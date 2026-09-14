@@ -1,6 +1,6 @@
-const CACHE='mala-nauka-v19';
+const CACHE='mala-nauka-v20';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
+  './','./index.html','./app.css','./viewport-lock.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
   './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
@@ -9,7 +9,7 @@ const CORE=[
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html',
-  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/correct-transition.js','./matematyka/app.js',
+  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/correct-transition.js','./matematyka/math-modes.css','./matematyka/app.js',
   './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
 ];
 

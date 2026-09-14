@@ -171,7 +171,7 @@ function explainerActions() {
 function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   const q = state.question;
   const showExplainer = state.hadMistake;
-  const animateEquation = !showExplainer && feedbackType !== 'good';
+  const animateEquation = !showExplainer;
 
   app.innerHTML = `
     ${topbar({ back: true })}
@@ -231,7 +231,6 @@ function chooseAnswer(answer) {
     state.locked = true;
     renderMultiply({ feedback: 'Dobrze!', feedbackType: 'good' });
 
-    // Poprawna odpowiedź prowadzi automatycznie dalej — bez przycisku „Dalej”.
     window.setTimeout(() => {
       if (state.screen === 'multiply') nextQuestion();
     }, 720);
@@ -307,7 +306,11 @@ function multiplicationExplainer(rows, columns) {
         <div class="row-labels" aria-label="Numery rzędów">${rowLabels}</div>
         <div class="array" aria-hidden="true">
           ${cells.join('')}
-          <span class="demo-finger" data-demo-finger aria-hidden="true">☝︎</span>
+          <span class="demo-finger" data-demo-finger aria-hidden="true">
+            <svg viewBox="0 0 28 28" focusable="false" aria-hidden="true">
+              <path d="M14 24V6M7.5 12.5 14 6l6.5 6.5" />
+            </svg>
+          </span>
         </div>
         <div class="row-expressions" aria-label="Kolejne dodawanie">${expressions}</div>
       </div>
@@ -381,14 +384,22 @@ function bindExplainerInteractions(rows, columns) {
     });
   };
 
-  const moveFingerToCount = (count) => {
+  const moveFingerToCell = (row, col, speed = 110) => {
     if (!finger) return;
-    const cell = array.querySelector(`.array-cell[data-count="${count}"]`);
+    const cell = array.querySelector(`.array-cell[data-row="${row}"][data-col="${col}"]`);
     if (!cell) return;
     const x = cell.offsetLeft + cell.offsetWidth / 2;
-    const y = cell.offsetTop + cell.offsetHeight * 1.72;
+    const y = cell.offsetTop + cell.offsetHeight * 1.66;
+    finger.style.setProperty('--finger-speed', `${speed}ms`);
     finger.style.setProperty('--finger-x', `${x}px`);
     finger.style.setProperty('--finger-y', `${y}px`);
+  };
+
+  const pulseFinger = () => {
+    if (!finger) return;
+    finger.classList.remove('is-tapping');
+    void finger.offsetWidth;
+    finger.classList.add('is-tapping');
   };
 
   const finishDemo = () => {
@@ -397,10 +408,10 @@ function bindExplainerInteractions(rows, columns) {
     paintStep(rows);
     finger?.classList.add('is-leaving');
     window.setTimeout(() => {
-      finger?.classList.remove('is-visible', 'is-leaving');
+      finger?.classList.remove('is-visible', 'is-leaving', 'is-tapping');
       manualEnabled = true;
       setButtonsEnabled(true);
-    }, 280);
+    }, 300);
   };
 
   const startDemo = () => {
@@ -413,29 +424,38 @@ function bindExplainerInteractions(rows, columns) {
       return;
     }
 
-    const total = rows * columns;
-    const stepDelay = Math.max(30, Math.min(92, Math.round(2600 / total)));
-    finger?.style.setProperty('--finger-speed', `${Math.max(34, stepDelay)}ms`);
-    let count = 1;
+    const stops = [];
+    for (let col = 1; col <= columns; col += 1) {
+      stops.push({ row: 1, col, count: col, delay: col === 1 ? 180 : 118, speed: 102 });
+    }
+    for (let row = 2; row <= rows; row += 1) {
+      stops.push({ row, col: columns, count: row * columns, delay: 285, speed: 230 });
+    }
+
+    let index = 0;
     demoRunning = true;
     setButtonsEnabled(false);
     paintCount(0);
-    moveFingerToCount(1);
+    moveFingerToCell(1, 1, 0);
     finger?.classList.add('is-visible');
 
     const advance = () => {
       if (!array.isConnected || state.screen !== 'multiply' || !state.hadMistake) return;
-      moveFingerToCount(count);
-      paintCount(count);
-      if (count >= total) {
-        window.setTimeout(finishDemo, 260);
+      const stop = stops[index];
+      moveFingerToCell(stop.row, stop.col, stop.speed);
+      paintCount(stop.count);
+      pulseFinger();
+
+      if (index >= stops.length - 1) {
+        window.setTimeout(finishDemo, 340);
         return;
       }
-      count += 1;
-      window.setTimeout(advance, stepDelay);
+
+      index += 1;
+      window.setTimeout(advance, stops[index].delay);
     };
 
-    window.setTimeout(advance, 180);
+    window.setTimeout(advance, 190);
   };
 
   const restoreSelected = () => {

@@ -2,27 +2,10 @@
   const DURATIONS = [60, 120, 180, 300];
   const STORAGE_KEY = 'malaNauka.math.duration';
   const SHARED_CONFIG_KEY = 'malaNauka.v1.configs';
-  const AUTOSTART_KEY = 'malaNauka.math.autostart';
 
   let selectedDuration = readDuration();
   let round = null;
-  let autoStartHandled = false;
-
-  // app.js jest modułem i trzyma start rundy we własnym zakresie.
-  // Zapamiętujemy wyłącznie handler przycisku mnożenia, aby móc bezpiecznie
-  // powtórzyć go po tapnięciu, gdy Safari nie przełączy widoku za pierwszym razem.
-  const multiplyHandlers = new WeakMap();
-  const nativeAddEventListener = EventTarget.prototype.addEventListener;
-  EventTarget.prototype.addEventListener = function patchedAddEventListener(type, listener, options) {
-    if (
-      type === 'click' &&
-      this instanceof Element &&
-      this.matches?.('[data-category="multiply"]')
-    ) {
-      multiplyHandlers.set(this, listener);
-    }
-    return nativeAddEventListener.call(this, type, listener, options);
-  };
+  let startingFromButton = false;
 
   function readDuration() {
     try {
@@ -71,18 +54,21 @@
         </a>
       `;
     }
+
+    // Usuwamy opis prototypu — na tym ekranie zostaje tylko decyzja: czas i tryb.
+    document.querySelector('.hero > p:not(.eyebrow)')?.remove();
   }
 
-  function installDurationChooser() {
+  function installSetupControls() {
     const grid = document.querySelector('.category-grid');
-    if (!grid) return;
+    if (!grid || !grid.parentElement) return;
 
-    let panel = document.querySelector('.math-duration-setup');
-    if (!panel) {
-      panel = document.createElement('section');
-      panel.className = 'math-duration-setup';
-      panel.innerHTML = `
-        <div class="math-duration-heading">Ile mamy czasu?</div>
+    let timerPanel = document.querySelector('.math-duration-setup');
+    if (!timerPanel) {
+      timerPanel = document.createElement('section');
+      timerPanel.className = 'math-duration-setup';
+      timerPanel.innerHTML = `
+        <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Czas rundy">
           ${DURATIONS.map((duration) => `
             <button type="button" class="math-duration-choice ${duration === selectedDuration ? 'is-selected' : ''}" data-math-duration="${duration}">
@@ -90,19 +76,27 @@
             </button>
           `).join('')}
         </div>
-        <p>Po pomyłce czas zatrzymuje się, aż obejrzysz wyjaśnienie.</p>
       `;
     }
 
-    // Czas wybieramy przed rodzajem działania, a nie pod kaflami.
-    if (grid.parentElement && panel.nextElementSibling !== grid) {
-      grid.parentElement.insertBefore(panel, grid);
+    if (timerPanel.nextElementSibling !== grid) {
+      grid.parentElement.insertBefore(timerPanel, grid);
     }
 
-    if (!autoStartHandled && sessionStorage.getItem(AUTOSTART_KEY) === '1') {
-      autoStartHandled = true;
-      sessionStorage.removeItem(AUTOSTART_KEY);
-      window.setTimeout(() => document.querySelector('[data-category="multiply"]')?.click(), 80);
+    let startPanel = document.querySelector('.math-start-panel');
+    if (!startPanel) {
+      startPanel = document.createElement('div');
+      startPanel.className = 'math-start-panel';
+      startPanel.innerHTML = `
+        <button type="button" class="math-start-button" data-math-start>
+          Rozpocznij
+          <span aria-hidden="true">→</span>
+        </button>
+      `;
+    }
+
+    if (grid.nextElementSibling !== startPanel) {
+      grid.insertAdjacentElement('afterend', startPanel);
     }
   }
 
@@ -192,14 +186,16 @@
     if (categories && !quiz) {
       if (round && !round.ended) round = null;
       decorateSetupHeader();
-      installDurationChooser();
+      installSetupControls();
       return;
     }
 
     if (quiz) ensureTimerUi();
   }
 
-  nativeAddEventListener.call(document, 'click', (event) => {
+  // Capture pozwala rozdzielić wybór „Mnożenie” od uruchomienia rundy.
+  // Jedynym startem jest teraz wyraźny przycisk „Rozpocznij”.
+  document.addEventListener('click', (event) => {
     const durationButton = event.target.closest?.('[data-math-duration]');
     if (durationButton) {
       const duration = Number(durationButton.dataset.mathDuration);
@@ -211,15 +207,22 @@
     }
 
     const multiply = event.target.closest?.('[data-category="multiply"]');
-    if (multiply) {
-      // Normalny handler app.js wykonuje się w tym samym evencie. Po zakończeniu
-      // zdarzenia sprawdzamy tylko, czy ekran faktycznie się zmienił.
-      window.setTimeout(() => {
-        if (!document.querySelector('.category-grid')) return;
-        const handler = multiplyHandlers.get(multiply);
-        if (typeof handler === 'function') handler.call(multiply, event);
-        else if (handler?.handleEvent) handler.handleEvent(event);
-      }, 0);
+    if (multiply && !startingFromButton && document.querySelector('.category-grid')) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      document.querySelectorAll('.category-card').forEach((card) => card.classList.remove('is-selected-mode'));
+      multiply.classList.add('is-selected-mode');
+      return;
+    }
+
+    const startButton = event.target.closest?.('[data-math-start]');
+    if (startButton) {
+      const target = document.querySelector('[data-category="multiply"]');
+      if (!target) return;
+      startingFromButton = true;
+      startRound();
+      target.click();
+      window.setTimeout(() => { startingFromButton = false; }, 0);
       return;
     }
 
@@ -235,13 +238,11 @@
     }
 
     if (event.target.closest?.('.math-time-again')) {
-      sessionStorage.setItem(AUTOSTART_KEY, '1');
       location.reload();
       return;
     }
 
     if (event.target.closest?.('.math-time-back')) {
-      sessionStorage.removeItem(AUTOSTART_KEY);
       location.reload();
     }
   }, true);

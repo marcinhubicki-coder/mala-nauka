@@ -1,0 +1,58 @@
+.quiz-stage[data-operation="divide"] .explainer-title::after {
+  content: none !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem {
+  overflow: visible;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  left: -1px;
+  bottom: calc(var(--cell-gap) / -2 - .5px);
+  width: calc(100% + var(--cell-gap) + 2px);
+  height: 1px;
+  border-radius: 999px;
+  background: rgba(137,151,236,.40);
+  pointer-events: none;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last::after {
+  width: calc(100% + 2px);
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-result-column {
+  background: rgba(94,115,232,.28);
+  border-color: rgba(119,135,238,.58);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10), 0 0 0 1px rgba(94,115,232,.08);
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-result-column.is-active {
+  background: rgba(94,115,232,.62);
+  border-color: rgba(139,151,246,.82);
+}
+
+.quiz-stage[data-operation="divide"] .axis-label.division-result-label {
+  color: var(--text);
+  opacity: 1;
+  font-weight: 900;
+  transform: scale(1.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+    background: rgba(151,164,255,.46);
+  }
+
+  .quiz-stage[data-operation="divide"] .array-cell.division-result-column {
+    background: rgba(104,121,234,.30);
+    border-color: rgba(142,156,255,.58);
+  }
+
+  .quiz-stage[data-operation="divide"] .array-cell.division-result-column.is-active {
+    background: rgba(113,132,247,.58);
+    border-color: rgba(160,173,255,.80);
+  }
+}

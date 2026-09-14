@@ -1,9 +1,11 @@
-const CACHE='mala-nauka-v19';
+const CACHE='mala-nauka-v20-spelling-webp-review';
 const CORE=[
   './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
+  // Exact URLs loaded by the spelling entry pages and their module import.
+  './spelling-art.css?v=7','./spelling-mobile.css?v=7','./spelling-art.js?v=7','./debug-tools.js?v=7','./spelling/art.mjs?v=6',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
-  './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
+  './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
@@ -35,7 +37,7 @@ self.addEventListener('fetch',event=>{
       const copy=response.clone();
       caches.open(CACHE).then(cache=>cache.put(request,copy));
       return response;
-    }).catch(async()=>await caches.match(request)||await caches.match('./index.html')));
+    }).catch(async()=>await caches.match(request)||await caches.match(request,{ignoreSearch:true})||await caches.match('./index.html')));
     return;
   }
 

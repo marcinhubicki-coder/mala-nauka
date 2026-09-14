@@ -23,9 +23,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 
-.math-home-link:active {
-  transform: scale(.98);
-}
+.math-home-link:active { transform: scale(.98); }
 
 .math-round-time {
   justify-self: end;
@@ -114,6 +112,12 @@
   box-shadow: 0 14px 36px rgba(94,115,232,.12);
 }
 
+/* Tryb jest już wybrany; start odbywa się wyłącznie przyciskiem Rozpocznij. */
+.category-card.math-mode-display-only {
+  pointer-events: none;
+  cursor: default;
+}
+
 .math-start-panel {
   margin-top: 20px;
   padding-bottom: 4px;
@@ -189,9 +193,7 @@
   font-size: 14px;
 }
 
-.math-time-over-card p strong {
-  color: var(--text);
-}
+.math-time-over-card p strong { color: var(--text); }
 
 .math-time-over-actions {
   display: grid;
@@ -220,49 +222,20 @@
 }
 
 @media (max-width: 430px) {
-  .topbar.math-timed {
-    grid-template-columns: 58px 1fr 58px;
-  }
-
-  .math-home-link {
-    gap: 7px;
-  }
-
-  .math-home-link img {
-    width: 22px;
-    height: 22px;
-  }
-
-  .math-round-time {
-    min-width: 54px;
-    padding-left: 7px;
-    padding-right: 7px;
-    font-size: 11.5px;
-  }
-
-  .math-duration-choices {
-    gap: 7px;
-  }
-
-  .math-duration-choice {
-    min-height: 40px;
-    font-size: 11.5px;
-  }
+  .topbar.math-timed { grid-template-columns: 58px 1fr 58px; }
+  .math-home-link { gap: 7px; }
+  .math-home-link img { width: 22px; height: 22px; }
+  .math-round-time { min-width: 54px; padding-left: 7px; padding-right: 7px; font-size: 11.5px; }
+  .math-duration-choices { gap: 7px; }
+  .math-duration-choice { min-height: 40px; font-size: 11.5px; }
 }
 
 @media (max-width: 360px) {
-  .math-duration-setup {
-    padding: 14px 12px;
-  }
-
-  .math-duration-choices {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .math-duration-setup { padding: 14px 12px; }
+  .math-duration-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .math-round-progress > span,
-  .math-start-button {
-    transition: none;
-  }
+  .math-start-button { transition: none; }
 }

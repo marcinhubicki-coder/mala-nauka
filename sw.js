@@ -1,13 +1,16 @@
-const CACHE='mala-nauka-v2';
+const CACHE='mala-nauka-v3';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./game.mjs','./modes.mjs','./progress.mjs',
+  './','./index.html','./app.css','./app.js','./module-router.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
+  './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
-  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/app.js'
+  './ortografia/','./ortografia/index.html',
+  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/app.js',
+  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
 ];
 
 self.addEventListener('install',event=>{

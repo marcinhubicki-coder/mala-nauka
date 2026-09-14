@@ -137,6 +137,16 @@ function answerGrid(q) {
   `;
 }
 
+function equationMarkup(q, animate = false) {
+  return `
+    <p class="equation ${animate ? 'equation-build' : ''}" aria-label="${q.a} razy ${q.b}">
+      <span class="equation-number equation-left">${q.a}</span>
+      <span class="equation-sign" aria-hidden="true">×</span>
+      <span class="equation-number equation-right">${q.b}</span>
+    </p>
+  `;
+}
+
 function wrongNotice() {
   return `
     <p class="wrong-answer-note" role="status" aria-live="polite">
@@ -161,6 +171,7 @@ function explainerActions() {
 function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   const q = state.question;
   const showExplainer = state.hadMistake;
+  const animateEquation = !showExplainer && feedbackType !== 'good';
 
   app.innerHTML = `
     ${topbar({ back: true })}
@@ -168,7 +179,7 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
       <div class="quiz-stage ${showExplainer ? 'has-explainer' : ''}">
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>
-          <p class="equation" aria-label="${q.a} razy ${q.b}">${q.a} × ${q.b}</p>
+          ${equationMarkup(q, animateEquation)}
           ${showExplainer ? wrongNotice() : ''}
         </div>
 
@@ -195,7 +206,7 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
 
   app.querySelector('[data-retry]')?.addEventListener('click', retryQuestion);
   app.querySelector('[data-next-question]')?.addEventListener('click', nextQuestion);
-  bindExplainerInteractions(q.a, q.b);
+  const explainerController = bindExplainerInteractions(q.a, q.b);
 
   if (showExplainer) {
     const reveal = app.querySelector('[data-explainer-reveal]');
@@ -203,7 +214,11 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
     window.setTimeout(() => {
       if (state.screen !== 'multiply' || !state.hadMistake || state.question !== q) return;
       reveal?.classList.add('is-open');
-      window.setTimeout(() => actions?.classList.add('is-visible'), 280);
+      window.setTimeout(() => {
+        if (state.screen !== 'multiply' || !state.hadMistake || state.question !== q) return;
+        explainerController?.startDemo();
+      }, 520);
+      window.setTimeout(() => actions?.classList.add('is-visible'), 320);
     }, 520);
   }
 }
@@ -241,14 +256,12 @@ function multiplicationExplainer(rows, columns) {
     for (let col = 1; col <= TABLE_SIZE; col += 1) {
       const inProblem = row <= rows && col <= columns;
       const count = inProblem ? ((row - 1) * columns) + col : '';
-      const delay = inProblem ? Math.min(count - 1, 32) * 12 : 0;
       cells.push(`
         <span
           class="array-cell ${inProblem ? 'in-problem' : 'outside-problem'}"
           data-row="${row}"
           data-col="${col}"
           data-count="${count}"
-          style="--cell-delay:${delay}ms"
           aria-hidden="true"
         >${inProblem ? `<span class="cell-number">${count}</span>` : ''}</span>
       `);
@@ -292,7 +305,10 @@ function multiplicationExplainer(rows, columns) {
       <div class="explain-grid">
         <div class="column-labels" aria-label="Numery kolumn">${columnLabels}</div>
         <div class="row-labels" aria-label="Numery rzędów">${rowLabels}</div>
-        <div class="array" aria-hidden="true">${cells.join('')}</div>
+        <div class="array" aria-hidden="true">
+          ${cells.join('')}
+          <span class="demo-finger" data-demo-finger aria-hidden="true">☝︎</span>
+        </div>
         <div class="row-expressions" aria-label="Kolejne dodawanie">${expressions}</div>
       </div>
 
@@ -303,29 +319,59 @@ function multiplicationExplainer(rows, columns) {
 
 function bindExplainerInteractions(rows, columns) {
   const buttons = [...app.querySelectorAll('[data-explain-step]')];
-  if (!buttons.length) return;
+  const array = app.querySelector('.array');
+  const finger = app.querySelector('[data-demo-finger]');
+  if (!buttons.length || !array) return null;
 
   let selectedStep = 0;
+  let manualEnabled = false;
+  let demoRunning = false;
 
-  const paint = (step) => {
-    app.querySelectorAll('.array-cell').forEach((cell) => {
-      const row = Number(cell.dataset.row);
-      const col = Number(cell.dataset.col);
-      const isCounted = step > 0 && row <= step && row <= rows && col <= columns;
-      cell.classList.toggle('is-active', isCounted);
-      cell.classList.toggle('show-number', isCounted);
+  const setButtonsEnabled = (enabled) => {
+    buttons.forEach((button) => {
+      button.disabled = !enabled;
+      button.classList.toggle('demo-locked', !enabled);
     });
+  };
+
+  const updateLabels = (count) => {
+    const currentRow = count > 0 ? Math.ceil(count / columns) : 0;
+    const currentColumn = count > 0 ? ((count - 1) % columns) + 1 : 0;
 
     app.querySelectorAll('[data-row-label]').forEach((label) => {
       const row = Number(label.dataset.rowLabel);
-      label.classList.toggle('is-active', step > 0 && row <= step && row <= rows);
+      label.classList.toggle('is-active', count > 0 && row <= currentRow && row <= rows);
     });
 
     app.querySelectorAll('[data-col-label]').forEach((label) => {
       const col = Number(label.dataset.colLabel);
-      label.classList.toggle('is-active', step > 0 && col <= columns);
+      const activeThrough = currentRow > 1 ? columns : currentColumn;
+      label.classList.toggle('is-active', count > 0 && col <= activeThrough && col <= columns);
+    });
+  };
+
+  const paintCount = (count) => {
+    app.querySelectorAll('.array-cell[data-count]').forEach((cell) => {
+      const cellCount = Number(cell.dataset.count);
+      const isCounted = cellCount > 0 && cellCount <= count;
+      cell.classList.toggle('is-active', isCounted);
+      cell.classList.toggle('show-number', isCounted);
     });
 
+    updateLabels(count);
+
+    const completedStep = count > 0 ? Math.floor(count / columns) : 0;
+    buttons.forEach((button) => {
+      const buttonStep = Number(button.dataset.explainStep);
+      const isCurrent = count > 0 && count % columns === 0 && buttonStep === completedStep;
+      button.classList.toggle('is-active', isCurrent);
+      button.setAttribute('aria-pressed', 'false');
+    });
+  };
+
+  const paintStep = (step) => {
+    const count = step > 0 ? Math.min(step, rows) * columns : 0;
+    paintCount(count);
     buttons.forEach((button) => {
       const buttonStep = Number(button.dataset.explainStep);
       const isSelected = buttonStep === selectedStep;
@@ -335,22 +381,88 @@ function bindExplainerInteractions(rows, columns) {
     });
   };
 
-  const restoreSelected = () => paint(selectedStep);
+  const moveFingerToCount = (count) => {
+    if (!finger) return;
+    const cell = array.querySelector(`.array-cell[data-count="${count}"]`);
+    if (!cell) return;
+    const x = cell.offsetLeft + cell.offsetWidth / 2;
+    const y = cell.offsetTop + cell.offsetHeight * 1.72;
+    finger.style.setProperty('--finger-x', `${x}px`);
+    finger.style.setProperty('--finger-y', `${y}px`);
+  };
+
+  const finishDemo = () => {
+    demoRunning = false;
+    selectedStep = rows;
+    paintStep(rows);
+    finger?.classList.add('is-leaving');
+    window.setTimeout(() => {
+      finger?.classList.remove('is-visible', 'is-leaving');
+      manualEnabled = true;
+      setButtonsEnabled(true);
+    }, 280);
+  };
+
+  const startDemo = () => {
+    if (demoRunning || manualEnabled || !array.isConnected) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      selectedStep = rows;
+      paintStep(rows);
+      manualEnabled = true;
+      setButtonsEnabled(true);
+      return;
+    }
+
+    const total = rows * columns;
+    const stepDelay = Math.max(30, Math.min(92, Math.round(2600 / total)));
+    finger?.style.setProperty('--finger-speed', `${Math.max(34, stepDelay)}ms`);
+    let count = 1;
+    demoRunning = true;
+    setButtonsEnabled(false);
+    paintCount(0);
+    moveFingerToCount(1);
+    finger?.classList.add('is-visible');
+
+    const advance = () => {
+      if (!array.isConnected || state.screen !== 'multiply' || !state.hadMistake) return;
+      moveFingerToCount(count);
+      paintCount(count);
+      if (count >= total) {
+        window.setTimeout(finishDemo, 260);
+        return;
+      }
+      count += 1;
+      window.setTimeout(advance, stepDelay);
+    };
+
+    window.setTimeout(advance, 180);
+  };
+
+  const restoreSelected = () => {
+    if (manualEnabled) paintStep(selectedStep);
+  };
 
   buttons.forEach((button) => {
     const step = Number(button.dataset.explainStep);
 
-    button.addEventListener('pointerenter', () => paint(step));
+    button.addEventListener('pointerenter', () => {
+      if (manualEnabled) paintStep(step);
+    });
     button.addEventListener('pointerleave', restoreSelected);
-    button.addEventListener('focus', () => paint(step));
+    button.addEventListener('focus', () => {
+      if (manualEnabled) paintStep(step);
+    });
     button.addEventListener('blur', restoreSelected);
     button.addEventListener('click', () => {
+      if (!manualEnabled) return;
       selectedStep = selectedStep === step ? 0 : step;
-      paint(selectedStep);
+      paintStep(selectedStep);
     });
   });
 
-  paint(0);
+  setButtonsEnabled(false);
+  paintStep(0);
+  return { startDemo };
 }
 
 renderCategories();

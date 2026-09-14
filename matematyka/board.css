@@ -1,0 +1,221 @@
+.explainer {
+  --cell-size: clamp(15px, 4.35vw, 20px);
+  --cell-gap: 2px;
+  width: min(100%, 570px);
+  padding: 12px 10px 10px;
+}
+
+.explain-grid {
+  display: grid;
+  grid-template-columns: 16px auto 112px;
+  grid-template-rows: 18px auto;
+  column-gap: 7px;
+  row-gap: 4px;
+  align-items: start;
+  justify-content: center;
+}
+
+.column-labels {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(10, var(--cell-size));
+  gap: var(--cell-gap);
+  align-items: center;
+  justify-content: start;
+}
+
+.row-labels {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: repeat(10, var(--cell-size));
+  gap: var(--cell-gap);
+  align-content: start;
+}
+
+.array {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(10, var(--cell-size));
+  grid-template-rows: repeat(10, var(--cell-size));
+  gap: var(--cell-gap);
+  justify-content: start;
+  align-content: start;
+}
+
+.row-expressions {
+  grid-column: 3;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: repeat(10, var(--cell-size));
+  gap: var(--cell-gap);
+  width: 112px;
+  min-width: 112px;
+  align-content: start;
+}
+
+.axis-label {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  font-size: clamp(7px, 1.9vw, 9px);
+  opacity: .48;
+}
+
+.axis-label.in-problem-axis {
+  color: var(--accent);
+  opacity: .82;
+}
+
+.axis-label.is-active {
+  color: var(--accent);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.array-cell {
+  position: relative;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  opacity: 1;
+  transform: none;
+  animation: none;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  transition: background .14s ease, border-color .14s ease, box-shadow .14s ease, opacity .14s ease, transform .14s ease;
+}
+
+.array-cell.in-problem {
+  background: rgba(94,115,232,.16);
+  border-color: rgba(94,115,232,.30);
+  opacity: 1;
+}
+
+.array-cell.outside-problem {
+  background: rgba(103,112,132,.07);
+  border-color: rgba(103,112,132,.10);
+  opacity: .46;
+}
+
+.array-cell.is-active {
+  background: rgba(94,115,232,.48);
+  border-color: rgba(74,94,216,.72);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 1px 4px rgba(71,85,170,.16);
+  transform: scale(1.025);
+  opacity: 1;
+}
+
+.cell-number {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  color: rgba(34,45,92,.92);
+  font-size: clamp(5.5px, 1.55vw, 7.5px);
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: -.04em;
+  transition: opacity .12s ease, transform .12s ease;
+  transform: scale(.84);
+}
+
+.array-cell.show-number .cell-number {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.row-expression,
+.row-expression-spacer {
+  width: 112px;
+  height: var(--cell-size);
+  min-height: var(--cell-size);
+}
+
+.row-expression {
+  padding: 0 5px;
+  font-size: clamp(7.5px, 2.2vw, 10px);
+  letter-spacing: -.02em;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.row-expression-spacer {
+  display: block;
+}
+
+.grid-caption {
+  max-width: 42ch;
+  margin: 9px auto 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+@media (max-width: 430px) {
+  .explainer {
+    width: min(100%, 400px);
+    padding: 10px 7px 9px;
+  }
+  .explain-grid {
+    grid-template-columns: 14px auto 104px;
+    column-gap: 5px;
+  }
+  .row-expressions {
+    width: 104px;
+    min-width: 104px;
+  }
+  .row-expression,
+  .row-expression-spacer {
+    width: 104px;
+  }
+}
+
+@media (max-width: 360px) {
+  .explainer {
+    --cell-size: 15px;
+  }
+  .explain-grid {
+    grid-template-columns: 13px auto 96px;
+    column-gap: 4px;
+  }
+  .row-expressions {
+    width: 96px;
+    min-width: 96px;
+  }
+  .row-expression,
+  .row-expression-spacer {
+    width: 96px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+}
+
+@media (max-height: 760px) {
+  .grid-caption { display: none; }
+  .explainer-copy { margin-bottom: 6px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .array-cell.in-problem {
+    background: rgba(115,132,255,.18);
+    border-color: rgba(135,149,255,.31);
+  }
+  .array-cell.outside-problem {
+    background: rgba(255,255,255,.035);
+    border-color: rgba(220,228,248,.075);
+    opacity: .4;
+  }
+  .array-cell.is-active {
+    background: rgba(115,132,255,.52);
+    border-color: rgba(158,169,255,.74);
+  }
+  .cell-number {
+    color: rgba(248,249,255,.96);
+  }
+}

@@ -8,6 +8,22 @@
   let round = null;
   let autoStartHandled = false;
 
+  // app.js jest modułem i trzyma start rundy we własnym zakresie.
+  // Zapamiętujemy wyłącznie handler przycisku mnożenia, aby móc bezpiecznie
+  // powtórzyć go po tapnięciu, gdy Safari nie przełączy widoku za pierwszym razem.
+  const multiplyHandlers = new WeakMap();
+  const nativeAddEventListener = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function patchedAddEventListener(type, listener, options) {
+    if (
+      type === 'click' &&
+      this instanceof Element &&
+      this.matches?.('[data-category="multiply"]')
+    ) {
+      multiplyHandlers.set(this, listener);
+    }
+    return nativeAddEventListener.call(this, type, listener, options);
+  };
+
   function readDuration() {
     try {
       const direct = Number(localStorage.getItem(STORAGE_KEY));
@@ -41,24 +57,47 @@
     return `${minutes}:${String(seconds).padStart(2, '0')}`;
   }
 
+  function decorateSetupHeader() {
+    const categories = document.querySelector('.category-grid');
+    const quiz = document.querySelector('.quiz-screen');
+    if (!categories || quiz) return;
+
+    const brand = document.querySelector('.topbar .brand');
+    if (brand && !brand.querySelector('.math-home-link')) {
+      brand.innerHTML = `
+        <a class="math-home-link" href="../" aria-label="Wróć do Małej Nauki i wybierz tryb">
+          <img src="../assets/icon-192.png" alt="" width="24" height="24">
+          <span>Mała Nauka</span>
+        </a>
+      `;
+    }
+  }
+
   function installDurationChooser() {
     const grid = document.querySelector('.category-grid');
-    if (!grid || document.querySelector('.math-duration-setup')) return;
+    if (!grid) return;
 
-    const panel = document.createElement('section');
-    panel.className = 'math-duration-setup';
-    panel.innerHTML = `
-      <div class="math-duration-heading">Ile mamy czasu?</div>
-      <div class="math-duration-choices" role="group" aria-label="Czas rundy">
-        ${DURATIONS.map((duration) => `
-          <button type="button" class="math-duration-choice ${duration === selectedDuration ? 'is-selected' : ''}" data-math-duration="${duration}">
-            ${formatDuration(duration)}
-          </button>
-        `).join('')}
-      </div>
-      <p>Po pomyłce czas zatrzymuje się, aż obejrzysz wyjaśnienie.</p>
-    `;
-    grid.insertAdjacentElement('afterend', panel);
+    let panel = document.querySelector('.math-duration-setup');
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.className = 'math-duration-setup';
+      panel.innerHTML = `
+        <div class="math-duration-heading">Ile mamy czasu?</div>
+        <div class="math-duration-choices" role="group" aria-label="Czas rundy">
+          ${DURATIONS.map((duration) => `
+            <button type="button" class="math-duration-choice ${duration === selectedDuration ? 'is-selected' : ''}" data-math-duration="${duration}">
+              ${formatDuration(duration)}
+            </button>
+          `).join('')}
+        </div>
+        <p>Po pomyłce czas zatrzymuje się, aż obejrzysz wyjaśnienie.</p>
+      `;
+    }
+
+    // Czas wybieramy przed rodzajem działania, a nie pod kaflami.
+    if (grid.parentElement && panel.nextElementSibling !== grid) {
+      grid.parentElement.insertBefore(panel, grid);
+    }
 
     if (!autoStartHandled && sessionStorage.getItem(AUTOSTART_KEY) === '1') {
       autoStartHandled = true;
@@ -152,6 +191,7 @@
 
     if (categories && !quiz) {
       if (round && !round.ended) round = null;
+      decorateSetupHeader();
       installDurationChooser();
       return;
     }
@@ -159,7 +199,7 @@
     if (quiz) ensureTimerUi();
   }
 
-  document.addEventListener('click', (event) => {
+  nativeAddEventListener.call(document, 'click', (event) => {
     const durationButton = event.target.closest?.('[data-math-duration]');
     if (durationButton) {
       const duration = Number(durationButton.dataset.mathDuration);
@@ -167,6 +207,19 @@
       document.querySelectorAll('[data-math-duration]').forEach((button) => {
         button.classList.toggle('is-selected', Number(button.dataset.mathDuration) === duration);
       });
+      return;
+    }
+
+    const multiply = event.target.closest?.('[data-category="multiply"]');
+    if (multiply) {
+      // Normalny handler app.js wykonuje się w tym samym evencie. Po zakończeniu
+      // zdarzenia sprawdzamy tylko, czy ekran faktycznie się zmienił.
+      window.setTimeout(() => {
+        if (!document.querySelector('.category-grid')) return;
+        const handler = multiplyHandlers.get(multiply);
+        if (typeof handler === 'function') handler.call(multiply, event);
+        else if (handler?.handleEvent) handler.handleEvent(event);
+      }, 0);
       return;
     }
 

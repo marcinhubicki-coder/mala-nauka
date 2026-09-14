@@ -23,9 +23,5 @@ main#app,
   -webkit-overflow-scrolling: touch;
 }
 
-/* Gdy zawartość mieści się w ekranie, nie ma żadnego sztucznego przesuwania.
-   Scroll pozostaje dostępny tylko dla ekranów faktycznie wyższych od viewportu. */
-main#app:has(> .result),
-main#app:has(> .math-result-screen) {
-  overflow: hidden;
-}
+/* Jeśli zawartość mieści się w 100dvh, nie ma zakresu przewijania ani bounce całej strony.
+   Jeśli realnie jest wyższa, przewija się wyłącznie kontener aplikacji. */

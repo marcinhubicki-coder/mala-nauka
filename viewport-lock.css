@@ -1,0 +1,31 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+main#app,
+.app-shell {
+  height: 100dvh !important;
+  max-height: 100dvh;
+  min-height: 0 !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Gdy zawartość mieści się w ekranie, nie ma żadnego sztucznego przesuwania.
+   Scroll pozostaje dostępny tylko dla ekranów faktycznie wyższych od viewportu. */
+main#app:has(> .result),
+main#app:has(> .math-result-screen) {
+  overflow: hidden;
+}

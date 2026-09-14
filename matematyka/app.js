@@ -16,6 +16,7 @@ const categoryItems = [
 ];
 
 const TABLE_SIZE = 10;
+const ANSWER_COUNT = 6;
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -26,28 +27,34 @@ function makeQuestion() {
   const b = randomInt(2, 10);
   const correct = a * b;
   const candidates = new Set([correct]);
-  const nearby = [
-    correct + a,
-    correct - a,
-    correct + b,
-    correct - b,
-    correct + 1,
-    correct - 1,
-    correct + 10,
-    correct - 10,
-  ].filter((value) => value > 0 && value !== correct);
 
-  while (candidates.size < 4 && nearby.length) {
-    const index = randomInt(0, nearby.length - 1);
-    candidates.add(nearby.splice(index, 1)[0]);
+  const distractorPool = [...new Set([
+    correct - a,
+    correct + a,
+    correct - b,
+    correct + b,
+    correct - 10,
+    correct + 10,
+    correct - 2,
+    correct + 2,
+    correct - 1,
+    correct + 1,
+    correct - a - b,
+    correct + a + b,
+  ])].filter((value) => value >= 1 && value <= 100 && value !== correct);
+
+  while (candidates.size < ANSWER_COUNT && distractorPool.length) {
+    const index = randomInt(0, distractorPool.length - 1);
+    candidates.add(distractorPool.splice(index, 1)[0]);
   }
-  while (candidates.size < 4) {
-    candidates.add(randomInt(Math.max(1, correct - 12), correct + 12));
+
+  while (candidates.size < ANSWER_COUNT) {
+    candidates.add(randomInt(Math.max(1, correct - 18), Math.min(100, correct + 18)));
   }
 
   const answers = [...candidates]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 4);
+    .sort((left, right) => left - right)
+    .slice(0, ANSWER_COUNT);
 
   return { a, b, correct, answers };
 }
@@ -108,7 +115,7 @@ function nextQuestion() {
 
 function answerGrid(q) {
   return `
-    <div class="answer-grid" aria-label="Wybierz wynik">
+    <div class="answer-grid" aria-label="Wybierz wynik. Odpowiedzi są ułożone rosnąco.">
       ${q.answers.map((answer) => {
         const isCorrectState = state.locked && answer === q.correct;
         const classes = ['answer'];
@@ -154,6 +161,7 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   });
 
   app.querySelector('[data-retry]')?.addEventListener('click', retryQuestion);
+  app.querySelector('[data-next-question]')?.addEventListener('click', nextQuestion);
   bindExplainerInteractions(q.a, q.b);
 }
 
@@ -190,12 +198,14 @@ function multiplicationExplainer(rows, columns) {
     for (let col = 1; col <= TABLE_SIZE; col += 1) {
       const inProblem = row <= rows && col <= columns;
       const count = inProblem ? ((row - 1) * columns) + col : '';
+      const delay = inProblem ? Math.min(count - 1, 32) * 12 : 0;
       cells.push(`
         <span
           class="array-cell ${inProblem ? 'in-problem' : 'outside-problem'}"
           data-row="${row}"
           data-col="${col}"
           data-count="${count}"
+          style="--cell-delay:${delay}ms"
           aria-hidden="true"
         >${inProblem ? `<span class="cell-number">${count}</span>` : ''}</span>
       `);
@@ -243,8 +253,11 @@ function multiplicationExplainer(rows, columns) {
         <div class="row-expressions" aria-label="Kolejne dodawanie">${expressions}</div>
       </div>
 
-      <p class="grid-caption">Cała plansza to tabliczka 10 × 10. Kolor pokazuje pola użyte w tym działaniu.</p>
-      <button class="retry-button" type="button" data-retry>Spróbuj ponownie</button>
+      <p class="grid-caption">Dotknij wyniku po prawej, żeby policzyć podświetlone pola.</p>
+      <div class="explainer-actions">
+        <button class="explainer-action retry-action" type="button" data-retry><span aria-hidden="true">↺</span> Spróbuj ponownie</button>
+        <button class="explainer-action next-action" type="button" data-next-question>Dalej <span aria-hidden="true">→</span></button>
+      </div>
     </section>
   `;
 }

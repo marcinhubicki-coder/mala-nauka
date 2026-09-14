@@ -6,6 +6,7 @@ const state = {
   locked: false,
   wrongAnswers: new Set(),
   hadMistake: false,
+  lastWrongAnswer: null,
 };
 
 const categoryItems = [
@@ -63,17 +64,22 @@ function topbar({ back = false } = {}) {
   return `
     <header class="topbar">
       <button class="icon-button" id="back" type="button" aria-label="Wróć" ${back ? '' : 'hidden'}>‹</button>
-      <div class="brand">Mała Nauka</div>
+      <div class="brand">Tabliczka mnożenia</div>
       <div></div>
     </header>
   `;
 }
 
+function resetAttemptState() {
+  state.locked = false;
+  state.wrongAnswers = new Set();
+  state.hadMistake = false;
+  state.lastWrongAnswer = null;
+}
+
 function renderCategories() {
   state.screen = 'categories';
-  state.locked = false;
-  state.wrongAnswers.clear();
-  state.hadMistake = false;
+  resetAttemptState();
 
   app.innerHTML = `
     ${topbar()}
@@ -107,9 +113,7 @@ function renderCategories() {
 
 function nextQuestion() {
   state.question = makeQuestion();
-  state.locked = false;
-  state.wrongAnswers = new Set();
-  state.hadMistake = false;
+  resetAttemptState();
   renderMultiply();
 }
 
@@ -133,6 +137,27 @@ function answerGrid(q) {
   `;
 }
 
+function wrongNotice() {
+  return `
+    <p class="wrong-answer-note" role="status" aria-live="polite">
+      Wynik tego działania to nie <strong>${state.lastWrongAnswer}</strong>.
+    </p>
+  `;
+}
+
+function explainerActions() {
+  return `
+    <div class="explainer-actions-panel" data-explainer-actions>
+      <button class="explainer-action retry-action" type="button" data-retry>
+        <span aria-hidden="true">↺</span> Spróbuj ponownie
+      </button>
+      <button class="explainer-action next-action" type="button" data-next-question>
+        Dalej <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  `;
+}
+
 function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   const q = state.question;
   const showExplainer = state.hadMistake;
@@ -144,9 +169,17 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>
           <p class="equation" aria-label="${q.a} razy ${q.b}">${q.a} × ${q.b}</p>
+          ${showExplainer ? wrongNotice() : ''}
         </div>
 
-        ${showExplainer ? multiplicationExplainer(q.a, q.b) : `
+        ${showExplainer ? `
+          <div class="explainer-reveal" data-explainer-reveal>
+            <div class="explainer-reveal-inner">
+              ${multiplicationExplainer(q.a, q.b)}
+            </div>
+          </div>
+          ${explainerActions()}
+        ` : `
           ${answerGrid(q)}
           <p class="feedback ${feedbackType}" role="status">${feedback}</p>
         `}
@@ -163,6 +196,16 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   app.querySelector('[data-retry]')?.addEventListener('click', retryQuestion);
   app.querySelector('[data-next-question]')?.addEventListener('click', nextQuestion);
   bindExplainerInteractions(q.a, q.b);
+
+  if (showExplainer) {
+    const reveal = app.querySelector('[data-explainer-reveal]');
+    const actions = app.querySelector('[data-explainer-actions]');
+    window.setTimeout(() => {
+      if (state.screen !== 'multiply' || !state.hadMistake || state.question !== q) return;
+      reveal?.classList.add('is-open');
+      window.setTimeout(() => actions?.classList.add('is-visible'), 280);
+    }, 520);
+  }
 }
 
 function chooseAnswer(answer) {
@@ -182,12 +225,12 @@ function chooseAnswer(answer) {
 
   state.wrongAnswers.add(answer);
   state.hadMistake = true;
+  state.lastWrongAnswer = answer;
   renderMultiply();
 }
 
 function retryQuestion() {
-  state.hadMistake = false;
-  state.wrongAnswers = new Set();
+  resetAttemptState();
   renderMultiply();
 }
 
@@ -254,10 +297,6 @@ function multiplicationExplainer(rows, columns) {
       </div>
 
       <p class="grid-caption">Dotknij wyniku po prawej, żeby policzyć podświetlone pola.</p>
-      <div class="explainer-actions">
-        <button class="explainer-action retry-action" type="button" data-retry><span aria-hidden="true">↺</span> Spróbuj ponownie</button>
-        <button class="explainer-action next-action" type="button" data-next-question>Dalej <span aria-hidden="true">→</span></button>
-      </div>
     </section>
   `;
 }

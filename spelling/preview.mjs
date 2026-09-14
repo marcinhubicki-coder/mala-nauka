@@ -2,10 +2,21 @@ import { SCENES } from './scenes.mjs';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');
+const STORAGE_KEY='malaNauka.spelling.assetsOnly';
 
-// Produkcyjnie korzystamy z całej bazy. Tryb asset-only jest świadomie włączany przez ?assets=1 do szybkiego QA scen.
+function storedAssetsOnly(){
+  try{return localStorage.getItem(STORAGE_KEY)==='1';}catch{return false;}
+}
+
+function assetsOnlyEnabled(){
+  const override=params.get('assets');
+  if(override==='1')return true;
+  if(override==='0')return false;
+  return storedAssetsOnly();
+}
+
 export const SPELLING_PREVIEW = Object.freeze({
-  assetsOnly: params.get('assets') === '1',
+  get assetsOnly(){return assetsOnlyEnabled();},
   word: normalize(params.get('word')),
   scene: normalize(params.get('scene')),
   layout: ['full','split'].includes(params.get('layout')) ? params.get('layout') : '',
@@ -20,7 +31,7 @@ const availableMasks = new Set(
 export function filterSpellingPreview(words){
   let pool = Array.isArray(words) ? words : [];
 
-  if(SPELLING_PREVIEW.assetsOnly){
+  if(assetsOnlyEnabled()){
     pool = pool.filter(word => availableMasks.has(word.masked));
   }
 
@@ -37,8 +48,11 @@ export function filterSpellingPreview(words){
 
 export function previewSummary(){
   return {
-    ...SPELLING_PREVIEW,
+    assetsOnly:assetsOnlyEnabled(),
+    word:SPELLING_PREVIEW.word,
+    scene:SPELLING_PREVIEW.scene,
+    layout:SPELLING_PREVIEW.layout,
     availableScenes:[...availableMasks],
-    active:SPELLING_PREVIEW.assetsOnly || !!SPELLING_PREVIEW.word || !!SPELLING_PREVIEW.scene || !!SPELLING_PREVIEW.layout,
+    active:assetsOnlyEnabled() || !!SPELLING_PREVIEW.word || !!SPELLING_PREVIEW.scene || !!SPELLING_PREVIEW.layout,
   };
 }

@@ -18,6 +18,7 @@ const categoryItems = [
 
 const TABLE_SIZE = 10;
 const ANSWER_COUNT = 6;
+const DEMO_DURATION = 2200;
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -171,7 +172,7 @@ function explainerActions() {
 function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   const q = state.question;
   const showExplainer = state.hadMistake;
-  const animateEquation = !showExplainer;
+  const animateEquation = !showExplainer && feedbackType !== 'good';
 
   app.innerHTML = `
     ${topbar({ back: true })}
@@ -307,8 +308,13 @@ function multiplicationExplainer(rows, columns) {
         <div class="array" aria-hidden="true">
           ${cells.join('')}
           <span class="demo-finger" data-demo-finger aria-hidden="true">
-            <svg viewBox="0 0 28 28" focusable="false" aria-hidden="true">
-              <path d="M14 24V6M7.5 12.5 14 6l6.5 6.5" />
+            <svg viewBox="0 0 46 46" focusable="false" aria-hidden="true">
+              <g class="pointer-rays" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+                <path d="M8 8 4.5 4.5"/>
+                <path d="M15 5V1.5"/>
+                <path d="M5 15H1.5"/>
+              </g>
+              <path class="pointer-shape" d="M9.5 8.5 37 23.2c2.1 1.1 1.8 4.2-.4 4.9l-10.1 3.2-4 9.7c-.9 2.2-4 2.2-4.9.1L6.1 12.2c-.9-2.4 1.1-5 3.4-3.7Z"/>
             </svg>
           </span>
         </div>
@@ -329,6 +335,8 @@ function bindExplainerInteractions(rows, columns) {
   let selectedStep = 0;
   let manualEnabled = false;
   let demoRunning = false;
+  let demoAnimation = null;
+  const demoTimers = [];
 
   const setButtonsEnabled = (enabled) => {
     buttons.forEach((button) => {
@@ -384,34 +392,30 @@ function bindExplainerInteractions(rows, columns) {
     });
   };
 
-  const moveFingerToCell = (row, col, speed = 110) => {
-    if (!finger) return;
-    const cell = array.querySelector(`.array-cell[data-row="${row}"][data-col="${col}"]`);
-    if (!cell) return;
-    const x = cell.offsetLeft + cell.offsetWidth / 2;
-    const y = cell.offsetTop + cell.offsetHeight * 1.66;
-    finger.style.setProperty('--finger-speed', `${speed}ms`);
-    finger.style.setProperty('--finger-x', `${x}px`);
-    finger.style.setProperty('--finger-y', `${y}px`);
+  const cellPoint = (count) => {
+    const cell = array.querySelector(`.array-cell[data-count="${count}"]`);
+    if (!cell) return null;
+    return {
+      x: cell.offsetLeft + cell.offsetWidth / 2,
+      y: cell.offsetTop + cell.offsetHeight / 2,
+    };
   };
 
-  const pulseFinger = () => {
-    if (!finger) return;
-    finger.classList.remove('is-tapping');
-    void finger.offsetWidth;
-    finger.classList.add('is-tapping');
+  const schedule = (callback, delay) => {
+    const timer = window.setTimeout(() => {
+      if (!array.isConnected || state.screen !== 'multiply' || !state.hadMistake) return;
+      callback();
+    }, delay);
+    demoTimers.push(timer);
   };
 
   const finishDemo = () => {
     demoRunning = false;
     selectedStep = rows;
     paintStep(rows);
-    finger?.classList.add('is-leaving');
-    window.setTimeout(() => {
-      finger?.classList.remove('is-visible', 'is-leaving', 'is-tapping');
-      manualEnabled = true;
-      setButtonsEnabled(true);
-    }, 300);
+    manualEnabled = true;
+    setButtonsEnabled(true);
+    finger?.classList.remove('is-clicking');
   };
 
   const startDemo = () => {
@@ -424,38 +428,55 @@ function bindExplainerInteractions(rows, columns) {
       return;
     }
 
-    const stops = [];
-    for (let col = 1; col <= columns; col += 1) {
-      stops.push({ row: 1, col, count: col, delay: col === 1 ? 180 : 118, speed: 102 });
-    }
-    for (let row = 2; row <= rows; row += 1) {
-      stops.push({ row, col: columns, count: row * columns, delay: 285, speed: 230 });
-    }
+    const total = rows * columns;
+    const first = cellPoint(1);
+    const firstRowEnd = cellPoint(columns);
+    const final = cellPoint(total);
+    if (!first || !firstRowEnd || !final || !finger) return;
 
-    let index = 0;
     demoRunning = true;
     setButtonsEnabled(false);
     paintCount(0);
-    moveFingerToCell(1, 1, 0);
-    finger?.classList.add('is-visible');
 
-    const advance = () => {
-      if (!array.isConnected || state.screen !== 'multiply' || !state.hadMistake) return;
-      const stop = stops[index];
-      moveFingerToCell(stop.row, stop.col, stop.speed);
-      paintCount(stop.count);
-      pulseFinger();
+    const pointerOffsetX = -8;
+    const pointerOffsetY = 7;
+    const transformAt = (point, scale = 1) => `translate(${point.x + pointerOffsetX}px, ${point.y + pointerOffsetY}px) scale(${scale})`;
 
-      if (index >= stops.length - 1) {
-        window.setTimeout(finishDemo, 340);
-        return;
+    finger.classList.add('is-visible', 'is-clicking');
+    paintCount(1);
+
+    demoAnimation?.cancel();
+    demoAnimation = finger.animate([
+      { offset: 0, opacity: 0, transform: transformAt(first, .72) },
+      { offset: .055, opacity: 1, transform: transformAt(first, 1.08) },
+      { offset: .12, opacity: 1, transform: transformAt(first, .96) },
+      { offset: .43, opacity: 1, transform: transformAt(firstRowEnd, 1) },
+      { offset: .88, opacity: 1, transform: transformAt(final, 1) },
+      { offset: 1, opacity: 0, transform: transformAt(final, .88) },
+    ], {
+      duration: DEMO_DURATION,
+      easing: 'cubic-bezier(.45, 0, .18, 1)',
+      fill: 'forwards',
+    });
+
+    schedule(() => finger.classList.remove('is-clicking'), 250);
+
+    if (columns > 1) {
+      for (let col = 2; col <= columns; col += 1) {
+        const ratio = (col - 1) / (columns - 1);
+        schedule(() => paintCount(col), 250 + ratio * 690);
       }
+    }
 
-      index += 1;
-      window.setTimeout(advance, stops[index].delay);
-    };
+    if (rows > 1) {
+      for (let row = 2; row <= rows; row += 1) {
+        const ratio = (row - 1) / (rows - 1);
+        const count = row * columns;
+        schedule(() => paintCount(count), 940 + ratio * 990);
+      }
+    }
 
-    window.setTimeout(advance, 190);
+    schedule(finishDemo, DEMO_DURATION);
   };
 
   const restoreSelected = () => {

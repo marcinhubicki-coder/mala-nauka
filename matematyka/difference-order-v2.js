@@ -55,7 +55,7 @@
   }
 
   function fix(note) {
-    if (!note || note.dataset.direction !== 'high' || note.dataset.diffDismissed === '1') return;
+    if (!note || note.dataset.direction !== 'high' || note.dataset.diffDismissed === '1' || note.dataset.diffOrderFixed === '1') return;
 
     const stage = note.closest('.quiz-stage');
     const questionBlock = note.closest('.question-block');

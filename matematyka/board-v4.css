@@ -1,4 +1,43 @@
-/* Matematyka v0.4 — płynny wskaźnik 2,2 s */
+/* Matematyka v0.5 — synchronizacja wskaźnika i maksymalna plansza */
+
+/* Prawa kolumna ma stałą, minimalną bezpieczną szerokość dla „90 + 10 = 100”.
+   Cała odzyskana przestrzeń trafia do kwadratów. */
+.explainer {
+  --expression-width: 78px;
+}
+
+.explain-grid {
+  grid-template-columns: var(--row-label-width) minmax(0, 1fr) var(--expression-width);
+}
+
+.row-expressions {
+  width: var(--expression-width);
+  min-width: var(--expression-width);
+}
+
+.row-expression,
+.row-expression-spacer {
+  width: 100%;
+  max-width: none;
+}
+
+.row-expression {
+  justify-self: stretch;
+  text-align: left;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* Kwadrat i liczba kończą swoją mikroanimację zanim wskaźnik ruszy dalej. */
+.array-cell.is-active {
+  animation-duration: .14s !important;
+  animation-delay: 0ms !important;
+}
+
+.array-cell.show-number .cell-number {
+  animation-duration: .12s !important;
+  animation-delay: .025s !important;
+}
 
 .demo-finger {
   position: absolute;
@@ -15,7 +54,7 @@
   transform-origin: 8px 8px;
   transition: none !important;
   animation: none !important;
-  filter: drop-shadow(0 4px 7px rgba(0,0,0,.34));
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.26));
   will-change: transform, opacity;
 }
 
@@ -34,8 +73,8 @@
 
 .pointer-shape {
   fill: #fff;
-  stroke: rgba(14,18,28,.86);
-  stroke-width: 2.2;
+  stroke: rgba(20,24,34,.48);
+  stroke-width: 1.15;
   stroke-linejoin: round;
 }
 
@@ -55,20 +94,30 @@
 @keyframes pointer-click {
   0% { transform: scale(1); }
   42% { transform: scale(.78); }
-  72% { transform: scale(1.12); }
+  72% { transform: scale(1.10); }
   100% { transform: scale(1); }
 }
 
 @keyframes pointer-rays {
   0%, 24% { opacity: 0; transform: scale(.72); }
-  48% { opacity: 1; transform: scale(1.08); }
-  100% { opacity: 0; transform: scale(1.18); }
+  48% { opacity: .8; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.16); }
 }
 
 @media (max-width: 430px) {
   .demo-finger {
     width: 35px;
     height: 35px;
+  }
+}
+
+@media (max-width: 360px) {
+  .explainer {
+    --expression-width: 76px;
+  }
+  .row-expression {
+    padding-left: 3px;
+    padding-right: 3px;
   }
 }
 

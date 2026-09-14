@@ -1,0 +1,107 @@
+/* Testowy polish poprawnej odpowiedzi: zielony flash + split-flap przejście do nowego zadania. */
+
+.quiz-stage.correct-transition-out .answer {
+  pointer-events: none;
+  will-change: transform, opacity, background, box-shadow;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 700px;
+}
+
+.quiz-stage.correct-transition-out .answer.correct-transition-hit {
+  color: #eafff2;
+  border-color: rgba(91, 224, 149, .8) !important;
+  background: linear-gradient(145deg, rgba(52, 177, 108, .98), rgba(32, 132, 79, .96)) !important;
+  box-shadow:
+    0 0 0 1px rgba(130, 255, 183, .22) inset,
+    0 10px 30px rgba(38, 165, 95, .25),
+    0 0 26px rgba(76, 221, 138, .18);
+  animation: correct-hit-flash 680ms cubic-bezier(.2,.82,.24,1) both;
+}
+
+.quiz-stage.correct-transition-out .answer.correct-transition-flip {
+  animation: split-flap-out 520ms cubic-bezier(.42,0,.2,1) 90ms both;
+}
+
+.quiz-stage.correct-transition-out .answer.correct-transition-hit.correct-transition-late {
+  animation:
+    correct-hit-flash 430ms cubic-bezier(.2,.82,.24,1) both,
+    split-flap-out-late 360ms cubic-bezier(.42,0,.2,1) 350ms both;
+}
+
+.quiz-stage.correct-transition-in .answer {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 700px;
+  animation: split-flap-in 360ms cubic-bezier(.18,.78,.28,1) both;
+}
+
+.quiz-stage.correct-transition-in .answer.correct-transition-late-slot {
+  animation-delay: 150ms;
+}
+
+.quiz-stage.correct-transition-in .equation-sign {
+  display: inline-block;
+  animation: sign-steady 520ms ease both;
+}
+
+.quiz-stage.correct-transition-in .equation-left {
+  display: inline-block;
+  animation: next-left-number 520ms cubic-bezier(.18,.78,.24,1) both;
+}
+
+.quiz-stage.correct-transition-in .equation-right {
+  display: inline-block;
+  animation: next-right-number 520ms cubic-bezier(.18,.78,.24,1) both;
+}
+
+@keyframes correct-hit-flash {
+  0% { transform: scale(1); filter: brightness(1); }
+  35% { transform: scale(1.035); filter: brightness(1.16); }
+  70% { transform: scale(1.015); filter: brightness(1.04); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes split-flap-out {
+  0% { transform: rotateX(0deg) scale(1); opacity: 1; }
+  58% { transform: rotateX(68deg) scale(.985); opacity: .8; }
+  100% { transform: rotateX(92deg) scale(.97); opacity: 0; }
+}
+
+@keyframes split-flap-out-late {
+  0% { transform: rotateX(0deg) scale(1); opacity: 1; }
+  100% { transform: rotateX(92deg) scale(.97); opacity: 0; }
+}
+
+@keyframes split-flap-in {
+  0% { transform: rotateX(-88deg) scale(.97); opacity: 0; }
+  62% { transform: rotateX(8deg) scale(1.01); opacity: 1; }
+  100% { transform: rotateX(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes next-left-number {
+  0% { opacity: 0; transform: translateX(22px) scale(.88); filter: blur(3px); }
+  65% { opacity: 1; transform: translateX(-3px) scale(1.02); filter: blur(0); }
+  100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+}
+
+@keyframes next-right-number {
+  0% { opacity: 0; transform: translateX(-22px) scale(.88); filter: blur(3px); }
+  65% { opacity: 1; transform: translateX(3px) scale(1.02); filter: blur(0); }
+  100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+}
+
+@keyframes sign-steady {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  45% { transform: scale(1.06); opacity: .94; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-stage.correct-transition-out .answer,
+  .quiz-stage.correct-transition-in .answer,
+  .quiz-stage.correct-transition-in .equation-number,
+  .quiz-stage.correct-transition-in .equation-sign {
+    animation-duration: .001ms !important;
+    animation-delay: 0ms !important;
+  }
+}

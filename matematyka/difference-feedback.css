@@ -1,46 +1,80 @@
-/* Matematyka v0.6 — wizualizacja różnicy między wybraną a poprawną odpowiedzią */
+/* Matematyka v0.7 — wybrany błędny wynik + delikatniejsza różnica */
+
+.wrong-answer-note .chosen-answer {
+  color: rgba(255,214,219,.98);
+  background: rgba(201,95,95,.18);
+  border-radius: .38em;
+  padding: .02em .24em;
+}
+
+.wrong-answer-note .difference-amount {
+  color: var(--text);
+}
 
 .array-cell.difference-cell {
-  background: rgba(201,95,95,.30) !important;
-  border-color: rgba(228,119,119,.48) !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 1px 5px rgba(114,43,56,.16) !important;
   opacity: 1 !important;
 }
 
-.array-cell.difference-cell .cell-number {
-  color: rgba(255,245,247,.98) !important;
+/* Reszta różnicy jest subtelna — w kolorze komunikatu nad planszą. */
+.array-cell.difference-soft {
+  background: rgba(201,95,95,.18) !important;
+  border-color: rgba(228,119,119,.32) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05) !important;
+}
+
+.array-cell.difference-soft .cell-number {
+  color: rgba(255,231,234,.92) !important;
   opacity: 1 !important;
   transform: none !important;
-  animation: difference-number-in .24s ease both !important;
+  animation: difference-number-in .20s ease both !important;
 }
 
-.array-cell.difference-missing {
-  animation: difference-cell-in .28s cubic-bezier(.18,.82,.26,1.12) both !important;
+/* Sam wynik wskazany przez dziecko jest wyraźnie ciemniejszy. */
+.array-cell.difference-target {
+  background: rgba(157,61,72,.58) !important;
+  border-color: rgba(237,137,147,.72) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.11),
+    0 2px 7px rgba(96,31,41,.24) !important;
 }
 
+.array-cell.difference-target .cell-number {
+  color: #fff !important;
+  opacity: 1 !important;
+  transform: none !important;
+  animation: difference-target-in .24s cubic-bezier(.18,.82,.26,1.12) both !important;
+}
+
+.array-cell.difference-missing,
 .array-cell.difference-extra {
-  animation: difference-extra-in .30s cubic-bezier(.18,.82,.26,1.12) both !important;
+  animation: difference-cell-in .24s cubic-bezier(.18,.82,.26,1.08) both !important;
 }
 
 @keyframes difference-cell-in {
-  from { transform: scale(.84); filter: brightness(1.08); }
+  from { transform: scale(.88); filter: brightness(1.06); }
   to { transform: scale(1); filter: brightness(1); }
 }
 
-@keyframes difference-extra-in {
-  from { transform: scale(.78); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@keyframes difference-number-in {
+  from { opacity: 0; transform: scale(.76); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes difference-number-in {
-  from { opacity: 0; transform: scale(.72); }
+@keyframes difference-target-in {
+  from { opacity: 0; transform: scale(.78); }
+  70% { opacity: 1; transform: scale(1.08); }
   to { opacity: 1; transform: scale(1); }
 }
 
 @media (prefers-color-scheme: dark) {
-  .array-cell.difference-cell {
-    background: rgba(201,95,95,.28) !important;
-    border-color: rgba(228,119,119,.42) !important;
+  .array-cell.difference-soft {
+    background: rgba(201,95,95,.17) !important;
+    border-color: rgba(228,119,119,.29) !important;
+  }
+
+  .array-cell.difference-target {
+    background: rgba(151,56,68,.62) !important;
+    border-color: rgba(237,137,147,.70) !important;
   }
 }
 

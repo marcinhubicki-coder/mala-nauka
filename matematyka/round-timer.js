@@ -61,6 +61,10 @@ function accuracy() {
 
 function endRound() {
   if (!clock || cancelled || document.querySelector('.math-result-screen')) return;
+  // Pozwól dokończyć krótki zielony feedback/flip, żeby timeout następnego pytania
+  // nie nadpisał ekranu podsumowania.
+  if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
+
   clock.end();
   const app = document.querySelector('#app');
   if (!app) return;
@@ -91,9 +95,7 @@ function endRound() {
 }
 
 window.addEventListener('math-round-start', event => {
-  const mode = event.detail?.mode || 'multiply';
-  const duration = Number(event.detail?.duration) || 180;
-  startClock(mode, duration);
+  startClock(event.detail?.mode || 'multiply', Number(event.detail?.duration) || 180);
 });
 
 window.addEventListener('math-round-cancel', () => {

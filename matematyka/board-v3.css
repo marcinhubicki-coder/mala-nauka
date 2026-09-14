@@ -1,0 +1,194 @@
+/* Matematyka v0.3 — pełna szerokość planszy + prowadzenie palcem */
+
+.explainer {
+  --expression-width: 88px;
+  --row-label-width: 14px;
+  --cell-gap: 2px;
+  width: min(100%, 620px);
+  padding-left: 11px;
+  padding-right: 11px;
+}
+
+.explain-grid {
+  width: 100%;
+  grid-template-columns: var(--row-label-width) minmax(0, 1fr) var(--expression-width);
+  column-gap: 4px;
+  justify-content: stretch;
+}
+
+.column-labels,
+.array {
+  width: 100%;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: var(--cell-gap);
+}
+
+.array {
+  position: relative;
+  overflow: visible;
+}
+
+.array-cell {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.row-labels,
+.row-expressions {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+  gap: var(--cell-gap);
+}
+
+.axis-label,
+.row-expression,
+.row-expression-spacer {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.row-expression {
+  max-width: none;
+  justify-self: stretch;
+  padding: 0 3px;
+  font-size: clamp(7.2px, 1.95vw, 9px);
+  text-align: center;
+}
+
+.row-expression-spacer {
+  width: 100%;
+}
+
+.demo-finger {
+  --finger-x: 0px;
+  --finger-y: 0px;
+  --finger-speed: 70ms;
+  position: absolute;
+  left: var(--finger-x);
+  top: var(--finger-y);
+  z-index: 12;
+  display: block;
+  width: 24px;
+  height: 30px;
+  margin: 0;
+  font-size: 24px;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,.26));
+  opacity: 0;
+  transform: translate(-50%, -42%) scale(.76);
+  transform-origin: 50% 10%;
+  pointer-events: none;
+  transition:
+    left var(--finger-speed) linear,
+    top var(--finger-speed) cubic-bezier(.25,.7,.25,1),
+    opacity .18s ease,
+    transform .18s ease;
+}
+
+.demo-finger.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -42%) scale(1);
+  animation: finger-touch .52s ease-in-out infinite alternate;
+}
+
+.demo-finger.is-leaving {
+  opacity: 0;
+  transform: translate(-50%, -54%) scale(.82);
+  animation: none;
+}
+
+.row-expression.demo-locked {
+  cursor: default;
+  opacity: .72;
+}
+
+.equation {
+  width: min(100%, 430px);
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.equation-left { text-align: right; }
+.equation-right { text-align: left; }
+.equation-sign {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding: 0 .055em;
+}
+
+.equation-build .equation-left {
+  animation: equation-left-out .44s cubic-bezier(.2,.8,.25,1) both;
+}
+
+.equation-build .equation-right {
+  animation: equation-right-out .44s cubic-bezier(.2,.8,.25,1) both;
+}
+
+@keyframes finger-touch {
+  from { margin-top: 2px; }
+  to { margin-top: -1px; }
+}
+
+@keyframes equation-left-out {
+  from { opacity: 0; transform: translateX(.34em) scale(.92); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes equation-right-out {
+  from { opacity: 0; transform: translateX(-.34em) scale(.92); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@media (max-width: 430px) {
+  .explainer {
+    --expression-width: 86px;
+    --row-label-width: 14px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .explain-grid {
+    column-gap: 4px;
+  }
+
+  .demo-finger {
+    width: 22px;
+    height: 28px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 360px) {
+  .explainer {
+    --expression-width: 80px;
+    --row-label-width: 12px;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .row-expression {
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 7.1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-finger {
+    display: none !important;
+  }
+  .equation-build .equation-left,
+  .equation-build .equation-right {
+    animation: none !important;
+  }
+}

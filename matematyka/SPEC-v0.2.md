@@ -1,8 +1,14 @@
 # Mała Nauka — Matematyka v0.2
 
+## Pytania mnożenia
+
+Każde pytanie z tabliczki mnożenia pokazuje **6 możliwych wyników**. Odpowiedzi są zawsze ułożone **rosnąco: od lewej do prawej, a potem w kolejnym rzędzie**, żeby dziecko nie musiało szukać liczby w losowo przemieszanej siatce. Większa liczba odpowiedzi ogranicza przypadkowe strzelanie.
+
+Po poprawnej odpowiedzi następne zadanie pojawia się automatycznie — bez przycisku „Dalej”.
+
 ## Stała plansza mnożenia
 
-Wyjaśnienie błędnej odpowiedzi w mnożeniu zawsze używa tej samej planszy **10 × 10**. Plansza nie zmienia wymiarów między zadaniami.
+Wyjaśnienie błędnej odpowiedzi zawsze używa tej samej planszy **10 × 10**. Plansza nie zmienia wymiarów między zadaniami.
 
 Dla działania `a × b`:
 
@@ -12,7 +18,7 @@ Dla działania `a × b`:
 - pozostałe pola pełnej planszy 10 × 10 są widoczne, ale lekko wyszarzone,
 - etykiety rzędów i kolumn zawsze pokazują zakres 1–10.
 
-Przykład: `3 × 5` oznacza 3 pierwsze rzędy i 5 pierwszych kolumn. `5 × 3` pokazuje 5 rzędów i 3 kolumny, co pozwala później wizualnie tłumaczyć przemienność mnożenia bez zmiany geometrii ekranu.
+Przykład: `3 × 5` oznacza 3 pierwsze rzędy i 5 pierwszych kolumn. `5 × 3` pokazuje 5 rzędów i 3 kolumny, co pozwala wizualnie tłumaczyć przemienność mnożenia bez zmiany geometrii ekranu.
 
 ## Kolejne dodawanie
 
@@ -23,11 +29,11 @@ Po prawej stronie planszy znajdują się kolejne kroki dodawania, np. dla `10 ×
 - …
 - `90 + 10 = 100`
 
-Kolumna działań ma stałą szerokość dobraną tak, aby najdłuższy zapis mieścił się bez przebudowy layoutu. Dla zadań z mniejszą liczbą rzędów niewykorzystane wiersze pozostają puste, dzięki czemu geometria całego explainera jest stała.
+Kolumna działań ma stałą, możliwie kompaktową szerokość dobraną tak, aby najdłuższy zapis mieścił się bez przebudowy layoutu. Zaoszczędzone miejsce przeznaczamy na większe kwadraty planszy.
 
-## Interakcja i numerowanie pól
+## Interakcja, numerowanie i animacja
 
-Dotknięcie lub wskazanie danego kroku podświetla wszystkie pola odpowiadające temu wynikowi. Podświetlone kwadraty są jednocześnie numerowane kolejno od `1` do aktualnego wyniku.
+Dotknięcie, wskazanie lub fokus danego kroku podświetla wszystkie pola odpowiadające temu wynikowi. Podświetlone kwadraty są jednocześnie numerowane kolejno od `1` do aktualnego wyniku.
 
 Przykład dla `3 × 5`:
 
@@ -35,12 +41,22 @@ Przykład dla `3 × 5`:
 - aktywacja `5 + 5 = 10` numeruje pola 1–10,
 - aktywacja `10 + 5 = 15` numeruje pola 1–15.
 
-Numeracja ma pomóc młodszemu dziecku zobaczyć, że wynik mnożenia odpowiada dosłownej liczbie pól w zaznaczonym obszarze. Numery są pomocnicze i pojawiają się dopiero podczas aktywacji kroku, żeby podstawowa plansza pozostała spokojna wizualnie.
+Aktywowane pola i ich cyfry pojawiają się lekką, krótką animacją kaskadową. Ma ona wzmacniać wrażenie „doliczania” pól, ale nie może spowalniać nauki. `prefers-reduced-motion` nadal jest respektowane.
+
+## Co po błędzie
+
+Po pokazaniu explainera dziecko ma dwie równorzędne możliwości:
+
+- **Spróbuj ponownie** — wraca do tego samego działania i ponownie wybiera wynik,
+- **Dalej** — przechodzi od razu do nowego działania, bez konieczności ponownego odpowiadania na błędnie rozwiązane zadanie.
+
+Przycisk „Dalej” jest głównym CTA, a „Spróbuj ponownie” pozostaje wyraźnym, zachęcającym przyciskiem pomocniczym.
 
 ## Pozostałe zasady
 
-- plansza ma mieścić się na ekranie telefonu,
-- pola są kwadratowe,
-- interakcja tap/hover/focus z poprzedniej wersji pozostaje,
+- plansza ma mieścić się na ekranie telefonu bez poziomego przewijania,
+- pola są kwadratowe i wykorzystują możliwie dużo dostępnego miejsca,
+- geometria planszy 10 × 10 pozostaje stała dla całej tabliczki mnożenia do 100,
+- interakcja tap/hover/focus pozostaje,
 - po poprawnej odpowiedzi nadal nie ma przycisku „Dalej” — następne zadanie pojawia się automatycznie,
 - `prefers-reduced-motion` nadal jest respektowane.

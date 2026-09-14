@@ -15,6 +15,8 @@ const categoryItems = [
   { key: 'divide', symbol: '÷', label: 'Dzielenie', enabled: false },
 ];
 
+const TABLE_SIZE = 10;
+
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -152,7 +154,7 @@ function renderMultiply({ feedback = '', feedbackType = '' } = {}) {
   });
 
   app.querySelector('[data-retry]')?.addEventListener('click', retryQuestion);
-  bindExplainerInteractions();
+  bindExplainerInteractions(q.a, q.b);
 }
 
 function chooseAnswer(answer) {
@@ -181,49 +183,39 @@ function retryQuestion() {
   renderMultiply();
 }
 
-function getExplainerMetrics(rows, columns) {
-  const largestSide = Math.max(rows, columns);
-
-  if (largestSide >= 9) {
-    return { cellWidth: 16, cellHeight: 18, gap: 2 };
-  }
-  if (largestSide >= 7) {
-    return { cellWidth: 19, cellHeight: 20, gap: 3 };
-  }
-  return { cellWidth: 22, cellHeight: 23, gap: 3 };
-}
-
 function multiplicationExplainer(rows, columns) {
-  const { cellWidth, cellHeight, gap } = getExplainerMetrics(rows, columns);
   const cells = [];
 
-  for (let row = 0; row < rows; row += 1) {
-    for (let col = 0; col < columns; col += 1) {
-      const classes = ['array-cell'];
-      if (row === 0) classes.push('first-row');
-      if (col === 0) classes.push('first-col');
-      const delay = row * 28 + col * 4;
+  for (let row = 1; row <= TABLE_SIZE; row += 1) {
+    for (let col = 1; col <= TABLE_SIZE; col += 1) {
+      const inProblem = row <= rows && col <= columns;
+      const count = inProblem ? ((row - 1) * columns) + col : '';
       cells.push(`
         <span
-          class="${classes.join(' ')}"
-          data-row="${row + 1}"
-          style="width:${cellWidth}px;height:${cellHeight}px;animation-delay:${delay}ms"
+          class="array-cell ${inProblem ? 'in-problem' : 'outside-problem'}"
+          data-row="${row}"
+          data-col="${col}"
+          data-count="${count}"
           aria-hidden="true"
-        ></span>
+        >${inProblem ? `<span class="cell-number">${count}</span>` : ''}</span>
       `);
     }
   }
 
-  const columnLabels = Array.from({ length: columns }, (_, index) => (
-    `<span class="axis-label col-label" data-col-label>${index + 1}</span>`
-  )).join('');
+  const columnLabels = Array.from({ length: TABLE_SIZE }, (_, index) => {
+    const col = index + 1;
+    return `<span class="axis-label col-label ${col <= columns ? 'in-problem-axis' : ''}" data-col-label="${col}">${col}</span>`;
+  }).join('');
 
-  const rowLabels = Array.from({ length: rows }, (_, index) => (
-    `<span class="axis-label row-label" data-row-label="${index + 1}" style="height:${cellHeight}px">${index + 1}</span>`
-  )).join('');
+  const rowLabels = Array.from({ length: TABLE_SIZE }, (_, index) => {
+    const row = index + 1;
+    return `<span class="axis-label row-label ${row <= rows ? 'in-problem-axis' : ''}" data-row-label="${row}">${row}</span>`;
+  }).join('');
 
-  const expressions = Array.from({ length: rows }, (_, index) => {
+  const expressions = Array.from({ length: TABLE_SIZE }, (_, index) => {
     const step = index + 1;
+    if (step > rows) return '<span class="row-expression-spacer" aria-hidden="true"></span>';
+
     const total = step * columns;
     const previous = (step - 1) * columns;
     const expression = step === 1 ? `${columns}` : `${previous} + ${columns} = ${total}`;
@@ -233,7 +225,7 @@ function multiplicationExplainer(rows, columns) {
         type="button"
         data-explain-step="${step}"
         aria-pressed="false"
-        style="height:${cellHeight}px"
+        aria-label="Pokaż ${total} pól: ${expression}"
       >${expression}</button>
     `;
   }).join('');
@@ -245,37 +237,19 @@ function multiplicationExplainer(rows, columns) {
       </div>
 
       <div class="explain-grid">
-        <div
-          class="column-labels"
-          style="grid-template-columns:repeat(${columns}, ${cellWidth}px);gap:${gap}px"
-          aria-label="Numery kolumn"
-        >${columnLabels}</div>
-
-        <div
-          class="row-labels"
-          style="grid-template-rows:repeat(${rows}, ${cellHeight}px);gap:${gap}px"
-          aria-label="Numery rzędów"
-        >${rowLabels}</div>
-
-        <div
-          class="array"
-          style="grid-template-columns:repeat(${columns}, ${cellWidth}px);grid-template-rows:repeat(${rows}, ${cellHeight}px);gap:${gap}px"
-          aria-hidden="true"
-        >${cells.join('')}</div>
-
-        <div
-          class="row-expressions"
-          style="grid-template-rows:repeat(${rows}, ${cellHeight}px);gap:${gap}px"
-          aria-label="Kolejne dodawanie"
-        >${expressions}</div>
+        <div class="column-labels" aria-label="Numery kolumn">${columnLabels}</div>
+        <div class="row-labels" aria-label="Numery rzędów">${rowLabels}</div>
+        <div class="array" aria-hidden="true">${cells.join('')}</div>
+        <div class="row-expressions" aria-label="Kolejne dodawanie">${expressions}</div>
       </div>
 
+      <p class="grid-caption">Cała plansza to tabliczka 10 × 10. Kolor pokazuje pola użyte w tym działaniu.</p>
       <button class="retry-button" type="button" data-retry>Spróbuj ponownie</button>
     </section>
   `;
 }
 
-function bindExplainerInteractions() {
+function bindExplainerInteractions(rows, columns) {
   const buttons = [...app.querySelectorAll('[data-explain-step]')];
   if (!buttons.length) return;
 
@@ -283,20 +257,27 @@ function bindExplainerInteractions() {
 
   const paint = (step) => {
     app.querySelectorAll('.array-cell').forEach((cell) => {
-      cell.classList.toggle('is-active', step > 0 && Number(cell.dataset.row) <= step);
+      const row = Number(cell.dataset.row);
+      const col = Number(cell.dataset.col);
+      const isCounted = step > 0 && row <= step && row <= rows && col <= columns;
+      cell.classList.toggle('is-active', isCounted);
+      cell.classList.toggle('show-number', isCounted);
     });
 
     app.querySelectorAll('[data-row-label]').forEach((label) => {
-      label.classList.toggle('is-active', step > 0 && Number(label.dataset.rowLabel) <= step);
+      const row = Number(label.dataset.rowLabel);
+      label.classList.toggle('is-active', step > 0 && row <= step && row <= rows);
     });
 
     app.querySelectorAll('[data-col-label]').forEach((label) => {
-      label.classList.toggle('is-active', step > 0);
+      const col = Number(label.dataset.colLabel);
+      label.classList.toggle('is-active', step > 0 && col <= columns);
     });
 
     buttons.forEach((button) => {
-      const isSelected = Number(button.dataset.explainStep) === selectedStep;
-      const isPreview = Number(button.dataset.explainStep) === step;
+      const buttonStep = Number(button.dataset.explainStep);
+      const isSelected = buttonStep === selectedStep;
+      const isPreview = buttonStep === step;
       button.classList.toggle('is-active', isPreview);
       button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
     });

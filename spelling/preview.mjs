@@ -3,10 +3,9 @@ import { SCENES } from './scenes.mjs';
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');
 
-// This branch is a visual QA branch: asset-only is ON by default, including installed PWA.
-// Use ?assets=0 only when intentionally checking the whole spelling database.
+// Produkcyjnie korzystamy z całej bazy. Tryb asset-only jest świadomie włączany przez ?assets=1 do szybkiego QA scen.
 export const SPELLING_PREVIEW = Object.freeze({
-  assetsOnly: params.get('assets') !== '0',
+  assetsOnly: params.get('assets') === '1',
   word: normalize(params.get('word')),
   scene: normalize(params.get('scene')),
   layout: ['full','split'].includes(params.get('layout')) ? params.get('layout') : '',

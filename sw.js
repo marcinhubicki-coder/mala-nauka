@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v7';
+const CACHE='mala-nauka-v8';
 const CORE=[
   './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
@@ -9,7 +9,7 @@ const CORE=[
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html',
-  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/app.js',
+  './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/app.js',
   './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
 ];
 

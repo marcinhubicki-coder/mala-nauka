@@ -1,0 +1,56 @@
+/* Wspólne dopracowanie explainera mnożenia i dzielenia. */
+.explainer {
+  --expression-width: 72px;
+}
+
+.explain-grid {
+  grid-template-columns: var(--row-label-width) minmax(0, 1fr) var(--expression-width);
+  grid-template-rows: 14px auto;
+  row-gap: 2px;
+}
+
+.column-labels {
+  align-items: end;
+}
+
+.column-labels .axis-label {
+  height: 12px;
+  align-self: end;
+}
+
+.row-expression {
+  padding-left: 2px;
+  padding-right: 2px;
+  text-align: left;
+  letter-spacing: -.035em;
+}
+
+.row-expression.expression-100 {
+  font-size: clamp(6.7px, 1.72vw, 8px);
+  letter-spacing: -.075em;
+}
+
+/* Delikatna fala: nowe rzędy nakładają się czasowo zamiast migać jednocześnie. */
+.array-cell.wave-enter {
+  animation: wave-row-in .34s cubic-bezier(.18,.82,.26,1.12) both !important;
+}
+
+@keyframes wave-row-in {
+  0% { transform: translateY(4px) scale(.82); filter: brightness(1.12); }
+  66% { transform: translateY(-1px) scale(1.06); }
+  100% { transform: translateY(0) scale(1.02); filter: brightness(1); }
+}
+
+@media (max-width: 430px) {
+  .explainer { --expression-width: 70px; }
+}
+
+@media (max-width: 360px) {
+  .explainer { --expression-width: 66px; }
+  .row-expression { font-size: 7px; }
+  .row-expression.expression-100 { font-size: 6.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .array-cell.wave-enter { animation: none !important; }
+}

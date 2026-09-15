@@ -1,7 +1,8 @@
 (() => {
   const processedExpressions = new WeakSet();
-  const fittedStages = new WeakMap();
-  const CUT_PAD = 4;
+  const observedExplainers = new WeakSet();
+  const CELL_GAP = 2;
+  const CUT_PAD = 6;
   const REFERENCE_EXPRESSION = '90\u2009+\u20099\u2009=\u200999';
 
   function number(text) {
@@ -72,7 +73,7 @@
     const pad = parseFloat(computed.paddingLeft) + parseFloat(computed.paddingRight);
     const referenceWidth = measureReference(sample);
     const desired = Math.ceil(referenceWidth + pad + 1);
-    const width = Math.max(46, Math.min(58, desired));
+    const width = Math.max(46, Math.min(56, desired));
     explainer.style.setProperty('--expression-width', `${width}px`);
 
     requestAnimationFrame(() => {
@@ -82,10 +83,7 @@
         span.style.transform = 'scaleX(1)';
 
         const style = getComputedStyle(button);
-        const available = Math.max(
-          1,
-          button.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
-        );
+        const available = Math.max(1, button.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight));
         const natural = span.scrollWidth || span.getBoundingClientRect().width;
         const scale = natural > available ? Math.max(.72, available / natural) : 1;
         span.style.transform = `scaleX(${scale})`;
@@ -109,7 +107,8 @@
       fontFamily: style.fontFamily,
       fontSize: style.fontSize,
       fontWeight: style.fontWeight,
-      letterSpacing: '-.12em',
+      letterSpacing: '-.10em',
+      transform: 'scaleX(.86)',
     });
     document.body.appendChild(probe);
     const measured = probe.getBoundingClientRect().width;
@@ -118,37 +117,41 @@
     explainer.style.setProperty('--row-label-width', `${Math.max(10, Math.min(13, Math.ceil(measured + 2)))}px`);
   }
 
-  function layoutDivision(stage) {
-    if (stage.dataset.operation !== 'divide') return;
-
+  function setStableTracks(stage) {
     const explainer = stage.querySelector('.explainer');
     const array = stage.querySelector('.array');
     const rowLabels = stage.querySelector('.row-labels');
     const rowExpressions = stage.querySelector('.row-expressions');
     const firstCell = array?.querySelector('.array-cell[data-row="1"][data-col="1"]');
-    const divisor = number(stage.querySelector('.equation-right')?.textContent);
-
-    if (!explainer || !array || !rowLabels || !rowExpressions || !firstCell || !divisor) return;
+    if (!explainer || !array || !rowLabels || !rowExpressions || !firstCell) return;
 
     const cellSize = firstCell.getBoundingClientRect().width;
     if (!cellSize) return;
 
+    const isDivision = stage.dataset.operation === 'divide';
+    const divisor = isDivision ? number(stage.querySelector('.equation-right')?.textContent) : 0;
     const tracks = Array.from({ length: 10 }, (_, index) => {
       const row = index + 1;
-      return `${cellSize + (row < divisor ? CUT_PAD : 0)}px`;
+      const hasCutAfter = isDivision && divisor && row < divisor;
+      return `${cellSize + (hasCutAfter ? CUT_PAD : 0)}px`;
     }).join(' ');
 
     [array, rowLabels, rowExpressions].forEach(grid => {
       grid.style.gridTemplateRows = tracks;
-      grid.style.rowGap = '0px';
+      grid.style.rowGap = isDivision ? '0px' : `${CELL_GAP}px`;
     });
 
-    const overhang = cellSize / 3;
-    explainer.style.setProperty('--division-cell-size', `${cellSize}px`);
-    explainer.style.setProperty('--division-cut-pad', `${CUT_PAD}px`);
-    explainer.style.setProperty('--division-cut-overhang', `${overhang}px`);
-    explainer.style.setProperty('--division-cut-left', `${-overhang}px`);
-    explainer.style.setProperty('--division-cut-extra', `${overhang * 2}px`);
+    explainer.style.setProperty('--stable-cell-size', `${cellSize}px`);
+
+    if (isDivision) {
+      const overhang = cellSize / 3;
+      explainer.style.setProperty('--division-cell-size', `${cellSize}px`);
+      explainer.style.setProperty('--division-cut-pad', `${CUT_PAD}px`);
+      explainer.style.setProperty('--division-cut-half-pad', `${CUT_PAD / 2}px`);
+      explainer.style.setProperty('--division-cut-overhang', `${overhang}px`);
+      explainer.style.setProperty('--division-cut-left', `${-overhang}px`);
+      explainer.style.setProperty('--division-cut-extra', `${overhang * 2}px`);
+    }
   }
 
   function layoutStage(stage) {
@@ -156,31 +159,30 @@
     wrapExpressions(stage);
     fitRowLabels(stage);
     fitExpressionColumn(stage);
-    layoutDivision(stage);
+    setStableTracks(stage);
+
+    const explainer = stage.querySelector('.explainer');
+    if (explainer && !observedExplainers.has(explainer) && 'ResizeObserver' in window) {
+      observedExplainers.add(explainer);
+      const resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => layoutStage(stage)));
+      resizeObserver.observe(explainer);
+    }
   }
 
   function scan() {
-    document.querySelectorAll('.quiz-stage.has-explainer').forEach(stage => {
-      const previous = fittedStages.get(stage);
-      const width = stage.getBoundingClientRect().width;
-      if (previous !== width) fittedStages.set(stage, width);
-      layoutStage(stage);
-    });
+    document.querySelectorAll('.quiz-stage.has-explainer').forEach(layoutStage);
   }
 
   let raf = 0;
   function scheduleScan() {
     cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(scan);
+    raf = requestAnimationFrame(() => requestAnimationFrame(scan));
   }
 
+  /* Reagujemy tylko na nowe DOM-y. Zmiany klas podczas animacji nie mogą
+     ponownie przeliczać geometrii, bo to powodowało mikroprzeskoki. */
   const observer = new MutationObserver(scheduleScan);
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['class', 'disabled'],
-  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 
   window.addEventListener('resize', scheduleScan, { passive: true });
   scheduleScan();

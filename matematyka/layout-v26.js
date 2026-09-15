@@ -156,6 +156,8 @@
 
   function layoutStage(stage) {
     if (!stage?.isConnected || !stage.classList.contains('has-explainer')) return;
+    if (stage.dataset.geometryLocked === '1') return;
+
     wrapExpressions(stage);
     fitRowLabels(stage);
     fitExpressionColumn(stage);
@@ -164,13 +166,18 @@
     const explainer = stage.querySelector('.explainer');
     if (explainer && !observedExplainers.has(explainer) && 'ResizeObserver' in window) {
       observedExplainers.add(explainer);
-      const resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => layoutStage(stage)));
+      const resizeObserver = new ResizeObserver(() => {
+        if (!stage.isConnected || stage.dataset.geometryLocked === '1') return;
+        requestAnimationFrame(() => layoutStage(stage));
+      });
       resizeObserver.observe(explainer);
     }
   }
 
   function scan() {
-    document.querySelectorAll('.quiz-stage.has-explainer').forEach(layoutStage);
+    document.querySelectorAll('.quiz-stage.has-explainer').forEach(stage => {
+      if (stage.dataset.geometryLocked !== '1') layoutStage(stage);
+    });
   }
 
   let raf = 0;
@@ -179,8 +186,6 @@
     raf = requestAnimationFrame(() => requestAnimationFrame(scan));
   }
 
-  /* Reagujemy tylko na nowe DOM-y. Zmiany klas podczas animacji nie mogą
-     ponownie przeliczać geometrii, bo to powodowało mikroprzeskoki. */
   const observer = new MutationObserver(scheduleScan);
   observer.observe(document.documentElement, { childList: true, subtree: true });
 

@@ -1,0 +1,92 @@
+/* v31 — zwykły ekran pytania ma stałe sloty. Animacje i feedback nie mogą
+   zmieniać położenia równania, odpowiedzi ani sąsiednich elementów. */
+
+.quiz-stage[data-normal-geometry-locked="1"] {
+  position: relative !important;
+  display: block !important;
+  height: var(--normal-stage-height) !important;
+  min-height: var(--normal-stage-height) !important;
+  max-height: var(--normal-stage-height) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: visible;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .question-block {
+  position: absolute !important;
+  top: var(--normal-question-top) !important;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--normal-question-height) !important;
+  min-height: var(--normal-question-height) !important;
+  max-height: var(--normal-question-height) !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .answer-grid {
+  position: absolute !important;
+  top: var(--normal-answers-top) !important;
+  left: 50%;
+  height: var(--normal-answers-height) !important;
+  min-height: var(--normal-answers-height) !important;
+  max-height: var(--normal-answers-height) !important;
+  margin: 0 !important;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .answer {
+  min-height: 0 !important;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .feedback {
+  position: absolute !important;
+  top: var(--normal-feedback-top) !important;
+  left: 0;
+  right: 0;
+  height: var(--normal-feedback-height) !important;
+  min-height: var(--normal-feedback-height) !important;
+  max-height: var(--normal-feedback-height) !important;
+  margin: 0 !important;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+}
+
+/* Timer i pasek postępu mają stały szkielet w każdym renderze pytania.
+   Wypełnienie tekstem/szerokością może się zmieniać, ale układ strony nie. */
+.topbar.math-timed {
+  min-height: var(--stable-timed-topbar-height, 44px);
+}
+
+.math-round-time {
+  box-sizing: border-box;
+}
+
+.math-round-progress {
+  flex: 0 0 3px;
+  min-height: 3px;
+  max-height: 3px;
+}
+
+/* Counter / green feedback mogą animować wyłącznie wewnątrz zamrożonych slotów. */
+.quiz-stage[data-normal-geometry-locked="1"] .equation,
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"] .equation-sign,
+.quiz-stage[data-normal-geometry-locked="1"] .answer,
+.quiz-stage[data-normal-geometry-locked="1"] .feedback {
+  contain: layout paint;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-stage[data-normal-geometry-locked="1"] .equation,
+  .quiz-stage[data-normal-geometry-locked="1"] .answer,
+  .quiz-stage[data-normal-geometry-locked="1"] .feedback {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,4 +1,4 @@
-/* v26.1 — wspólny, stabilny układ explainera mnożenia i dzielenia. */
+/* v27 — wspólny, stabilny układ explainera mnożenia i dzielenia. */
 .explainer {
   --table-side-pad: 8px;
   --row-label-width: 12px;
@@ -17,8 +17,6 @@
   justify-content: stretch !important;
 }
 
-/* Ten sam rozmiar wszystkich nagłówków 1–10 w mnożeniu i dzieleniu.
-   Aktywność zmienia kolor/wagę, ale nie rozmiar — dzięki temu nic nie „skacze”. */
 .axis-label {
   font-size: var(--axis-font-size) !important;
   line-height: 1 !important;
@@ -42,7 +40,6 @@
   align-self: end;
 }
 
-/* Górna 10 ma dokładnie ten sam krój i rozmiar co 1–9 — jest na nią miejsce. */
 .col-label[data-col-label="10"] {
   font-size: var(--axis-font-size) !important;
   letter-spacing: 0 !important;
@@ -55,7 +52,6 @@
   width: 100%;
 }
 
-/* Tylko lewa 10 jest lekko zwężona poziomo, żeby nie zabierała szerokości planszy. */
 .row-label[data-row-label="10"] {
   font-size: var(--axis-font-size) !important;
   letter-spacing: -.10em !important;
@@ -99,8 +95,6 @@
   will-change: transform;
 }
 
-/* Tylko wyjątkowy zapis kończący się na 100 dostaje ciaśniejszy padding.
-   Jeśli nadal będzie za szeroki, JS ściska sam tekst przez scaleX. */
 .row-expression.expression-100 {
   padding-left: 2px !important;
   padding-right: 2px !important;
@@ -110,9 +104,29 @@
   letter-spacing: -.055em;
 }
 
-/* Dzielenie: każdy rząd ma własny tor wyliczany w JS. Kreska nie zmienia
-   rozmiaru komórek ani wyrównania numerów / działań — dodaje wyłącznie odstęp
-   między dwoma sąsiednimi rzędami. */
+/* Wszystkie trzy pionowe warstwy dostają dokładnie te same tory. Dzięki temu
+   w mnożeniu odstępy rzędów są identyczne, a w dzieleniu kreska powiększa
+   tylko tor, po którym faktycznie występuje. */
+.array,
+.row-labels,
+.row-expressions {
+  align-content: start !important;
+}
+
+.array-cell,
+.row-labels > *,
+.row-expressions > * {
+  align-self: start !important;
+}
+
+.quiz-stage[data-operation="multiply"] .row-labels > *,
+.quiz-stage[data-operation="multiply"] .row-expressions > *,
+.quiz-stage[data-operation="divide"] .row-labels > *,
+.quiz-stage[data-operation="divide"] .row-expressions > * {
+  height: var(--stable-cell-size, auto) !important;
+  min-height: var(--stable-cell-size, 0px) !important;
+}
+
 .quiz-stage[data-operation="divide"] .explainer.division-polished .array,
 .quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
 .quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
@@ -127,18 +141,11 @@
   align-self: start !important;
 }
 
-.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels > *,
-.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions > * {
-  height: var(--division-cell-size, auto) !important;
-  min-height: var(--division-cell-size, 0px) !important;
-}
-
-/* Linia jest dokładnie pośrodku dodatkowego odstępu: tyle samo miejsca
-   nad nią i pod nią. Przy 1 px linii oraz 4 px odstępu jej dolna krawędź
-   wypada 2.5 px poniżej komórki, więc środek jest dokładnie na 2 px. */
+/* 6 px dodatkowego toru = po 3 px nad i pod linią. Linia ma 1 px i siedzi
+   dokładnie na środku przerwy między sąsiednimi kwadratami. */
 .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
   left: var(--division-cut-left, -8px) !important;
-  bottom: calc(-1 * var(--division-cut-half-pad, 2px) - .5px) !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 3px) - .5px) !important;
   width: calc(100% + var(--division-cut-extra, 16px)) !important;
   height: 1px !important;
 }
@@ -147,15 +154,35 @@
   width: calc(100% + var(--division-cut-overhang, 8px)) !important;
 }
 
-/* Delikatna fala pozostaje wspólna dla mnożenia i dzielenia. */
+/* Po przejściu do trybu ręcznego nie uruchamiamy ponownie starego popa
+   .is-active — ten konflikt z falą powodował drugie szarpnięcie po animacji. */
+.quiz-stage.wave-ready .array-cell.is-active {
+  animation: none !important;
+}
+
 .array-cell.wave-enter {
-  animation: wave-row-in .34s cubic-bezier(.18,.82,.26,1.12) both !important;
+  animation: wave-row-in .30s cubic-bezier(.18,.78,.24,1) both !important;
 }
 
 @keyframes wave-row-in {
-  0% { transform: translateY(4px) scale(.82); filter: brightness(1.12); }
-  66% { transform: translateY(-1px) scale(1.06); }
-  100% { transform: translateY(0) scale(1.02); filter: brightness(1); }
+  0% { transform: translateY(2px) scale(.985); filter: brightness(1.08); }
+  70% { transform: translateY(0) scale(1.012); filter: brightness(1.025); }
+  100% { transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+/* Numery w aktywnych polach przechodzą płynnie zamiast znikać i ponownie
+   odpalać animację po zdjęciu klasy wave-enter. */
+.quiz-stage.wave-ready .cell-number {
+  animation: none !important;
+  opacity: 0;
+  transform: translateY(2px) scale(.92);
+  transition: opacity .20s ease, transform .24s cubic-bezier(.2,.75,.25,1);
+}
+
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  animation: none !important;
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 @media (max-width: 430px) {
@@ -169,4 +196,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .array-cell.wave-enter { animation: none !important; }
+  .quiz-stage.wave-ready .cell-number { transition: none !important; }
 }

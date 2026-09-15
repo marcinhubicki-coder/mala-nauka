@@ -1,0 +1,223 @@
+/* v30 — finalna geometria explainera jest rezerwowana przed animacją.
+   Pojawianie się treści nie może już zmieniać wysokości ani położenia tabeli. */
+
+@property --counter-value {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+
+/* Cały obszar explainera istnieje od pierwszego frame'u. Otwieranie zmienia
+   wyłącznie opacity/transform zawartości — nigdy wysokość kontenera. */
+.explainer-reveal {
+  display: block !important;
+  grid-template-rows: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.explainer-reveal-inner {
+  min-height: 0;
+  overflow: visible !important;
+}
+
+.explainer-reveal:not(.is-open) .explainer-copy,
+.explainer-reveal:not(.is-open) .explain-grid,
+.explainer-reveal:not(.is-open) .grid-caption {
+  visibility: hidden;
+  opacity: 0 !important;
+  transform: translateY(4px);
+  animation: none !important;
+  pointer-events: none;
+}
+
+.explainer-reveal.is-open .explainer-copy,
+.explainer-reveal.is-open .explain-grid,
+.explainer-reveal.is-open .grid-caption {
+  visibility: visible;
+  animation: none !important;
+  opacity: 1 !important;
+  transform: translateY(0);
+}
+
+.explainer-reveal.is-open .explainer-copy {
+  transition: opacity .24s ease, transform .34s cubic-bezier(.2,.75,.2,1);
+}
+
+.explainer-reveal.is-open .explain-grid {
+  transition: opacity .30s .05s ease, transform .38s .05s cubic-bezier(.2,.75,.2,1);
+}
+
+.explainer-reveal.is-open .grid-caption {
+  transition: opacity .26s .10s ease, transform .34s .10s cubic-bezier(.2,.75,.2,1);
+}
+
+/* Akcje też mają od początku finalny slot. Są niewidoczne, ale ich późniejsze
+   pojawienie się nie przepycha explainera ani niczego poniżej. */
+.explainer-actions-panel {
+  min-height: 50px !important;
+  max-height: none !important;
+  margin-top: 18px !important;
+  overflow: visible !important;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity .24s ease, transform .32s cubic-bezier(.2,.75,.2,1) !important;
+}
+
+.explainer-actions-panel.is-visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Po ustaleniu geometrii trzy warstwy tabeli mają identyczną, zamrożoną
+   wysokość. Kolory/liczby mogą się animować, geometria nie. */
+.quiz-stage[data-geometry-locked="1"] .array,
+.quiz-stage[data-geometry-locked="1"] .row-labels,
+.quiz-stage[data-geometry-locked="1"] .row-expressions {
+  height: var(--reserved-table-height) !important;
+  min-height: var(--reserved-table-height) !important;
+  max-height: var(--reserved-table-height) !important;
+}
+
+.quiz-stage[data-geometry-locked="1"] .explain-grid {
+  min-height: var(--reserved-grid-height) !important;
+}
+
+/* Dzielenie: separator jest absolutny i istnieje od pierwszego renderu.
+   Jego widoczność nie wpływa na rozmiar toru; miejsce jest już policzone. */
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator {
+  box-shadow: none !important;
+  border-bottom-color: rgba(94,115,232,.29) !important;
+  overflow: visible !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+  border-bottom-color: rgba(74,94,216,.76) !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+  content: "" !important;
+  position: absolute;
+  z-index: 8;
+  left: var(--division-cut-left, -8px) !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 3px) - .5px) !important;
+  width: calc(100% + var(--division-cut-extra, 16px)) !important;
+  height: 1px !important;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72) !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator[data-col="10"]::after {
+  width: calc(100% + var(--division-cut-overhang, 8px)) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+    background: rgba(154,167,255,.76) !important;
+  }
+}
+
+/* Organiczna fala: tylko compositor-friendly właściwości i kolory.
+   Żadnego scale komórek ani zmiany ich wymiarów. */
+.quiz-stage.wave-ready .array-cell,
+.quiz-stage.wave-ready .array-cell.is-active,
+.quiz-stage.wave-ready .array-cell.wave-enter {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  transition:
+    background-color .30s cubic-bezier(.2,.72,.24,1),
+    border-color .30s cubic-bezier(.2,.72,.24,1),
+    box-shadow .30s cubic-bezier(.2,.72,.24,1),
+    opacity .24s ease !important;
+}
+
+.quiz-stage.wave-ready .cell-number,
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  animation: none !important;
+  transition: opacity .26s ease, transform .30s cubic-bezier(.2,.72,.24,1) !important;
+}
+
+.quiz-stage.wave-ready .cell-number {
+  opacity: 0;
+  transform: translateY(2px) scale(.94);
+}
+
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Nowe zadanie ma od razu końcowe sloty. Animowana jest tylko wartość. */
+.quiz-stage.correct-transition-in .answer,
+.quiz-stage.correct-transition-in .equation-left,
+.quiz-stage.correct-transition-in .equation-right,
+.quiz-stage.correct-transition-in .equation-sign {
+  animation: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.counter-tween {
+  position: relative;
+  color: transparent !important;
+  counter-reset: smooth-number var(--counter-value);
+  transition: --counter-value .56s cubic-bezier(.18,.76,.22,1) !important;
+}
+
+.counter-tween::after {
+  content: counter(smooth-number);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: var(--counter-color);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  pointer-events: none;
+}
+
+.answer.counter-tween::after {
+  display: grid;
+  place-items: center;
+}
+
+.equation-left.counter-tween::after {
+  display: block;
+  text-align: right;
+}
+
+.equation-right.counter-tween::after {
+  display: block;
+  text-align: left;
+}
+
+@media (max-width: 430px) {
+  .explainer-actions-panel { margin-top: 16px !important; }
+}
+
+@media (max-height: 760px) {
+  .explainer-actions-panel { margin-top: 10px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explainer-reveal.is-open .explainer-copy,
+  .explainer-reveal.is-open .explain-grid,
+  .explainer-reveal.is-open .grid-caption,
+  .explainer-actions-panel,
+  .quiz-stage.wave-ready .array-cell,
+  .quiz-stage.wave-ready .cell-number,
+  .counter-tween {
+    transition: none !important;
+  }
+}

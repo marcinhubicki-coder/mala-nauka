@@ -1,9 +1,9 @@
-/* v26 — stabilny układ tabeli explainera: szerokości od krawędzi do krawędzi,
-   osobne tory rzędów dla dzielenia i maksymalnie duże kwadraty. */
+/* v26.1 — wspólny, stabilny układ explainera mnożenia i dzielenia. */
 .explainer {
   --table-side-pad: 8px;
   --row-label-width: 12px;
   --expression-width: 54px;
+  --axis-font-size: clamp(7.2px, 1.9vw, 9px);
   padding-left: var(--table-side-pad) !important;
   padding-right: var(--table-side-pad) !important;
 }
@@ -17,6 +17,21 @@
   justify-content: stretch !important;
 }
 
+/* Ten sam rozmiar wszystkich nagłówków 1–10 w mnożeniu i dzieleniu.
+   Aktywność zmienia kolor/wagę, ale nie rozmiar — dzięki temu nic nie „skacze”. */
+.axis-label {
+  font-size: var(--axis-font-size) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+  transform-origin: center !important;
+}
+
+.axis-label.is-active,
+.axis-label.division-result-label {
+  transform: none !important;
+}
+
 .column-labels {
   align-items: end !important;
   transform: translateY(1px);
@@ -27,16 +42,29 @@
   align-self: end;
 }
 
+/* Górna 10 ma dokładnie ten sam krój i rozmiar co 1–9 — jest na nią miejsce. */
+.col-label[data-col-label="10"] {
+  font-size: var(--axis-font-size) !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+}
+
 .row-labels,
 .row-expressions {
   min-width: 0;
   width: 100%;
 }
 
-.row-label[data-row-label="10"],
-.col-label[data-col-label="10"] {
-  letter-spacing: -.12em;
-  font-size: .92em;
+/* Tylko lewa 10 jest lekko zwężona poziomo, żeby nie zabierała szerokości planszy. */
+.row-label[data-row-label="10"] {
+  font-size: var(--axis-font-size) !important;
+  letter-spacing: -.10em !important;
+  transform: scaleX(.86) !important;
+  transform-origin: center !important;
+}
+
+.row-label[data-row-label="10"].is-active {
+  transform: scaleX(.86) !important;
 }
 
 .row-expression,
@@ -82,9 +110,9 @@
   letter-spacing: -.055em;
 }
 
-/* Dzielenie: stary model przesunięć jest wyłączony. Wysokość każdego rzędu
-   wylicza JS osobno, więc kreska powiększa tylko swój tor, a dalsze puste
-   rzędy zachowują zwykły rytm jak w mnożeniu. */
+/* Dzielenie: każdy rząd ma własny tor wyliczany w JS. Kreska nie zmienia
+   rozmiaru komórek ani wyrównania numerów / działań — dodaje wyłącznie odstęp
+   między dwoma sąsiednimi rzędami. */
 .quiz-stage[data-operation="divide"] .explainer.division-polished .array,
 .quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
 .quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
@@ -105,9 +133,12 @@
   min-height: var(--division-cell-size, 0px) !important;
 }
 
+/* Linia jest dokładnie pośrodku dodatkowego odstępu: tyle samo miejsca
+   nad nią i pod nią. Przy 1 px linii oraz 4 px odstępu jej dolna krawędź
+   wypada 2.5 px poniżej komórki, więc środek jest dokładnie na 2 px. */
 .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
   left: var(--division-cut-left, -8px) !important;
-  bottom: -2px !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 2px) - .5px) !important;
   width: calc(100% + var(--division-cut-extra, 16px)) !important;
   height: 1px !important;
 }

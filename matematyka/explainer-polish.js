@@ -1,7 +1,7 @@
 (() => {
   const states = new WeakMap();
   const normalized = new WeakSet();
-  const WAVE_DELAY = 72;
+  const WAVE_DELAY = 78;
 
   function stageFor(node) {
     return node?.closest?.('.quiz-stage.has-explainer');
@@ -18,6 +18,7 @@
   function normalizeExpressions(stage) {
     if (normalized.has(stage)) return;
     stage.querySelectorAll('.row-expression').forEach(button => {
+      if (button.querySelector('.expression-text')) return;
       const raw = button.textContent.trim();
       if (!raw.includes('+') || !raw.includes('=')) return;
       const values = raw.match(/\d+/g)?.map(Number) || [];
@@ -57,23 +58,29 @@
     });
   }
 
-  function paintStep(stage, step, rows, columns, animateRow = false) {
+  function paintStep(stage, step, rows, columns, animateForward = false) {
     const count = step > 0 ? Math.min(step, rows) * columns : 0;
-    const previousActive = new Set([...stage.querySelectorAll('.array-cell.is-active')]);
+    const previouslyActive = new Set([...stage.querySelectorAll('.array-cell.is-active')]);
+    const newCells = [];
 
     stage.querySelectorAll('.array-cell[data-count]').forEach(cell => {
       const cellCount = Number(cell.dataset.count);
       const counted = cellCount > 0 && cellCount <= count;
+      const wasActive = previouslyActive.has(cell);
+
       cell.classList.toggle('is-active', counted);
       cell.classList.toggle('show-number', counted);
 
-      if (animateRow && counted && !previousActive.has(cell)) {
-        cell.classList.remove('wave-enter');
-        void cell.offsetWidth;
-        cell.classList.add('wave-enter');
-        window.setTimeout(() => cell.classList.remove('wave-enter'), 380);
-      }
+      if (animateForward && counted && !wasActive) newCells.push(cell);
+      if (!counted) cell.classList.remove('wave-enter');
     });
+
+    if (newCells.length) {
+      requestAnimationFrame(() => {
+        newCells.forEach(cell => cell.classList.add('wave-enter'));
+        window.setTimeout(() => newCells.forEach(cell => cell.classList.remove('wave-enter')), 340);
+      });
+    }
 
     updateLabels(stage, count, rows, columns);
     stage.querySelectorAll('.row-expression').forEach(button => {

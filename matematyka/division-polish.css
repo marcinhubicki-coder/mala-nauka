@@ -2,6 +2,21 @@
   content: none !important;
 }
 
+.quiz-stage[data-operation="divide"] .explainer.division-polished {
+  /* Około 1/3 wolnej przestrzeni pod cyfrą w komórce; ma być czytelnie,
+     ale bez niepotrzebnego rozciągania całej planszy. */
+  --division-cut-pad: clamp(1.25px, .42vw, 2px);
+  --division-row-gap: calc(var(--cell-gap) + (2 * var(--division-cut-pad)));
+}
+
+/* Linia dzielenia dostaje oddech nad i pod sobą. Te trzy siatki muszą mieć
+   identyczny rytm, żeby numery rzędów i działania po prawej nadal się pokrywały. */
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
+  row-gap: var(--division-row-gap);
+}
+
 .quiz-stage[data-operation="divide"] .array-cell.in-problem {
   overflow: visible;
 }
@@ -11,15 +26,23 @@
   position: absolute;
   z-index: 5;
   left: -1px;
-  bottom: calc(var(--cell-gap) / -2 - .5px);
+  bottom: calc((var(--division-row-gap) / -2) - 1px);
   width: calc(100% + var(--cell-gap) + 2px);
-  height: 1px;
+  height: 2px;
   border-radius: 999px;
-  background: rgba(137,151,236,.40);
+  background: rgba(119,136,238,.66);
+  box-shadow: 0 0 0 .35px rgba(119,136,238,.20);
   pointer-events: none;
 }
 
-.quiz-stage[data-operation="divide"] .array-cell.division-cut-last::after {
+/* Ostatni aktywny fragment dochodzi do połowy następnego pola — dzięki temu
+   kreska czytelnie pokazuje miejsce „cięcia” po wyniku. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last:not([data-col="10"])::after {
+  width: calc(150% + var(--cell-gap) + 1px);
+}
+
+/* Przy wyniku 10 nie wychodzimy poza planszę. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last[data-col="10"]::after {
   width: calc(100% + 2px);
 }
 
@@ -43,7 +66,8 @@
 
 @media (prefers-color-scheme: dark) {
   .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
-    background: rgba(151,164,255,.46);
+    background: rgba(154,167,255,.72);
+    box-shadow: 0 0 0 .35px rgba(154,167,255,.22);
   }
 
   .quiz-stage[data-operation="divide"] .array-cell.division-result-column {

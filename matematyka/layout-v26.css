@@ -1,0 +1,141 @@
+/* v26 — stabilny układ tabeli explainera: szerokości od krawędzi do krawędzi,
+   osobne tory rzędów dla dzielenia i maksymalnie duże kwadraty. */
+.explainer {
+  --table-side-pad: 8px;
+  --row-label-width: 12px;
+  --expression-width: 54px;
+  padding-left: var(--table-side-pad) !important;
+  padding-right: var(--table-side-pad) !important;
+}
+
+.explain-grid {
+  width: 100%;
+  grid-template-columns: var(--row-label-width) minmax(0, 1fr) var(--expression-width) !important;
+  grid-template-rows: 13px auto !important;
+  column-gap: 4px !important;
+  row-gap: 3px !important;
+  justify-content: stretch !important;
+}
+
+.column-labels {
+  align-items: end !important;
+  transform: translateY(1px);
+}
+
+.column-labels .axis-label {
+  height: 12px !important;
+  align-self: end;
+}
+
+.row-labels,
+.row-expressions {
+  min-width: 0;
+  width: 100%;
+}
+
+.row-label[data-row-label="10"],
+.col-label[data-col-label="10"] {
+  letter-spacing: -.12em;
+  font-size: .92em;
+}
+
+.row-expression,
+.row-expression-spacer {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+.row-expression {
+  justify-self: stretch !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: left !important;
+  letter-spacing: -.025em !important;
+  overflow: hidden;
+  transform: none !important;
+}
+
+.row-expression:hover,
+.row-expression:focus-visible,
+.row-expression.is-active,
+.row-expression[aria-pressed="true"] {
+  transform: none !important;
+}
+
+.row-expression .expression-text {
+  display: inline-block;
+  max-width: none;
+  white-space: nowrap;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* Tylko wyjątkowy zapis kończący się na 100 dostaje ciaśniejszy padding.
+   Jeśli nadal będzie za szeroki, JS ściska sam tekst przez scaleX. */
+.row-expression.expression-100 {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+.row-expression.expression-100 .expression-text {
+  letter-spacing: -.055em;
+}
+
+/* Dzielenie: stary model przesunięć jest wyłączony. Wysokość każdego rzędu
+   wylicza JS osobno, więc kreska powiększa tylko swój tor, a dalsze puste
+   rzędy zachowują zwykły rytm jak w mnożeniu. */
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
+  row-gap: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array-cell,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels > *,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions > * {
+  top: 0 !important;
+  align-self: start !important;
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels > *,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions > * {
+  height: var(--division-cell-size, auto) !important;
+  min-height: var(--division-cell-size, 0px) !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+  left: var(--division-cut-left, -8px) !important;
+  bottom: -2px !important;
+  width: calc(100% + var(--division-cut-extra, 16px)) !important;
+  height: 1px !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last[data-col="10"]::after {
+  width: calc(100% + var(--division-cut-overhang, 8px)) !important;
+}
+
+/* Delikatna fala pozostaje wspólna dla mnożenia i dzielenia. */
+.array-cell.wave-enter {
+  animation: wave-row-in .34s cubic-bezier(.18,.82,.26,1.12) both !important;
+}
+
+@keyframes wave-row-in {
+  0% { transform: translateY(4px) scale(.82); filter: brightness(1.12); }
+  66% { transform: translateY(-1px) scale(1.06); }
+  100% { transform: translateY(0) scale(1.02); filter: brightness(1); }
+}
+
+@media (max-width: 430px) {
+  .explainer { --table-side-pad: 8px; }
+}
+
+@media (max-width: 360px) {
+  .explainer { --table-side-pad: 6px; }
+  .row-expression { font-size: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .array-cell.wave-enter { animation: none !important; }
+}

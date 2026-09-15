@@ -14,6 +14,12 @@ function currentQuestionNumber(){
   return Number(text.match(/\d+/)?.[0]||0);
 }
 
+function totalQuestionCount(){
+  const progress=app.querySelector('progress');
+  const max=Number(progress?.max||0);
+  return Number.isFinite(max)&&max>0?Math.round(max):10;
+}
+
 function maskedFromAria(word){
   const aria=word?.getAttribute('aria-label')||'';
   if(!aria)return '';
@@ -97,7 +103,7 @@ function decorate(){
 
   const n=question||1;
   const small=app.querySelector('.time-block small');
-  if(small)small.textContent=`Przygoda · zadanie ${n}`;
+  if(small)small.textContent=`Przygoda ${n}/${totalQuestionCount()}`;
 
   if(feedback){
     app.classList.add('spelling-has-feedback');

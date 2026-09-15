@@ -1,10 +1,10 @@
-const CACHE='mala-nauka-v21-spelling-bubble-static';
+const CACHE='mala-nauka-v22-spelling-review-v041';
 const CORE=[
   './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
-  './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
-  './spelling-art.css?v=8','./spelling-mobile.css?v=8','./spelling-art.js?v=8','./debug-tools.js?v=7','./spelling/art.mjs?v=7',
+  './spelling-art.css','./spelling-mobile.css','./spelling-review-v041.css','./spelling-art.js','./debug-tools.js',
+  './spelling-art.css?v=9','./spelling-mobile.css?v=9','./spelling-review-v041.css?v=1','./spelling-art.js?v=9','./debug-tools.js?v=7','./spelling/art.mjs?v=8',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
-  './assets/scenes/spelling-bg.webp','./assets/scenes/bunny-bubble.webp','./assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp',
+  './assets/scenes/spelling-bg.webp','./assets/scenes/bunny-bubble.webp','./assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',

@@ -12,14 +12,16 @@ function assetsOnlyEnabled(){
   const override=params.get('assets');
   if(override==='1')return true;
   if(override==='0')return false;
-  return storedAssetsOnly();
+  if(storedAssetsOnly())return true;
+  // Preview branch default: keep review focused on words that already have artwork.
+  return true;
 }
 
 export const SPELLING_PREVIEW = Object.freeze({
   get assetsOnly(){return assetsOnlyEnabled();},
   word: normalize(params.get('word')),
   scene: normalize(params.get('scene')),
-  layout: ['full','split'].includes(params.get('layout')) ? params.get('layout') : '',
+  layout: 'bubble',
 });
 
 const availableMasks = new Set(
@@ -53,6 +55,6 @@ export function previewSummary(){
     scene:SPELLING_PREVIEW.scene,
     layout:SPELLING_PREVIEW.layout,
     availableScenes:[...availableMasks],
-    active:assetsOnlyEnabled() || !!SPELLING_PREVIEW.word || !!SPELLING_PREVIEW.scene || !!SPELLING_PREVIEW.layout,
+    active:true,
   };
 }

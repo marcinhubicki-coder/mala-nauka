@@ -1,0 +1,151 @@
+/* v0.4.1 review polish: reference spacing + reliable fairytale background. */
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready{
+  background:transparent!important;
+  gap:clamp(8px,1.05svh,11px)!important;
+  grid-template-rows:auto 5px auto auto auto auto auto minmax(0,1fr)!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:url('assets/scenes/spelling-bg.webp');
+  background-repeat:no-repeat;
+  background-position:center center;
+  background-size:100% 100%;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1!important;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(247,247,255,.08) 0%,rgba(250,248,255,.03) 55%,rgba(248,246,255,.06) 100%),
+    radial-gradient(80% 34% at 50% 32%,rgba(255,255,255,.12),transparent 72%);
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .game-bar,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready progress,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .spelling-title,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .spelling-visual,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .spelling-question-card,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .answers,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .spelling-hint,
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .feedback{z-index:4}
+
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .game-bar{
+  min-height:44px!important;
+  margin-top:1px;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .game-bar .icon{
+  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  background:rgba(255,255,255,.72)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 6px 16px rgba(72,54,126,.08)!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .time-block{gap:3px!important}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .timer{
+  font-size:20px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  letter-spacing:-.25px!important;
+  color:#152b63!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .time-block small{
+  font-size:10.5px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.1px;
+  color:#6b6e91!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready progress{
+  width:min(64%,250px)!important;
+  justify-self:center!important;
+  height:5px!important;
+  border-radius:999px!important;
+  margin:0 auto 1px!important;
+  box-shadow:inset 0 1px 2px rgba(72,47,129,.10)!important;
+}
+
+.spelling-title{
+  margin:2px auto 1px!important;
+  font-size:clamp(30px,8vw,38px)!important;
+  line-height:.98!important;
+  letter-spacing:-1.55px!important;
+  white-space:nowrap!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.84),0 5px 16px rgba(32,30,88,.045)!important;
+}
+.spelling-visual{
+  width:min(70vw,274px)!important;
+  aspect-ratio:1.045!important;
+  margin:1px auto 0!important;
+  border-radius:46% 54% 49% 51% / 50% 44% 56% 50%!important;
+  box-shadow:
+    0 10px 28px rgba(68,50,132,.12),
+    0 0 0 1px rgba(177,143,238,.18),
+    inset 0 0 0 2px rgba(255,255,255,.33),
+    inset 0 -10px 24px rgba(122,93,197,.09)!important;
+}
+.spelling-visual::after{
+  box-shadow:
+    inset 0 0 16px 7px rgba(255,255,255,.18),
+    inset 0 0 38px 4px rgba(227,222,255,.12)!important;
+}
+.spelling-visual img{filter:saturate(.99) contrast(.99) brightness(1.015)!important}
+
+.spelling-question-card{min-height:62px!important;margin:0!important}
+.spelling-question-card .question-content{min-height:60px!important}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{
+  font-size:clamp(41px,11.2vw,54px)!important;
+  letter-spacing:-1.85px!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .answers{
+  gap:12px!important;
+  margin:0 3px!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .answer{
+  height:clamp(78px,10.2svh,90px)!important;
+  min-height:76px!important;
+  border-radius:27px!important;
+  font-size:clamp(40px,11vw,52px)!important;
+}
+.spelling-hint{
+  width:min(78%,315px)!important;
+  min-height:44px!important;
+  margin-top:2px!important;
+  padding:8px 15px!important;
+  font-size:13.5px!important;
+}
+
+/* Scene-specific framing for the review set. */
+[data-art-scene="rose"] .spelling-visual img{object-position:center 52%!important}
+[data-art-scene="bunny"] .spelling-visual img{object-position:center 48%!important}
+[data-art-scene="mountains"] .spelling-visual img{object-position:center 46%!important}
+[data-art-scene="clouds"] .spelling-visual img{object-position:center 48%!important}
+[data-art-scene="king"] .spelling-visual img{object-position:center 47%!important}
+
+@media (max-width:600px){
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{
+    --mobile-side:16px;
+    padding:max(9px,env(safe-area-inset-top)) var(--mobile-side) max(9px,env(safe-area-inset-bottom))!important;
+    gap:clamp(7px,.92svh,10px)!important;
+  }
+  .spelling-title{font-size:clamp(29px,7.65vw,34px)!important}
+  .spelling-visual{width:min(69vw,268px)!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{font-size:clamp(40px,10.9vw,50px)!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .answer{height:clamp(76px,9.7svh,84px)!important}
+}
+@media (max-height:760px) and (max-width:600px){
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{gap:7px!important}
+  .spelling-title{font-size:29px!important}
+  .spelling-visual{width:min(64vw,238px)!important}
+  .spelling-question-card{min-height:56px!important}
+  .spelling-question-card .question-content{min-height:54px!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{font-size:40px!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .answer{height:70px!important;min-height:68px!important}
+  .spelling-hint{min-height:41px!important;padding-block:6px!important}
+}
+@media (max-height:700px) and (max-width:600px){
+  .spelling-visual{width:min(61vw,224px)!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .answer{height:66px!important;min-height:64px!important}
+}

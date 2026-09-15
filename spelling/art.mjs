@@ -14,12 +14,6 @@ function currentQuestionNumber(){
   return Number(text.match(/\d+/)?.[0]||0);
 }
 
-function totalQuestionCount(){
-  const progress=app.querySelector('progress');
-  const max=Number(progress?.max||0);
-  return Number.isFinite(max)&&max>0?Math.round(max):10;
-}
-
 function maskedFromAria(word){
   const aria=word?.getAttribute('aria-label')||'';
   if(!aria)return '';
@@ -33,6 +27,11 @@ function mountVisual(scene,title){
   const bubble=document.createElement('div');
   bubble.className='spelling-visual scene-missing';
   bubble.setAttribute('aria-hidden','true');
+  if(scene?.scale)bubble.style.setProperty('--scene-scale',String(scene.scale));
+
+  const media=document.createElement('div');
+  media.className='spelling-visual-media';
+  bubble.append(media);
 
   if(scene?.asset){
     const img=document.createElement('img');
@@ -43,7 +42,14 @@ function mountVisual(scene,title){
     if(scene.position)img.style.objectPosition=scene.position;
     img.addEventListener('load',()=>bubble.classList.remove('scene-missing'),{once:true});
     img.addEventListener('error',()=>img.remove(),{once:true});
-    bubble.append(img);
+    media.append(img);
+  }
+
+  for(const suffix of ['a','b','c']){
+    const orb=document.createElement('i');
+    orb.className=`scene-orb scene-orb-${suffix}`;
+    orb.setAttribute('aria-hidden','true');
+    bubble.append(orb);
   }
 
   title.insertAdjacentElement('afterend',bubble);
@@ -101,9 +107,12 @@ function decorate(){
   decorateWord(word,options,feedback);
   mountHintButton(app,answers,category);
 
-  const n=question||1;
   const small=app.querySelector('.time-block small');
-  if(small)small.textContent=`Przygoda ${n}/${totalQuestionCount()}`;
+  if(small){
+    small.textContent='';
+    small.hidden=true;
+    small.setAttribute('aria-hidden','true');
+  }
 
   if(feedback){
     app.classList.add('spelling-has-feedback');

@@ -1,0 +1,66 @@
+/* v37 — PWA polish: status-bar gradient, większy badge trybu i wspólny feedback. */
+
+/* Root canvas carries the gradient, so iOS standalone status bar has no flat cut-off. */
+html {
+  background-color: #f4f7fb !important;
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(135,153,255,.20), transparent 36%),
+    linear-gradient(180deg, #f8faff 0%, #f4f7fb 100%) !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+  background-attachment: fixed !important;
+}
+body {
+  background: transparent !important;
+}
+body::before {
+  content: none !important;
+  display: none !important;
+}
+.app-shell {
+  background: transparent !important;
+}
+
+/* Badge is purely visual and remains outside layout flow. */
+.quiz-stage:not(.has-explainer) .question-label::before {
+  bottom: calc(100% + 38px) !important;
+  width: 92px !important;
+  height: 87px !important;
+  border-radius: 29px !important;
+  font-size: 56px !important;
+}
+
+/* Every correct answer uses the same feedback size and placement. */
+.quiz-stage[data-normal-geometry-locked="1"] {
+  --normal-feedback-height: 36px !important;
+}
+.quiz-stage .feedback.good {
+  font-size: 20px !important;
+  line-height: 1.15 !important;
+  font-weight: 820 !important;
+  letter-spacing: -.02em !important;
+  transform: translateY(16px) !important;
+}
+
+@media (max-height: 760px) {
+  .quiz-stage:not(.has-explainer) .question-label::before {
+    bottom: calc(100% + 31px) !important;
+    width: 81px !important;
+    height: 76px !important;
+    border-radius: 25px !important;
+    font-size: 49px !important;
+  }
+
+  .quiz-stage .feedback.good {
+    transform: translateY(10px) !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #10151f !important;
+    background-image:
+      radial-gradient(circle at 18% 0%, rgba(91,111,220,.18), transparent 36%),
+      linear-gradient(180deg, #182133 0%, #121824 24%, #10151f 100%) !important;
+  }
+}

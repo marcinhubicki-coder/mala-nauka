@@ -1,0 +1,33 @@
+// word|Polish meaning|category|difficulty 1-3|wrong answers (semicolon-separated)
+export default String.raw`
+book|książka|objects|1|buk;boock;bok
+pencil|ołówek|objects|2|pensil;pencill;pencel
+pen|długopis|objects|1|pne;epn;peen
+notebook|zeszyt|objects|3|notbeook;ontebook;noteook
+phone|telefon|objects|3|fone;phonne;phoane
+clock|zegar|objects|2|clok;cloc;klock
+watch|zegarek|objects|3|wacth;awtch;wach
+key|klucz|objects|1|kye;eky;keey
+bag|torba|objects|1|bga;abg;baag
+box|pudełko|objects|1|bxo;obx;boox
+bottle|butelka|objects|2|botlte;obttle;botle
+cup|kubek|objects|1|cpu;ucp;cuup
+glass|szklanka|objects|2|galss;lgass;glss
+plate|talerz|objects|2|pltae;lpate;plte
+bowl|miska|objects|1|bwol;obwl;bol
+spoon|łyżka|objects|2|sopon;psoon;spon
+fork|widelec|objects|1|frok;ofrk;fok
+knife|nóż|objects|3|knfie;nkife;knfe
+scissors|nożyczki|objects|3|scisosrs;csissors;scisors
+umbrella|parasol|objects|3|umberlla;mubrella;umbrlla
+computer|komputer|objects|3|comupter;ocmputer;compter
+laptop|laptop|objects|2|latpop;alptop;lapop
+screen|ekran|objects|3|sceren;csreen;scren
+camera|aparat|objects|2|caemra;acmera;camra
+picture|obrazek|objects|2|picutre;ipcture;picure
+map|mapa|objects|1|mpa;amp;maap
+ball|piłka|objects|1|blal;abll;bal
+toy|zabawka|objects|1|tyo;oty;tooy
+gift|prezent|objects|1|gfit;igft;git
+letter|list|objects|2|letetr;eltter;leter
+`;

@@ -35,6 +35,6 @@ SVG flag pochodzą z `flag-icons` v7.5.0 i są ładowane przez przypięty adres 
 
 Przełącznik języka nazw krajów jest dostępny w module flag (PL / EN) i zapamiętuje wybór na urządzeniu. Zmienia nazwy na przyciskach odpowiedzi oraz nazwę kraju w feedbacku bez zmiany mechaniki punktów.
 
-Po błędnej odpowiedzi poprawna nazwa pojawia się najpierw przy fladze, a następnie flaga zmniejsza się i przesuwa do prawego górnego rogu powiększonego kafla. W środku pojawia się duża mapa właściwego kontynentu z podświetlonym państwem. Ten sam renderer obsługuje Europę, Azję, Afrykę, Amerykę Północną, Amerykę Południową i Oceanię oraz zachowuje obsługę kliknięć pod przyszły tryb wskazywania kraju na mapie.
+Po błędnej odpowiedzi poprawna nazwa pojawia się najpierw przy fladze, a następnie flaga zmniejsza się i przesuwa do prawego górnego rogu powiększonego kafla. W środku pojawia się duża, stała mapa całego właściwego kontynentu, a poprawne państwo jest jedynie podświetlane. Ten sam renderer obsługuje Europę, Azję, Afrykę, Amerykę Północną, Amerykę Południową i Oceanię oraz zachowuje obsługę kliknięć pod przyszły tryb wskazywania kraju na mapie.
 
-Mapa świata pochodzi z VectorAtlas (Menelabs), jest generowana z danych Natural Earth i używana z atrybucją CC BY 4.0. Przypięty commit i informacje licencyjne znajdują się w `assets/maps/VECTORATLAS-SOURCE.txt`. Service worker zapisuje mapę w cache po pierwszym pobraniu.
+Mapy kontynentów są lokalnymi SVG w `assets/maps/`, z osobnym elementem `data-country` dla każdego państwa. Są wygenerowane z danych Natural Earth i pre-cache'owane przez service worker, więc feedback mapowy nie zależy od zewnętrznego requestu w momencie odpowiedzi. Informacja o źródle znajduje się w `assets/maps/NATURAL-EARTH-SOURCE.txt`.

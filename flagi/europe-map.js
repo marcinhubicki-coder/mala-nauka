@@ -1,14 +1,12 @@
 (() => {
   const STYLE_ID = 'continent-map-styles';
-  const WORLD_MAP_URL = 'assets/maps/world.svg';
-  const WORLD_MAP_FALLBACK_URL = 'https://cdn.jsdelivr.net/gh/melenaos/Menelabs.VectorAtlas@98bc8b95ee210012c32b02805d21a8de77a04507/dist/world.svg';
-  const CONTEXT_IDS = Object.freeze({
-    europe: ['xk'],
-    asia: ['tw'],
-    africa: ['eh'],
-    'north-america': ['gl','pr'],
-    'south-america': ['fk'],
-    oceania: ['nc']
+  const MAP_URLS = Object.freeze({
+    europe: 'assets/maps/europe.svg',
+    asia: 'assets/maps/asia.svg',
+    africa: 'assets/maps/africa.svg',
+    'north-america': 'assets/maps/north-america.svg',
+    'south-america': 'assets/maps/south-america.svg',
+    oceania: 'assets/maps/oceania.svg'
   });
   const LABELS = Object.freeze({
     europe: { pl: 'Europy', en: 'Europe' },
@@ -18,7 +16,7 @@
     'south-america': { pl: 'Ameryki Południowej', en: 'South America' },
     oceania: { pl: 'Oceanii', en: 'Oceania' }
   });
-  let sourcePromise = null;
+  const sourcePromises = new Map();
 
   if (!document.getElementById(STYLE_ID)) {
     const style = document.createElement('style');
@@ -37,8 +35,8 @@
       .continent-map-host.no-copy { grid-template-rows: minmax(0, 1fr); }
       .continent-map-copy { font-size: 11px; line-height: 1.2; color: #758399; text-align: center; }
       .continent-map-copy strong { color: #8c5b2b; font-weight: 850; }
-      .continent-map-canvas { width: min(100%, 540px); min-height: 0; display: grid; place-items: center; }
-      .continent-map-canvas svg { display: block; width: 100%; height: 180px; overflow: visible; }
+      .continent-map-canvas { width: min(100%, 560px); min-height: 0; display: grid; place-items: center; }
+      .continent-map-canvas svg { display: block; width: 100%; height: 100%; max-height: 430px; overflow: visible; }
       .continent-map-canvas .country {
         fill: #dfe7ef;
         stroke: #fff;
@@ -47,7 +45,7 @@
         vector-effect: non-scaling-stroke;
         transition: fill .22s ease, opacity .22s ease, filter .22s ease, transform .22s ease;
       }
-      .continent-map-canvas .country:not(.is-highlighted) { opacity: .74; }
+      .continent-map-canvas .country:not(.is-highlighted) { opacity: .78; }
       .continent-map-canvas .country.is-highlighted {
         fill: #e78a41;
         opacity: 1;
@@ -55,6 +53,10 @@
         transform-box: fill-box;
         transform-origin: center;
         animation: continent-country-pulse .56s cubic-bezier(.2,.8,.25,1) both;
+      }
+      .continent-map-canvas .small-country.is-highlighted {
+        stroke: #fff;
+        stroke-width: 2.2;
       }
       .continent-map-host.is-loading .continent-map-canvas::before {
         content: '';
@@ -96,58 +98,20 @@
     .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-  async function fetchMapSource(url) {
-    const response = await fetch(url, { cache: 'force-cache' });
-    if (!response.ok) throw new Error(`Map unavailable: ${response.status} (${url})`);
-    return response.text();
-  }
-
-  function loadSource() {
-    sourcePromise ||= fetchMapSource(WORLD_MAP_URL).catch(primaryError => {
-      console.warn('[flags-map] local map failed, using CDN fallback', primaryError);
-      return fetchMapSource(WORLD_MAP_FALLBACK_URL);
-    });
-    return sourcePromise;
-  }
-
   function supports(countryId, continent) {
-    return Boolean(String(countryId || '').trim() && LABELS[continent]);
+    return Boolean(String(countryId || '').trim() && MAP_URLS[continent]);
   }
 
-  function cropToContinent(svg, continentIds) {
-    const allowed = new Set(continentIds.map(id => String(id).toLowerCase()));
-    svg.querySelectorAll('path[id]').forEach(path => {
-      const id = path.id.toLowerCase();
-      if (!allowed.has(id)) {
-        path.remove();
-        return;
-      }
-      path.classList.add('country');
-      path.dataset.country = id;
-      path.removeAttribute('style');
-    });
-
-    const countries = [...svg.querySelectorAll('.country')];
-    if (!countries.length) return false;
-
-    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-    for (const country of countries) {
-      const box = country.getBBox();
-      if (!Number.isFinite(box.x) || !Number.isFinite(box.y)) continue;
-      minX=Math.min(minX,box.x);
-      minY=Math.min(minY,box.y);
-      maxX=Math.max(maxX,box.x+box.width);
-      maxY=Math.max(maxY,box.y+box.height);
+  function loadSource(continent) {
+    const url = MAP_URLS[continent];
+    if (!url) return Promise.reject(new Error(`Unknown continent: ${continent}`));
+    if (!sourcePromises.has(continent)) {
+      sourcePromises.set(continent, fetch(url, { cache: 'force-cache' }).then(response => {
+        if (!response.ok) throw new Error(`Map unavailable: ${response.status} (${url})`);
+        return response.text();
+      }));
     }
-    if (![minX,minY,maxX,maxY].every(Number.isFinite)) return false;
-
-    const width=maxX-minX;
-    const height=maxY-minY;
-    const padX=Math.max(width*.055,8);
-    const padY=Math.max(height*.07,8);
-    svg.setAttribute('viewBox',`${minX-padX} ${minY-padY} ${width+padX*2} ${height+padY*2}`);
-    svg.setAttribute('preserveAspectRatio','xMidYMid meet');
-    return true;
+    return sourcePromises.get(continent);
   }
 
   async function mount(target, options = {}) {
@@ -155,7 +119,6 @@
     const countryId = String(options.countryId || '').toLowerCase();
     const countryName = String(options.countryName || '');
     const continent = String(options.continent || '').toLowerCase();
-    const continentIds = [...new Set([...(options.continentIds || []), ...(CONTEXT_IDS[continent] || [])])];
     const interactive = Boolean(options.interactive);
     const showCopy = options.showCopy !== false;
     const language = options.language === 'en' ? 'en' : 'pl';
@@ -172,38 +135,37 @@
       : '';
     target.innerHTML = `${copy}<div class="continent-map-canvas" aria-hidden="${interactive ? 'false' : 'true'}"></div>`;
 
-    if (!supports(countryId, continent) || !continentIds.length) {
+    if (!supports(countryId, continent)) {
       target.classList.remove('is-loading');
       target.classList.add('is-unavailable');
       return { found: false, svg: null };
     }
 
     try {
-      const source = await loadSource();
+      const source = await loadSource(continent);
       const canvas = target.querySelector('.continent-map-canvas');
       if (!canvas || !target.isConnected) return { found: false, svg: null };
       canvas.innerHTML = source;
       const svg = canvas.querySelector('svg');
       if (!svg) throw new Error('Missing SVG root');
 
-      if (!cropToContinent(svg, continentIds)) throw new Error(`Missing continent ${continent}`);
       svg.setAttribute('aria-hidden', interactive ? 'false' : 'true');
       svg.setAttribute('focusable', 'false');
+      svg.dataset.continent = continent;
 
-      const active = svg.querySelector(`#${CSS.escape(countryId)}, [data-country="${countryId}"]`);
+      const active = svg.querySelector(`[data-country="${countryId}"]`);
       if (!active) throw new Error(`Missing country ${countryId} on ${continent}`);
-      active.classList.add('country','is-highlighted');
-      active.dataset.country = countryId;
+      active.classList.add('is-highlighted');
 
       if (interactive) {
-        svg.querySelectorAll('.country').forEach(country => {
+        svg.querySelectorAll('.country[data-country]').forEach(country => {
           country.setAttribute('tabindex', '0');
           country.setAttribute('role', 'button');
         });
         const activate = event => {
-          const country = event.target.closest?.('.country');
+          const country = event.target.closest?.('.country[data-country]');
           if (!country || !svg.contains(country)) return;
-          options.onSelect?.(country.dataset.country || country.id, country, event);
+          options.onSelect?.(country.dataset.country, country, event);
         };
         svg.addEventListener('click', activate);
         svg.addEventListener('keydown', event => {
@@ -224,7 +186,7 @@
     }
   }
 
-  const api = Object.freeze({ mount, supports, worldMapUrl: WORLD_MAP_URL });
+  const api = Object.freeze({ mount, supports, mapUrls: MAP_URLS });
   window.MalaNaukaContinentMap = api;
   window.MalaNaukaEuropeMap = api;
 })();

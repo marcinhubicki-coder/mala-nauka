@@ -35,10 +35,17 @@
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name,
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
   left:18px!important;
+  text-align:left!important;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name{
+  top:21px!important;
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
-  top:43px!important;
+  top:auto!important;
+  bottom:calc(100% - 65px)!important;
+  line-height:1.05!important;
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map{
@@ -72,11 +79,11 @@
 #app[data-mode="flags"] .flag-continent-label{
   align-self:center;
   justify-self:center;
-  min-height:24px;
+  min-height:28px;
   margin:0;
   color:#8b663c;
-  font-size:16px;
-  line-height:24px;
+  font-size:20px;
+  line-height:28px;
   font-weight:850;
   letter-spacing:.1px;
   text-align:center;

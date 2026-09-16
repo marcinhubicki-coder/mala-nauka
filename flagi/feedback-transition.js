@@ -202,7 +202,7 @@
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
   const wait = ms => new Promise(resolve => window.setTimeout(resolve, ms));
@@ -220,6 +220,10 @@
     return source.match(/\/([a-z]{2})\.svg(?:[?#].*)?$/i)?.[1]?.toLowerCase() || '';
   }
 
+  function feedbackKey(card) {
+    return `${countryIdFromCard(card)}|${card.classList.contains('wrong') ? 'wrong' : 'correct'}`;
+  }
+
   function prepareLocalizedName(card) {
     const language = window.MalaNaukaFlagLanguage;
     return language?.localizeFeedbackName(card, true)
@@ -227,10 +231,10 @@
       || '';
   }
 
-  async function showWrongMap(card) {
+  async function showWrongMap(card, key = feedbackKey(card)) {
     const map = window.MalaNaukaContinentMap || window.MalaNaukaEuropeMap;
     const content = card.querySelector('.question-content');
-    if (!map || !content || card.dataset.flagMap === 'true') return;
+    if (!map || !content || card.dataset.flagMapKey === key) return;
 
     const countryId = countryIdFromCard(card);
     const language = window.MalaNaukaFlagLanguage;
@@ -244,7 +248,8 @@
       || card.querySelector('.flag-name')?.textContent
       || '';
 
-    card.dataset.flagMap = 'true';
+    card.dataset.flagMapKey = key;
+    card.querySelector('.flag-card-map')?.remove();
     const holder = document.createElement('div');
     holder.className = 'flag-card-map';
     holder.innerHTML = '<div data-flag-map></div>';
@@ -259,23 +264,26 @@
       showCopy: false
     });
 
+    if (!card.isConnected || feedbackKey(card) !== key) return;
     if (!result.found) {
       holder.remove();
-      delete card.dataset.flagMap;
+      delete card.dataset.flagMapKey;
       return;
     }
 
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    card.classList.add('map-feedback-stage-2');
+    if (card.isConnected && feedbackKey(card) === key) card.classList.add('map-feedback-stage-2');
   }
 
   function animateCorrectFlagFeedback(card, app) {
+    const key = feedbackKey(card);
+    if (card.dataset.flagAnimatedKey === key) return;
+    card.dataset.flagAnimatedKey = key;
     app.querySelector('.feedback [data-action="next"]')?.remove();
 
     const name = card.querySelector('.flag-name');
-    if (!name || name.dataset.flagAnimated === 'true') return;
+    if (!name) return;
     prepareLocalizedName(card);
-    name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
     const characters = Array.from(text);
@@ -290,10 +298,13 @@
   }
 
   async function animateWrongFlagFeedback(card) {
+    const key = feedbackKey(card);
+    if (card.dataset.flagAnimatedKey === key) return;
+    card.dataset.flagAnimatedKey = key;
+
     const name = card.querySelector('.flag-name');
-    if (!name || name.dataset.flagAnimated === 'true') return;
+    if (!name) return;
     prepareLocalizedName(card);
-    name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
     const characters = Array.from(text);
@@ -307,6 +318,7 @@
     const targetLetters = characters.filter(character => !/\s/.test(character));
 
     for (let frame = 0; frame < 4; frame += 1) {
+      if (!card.isConnected || feedbackKey(card) !== key) return;
       slots.forEach((slot, index) => {
         slot.classList.remove('is-cycling');
         void slot.offsetWidth;
@@ -322,6 +334,7 @@
       .sort((a, b) => Math.abs(a - midpoint) - Math.abs(b - midpoint));
 
     for (const index of order) {
+      if (!card.isConnected || feedbackKey(card) !== key) return;
       const slot = slots[index];
       slot.classList.remove('is-cycling');
       slot.textContent = targetLetters[index];
@@ -330,7 +343,7 @@
     }
 
     await wait(260);
-    showWrongMap(card);
+    if (card.isConnected && feedbackKey(card) === key) showWrongMap(card, key);
   }
 
   function animateFlagFeedback() {
@@ -352,7 +365,7 @@
   const start = () => {
     const app = document.querySelector('#app');
     if (!app) return;
-    observer.observe(app, { childList: true, subtree: true });
+    observer.observe(app, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
     animateFlagFeedback();
   };
 

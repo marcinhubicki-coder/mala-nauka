@@ -1,6 +1,7 @@
 (() => {
   const STYLE_ID = 'continent-map-styles';
-  const WORLD_MAP_URL = 'https://cdn.jsdelivr.net/gh/melenaos/Menelabs.VectorAtlas@98bc8b95ee210012c32b02805d21a8de77a04507/dist/world.svg';
+  const WORLD_MAP_URL = 'assets/maps/world.svg';
+  const WORLD_MAP_FALLBACK_URL = 'https://cdn.jsdelivr.net/gh/melenaos/Menelabs.VectorAtlas@98bc8b95ee210012c32b02805d21a8de77a04507/dist/world.svg';
   const CONTEXT_IDS = Object.freeze({
     europe: ['xk'],
     asia: ['tw'],
@@ -92,13 +93,19 @@
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
+  async function fetchMapSource(url) {
+    const response = await fetch(url, { cache: 'force-cache' });
+    if (!response.ok) throw new Error(`Map unavailable: ${response.status} (${url})`);
+    return response.text();
+  }
+
   function loadSource() {
-    sourcePromise ||= fetch(WORLD_MAP_URL, { cache: 'force-cache' }).then(response => {
-      if (!response.ok) throw new Error(`Map unavailable: ${response.status}`);
-      return response.text();
+    sourcePromise ||= fetchMapSource(WORLD_MAP_URL).catch(primaryError => {
+      console.warn('[flags-map] local map failed, using CDN fallback', primaryError);
+      return fetchMapSource(WORLD_MAP_FALLBACK_URL);
     });
     return sourcePromise;
   }
@@ -211,8 +218,9 @@
     } catch (error) {
       target.classList.remove('is-loading');
       target.classList.add('is-unavailable');
+      target.dataset.error = error?.message || 'map-error';
       console.warn('[flags-map]', error);
-      return { found: false, svg: null };
+      return { found: false, svg: null, error };
     }
   }
 

@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/assets/maps/world.svg",
+      "destination": "https://cdn.jsdelivr.net/gh/melenaos/Menelabs.VectorAtlas@98bc8b95ee210012c32b02805d21a8de77a04507/dist/world.svg"
+    }
+  ]
+}

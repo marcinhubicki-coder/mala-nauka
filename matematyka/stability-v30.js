@@ -1,6 +1,6 @@
 (() => {
   const CELL_GAP = 2;
-  const CUT_PAD = 6;
+  const CUT_PAD = 7;
   const HEADER_ROW = 13;
   const GRID_ROW_GAP = 3;
   const locked = new WeakSet();
@@ -20,12 +20,17 @@
     const array = stage.querySelector('.array');
     const rowLabels = stage.querySelector('.row-labels');
     const rowExpressions = stage.querySelector('.row-expressions');
-    if (!explainer || !array || !rowLabels || !rowExpressions) return false;
+    const firstCell = array?.querySelector('.array-cell[data-row="1"][data-col="1"]');
+    if (!explainer || !array || !rowLabels || !rowExpressions || !firstCell) return false;
 
-    const width = array.getBoundingClientRect().width;
-    if (!(width > 0)) return false;
-
-    const cellSize = (width - (CELL_GAP * 9)) / 10;
+    /*
+      Ważne: rozmiar pionowych torów musi pochodzić z faktycznego kwadratu,
+      a nie z szerokości całej kolumny gridu. Kolumna może mieć wolne miejsce
+      po prawej, więc liczenie (array.width - gaps) / 10 zawyżało wysokość torów
+      i dawało nierówny rytm separatorów w dzieleniu.
+    */
+    const cellRect = firstCell.getBoundingClientRect();
+    const cellSize = cellRect.width;
     if (!(cellSize > 0)) return false;
 
     const isDivision = stage.dataset.operation === 'divide';

@@ -1,5 +1,17 @@
-/* v34 — liczby animują się wyłącznie wewnątrz zamrożonych slotów.
-   Końcowy handoff jest crossfadem, więc Safari nie pokazuje pustej klatki. */
+/* v35 — jedna animacja zmiany zadania. Liczby animują się wyłącznie wewnątrz
+   zamrożonych slotów; legacy equation-build / incoming settle nie mogą się
+   nakładać na interpolację v33. */
+
+/* app.js nadal nadaje klasę equation-build przy renderze nowego pytania,
+   a board-v3.css uruchamiał wtedy osobny scale/translate przez 440 ms.
+   To była druga animacja na tym samym równaniu. Wyłączamy ją dla zwykłego
+   ekranu pytania — przejście wartości obsługuje wyłącznie v33.js. */
+.quiz-stage:not(.has-explainer) .equation-build .equation-left,
+.quiz-stage:not(.has-explainer) .equation-build .equation-right {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
 
 .quiz-stage[data-normal-geometry-locked="1"] .equation {
   height: 1em !important;
@@ -117,11 +129,14 @@
   text-align: left;
 }
 
+/* Bez legacy correct-transition-in. Pozostawiamy jedynie zielony feedback
+   poprawnego kafla z correct-transition.css. */
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .answer,
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-number,
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-sign {
   animation: none !important;
   transform: none !important;
+  opacity: 1 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

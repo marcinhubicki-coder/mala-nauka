@@ -3,26 +3,11 @@
   const CUT_PAD = 6;
   const HEADER_ROW = 13;
   const GRID_ROW_GAP = 3;
-  const TWEEN_MS = 560;
   const locked = new WeakSet();
-  let pendingCounter = null;
 
   function number(value) {
     const parsed = Number(String(value ?? '').replace(/[^0-9-]/g, ''));
     return Number.isFinite(parsed) ? parsed : null;
-  }
-
-  function currentQuestion() {
-    const stage = document.querySelector('.quiz-stage[data-correct-answer][data-operation]');
-    if (!stage) return null;
-    const correct = Number(stage.dataset.correctAnswer);
-    if (!Number.isFinite(correct)) return null;
-    return {
-      stage,
-      correct,
-      equation: [...stage.querySelectorAll('.equation-number')].map(node => number(node.textContent)),
-      answers: [...stage.querySelectorAll('.answer[data-answer]')].map(node => number(node.dataset.answer)),
-    };
   }
 
   function lockGeometry(stage, force = false) {
@@ -77,8 +62,6 @@
 
     stage.dataset.geometryLocked = '1';
 
-    /* Zamrażamy także zewnętrzną wysokość reveal po policzeniu pełnej tabeli.
-       Późniejsze opacity/visibility nie mogą już przesuwać żadnego elementu. */
     if (reveal && inner) {
       reveal.style.height = 'auto';
       const finalHeight = Math.ceil(inner.getBoundingClientRect().height || inner.scrollHeight || 0);
@@ -97,93 +80,7 @@
     document.querySelectorAll('.quiz-stage.has-explainer').forEach(stage => lockGeometry(stage, force));
   }
 
-  function prepareCounterTween(element, from, to) {
-    if (!element || !Number.isFinite(from) || !Number.isFinite(to) || from === to) return null;
-    const color = getComputedStyle(element).color;
-    element.style.setProperty('--counter-color', color);
-    element.style.setProperty('--counter-value', String(Math.round(from)));
-    element.classList.add('counter-tween');
-    getComputedStyle(element).getPropertyValue('--counter-value');
-    return { element, to: Math.round(to) };
-  }
-
-  function animateCounters(stage, snapshot) {
-    if (!stage?.isConnected || !snapshot) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const tweens = [];
-    [...stage.querySelectorAll('.equation-number')].forEach((element, index) => {
-      const item = prepareCounterTween(element, snapshot.equation[index], number(element.textContent));
-      if (item) tweens.push(item);
-    });
-
-    [...stage.querySelectorAll('.answer[data-answer]')].forEach((element, index) => {
-      const item = prepareCounterTween(element, snapshot.answers[index], number(element.dataset.answer));
-      if (item) tweens.push(item);
-    });
-
-    if (!tweens.length) return;
-
-    requestAnimationFrame(() => {
-      tweens.forEach(({ element, to }) => {
-        if (element.isConnected) element.style.setProperty('--counter-value', String(to));
-      });
-    });
-
-    window.setTimeout(() => {
-      tweens.forEach(({ element }) => {
-        if (!element.isConnected) return;
-        element.classList.remove('counter-tween');
-        element.style.removeProperty('--counter-value');
-        element.style.removeProperty('--counter-color');
-      });
-    }, TWEEN_MS + 60);
-  }
-
-  document.addEventListener('click', event => {
-    const answer = event.target.closest?.('.answer[data-answer]');
-    if (!answer) return;
-    const question = currentQuestion();
-    if (!question) return;
-    if (number(answer.dataset.answer) !== question.correct) return;
-
-    pendingCounter = {
-      fromStage: question.stage,
-      feedbackStage: null,
-      equation: question.equation,
-      answers: question.answers,
-      startedAt: performance.now(),
-    };
-  }, true);
-
-  function processCounterTransition() {
-    if (!pendingCounter) return;
-    if (performance.now() - pendingCounter.startedAt > 2200) {
-      pendingCounter = null;
-      return;
-    }
-
-    const question = currentQuestion();
-    if (!question || question.stage === pendingCounter.fromStage) return;
-
-    if (!pendingCounter.feedbackStage) {
-      pendingCounter.feedbackStage = question.stage;
-      return;
-    }
-    if (question.stage === pendingCounter.feedbackStage) return;
-
-    const snapshot = pendingCounter;
-    pendingCounter = null;
-    animateCounters(question.stage, snapshot);
-  }
-
-  const observer = new MutationObserver(() => {
-    /* Callback MutationObserver jest przed paintem. Najpierw zamrażamy pełną
-       geometrię tabeli, dopiero potem jakiekolwiek późniejsze klasy ją odsłaniają. */
-    lockAll(false);
-    processCounterTransition();
-  });
-
+  const observer = new MutationObserver(() => lockAll(false));
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
   window.addEventListener('resize', () => {

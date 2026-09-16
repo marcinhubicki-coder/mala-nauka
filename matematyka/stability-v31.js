@@ -7,23 +7,33 @@
     return `${window.innerWidth}x${window.innerHeight}`;
   }
 
+  function timerSnapshot() {
+    const snapshot = window.__getMathTimerSnapshot?.() || window.__mathTimerSnapshot;
+    if (!snapshot?.active) return null;
+    return snapshot;
+  }
+
   function ensureTimerScaffold() {
     const quiz = document.querySelector('[data-math-quiz]');
     const app = document.querySelector('#app');
     const topbar = app?.querySelector(':scope > .topbar');
     if (!quiz || !topbar) return false;
 
+    const snapshot = timerSnapshot();
     topbar.classList.add('math-timed');
     const slot = topbar.lastElementChild;
     if (slot && !slot.querySelector('.math-round-time')) {
-      slot.innerHTML = '<div class="math-round-time" aria-label="Pozostały czas rundy"><span></span></div>';
+      const text = snapshot?.text || '';
+      const paused = snapshot?.paused ? ' is-paused' : '';
+      slot.innerHTML = `<div class="math-round-time${paused}" aria-label="Pozostały czas rundy"><span>${text}</span></div>`;
     }
 
     let progress = app.querySelector(':scope > .math-round-progress');
     if (!progress) {
+      const percent = Number.isFinite(snapshot?.percent) ? snapshot.percent : 0;
       progress = document.createElement('div');
       progress.className = 'math-round-progress';
-      progress.innerHTML = '<span></span>';
+      progress.innerHTML = `<span style="width:${percent}%"></span>`;
       topbar.insertAdjacentElement('afterend', progress);
     }
     return true;
@@ -95,8 +105,6 @@
   }
 
   function stabilize() {
-    /* Najpierw stały topbar + pasek. Dopiero z takim finalnym szkieletem
-       mierzymy ekran pytania. MutationObserver wykonuje się przed paintem. */
     ensureTimerScaffold();
     document.querySelectorAll('.quiz-stage:not(.has-explainer)').forEach(lockNormalStage);
   }
@@ -107,8 +115,6 @@
   }
 
   const observer = new MutationObserver(() => {
-    /* Tutaj nie czekamy na timeouty animacji. Struktura i wysokości są ustalone
-       zanim przeglądarka pokaże nowy render pytania. */
     stabilize();
   });
 

@@ -37,44 +37,45 @@ export function mathQuestion(config, random = Math.random) {
  return {kind:'math',text:`${a} ${symbol} ${b} = ?`,answer:String(result),options,full:`${a} ${symbol} ${b} = ${result}`,prompt:'Wybierz wynik działania',difficulty:level};
 }
 
-function flagWeights(startDifficulty, session) {
- const recent=(session?.recentAnswers||[]).slice(-8);
- const attempts=recent.length;
- if(startDifficulty===3)return {1:0,2:0,3:1};
- if(attempts<3)return startDifficulty===2?{1:0,2:1,3:0}:{1:1,2:0,3:0};
+function splitFlagPools(region,useGlobalDifficulty){
+ const ordered=[...region].sort((a,b)=>a.distanceKm-b.distanceKm||a.id.localeCompare(b.id));
+ const pools=new Map([[1,[]],[2,[]],[3,[]]]);
+ ordered.forEach((flag,index)=>{
+  const playDifficulty=useGlobalDifficulty
+   ? flag.difficulty
+   : Math.min(3,Math.floor(index*3/ordered.length)+1);
+  pools.get(playDifficulty).push({...flag,playDifficulty});
+ });
+ return pools;
+}
+
+function canAdvanceFlagStage(stage,session){
+ const gate=stage===1
+  ? {attempts:5,accuracy:.80,averageMs:5200}
+  : {attempts:6,accuracy:.85,averageMs:4500};
+ const recent=(session?.recentAnswers||[]).filter(result=>result.difficulty===stage).slice(-8);
+ if(recent.length<gate.attempts)return false;
  const correct=recent.filter(result=>result.correct).length;
- const accuracy=correct/attempts;
- const averageMs=recent.reduce((sum,result)=>sum+Math.min(result.responseMs||8000,12000),0)/attempts;
- if(startDifficulty===2){
-  if(attempts>=6&&accuracy>=.85&&averageMs<=3800)return {1:0,2:.45,3:.55};
-  if(accuracy>=.80&&averageMs<=4800)return {1:0,2:.75,3:.25};
-  return {1:0,2:1,3:0};
- }
- if(attempts>=8&&accuracy>=.88&&averageMs<=3200)return {1:.15,2:.45,3:.40};
- if(attempts>=6&&accuracy>=.84&&averageMs<=4200)return {1:.35,2:.50,3:.15};
- if(accuracy>=.80&&averageMs<=5200)return {1:.65,2:.35,3:0};
- return {1:1,2:0,3:0};
+ const accuracy=correct/recent.length;
+ const averageMs=recent.reduce((sum,result)=>sum+Math.min(result.responseMs||12000,12000),0)/recent.length;
+ return accuracy>=gate.accuracy&&averageMs<=gate.averageMs;
 }
 
-function chooseFlagDifficulty(pools,startDifficulty,session,random){
- const weights=flagWeights(startDifficulty,session);
- const weighted=[1,2,3].filter(level=>weights[level]>0&&(pools.get(level)?.length||0));
- if(weighted.length){
-  const total=weighted.reduce((sum,level)=>sum+weights[level],0);
-  let pick=random()*total;
-  for(const level of weighted){pick-=weights[level];if(pick<=0)return level;}
-  return weighted.at(-1);
+function currentFlagStage(startDifficulty,session,pools){
+ if(!session)return startDifficulty;
+ if(![1,2,3].includes(session.flagStage))session.flagStage=startDifficulty;
+ if(session.flagStage<3&&canAdvanceFlagStage(session.flagStage,session)&&(pools.get(session.flagStage+1)?.length||0)){
+  session.flagStage+=1;
  }
- const atOrAbove=[1,2,3].filter(level=>level>=startDifficulty&&(pools.get(level)?.length||0));
- if(atOrAbove.length)return atOrAbove[0];
- return [3,2,1].find(level=>pools.get(level)?.length)||1;
+ return session.flagStage;
 }
 
-function flagQuestion(flag,region,config,random){
+function flagQuestion(flag,optionRegion,config,random,difficulty){
  return {kind:'flags',text:'Co to za kraj?',image:flag.flagSvg,answer:flag.country,full:flag.country,
-  countryId:flag.id,continent:flag.continent,capital:flag.capital,startDifficulty:config.difficulty,
-  options:[flag.country,...shuffle(region.filter(other=>other.id!==flag.id),random).slice(0,3).map(other=>other.country)],
-  prompt:'Który kraj ma taką flagę?',difficulty:flag.difficulty};
+  countryId:flag.id,continent:flag.continent,capital:flag.capital,distanceKm:flag.distanceKm,distanceRank:flag.distanceRank,
+  startDifficulty:config.category==='all'?1:config.difficulty,
+  options:[flag.country,...shuffle(optionRegion.filter(other=>other.id!==flag.id),random).slice(0,3).map(other=>other.country)],
+  prompt:'Który kraj ma taką flagę?',difficulty};
 }
 
 export function createSource(mode, config, words, random = Math.random) {
@@ -90,16 +91,21 @@ export function createSource(mode, config, words, random = Math.random) {
    prompt:config.difficulty===1?'Jak to jest po angielsku?':'Wybierz poprawną pisownię',difficulty:config.difficulty}));
  }
  if(mode==='flags') {
-  const region=FLAGS.filter(f=>config.category==='all'||f.continent===config.category);
-  const pools=new Map([1,2,3].map(level=>[level,region.filter(flag=>flag.difficulty===level)]));
+  const region=FLAGS.filter(flag=>config.category==='all'||flag.continent===config.category);
+  const allCountries=config.category==='all';
+  const startDifficulty=allCountries?1:config.difficulty;
+  const pools=splitFlagPools(region,allCountries);
   return session=>{
-   const level=chooseFlagDifficulty(pools,config.difficulty,session,random);
+   const level=currentFlagStage(startDifficulty,session,pools);
    let candidates=pools.get(level)||[];
    const previousId=session?.current?.countryId;
    if(candidates.length>1&&previousId)candidates=candidates.filter(flag=>flag.id!==previousId);
    const flag=candidates[Math.floor(random()*candidates.length)]||region[Math.floor(random()*region.length)];
    if(!flag)throw Error('Brak flag dla tego wyboru.');
-   return flagQuestion(flag,region,config,random);
+   const optionRegion=[1,2,3]
+    .filter(optionLevel=>optionLevel>=startDifficulty&&optionLevel<=level)
+    .flatMap(optionLevel=>pools.get(optionLevel)||[]);
+   return flagQuestion(flag,optionRegion.length>=4?optionRegion:region,config,random,level);
   };
  }
  if(mode==='reading') return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));

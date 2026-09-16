@@ -1,4 +1,5 @@
 const STYLE_ID='flags-adaptive-difficulty-styles';
+const MIGRATION_KEY='malaNauka.flags.world-default.v1';
 const root=document.querySelector('#app');
 const LABELS={1:'Łatwe',2:'Średnie',3:'Trudne'};
 
@@ -35,32 +36,71 @@ function updateSlider(wrapper,value){
  wrapper.querySelectorAll('[data-level]').forEach(label=>label.classList.toggle('is-active',Number(label.dataset.level)===level));
 }
 
-function enhance(){
- if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
- const original=root.querySelector('input[name="difficulty"]');
- if(!original)return;
- const fieldset=original.closest('fieldset');
- const choices=fieldset?.querySelector('.choices.levels');
- if(!fieldset||!choices||choices.dataset.adaptive==='true')return;
- const checked=fieldset.querySelector('input[name="difficulty"]:checked');
- const value=Number(checked?.value||original.value||1);
- const legend=fieldset.querySelector('legend');
- if(legend)legend.innerHTML='<span class="step-dot">2</span>Poziom startowy';
- choices.dataset.adaptive='true';
- choices.className='flag-difficulty-slider';
- choices.innerHTML=`
-  <div class="flag-difficulty-readout"><span>Zacznij od</span><strong data-current-level></strong></div>
-  <input class="flag-difficulty-range" type="range" name="difficulty" min="1" max="3" step="1" value="${value}" aria-label="Poziom startowy">
-  <div class="flag-difficulty-labels" aria-hidden="true"><span data-level="1">Łatwe</span><span data-level="2">Średnie</span><span data-level="3">Trudne</span></div>
-  <p class="flag-difficulty-help">Gra zwiększa udział trudniejszych flag, gdy odpowiadasz szybko i poprawnie.</p>`;
- const range=choices.querySelector('.flag-difficulty-range');
- updateSlider(choices,value);
- range.addEventListener('input',()=>updateSlider(choices,range.value));
- choices.querySelectorAll('[data-level]').forEach(label=>label.addEventListener('click',()=>{
-  updateSlider(choices,label.dataset.level);
-  range.dispatchEvent(new Event('change',{bubbles:true}));
- }));
+function migrateDefaultCategory(select){
+ try{
+  if(localStorage.getItem(MIGRATION_KEY))return;
+  localStorage.setItem(MIGRATION_KEY,'1');
+  if(select.value!=='all'){
+   select.value='all';
+   select.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+ }catch{
+  // Keep the saved selection when storage is unavailable.
+ }
 }
 
+function syncVisibility(){
+ if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
+ const select=root.querySelector('#category');
+ const range=root.querySelector('.flag-difficulty-range');
+ const fieldset=range?.closest('fieldset');
+ if(!select||!range||!fieldset)return;
+ const allCountries=select.value==='all';
+ fieldset.hidden=allCountries;
+ if(allCountries&&Number(range.value)!==1){
+  updateSlider(range.closest('.flag-difficulty-slider'),1);
+  range.dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ const timeInput=root.querySelector('input[name="duration"]');
+ const timeDot=timeInput?.closest('fieldset')?.querySelector('legend .step-dot');
+ if(timeDot)timeDot.textContent=allCountries?'2':'3';
+}
+
+function enhance(){
+ if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
+ const select=root.querySelector('#category');
+ const difficultyInput=root.querySelector('input[name="difficulty"]');
+ if(!select||!difficultyInput)return;
+ migrateDefaultCategory(select);
+ const fieldset=difficultyInput.closest('fieldset');
+ const choices=fieldset?.querySelector('.choices.levels, .flag-difficulty-slider');
+ if(!fieldset||!choices)return;
+
+ if(choices.dataset.adaptive!=='true'){
+  const checked=fieldset.querySelector('input[name="difficulty"]:checked');
+  const value=Number(checked?.value||difficultyInput.value||1);
+  const legend=fieldset.querySelector('legend');
+  if(legend)legend.innerHTML='<span class="step-dot">2</span>Poziom startowy';
+  choices.dataset.adaptive='true';
+  choices.className='flag-difficulty-slider';
+  choices.innerHTML=`
+   <div class="flag-difficulty-readout"><span>Zacznij od</span><strong data-current-level></strong></div>
+   <input class="flag-difficulty-range" type="range" name="difficulty" min="1" max="3" step="1" value="${value}" aria-label="Poziom startowy">
+   <div class="flag-difficulty-labels"><span data-level="1">Łatwe</span><span data-level="2">Średnie</span><span data-level="3">Trudne</span></div>
+   <p class="flag-difficulty-help">W obrębie kontynentu poziomy biegną od krajów najbliższych Polsce do najdalszych.</p>`;
+  const range=choices.querySelector('.flag-difficulty-range');
+  updateSlider(choices,value);
+  range.addEventListener('input',()=>updateSlider(choices,range.value));
+  choices.querySelectorAll('[data-level]').forEach(label=>label.addEventListener('click',()=>{
+   updateSlider(choices,label.dataset.level);
+   range.dispatchEvent(new Event('change',{bubbles:true}));
+  }));
+ }
+ syncVisibility();
+}
+
+root?.addEventListener('change',event=>{
+ if(event.target?.id==='category')requestAnimationFrame(syncVisibility);
+});
 const observer=new MutationObserver(()=>requestAnimationFrame(enhance));
 if(root){observer.observe(root,{childList:true,subtree:true});enhance();}

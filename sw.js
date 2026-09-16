@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v37';
+const CACHE='mala-nauka-v38';
 const CORE=[
   './','./index.html','./app.css','./viewport-lock.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
@@ -6,13 +6,14 @@ const CORE=[
   './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
   './assets/flags/pl.svg','./assets/flags/de.svg','./assets/flags/fr.svg','./assets/flags/it.svg','./assets/flags/ua.svg','./assets/flags/se.svg','./assets/flags/ch.svg','./assets/flags/gb.svg','./assets/flags/nl.svg','./assets/flags/be.svg','./assets/flags/ie.svg','./assets/flags/at.svg','./assets/flags/no.svg','./assets/flags/dk.svg','./assets/flags/fi.svg','./assets/flags/cz.svg','./assets/flags/ee.svg',
   './assets/flags/jp.svg','./assets/flags/cn.svg','./assets/flags/bd.svg','./assets/flags/id.svg','./assets/flags/za.svg','./assets/flags/eg.svg','./assets/flags/ma.svg','./assets/flags/ng.svg','./assets/flags/us.svg','./assets/flags/ca.svg','./assets/flags/mx.svg','./assets/flags/cu.svg','./assets/flags/br.svg','./assets/flags/ar.svg','./assets/flags/cl.svg','./assets/flags/pe.svg','./assets/flags/au.svg','./assets/flags/nz.svg','./assets/flags/fj.svg','./assets/flags/pg.svg',
+  './assets/maps/europe.svg','./assets/maps/NATURAL-EARTH-SOURCE.txt',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html',
   './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/math-modes.css','./matematyka/division-polish.css','./matematyka/division-polish.js','./matematyka/explainer-polish.css','./matematyka/explainer-polish.js','./matematyka/layout-v26.css','./matematyka/layout-v26.js','./matematyka/stability-v30.css','./matematyka/stability-v30.js','./matematyka/stability-v31.css','./matematyka/stability-v31.js','./matematyka/stability-v33.css','./matematyka/stability-v33.js','./matematyka/app.js',
-  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./flagi/feedback-transition.js','./czytanie/','./czytanie/index.html'
+  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./flagi/europe-map.js','./flagi/feedback-transition.js','./czytanie/','./czytanie/index.html'
 ];
 
 self.addEventListener('install',event=>{

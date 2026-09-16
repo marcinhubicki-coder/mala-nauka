@@ -1,9 +1,9 @@
-/* v38 — PWA polish: bezpieczne przejście status bara, większy badge trybu i licznik trafień. */
+/* v40 — PWA polish: bezpieczne przejście status bara, rzeczywista ikona trybu i trwały licznik trafień. */
 
 /*
   iOS potrafi malować status bar kolorem theme-color zamiast właściwym tłem strony.
-  Dlatego pierwszy kolor gradientu jest identyczny z theme-color (#182133),
-  a dopiero niżej przechodzi w właściwe tło. Dzięki temu granica jest niewidoczna.
+  Pierwszy kolor gradientu jest więc identyczny z theme-color, a właściwe tło
+  zaczyna się dopiero niżej — bez widocznej granicy.
 */
 html {
   background-color: #f5f8ff !important;
@@ -39,27 +39,57 @@ body::after {
   background: transparent !important;
 }
 
-/* Badge trybu jest tylko wizualny i nie wpływa na geometrię ekranu. */
+/* Ikona trybu jest rzeczywistym elementem DOM. Dzięki temu licznik jest jej
+   częścią i obraca się razem z kartą zamiast wisieć niezależnie obok niej. */
 .quiz-stage:not(.has-explainer) .question-label {
-  --mode-card-half: 46px;
+  --mode-card-width: 92px;
   --mode-card-height: 87px;
   --mode-card-gap: 38px;
   position: relative;
 }
+
+/* Wyłączamy dawny pseudo-element — ikonę tworzy score-badge-v38.js. */
 .quiz-stage:not(.has-explainer) .question-label::before {
-  bottom: calc(100% + var(--mode-card-gap)) !important;
-  width: 92px !important;
-  height: var(--mode-card-height) !important;
-  border-radius: 29px !important;
-  font-size: 56px !important;
+  content: none !important;
+  display: none !important;
 }
 
-/* Licznik poprawnych odpowiedzi — doczepiony jak systemowy badge powiadomień. */
+.mode-icon-card {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: calc(100% + var(--mode-card-gap));
+  width: var(--mode-card-width);
+  height: var(--mode-card-height);
+  display: grid;
+  place-items: center;
+  border-radius: 29px;
+  border: 1px solid rgba(94,115,232,.18);
+  background: linear-gradient(145deg, rgba(232,236,255,.96), rgba(213,220,255,.90));
+  color: #5e73e8;
+  box-shadow: 0 13px 30px rgba(65,75,140,.16), inset 0 1px 0 rgba(255,255,255,.72);
+  transform: translateX(-50%) rotate(-7deg);
+  transform-origin: 50% 55%;
+  pointer-events: none;
+}
+
+.mode-icon-symbol {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 720;
+}
+
+/* Licznik poprawnych odpowiedzi. Jest dzieckiem obróconej ikony, więc dzieli
+   z nią dokładnie tę samą rotację. */
 .mode-score-badge {
   position: absolute;
   z-index: 4;
-  left: calc(50% + var(--mode-card-half) - 10px);
-  bottom: calc(100% + var(--mode-card-gap) + var(--mode-card-height) - 17px);
+  top: -12px;
+  right: -10px;
   width: 29px;
   height: 29px;
   padding: 0;
@@ -76,17 +106,18 @@ body::after {
   font-variant-numeric: tabular-nums;
   letter-spacing: -.025em;
   opacity: 0;
-  transform: translate(2px, -2px) scale(.45);
+  transform: scale(.45);
   transform-origin: 50% 50%;
   transition:
     width .24s cubic-bezier(.22,.85,.28,1),
     opacity .18s ease,
     transform .28s cubic-bezier(.18,.88,.24,1.18);
   pointer-events: none;
+  overflow: hidden;
 }
 .mode-score-badge.is-visible {
   opacity: 1;
-  transform: translate(0, 0) scale(1);
+  transform: scale(1);
 }
 .mode-score-badge.is-wide {
   width: 43px;
@@ -95,13 +126,29 @@ body::after {
   width: 53px;
   font-size: 13px;
 }
+.mode-score-badge.is-restored {
+  transition: none !important;
+}
 .mode-score-badge.is-bump {
-  animation: score-badge-bump .36s cubic-bezier(.2,.9,.28,1.22);
+  animation: score-badge-bump .34s cubic-bezier(.2,.9,.28,1.18);
+}
+.mode-score-value {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: center;
+}
+.mode-score-value.is-counting {
+  animation: score-value-tick .30s cubic-bezier(.2,.78,.24,1);
 }
 @keyframes score-badge-bump {
-  0% { transform: translate(0,0) scale(.88); }
-  56% { transform: translate(0,0) scale(1.12); }
-  100% { transform: translate(0,0) scale(1); }
+  0% { transform: scale(.94); }
+  58% { transform: scale(1.09); }
+  100% { transform: scale(1); }
+}
+@keyframes score-value-tick {
+  0% { opacity: .58; transform: translateY(5px); }
+  64% { opacity: 1; transform: translateY(-1px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Każda poprawna odpowiedź używa tego samego feedbacku i miejsca. */
@@ -118,18 +165,19 @@ body::after {
 
 @media (max-height: 760px) {
   .quiz-stage:not(.has-explainer) .question-label {
-    --mode-card-half: 40.5px;
+    --mode-card-width: 81px;
     --mode-card-height: 76px;
     --mode-card-gap: 31px;
   }
-  .quiz-stage:not(.has-explainer) .question-label::before {
-    width: 81px !important;
-    border-radius: 25px !important;
-    font-size: 49px !important;
+  .mode-icon-card {
+    border-radius: 25px;
+  }
+  .mode-icon-symbol {
+    font-size: 49px;
   }
   .mode-score-badge {
-    left: calc(50% + var(--mode-card-half) - 9px);
-    bottom: calc(100% + var(--mode-card-gap) + var(--mode-card-height) - 16px);
+    top: -11px;
+    right: -9px;
     width: 27px;
     height: 27px;
     font-size: 13px;
@@ -156,6 +204,12 @@ body::after {
   body::after {
     background: radial-gradient(ellipse at 18% 34%, rgba(91,111,220,.22), transparent 62%);
   }
+  .mode-icon-card {
+    border-color: rgba(123,143,255,.24);
+    background: linear-gradient(145deg, rgba(58,68,108,.96), rgba(38,46,77,.96));
+    color: #a8b5ff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.07);
+  }
   .mode-score-badge {
     border-color: rgba(183,192,255,.30);
     background: linear-gradient(145deg, #7f90ff, #5f72df);
@@ -164,7 +218,8 @@ body::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mode-score-badge {
+  .mode-score-badge,
+  .mode-score-value {
     transition: none !important;
     animation: none !important;
   }

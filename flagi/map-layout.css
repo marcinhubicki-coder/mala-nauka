@@ -1,0 +1,82 @@
+#app[data-mode="flags"]{
+  --flag-map-card-height:clamp(360px,49dvh,410px);
+}
+
+#app[data-mode="flags"][data-view="game"]:has(.question-card.wrong.map-feedback-stage-2){
+  grid-template-rows:auto 6px auto var(--flag-map-card-height) minmax(88px,1fr);
+  gap:10px;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2{
+  height:var(--flag-map-card-height)!important;
+  min-height:var(--flag-map-card-height)!important;
+  max-height:var(--flag-map-card-height)!important;
+  overflow:hidden;
+  border:2px solid #efd19a!important;
+  box-shadow:none!important;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .badges{
+  height:0;
+  min-height:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content{
+  height:100%;
+  min-height:0!important;
+  padding:68px 4px 8px!important;
+  overflow:hidden;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map{
+  flex:1 1 auto;
+  display:grid;
+  place-items:center;
+  width:100%;
+  min-height:0;
+  margin:0 auto;
+  overflow:hidden;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map .continent-map-host,
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map .continent-map-canvas{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map .continent-map-canvas{
+  display:grid;
+  place-items:center;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map .continent-map-canvas svg{
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  overflow:visible;
+}
+
+#app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback{
+  min-height:88px;
+  margin-top:0!important;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+#app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback .primary,
+#app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback .secondary{
+  flex-shrink:0;
+}
+
+@media (max-height:760px){
+  #app[data-mode="flags"]{
+    --flag-map-card-height:350px;
+  }
+}

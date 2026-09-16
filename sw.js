@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v35';
+const CACHE='mala-nauka-v36';
 const CORE=[
   './','./index.html','./app.css','./viewport-lock.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
@@ -6,6 +6,7 @@ const CORE=[
   './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
+  './data/english/numbers.mjs','./data/english/colors.mjs','./data/english/family.mjs','./data/english/people.mjs','./data/english/body.mjs','./data/english/home.mjs','./data/english/objects.mjs','./data/english/school.mjs','./data/english/food.mjs','./data/english/animals.mjs','./data/english/nature.mjs','./data/english/places.mjs','./data/english/transport.mjs','./data/english/clothes.mjs','./data/english/jobs.mjs','./data/english/verbs.mjs','./data/english/adjectives.mjs','./data/english/time.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html',

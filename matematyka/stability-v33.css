@@ -1,6 +1,5 @@
-/* v33 — liczby animują się wyłącznie wewnątrz zamrożonych slotów.
-   Zmiana wartości, szerokości ani wysokości glifu nie może przesunąć kafla,
-   równania ani żadnego sąsiada. */
+/* v34 — liczby animują się wyłącznie wewnątrz zamrożonych slotów.
+   Końcowy handoff jest crossfadem, więc Safari nie pokazuje pustej klatki. */
 
 .quiz-stage[data-normal-geometry-locked="1"] .equation {
   height: 1em !important;
@@ -45,8 +44,6 @@
   align-self: center;
 }
 
-/* Trzy wiersze odpowiedzi mają stałe tory. Nawet gdy animowana cyfra chwilowo
-   ma inne metryki fontu, sąsiednie kafle nie mogą zostać przeliczone. */
 .quiz-stage[data-normal-geometry-locked="1"] .answer-grid {
   grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
   align-items: stretch !important;
@@ -68,14 +65,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Podczas animacji prawdziwa wartość zostaje w swoim końcowym slocie, ale jest
-   przezroczysta. Ruchoma liczba to absolutna nakładka: ma zerowy wpływ na flow. */
 .math-value-host {
   position: relative !important;
 }
 
 .math-value-host.math-value-animating {
   color: transparent !important;
+}
+
+/* W fazie handoff finalny tekst hosta wraca pod identyczną nakładką.
+   Nakładka znika opacity, więc nie ma klatki przełączenia. */
+.math-value-host.math-value-animating.math-value-handoff {
+  color: var(--math-overlay-color) !important;
 }
 
 .math-number-overlay {
@@ -90,9 +91,15 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: inherit;
   line-height: 1;
+  opacity: 1;
   pointer-events: none;
   white-space: nowrap;
-  will-change: contents;
+  will-change: opacity;
+}
+
+.math-number-overlay.math-number-overlay-handoff {
+  opacity: 0;
+  transition: opacity 120ms cubic-bezier(.2,.72,.24,1);
 }
 
 .answer .math-number-overlay {
@@ -110,7 +117,6 @@
   text-align: left;
 }
 
-/* Stare animacje wejścia kafli/liczb nie mogą konkurować z interpolacją v33. */
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .answer,
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-number,
 .quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-sign {
@@ -120,5 +126,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .math-number-overlay { display: none !important; }
-  .math-value-host.math-value-animating { color: inherit !important; }
+  .math-value-host.math-value-animating,
+  .math-value-host.math-value-animating.math-value-handoff { color: inherit !important; }
 }

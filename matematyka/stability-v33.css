@@ -1,0 +1,124 @@
+/* v33 — liczby animują się wyłącznie wewnątrz zamrożonych slotów.
+   Zmiana wartości, szerokości ani wysokości glifu nie może przesunąć kafla,
+   równania ani żadnego sąsiada. */
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation {
+  height: 1em !important;
+  min-height: 1em !important;
+  max-height: 1em !important;
+  align-items: center !important;
+  overflow: visible;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"] .equation-sign {
+  position: relative;
+  height: 1em !important;
+  min-height: 1em !important;
+  max-height: 1em !important;
+  line-height: 1 !important;
+  box-sizing: border-box;
+  transform: none !important;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number {
+  display: flex;
+  align-items: center;
+  letter-spacing: -.01em !important;
+  font-variant-numeric: tabular-nums;
+  contain: paint !important;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-left {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-right {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-sign {
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+
+/* Trzy wiersze odpowiedzi mają stałe tory. Nawet gdy animowana cyfra chwilowo
+   ma inne metryki fontu, sąsiednie kafle nie mogą zostać przeliczone. */
+.quiz-stage[data-normal-geometry-locked="1"] .answer-grid {
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  contain: layout paint;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .answer {
+  position: relative;
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: grid;
+  place-items: center;
+  line-height: 1 !important;
+  overflow: hidden;
+  transform: none !important;
+  contain: layout paint !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Podczas animacji prawdziwa wartość zostaje w swoim końcowym slocie, ale jest
+   przezroczysta. Ruchoma liczba to absolutna nakładka: ma zerowy wpływ na flow. */
+.math-value-host {
+  position: relative !important;
+}
+
+.math-value-host.math-value-animating {
+  color: transparent !important;
+}
+
+.math-number-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  color: var(--math-overlay-color);
+  font: inherit;
+  font-weight: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  will-change: contents;
+}
+
+.answer .math-number-overlay {
+  justify-content: center;
+  text-align: center;
+}
+
+.equation-left .math-number-overlay {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.equation-right .math-number-overlay {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* Stare animacje wejścia kafli/liczb nie mogą konkurować z interpolacją v33. */
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .answer,
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-sign {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .math-number-overlay { display: none !important; }
+  .math-value-host.math-value-animating { color: inherit !important; }
+}

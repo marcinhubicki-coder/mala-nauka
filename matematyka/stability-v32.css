@@ -1,0 +1,71 @@
+/* v32 — liczby animują się wewnątrz stałych slotów. Nie zmieniają geometrii. */
+
+@property --math-counter {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+
+/* Wielocyfrowe składniki równania nie są już nadmiernie ściśnięte. */
+.equation-number {
+  letter-spacing: -.02em !important;
+}
+
+/* v31 blokuje pozycje; tutaj zawartość może być malowana, ale nie tworzymy
+   dodatkowego kontekstu layoutu dla samych cyfr. */
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"] .answer {
+  contain: paint !important;
+}
+
+.math-counter-tween {
+  position: relative;
+  color: transparent !important;
+  counter-reset: math-smooth-number var(--math-counter);
+  transition-property: --math-counter !important;
+  transition-duration: 620ms !important;
+  transition-timing-function: cubic-bezier(.18,.76,.22,1) !important;
+  transition-delay: var(--math-counter-delay, 0ms) !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.math-counter-tween::after {
+  content: counter(math-smooth-number);
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  color: var(--math-counter-color);
+  font: inherit;
+  font-weight: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  line-height: inherit;
+  pointer-events: none;
+}
+
+.answer.math-counter-tween::after {
+  display: grid;
+  place-items: center;
+}
+
+.equation-left.math-counter-tween::after {
+  display: block;
+  text-align: right;
+}
+
+.equation-right.math-counter-tween::after {
+  display: block;
+  text-align: left;
+}
+
+/* Delikatne wejście nowej wartości jest wyłącznie optyczne — bez scale całych
+   kafli i bez przesuwania sąsiednich elementów. */
+.math-counter-tween::after {
+  opacity: .98;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .math-counter-tween {
+    transition: none !important;
+  }
+}

@@ -21,6 +21,20 @@ function maskedFromAria(word){
   return '';
 }
 
+function ensureScreenBackground(){
+  let bg=app.querySelector(':scope > .spelling-screen-bg');
+  if(bg)return bg;
+  bg=document.createElement('img');
+  bg.className='spelling-screen-bg';
+  bg.src='assets/ortografia/spelling-bg-v053.webp';
+  bg.alt='';
+  bg.decoding='async';
+  bg.loading='eager';
+  bg.setAttribute('aria-hidden','true');
+  app.prepend(bg);
+  return bg;
+}
+
 function mountVisual(scene,title){
   app.querySelector('.spelling-visual')?.remove();
 
@@ -44,6 +58,15 @@ function mountVisual(scene,title){
     img.addEventListener('error',()=>img.remove(),{once:true});
     media.append(img);
   }
+
+  const frame=document.createElement('img');
+  frame.className='spelling-bubble-frame';
+  frame.src='assets/ortografia/bubble-frame-v053.webp';
+  frame.alt='';
+  frame.decoding='async';
+  frame.loading='eager';
+  frame.setAttribute('aria-hidden','true');
+  bubble.append(frame);
 
   for(const suffix of ['a','b','c']){
     const orb=document.createElement('i');
@@ -73,6 +96,7 @@ function scheduleCorrectAutoAdvance(card){
 function decorate(){
   scheduled=false;
   if(app.dataset.view!=='game'||app.dataset.mode!=='spelling')return;
+  ensureScreenBackground();
   if(app.querySelector('.spelling-title'))return;
 
   const word=app.querySelector('.word');

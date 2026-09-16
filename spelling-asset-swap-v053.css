@@ -1,14 +1,42 @@
-/* v0.5.3 — exact user-provided visual assets only. */
+/* v0.5.4 — render supplied background and bubble frame as real image layers, not CSS backgrounds/pseudo-elements. */
 #app[data-view="game"][data-mode="spelling"].spelling-art-ready{
-  background-color:#edeaff!important;
-  background-image:url('assets/ortografia/spelling-bg-v053.webp')!important;
-  background-position:center top!important;
-  background-size:contain!important;
-  background-repeat:no-repeat!important;
+  position:relative!important;
+  background:#edeaff!important;
 }
+.spelling-screen-bg{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  user-select:none!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready > :not(.spelling-screen-bg){
+  position:relative;
+  z-index:4;
+}
+.spelling-visual::before,
 .spelling-visual::after{
-  background-image:url('assets/ortografia/bubble-frame-v053.webp')!important;
-  background-position:center!important;
-  background-size:100% 100%!important;
-  background-repeat:no-repeat!important;
+  content:none!important;
+  display:none!important;
+}
+.spelling-bubble-frame{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  display:block!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  z-index:10!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  transform:none!important;
+  filter:none!important;
 }

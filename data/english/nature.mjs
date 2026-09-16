@@ -1,0 +1,33 @@
+// word|Polish meaning|category|difficulty 1-3|wrong answers (semicolon-separated)
+export default String.raw`
+tree|drzewo|nature|1|tre;trie;treee
+flower|kwiat|nature|2|flawer;flouer;flowar
+grass|trawa|nature|2|gras;grase;gress
+forest|las|nature|2|foerst;ofrest;forst
+wood|drewno|nature|1|wodo;owod;wod
+river|rzeka|nature|2|rivar;rivver;rever
+lake|jezioro|nature|1|lkae;alke;lae
+sea|morze|nature|1|sae;esa;seea
+ocean|ocean|nature|2|ocaen;coean;ocan
+mountain|góra|nature|3|mountin;mauntain;moutain
+hill|wzgórze|nature|1|hlil;ihll;hil
+field|pole|nature|3|filed;ifeld;fild
+sky|niebo|nature|1|syk;ksy;skky
+cloud|chmura|nature|2|cluod;lcoud;clud
+rain|deszcz|nature|1|rian;arin;ran
+snow|śnieg|nature|1|sonw;nsow;snw
+wind|wiatr|nature|1|wnid;iwnd;wid
+storm|burza|nature|2|strom;tsorm;strm
+sun|słońce|nature|1|snu;usn;suun
+moon|księżyc|nature|1|mono;omon;mon
+star|gwiazda|nature|1|satr;tsar;str
+earth|ziemia|nature|2|eatrh;aerth;eath
+stone|kamień|nature|2|stnoe;tsone;stne
+rock|skała|nature|1|rcok;orck;rok
+sand|piasek|nature|1|snad;asnd;sannd
+beach|plaża|nature|2|becah;ebach;bech
+island|wyspa|nature|2|isalnd;siland;islnd
+weather|pogoda|nature|2|weahter;ewather;weaher
+fire|ogień|nature|1|frie;ifre;fie
+air|powietrze|nature|1|ari;iar;aiir
+`;

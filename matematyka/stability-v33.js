@@ -1,8 +1,8 @@
 (() => {
   const DURATION = 620;
+  const HANDOFF_MS = 120;
   const ANSWER_STAGGER = 26;
   let pending = null;
-  let frame = 0;
 
   function number(value) {
     const parsed = Number(String(value ?? '').replace(/[^0-9-]/g, ''));
@@ -27,8 +27,25 @@
   }
 
   function ease(t) {
-    // miękkie ease-out bez overshootu; pozycja hosta nigdy się nie zmienia
     return 1 - Math.pow(1 - t, 3);
+  }
+
+  function finishValue(host, overlay) {
+    if (!host?.isConnected || !overlay?.isConnected) return;
+
+    /* Nakładka stoi już dokładnie na wartości końcowej. Zamiast usuwać ją
+       natychmiast (co na Safari potrafi dać jedną pustą klatkę), robimy krótki
+       handoff: finalny tekst hosta pojawia się pod identyczną nakładką, a ona
+       miękko znika. Geometria pozostaje bez zmian. */
+    host.classList.add('math-value-handoff');
+    overlay.classList.add('math-number-overlay-handoff');
+
+    window.setTimeout(() => {
+      if (overlay.isConnected) overlay.remove();
+      if (!host.isConnected) return;
+      host.classList.remove('math-value-handoff', 'math-value-animating', 'math-value-host');
+      host.style.removeProperty('--math-overlay-color');
+    }, HANDOFF_MS + 24);
   }
 
   function animateValue(host, from, to, delay = 0) {
@@ -49,7 +66,7 @@
     const tick = now => {
       if (!host.isConnected || !overlay.isConnected) return;
       if (now < start) {
-        frame = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
         return;
       }
 
@@ -58,16 +75,16 @@
       overlay.textContent = String(value);
 
       if (t < 1) {
-        frame = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
         return;
       }
 
-      overlay.remove();
-      host.classList.remove('math-value-animating', 'math-value-host');
-      host.style.removeProperty('--math-overlay-color');
+      /* Gwarantujemy identyczny finalny glif przed rozpoczęciem crossfade. */
+      overlay.textContent = String(Math.round(to));
+      requestAnimationFrame(() => finishValue(host, overlay));
     };
 
-    frame = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
 
   function animateInto(stage, snapshot) {

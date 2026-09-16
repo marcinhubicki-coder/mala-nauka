@@ -1,13 +1,13 @@
 import { CATEGORIES, DURATIONS, shuffle } from './game.mjs';
 import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs';
-import { FLAGS } from './data/flags.mjs';
+import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';
 import { filterSpellingPreview } from './spelling/preview.mjs';
 export const MODES = {
  spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Łatwe','Średnie','Trudne']},
  math: {name:'Matematyka',icon:'1+2',hint:'Małe działania, wielkie odkrycia',color:'blue',categories:[['all','Mieszane'],['add','Dodawanie'],['subtract','Odejmowanie'],['multiply','Mnożenie'],['divide','Dzielenie']],levels:['Łatwe','Średnie','Trudne']},
  english: {name:'Angielski',icon:'🇬🇧',hint:'Słówka i ich pisownia',color:'yellow',categories:[['all','Wszystkie słówka'],['numbers','Liczby'],['objects','Przedmioty'],['verbs','Czasowniki'],['jobs','Zawody'],['home','Dom'],['nature','Natura'],['animals','Zwierzęta']],levels:['Znaczenie','Pisownia','Trudniejsza pisownia']},
- flags: {name:'Flagi',icon:'🌍',hint:'Mała podróż dookoła świata',color:'green',categories:[['all','Cały świat'],['europe','Europa'],['world','Poza Europą']],levels:['Łatwe','Średnie','Trudne']},
+ flags: {name:'Flagi',icon:'🌍',hint:'Mała podróż dookoła świata',color:'green',categories:FLAG_CATEGORIES,levels:['Łatwe','Średnie','Trudne']},
  reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
 };
 export const modeIds = Object.keys(MODES);
@@ -49,10 +49,11 @@ export function createSource(mode, config, words, random = Math.random) {
    prompt:config.difficulty===1?'Jak to jest po angielsku?':'Wybierz poprawną pisownię',difficulty:config.difficulty}));
  }
  if(mode==='flags') {
-  const region=FLAGS.filter(f=>config.category==='all'||f.region===config.category);
-  let pool=region.filter(f=>f.difficulty<=config.difficulty);if(pool.length<4)pool=region;
-  return pool.map(f=>({kind:'flags',text:'Co to za kraj?',image:`assets/flags/${f.code}.svg`,answer:f.name,full:f.name,
-   options:[f.name,...shuffle(pool.filter(other=>other!==f),random).slice(0,3).map(other=>other.name)],prompt:'Który kraj ma taką flagę?',difficulty:config.difficulty}));
+  const region=FLAGS.filter(f=>config.category==='all'||f.continent===config.category);
+  let pool=region.filter(f=>f.difficulty<=config.difficulty);if(!pool.length)pool=region;
+  return pool.map(f=>({kind:'flags',text:'Co to za kraj?',image:f.flagSvg,answer:f.country,full:f.country,
+   countryId:f.id,continent:f.continent,capital:f.capital,
+   options:[f.country,...shuffle(region.filter(other=>other.id!==f.id),random).slice(0,3).map(other=>other.country)],prompt:'Który kraj ma taką flagę?',difficulty:config.difficulty}));
  }
  if(mode==='reading') return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
  throw Error('Nieznany tryb.');

@@ -1,9 +1,11 @@
-const CACHE='mala-nauka-v35';
+const CACHE='mala-nauka-v36';
 const CORE=[
   './','./index.html','./app.css','./viewport-lock.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
   './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
+  './assets/flags/pl.svg','./assets/flags/de.svg','./assets/flags/fr.svg','./assets/flags/it.svg','./assets/flags/ua.svg','./assets/flags/se.svg','./assets/flags/ch.svg','./assets/flags/gb.svg','./assets/flags/nl.svg','./assets/flags/be.svg','./assets/flags/ie.svg','./assets/flags/at.svg','./assets/flags/no.svg','./assets/flags/dk.svg','./assets/flags/fi.svg','./assets/flags/cz.svg','./assets/flags/ee.svg',
+  './assets/flags/jp.svg','./assets/flags/cn.svg','./assets/flags/bd.svg','./assets/flags/id.svg','./assets/flags/za.svg','./assets/flags/eg.svg','./assets/flags/ma.svg','./assets/flags/ng.svg','./assets/flags/us.svg','./assets/flags/ca.svg','./assets/flags/mx.svg','./assets/flags/cu.svg','./assets/flags/br.svg','./assets/flags/ar.svg','./assets/flags/cl.svg','./assets/flags/pe.svg','./assets/flags/au.svg','./assets/flags/nz.svg','./assets/flags/fj.svg','./assets/flags/pg.svg',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',

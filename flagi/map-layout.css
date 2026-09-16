@@ -32,6 +32,15 @@
   overflow:visible;
 }
 
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name,
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
+  left:18px!important;
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
+  top:43px!important;
+}
+
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map{
   display:grid;
   place-items:center;
@@ -63,11 +72,11 @@
 #app[data-mode="flags"] .flag-continent-label{
   align-self:center;
   justify-self:center;
-  min-height:22px;
+  min-height:24px;
   margin:0;
   color:#8b663c;
-  font-size:13px;
-  line-height:22px;
+  font-size:16px;
+  line-height:24px;
   font-weight:850;
   letter-spacing:.1px;
   text-align:center;

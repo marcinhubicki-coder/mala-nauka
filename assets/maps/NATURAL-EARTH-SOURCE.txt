@@ -1,0 +1,13 @@
+Europe map geometry was generated from Natural Earth 1:110m Admin 0 country data.
+
+Source: https://www.naturalearthdata.com/
+Terms: https://www.naturalearthdata.com/about/terms-of-use/
+Natural Earth raster and vector map data are in the public domain.
+
+Local processing for this project:
+- Europe-focused crop and projection
+- light geometry simplification for mobile/PWA use
+- one SVG path per country
+- lower-case ISO-style identifiers exposed as id="country-xx" and data-country="xx"
+
+The SVG is intentionally structured so the same asset can be reused later for interactive country-selection exercises.

@@ -1,8 +1,9 @@
 /* v0.5.3 — exact user-provided visual assets only. */
 #app[data-view="game"][data-mode="spelling"].spelling-art-ready{
+  background-color:#edeaff!important;
   background-image:url('assets/ortografia/spelling-bg-v053.webp')!important;
-  background-position:center bottom!important;
-  background-size:cover!important;
+  background-position:center top!important;
+  background-size:contain!important;
   background-repeat:no-repeat!important;
 }
 .spelling-visual::after{

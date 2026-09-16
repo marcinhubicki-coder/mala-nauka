@@ -46,7 +46,7 @@
 
       #app[data-mode="flags"] .question-card.wrong {
         transition:
-          min-height .5s cubic-bezier(.2,.8,.25,1),
+          min-height .55s cubic-bezier(.2,.8,.25,1),
           background .15s,
           border-color .15s;
       }
@@ -56,7 +56,7 @@
       }
 
       #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
-        min-height: clamp(340px, 48dvh, 455px);
+        min-height: clamp(500px, 62dvh, 620px);
       }
 
       #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .badges {
@@ -84,12 +84,15 @@
 
       #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content {
         justify-content: flex-start;
-        padding-top: 68px;
+        padding-top: 72px;
+        padding-bottom: 14px;
+        min-height: inherit;
       }
 
       #app[data-mode="flags"] .flag-card-map {
-        width: min(100%, 360px);
-        margin: 0 auto;
+        width: min(100%, 540px);
+        min-height: 0;
+        margin: 8px auto 0;
         opacity: 0;
         transform: translateY(13px) scale(.965);
         transition:
@@ -102,27 +105,31 @@
         transform: translateY(0) scale(1);
       }
 
-      #app[data-mode="flags"] .flag-card-map .europe-map-host {
-        min-height: clamp(205px, 28dvh, 250px);
+      #app[data-mode="flags"] .flag-card-map .continent-map-host {
+        min-height: clamp(330px, 43dvh, 430px);
         grid-template-rows: 1fr;
         gap: 0;
       }
 
-      #app[data-mode="flags"] .flag-card-map .europe-map-copy {
+      #app[data-mode="flags"] .flag-card-map .continent-map-copy {
         display: none;
       }
 
-      #app[data-mode="flags"] .flag-card-map .europe-map-canvas {
-        width: min(100%, 350px);
+      #app[data-mode="flags"] .flag-card-map .continent-map-canvas {
+        width: min(100%, 520px);
       }
 
-      #app[data-mode="flags"] .flag-card-map .europe-map-canvas svg {
-        height: clamp(205px, 28dvh, 250px);
+      #app[data-mode="flags"] .flag-card-map .continent-map-canvas svg {
+        height: clamp(330px, 43dvh, 430px);
       }
 
       #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt,
       #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt + .answers {
         display: none;
+      }
+
+      #app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback {
+        margin-top: 20px;
       }
 
       #app[data-mode="flags"] .flag-letter-in {
@@ -134,50 +141,31 @@
         animation-delay: calc(var(--letter-distance, 0) * 18ms);
       }
 
-      #app[data-mode="flags"] .flag-letter-in.from-right {
-        animation-name: flag-letter-from-right;
-      }
-
-      #app[data-mode="flags"] .flag-letter-in.from-left {
-        animation-name: flag-letter-from-left;
-      }
-
+      #app[data-mode="flags"] .flag-letter-in.from-right { animation-name: flag-letter-from-right; }
+      #app[data-mode="flags"] .flag-letter-in.from-left { animation-name: flag-letter-from-left; }
       #app[data-mode="flags"] .flag-letter-slot {
         display: inline-block;
         min-width: .56em;
         text-align: center;
         transform-origin: center;
       }
-
-      #app[data-mode="flags"] .flag-letter-slot.is-cycling {
-        animation: flag-letter-cycle .11s ease both;
-      }
-
-      #app[data-mode="flags"] .flag-letter-slot.is-settled {
-        animation: flag-letter-settle .22s cubic-bezier(.2,.8,.25,1) both;
-      }
-
-      #app[data-mode="flags"] .flag-letter-space {
-        display: inline-block;
-        width: .28em;
-      }
+      #app[data-mode="flags"] .flag-letter-slot.is-cycling { animation: flag-letter-cycle .11s ease both; }
+      #app[data-mode="flags"] .flag-letter-slot.is-settled { animation: flag-letter-settle .22s cubic-bezier(.2,.8,.25,1) both; }
+      #app[data-mode="flags"] .flag-letter-space { display: inline-block; width: .28em; }
 
       @keyframes flag-letter-from-right {
         from { opacity: 0; transform: translateX(.34em) scale(.92); }
         to { opacity: 1; transform: translateX(0) scale(1); }
       }
-
       @keyframes flag-letter-from-left {
         from { opacity: 0; transform: translateX(-.34em) scale(.92); }
         to { opacity: 1; transform: translateX(0) scale(1); }
       }
-
       @keyframes flag-letter-cycle {
         0% { opacity: .68; transform: translateY(2px) scale(.96); filter: blur(.25px); }
         55% { opacity: 1; transform: translateY(-1px) scale(1.035); filter: blur(0); }
         100% { opacity: .88; transform: translateY(0) scale(1); filter: blur(0); }
       }
-
       @keyframes flag-letter-settle {
         0% { opacity: .78; transform: translateY(2px) scale(.96); }
         70% { opacity: 1; transform: translateY(-1px) scale(1.035); }
@@ -186,13 +174,12 @@
 
       @media (max-height: 760px) {
         #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
-          min-height: 315px;
+          min-height: 455px;
         }
-
-        #app[data-mode="flags"] .flag-card-map .europe-map-host,
-        #app[data-mode="flags"] .flag-card-map .europe-map-canvas svg {
+        #app[data-mode="flags"] .flag-card-map .continent-map-host,
+        #app[data-mode="flags"] .flag-card-map .continent-map-canvas svg {
           min-height: 0;
-          height: 190px;
+          height: 300px;
         }
       }
 
@@ -241,14 +228,17 @@
   }
 
   async function showWrongMap(card) {
-    const map = window.MalaNaukaEuropeMap;
+    const map = window.MalaNaukaContinentMap || window.MalaNaukaEuropeMap;
     const content = card.querySelector('.question-content');
     if (!map || !content || card.dataset.flagMap === 'true') return;
 
     const countryId = countryIdFromCard(card);
-    if (!map.supports(countryId)) return;
-
     const language = window.MalaNaukaFlagLanguage;
+    const flagRecord = language?.recordForId?.(countryId);
+    const continent = flagRecord?.continent || '';
+    const continentIds = language?.recordsForContinent?.(continent)?.map(flag => flag.id) || [];
+    if (!map.supports(countryId, continent)) return;
+
     const countryName = language?.nameForId(countryId)
       || card.querySelector('.flag-name')?.getAttribute('aria-label')
       || card.querySelector('.flag-name')?.textContent
@@ -263,6 +253,8 @@
     const result = await map.mount(holder.querySelector('[data-flag-map]'), {
       countryId,
       countryName,
+      continent,
+      continentIds,
       language: language?.language || 'pl',
       showCopy: false
     });
@@ -355,9 +347,7 @@
     if (wrongCard) animateWrongFlagFeedback(wrongCard);
   }
 
-  const observer = new MutationObserver(() => {
-    requestAnimationFrame(animateFlagFeedback);
-  });
+  const observer = new MutationObserver(() => requestAnimationFrame(animateFlagFeedback));
 
   const start = () => {
     const app = document.querySelector('#app');
@@ -366,9 +356,6 @@
     animateFlagFeedback();
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })();

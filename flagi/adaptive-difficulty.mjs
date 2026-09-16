@@ -7,6 +7,7 @@ if(!document.getElementById(STYLE_ID)){
  const style=document.createElement('style');
  style.id=STYLE_ID;
  style.textContent=`
+  #app[data-mode="flags"] fieldset.flag-difficulty-hidden{display:none!important}
   #app[data-mode="flags"] .flag-difficulty-slider{display:grid;gap:12px;padding:2px 2px 0}
   #app[data-mode="flags"] .flag-difficulty-readout{display:flex;align-items:baseline;justify-content:space-between;gap:12px;color:#6d7d93;font-size:12px}
   #app[data-mode="flags"] .flag-difficulty-readout strong{font-size:15px;color:#2b465f}
@@ -28,7 +29,7 @@ if(!document.getElementById(STYLE_ID)){
 
 function updateSlider(wrapper,value){
  const level=Math.min(3,Math.max(1,Number(value)||1));
- const input=wrapper.querySelector('.flag-difficulty-range');
+ const input=wrapper?.querySelector('.flag-difficulty-range');
  if(!input)return;
  input.value=String(level);
  input.style.setProperty('--flag-slider-progress',`${(level-1)*50}%`);
@@ -55,14 +56,23 @@ function syncVisibility(){
  const range=root.querySelector('.flag-difficulty-range');
  const fieldset=range?.closest('fieldset');
  if(!select||!range||!fieldset)return;
+
  const allCountries=select.value==='all';
  fieldset.hidden=allCountries;
+ fieldset.classList.toggle('flag-difficulty-hidden',allCountries);
+ if(allCountries) fieldset.style.setProperty('display','none','important');
+ else fieldset.style.removeProperty('display');
+ fieldset.setAttribute('aria-hidden',allCountries?'true':'false');
+
  if(allCountries&&Number(range.value)!==1){
   updateSlider(range.closest('.flag-difficulty-slider'),1);
+  range.dispatchEvent(new Event('input',{bubbles:true}));
   range.dispatchEvent(new Event('change',{bubbles:true}));
  }
+
  const timeInput=root.querySelector('input[name="duration"]');
- const timeDot=timeInput?.closest('fieldset')?.querySelector('legend .step-dot');
+ const timeFieldset=timeInput?.closest('fieldset');
+ const timeDot=timeFieldset?.querySelector('legend .step-dot');
  if(timeDot)timeDot.textContent=allCountries?'2':'3';
 }
 
@@ -71,7 +81,9 @@ function enhance(){
  const select=root.querySelector('#category');
  const difficultyInput=root.querySelector('input[name="difficulty"]');
  if(!select||!difficultyInput)return;
+
  migrateDefaultCategory(select);
+
  const fieldset=difficultyInput.closest('fieldset');
  const choices=fieldset?.querySelector('.choices.levels, .flag-difficulty-slider');
  if(!fieldset||!choices)return;
@@ -96,11 +108,12 @@ function enhance(){
    range.dispatchEvent(new Event('change',{bubbles:true}));
   }));
  }
+
  syncVisibility();
 }
 
 root?.addEventListener('change',event=>{
- if(event.target?.id==='category')requestAnimationFrame(syncVisibility);
+ if(event.target?.id==='category')requestAnimationFrame(()=>requestAnimationFrame(syncVisibility));
 });
 const observer=new MutationObserver(()=>requestAnimationFrame(enhance));
 if(root){observer.observe(root,{childList:true,subtree:true});enhance();}

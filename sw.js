@@ -1,6 +1,8 @@
-const CACHE='mala-nauka-v41';
+const CACHE='mala-nauka-v42';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
+const MAP_CDN_HOST='cdn.jsdelivr.net';
+const MAP_CDN_PATH='/gh/melenaos/Menelabs.VectorAtlas@98bc8b95ee210012c32b02805d21a8de77a04507/dist/world.svg';
 const CORE=[
   './','./index.html','./app.css','./viewport-lock.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-art.js','./debug-tools.js',
@@ -8,7 +10,7 @@ const CORE=[
   './assets/scenes/bunny.svg','./assets/scenes/mountains.svg','./assets/scenes/rose.svg',
   './assets/flags/pl.svg','./assets/flags/de.svg','./assets/flags/fr.svg','./assets/flags/it.svg','./assets/flags/ua.svg','./assets/flags/se.svg','./assets/flags/ch.svg','./assets/flags/gb.svg','./assets/flags/nl.svg','./assets/flags/be.svg','./assets/flags/ie.svg','./assets/flags/at.svg','./assets/flags/no.svg','./assets/flags/dk.svg','./assets/flags/fi.svg','./assets/flags/cz.svg','./assets/flags/ee.svg',
   './assets/flags/jp.svg','./assets/flags/cn.svg','./assets/flags/bd.svg','./assets/flags/id.svg','./assets/flags/za.svg','./assets/flags/eg.svg','./assets/flags/ma.svg','./assets/flags/ng.svg','./assets/flags/us.svg','./assets/flags/ca.svg','./assets/flags/mx.svg','./assets/flags/cu.svg','./assets/flags/br.svg','./assets/flags/ar.svg','./assets/flags/cl.svg','./assets/flags/pe.svg','./assets/flags/au.svg','./assets/flags/nz.svg','./assets/flags/fj.svg','./assets/flags/pg.svg',
-  './assets/maps/europe.svg','./assets/maps/NATURAL-EARTH-SOURCE.txt','./assets/flags/FLAG-ICONS-SOURCE.txt',
+  './assets/maps/europe.svg','./assets/maps/NATURAL-EARTH-SOURCE.txt','./assets/maps/VECTORATLAS-SOURCE.txt','./assets/flags/FLAG-ICONS-SOURCE.txt',
   './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
   './data/english.mjs','./data/flags.mjs','./data/flags/europe.mjs','./data/flags/asia.mjs','./data/flags/africa.mjs','./data/flags/north-america.mjs','./data/flags/south-america.mjs','./data/flags/oceania.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
@@ -34,7 +36,8 @@ self.addEventListener('fetch',event=>{
   if(request.method!=='GET')return;
   const url=new URL(request.url);
 
-  if(url.hostname===FLAG_CDN_HOST&&url.pathname.startsWith(FLAG_CDN_PATH)){
+  if((url.hostname===FLAG_CDN_HOST&&url.pathname.startsWith(FLAG_CDN_PATH))||
+     (url.hostname===MAP_CDN_HOST&&url.pathname===MAP_CDN_PATH)){
     event.respondWith(caches.open(CACHE).then(async cache=>{
       const cached=await cache.match(request);
       if(cached)return cached;

@@ -23,16 +23,18 @@ Globalna lista 195 państw jest dzielona według odległości na trzy równe pul
 
 ## Konfigurator i progresja
 
-Domyślna kategoria to `Wszystkie`. W tym trybie suwak poziomu jest ukryty i każda runda zawsze startuje na poziomie łatwym. Gra przechodzi tylko w górę: łatwe → średnie → trudne.
+Domyślna kategoria to `Wszystkie`. W tym trybie pole poziomu jest całkowicie ukryte i każda runda zawsze startuje na poziomie łatwym. Gra przechodzi tylko w górę: łatwe → średnie → trudne.
 
 Przejście z łatwych na średnie wymaga co najmniej 5 odpowiedzi z bieżącego poziomu, minimum 80% poprawności i średniego czasu odpowiedzi nie większego niż 5,2 s. Przejście ze średnich na trudne wymaga co najmniej 6 odpowiedzi, minimum 85% poprawności i średniego czasu nie większego niż 4,5 s. Po awansie gra nie cofa poziomu w tej rundzie.
 
 Po wybraniu konkretnego kontynentu suwak `Łatwe — Średnie — Trudne` pojawia się ponownie. Wtedy poziomy są liczone względnie w obrębie wybranego kontynentu: państwa są sortowane według odległości od Polski i dzielone na trzy możliwie równe grupy. Suwak wskazuje poziom startowy, a podczas rundy nadal możliwy jest awans na kolejne poziomy.
 
-## Flagi, język i mapa
+## Flagi, język i mapy
 
-SVG flag pochodzą z `flag-icons` v7.5.0 i są ładowane przez przypięty adres jsDelivr. Service worker zapisuje każdą flagę w cache po pierwszym pobraniu, dzięki czemu już użyte flagi są później dostępne offline. Informacja o źródle i licencji znajduje się w `assets/flags/FLAG-ICONS-SOURCE.txt`.
+SVG flag pochodzą z `flag-icons` v7.5.0 i są ładowane przez przypięty adres jsDelivr. Service worker zapisuje każdą flagę w cache po pierwszym pobraniu. Informacja o źródle i licencji znajduje się w `assets/flags/FLAG-ICONS-SOURCE.txt`.
 
 Przełącznik języka nazw krajów jest dostępny w module flag (PL / EN) i zapamiętuje wybór na urządzeniu. Zmienia nazwy na przyciskach odpowiedzi oraz nazwę kraju w feedbacku bez zmiany mechaniki punktów.
 
-Po błędnej odpowiedzi dla państwa europejskiego poprawna nazwa pojawia się najpierw przy fladze, a następnie flaga zmniejsza się i przesuwa do prawego górnego rogu kafla. W jej dotychczasowym miejscu pojawia się mapa Europy z podświetlonym krajem. Mapa ma osobne regiony z `data-country`, dzięki czemu może być później użyta w interaktywnym trybie wskazywania państwa.
+Po błędnej odpowiedzi poprawna nazwa pojawia się najpierw przy fladze, a następnie flaga zmniejsza się i przesuwa do prawego górnego rogu powiększonego kafla. W środku pojawia się duża mapa właściwego kontynentu z podświetlonym państwem. Ten sam renderer obsługuje Europę, Azję, Afrykę, Amerykę Północną, Amerykę Południową i Oceanię oraz zachowuje obsługę kliknięć pod przyszły tryb wskazywania kraju na mapie.
+
+Mapa świata pochodzi z VectorAtlas (Menelabs), jest generowana z danych Natural Earth i używana z atrybucją CC BY 4.0. Przypięty commit i informacje licencyjne znajdują się w `assets/maps/VECTORATLAS-SOURCE.txt`. Service worker zapisuje mapę w cache po pierwszym pobraniu.

@@ -37,8 +37,16 @@ function flagFromName(value) {
     || null;
 }
 
+function recordForId(id) {
+  return byId.get(String(id || '').toLowerCase()) || null;
+}
+
+function recordsForContinent(continent) {
+  return FLAGS.filter(flag => flag.continent === continent);
+}
+
 function nameForId(id, requestedLanguage = language) {
-  const flag = byId.get(String(id || '').toLowerCase());
+  const flag = recordForId(id);
   if (!flag) return '';
   return requestedLanguage === 'en' ? flag.countryEn : flag.country;
 }
@@ -77,7 +85,7 @@ function localizeVisibleMap(root) {
   if (!card) return;
   const id = countryIdFromCard(card);
   const name = nameForId(id);
-  const copy = root.querySelector('.europe-map-copy strong');
+  const copy = root.querySelector('.continent-map-copy strong, .europe-map-copy strong');
   if (copy && name && copy.textContent !== name) copy.textContent = name;
 }
 
@@ -214,6 +222,8 @@ const start = () => {
 
 window.MalaNaukaFlagLanguage = Object.freeze({
   get language() { return language; },
+  recordForId,
+  recordsForContinent,
   nameForId,
   nameFromAny,
   localizeFeedbackName,

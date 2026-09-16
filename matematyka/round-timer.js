@@ -17,6 +17,28 @@ function formatRemaining(milliseconds) {
   return `${min}:${String(sec).padStart(2, '0')}`;
 }
 
+function syncTimerSnapshot() {
+  if (!clock) {
+    window.__mathTimerSnapshot = { active: false, text: '', percent: 0, paused: false };
+    return window.__mathTimerSnapshot;
+  }
+
+  const paused = clock.state === 'paused';
+  const percent = Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100));
+  window.__mathTimerSnapshot = {
+    active: true,
+    paused,
+    remaining: clock.remaining,
+    duration: clock.duration,
+    percent,
+    text: `${paused ? 'Ⅱ ' : ''}${formatRemaining(clock.remaining)}`,
+  };
+  return window.__mathTimerSnapshot;
+}
+
+window.__mathTimerSnapshot = { active: false, text: '', percent: 0, paused: false };
+window.__getMathTimerSnapshot = () => ({ ...window.__mathTimerSnapshot });
+
 function startClock(mode, duration) {
   currentMode = mode;
   currentDuration = duration;
@@ -24,6 +46,7 @@ function startClock(mode, duration) {
   correct = 0;
   wrong = 0;
   cancelled = false;
+  syncTimerSnapshot();
 }
 
 function ensureTimerUi() {
@@ -31,28 +54,30 @@ function ensureTimerUi() {
   if (!quiz || !clock) return;
   const topbar = document.querySelector('.topbar');
   if (!topbar) return;
+
+  const snapshot = syncTimerSnapshot();
   topbar.classList.add('math-timed');
   const slot = topbar.lastElementChild;
   if (slot && !slot.querySelector('.math-round-time')) {
-    slot.innerHTML = '<div class="math-round-time" aria-label="Pozostały czas rundy"><span></span></div>';
+    slot.innerHTML = `<div class="math-round-time ${snapshot.paused ? 'is-paused' : ''}" aria-label="Pozostały czas rundy"><span>${snapshot.text}</span></div>`;
   }
   if (!document.querySelector('.math-round-progress')) {
     const progress = document.createElement('div');
     progress.className = 'math-round-progress';
-    progress.innerHTML = '<span></span>';
+    progress.innerHTML = `<span style="width:${snapshot.percent}%"></span>`;
     topbar.insertAdjacentElement('afterend', progress);
   }
 }
 
 function updateTimerUi() {
   if (!clock) return;
-  const paused = clock.state === 'paused';
+  const snapshot = syncTimerSnapshot();
   const time = document.querySelector('.math-round-time');
   const text = time?.querySelector('span');
   const bar = document.querySelector('.math-round-progress > span');
-  if (text) text.textContent = `${paused ? 'Ⅱ ' : ''}${formatRemaining(clock.remaining)}`;
-  time?.classList.toggle('is-paused', paused);
-  if (bar) bar.style.width = `${Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100))}%`;
+  if (text && text.textContent !== snapshot.text) text.textContent = snapshot.text;
+  time?.classList.toggle('is-paused', snapshot.paused);
+  if (bar) bar.style.width = `${snapshot.percent}%`;
 }
 
 function accuracy() {
@@ -61,11 +86,10 @@ function accuracy() {
 
 function endRound() {
   if (!clock || cancelled || document.querySelector('.math-result-screen')) return;
-  // Pozwól dokończyć krótki zielony feedback/flip, żeby timeout następnego pytania
-  // nie nadpisał ekranu podsumowania.
   if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
 
   clock.end();
+  syncTimerSnapshot();
   const app = document.querySelector('#app');
   if (!app) return;
   const total = correct + wrong;
@@ -92,6 +116,7 @@ function endRound() {
     </section>
   `;
   clock = null;
+  syncTimerSnapshot();
 }
 
 window.addEventListener('math-round-start', event => {
@@ -101,6 +126,7 @@ window.addEventListener('math-round-start', event => {
 window.addEventListener('math-round-cancel', () => {
   cancelled = true;
   clock = null;
+  syncTimerSnapshot();
 });
 
 document.addEventListener('click', event => {
@@ -130,6 +156,7 @@ document.addEventListener('visibilitychange', () => {
   if (!clock) return;
   if (document.hidden && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
   if (!document.hidden && clock.state === 'paused' && !document.querySelector('.quiz-stage.has-explainer')) clock.resume();
+  syncTimerSnapshot();
 });
 
 setInterval(() => {

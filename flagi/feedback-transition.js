@@ -7,15 +7,22 @@
     style.id = STYLE_ID;
     style.textContent = `
       #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content {
-        position: relative;
+        position: static;
       }
 
       #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content .flag {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) scale(1);
+        transform-origin: center;
         margin: 0;
+        transition:
+          left .52s cubic-bezier(.2,.8,.25,1),
+          top .52s cubic-bezier(.2,.8,.25,1),
+          transform .52s cubic-bezier(.2,.8,.25,1),
+          filter .35s ease;
+        z-index: 3;
       }
 
       #app[data-mode="flags"] .question-card:is(.correct,.wrong) .flag-name {
@@ -27,6 +34,95 @@
         margin: 0;
         white-space: normal;
         line-height: 1.08;
+        transition:
+          left .48s cubic-bezier(.2,.8,.25,1),
+          top .48s cubic-bezier(.2,.8,.25,1),
+          width .48s cubic-bezier(.2,.8,.25,1),
+          transform .48s cubic-bezier(.2,.8,.25,1),
+          font-size .36s ease,
+          text-align .01s linear;
+        z-index: 3;
+      }
+
+      #app[data-mode="flags"] .question-card.wrong {
+        transition:
+          min-height .5s cubic-bezier(.2,.8,.25,1),
+          background .15s,
+          border-color .15s;
+      }
+
+      #app[data-mode="flags"] .question-card.wrong .badges {
+        transition: opacity .24s ease, transform .34s ease;
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
+        min-height: clamp(340px, 48dvh, 455px);
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .badges {
+        opacity: 0;
+        transform: translateY(-5px);
+        pointer-events: none;
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content .flag {
+        left: calc(100% - 16px);
+        top: 16px;
+        transform: translate(-100%, 0) scale(.38);
+        transform-origin: top right;
+        filter: drop-shadow(0 5px 8px rgba(32,55,91,.12));
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name {
+        left: 18px;
+        top: 22px;
+        width: calc(100% - 138px);
+        transform: none;
+        text-align: left;
+        font-size: clamp(20px, 6vw, 25px);
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content {
+        justify-content: flex-start;
+        padding-top: 68px;
+      }
+
+      #app[data-mode="flags"] .flag-card-map {
+        width: min(100%, 360px);
+        margin: 0 auto;
+        opacity: 0;
+        transform: translateY(13px) scale(.965);
+        transition:
+          opacity .34s ease .12s,
+          transform .5s cubic-bezier(.2,.8,.25,1) .08s;
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      #app[data-mode="flags"] .flag-card-map .europe-map-host {
+        min-height: clamp(205px, 28dvh, 250px);
+        grid-template-rows: 1fr;
+        gap: 0;
+      }
+
+      #app[data-mode="flags"] .flag-card-map .europe-map-copy {
+        display: none;
+      }
+
+      #app[data-mode="flags"] .flag-card-map .europe-map-canvas {
+        width: min(100%, 350px);
+      }
+
+      #app[data-mode="flags"] .flag-card-map .europe-map-canvas svg {
+        height: clamp(205px, 28dvh, 250px);
+      }
+
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt,
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt + .answers {
+        display: none;
       }
 
       #app[data-mode="flags"] .flag-letter-in {
@@ -66,22 +162,6 @@
         width: .28em;
       }
 
-      #app[data-mode="flags"] .answers.flag-map-feedback {
-        display: block;
-        min-height: 138px;
-        height: 138px;
-        padding: 0;
-      }
-
-      #app[data-mode="flags"] .answers.flag-map-feedback .europe-map-host {
-        animation: flag-map-in .34s cubic-bezier(.2,.8,.25,1) both;
-      }
-
-      #app[data-mode="flags"] .prompt.flag-map-prompt {
-        color: #8c5b2b;
-        font-weight: 700;
-      }
-
       @keyframes flag-letter-from-right {
         from { opacity: 0; transform: translateX(.34em) scale(.92); }
         to { opacity: 1; transform: translateX(0) scale(1); }
@@ -104,16 +184,27 @@
         100% { opacity: 1; transform: translateY(0) scale(1); }
       }
 
-      @keyframes flag-map-in {
-        from { opacity: 0; transform: translateY(5px) scale(.985); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
+      @media (max-height: 760px) {
+        #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
+          min-height: 315px;
+        }
+
+        #app[data-mode="flags"] .flag-card-map .europe-map-host,
+        #app[data-mode="flags"] .flag-card-map .europe-map-canvas svg {
+          min-height: 0;
+          height: 190px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
         #app[data-mode="flags"] .flag-letter-in,
         #app[data-mode="flags"] .flag-letter-slot,
-        #app[data-mode="flags"] .answers.flag-map-feedback .europe-map-host {
+        #app[data-mode="flags"] .question-card.wrong,
+        #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content .flag,
+        #app[data-mode="flags"] .question-card:is(.correct,.wrong) .flag-name,
+        #app[data-mode="flags"] .flag-card-map {
           animation: none !important;
+          transition: none !important;
         }
       }
     `;
@@ -142,30 +233,48 @@
     return source.match(/\/([a-z]{2})\.svg(?:[?#].*)?$/i)?.[1]?.toLowerCase() || '';
   }
 
+  function prepareLocalizedName(card) {
+    const language = window.MalaNaukaFlagLanguage;
+    return language?.localizeFeedbackName(card, true)
+      || card.querySelector('.flag-name')?.textContent
+      || '';
+  }
+
   async function showWrongMap(card) {
-    const app = document.querySelector('#app');
     const map = window.MalaNaukaEuropeMap;
-    const answers = app?.querySelector('.answers');
-    if (!app || !map || !answers || answers.dataset.flagMap === 'true') return;
+    const content = card.querySelector('.question-content');
+    if (!map || !content || card.dataset.flagMap === 'true') return;
 
     const countryId = countryIdFromCard(card);
-    const countryName = card.querySelector('.flag-name')?.getAttribute('aria-label') || card.querySelector('.flag-name')?.textContent || '';
     if (!map.supports(countryId)) return;
 
-    answers.dataset.flagMap = 'true';
-    answers.classList.add('flag-map-feedback');
-    answers.innerHTML = '<div data-flag-map></div>';
-    const prompt = app.querySelector('.prompt');
-    if (prompt) {
-      prompt.textContent = 'Zobacz, gdzie leży ten kraj';
-      prompt.classList.add('flag-map-prompt');
+    const language = window.MalaNaukaFlagLanguage;
+    const countryName = language?.nameForId(countryId)
+      || card.querySelector('.flag-name')?.getAttribute('aria-label')
+      || card.querySelector('.flag-name')?.textContent
+      || '';
+
+    card.dataset.flagMap = 'true';
+    const holder = document.createElement('div');
+    holder.className = 'flag-card-map';
+    holder.innerHTML = '<div data-flag-map></div>';
+    content.append(holder);
+
+    const result = await map.mount(holder.querySelector('[data-flag-map]'), {
+      countryId,
+      countryName,
+      language: language?.language || 'pl',
+      showCopy: false
+    });
+
+    if (!result.found) {
+      holder.remove();
+      delete card.dataset.flagMap;
+      return;
     }
 
-    const result = await map.mount(answers.querySelector('[data-flag-map]'), { countryId, countryName });
-    if (!result.found && answers.isConnected) {
-      answers.classList.remove('flag-map-feedback');
-      answers.innerHTML = '';
-    }
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    card.classList.add('map-feedback-stage-2');
   }
 
   function animateCorrectFlagFeedback(card, app) {
@@ -173,6 +282,7 @@
 
     const name = card.querySelector('.flag-name');
     if (!name || name.dataset.flagAnimated === 'true') return;
+    prepareLocalizedName(card);
     name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
@@ -190,6 +300,7 @@
   async function animateWrongFlagFeedback(card) {
     const name = card.querySelector('.flag-name');
     if (!name || name.dataset.flagAnimated === 'true') return;
+    prepareLocalizedName(card);
     name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
@@ -226,7 +337,7 @@
       await wait(28);
     }
 
-    await wait(40);
+    await wait(260);
     showWrongMap(card);
   }
 

@@ -22,6 +22,10 @@
         overflow: hidden;
       }
 
+      .europe-map-host.no-copy {
+        grid-template-rows: minmax(0, 1fr);
+      }
+
       .europe-map-copy {
         font-size: 11px;
         line-height: 1.2;
@@ -141,10 +145,18 @@
     const countryId = String(options.countryId || '').toLowerCase();
     const countryName = String(options.countryName || '');
     const interactive = Boolean(options.interactive);
+    const showCopy = options.showCopy !== false;
+    const language = options.language === 'en' ? 'en' : 'pl';
 
-    target.className = `europe-map-host is-loading${interactive ? ' is-interactive' : ''}`;
-    target.setAttribute('aria-label', countryName ? `Położenie kraju ${countryName} na mapie Europy` : 'Mapa Europy');
-    target.innerHTML = `<div class="europe-map-copy">Tu leży <strong>${safe(countryName)}</strong></div><div class="europe-map-canvas" aria-hidden="${interactive ? 'false' : 'true'}"></div>`;
+    target.className = `europe-map-host is-loading${interactive ? ' is-interactive' : ''}${showCopy ? '' : ' no-copy'}`;
+    target.setAttribute('aria-label', countryName
+      ? (language === 'en' ? `Location of ${countryName} on the map of Europe` : `Położenie kraju ${countryName} na mapie Europy`)
+      : (language === 'en' ? 'Map of Europe' : 'Mapa Europy'));
+
+    const copy = showCopy
+      ? `<div class="europe-map-copy">${language === 'en' ? 'This is' : 'Tu leży'} <strong>${safe(countryName)}</strong></div>`
+      : '';
+    target.innerHTML = `${copy}<div class="europe-map-canvas" aria-hidden="${interactive ? 'false' : 'true'}"></div>`;
 
     if (!supports(countryId)) {
       target.classList.remove('is-loading');

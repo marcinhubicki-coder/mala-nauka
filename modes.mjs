@@ -6,7 +6,7 @@ import { filterSpellingPreview } from './spelling/preview.mjs';
 export const MODES = {
  spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Łatwe','Średnie','Trudne']},
  math: {name:'Matematyka',icon:'1+2',hint:'Małe działania, wielkie odkrycia',color:'blue',categories:[['all','Mieszane'],['add','Dodawanie'],['subtract','Odejmowanie'],['multiply','Mnożenie'],['divide','Dzielenie']],levels:['Łatwe','Średnie','Trudne']},
- english: {name:'Angielski',icon:'🇬🇧',hint:'Słówka i ich pisownia',color:'yellow',categories:[['all','Wszystkie słówka'],['numbers','Liczby'],['objects','Przedmioty'],['verbs','Czasowniki'],['jobs','Zawody'],['home','Dom'],['nature','Natura'],['animals','Zwierzęta']],levels:['Znaczenie','Pisownia','Trudniejsza pisownia']},
+ english: {name:'Angielski',icon:'🇬🇧',hint:'Słówka i ich pisownia',color:'yellow',categories:[['all','Wszystkie słówka'],['numbers','Liczby'],['colors','Kolory'],['family','Rodzina'],['people','Ludzie'],['body','Ciało'],['home','Dom'],['objects','Przedmioty'],['school','Szkoła'],['food','Jedzenie'],['animals','Zwierzęta'],['nature','Natura'],['places','Miejsca'],['transport','Transport'],['clothes','Ubrania'],['jobs','Zawody'],['verbs','Czasowniki'],['adjectives','Przymiotniki'],['time','Czas']],levels:['Znaczenie','Pisownia','Trudniejsza pisownia']},
  flags: {name:'Flagi',icon:'🌍',hint:'Mała podróż dookoła świata',color:'green',categories:[['all','Cały świat'],['europe','Europa'],['world','Poza Europą']],levels:['Łatwe','Średnie','Trudne']},
  reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
 };
@@ -43,7 +43,7 @@ export function createSource(mode, config, words, random = Math.random) {
  if(mode==='math') return ()=>mathQuestion(config,random);
  if(mode==='english') {
   let pool=ENGLISH.filter(w=>config.category==='all'||w.category===config.category);
-  if(config.difficulty===3) { const longer=pool.filter(w=>w.word.length>=5);if(longer.length)pool=longer; }
+  if(config.difficulty===3) { const harder=pool.filter(w=>w.difficulty>=2);if(harder.length)pool=harder; }
   return pool.map(w=>({kind:'english',text:w.meaning,answer:w.word,full:w.word,
    options:config.difficulty===1?[w.word,...shuffle(ENGLISH.filter(o=>o.category===w.category&&o.word!==w.word),random).slice(0,3).map(o=>o.word)]:[w.word,...w.mistakes],
    prompt:config.difficulty===1?'Jak to jest po angielsku?':'Wybierz poprawną pisownię',difficulty:config.difficulty}));

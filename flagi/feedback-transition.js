@@ -66,6 +66,22 @@
         width: .28em;
       }
 
+      #app[data-mode="flags"] .answers.flag-map-feedback {
+        display: block;
+        min-height: 138px;
+        height: 138px;
+        padding: 0;
+      }
+
+      #app[data-mode="flags"] .answers.flag-map-feedback .europe-map-host {
+        animation: flag-map-in .34s cubic-bezier(.2,.8,.25,1) both;
+      }
+
+      #app[data-mode="flags"] .prompt.flag-map-prompt {
+        color: #8c5b2b;
+        font-weight: 700;
+      }
+
       @keyframes flag-letter-from-right {
         from { opacity: 0; transform: translateX(.34em) scale(.92); }
         to { opacity: 1; transform: translateX(0) scale(1); }
@@ -88,9 +104,15 @@
         100% { opacity: 1; transform: translateY(0) scale(1); }
       }
 
+      @keyframes flag-map-in {
+        from { opacity: 0; transform: translateY(5px) scale(.985); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         #app[data-mode="flags"] .flag-letter-in,
-        #app[data-mode="flags"] .flag-letter-slot {
+        #app[data-mode="flags"] .flag-letter-slot,
+        #app[data-mode="flags"] .answers.flag-map-feedback .europe-map-host {
           animation: none !important;
         }
       }
@@ -113,6 +135,37 @@
       next = SCRAMBLE_ALPHABET[(SCRAMBLE_ALPHABET.indexOf(next) + 7) % SCRAMBLE_ALPHABET.length];
     }
     return next;
+  }
+
+  function countryIdFromCard(card) {
+    const source = card.querySelector('.flag')?.getAttribute('src') || '';
+    return source.match(/\/([a-z]{2})\.svg(?:[?#].*)?$/i)?.[1]?.toLowerCase() || '';
+  }
+
+  async function showWrongMap(card) {
+    const app = document.querySelector('#app');
+    const map = window.MalaNaukaEuropeMap;
+    const answers = app?.querySelector('.answers');
+    if (!app || !map || !answers || answers.dataset.flagMap === 'true') return;
+
+    const countryId = countryIdFromCard(card);
+    const countryName = card.querySelector('.flag-name')?.getAttribute('aria-label') || card.querySelector('.flag-name')?.textContent || '';
+    if (!map.supports(countryId)) return;
+
+    answers.dataset.flagMap = 'true';
+    answers.classList.add('flag-map-feedback');
+    answers.innerHTML = '<div data-flag-map></div>';
+    const prompt = app.querySelector('.prompt');
+    if (prompt) {
+      prompt.textContent = 'Zobacz, gdzie leży ten kraj';
+      prompt.classList.add('flag-map-prompt');
+    }
+
+    const result = await map.mount(answers.querySelector('[data-flag-map]'), { countryId, countryName });
+    if (!result.found && answers.isConnected) {
+      answers.classList.remove('flag-map-feedback');
+      answers.innerHTML = '';
+    }
   }
 
   function animateCorrectFlagFeedback(card, app) {
@@ -172,6 +225,9 @@
       slot.classList.add('is-settled');
       await wait(28);
     }
+
+    await wait(40);
+    showWrongMap(card);
   }
 
   function animateFlagFeedback() {

@@ -36,6 +36,47 @@ export function mathQuestion(config, random = Math.random) {
  const options=[result,...shuffle(neighbours,random).slice(0,5)].map(String);
  return {kind:'math',text:`${a} ${symbol} ${b} = ?`,answer:String(result),options,full:`${a} ${symbol} ${b} = ${result}`,prompt:'Wybierz wynik działania',difficulty:level};
 }
+
+function flagWeights(startDifficulty, session) {
+ const recent=(session?.recentAnswers||[]).slice(-8);
+ const attempts=recent.length;
+ if(startDifficulty===3)return {1:0,2:0,3:1};
+ if(attempts<3)return startDifficulty===2?{1:0,2:1,3:0}:{1:1,2:0,3:0};
+ const correct=recent.filter(result=>result.correct).length;
+ const accuracy=correct/attempts;
+ const averageMs=recent.reduce((sum,result)=>sum+Math.min(result.responseMs||8000,12000),0)/attempts;
+ if(startDifficulty===2){
+  if(attempts>=6&&accuracy>=.85&&averageMs<=3800)return {1:0,2:.45,3:.55};
+  if(accuracy>=.80&&averageMs<=4800)return {1:0,2:.75,3:.25};
+  return {1:0,2:1,3:0};
+ }
+ if(attempts>=8&&accuracy>=.88&&averageMs<=3200)return {1:.15,2:.45,3:.40};
+ if(attempts>=6&&accuracy>=.84&&averageMs<=4200)return {1:.35,2:.50,3:.15};
+ if(accuracy>=.80&&averageMs<=5200)return {1:.65,2:.35,3:0};
+ return {1:1,2:0,3:0};
+}
+
+function chooseFlagDifficulty(pools,startDifficulty,session,random){
+ const weights=flagWeights(startDifficulty,session);
+ const weighted=[1,2,3].filter(level=>weights[level]>0&&(pools.get(level)?.length||0));
+ if(weighted.length){
+  const total=weighted.reduce((sum,level)=>sum+weights[level],0);
+  let pick=random()*total;
+  for(const level of weighted){pick-=weights[level];if(pick<=0)return level;}
+  return weighted.at(-1);
+ }
+ const atOrAbove=[1,2,3].filter(level=>level>=startDifficulty&&(pools.get(level)?.length||0));
+ if(atOrAbove.length)return atOrAbove[0];
+ return [3,2,1].find(level=>pools.get(level)?.length)||1;
+}
+
+function flagQuestion(flag,region,config,random){
+ return {kind:'flags',text:'Co to za kraj?',image:flag.flagSvg,answer:flag.country,full:flag.country,
+  countryId:flag.id,continent:flag.continent,capital:flag.capital,startDifficulty:config.difficulty,
+  options:[flag.country,...shuffle(region.filter(other=>other.id!==flag.id),random).slice(0,3).map(other=>other.country)],
+  prompt:'Który kraj ma taką flagę?',difficulty:flag.difficulty};
+}
+
 export function createSource(mode, config, words, random = Math.random) {
  if(mode==='spelling') return filterSpellingPreview(words)
   .filter(w=>(config.category==='all'||w.category===config.category)&&(!config.difficulty||w.difficulty===config.difficulty))
@@ -50,10 +91,16 @@ export function createSource(mode, config, words, random = Math.random) {
  }
  if(mode==='flags') {
   const region=FLAGS.filter(f=>config.category==='all'||f.continent===config.category);
-  let pool=region.filter(f=>f.difficulty<=config.difficulty);if(!pool.length)pool=region;
-  return pool.map(f=>({kind:'flags',text:'Co to za kraj?',image:f.flagSvg,answer:f.country,full:f.country,
-   countryId:f.id,continent:f.continent,capital:f.capital,
-   options:[f.country,...shuffle(region.filter(other=>other.id!==f.id),random).slice(0,3).map(other=>other.country)],prompt:'Który kraj ma taką flagę?',difficulty:config.difficulty}));
+  const pools=new Map([1,2,3].map(level=>[level,region.filter(flag=>flag.difficulty===level)]));
+  return session=>{
+   const level=chooseFlagDifficulty(pools,config.difficulty,session,random);
+   let candidates=pools.get(level)||[];
+   const previousId=session?.current?.countryId;
+   if(candidates.length>1&&previousId)candidates=candidates.filter(flag=>flag.id!==previousId);
+   const flag=candidates[Math.floor(random()*candidates.length)]||region[Math.floor(random()*region.length)];
+   if(!flag)throw Error('Brak flag dla tego wyboru.');
+   return flagQuestion(flag,region,config,random);
+  };
  }
  if(mode==='reading') return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
  throw Error('Nieznany tryb.');

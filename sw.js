@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v45';
+const CACHE='mala-nauka-v46';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -15,7 +15,7 @@ const CORE=[
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html',
   './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/math-modes.css','./matematyka/division-polish.css','./matematyka/division-polish.js','./matematyka/explainer-polish.css','./matematyka/explainer-polish.js','./matematyka/layout-v26.css','./matematyka/layout-v26.js','./matematyka/stability-v30.css','./matematyka/stability-v30.js','./matematyka/stability-v31.css','./matematyka/stability-v31.js','./matematyka/stability-v33.css','./matematyka/stability-v33.js','./matematyka/app.js',
-  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./flagi/map-layout.css','./flagi/language-toggle.mjs','./flagi/adaptive-difficulty.mjs','./flagi/europe-map.js','./flagi/feedback-transition.js','./czytanie/','./czytanie/index.html'
+  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./flagi/language-toggle.mjs','./flagi/adaptive-difficulty.mjs','./flagi/europe-map.js','./flagi/feedback-transition.js','./flagi/map-layout.css','./czytanie/','./czytanie/index.html'
 ];
 
 self.addEventListener('install',event=>{

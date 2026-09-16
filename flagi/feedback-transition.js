@@ -1,217 +1,245 @@
 (() => {
   const STYLE_ID = 'flags-feedback-transition-styles';
   const SCRAMBLE_ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+  const CONTINENT_NAMES = Object.freeze({
+    europe: { pl: 'Europa', en: 'Europe' },
+    asia: { pl: 'Azja', en: 'Asia' },
+    africa: { pl: 'Afryka', en: 'Africa' },
+    'north-america': { pl: 'Ameryka Północna', en: 'North America' },
+    'south-america': { pl: 'Ameryka Południowa', en: 'South America' },
+    oceania: { pl: 'Oceania', en: 'Oceania' }
+  });
+  const CAPITAL_PL = Object.freeze({
+    pl:'Warszawa', cz:'Praga', ru:'Moskwa', ua:'Kijów', ro:'Bukareszt', at:'Wiedeń', dk:'Kopenhaga',
+    rs:'Belgrad', it:'Rzym', fr:'Paryż', ch:'Berno', be:'Bruksela', gr:'Ateny', gb:'Londyn', pt:'Lizbona',
+    ge:'Tbilisi', am:'Erywań', az:'Baku', tr:'Ankara', eg:'Kair', cn:'Pekin', jp:'Tokio', kr:'Seul',
+    kp:'Pjongjang', in:'Nowe Delhi', mn:'Ułan Bator', sy:'Damaszek', il:'Jerozolima', sa:'Rijad', ir:'Teheran',
+    iq:'Bagdad', us:'Waszyngton', mx:'Meksyk', cu:'Hawana'
+  });
 
-  if (!document.getElementById(STYLE_ID)) {
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = `
-      #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content {
-        position: static;
-      }
+  document.getElementById(STYLE_ID)?.remove();
+  const style = document.createElement('style');
+  style.id = STYLE_ID;
+  style.textContent = `
+    #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content {
+      position: relative;
+    }
 
-      #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content .flag {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) scale(1);
-        transform-origin: center;
-        margin: 0;
-        transition:
-          left .52s cubic-bezier(.2,.8,.25,1),
-          top .52s cubic-bezier(.2,.8,.25,1),
-          transform .52s cubic-bezier(.2,.8,.25,1),
-          filter .35s ease;
-        z-index: 3;
-      }
+    /* Stage 1: the flag stays exactly where it was before the answer. */
+    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.map-feedback-prep) .question-content .flag {
+      position: static;
+      transform: none;
+      margin: 0;
+    }
 
-      #app[data-mode="flags"] .question-card:is(.correct,.wrong) .flag-name {
-        position: absolute;
-        left: 50%;
-        top: calc(50% + clamp(78px, 20vw, 86px));
-        width: min(92%, 360px);
-        transform: translateX(-50%);
-        margin: 0;
-        white-space: normal;
-        line-height: 1.08;
-        transition:
-          left .48s cubic-bezier(.2,.8,.25,1),
-          top .48s cubic-bezier(.2,.8,.25,1),
-          width .48s cubic-bezier(.2,.8,.25,1),
-          transform .48s cubic-bezier(.2,.8,.25,1),
-          font-size .36s ease,
-          text-align .01s linear;
-        z-index: 3;
-      }
+    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.map-feedback-prep) .flag-name {
+      position: absolute;
+      left: 50%;
+      top: calc(50% + clamp(78px, 20vw, 86px));
+      width: min(92%, 360px);
+      transform: translateX(-50%);
+      margin: 0;
+      white-space: normal;
+      line-height: 1.08;
+      z-index: 3;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong {
-        transition:
-          min-height .55s cubic-bezier(.2,.8,.25,1),
-          background .15s,
-          border-color .15s;
-      }
+    #app[data-mode="flags"] .question-card.wrong .badges {
+      transition: opacity .24s ease, transform .34s ease;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong .badges {
-        transition: opacity .24s ease, transform .34s ease;
-      }
+    /* Freeze the exact stage-1 geometry before flying to the map layout. */
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .question-content {
+      position: static;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
-        min-height: clamp(500px, 62dvh, 620px);
-      }
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .question-content .flag {
+      position: absolute;
+      left: var(--flag-start-left);
+      top: var(--flag-start-top);
+      width: var(--flag-start-width);
+      height: var(--flag-start-height);
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      transform: none;
+      transform-origin: top left;
+      object-fit: contain;
+      transition:
+        left .56s cubic-bezier(.2,.8,.25,1),
+        top .56s cubic-bezier(.2,.8,.25,1),
+        width .56s cubic-bezier(.2,.8,.25,1),
+        height .56s cubic-bezier(.2,.8,.25,1),
+        filter .38s ease;
+      z-index: 4;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .badges {
-        opacity: 0;
-        transform: translateY(-5px);
-        pointer-events: none;
-      }
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .flag-name {
+      position: absolute;
+      left: var(--name-start-left);
+      top: var(--name-start-top);
+      width: var(--name-start-width);
+      transform: none;
+      margin: 0;
+      white-space: nowrap;
+      overflow: visible;
+      line-height: 1.02;
+      text-align: left;
+      font-size: 25px;
+      transition:
+        left .52s cubic-bezier(.2,.8,.25,1),
+        top .52s cubic-bezier(.2,.8,.25,1),
+        width .52s cubic-bezier(.2,.8,.25,1),
+        font-size .46s cubic-bezier(.2,.8,.25,1);
+      z-index: 4;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content .flag {
-        left: calc(100% - 16px);
-        top: 16px;
-        transform: translate(-100%, 0) scale(.38);
-        transform-origin: top right;
-        filter: drop-shadow(0 5px 8px rgba(32,55,91,.12));
-      }
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .badges {
+      opacity: 0;
+      transform: translateY(-5px);
+      pointer-events: none;
+    }
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name {
-        left: 18px;
-        top: 22px;
-        width: calc(100% - 138px);
-        transform: none;
-        text-align: left;
-        font-size: clamp(20px, 6vw, 25px);
-      }
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content .flag {
+      left: calc(100% - 90px);
+      top: 17px;
+      width: 72px;
+      height: 48px;
+      filter: drop-shadow(0 5px 8px rgba(32,55,91,.12));
+    }
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .question-content {
-        justify-content: flex-start;
-        padding-top: 72px;
-        padding-bottom: 14px;
-        min-height: inherit;
-      }
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name {
+      left: 18px;
+      top: 17px;
+      width: calc(100% - 122px);
+      font-size: var(--flag-map-name-size, 23px);
+    }
 
+    #app[data-mode="flags"] .flag-capital {
+      position: absolute;
+      left: 18px;
+      top: 47px;
+      width: calc(100% - 122px);
+      margin: 0;
+      color: #74839a;
+      font-size: var(--flag-capital-size, 11px);
+      line-height: 1.1;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .28s ease .25s, transform .38s ease .22s;
+      z-index: 4;
+    }
+
+    #app[data-mode="flags"] .flag-capital strong {
+      color: #566a86;
+      font-weight: 800;
+    }
+
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #app[data-mode="flags"] .flag-card-map {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      top: 74px;
+      bottom: 8px;
+      width: auto;
+      min-height: 0;
+      margin: 0;
+      opacity: 0;
+      transform: translateY(12px) scale(.965);
+      pointer-events: none;
+      transition:
+        opacity .34s ease .18s,
+        transform .5s cubic-bezier(.2,.8,.25,1) .12s;
+      z-index: 2;
+    }
+
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .flag-continent-label + .prompt,
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .flag-continent-label + .prompt + .answers,
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt,
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt + .answers {
+      display: none;
+    }
+
+    #app[data-mode="flags"] .flag-letter-in {
+      display: inline-block;
+      transform-origin: center;
+      animation-duration: .44s;
+      animation-timing-function: cubic-bezier(.2,.8,.25,1);
+      animation-fill-mode: both;
+      animation-delay: calc(var(--letter-distance, 0) * 18ms);
+    }
+
+    #app[data-mode="flags"] .flag-letter-in.from-right { animation-name: flag-letter-from-right; }
+    #app[data-mode="flags"] .flag-letter-in.from-left { animation-name: flag-letter-from-left; }
+    #app[data-mode="flags"] .flag-letter-slot {
+      display: inline-block;
+      min-width: .56em;
+      text-align: center;
+      transform-origin: center;
+    }
+    #app[data-mode="flags"] .flag-letter-slot.is-cycling { animation: flag-letter-cycle .13s ease both; }
+    #app[data-mode="flags"] .flag-letter-slot.is-settled { animation: flag-letter-settle .24s cubic-bezier(.2,.8,.25,1) both; }
+    #app[data-mode="flags"] .flag-letter-space { display: inline-block; width: .28em; }
+
+    @keyframes flag-letter-from-right {
+      from { opacity: 0; transform: translateX(.34em) scale(.92); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes flag-letter-from-left {
+      from { opacity: 0; transform: translateX(-.34em) scale(.92); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes flag-letter-cycle {
+      0% { opacity: .58; transform: translateY(3px) scale(.94); filter: blur(.4px); }
+      55% { opacity: 1; transform: translateY(-1px) scale(1.045); filter: blur(0); }
+      100% { opacity: .88; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes flag-letter-settle {
+      0% { opacity: .76; transform: translateY(2px) scale(.95); }
+      70% { opacity: 1; transform: translateY(-1px) scale(1.04); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #app[data-mode="flags"] .flag-letter-in,
+      #app[data-mode="flags"] .flag-letter-slot,
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .question-content .flag,
+      #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .flag-name,
+      #app[data-mode="flags"] .flag-capital,
       #app[data-mode="flags"] .flag-card-map {
-        width: min(100%, 540px);
-        min-height: 0;
-        margin: 8px auto 0;
-        opacity: 0;
-        transform: translateY(13px) scale(.965);
-        transition:
-          opacity .34s ease .12s,
-          transform .5s cubic-bezier(.2,.8,.25,1) .08s;
+        animation: none !important;
+        transition: none !important;
       }
+    }
+  `;
+  document.head.append(style);
 
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-
-      #app[data-mode="flags"] .flag-card-map .continent-map-host {
-        min-height: clamp(330px, 43dvh, 430px);
-        grid-template-rows: 1fr;
-        gap: 0;
-      }
-
-      #app[data-mode="flags"] .flag-card-map .continent-map-copy {
-        display: none;
-      }
-
-      #app[data-mode="flags"] .flag-card-map .continent-map-canvas {
-        width: min(100%, 520px);
-      }
-
-      #app[data-mode="flags"] .flag-card-map .continent-map-canvas svg {
-        height: clamp(330px, 43dvh, 430px);
-      }
-
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt,
-      #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 + .prompt + .answers {
-        display: none;
-      }
-
-      #app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback {
-        margin-top: 20px;
-      }
-
-      #app[data-mode="flags"] .flag-letter-in {
-        display: inline-block;
-        transform-origin: center;
-        animation-duration: .44s;
-        animation-timing-function: cubic-bezier(.2,.8,.25,1);
-        animation-fill-mode: both;
-        animation-delay: calc(var(--letter-distance, 0) * 18ms);
-      }
-
-      #app[data-mode="flags"] .flag-letter-in.from-right { animation-name: flag-letter-from-right; }
-      #app[data-mode="flags"] .flag-letter-in.from-left { animation-name: flag-letter-from-left; }
-      #app[data-mode="flags"] .flag-letter-slot {
-        display: inline-block;
-        min-width: .56em;
-        text-align: center;
-        transform-origin: center;
-      }
-      #app[data-mode="flags"] .flag-letter-slot.is-cycling { animation: flag-letter-cycle .11s ease both; }
-      #app[data-mode="flags"] .flag-letter-slot.is-settled { animation: flag-letter-settle .22s cubic-bezier(.2,.8,.25,1) both; }
-      #app[data-mode="flags"] .flag-letter-space { display: inline-block; width: .28em; }
-
-      @keyframes flag-letter-from-right {
-        from { opacity: 0; transform: translateX(.34em) scale(.92); }
-        to { opacity: 1; transform: translateX(0) scale(1); }
-      }
-      @keyframes flag-letter-from-left {
-        from { opacity: 0; transform: translateX(-.34em) scale(.92); }
-        to { opacity: 1; transform: translateX(0) scale(1); }
-      }
-      @keyframes flag-letter-cycle {
-        0% { opacity: .68; transform: translateY(2px) scale(.96); filter: blur(.25px); }
-        55% { opacity: 1; transform: translateY(-1px) scale(1.035); filter: blur(0); }
-        100% { opacity: .88; transform: translateY(0) scale(1); filter: blur(0); }
-      }
-      @keyframes flag-letter-settle {
-        0% { opacity: .78; transform: translateY(2px) scale(.96); }
-        70% { opacity: 1; transform: translateY(-1px) scale(1.035); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
-      }
-
-      @media (max-height: 760px) {
-        #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 {
-          min-height: 455px;
-        }
-        #app[data-mode="flags"] .flag-card-map .continent-map-host,
-        #app[data-mode="flags"] .flag-card-map .continent-map-canvas svg {
-          min-height: 0;
-          height: 300px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        #app[data-mode="flags"] .flag-letter-in,
-        #app[data-mode="flags"] .flag-letter-slot,
-        #app[data-mode="flags"] .question-card.wrong,
-        #app[data-mode="flags"] .question-card:is(.correct,.wrong) .question-content .flag,
-        #app[data-mode="flags"] .question-card:is(.correct,.wrong) .flag-name,
-        #app[data-mode="flags"] .flag-card-map {
-          animation: none !important;
-          transition: none !important;
-        }
-      }
-    `;
-    document.head.append(style);
-  }
-
-  const safe = character => character
+  const safe = value => String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#39;');
-
   const wait = ms => new Promise(resolve => window.setTimeout(resolve, ms));
+  const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
 
   function randomLetter(target = '') {
     let next = SCRAMBLE_ALPHABET[Math.floor(Math.random() * SCRAMBLE_ALPHABET.length)];
-    if (next === target.toLowerCase()) {
-      next = SCRAMBLE_ALPHABET[(SCRAMBLE_ALPHABET.indexOf(next) + 7) % SCRAMBLE_ALPHABET.length];
-    }
+    if (next === target.toLowerCase()) next = SCRAMBLE_ALPHABET[(SCRAMBLE_ALPHABET.indexOf(next) + 7) % SCRAMBLE_ALPHABET.length];
     return next;
   }
 
@@ -231,6 +259,73 @@
       || '';
   }
 
+  function displayCapital(record, language) {
+    if (!record) return '';
+    if (language === 'pl') return CAPITAL_PL[record.id] || record.capital || '';
+    return record.capital || '';
+  }
+
+  function mapNameSize(name) {
+    const length = Array.from(String(name || '')).length;
+    return length > 29 ? 15 : length > 23 ? 17 : length > 17 ? 19 : length > 12 ? 21 : 23;
+  }
+
+  function capitalSize(capital) {
+    const length = Array.from(String(capital || '')).length;
+    return length > 26 ? 9 : length > 20 ? 10 : 11;
+  }
+
+  function ensureMapMeta(card, record) {
+    if (!record) return { continentLabel: null, capital: null };
+    const languageApi = window.MalaNaukaFlagLanguage;
+    const lang = languageApi?.language === 'en' ? 'en' : 'pl';
+    const countryName = languageApi?.nameForId(record.id) || record.country || '';
+    const capitalText = displayCapital(record, lang);
+    card.style.setProperty('--flag-map-name-size', `${mapNameSize(countryName)}px`);
+    card.style.setProperty('--flag-capital-size', `${capitalSize(capitalText)}px`);
+
+    let capital = card.querySelector('.flag-capital');
+    if (!capital) {
+      capital = document.createElement('p');
+      capital.className = 'flag-capital';
+      card.querySelector('.question-content')?.append(capital);
+    }
+    const capitalLabel = lang === 'en' ? 'Capital' : 'Stolica';
+    capital.innerHTML = `${capitalLabel}: <strong>${safe(capitalText)}</strong>`;
+
+    const app = card.closest('#app');
+    let continentLabel = app?.querySelector('.flag-continent-label');
+    if (!continentLabel && app) {
+      continentLabel = document.createElement('div');
+      continentLabel.className = 'flag-continent-label';
+      continentLabel.hidden = true;
+      card.after(continentLabel);
+    }
+    if (continentLabel) {
+      continentLabel.dataset.continent = record.continent;
+      continentLabel.textContent = CONTINENT_NAMES[record.continent]?.[lang] || record.continent;
+    }
+    return { continentLabel, capital };
+  }
+
+  function freezeStageOne(card) {
+    const flag = card.querySelector('.flag');
+    const name = card.querySelector('.flag-name');
+    if (!flag || !name) return false;
+    const cardRect = card.getBoundingClientRect();
+    const flagRect = flag.getBoundingClientRect();
+    const nameRect = name.getBoundingClientRect();
+    card.style.setProperty('--flag-start-left', `${flagRect.left - cardRect.left}px`);
+    card.style.setProperty('--flag-start-top', `${flagRect.top - cardRect.top}px`);
+    card.style.setProperty('--flag-start-width', `${flagRect.width}px`);
+    card.style.setProperty('--flag-start-height', `${flagRect.height}px`);
+    card.style.setProperty('--name-start-left', `${nameRect.left - cardRect.left}px`);
+    card.style.setProperty('--name-start-top', `${nameRect.top - cardRect.top}px`);
+    card.style.setProperty('--name-start-width', `${nameRect.width}px`);
+    card.classList.add('map-feedback-prep');
+    return true;
+  }
+
   async function showWrongMap(card, key = feedbackKey(card)) {
     const map = window.MalaNaukaContinentMap || window.MalaNaukaEuropeMap;
     const content = card.querySelector('.question-content');
@@ -241,7 +336,7 @@
     const flagRecord = language?.recordForId?.(countryId);
     const continent = flagRecord?.continent || '';
     const continentIds = language?.recordsForContinent?.(continent)?.map(flag => flag.id) || [];
-    if (!map.supports(countryId, continent)) return;
+    if (!flagRecord || !map.supports(countryId, continent)) return;
 
     const countryName = language?.nameForId(countryId)
       || card.querySelector('.flag-name')?.getAttribute('aria-label')
@@ -271,8 +366,13 @@
       return;
     }
 
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    if (card.isConnected && feedbackKey(card) === key) card.classList.add('map-feedback-stage-2');
+    const { continentLabel } = ensureMapMeta(card, flagRecord);
+    if (!freezeStageOne(card)) return;
+    await nextFrame();
+    await nextFrame();
+    if (!card.isConnected || feedbackKey(card) !== key) return;
+    card.classList.add('map-feedback-stage-2');
+    if (continentLabel) continentLabel.hidden = false;
   }
 
   function animateCorrectFlagFeedback(card, app) {
@@ -284,6 +384,7 @@
     const name = card.querySelector('.flag-name');
     if (!name) return;
     prepareLocalizedName(card);
+    name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
     const characters = Array.from(text);
@@ -305,6 +406,7 @@
     const name = card.querySelector('.flag-name');
     if (!name) return;
     prepareLocalizedName(card);
+    name.dataset.flagAnimated = 'true';
 
     const text = name.textContent || '';
     const characters = Array.from(text);
@@ -317,7 +419,7 @@
     const slots = [...name.querySelectorAll('.flag-letter-slot')];
     const targetLetters = characters.filter(character => !/\s/.test(character));
 
-    for (let frame = 0; frame < 4; frame += 1) {
+    for (let frame = 0; frame < 5; frame += 1) {
       if (!card.isConnected || feedbackKey(card) !== key) return;
       slots.forEach((slot, index) => {
         slot.classList.remove('is-cycling');
@@ -325,7 +427,7 @@
         slot.textContent = randomLetter(targetLetters[index]);
         slot.classList.add('is-cycling');
       });
-      await wait(78);
+      await wait(82);
     }
 
     const midpoint = (slots.length - 1) / 2;
@@ -339,10 +441,10 @@
       slot.classList.remove('is-cycling');
       slot.textContent = targetLetters[index];
       slot.classList.add('is-settled');
-      await wait(28);
+      await wait(30);
     }
 
-    await wait(260);
+    await wait(360);
     if (card.isConnected && feedbackKey(card) === key) showWrongMap(card, key);
   }
 
@@ -360,8 +462,16 @@
     if (wrongCard) animateWrongFlagFeedback(wrongCard);
   }
 
-  const observer = new MutationObserver(() => requestAnimationFrame(animateFlagFeedback));
+  function refreshVisibleMeta() {
+    const card = document.querySelector('#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2');
+    if (!card) return;
+    const record = window.MalaNaukaFlagLanguage?.recordForId?.(countryIdFromCard(card));
+    if (!record) return;
+    const { continentLabel } = ensureMapMeta(card, record);
+    if (continentLabel) continentLabel.hidden = false;
+  }
 
+  const observer = new MutationObserver(() => requestAnimationFrame(animateFlagFeedback));
   const start = () => {
     const app = document.querySelector('#app');
     if (!app) return;
@@ -369,6 +479,7 @@
     animateFlagFeedback();
   };
 
+  document.addEventListener('mala-nauka:flag-language-change', () => requestAnimationFrame(refreshVisibleMeta));
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })();

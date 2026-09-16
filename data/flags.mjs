@@ -31,8 +31,8 @@ export const FLAGS = [
   // Azja
   { id:'jp', country:'Japonia', countryEn:'Japan', continent:'asia', flagSvg:'assets/flags/jp.svg', capital:'Tokio', difficulty:1 },
   { id:'cn', country:'Chiny', countryEn:'China', continent:'asia', flagSvg:'assets/flags/cn.svg', capital:'Pekin', difficulty:1 },
+  { id:'id', country:'Indonezja', countryEn:'Indonesia', continent:'asia', flagSvg:'assets/flags/id.svg', capital:'Dżakarta', difficulty:2 },
   { id:'bd', country:'Bangladesz', countryEn:'Bangladesh', continent:'asia', flagSvg:'assets/flags/bd.svg', capital:'Dhaka', difficulty:3 },
-  { id:'id', country:'Indonezja', countryEn:'Indonesia', continent:'asia', flagSvg:'assets/flags/id.svg', capital:'Dżakarta', difficulty:3 },
 
   // Afryka
   { id:'za', country:'Republika Południowej Afryki', countryEn:'South Africa', continent:'africa', flagSvg:'assets/flags/za.svg', capital:'Pretoria', difficulty:1 },
@@ -43,18 +43,18 @@ export const FLAGS = [
   // Ameryka Północna
   { id:'us', country:'Stany Zjednoczone', countryEn:'United States', continent:'north-america', flagSvg:'assets/flags/us.svg', capital:'Waszyngton', difficulty:1 },
   { id:'ca', country:'Kanada', countryEn:'Canada', continent:'north-america', flagSvg:'assets/flags/ca.svg', capital:'Ottawa', difficulty:1 },
-  { id:'mx', country:'Meksyk', countryEn:'Mexico', continent:'north-america', flagSvg:'assets/flags/mx.svg', capital:'Meksyk', difficulty:1 },
-  { id:'cu', country:'Kuba', countryEn:'Cuba', continent:'north-america', flagSvg:'assets/flags/cu.svg', capital:'Hawana', difficulty:2 },
+  { id:'mx', country:'Meksyk', countryEn:'Mexico', continent:'north-america', flagSvg:'assets/flags/mx.svg', capital:'Meksyk', difficulty:2 },
+  { id:'cu', country:'Kuba', countryEn:'Cuba', continent:'north-america', flagSvg:'assets/flags/cu.svg', capital:'Hawana', difficulty:3 },
 
   // Ameryka Południowa
   { id:'br', country:'Brazylia', countryEn:'Brazil', continent:'south-america', flagSvg:'assets/flags/br.svg', capital:'Brasília', difficulty:1 },
   { id:'ar', country:'Argentyna', countryEn:'Argentina', continent:'south-america', flagSvg:'assets/flags/ar.svg', capital:'Buenos Aires', difficulty:1 },
   { id:'cl', country:'Chile', countryEn:'Chile', continent:'south-america', flagSvg:'assets/flags/cl.svg', capital:'Santiago', difficulty:2 },
-  { id:'pe', country:'Peru', countryEn:'Peru', continent:'south-america', flagSvg:'assets/flags/pe.svg', capital:'Lima', difficulty:2 },
+  { id:'pe', country:'Peru', countryEn:'Peru', continent:'south-america', flagSvg:'assets/flags/pe.svg', capital:'Lima', difficulty:3 },
 
   // Oceania
   { id:'au', country:'Australia', countryEn:'Australia', continent:'oceania', flagSvg:'assets/flags/au.svg', capital:'Canberra', difficulty:1 },
   { id:'nz', country:'Nowa Zelandia', countryEn:'New Zealand', continent:'oceania', flagSvg:'assets/flags/nz.svg', capital:'Wellington', difficulty:1 },
-  { id:'fj', country:'Fidżi', countryEn:'Fiji', continent:'oceania', flagSvg:'assets/flags/fj.svg', capital:'Suva', difficulty:3 },
+  { id:'fj', country:'Fidżi', countryEn:'Fiji', continent:'oceania', flagSvg:'assets/flags/fj.svg', capital:'Suva', difficulty:2 },
   { id:'pg', country:'Papua-Nowa Gwinea', countryEn:'Papua New Guinea', continent:'oceania', flagSvg:'assets/flags/pg.svg', capital:'Port Moresby', difficulty:3 },
 ];

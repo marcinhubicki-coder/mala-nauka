@@ -39,7 +39,7 @@
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name{
-  top:21px!important;
+  top:25px!important;
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
@@ -52,6 +52,7 @@
   display:grid;
   place-items:center;
   overflow:hidden;
+  bottom:18px!important;
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-card-map .continent-map-host,
@@ -74,16 +75,27 @@
   max-width:100%!important;
   max-height:100%!important;
   overflow:visible;
+  transform-origin:center center;
 }
+
+/* Feedback crops are intentionally tighter than the source SVGs. Small remote islands
+   stay in the assets for the future interactive map mode, but no longer dictate the
+   visible scale of the main continent during wrong-answer feedback. */
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="europe"] svg{transform:scale(1.06)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="asia"] svg{transform:scale(1.22)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="africa"] svg{transform:scale(1.10)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="north-america"] svg{transform:scale(1.12)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="south-america"] svg{transform:scale(1.12)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="oceania"] svg{transform:scale(1.03)}
 
 #app[data-mode="flags"] .flag-continent-label{
   align-self:center;
   justify-self:center;
-  min-height:28px;
+  min-height:32px;
   margin:0;
   color:#8b663c;
-  font-size:20px;
-  line-height:28px;
+  font-size:24px;
+  line-height:32px;
   font-weight:850;
   letter-spacing:.1px;
   text-align:center;

@@ -44,13 +44,13 @@
 }
 
 #app[data-mode="flags"] .flag-language-toggle{
-  border-color:rgba(63,143,114,.22);
-  color:var(--flag-theme-deep);
-  box-shadow:0 5px 16px rgba(47,116,93,.10);
+  border-color:rgba(63,143,114,.22)!important;
+  color:var(--flag-theme-deep)!important;
+  box-shadow:0 5px 16px rgba(47,116,93,.10)!important;
 }
 
 #app[data-mode="flags"] .flag-language-toggle.in-game{
-  background:#f5fbf8;
+  background:#f5fbf8!important;
 }
 
 #app[data-mode="flags"] .continent-map-copy strong{

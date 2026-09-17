@@ -72,13 +72,13 @@ function gameTypeChoices(){
 
 function scopeChoices(){
  return `
-  <div class="flag-scope-toggle flag-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres państw">
+  <div class="flag-v2-game-grid flag-v2-scope-grid flag-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres państw">
    ${indicator()}
-   <label>
+   <label class="flag-v2-choice">
     <input type="radio" name="flagScope" value="world" ${state.scope==='world'?'checked':''}>
     <span>Cały świat</span>
    </label>
-   <label>
+   <label class="flag-v2-choice">
     <input type="radio" name="flagScope" value="continents" ${state.scope==='continents'?'checked':''}>
     <span>Kontynenty</span>
    </label>
@@ -132,13 +132,13 @@ function motionTiming(current,target){
  const base=Math.min(1280,Math.max(860,Math.round(860+distance*.72)));
  // Lead-to-overshoot stays at the old tempo; the return/settle phase is 50% longer.
  const total=Math.round(base*1.23);
- const overshoot=Math.min(30,Math.max(10,Math.round(distance*.125)));
+ const overshoot=Math.min(18,Math.max(6,Math.round(distance*.075)));
  return {total,overshoot};
 }
 
 function jellyFrames(current,target,forward,overshoot){
- const back=Math.max(4,Math.round(overshoot*.50));
- const bounce=Math.max(2,Math.round(overshoot*.20));
+ const back=Math.max(3,Math.round(overshoot*.38));
+ const bounce=Math.max(1,Math.round(overshoot*.12));
 
  // Leading edge: starts first, never overshoots. It accelerates, brakes and quietly settles.
  // Trailing edge: starts later, creates stretch, overshoots and spends a longer time returning.

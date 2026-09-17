@@ -115,14 +115,14 @@
       font-size: var(--flag-map-name-size, 23px);
     }
 
-    #app[data-mode="flags"] .flag-capital {
+    #app[data-mode="flags"] .flag-map-capital {
       position: absolute;
       left: 18px;
       top: 47px;
       width: calc(100% - 122px);
       margin: 0;
       color: #74839a;
-      font-size: var(--flag-capital-size, 11px);
+      font-size: var(--flag-map-capital-size, 11px);
       line-height: 1.1;
       font-weight: 650;
       white-space: nowrap;
@@ -134,12 +134,12 @@
       z-index: 4;
     }
 
-    #app[data-mode="flags"] .flag-capital strong {
+    #app[data-mode="flags"] .flag-map-capital strong {
       color: #566a86;
       font-weight: 800;
     }
 
-    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital {
+    #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-map-capital {
       opacity: 1;
       transform: translateY(0);
     }
@@ -219,7 +219,7 @@
       #app[data-mode="flags"] .flag-letter-slot,
       #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .question-content .flag,
       #app[data-mode="flags"] .question-card.wrong.map-feedback-prep .flag-name,
-      #app[data-mode="flags"] .flag-capital,
+      #app[data-mode="flags"] .flag-map-capital,
       #app[data-mode="flags"] .flag-card-map {
         animation: none !important;
         transition: none !important;
@@ -282,12 +282,12 @@
     const countryName = languageApi?.nameForId(record.id) || record.country || '';
     const capitalText = displayCapital(record, lang);
     card.style.setProperty('--flag-map-name-size', `${mapNameSize(countryName)}px`);
-    card.style.setProperty('--flag-capital-size', `${capitalSize(capitalText)}px`);
+    card.style.setProperty('--flag-map-capital-size', `${capitalSize(capitalText)}px`);
 
-    let capital = card.querySelector('.flag-capital');
+    let capital = card.querySelector('.flag-map-capital');
     if (!capital) {
       capital = document.createElement('p');
-      capital.className = 'flag-capital';
+      capital.className = 'flag-map-capital';
       card.querySelector('.question-content')?.append(capital);
     }
     const capitalLabel = lang === 'en' ? 'Capital' : 'Stolica';

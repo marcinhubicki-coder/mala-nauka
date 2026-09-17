@@ -33,7 +33,7 @@
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-name,
-#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-map-capital{
   left:18px!important;
   text-align:left!important;
 }
@@ -42,7 +42,7 @@
   top:25px!important;
 }
 
-#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-capital{
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .flag-map-capital{
   top:auto!important;
   bottom:calc(100% - 65px)!important;
   line-height:1.05!important;

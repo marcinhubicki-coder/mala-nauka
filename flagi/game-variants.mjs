@@ -85,14 +85,12 @@ function enhanceCard(){
   root.dataset.flagGameVariant='countries';
   badge(card,'Państwa');
 
+  decorateFlagAnswers(card);
   if(feedback){
    feedbackFlag(card,record);
-  }else{
-   if(record){
-    const name=localizedName(record);
-    if(countryQuestion.textContent!==name)countryQuestion.textContent=name;
-   }
-   decorateFlagAnswers(card);
+  }else if(record){
+   const name=localizedName(record);
+   if(countryQuestion.textContent!==name)countryQuestion.textContent=name;
   }
   return;
  }

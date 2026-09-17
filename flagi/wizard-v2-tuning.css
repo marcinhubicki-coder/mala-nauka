@@ -4,7 +4,7 @@
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid,
-#app[data-mode="flags"] .flag-scope-toggle,
+#app[data-mode="flags"] .flag-v2-scope-grid,
 #app[data-mode="flags"] .flag-time-segmented{
   width:100%!important;
   height:var(--flag-segment-height)!important;
@@ -15,7 +15,7 @@
   margin:0!important;
 }
 
-#app[data-mode="flags"] .flag-scope-toggle{
+#app[data-mode="flags"] .flag-v2-scope-grid{
   display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   overflow:hidden!important;
@@ -23,7 +23,7 @@
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid > label,
-#app[data-mode="flags"] .flag-scope-toggle > label,
+#app[data-mode="flags"] .flag-v2-scope-grid > label,
 #app[data-mode="flags"] .flag-time-segmented > label{
   width:100%!important;
   height:100%!important;
@@ -35,7 +35,7 @@
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid > label > span,
-#app[data-mode="flags"] .flag-scope-toggle > label > span,
+#app[data-mode="flags"] .flag-v2-scope-grid > label > span,
 #app[data-mode="flags"] .flag-time-segmented > label > span{
   width:100%!important;
   height:100%!important;
@@ -44,7 +44,7 @@
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid > .flag-segment-indicator,
-#app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator,
+#app[data-mode="flags"] .flag-v2-scope-grid > .flag-segment-indicator,
 #app[data-mode="flags"] .flag-time-segmented > .flag-segment-indicator{
   top:4px!important;
   bottom:4px!important;

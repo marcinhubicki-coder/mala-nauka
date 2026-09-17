@@ -2,7 +2,7 @@
   const processedExpressions = new WeakSet();
   const observedExplainers = new WeakSet();
   const CELL_GAP = 2;
-  const CUT_PAD = 3;
+  const CUT_EXTRA = 1;
   const REFERENCE_EXPRESSION = '90\u2009+\u20099\u2009=\u200999';
 
   function number(text) {
@@ -133,12 +133,11 @@
     const tracks = Array.from({ length: 10 }, (_, index) => {
       const row = index + 1;
       const hasCutAfter = isDivision && divisor && row < divisor;
-      return `${cellSize + (hasCutAfter ? CUT_PAD : 0)}px`;
+      return `${cellSize + (hasCutAfter ? CUT_EXTRA : 0)}px`;
     }).join(' ');
 
-    /* Pionowy rytm zawsze ma bazowy 2 px gap, taki sam jak kolumny. W dzieleniu
-       aktywne cięcie dodaje tylko 3 px do toru wiersza, więc całkowita szczelina
-       między kwadratami nadal ma 5 px, ale rzędy bez kreski nie sklejają się. */
+    /* Ten sam bazowy rytm co w mnożeniu: 2 px między wszystkimi rzędami.
+       Separator dzielenia dostaje tylko 1 dodatkowy piksel toru. */
     [array, rowLabels, rowExpressions].forEach(grid => {
       grid.style.gridTemplateRows = tracks;
       grid.style.rowGap = `${CELL_GAP}px`;
@@ -147,10 +146,11 @@
     explainer.style.setProperty('--stable-cell-size', `${cellSize}px`);
 
     if (isDivision) {
+      const cutGap = CELL_GAP + CUT_EXTRA;
       const overhang = cellSize / 3;
       explainer.style.setProperty('--division-cell-size', `${cellSize}px`);
-      explainer.style.setProperty('--division-cut-pad', `${CUT_PAD}px`);
-      explainer.style.setProperty('--division-cut-half-pad', `${CUT_PAD / 2}px`);
+      explainer.style.setProperty('--division-cut-pad', `${cutGap}px`);
+      explainer.style.setProperty('--division-cut-half-pad', `${cutGap / 2}px`);
       explainer.style.setProperty('--division-cut-overhang', `${overhang}px`);
       explainer.style.setProperty('--division-cut-left', `${-overhang}px`);
       explainer.style.setProperty('--division-cut-extra', `${overhang * 2}px`);

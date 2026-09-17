@@ -54,9 +54,10 @@
     }, delay);
   }, true);
 
-  /* Division separators are an independent layer. Their Y position is measured
-     from the actual bottom of the current cell to the actual top of the next row,
-     so borders and box sizing cannot skew the perceived padding. */
+  /* Separatory dzielenia są niezależną warstwą. Pozycję Y liczymy z faktycznej
+     szczeliny pomiędzy obrysem bieżącego kwadratu a początkiem następnego rzędu.
+     Przy docelowej szczelinie 3 px kreska siedzi dokładnie pośrodku: 1 px luzu,
+     1 px kreski, 1 px luzu. */
   let separatorFrame = 0;
   const observedArrays = new WeakSet();
 
@@ -86,9 +87,7 @@
       const cellBottom = first.offsetTop + first.offsetHeight;
       const nextTop = next.offsetTop;
       const measuredGap = Math.max(1, nextTop - cellBottom);
-      /* Przy docelowym gapie 5 px daje to 3 px nad kreską, 1 px kreski i 1 px
-         pod nią. Dolna krawędź aktywnego kwadratu ma więc więcej oddechu. */
-      const top = cellBottom + Math.max(2, measuredGap - 2);
+      const top = cellBottom + Math.max(0, Math.floor((measuredGap - 1) / 2));
 
       const line = document.createElement('span');
       line.className = 'division-cut-overlay';

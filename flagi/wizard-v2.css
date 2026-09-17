@@ -4,7 +4,6 @@
 
 #app[data-mode="flags"] button,
 #app[data-mode="flags"] label,
-#app[data-mode="flags"] input,
 #app[data-mode="flags"] .flag-segmented,
 #app[data-mode="flags"] .flag-continent-chip{
   -webkit-tap-highlight-color:transparent;
@@ -25,13 +24,14 @@
   margin-bottom:12px;
 }
 
-/* Shared segmented control shell. */
 #app[data-mode="flags"] .flag-segmented{
   position:relative;
   isolation:isolate;
   display:grid;
   overflow:hidden;
-  min-height:54px;
+  box-sizing:border-box;
+  height:56px;
+  min-height:56px;
   border:1px solid #dfe6f0;
   border-radius:16px;
   background:#f2f5f9;
@@ -45,55 +45,47 @@
 
 #app[data-mode="flags"] .flag-scope-toggle{
   grid-template-columns:repeat(2,minmax(0,1fr));
-  min-height:54px;
 }
 
 #app[data-mode="flags"] .flag-time-segmented{
   grid-template-columns:repeat(4,minmax(0,1fr));
-  min-height:54px;
 }
 
-/* The same green bubble is used for game type, scope and duration. */
 #app[data-mode="flags"] .flag-segment-indicator{
   position:absolute;
   z-index:0;
   top:4px;
   bottom:4px;
-  left:var(--segment-left,4px);
-  right:var(--segment-right,4px);
-  overflow:hidden;
-  border:1px solid #79b49e;
-  border-radius:12px;
-  background:linear-gradient(180deg,#e8f6ef 0%,#dff2e9 100%);
-  box-shadow:
-    0 4px 12px rgba(47,116,93,.10),
-    inset 0 1px 0 rgba(255,255,255,.64);
+  left:4px;
+  right:calc(100% - 4px);
+  border:1px solid rgba(84,151,129,.34);
+  border-radius:14px;
+  background:linear-gradient(180deg,#e7f7ef 0%,#d9efe5 100%);
+  box-shadow:0 4px 12px rgba(37,107,88,.10), inset 0 1px 0 rgba(255,255,255,.58);
   pointer-events:none;
+  overflow:hidden;
   will-change:left,right,box-shadow,filter;
 }
 
-/* Centre-only highlight: sides stay green while the middle brightens during acceleration. */
 #app[data-mode="flags"] .flag-segment-indicator::after{
   content:"";
   position:absolute;
-  inset:-16% -8%;
+  inset:-18% -10%;
   border-radius:inherit;
   background:radial-gradient(
     ellipse at center,
-    rgba(255,255,255,.78) 0%,
-    rgba(255,255,255,.48) 24%,
-    rgba(255,255,255,.18) 46%,
+    rgba(255,255,255,.98) 0%,
+    rgba(255,255,255,.72) 24%,
+    rgba(255,255,255,.28) 46%,
     rgba(255,255,255,0) 72%
   );
   opacity:0;
-  transform:scaleX(.78) scaleY(.92);
+  transform:scaleX(.74) scaleY(.9);
   pointer-events:none;
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator{
-  box-shadow:
-    0 9px 21px rgba(47,116,93,.15),
-    inset 0 1px 0 rgba(255,255,255,.72);
+  box-shadow:0 9px 21px rgba(47,116,93,.15), inset 0 1px 0 rgba(255,255,255,.76);
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator::after{
@@ -101,13 +93,17 @@
 }
 
 @keyframes flag-segment-center-glow{
-  0%{opacity:0;transform:scaleX(.72) scaleY(.9)}
-  18%{opacity:.34;transform:scaleX(.84) scaleY(.95)}
-  38%{opacity:.9;transform:scaleX(1) scaleY(1)}
-  57%{opacity:.54;transform:scaleX(.94) scaleY(.98)}
-  74%{opacity:.67;transform:scaleX(.98) scaleY(1)}
-  88%{opacity:.22;transform:scaleX(.88) scaleY(.96)}
-  100%{opacity:0;transform:scaleX(.8) scaleY(.94)}
+  0%{opacity:0;transform:scaleX(.72) scaleY(.90)}
+  16%{opacity:.48;transform:scaleX(.86) scaleY(.96)}
+  36%{opacity:1;transform:scaleX(1.08) scaleY(1.02)}
+  56%{opacity:.72;transform:scaleX(1.02) scaleY(1)}
+  72%{opacity:.9;transform:scaleX(1.05) scaleY(1.01)}
+  88%{opacity:.28;transform:scaleX(.90) scaleY(.97)}
+  100%{opacity:0;transform:scaleX(.82) scaleY(.94)}
+}
+
+#app[data-mode="flags"] .flag-segmented.is-segment-instant .flag-segment-indicator{
+  transition:none!important;
 }
 
 #app[data-mode="flags"] .flag-v2-choice,
@@ -126,6 +122,7 @@
 #app[data-mode="flags"] .flag-time-choice{
   z-index:1;
   min-width:0;
+  height:100%;
 }
 
 #app[data-mode="flags"] .flag-v2-choice input,
@@ -147,16 +144,14 @@
   width:100%;
   min-width:0;
   min-height:100%;
-  padding:9px 8px;
+  box-sizing:border-box;
+  padding:10px 8px;
   color:#697a91;
   font-size:13px;
   line-height:1.15;
   font-weight:800;
-  transition:color .28s ease,transform .3s cubic-bezier(.2,.8,.25,1);
-}
-
-#app[data-mode="flags"] .flag-scope-toggle span{
-  font-size:12px;
+  text-align:center;
+  transition:color .24s ease;
 }
 
 #app[data-mode="flags"] .flag-v2-choice input:checked + span,
@@ -165,29 +160,22 @@
   color:#2f745d;
 }
 
-/* Continents dropdown: its own grey tray, visually connected to the right half of the scope slider. */
 #app[data-mode="flags"] .flag-continent-panel{
   width:100%;
   max-height:0;
-  overflow:hidden;
   box-sizing:border-box;
+  overflow:hidden;
   opacity:0;
-  transform:translateY(-7px) scaleY(.97);
-  transform-origin:top center;
+  transform:translateY(-5px);
   margin-top:0;
   padding-top:0;
-  transition:
-    max-height .48s cubic-bezier(.16,.86,.24,1),
-    opacity .28s ease,
-    transform .48s cubic-bezier(.16,.86,.24,1),
-    margin-top .48s cubic-bezier(.16,.86,.24,1),
-    padding-top .48s cubic-bezier(.16,.86,.24,1);
+  transition:max-height .42s cubic-bezier(.16,1,.28,1),opacity .28s ease,transform .42s cubic-bezier(.16,1,.28,1),margin-top .42s cubic-bezier(.16,1,.28,1),padding-top .42s cubic-bezier(.16,1,.28,1);
 }
 
 #app[data-mode="flags"] .flag-continent-panel.is-open{
   max-height:188px;
   opacity:1;
-  transform:translateY(0) scaleY(1);
+  transform:translateY(0);
   margin-top:0;
   padding-top:12px;
 }
@@ -205,7 +193,6 @@
   background:#f2f5f9;
 }
 
-/* Funnel from the centre of the "Kontynenty" half into the lower tray. */
 #app[data-mode="flags"] .flag-continent-grid::before{
   content:"";
   position:absolute;
@@ -216,7 +203,6 @@
   transform:translateX(-50%);
   background:#f2f5f9;
   clip-path:polygon(39% 0,61% 0,100% 100%,0 100%);
-  pointer-events:none;
 }
 
 #app[data-mode="flags"] .flag-continent-chip{
@@ -231,42 +217,32 @@
 #app[data-mode="flags"] .flag-continent-chip span{
   display:grid;
   place-items:center;
+  min-height:39px;
   width:100%;
   min-width:0;
-  min-height:39px;
   box-sizing:border-box;
-  padding:7px 9px;
+  padding:8px 10px;
   border:1px solid #d7e0ea;
-  border-radius:13px;
-  background:#f8faff;
+  border-radius:14px;
+  background:#fbfcfe;
   color:#607086;
   font-size:10.5px;
   line-height:1.15;
   font-weight:760;
   text-align:center;
-  transform:scale(.986);
-  box-shadow:0 0 0 rgba(47,116,93,0);
-  transition:
-    background .34s cubic-bezier(.2,.8,.25,1),
-    border-color .34s cubic-bezier(.2,.8,.25,1),
-    color .3s ease,
-    transform .34s cubic-bezier(.2,.8,.25,1),
-    box-shadow .34s cubic-bezier(.2,.8,.25,1);
+  transition:background .26s ease,border-color .26s ease,color .26s ease,box-shadow .26s ease,transform .26s cubic-bezier(.2,.8,.25,1);
 }
 
 #app[data-mode="flags"] .flag-continent-chip input:checked + span{
   border-color:#79b49e;
-  background:
-    radial-gradient(ellipse at center,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 44%,rgba(255,255,255,0) 74%),
-    linear-gradient(180deg,#e8f6ef 0%,#dff2e9 100%);
+  background:linear-gradient(180deg,#e7f7ef 0%,#d9efe5 100%);
   color:#256b58;
   font-weight:850;
-  transform:scale(1);
-  box-shadow:0 4px 10px rgba(47,116,93,.08);
+  box-shadow:0 5px 12px rgba(37,107,88,.10);
 }
 
 #app[data-mode="flags"] .flag-continent-chip:active span{
-  transform:scale(.972);
+  transform:scale(.985);
 }
 
 #app[data-mode="flags"] .start-button [data-start-copy]{
@@ -292,11 +268,11 @@
     margin-top:18px;
   }
   #app[data-mode="flags"] .flag-continent-panel.is-open{
-    padding-top:10px;
+    margin-top:8px;
   }
   #app[data-mode="flags"] .flag-continent-grid{
-    padding-top:10px;
-    padding-bottom:9px;
+    padding:12px;
+    gap:8px;
   }
 }
 

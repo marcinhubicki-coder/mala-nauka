@@ -1,4 +1,4 @@
-/* v42 — blend dolnego safe-area z PWA i symetryczne separatory dzielenia. */
+/* v42 — blend dolnego safe-area z PWA. Geometria dzielenia jest kontrolowana wyłącznie przez layout-v26. */
 
 /* iOS rysuje dolny obszar PWA kolorem theme-color. Końcówka gradientu wraca
    więc do tego samego koloru, dzięki czemu nie ma twardego odcięcia. */
@@ -28,15 +28,4 @@
         #f4f7fb 82%,
         #f5f8ff 100%) !important;
   }
-}
-
-/* Bazowy gap planszy to 2px. Skrypt v42 dodaje po 5px na aktywny separator,
-   więc cały tor ma 7px: 3px nad kreską + 1px kreski + 3px pod kreską. */
-.quiz-stage[data-operation="divide"] .explainer.division-polished {
-  --division-cut-space: 3px;
-}
-
-.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
-  bottom: calc(-1px - var(--division-cut-space)) !important;
-  height: 1px !important;
 }

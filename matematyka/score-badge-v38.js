@@ -3,7 +3,8 @@
     let correctCount = 0;
     let lastRenderedCount = 0;
     let hasRevealed = false;
-    let syncFrame = 0;
+    let syncQueued = false;
+    let persistentCard = null;
 
     const symbols = {
       add: '+',
@@ -17,9 +18,19 @@
 
     function ensureModeCard(label, stage) {
       let card = label.querySelector(':scope > .mode-icon-card');
-      const created = !card;
+      let created = false;
+
+      /* renderGame() wymienia wnętrze #app. Zachowujemy jednak dokładnie ten sam
+         element ikony w pamięci i przepinamy go do nowego question-label jeszcze
+         przed następnym paintem. Dzięki temu ikona i licznik nie znikają między
+         poprawną odpowiedzią a kolejnym zadaniem. */
+      if (!card && persistentCard) {
+        card = persistentCard;
+        if (card.parentNode !== label) label.appendChild(card);
+      }
 
       if (!card) {
+        created = true;
         card = document.createElement('span');
         card.className = 'mode-icon-card';
         card.setAttribute('aria-hidden', 'true');
@@ -39,6 +50,8 @@
         card.append(symbol, badge);
         label.appendChild(card);
       }
+
+      persistentCard = card;
 
       const symbol = card.querySelector('.mode-icon-symbol');
       const badge = card.querySelector('.mode-score-badge');
@@ -86,9 +99,16 @@
       lastRenderedCount = correctCount;
     }
 
+    /* MutationObserver działa w mikro-zadaniu. Nie odkładamy przepięcia ikony do
+       kolejnej klatki — dzięki temu nowy DOM dostaje ją zanim Safari zdąży go
+       narysować bez badge'a. */
     function scheduleSync() {
-      cancelAnimationFrame(syncFrame);
-      syncFrame = requestAnimationFrame(() => syncBadge());
+      if (syncQueued) return;
+      syncQueued = true;
+      queueMicrotask(() => {
+        syncQueued = false;
+        syncBadge();
+      });
     }
 
     function resetScore() {

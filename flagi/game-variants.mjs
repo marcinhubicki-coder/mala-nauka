@@ -86,6 +86,7 @@ function enhanceCard(){
   badge(card,'Państwa');
 
   decorateFlagAnswers(card);
+  card.classList.toggle('country-feedback',feedback);
   if(feedback){
    feedbackFlag(card,record);
   }else if(record){
@@ -94,6 +95,8 @@ function enhanceCard(){
   }
   return;
  }
+
+ card.classList.remove('country-feedback');
 
  if(capitalQuestion){
   let record=byId.get(card.dataset.countryId);

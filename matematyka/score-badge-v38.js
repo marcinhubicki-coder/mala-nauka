@@ -3,7 +3,7 @@
     let correctCount = 0;
     let lastRenderedCount = 0;
     let hasRevealed = false;
-    let syncing = false;
+    let syncFrame = 0;
 
     const symbols = {
       add: '+',
@@ -43,57 +43,59 @@
       const symbol = card.querySelector('.mode-icon-symbol');
       const badge = card.querySelector('.mode-score-badge');
       const value = card.querySelector('.mode-score-value');
-      if (symbol) symbol.textContent = symbols[stage?.dataset.operation] || '';
+      const nextSymbol = symbols[stage?.dataset.operation] || '';
+      if (symbol && symbol.textContent !== nextSymbol) symbol.textContent = nextSymbol;
       return { badge, value, created };
     }
 
     function syncBadge({ animateChange = false } = {}) {
-      if (syncing) return;
       const label = app.querySelector('.quiz-stage:not(.has-explainer) .question-label');
       const stage = label?.closest('.quiz-stage');
       if (!label || !stage) return;
 
-      syncing = true;
-      try {
-        const { badge, value, created } = ensureModeCard(label, stage);
-        if (!badge || !value) return;
+      const { badge, value, created } = ensureModeCard(label, stage);
+      if (!badge || !value) return;
 
-        const changed = correctCount !== lastRenderedCount;
-        value.textContent = String(correctCount);
-        badge.classList.toggle('is-visible', correctCount > 0);
-        badge.classList.toggle('is-wide', correctCount >= 10);
-        badge.classList.toggle('is-hundred', correctCount >= 100);
+      const changed = correctCount !== lastRenderedCount;
+      const nextValue = String(correctCount);
+      if (value.textContent !== nextValue) value.textContent = nextValue;
 
-        if (created && correctCount > 0 && hasRevealed) {
-          badge.classList.add('is-restored');
-          requestAnimationFrame(() => badge.classList.remove('is-restored'));
-        }
+      badge.classList.toggle('is-visible', correctCount > 0);
+      badge.classList.toggle('is-wide', correctCount >= 10);
+      badge.classList.toggle('is-hundred', correctCount >= 100);
 
-        if (correctCount > 0 && !hasRevealed) {
-          hasRevealed = true;
-        } else if (animateChange && changed && correctCount > 0) {
+      if (created && correctCount > 0 && hasRevealed) {
+        badge.classList.add('is-restored');
+        requestAnimationFrame(() => badge.classList.remove('is-restored'));
+      }
+
+      if (correctCount > 0 && !hasRevealed) {
+        hasRevealed = true;
+      } else if (animateChange && changed && correctCount > 0) {
+        badge.classList.remove('is-bump');
+        value.classList.remove('is-counting');
+        void badge.offsetWidth;
+        badge.classList.add('is-bump');
+        value.classList.add('is-counting');
+        window.setTimeout(() => {
           badge.classList.remove('is-bump');
           value.classList.remove('is-counting');
-          void badge.offsetWidth;
-          badge.classList.add('is-bump');
-          value.classList.add('is-counting');
-          window.setTimeout(() => {
-            badge.classList.remove('is-bump');
-            value.classList.remove('is-counting');
-          }, 360);
-        }
-
-        lastRenderedCount = correctCount;
-      } finally {
-        syncing = false;
+        }, 360);
       }
+
+      lastRenderedCount = correctCount;
+    }
+
+    function scheduleSync() {
+      cancelAnimationFrame(syncFrame);
+      syncFrame = requestAnimationFrame(() => syncBadge());
     }
 
     function resetScore() {
       correctCount = 0;
       lastRenderedCount = 0;
       hasRevealed = false;
-      syncBadge();
+      scheduleSync();
     }
 
     window.addEventListener('math-round-start', resetScore);
@@ -115,9 +117,9 @@
       syncBadge({ animateChange: correctCount > 1 });
     }, true);
 
-    const observer = new MutationObserver(() => syncBadge());
+    const observer = new MutationObserver(scheduleSync);
     observer.observe(app, { childList: true, subtree: true });
-    syncBadge();
+    scheduleSync();
   }
 
   if (document.readyState === 'loading') {

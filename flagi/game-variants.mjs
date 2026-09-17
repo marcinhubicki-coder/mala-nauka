@@ -5,6 +5,7 @@ const byId=new Map(FLAGS.map(flag=>[flag.id,flag]));
 const byPl=new Map(FLAGS.map(flag=>[flag.country.toLocaleLowerCase('pl-PL'),flag]));
 const byEn=new Map(FLAGS.map(flag=>[flag.countryEn.toLocaleLowerCase('en-US'),flag]));
 const byCapital=new Map(FLAGS.map(flag=>[String(flag.capital||'').toLocaleLowerCase('pl-PL'),flag]));
+let enhanceQueued=false;
 
 function recordFromCountryName(value){
  const text=String(value||'').trim();
@@ -29,7 +30,7 @@ function decorateFlagAnswers(card){
  const answers=root.querySelector('.answers');
  if(!answers)return;
  root.dataset.flagGameVariant='countries';
- answers.classList.add('flag-image-answers');
+ if(!answers.classList.contains('flag-image-answers'))answers.classList.add('flag-image-answers');
 
  answers.querySelectorAll('.answer').forEach(button=>{
   const raw=(button.dataset.flagOptionId||button.textContent||'').trim().toLowerCase();
@@ -37,7 +38,7 @@ function decorateFlagAnswers(card){
   if(!record)return;
 
   button.dataset.flagOptionId=record.id;
-  button.classList.add('flag-option-answer');
+  if(!button.classList.contains('flag-option-answer'))button.classList.add('flag-option-answer');
   button.setAttribute('aria-label',`Flaga: ${localizedName(record)}`);
 
   const current=button.querySelector('img[data-country-flag]');
@@ -66,7 +67,6 @@ function decorateCapitalQuestion(card,record){
  const question=content?.querySelector('.question-text.flag-capital');
  if(!content||!question)return;
 
- const capital=question.textContent.trim();
  let wrap=content.querySelector('.capital-question-wrap');
  if(!wrap){
   wrap=document.createElement('div');
@@ -85,7 +85,6 @@ function decorateCapitalQuestion(card,record){
  }
  image.src=record.flagSvg;
  image.alt=`Flaga: ${localizedName(record)}`;
- question.textContent=capital;
 }
 
 function feedbackFlag(card,record){
@@ -144,6 +143,15 @@ function enhanceCard(){
  root.dataset.flagGameVariant='flags';
 }
 
+function scheduleEnhance(){
+ if(enhanceQueued)return;
+ enhanceQueued=true;
+ queueMicrotask(()=>{
+  enhanceQueued=false;
+  enhanceCard();
+ });
+}
+
 function refreshLanguage(){
  const card=root?.querySelector('.question-card');
  if(!card)return;
@@ -172,12 +180,15 @@ function refreshLanguage(){
 document.addEventListener('mala-nauka:flag-language-change',()=>{
  requestAnimationFrame(()=>{
   refreshLanguage();
-  enhanceCard();
+  scheduleEnhance();
  });
 });
 
-const observer=new MutationObserver(()=>queueMicrotask(enhanceCard));
+const observer=new MutationObserver(mutations=>{
+ if(!mutations.some(mutation=>mutation.type==='childList'&&(mutation.addedNodes.length||mutation.removedNodes.length)))return;
+ scheduleEnhance();
+});
 if(root){
- observer.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
- enhanceCard();
+ observer.observe(root,{childList:true,subtree:true});
+ scheduleEnhance();
 }

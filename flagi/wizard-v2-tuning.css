@@ -1,27 +1,24 @@
-/* Independent geometry for the scope slider + shared fixed heights. */
+/* One geometry source for all three segmented controls. */
 #app[data-mode="flags"][data-view="wizard"]{
   --flag-segment-height:56px;
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid,
+#app[data-mode="flags"] .flag-scope-toggle,
 #app[data-mode="flags"] .flag-time-segmented{
-  height:var(--flag-segment-height)!important;
-  min-height:var(--flag-segment-height)!important;
-  max-height:var(--flag-segment-height)!important;
-  box-sizing:border-box!important;
-}
-
-/* Scope is intentionally independent from the generic segmented-control geometry. */
-#app[data-mode="flags"] .flag-scope-toggle{
-  display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
   width:100%!important;
   height:var(--flag-segment-height)!important;
   min-height:var(--flag-segment-height)!important;
   max-height:var(--flag-segment-height)!important;
   box-sizing:border-box!important;
   padding:0!important;
-  margin:0!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+#app[data-mode="flags"] .flag-scope-toggle{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
   overflow:hidden!important;
   align-items:stretch!important;
 }
@@ -44,13 +41,15 @@
   place-items:center!important;
 }
 
+/* Same 48 px inner bubble height as game type and time. */
 #app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator{
   top:4px!important;
-  bottom:4px!important;
+  bottom:auto!important;
+  height:calc(var(--flag-segment-height) - 8px)!important;
+  max-height:calc(var(--flag-segment-height) - 8px)!important;
   box-sizing:border-box!important;
 }
 
-/* Pull the continent tray up by the same amount freed by the rebuilt scope control. */
 #app[data-mode="flags"] .flag-continent-panel.is-open{
   padding-top:4px!important;
 }

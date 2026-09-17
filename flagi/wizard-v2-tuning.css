@@ -1,48 +1,61 @@
-/* Final geometry tuning for the flag setup controls. */
+/* Independent geometry for the scope slider + shared fixed heights. */
 #app[data-mode="flags"][data-view="wizard"]{
   --flag-segment-height:56px;
 }
 
 #app[data-mode="flags"] .flag-v2-game-grid,
-#app[data-mode="flags"] .flag-scope-toggle,
 #app[data-mode="flags"] .flag-time-segmented{
   height:var(--flag-segment-height)!important;
   min-height:var(--flag-segment-height)!important;
   max-height:var(--flag-segment-height)!important;
   box-sizing:border-box!important;
-  padding:0!important;
-  margin-left:0!important;
-  margin-right:0!important;
 }
 
+/* Scope is intentionally independent from the generic segmented-control geometry. */
 #app[data-mode="flags"] .flag-scope-toggle{
-  width:100%!important;
+  display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  width:100%!important;
+  height:var(--flag-segment-height)!important;
+  min-height:var(--flag-segment-height)!important;
+  max-height:var(--flag-segment-height)!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  align-items:stretch!important;
 }
 
-#app[data-mode="flags"] .flag-v2-game-grid > label,
-#app[data-mode="flags"] .flag-scope-toggle > label,
-#app[data-mode="flags"] .flag-time-segmented > label{
+#app[data-mode="flags"] .flag-scope-toggle > label{
+  width:100%!important;
   height:100%!important;
+  min-width:0!important;
   min-height:0!important;
   box-sizing:border-box!important;
 }
 
-#app[data-mode="flags"] .flag-v2-game-grid > label > span,
-#app[data-mode="flags"] .flag-scope-toggle > label > span,
-#app[data-mode="flags"] .flag-time-segmented > label > span{
+#app[data-mode="flags"] .flag-scope-toggle > label > span{
+  width:100%!important;
   height:100%!important;
   min-height:0!important;
   box-sizing:border-box!important;
-  padding-top:0!important;
-  padding-bottom:0!important;
+  padding:0 8px!important;
+  display:grid!important;
+  place-items:center!important;
 }
 
+#app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator{
+  top:4px!important;
+  bottom:4px!important;
+  box-sizing:border-box!important;
+}
+
+/* Pull the continent tray up by the same amount freed by the rebuilt scope control. */
 #app[data-mode="flags"] .flag-continent-panel.is-open{
-  padding-top:8px!important;
+  padding-top:4px!important;
 }
 
 #app[data-mode="flags"] .flag-continent-grid::before{
-  top:-8px!important;
-  height:10px!important;
+  top:-5px!important;
+  height:7px!important;
 }

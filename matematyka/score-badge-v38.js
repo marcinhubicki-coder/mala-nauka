@@ -5,6 +5,7 @@
     let hasRevealed = false;
     let syncQueued = false;
     let persistentCard = null;
+    let needsRebuildOnReturn = false;
 
     const symbols = {
       add: '+',
@@ -16,16 +17,25 @@
     const app = document.querySelector('#app');
     if (!app) return;
 
+    function restartClass(node, className, timeout = 560) {
+      if (!node) return;
+      node.classList.remove(className);
+      void node.offsetWidth;
+      node.classList.add(className);
+      window.setTimeout(() => node.classList.remove(className), timeout);
+    }
+
     function ensureModeCard(label, stage) {
       let card = label.querySelector(':scope > .mode-icon-card');
       let created = false;
+      let reattached = false;
 
-      /* renderGame() wymienia wnętrze #app. Zachowujemy jednak dokładnie ten sam
-         element ikony w pamięci i przepinamy go do nowego question-label jeszcze
-         przed następnym paintem. Dzięki temu ikona i licznik nie znikają między
-         poprawną odpowiedzią a kolejnym zadaniem. */
+      /* renderGame() wymienia wnętrze #app, ale zachowujemy dokładnie ten sam
+         element ikony w pamięci. Przy zwykłej zmianie pytania przepinamy go w
+         mikro-zadaniu, zanim Safari narysuje klatkę bez badge'a. */
       if (!card && persistentCard) {
         card = persistentCard;
+        reattached = true;
         if (card.parentNode !== label) label.appendChild(card);
       }
 
@@ -58,18 +68,24 @@
       const value = card.querySelector('.mode-score-value');
       const nextSymbol = symbols[stage?.dataset.operation] || '';
       if (symbol && symbol.textContent !== nextSymbol) symbol.textContent = nextSymbol;
-      return { badge, value, created };
+      return { badge, value, created, reattached };
     }
 
     function syncBadge({ animateChange = false } = {}) {
       const label = app.querySelector('.quiz-stage:not(.has-explainer) .question-label');
       const stage = label?.closest('.quiz-stage');
-      if (!label || !stage) return;
 
-      const { badge, value, created } = ensureModeCard(label, stage);
+      if (!label || !stage) {
+        if (correctCount > 0 && hasRevealed) needsRebuildOnReturn = true;
+        return;
+      }
+
+      const { badge, value, reattached } = ensureModeCard(label, stage);
       if (!badge || !value) return;
 
-      const changed = correctCount !== lastRenderedCount;
+      const previous = lastRenderedCount;
+      const changed = correctCount !== previous;
+      const crossedTen = previous < 10 && correctCount >= 10;
       const nextValue = String(correctCount);
       if (value.textContent !== nextValue) value.textContent = nextValue;
 
@@ -77,31 +93,33 @@
       badge.classList.toggle('is-wide', correctCount >= 10);
       badge.classList.toggle('is-hundred', correctCount >= 100);
 
-      if (created && correctCount > 0 && hasRevealed) {
-        badge.classList.add('is-restored');
-        requestAnimationFrame(() => badge.classList.remove('is-restored'));
-      }
-
       if (correctCount > 0 && !hasRevealed) {
         hasRevealed = true;
+        restartClass(badge, 'is-entering');
+      } else if (reattached && needsRebuildOnReturn && correctCount > 0) {
+        needsRebuildOnReturn = false;
+        restartClass(badge, 'is-rebuilding');
       } else if (animateChange && changed && correctCount > 0) {
-        badge.classList.remove('is-bump');
         value.classList.remove('is-counting');
+        badge.classList.remove('is-bump', 'is-growing');
         void badge.offsetWidth;
-        badge.classList.add('is-bump');
+
+        if (crossedTen) {
+          badge.classList.add('is-growing');
+        } else {
+          badge.classList.add('is-bump');
+        }
         value.classList.add('is-counting');
+
         window.setTimeout(() => {
-          badge.classList.remove('is-bump');
+          badge.classList.remove('is-bump', 'is-growing');
           value.classList.remove('is-counting');
-        }, 360);
+        }, 560);
       }
 
       lastRenderedCount = correctCount;
     }
 
-    /* MutationObserver działa w mikro-zadaniu. Nie odkładamy przepięcia ikony do
-       kolejnej klatki — dzięki temu nowy DOM dostaje ją zanim Safari zdąży go
-       narysować bez badge'a. */
     function scheduleSync() {
       if (syncQueued) return;
       syncQueued = true;
@@ -115,6 +133,7 @@
       correctCount = 0;
       lastRenderedCount = 0;
       hasRevealed = false;
+      needsRebuildOnReturn = false;
       scheduleSync();
     }
 

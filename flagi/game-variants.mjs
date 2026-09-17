@@ -26,16 +26,66 @@ function badge(card,label){
 }
 
 function decorateFlagAnswers(card){
- card.querySelectorAll('.answers .answer').forEach(button=>{
-  const id=button.dataset.flagOptionId||button.textContent.trim().toLowerCase();
-  if(!byId.has(id))return;
-  button.dataset.flagOptionId=id;
+ const answers=root.querySelector('.answers');
+ if(!answers)return;
+ root.dataset.flagGameVariant='countries';
+ answers.classList.add('flag-image-answers');
+
+ answers.querySelectorAll('.answer').forEach(button=>{
+  const raw=(button.dataset.flagOptionId||button.textContent||'').trim().toLowerCase();
+  const record=byId.get(raw);
+  if(!record)return;
+
+  button.dataset.flagOptionId=record.id;
   button.classList.add('flag-option-answer');
-  if(!button.querySelector('img')){
-   const record=byId.get(id);
-   button.innerHTML=`<img src="${record.flagSvg}" alt="Flaga do wyboru" width="112" height="75">`;
+  button.setAttribute('aria-label',`Flaga: ${localizedName(record)}`);
+
+  const current=button.querySelector('img[data-country-flag]');
+  if(current){
+   if(current.getAttribute('src')!==record.flagSvg)current.setAttribute('src',record.flagSvg);
+   current.setAttribute('alt',`Flaga: ${localizedName(record)}`);
+   return;
   }
+
+  button.replaceChildren();
+  const image=document.createElement('img');
+  image.dataset.countryFlag='';
+  image.className='flag-option-image';
+  image.src=record.flagSvg;
+  image.alt=`Flaga: ${localizedName(record)}`;
+  image.width=156;
+  image.height=104;
+  button.append(image);
  });
+}
+
+function decorateCapitalQuestion(card,record){
+ if(!card||!record)return;
+ root.dataset.flagGameVariant='capitals';
+ const content=card.querySelector('.question-content');
+ const question=content?.querySelector('.question-text.flag-capital');
+ if(!content||!question)return;
+
+ const capital=question.textContent.trim();
+ let wrap=content.querySelector('.capital-question-wrap');
+ if(!wrap){
+  wrap=document.createElement('div');
+  wrap.className='capital-question-wrap';
+  question.before(wrap);
+  wrap.append(question);
+ }
+
+ let image=wrap.querySelector('img.capital-question-flag');
+ if(!image){
+  image=document.createElement('img');
+  image.className='capital-question-flag';
+  image.width=132;
+  image.height=88;
+  wrap.append(image);
+ }
+ image.src=record.flagSvg;
+ image.alt=`Flaga: ${localizedName(record)}`;
+ question.textContent=capital;
 }
 
 function feedbackFlag(card,record){
@@ -60,6 +110,7 @@ function enhanceCard(){
   const record=byId.get(card.dataset.countryId)||recordFromCountryName(countryQuestion.textContent);
   if(record)card.dataset.countryId=record.id;
   card.dataset.flagVariant='countries';
+  root.dataset.flagGameVariant='countries';
   badge(card,'Państwa');
 
   if(feedback){
@@ -82,10 +133,15 @@ function enhanceCard(){
   }
   if(record)card.dataset.countryId=record.id;
   card.dataset.flagVariant='capitals';
+  root.dataset.flagGameVariant='capitals';
   badge(card,'Stolice');
 
   if(feedback)feedbackFlag(card,record);
+  else decorateCapitalQuestion(card,record);
+  return;
  }
+
+ root.dataset.flagGameVariant='flags';
 }
 
 function refreshLanguage(){
@@ -93,12 +149,24 @@ function refreshLanguage(){
  if(!card)return;
  const record=byId.get(card.dataset.countryId);
  if(!record)return;
+
  const countryQuestion=card.querySelector('.question-text.flag-country');
  if(countryQuestion&&!card.classList.contains('correct')&&!card.classList.contains('wrong')){
   countryQuestion.textContent=localizedName(record);
  }
  const name=card.querySelector('.flag-name');
  if(name)name.textContent=localizedName(record);
+
+ const capitalFlag=card.querySelector('.capital-question-flag');
+ if(capitalFlag)capitalFlag.alt=`Flaga: ${localizedName(record)}`;
+
+ root.querySelectorAll('.answer.flag-option-answer').forEach(button=>{
+  const option=byId.get(button.dataset.flagOptionId);
+  if(!option)return;
+  button.setAttribute('aria-label',`Flaga: ${localizedName(option)}`);
+  const image=button.querySelector('img[data-country-flag]');
+  if(image)image.alt=`Flaga: ${localizedName(option)}`;
+ });
 }
 
 document.addEventListener('mala-nauka:flag-language-change',()=>{

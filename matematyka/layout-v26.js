@@ -2,7 +2,7 @@
   const processedExpressions = new WeakSet();
   const observedExplainers = new WeakSet();
   const CELL_GAP = 2;
-  const CUT_PAD = 5;
+  const CUT_PAD = 3;
   const REFERENCE_EXPRESSION = '90\u2009+\u20099\u2009=\u200999';
 
   function number(text) {
@@ -136,9 +136,12 @@
       return `${cellSize + (hasCutAfter ? CUT_PAD : 0)}px`;
     }).join(' ');
 
+    /* Pionowy rytm zawsze ma bazowy 2 px gap, taki sam jak kolumny. W dzieleniu
+       aktywne cięcie dodaje tylko 3 px do toru wiersza, więc całkowita szczelina
+       między kwadratami nadal ma 5 px, ale rzędy bez kreski nie sklejają się. */
     [array, rowLabels, rowExpressions].forEach(grid => {
       grid.style.gridTemplateRows = tracks;
-      grid.style.rowGap = isDivision ? '0px' : `${CELL_GAP}px`;
+      grid.style.rowGap = `${CELL_GAP}px`;
     });
 
     explainer.style.setProperty('--stable-cell-size', `${cellSize}px`);

@@ -19,6 +19,12 @@
   z-index: 1;
 }
 
+/* Aktywne pola są nad separatorem i nad sąsiednimi nieaktywnymi torami, dzięki
+   czemu cały dolny border/box-shadow pozostaje widoczny także przed kreską. */
+.quiz-stage[data-operation="divide"] .array-cell.is-active {
+  z-index: 2;
+}
+
 .quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator {
   border-bottom-color: rgba(94,115,232,.29) !important;
   box-shadow: none !important;

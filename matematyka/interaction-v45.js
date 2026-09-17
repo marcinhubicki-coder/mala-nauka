@@ -54,8 +54,9 @@
     }, delay);
   }, true);
 
-  /* Division separators are an independent layer in the gap between rows.
-     v45 uses a 5 px track: 2 px + 1 px line + 2 px. */
+  /* Division separators are an independent layer. Their Y position is measured
+     from the actual bottom of the current cell to the actual top of the next row,
+     so borders and box sizing cannot skew the perceived padding. */
   let separatorFrame = 0;
   const observedArrays = new WeakSet();
 
@@ -74,13 +75,20 @@
     for (let row = 1; row < divisor; row += 1) {
       const first = array.querySelector(`.array-cell[data-row="${row}"][data-col="1"]`);
       const last = array.querySelector(`.array-cell[data-row="${row}"][data-col="${quotient}"]`);
-      if (!first || !last) continue;
+      const next = array.querySelector(`.array-cell[data-row="${row + 1}"][data-col="1"]`);
+      if (!first || !last || !next) continue;
 
       const overhang = first.offsetWidth / 3;
       const left = first.offsetLeft - overhang;
       const rightOverhang = quotient >= 10 ? 0 : overhang;
       const right = last.offsetLeft + last.offsetWidth + rightOverhang;
-      const top = first.offsetTop + first.offsetHeight + 2;
+
+      const cellBottom = first.offsetTop + first.offsetHeight;
+      const nextTop = next.offsetTop;
+      const measuredGap = Math.max(1, nextTop - cellBottom);
+      /* Przy docelowym gapie 5 px daje to 3 px nad kreską, 1 px kreski i 1 px
+         pod nią. Dolna krawędź aktywnego kwadratu ma więc więcej oddechu. */
+      const top = cellBottom + Math.max(2, measuredGap - 2);
 
       const line = document.createElement('span');
       line.className = 'division-cut-overlay';

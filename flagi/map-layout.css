@@ -82,7 +82,7 @@
    stay in the assets for the future interactive map mode, but no longer dictate the
    visible scale of the main continent during wrong-answer feedback. */
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="europe"] svg{transform:scale(1.06)}
-#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="asia"] svg{transform:scale(1.22)}
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="asia"] svg{transform:scale(1.04)}
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="africa"] svg{transform:scale(1.10)}
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="north-america"] svg{transform:scale(1.12)}
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2 .continent-map-host[data-continent="south-america"] svg{transform:scale(1.12)}

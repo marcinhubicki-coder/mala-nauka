@@ -1,0 +1,51 @@
+/* v49 — pixel-perfect rhythm for division.
+   The division board uses exactly the same 2px row/column gap as multiplication.
+   Cutting lines are overlays inside that existing gap and never change track size. */
+
+.quiz-stage[data-operation="divide"] .array,
+.quiz-stage[data-operation="divide"] .column-labels,
+.quiz-stage[data-operation="divide"] .row-labels,
+.quiz-stage[data-operation="divide"] .row-expressions {
+  row-gap: 2px !important;
+}
+
+.quiz-stage[data-operation="divide"] .array,
+.quiz-stage[data-operation="divide"] .column-labels {
+  column-gap: 2px !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell {
+  box-sizing: border-box !important;
+  aspect-ratio: auto !important;
+}
+
+/* Legacy separator styles must not alter a cell's border or shadow. */
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator,
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+  border-bottom-color: inherit !important;
+}
+
+/* Keep the visual halo symmetric so the perceived bottom gap is not smaller
+   than the horizontal gap. */
+.quiz-stage[data-operation="divide"] .array-cell.is-active {
+  position: relative;
+  z-index: 2 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.20),
+    0 0 5px rgba(71,85,170,.16) !important;
+}
+
+.quiz-stage[data-operation="divide"] .division-cut-overlay {
+  position: absolute;
+  z-index: 1 !important;
+  height: 1px !important;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72);
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .division-cut-overlay {
+    background: rgba(154,167,255,.76);
+  }
+}

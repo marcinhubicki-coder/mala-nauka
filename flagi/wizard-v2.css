@@ -85,7 +85,28 @@
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator{
-  box-shadow:0 9px 21px rgba(47,116,93,.15), inset 0 1px 0 rgba(255,255,255,.76);
+  animation:flag-segment-shadow var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes flag-segment-shadow{
+  0%{
+    box-shadow:0 4px 12px rgba(37,107,88,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
+  18%{
+    box-shadow:0 6px 16px rgba(42,111,90,.13), inset 0 1px 0 rgba(255,255,255,.66);
+  }
+  42%{
+    box-shadow:0 10px 23px rgba(47,116,93,.17), inset 0 1px 0 rgba(255,255,255,.78);
+  }
+  68%{
+    box-shadow:0 8px 19px rgba(44,112,91,.14), inset 0 1px 0 rgba(255,255,255,.70);
+  }
+  86%{
+    box-shadow:0 5px 14px rgba(39,109,88,.11), inset 0 1px 0 rgba(255,255,255,.62);
+  }
+  100%{
+    box-shadow:0 4px 12px rgba(37,107,88,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator::after{
@@ -150,7 +171,7 @@
   transition:color .24s ease;
 }
 
-#app[data-mode="flags"] .flag-v2-choice input:checked + span:checked + span,
+#app[data-mode="flags"] .flag-v2-choice input:checked + span,
 #app[data-mode="flags"] .flag-time-choice input:checked + span{
   color:#2f745d;
 }

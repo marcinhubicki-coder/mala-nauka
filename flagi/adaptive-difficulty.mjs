@@ -12,6 +12,7 @@ const CONTINENTS=[
  ['north-america','Ameryka Północna'],
  ['south-america','Ameryka Południowa']
 ];
+const DURATIONS=[60,120,180,300];
 const START_COPY={
  60:'Szybka akcja!',
  120:'Zaczynamy!',
@@ -25,6 +26,7 @@ const NOTES={
 };
 
 let state=null;
+let segmentTimer=0;
 
 function readState(fallbackDuration=60){
  try{
@@ -35,7 +37,7 @@ function readState(fallbackDuration=60){
     gameType:GAME_TYPES.some(([id])=>id===saved.gameType)?saved.gameType:'flags',
     scope:saved.scope==='continents'?'continents':'world',
     continents:continents.length?continents:['europe'],
-    duration:[60,120,180,300].includes(Number(saved.duration))?Number(saved.duration):fallbackDuration
+    duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallbackDuration
    };
   }
  }catch{}
@@ -91,39 +93,84 @@ function continentChoices(){
 }
 
 function durationChoices(){
- return [60,120,180,300].map(seconds=>`
-  <label class="choice">
+ return `${indicator()}${DURATIONS.map(seconds=>`
+  <label class="flag-time-choice">
    <input type="radio" name="duration" value="${seconds}" ${state.duration===seconds?'checked':''}>
    <span>${seconds/60} min</span>
-  </label>`).join('');
+  </label>`).join('')}`;
+}
+
+function segmentGeometry(container,index){
+ const labels=[...container.querySelectorAll(':scope > label')];
+ const target=labels[index];
+ if(!target)return null;
+ const containerRect=container.getBoundingClientRect();
+ const targetRect=target.getBoundingClientRect();
+ const inset=4;
+ return {
+  left:Math.max(inset,targetRect.left-containerRect.left+inset),
+  right:Math.max(inset,containerRect.right-targetRect.right+inset)
+ };
+}
+
+function motionTiming(distance){
+ const hops=Math.max(1,distance||1);
+ // About 30% slower than the previous motion, then progressively longer for longer jumps.
+ const total=Math.min(980,720+(hops-1)*110);
+ return {
+  total,
+  lead:Math.round(total*.76),
+  trail:Math.round(total*.82),
+  delay:Math.round(total*.18)
+ };
 }
 
 function updateSegment(container,index,count,animate=true){
  if(!container)return;
  const previous=Number(container.dataset.activeIndex);
  const next=Math.max(0,Math.min(count-1,index));
- if(Number.isFinite(previous)&&previous!==next){
-  container.dataset.direction=next>previous?'forward':'backward';
- }else if(!container.dataset.direction){
-  container.dataset.direction='forward';
- }
+ const geometry=segmentGeometry(container,next);
+ if(!geometry)return;
+ const changed=Number.isFinite(previous)&&previous!==next;
+ const distance=changed?Math.abs(next-previous):0;
+ const timing=motionTiming(distance);
+
+ if(changed)container.dataset.direction=next>previous?'forward':'backward';
+ else if(!container.dataset.direction)container.dataset.direction='forward';
  container.dataset.activeIndex=String(next);
- container.style.setProperty('--segment-left',`${next*100/count}%`);
- container.style.setProperty('--segment-right',`${(count-next-1)*100/count}%`);
- if(animate&&Number.isFinite(previous)&&previous!==next){
-  container.classList.remove('is-segment-moving');
-  void container.offsetWidth;
-  container.classList.add('is-segment-moving');
-  window.setTimeout(()=>container.classList.remove('is-segment-moving'),560);
+ container.style.setProperty('--segment-lead-ms',`${timing.lead}ms`);
+ container.style.setProperty('--segment-trail-ms',`${timing.trail}ms`);
+ container.style.setProperty('--segment-delay-ms',`${timing.delay}ms`);
+
+ if(!animate||!changed){
+  container.classList.add('is-segment-instant');
+  container.style.setProperty('--segment-left',`${geometry.left}px`);
+  container.style.setProperty('--segment-right',`${geometry.right}px`);
+  requestAnimationFrame(()=>container.classList.remove('is-segment-instant'));
+  return;
  }
+
+ container.classList.remove('is-segment-instant');
+ container.classList.remove('is-segment-moving');
+ void container.offsetWidth;
+ container.classList.add('is-segment-moving');
+ container.style.setProperty('--segment-left',`${geometry.left}px`);
+ container.style.setProperty('--segment-right',`${geometry.right}px`);
+ window.clearTimeout(segmentTimer);
+ segmentTimer=window.setTimeout(()=>container.classList.remove('is-segment-moving'),timing.total+80);
 }
 
 function syncSegmentedControls(animate=false){
  const game=root.querySelector('[data-segmented="game"]');
  const gameIndex=Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
  updateSegment(game,gameIndex,GAME_TYPES.length,animate);
+
  const scope=root.querySelector('[data-segmented="scope"]');
  updateSegment(scope,state.scope==='continents'?1:0,2,animate);
+
+ const time=root.querySelector('[data-segmented="time"]');
+ const timeIndex=Math.max(0,DURATIONS.indexOf(state.duration));
+ updateSegment(time,timeIndex,DURATIONS.length,animate);
 }
 
 function updateStartButton(animate=false){
@@ -185,7 +232,7 @@ function install(){
 
  const existingDuration=Number(root.querySelector('input[name="duration"]:checked')?.value)||60;
  state=state||readState(existingDuration);
- if(![60,120,180,300].includes(state.duration))state.duration=existingDuration;
+ if(!DURATIONS.includes(state.duration))state.duration=existingDuration;
 
  card.dataset.flagsWizardV2='true';
  card.classList.add('flag-wizard-v2');
@@ -208,13 +255,14 @@ function install(){
 
   <fieldset class="flag-v2-section flag-v2-time">
    <legend><span class="step-dot">3</span>Jak długo dasz radę?</legend>
-   <div class="choices four">${durationChoices()}</div>
+   <div class="flag-time-segmented flag-segmented" data-segmented="time" role="radiogroup" aria-label="Czas rozgrywki">${durationChoices()}</div>
   </fieldset>`;
 
  updateStartButton(false);
  updateNote();
  syncPanel(false);
  syncHidden(true);
+ requestAnimationFrame(()=>syncSegmentedControls(false));
 }
 
 root?.addEventListener('change',event=>{
@@ -252,9 +300,16 @@ root?.addEventListener('change',event=>{
  if(target?.name==='duration'){
   state.duration=Number(target.value)||60;
   saveState();
+  syncSegmentedControls(true);
   updateStartButton(true);
  }
 });
+
+window.addEventListener('resize',()=>{
+ if(root?.dataset.mode==='flags'&&root.dataset.view==='wizard'&&state){
+  requestAnimationFrame(()=>syncSegmentedControls(false));
+ }
+},{passive:true});
 
 const observer=new MutationObserver(()=>requestAnimationFrame(install));
 if(root){

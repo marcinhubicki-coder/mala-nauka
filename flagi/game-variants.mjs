@@ -60,33 +60,6 @@ function decorateFlagAnswers(card){
  });
 }
 
-function decorateCapitalQuestion(card,record){
- if(!card||!record)return;
- root.dataset.flagGameVariant='capitals';
- const content=card.querySelector('.question-content');
- const question=content?.querySelector('.question-text.flag-capital');
- if(!content||!question)return;
-
- let wrap=content.querySelector('.capital-question-wrap');
- if(!wrap){
-  wrap=document.createElement('div');
-  wrap.className='capital-question-wrap';
-  question.before(wrap);
-  wrap.append(question);
- }
-
- let image=wrap.querySelector('img.capital-question-flag');
- if(!image){
-  image=document.createElement('img');
-  image.className='capital-question-flag';
-  image.width=132;
-  image.height=88;
-  wrap.append(image);
- }
- image.src=record.flagSvg;
- image.alt=`Flaga: ${localizedName(record)}`;
-}
-
 function feedbackFlag(card,record){
  if(!card||!record||card.dataset.flagVariantFeedback==='true')return;
  const content=card.querySelector('.question-content');
@@ -136,7 +109,7 @@ function enhanceCard(){
   badge(card,'Stolice');
 
   if(feedback)feedbackFlag(card,record);
-  else decorateCapitalQuestion(card,record);
+  else if(record&&capitalQuestion.textContent!==record.capital)capitalQuestion.textContent=record.capital;
   return;
  }
 
@@ -164,9 +137,6 @@ function refreshLanguage(){
  }
  const name=card.querySelector('.flag-name');
  if(name)name.textContent=localizedName(record);
-
- const capitalFlag=card.querySelector('.capital-question-flag');
- if(capitalFlag)capitalFlag.alt=`Flaga: ${localizedName(record)}`;
 
  root.querySelectorAll('.answer.flag-option-answer').forEach(button=>{
   const option=byId.get(button.dataset.flagOptionId);

@@ -12,8 +12,7 @@
   max-height:var(--flag-segment-height)!important;
   box-sizing:border-box!important;
   padding:0!important;
-  margin-left:0!important;
-  margin-right:0!important;
+  margin:0!important;
 }
 
 #app[data-mode="flags"] .flag-scope-toggle{
@@ -23,30 +22,34 @@
   align-items:stretch!important;
 }
 
-#app[data-mode="flags"] .flag-scope-toggle > label{
+#app[data-mode="flags"] .flag-v2-game-grid > label,
+#app[data-mode="flags"] .flag-scope-toggle > label,
+#app[data-mode="flags"] .flag-time-segmented > label{
   width:100%!important;
   height:100%!important;
   min-width:0!important;
   min-height:0!important;
   box-sizing:border-box!important;
+  margin:0!important;
+  padding:0!important;
 }
 
-#app[data-mode="flags"] .flag-scope-toggle > label > span{
+#app[data-mode="flags"] .flag-v2-game-grid > label > span,
+#app[data-mode="flags"] .flag-scope-toggle > label > span,
+#app[data-mode="flags"] .flag-time-segmented > label > span{
   width:100%!important;
   height:100%!important;
   min-height:0!important;
   box-sizing:border-box!important;
-  padding:0 8px!important;
-  display:grid!important;
-  place-items:center!important;
 }
 
-/* Same 48 px inner bubble height as game type and time. */
-#app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator{
+#app[data-mode="flags"] .flag-v2-game-grid > .flag-segment-indicator,
+#app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator,
+#app[data-mode="flags"] .flag-time-segmented > .flag-segment-indicator{
   top:4px!important;
-  bottom:auto!important;
-  height:calc(var(--flag-segment-height) - 8px)!important;
-  max-height:calc(var(--flag-segment-height) - 8px)!important;
+  bottom:4px!important;
+  height:auto!important;
+  max-height:none!important;
   box-sizing:border-box!important;
 }
 

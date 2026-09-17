@@ -72,7 +72,7 @@ function gameTypeChoices(){
 
 function scopeChoices(){
  return `
-  <div class="flag-scope-toggle flag-segmented" data-scope-slider role="radiogroup" aria-label="Zakres państw">
+  <div class="flag-scope-toggle flag-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres państw">
    ${indicator()}
    <label>
     <input type="radio" name="flagScope" value="world" ${state.scope==='world'?'checked':''}>
@@ -132,7 +132,7 @@ function motionTiming(current,target){
  const base=Math.min(1280,Math.max(860,Math.round(860+distance*.72)));
  // Lead-to-overshoot stays at the old tempo; the return/settle phase is 50% longer.
  const total=Math.round(base*1.23);
- const overshoot=Math.min(24,Math.max(8,Math.round(distance*.10)));
+ const overshoot=Math.min(30,Math.max(10,Math.round(distance*.125)));
  return {total,overshoot};
 }
 
@@ -231,78 +231,13 @@ function updateSegment(container,index,count,animate=true){
  segmentTimers.set(container,cleanup);
 }
 
-function scopeTargetGeometry(container,index){
- if(!container)return null;
- const width=container.clientWidth;
- const inset=4;
- const half=width/2;
- if(index===0){
-  const left=inset;
-  const right=half+inset;
-  return {left,right,width:Math.max(0,width-left-right),center:(left+(width-right))/2};
- }
- const left=half+inset;
- const right=inset;
- return {left,right,width:Math.max(0,width-left-right),center:(left+(width-right))/2};
-}
-
-function updateScopeSegment(animate=false){
- const container=root.querySelector('[data-scope-slider]');
- if(!container)return;
- const indicator=container.querySelector('.flag-segment-indicator');
- if(!indicator)return;
-
- const previousIndex=Number(container.dataset.activeIndex);
- const nextIndex=state.scope==='continents'?1:0;
- const target=scopeTargetGeometry(container,nextIndex);
- if(!target)return;
-
- const changed=Number.isFinite(previousIndex)&&previousIndex!==nextIndex;
- const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
- const current=stopSegmentAnimation(container,indicator);
- container.dataset.activeIndex=String(nextIndex);
- container.dataset.direction=changed&&nextIndex<previousIndex?'backward':'forward';
-
- const timer=segmentTimers.get(container);
- if(timer)window.clearTimeout(timer);
-
- if(!animate||!changed||reduced||typeof indicator.animate!=='function'){
-  indicator.style.left=`${target.left}px`;
-  indicator.style.right=`${target.right}px`;
-  container.classList.remove('is-segment-moving');
-  return;
- }
-
- const timing=motionTiming(current,target);
- container.style.setProperty('--segment-total-ms',`${timing.total}ms`);
- container.classList.remove('is-segment-moving');
- void container.offsetWidth;
- container.classList.add('is-segment-moving');
-
- const animation=indicator.animate(
-  jellyFrames(current,target,nextIndex>previousIndex,timing.overshoot),
-  {duration:timing.total,easing:'linear',fill:'both'}
- );
- segmentAnimations.set(container,animation);
- indicator.style.left=`${target.left}px`;
- indicator.style.right=`${target.right}px`;
-
- const finish=()=>{
-  if(segmentAnimations.get(container)===animation){
-   segmentAnimations.delete(container);
-   try{animation.cancel();}catch{}
-   container.classList.remove('is-segment-moving');
-  }
- };
- animation.addEventListener('finish',finish,{once:true});
- const cleanup=window.setTimeout(finish,timing.total+120);
- segmentTimers.set(container,cleanup);
-}
-
 function syncSegmentedControls(animate=false){
  const game=root.querySelector('[data-segmented="game"]');
  const gameIndex=Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
  updateSegment(game,gameIndex,GAME_TYPES.length,animate);
+
+ const scope=root.querySelector('[data-segmented="scope"]');
+ updateSegment(scope,state.scope==='continents'?1:0,2,animate);
 
  const time=root.querySelector('[data-segmented="time"]');
  const timeIndex=Math.max(0,DURATIONS.indexOf(state.duration));
@@ -341,8 +276,7 @@ function syncPanel(animate=false){
   panel.setAttribute('aria-hidden',open?'false':'true');
  }
  root.querySelectorAll('input[name="flagScope"]').forEach(input=>{input.checked=input.value===state.scope;});
- // Scope animation is deliberately independent from the expanding continent tray.
- updateScopeSegment(animate);
+ syncSegmentedControls(animate);
 }
 
 function syncHidden(dispatch=true){
@@ -399,7 +333,7 @@ function install(){
  updateNote();
  syncPanel(false);
  syncHidden(true);
- requestAnimationFrame(()=>{syncSegmentedControls(false);updateScopeSegment(false);});
+ requestAnimationFrame(()=>syncSegmentedControls(false));
 }
 
 root?.addEventListener('change',event=>{
@@ -444,13 +378,13 @@ root?.addEventListener('change',event=>{
 
 window.addEventListener('resize',()=>{
  if(root?.dataset.mode==='flags'&&root.dataset.view==='wizard'&&state){
-  requestAnimationFrame(()=>{syncSegmentedControls(false);updateScopeSegment(false);});
+  requestAnimationFrame(()=>syncSegmentedControls(false));
  }
 },{passive:true});
 
 window.addEventListener('orientationchange',()=>{
  if(root?.dataset.mode==='flags'&&root.dataset.view==='wizard'&&state){
-  window.setTimeout(()=>{syncSegmentedControls(false);updateScopeSegment(false);},120);
+  window.setTimeout(()=>syncSegmentedControls(false),120);
  }
 },{passive:true});
 

@@ -7,29 +7,6 @@
   text-align:center;
 }
 
-#app[data-mode="flags"] .capital-question-wrap{
-  width:100%;
-  min-height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-}
-
-#app[data-mode="flags"] .capital-question-wrap .question-text.flag-capital{
-  margin:0;
-}
-
-#app[data-mode="flags"] .capital-question-flag{
-  display:block;
-  width:min(38vw,132px);
-  max-width:132px;
-  height:auto;
-  max-height:88px;
-  object-fit:contain;
-  filter:drop-shadow(0 3px 5px rgba(32,55,91,.11));
-}
 
 #app[data-mode="flags"][data-flag-game-variant="countries"] .answers{
   gap:12px;
@@ -62,12 +39,6 @@
 }
 
 @media (max-height:760px){
-  #app[data-mode="flags"] .capital-question-wrap{
-    gap:14px;
-  }
-  #app[data-mode="flags"] .capital-question-flag{
-    max-height:72px;
-  }
   #app[data-mode="flags"] .answers .answer.flag-option-answer{
     min-height:90px;
   }

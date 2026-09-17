@@ -10,8 +10,7 @@ const CONTINENTS=[
  ['asia','Azja'],
  ['africa','Afryka'],
  ['north-america','Ameryka Północna'],
- ['south-america','Ameryka Południowa'],
- ['oceania','Oceania']
+ ['south-america','Ameryka Południowa']
 ];
 const START_COPY={
  60:'Szybka akcja!',
@@ -56,17 +55,22 @@ function escape(value){
  return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 }
 
+function indicator(){
+ return '<span class="flag-segment-indicator" aria-hidden="true"></span>';
+}
+
 function gameTypeChoices(){
- return GAME_TYPES.map(([id,label])=>`
+ return `${indicator()}${GAME_TYPES.map(([id,label])=>`
   <label class="flag-v2-choice">
    <input type="radio" name="flagGameType" value="${id}" ${state.gameType===id?'checked':''}>
    <span>${label}</span>
-  </label>`).join('');
+  </label>`).join('')}`;
 }
 
 function scopeChoices(){
  return `
-  <div class="flag-scope-toggle" role="radiogroup" aria-label="Zakres państw">
+  <div class="flag-scope-toggle flag-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres państw">
+   ${indicator()}
    <label>
     <input type="radio" name="flagScope" value="world" ${state.scope==='world'?'checked':''}>
     <span>Cały świat</span>
@@ -94,6 +98,34 @@ function durationChoices(){
   </label>`).join('');
 }
 
+function updateSegment(container,index,count,animate=true){
+ if(!container)return;
+ const previous=Number(container.dataset.activeIndex);
+ const next=Math.max(0,Math.min(count-1,index));
+ if(Number.isFinite(previous)&&previous!==next){
+  container.dataset.direction=next>previous?'forward':'backward';
+ }else if(!container.dataset.direction){
+  container.dataset.direction='forward';
+ }
+ container.dataset.activeIndex=String(next);
+ container.style.setProperty('--segment-left',`${next*100/count}%`);
+ container.style.setProperty('--segment-right',`${(count-next-1)*100/count}%`);
+ if(animate&&Number.isFinite(previous)&&previous!==next){
+  container.classList.remove('is-segment-moving');
+  void container.offsetWidth;
+  container.classList.add('is-segment-moving');
+  window.setTimeout(()=>container.classList.remove('is-segment-moving'),560);
+ }
+}
+
+function syncSegmentedControls(animate=false){
+ const game=root.querySelector('[data-segmented="game"]');
+ const gameIndex=Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
+ updateSegment(game,gameIndex,GAME_TYPES.length,animate);
+ const scope=root.querySelector('[data-segmented="scope"]');
+ updateSegment(scope,state.scope==='continents'?1:0,2,animate);
+}
+
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');
  if(!button)return;
@@ -118,7 +150,7 @@ function updateNote(){
  if(note)note.textContent=NOTES[state.gameType]||NOTES.flags;
 }
 
-function syncPanel(){
+function syncPanel(animate=false){
  const panel=root.querySelector('[data-continent-panel]');
  const open=state.scope==='continents';
  if(panel){
@@ -126,6 +158,7 @@ function syncPanel(){
   panel.setAttribute('aria-hidden',open?'false':'true');
  }
  root.querySelectorAll('input[name="flagScope"]').forEach(input=>{input.checked=input.value===state.scope;});
+ syncSegmentedControls(animate);
 }
 
 function syncHidden(dispatch=true){
@@ -162,7 +195,7 @@ function install(){
 
   <fieldset class="flag-v2-section flag-v2-game">
    <legend><span class="step-dot">1</span>Rodzaj rozgrywki</legend>
-   <div class="flag-v2-game-grid">${gameTypeChoices()}</div>
+   <div class="flag-v2-game-grid flag-segmented" data-segmented="game">${gameTypeChoices()}</div>
   </fieldset>
 
   <fieldset class="flag-v2-section flag-v2-scope">
@@ -180,7 +213,7 @@ function install(){
 
  updateStartButton(false);
  updateNote();
- syncPanel();
+ syncPanel(false);
  syncHidden(true);
 }
 
@@ -190,13 +223,14 @@ root?.addEventListener('change',event=>{
  if(target?.name==='flagGameType'){
   state.gameType=target.value;
   updateNote();
+  syncSegmentedControls(true);
   syncHidden(true);
   return;
  }
  if(target?.name==='flagScope'){
   state.scope=target.value==='continents'?'continents':'world';
   if(state.scope==='continents'&&!state.continents.length)state.continents=['europe'];
-  syncPanel();
+  syncPanel(true);
   syncHidden(true);
   return;
  }
@@ -210,9 +244,9 @@ root?.addEventListener('change',event=>{
    state.continents=checked;
   }
   const switched=setWorldFromAllContinents();
-  syncPanel();
+  syncPanel(switched);
   syncHidden(true);
-  if(switched)requestAnimationFrame(syncPanel);
+  if(switched)requestAnimationFrame(()=>syncPanel(false));
   return;
  }
  if(target?.name==='duration'){

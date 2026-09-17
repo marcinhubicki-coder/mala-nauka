@@ -108,137 +108,157 @@ function segmentGeometry(container,index){
  const containerRect=container.getBoundingClientRect();
  const targetRect=target.getBoundingClientRect();
  const inset=4;
- return {
-  left:Math.max(inset,targetRect.left-containerRect.left+inset),
-  right:Math.max(inset,containerRect.right-targetRect.right+inset)
- };
+ const left=Math.max(inset,targetRect.left-containerRect.left+inset);
+ const right=Math.max(inset,containerRect.right-targetRect.right+inset);
+ const width=Math.max(0,containerRect.width-left-right);
+ const center=left+(width/2);
+ return {left,right,width,center};
 }
 
-function indicatorGeometry(container,indicator){
+function applyIndicator(indicator,geometry){
+ indicator.style.left=`${geometry.left}px`;
+ indicator.style.right=`${geometry.right}px`;
+}
+
+function currentGeometry(container,indicator){
+ if(!indicator)return null;
  const containerRect=container.getBoundingClientRect();
  const rect=indicator.getBoundingClientRect();
- return {
-  left:Math.max(0,rect.left-containerRect.left),
-  right:Math.max(0,containerRect.right-rect.right)
- };
-}
-
-function lerp(a,b,t){
- return a+(b-a)*t;
-}
-
-function motionTiming(container,current,target){
- const width=Math.max(1,container.clientWidth);
- const currentCenter=(current.left+(width-current.right))/2;
- const targetCenter=(target.left+(width-target.right))/2;
- const distance=Math.abs(targetCenter-currentCenter);
- const ratio=Math.min(1,distance/width);
- // Longer travel = more time. One-segment hops sit around 0.9s, long jumps a little over 1s.
- const total=Math.round(Math.min(1120,800+ratio*360));
- const overshoot=Math.max(8,Math.min(24,distance*.09));
- return {total,overshoot,distance};
-}
-
-function jellyFrames(current,target,forward,overshoot){
- const trailOvershoot=Math.min(4,overshoot*.14);
- const o2=overshoot*.58;
- const o3=overshoot*.26;
- const o4=overshoot*.08;
- const easeA='cubic-bezier(.34,.02,.16,1)';
- const easeB='cubic-bezier(.38,.01,.18,1)';
- const easeC='cubic-bezier(.3,.02,.2,1)';
- const easeD='cubic-bezier(.24,.04,.2,1)';
- const easeE='cubic-bezier(.18,.72,.22,1)';
-
- if(forward){
-  return [
-   {left:`${current.left}px`,right:`${current.right}px`,offset:0,easing:easeA},
-   // The far/right edge shoots beyond the destination while the rear edge stays put.
-   {left:`${current.left}px`,right:`${target.right-overshoot}px`,offset:.36,easing:easeB},
-   // It recoils too far; the trailing edge only now starts catching up.
-   {left:`${lerp(current.left,target.left,.45)}px`,right:`${target.right+o2}px`,offset:.58,easing:easeC},
-   // A smaller second overshoot creates the jelly wobble.
-   {left:`${lerp(current.left,target.left,.84)}px`,right:`${target.right-o3}px`,offset:.76,easing:easeD},
-   {left:`${target.left+trailOvershoot}px`,right:`${target.right+o4}px`,offset:.9,easing:easeE},
-   {left:`${target.left}px`,right:`${target.right}px`,offset:1}
-  ];
+ if(rect.width>0){
+  const left=Math.max(0,rect.left-containerRect.left);
+  const right=Math.max(0,containerRect.right-rect.right);
+  const width=Math.max(0,containerRect.width-left-right);
+  return {left,right,width,center:left+(width/2)};
  }
-
- return [
-  {left:`${current.left}px`,right:`${current.right}px`,offset:0,easing:easeA},
-  // Mirror image: the far/left edge leads.
-  {left:`${target.left-overshoot}px`,right:`${current.right}px`,offset:.36,easing:easeB},
-  {left:`${target.left+o2}px`,right:`${lerp(current.right,target.right,.45)}px`,offset:.58,easing:easeC},
-  {left:`${target.left-o3}px`,right:`${lerp(current.right,target.right,.84)}px`,offset:.76,easing:easeD},
-  {left:`${target.left+o4}px`,right:`${target.right+trailOvershoot}px`,offset:.9,easing:easeE},
-  {left:`${target.left}px`,right:`${target.right}px`,offset:1}
- ];
+ const left=parseFloat(indicator.style.left);
+ const right=parseFloat(indicator.style.right);
+ if(Number.isFinite(left)&&Number.isFinite(right)){
+  const width=Math.max(0,containerRect.width-left-right);
+  return {left,right,width,center:left+(width/2)};
+ }
+ const activeIndex=Number(container.dataset.activeIndex);
+ return segmentGeometry(container,Number.isFinite(activeIndex)?activeIndex:0);
 }
 
 function stopSegmentAnimation(container,indicator){
+ const visual=currentGeometry(container,indicator);
  const animation=segmentAnimations.get(container);
- if(!animation)return indicatorGeometry(container,indicator);
- const visual=indicatorGeometry(container,indicator);
- try{animation.cancel();}catch{}
- segmentAnimations.delete(container);
- indicator.style.left=`${visual.left}px`;
- indicator.style.right=`${visual.right}px`;
+ if(animation){
+  try{animation.cancel();}catch{}
+  segmentAnimations.delete(container);
+ }
+ if(visual)applyIndicator(indicator,visual);
  return visual;
+}
+
+function motionTiming(distancePx){
+ const total=Math.min(1180,Math.max(780,Math.round(780+distancePx*0.72)));
+ return {total};
+}
+
+// The leading side always moves first and never overshoots.
+// The trailing side waits, stretches the bubble, overshoots once, then eases back home.
+function buildSegmentFrames(previous,next,forward,overshoot){
+ const leadingMid=.57;
+ const trailingStart=.16;
+ const trailingOvershoot=.72;
+ const trailingSettle=.88;
+ const trailingEase='cubic-bezier(.22,.02,.18,1)';
+ const leadingEase='cubic-bezier(.24,.06,.18,1)';
+ const settleEase='cubic-bezier(.18,.62,.2,1)';
+
+ if(forward){
+  // Forward = right side leads (right offset shrinks); left side trails.
+  const leadMid=previous.right+(next.right-previous.right)*.72;
+  const trailMid=previous.left+(next.left-previous.left)*.42;
+  const trailOver=next.left+overshoot;
+  const trailReturn=next.left-Math.max(2,overshoot*.18);
+  return [
+   {offset:0,left:`${previous.left}px`,right:`${previous.right}px`,easing:leadingEase},
+   // Leading/right side accelerates first. Trailing/left edge stays put.
+   {offset:trailingStart,left:`${previous.left}px`,right:`${leadMid}px`,easing:leadingEase},
+   // Leading edge brakes into its final position without any overshoot.
+   {offset:leadingMid,left:`${trailMid}px`,right:`${next.right}px`,easing:trailingEase},
+   // Leading edge is parked. Trailing edge softly stretches past its target.
+   {offset:trailingOvershoot,left:`${trailOver}px`,right:`${next.right}px`,easing:'cubic-bezier(.2,.12,.16,1)'},
+   // Gentle recoil, deliberately a touch too far in the other direction.
+   {offset:trailingSettle,left:`${trailReturn}px`,right:`${next.right}px`,easing:settleEase},
+   // Long, soft landing.
+   {offset:1,left:`${next.left}px`,right:`${next.right}px`}
+  ];
+ }
+
+ // Backward = left side leads (left offset shrinks); right side trails.
+ const leadMid=previous.left+(next.left-previous.left)*.72;
+ const trailMid=previous.right+(next.right-previous.right)*.42;
+ const trailOver=next.right+overshoot;
+ const trailReturn=next.right-Math.max(2,overshoot*.18);
+ return [
+  {offset:0,left:`${previous.left}px`,right:`${previous.right}px`,easing:leadingEase},
+  {offset:trailingStart,left:`${leadMid}px`,right:`${previous.right}px`,easing:leadingEase},
+  {offset:leadingMid,left:`${next.left}px`,right:`${trailMid}px`,easing:trailingEase},
+  {offset:trailingOvershoot,left:`${next.left}px`,right:`${trailOver}px`,easing:'cubic-bezier(.2,.12,.16,1)'},
+  {offset:trailingSettle,left:`${next.left}px`,right:`${trailReturn}px`,easing:settleEase},
+  {offset:1,left:`${next.left}px`,right:`${next.right}px`}
+ ];
 }
 
 function updateSegment(container,index,count,animate=true){
  if(!container)return;
  const indicator=container.querySelector('.flag-segment-indicator');
  if(!indicator)return;
- const previous=Number(container.dataset.activeIndex);
- const next=Math.max(0,Math.min(count-1,index));
- const target=segmentGeometry(container,next);
- if(!target)return;
- const changed=Number.isFinite(previous)&&previous!==next;
- const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
- const current=stopSegmentAnimation(container,indicator);
+ const previousIndex=Number(container.dataset.activeIndex);
+ const nextIndex=Math.max(0,Math.min(count-1,index));
+ const nextGeometry=segmentGeometry(container,nextIndex);
+ if(!nextGeometry)return;
+ const hasPrevious=Number.isFinite(previousIndex);
+ const changed=hasPrevious&&previousIndex!==nextIndex;
+ const forward=!hasPrevious?true:nextIndex>previousIndex;
+ container.dataset.direction=forward?'forward':'backward';
+ container.dataset.activeIndex=String(nextIndex);
 
- container.dataset.activeIndex=String(next);
- container.dataset.direction=changed&&next<previous?'backward':'forward';
-
+ const previousGeometry=stopSegmentAnimation(container,indicator)||nextGeometry;
  const timer=segmentTimers.get(container);
  if(timer)window.clearTimeout(timer);
 
- if(!animate||!changed||reduced||typeof indicator.animate!=='function'){
-  indicator.style.left=`${target.left}px`;
-  indicator.style.right=`${target.right}px`;
+ if(!animate||!changed){
+  container.classList.add('is-segment-instant');
+  applyIndicator(indicator,nextGeometry);
+  requestAnimationFrame(()=>container.classList.remove('is-segment-instant'));
   container.classList.remove('is-segment-moving');
   return;
  }
 
- const forward=next>previous;
- const timing=motionTiming(container,current,target);
- container.style.setProperty('--segment-total-ms',`${timing.total}ms`);
+ const distancePx=Math.abs(nextGeometry.center-previousGeometry.center);
+ const {total}=motionTiming(distancePx);
+ const overshoot=Math.min(22,Math.max(8,Math.round(distancePx*0.10)));
+ const keyframes=buildSegmentFrames(previousGeometry,nextGeometry,forward,overshoot);
+
+ applyIndicator(indicator,previousGeometry);
+ container.classList.remove('is-segment-instant');
  container.classList.remove('is-segment-moving');
  void container.offsetWidth;
  container.classList.add('is-segment-moving');
+ container.style.setProperty('--segment-total-ms',`${total}ms`);
 
- const animation=indicator.animate(
-  jellyFrames(current,target,forward,timing.overshoot),
-  {duration:timing.total,easing:'linear',fill:'both'}
- );
+ const animation=indicator.animate(keyframes,{duration:total,easing:'linear',fill:'forwards'});
  segmentAnimations.set(container,animation);
-
- // Keep the final geometry in regular styles after the WAAPI animation releases its layer.
- indicator.style.left=`${target.left}px`;
- indicator.style.right=`${target.right}px`;
+ const token=`${Date.now()}-${Math.random()}`;
+ container.dataset.segmentToken=token;
 
  const finish=()=>{
-  if(segmentAnimations.get(container)===animation){
-   segmentAnimations.delete(container);
-   try{animation.cancel();}catch{}
-   container.classList.remove('is-segment-moving');
-  }
+  if(container.dataset.segmentToken!==token)return;
+  applyIndicator(indicator,nextGeometry);
+  if(segmentAnimations.get(container)===animation)segmentAnimations.delete(container);
+  try{animation.cancel();}catch{}
+  container.classList.remove('is-segment-moving');
  };
- animation.addEventListener('finish',finish,{once:true});
- animation.addEventListener('cancel',()=>{}, {once:true});
- const cleanup=window.setTimeout(finish,timing.total+90);
- segmentTimers.set(container,cleanup);
+
+ animation.finished.then(finish).catch(finish);
+ segmentTimers.set(container,window.setTimeout(()=>{
+  finish();
+  segmentTimers.delete(container);
+ },total+120));
 }
 
 function syncSegmentedControls(animate=false){

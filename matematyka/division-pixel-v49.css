@@ -1,13 +1,6 @@
-/* v49 — pixel-perfect rhythm for division.
-   The division board uses exactly the same 2px row/column gap as multiplication.
-   Cutting lines are overlays inside that existing gap and never change track size. */
-
-.quiz-stage[data-operation="divide"] .array,
-.quiz-stage[data-operation="divide"] .column-labels,
-.quiz-stage[data-operation="divide"] .row-labels,
-.quiz-stage[data-operation="divide"] .row-expressions {
-  row-gap: 2px !important;
-}
+/* v50 — one geometry and one separator renderer for division.
+   Horizontal rhythm stays identical to multiplication (2px). Cut rows reserve
+   their own 5px vertical gap in JS, while the line itself remains an overlay. */
 
 .quiz-stage[data-operation="divide"] .array,
 .quiz-stage[data-operation="divide"] .column-labels {
@@ -19,32 +12,40 @@
   aspect-ratio: auto !important;
 }
 
-/* Legacy separator styles must not alter a cell's border or shadow. */
-.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator,
-.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
-  border-bottom-color: inherit !important;
+/* All obsolete pseudo separators are disabled. Only .division-cut-overlay-v50
+   may draw a cutting line. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after,
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+  content: none !important;
+  display: none !important;
 }
 
-/* Keep the visual halo symmetric so the perceived bottom gap is not smaller
-   than the horizontal gap. */
-.quiz-stage[data-operation="divide"] .array-cell.is-active {
+/* Use exactly the same active-cell edge treatment as multiplication. The larger
+   cut gap now gives the shadow room, so no special division halo is needed. */
+.quiz-stage[data-operation="divide"] .array-cell.is-active,
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
   position: relative;
   z-index: 2 !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.20),
-    0 0 5px rgba(71,85,170,.16) !important;
+  border-color: rgba(74,94,216,.76) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), 0 2px 7px rgba(71,85,170,.18) !important;
 }
 
 .quiz-stage[data-operation="divide"] .division-cut-overlay {
   position: absolute;
-  z-index: 1 !important;
+  z-index: 0 !important;
   height: 1px !important;
   border-radius: 999px;
   background: rgba(119,136,238,.72);
+  box-shadow: none !important;
   pointer-events: none;
 }
 
 @media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.is-active,
+  .quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+    border-color: rgba(158,169,255,.78) !important;
+  }
+
   .quiz-stage[data-operation="divide"] .division-cut-overlay {
     background: rgba(154,167,255,.76);
   }

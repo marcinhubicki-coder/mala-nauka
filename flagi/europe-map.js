@@ -8,6 +8,12 @@
     'south-america': 'assets/maps/south-america.svg',
     oceania: 'assets/maps/oceania.svg'
   });
+  const VIEWBOX_OVERRIDES = Object.freeze({
+    // asia.svg keeps the complete source geometry, but its original 760-wide viewBox
+    // has a large empty strip east of Japan. This tighter educational framing keeps
+    // Turkey / the Middle East and Japan while giving the continent much more scale.
+    asia: '35 0 555 420'
+  });
   const LABELS = Object.freeze({
     europe: { pl: 'Europy', en: 'Europe' },
     asia: { pl: 'Azji', en: 'Asia' },
@@ -152,6 +158,7 @@
       svg.setAttribute('aria-hidden', interactive ? 'false' : 'true');
       svg.setAttribute('focusable', 'false');
       svg.dataset.continent = continent;
+      if (VIEWBOX_OVERRIDES[continent]) svg.setAttribute('viewBox', VIEWBOX_OVERRIDES[continent]);
 
       const active = svg.querySelector(`[data-country="${countryId}"]`);
       if (!active) throw new Error(`Missing country ${countryId} on ${continent}`);

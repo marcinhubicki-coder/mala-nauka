@@ -17,7 +17,7 @@
     const app = document.querySelector('#app');
     if (!app) return;
 
-    function restartClass(node, className, timeout = 560) {
+    function restartClass(node, className, timeout = 840) {
       if (!node) return;
       node.classList.remove(className);
       void node.offsetWidth;
@@ -30,9 +30,6 @@
       let created = false;
       let reattached = false;
 
-      /* renderGame() wymienia wnętrze #app, ale zachowujemy dokładnie ten sam
-         element ikony w pamięci. Przy zwykłej zmianie pytania przepinamy go w
-         mikro-zadaniu, zanim Safari narysuje klatkę bez badge'a. */
       if (!card && persistentCard) {
         card = persistentCard;
         reattached = true;
@@ -114,7 +111,7 @@
         window.setTimeout(() => {
           badge.classList.remove('is-bump', 'is-growing');
           value.classList.remove('is-counting');
-        }, 560);
+        }, crossedTen ? 760 : 560);
       }
 
       lastRenderedCount = correctCount;

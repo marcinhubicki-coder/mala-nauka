@@ -1,0 +1,128 @@
+/* v45 — unclipped wrong-answer feedback, safer division geometry, slower organic score badge. */
+
+/* Old row-level pseudo separators from stability-v30 and division-polish must not
+   coexist with the overlay separator. They were also responsible for stealing
+   the full active-cell shadow on every row except the last one. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after,
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+  content: none !important;
+  display: none !important;
+}
+
+.quiz-stage[data-operation="divide"] .array {
+  position: relative;
+  overflow: visible;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell {
+  position: relative;
+  z-index: 1;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator {
+  border-bottom-color: rgba(94,115,232,.29) !important;
+  box-shadow: none !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+  border-color: rgba(74,94,216,.76) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), 0 2px 7px rgba(71,85,170,.18) !important;
+}
+
+.division-cut-overlay {
+  position: absolute;
+  z-index: 0;
+  height: 1px;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72);
+  pointer-events: none;
+}
+
+/* Wrong answer is rendered as a fixed ghost, so no parent paint containment or
+   overflow:hidden can clip the 0.5 s shake or its red halo. */
+.answer.wrong-preview-source {
+  opacity: 0 !important;
+}
+
+.wrong-preview-ghost {
+  position: fixed !important;
+  z-index: 2147483000 !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  contain: none !important;
+  overflow: visible !important;
+  animation: wrong-answer-shake-v45 .50s cubic-bezier(.36,.07,.19,.97) both !important;
+  background: rgba(88,34,45,.78) !important;
+  border-color: rgba(228,105,116,.68) !important;
+  color: #f47b83 !important;
+  box-shadow: 0 12px 30px rgba(86,29,40,.28), inset 0 0 0 1px rgba(255,255,255,.05) !important;
+}
+
+.quiz-stage.wrong-preview-running .answer:not(.wrong-preview-source) {
+  pointer-events: none;
+}
+
+@keyframes wrong-answer-shake-v45 {
+  0%   { transform: translateX(0) scale(1); }
+  12%  { transform: translateX(-5px) scale(1.012); }
+  24%  { transform: translateX(5px) scale(1.012); }
+  36%  { transform: translateX(-4px) scale(1.008); }
+  48%  { transform: translateX(4px) scale(1.008); }
+  62%  { transform: translateX(-3px) scale(1.004); }
+  76%  { transform: translateX(2px) scale(1.002); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+/* Score badge: 50% slower than v44 and with a 115% overshoot before a soft
+   settle. Width expansion at 10+ uses the same organic tempo. */
+.mode-score-badge {
+  transition:
+    width .63s cubic-bezier(.18,.86,.24,1.08),
+    opacity .24s ease,
+    transform .42s cubic-bezier(.18,.88,.24,1.18) !important;
+}
+
+.mode-score-badge.is-entering,
+.mode-score-badge.is-rebuilding {
+  animation: score-badge-organic-in-v45 .78s cubic-bezier(.18,.86,.24,1.12) both !important;
+}
+
+.mode-score-badge.is-growing {
+  animation: score-badge-organic-grow-v45 .69s cubic-bezier(.18,.86,.24,1.08) both !important;
+}
+
+@keyframes score-badge-organic-in-v45 {
+  0%   { opacity: 0; transform: scale(.54); }
+  58%  { opacity: 1; transform: scale(1.15); }
+  82%  { opacity: 1; transform: scale(.985); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes score-badge-organic-grow-v45 {
+  0%   { transform: scale(1,1); }
+  48%  { transform: scale(1.12,1.065); }
+  74%  { transform: scale(.988,.994); }
+  100% { transform: scale(1,1); }
+}
+
+@media (prefers-color-scheme: dark) {
+  .division-cut-overlay {
+    background: rgba(154,167,255,.76);
+  }
+
+  .quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+    border-color: rgba(158,169,255,.78) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), 0 2px 7px rgba(71,85,170,.18) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrong-preview-ghost,
+  .mode-score-badge.is-entering,
+  .mode-score-badge.is-rebuilding,
+  .mode-score-badge.is-growing {
+    animation: none !important;
+  }
+}

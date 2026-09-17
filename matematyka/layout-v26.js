@@ -2,7 +2,7 @@
   const processedExpressions = new WeakSet();
   const observedExplainers = new WeakSet();
   const CELL_GAP = 2;
-  const CUT_PAD = 7;
+  const CUT_PAD = 5;
   const REFERENCE_EXPRESSION = '90\u2009+\u20099\u2009=\u200999';
 
   function number(text) {

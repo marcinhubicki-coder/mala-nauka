@@ -70,10 +70,90 @@ function currentFlagStage(startDifficulty,session,pools){
  return session.flagStage;
 }
 
-function flagQuestion(flag,optionRegion,config,random,difficulty){
+const WORLD_EUROPE=FLAGS.filter(flag=>flag.continent==='europe').sort((a,b)=>a.distanceKm-b.distanceKm||a.distanceRank-b.distanceRank);
+
+function ensureFlagUsed(session){
+ if(!session)return new Set();
+ if(!(session.flagUsedIds instanceof Set))session.flagUsedIds=new Set();
+ return session.flagUsedIds;
+}
+
+function randomPick(items,random){
+ return items.length?items[Math.floor(random()*items.length)]:null;
+}
+
+function europeFrontierSize(questionNumber){
+ if(questionNumber<=12)return Math.min(14,WORLD_EUROPE.length);
+ if(questionNumber<=28)return Math.min(26,WORLD_EUROPE.length);
+ if(questionNumber<=46)return Math.min(38,WORLD_EUROPE.length);
+ return WORLD_EUROPE.length;
+}
+
+function jumpRankBand(questionNumber){
+ if(questionNumber<=20)return [60,110];
+ if(questionNumber<=40)return [80,140];
+ if(questionNumber<=60)return [105,165];
+ return [130,195];
+}
+
+function scheduleNextJump(session,questionNumber,random){
+ // A distant surprise every 5–7 regular questions, never twice in a row.
+ session.flagNextJumpAt=questionNumber+6+Math.floor(random()*3);
+}
+
+function pickWorldCurriculumFlag(session,random){
+ const used=ensureFlagUsed(session);
+ const questionNumber=(session?.question||0)+1;
+ if(!Number.isInteger(session?.flagNextJumpAt))scheduleNextJump(session,0,random);
+
+ let unused=FLAGS.filter(flag=>!used.has(flag.id));
+ if(!unused.length){
+  used.clear();
+  unused=[...FLAGS];
+ }
+
+ const nonEuropean=unused.filter(flag=>flag.continent!=='europe');
+ const jumpDue=questionNumber>=session.flagNextJumpAt&&nonEuropean.length>0;
+ let flag=null;
+ let isDistanceJump=false;
+ let frontierSize=europeFrontierSize(questionNumber);
+
+ if(jumpDue){
+  const [minRank,maxRank]=jumpRankBand(questionNumber);
+  let jumpPool=nonEuropean.filter(item=>item.distanceRank>=minRank&&item.distanceRank<=maxRank);
+  if(!jumpPool.length)jumpPool=nonEuropean;
+  flag=randomPick(jumpPool,random);
+  isDistanceJump=true;
+  scheduleNextJump(session,questionNumber,random);
+ }else{
+  const unusedEurope=WORLD_EUROPE.filter(item=>!used.has(item.id));
+  if(unusedEurope.length){
+   let localPool=WORLD_EUROPE.slice(0,frontierSize).filter(item=>!used.has(item.id));
+   if(!localPool.length)localPool=unusedEurope;
+   localPool.sort((a,b)=>a.distanceKm-b.distanceKm||a.distanceRank-b.distanceRank);
+   // Randomness stays local: choose from the next handful of not-yet-seen countries.
+   flag=randomPick(localPool.slice(0,Math.min(8,localPool.length)),random);
+  }else{
+   // After Europe is exhausted, keep expanding outwards from Poland without repeats.
+   const nearest=[...unused].sort((a,b)=>a.distanceKm-b.distanceKm||a.distanceRank-b.distanceRank);
+   flag=randomPick(nearest.slice(0,Math.min(12,nearest.length)),random);
+  }
+ }
+
+ if(!flag)flag=randomPick(unused,random);
+ if(!flag)throw Error('Brak flag dla tego wyboru.');
+ used.add(flag.id);
+ session.flagLastWasDistanceJump=isDistanceJump;
+ session.flagEuropeFrontier=frontierSize;
+ session.flagCountriesSeen=used.size;
+ return {flag,isDistanceJump,questionNumber};
+}
+
+function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
  return {kind:'flags',text:'Co to za kraj?',image:flag.flagSvg,answer:flag.country,full:flag.country,
   countryId:flag.id,continent:flag.continent,capital:flag.capital,distanceKm:flag.distanceKm,distanceRank:flag.distanceRank,
   startDifficulty:config.category==='all'?1:config.difficulty,
+  distanceJump:Boolean(extra.distanceJump),countriesSeen:Number(extra.countriesSeen)||0,
   options:[flag.country,...shuffle(optionRegion.filter(other=>other.id!==flag.id),random).slice(0,3).map(other=>other.country)],
   prompt:'Który kraj ma taką flagę?',difficulty};
 }
@@ -96,16 +176,37 @@ export function createSource(mode, config, words, random = Math.random) {
   const startDifficulty=allCountries?1:config.difficulty;
   const pools=splitFlagPools(region,allCountries);
   return session=>{
+   if(allCountries){
+    const picked=pickWorldCurriculumFlag(session,random);
+    const flag=picked.flag;
+    const optionRegion=flag.continent==='europe'
+     ? WORLD_EUROPE
+     : FLAGS.filter(other=>other.continent===flag.continent);
+    return flagQuestion(flag,optionRegion.length>=4?optionRegion:FLAGS,config,random,flag.difficulty,{
+     distanceJump:picked.isDistanceJump,
+     countriesSeen:session?.flagCountriesSeen
+    });
+   }
+
    const level=currentFlagStage(startDifficulty,session,pools);
    let candidates=pools.get(level)||[];
+   const used=ensureFlagUsed(session);
+   const unseen=candidates.filter(flag=>!used.has(flag.id));
+   if(unseen.length)candidates=unseen;
+   else{
+    const remaining=region.filter(flag=>!used.has(flag.id));
+    if(remaining.length)candidates=remaining;
+    else used.clear();
+   }
    const previousId=session?.current?.countryId;
    if(candidates.length>1&&previousId)candidates=candidates.filter(flag=>flag.id!==previousId);
-   const flag=candidates[Math.floor(random()*candidates.length)]||region[Math.floor(random()*region.length)];
+   const flag=randomPick(candidates,random)||randomPick(region,random);
    if(!flag)throw Error('Brak flag dla tego wyboru.');
+   used.add(flag.id);
    const optionRegion=[1,2,3]
     .filter(optionLevel=>optionLevel>=startDifficulty&&optionLevel<=level)
     .flatMap(optionLevel=>pools.get(optionLevel)||[]);
-   return flagQuestion(flag,optionRegion.length>=4?optionRegion:region,config,random,level);
+   return flagQuestion(flag,optionRegion.length>=4?optionRegion:region,config,random,flag.playDifficulty||level,{countriesSeen:used.size});
   };
  }
  if(mode==='reading') return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));

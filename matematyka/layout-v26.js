@@ -2,13 +2,7 @@
   const processedExpressions = new WeakSet();
   const observedExplainers = new WeakSet();
   const CELL_GAP = 2;
-  const CUT_EXTRA = 1;
   const REFERENCE_EXPRESSION = '90\u2009+\u20099\u2009=\u200999';
-
-  function number(text) {
-    const value = Number(String(text || '').replace(/[^0-9-]/g, ''));
-    return Number.isFinite(value) ? value : null;
-  }
 
   function wrapExpressions(stage) {
     if (processedExpressions.has(stage)) return;
@@ -128,42 +122,27 @@
     const cellSize = firstCell.getBoundingClientRect().width;
     if (!cellSize) return;
 
-    const isDivision = stage.dataset.operation === 'divide';
-    const divisor = isDivision ? number(stage.querySelector('.equation-right')?.textContent) : 0;
-    const tracks = Array.from({ length: 10 }, (_, index) => {
-      const row = index + 1;
-      const hasCutAfter = isDivision && divisor && row < divisor;
-      return `${cellSize + (hasCutAfter ? CUT_EXTRA : 0)}px`;
-    }).join(' ');
-
-    /* Ten sam bazowy rytm co w mnożeniu: 2 px między wszystkimi rzędami.
-       Separator dzielenia dostaje tylko 1 dodatkowy piksel toru. */
+    const tracks = `repeat(10, ${cellSize}px)`;
     [array, rowLabels, rowExpressions].forEach(grid => {
       grid.style.gridTemplateRows = tracks;
       grid.style.rowGap = `${CELL_GAP}px`;
     });
 
     explainer.style.setProperty('--stable-cell-size', `${cellSize}px`);
-
-    if (isDivision) {
-      const cutGap = CELL_GAP + CUT_EXTRA;
-      const overhang = cellSize / 3;
-      explainer.style.setProperty('--division-cell-size', `${cellSize}px`);
-      explainer.style.setProperty('--division-cut-pad', `${cutGap}px`);
-      explainer.style.setProperty('--division-cut-half-pad', `${cutGap / 2}px`);
-      explainer.style.setProperty('--division-cut-overhang', `${overhang}px`);
-      explainer.style.setProperty('--division-cut-left', `${-overhang}px`);
-      explainer.style.setProperty('--division-cut-extra', `${overhang * 2}px`);
-    }
   }
 
   function layoutStage(stage) {
     if (!stage?.isConnected || !stage.classList.contains('has-explainer')) return;
-    if (stage.dataset.geometryLocked === '1') return;
 
     wrapExpressions(stage);
     fitRowLabels(stage);
     fitExpressionColumn(stage);
+
+    /* Dzielenie ma od v51 jednego właściciela geometrii: division-grid-v51.js.
+       Ten wspólny layout zajmuje się tylko tekstem i szerokościami kolumn. */
+    if (stage.dataset.operation === 'divide') return;
+    if (stage.dataset.geometryLocked === '1') return;
+
     setStableTracks(stage);
 
     const explainer = stage.querySelector('.explainer');
@@ -178,9 +157,7 @@
   }
 
   function scan() {
-    document.querySelectorAll('.quiz-stage.has-explainer').forEach(stage => {
-      if (stage.dataset.geometryLocked !== '1') layoutStage(stage);
-    });
+    document.querySelectorAll('.quiz-stage.has-explainer').forEach(layoutStage);
   }
 
   let raf = 0;

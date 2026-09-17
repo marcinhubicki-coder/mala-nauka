@@ -1,119 +1,229 @@
-const STYLE_ID='flags-adaptive-difficulty-styles';
-const MIGRATION_KEY='malaNauka.flags.world-default.v1';
 const root=document.querySelector('#app');
-const LABELS={1:'Łatwe',2:'Średnie',3:'Trudne'};
+const STORAGE_KEY='malaNauka.v1.flagsWizardV2';
+const GAME_TYPES=[
+ ['flags','Flagi'],
+ ['countries','Państwa'],
+ ['capitals','Stolice']
+];
+const CONTINENTS=[
+ ['europe','Europa'],
+ ['asia','Azja'],
+ ['africa','Afryka'],
+ ['north-america','Ameryka Północna'],
+ ['south-america','Ameryka Południowa'],
+ ['oceania','Oceania']
+];
+const START_COPY={
+ 60:'Szybka akcja!',
+ 120:'Zaczynamy!',
+ 180:'Dłuższa misja!',
+ 300:'Jesteś pewien?'
+};
+const NOTES={
+ flags:'Rozpoznawaj flagi i odkrywaj, gdzie leżą państwa.',
+ countries:'Patrz na nazwę państwa i wybierz jego flagę.',
+ capitals:'Połącz stolicę z właściwym państwem.'
+};
 
-if(!document.getElementById(STYLE_ID)){
- const style=document.createElement('style');
- style.id=STYLE_ID;
- style.textContent=`
-  #app[data-mode="flags"] fieldset.flag-difficulty-hidden{display:none!important}
-  #app[data-mode="flags"] .flag-difficulty-slider{display:grid;gap:12px;padding:2px 2px 0}
-  #app[data-mode="flags"] .flag-difficulty-readout{display:flex;align-items:baseline;justify-content:space-between;gap:12px;color:#6d7d93;font-size:12px}
-  #app[data-mode="flags"] .flag-difficulty-readout strong{font-size:15px;color:#2b465f}
-  #app[data-mode="flags"] .flag-difficulty-range{--flag-slider-progress:0%;width:100%;height:30px;margin:0;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;touch-action:pan-y}
-  #app[data-mode="flags"] .flag-difficulty-range::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:linear-gradient(90deg,#4f9a82 0 var(--flag-slider-progress),#e5ebf2 var(--flag-slider-progress) 100%);box-shadow:inset 0 0 0 1px #dce4ed}
-  #app[data-mode="flags"] .flag-difficulty-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:28px;height:28px;margin-top:-10px;border:4px solid #fff;border-radius:50%;background:#4f9a82;box-shadow:0 3px 10px rgba(32,55,91,.20)}
-  #app[data-mode="flags"] .flag-difficulty-range::-moz-range-track{height:8px;border-radius:999px;background:#e5ebf2}
-  #app[data-mode="flags"] .flag-difficulty-range::-moz-range-progress{height:8px;border-radius:999px;background:#4f9a82}
-  #app[data-mode="flags"] .flag-difficulty-range::-moz-range-thumb{width:20px;height:20px;border:4px solid #fff;border-radius:50%;background:#4f9a82;box-shadow:0 3px 10px rgba(32,55,91,.20)}
-  #app[data-mode="flags"] .flag-difficulty-labels{display:grid;grid-template-columns:repeat(3,1fr);margin-top:-8px;font-size:11px;color:#8794a6;font-weight:700}
-  #app[data-mode="flags"] .flag-difficulty-labels span{cursor:pointer;user-select:none}
-  #app[data-mode="flags"] .flag-difficulty-labels span:nth-child(2){text-align:center}
-  #app[data-mode="flags"] .flag-difficulty-labels span:last-child{text-align:right}
-  #app[data-mode="flags"] .flag-difficulty-labels span.is-active{color:#397b67;font-weight:850}
-  #app[data-mode="flags"] .flag-difficulty-help{font-size:10px;line-height:1.4;color:#8190a4;text-align:center;margin-top:1px}
- `;
- document.head.append(style);
-}
+let state=null;
 
-function updateSlider(wrapper,value){
- const level=Math.min(3,Math.max(1,Number(value)||1));
- const input=wrapper?.querySelector('.flag-difficulty-range');
- if(!input)return;
- input.value=String(level);
- input.style.setProperty('--flag-slider-progress',`${(level-1)*50}%`);
- wrapper.querySelector('[data-current-level]').textContent=LABELS[level];
- wrapper.querySelectorAll('[data-level]').forEach(label=>label.classList.toggle('is-active',Number(label.dataset.level)===level));
-}
-
-function migrateDefaultCategory(select){
+function readState(fallbackDuration=60){
  try{
-  if(localStorage.getItem(MIGRATION_KEY))return;
-  localStorage.setItem(MIGRATION_KEY,'1');
-  if(select.value!=='all'){
-   select.value='all';
-   select.dispatchEvent(new Event('change',{bubbles:true}));
+  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
+  if(saved&&typeof saved==='object'){
+   const continents=Array.isArray(saved.continents)?saved.continents.filter(id=>CONTINENTS.some(([key])=>key===id)):[];
+   return {
+    gameType:GAME_TYPES.some(([id])=>id===saved.gameType)?saved.gameType:'flags',
+    scope:saved.scope==='continents'?'continents':'world',
+    continents:continents.length?continents:['europe'],
+    duration:[60,120,180,300].includes(Number(saved.duration))?Number(saved.duration):fallbackDuration
+   };
   }
- }catch{
-  // Keep the saved selection when storage is unavailable.
+ }catch{}
+ return {gameType:'flags',scope:'world',continents:['europe'],duration:fallbackDuration};
+}
+
+function saveState(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}
+}
+
+function encodeCategory(){
+ if(state.scope!=='continents'||state.continents.length===CONTINENTS.length)return `flagcfg:${state.gameType}:world:`;
+ return `flagcfg:${state.gameType}:continents:${state.continents.join(',')}`;
+}
+
+function escape(value){
+ return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
+function gameTypeChoices(){
+ return GAME_TYPES.map(([id,label])=>`
+  <label class="flag-v2-choice">
+   <input type="radio" name="flagGameType" value="${id}" ${state.gameType===id?'checked':''}>
+   <span>${label}</span>
+  </label>`).join('');
+}
+
+function scopeChoices(){
+ return `
+  <div class="flag-scope-toggle" role="radiogroup" aria-label="Zakres państw">
+   <label>
+    <input type="radio" name="flagScope" value="world" ${state.scope==='world'?'checked':''}>
+    <span>Cały świat</span>
+   </label>
+   <label>
+    <input type="radio" name="flagScope" value="continents" ${state.scope==='continents'?'checked':''}>
+    <span>Kontynenty</span>
+   </label>
+  </div>`;
+}
+
+function continentChoices(){
+ return CONTINENTS.map(([id,label])=>`
+  <label class="flag-continent-chip ${id.includes('america')?'wide':''}">
+   <input type="checkbox" name="flagContinents" value="${id}" ${state.continents.includes(id)?'checked':''}>
+   <span>${label}</span>
+  </label>`).join('');
+}
+
+function durationChoices(){
+ return [60,120,180,300].map(seconds=>`
+  <label class="choice">
+   <input type="radio" name="duration" value="${seconds}" ${state.duration===seconds?'checked':''}>
+   <span>${seconds/60} min</span>
+  </label>`).join('');
+}
+
+function updateStartButton(animate=false){
+ const button=root.querySelector('.start-button');
+ if(!button)return;
+ const next=START_COPY[state.duration]||'Zaczynamy!';
+ let copy=button.querySelector('[data-start-copy]');
+ if(!copy){
+  button.innerHTML='<span data-start-copy></span><span aria-hidden="true">→</span>';
+  copy=button.querySelector('[data-start-copy]');
+ }
+ if(copy.textContent!==next){
+  copy.textContent=next;
+  if(animate){
+   button.classList.remove('flag-start-pop');
+   void button.offsetWidth;
+   button.classList.add('flag-start-pop');
+  }
  }
 }
 
-function syncVisibility(){
- if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
- const select=root.querySelector('#category');
- const range=root.querySelector('.flag-difficulty-range');
- const fieldset=range?.closest('fieldset');
- if(!select||!range||!fieldset)return;
-
- const allCountries=select.value==='all';
- fieldset.hidden=allCountries;
- fieldset.classList.toggle('flag-difficulty-hidden',allCountries);
- if(allCountries) fieldset.style.setProperty('display','none','important');
- else fieldset.style.removeProperty('display');
- fieldset.setAttribute('aria-hidden',allCountries?'true':'false');
-
- if(allCountries&&Number(range.value)!==1){
-  updateSlider(range.closest('.flag-difficulty-slider'),1);
-  range.dispatchEvent(new Event('input',{bubbles:true}));
-  range.dispatchEvent(new Event('change',{bubbles:true}));
- }
-
- const timeInput=root.querySelector('input[name="duration"]');
- const timeFieldset=timeInput?.closest('fieldset');
- const timeDot=timeFieldset?.querySelector('legend .step-dot');
- if(timeDot)timeDot.textContent=allCountries?'2':'3';
+function updateNote(){
+ const note=root.querySelector('.wizard-note');
+ if(note)note.textContent=NOTES[state.gameType]||NOTES.flags;
 }
 
-function enhance(){
- if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
- const select=root.querySelector('#category');
- const difficultyInput=root.querySelector('input[name="difficulty"]');
- if(!select||!difficultyInput)return;
-
- migrateDefaultCategory(select);
-
- const fieldset=difficultyInput.closest('fieldset');
- const choices=fieldset?.querySelector('.choices.levels, .flag-difficulty-slider');
- if(!fieldset||!choices)return;
-
- if(choices.dataset.adaptive!=='true'){
-  const checked=fieldset.querySelector('input[name="difficulty"]:checked');
-  const value=Number(checked?.value||difficultyInput.value||1);
-  const legend=fieldset.querySelector('legend');
-  if(legend)legend.innerHTML='<span class="step-dot">2</span>Poziom startowy';
-  choices.dataset.adaptive='true';
-  choices.className='flag-difficulty-slider';
-  choices.innerHTML=`
-   <div class="flag-difficulty-readout"><span>Zacznij od</span><strong data-current-level></strong></div>
-   <input class="flag-difficulty-range" type="range" name="difficulty" min="1" max="3" step="1" value="${value}" aria-label="Poziom startowy">
-   <div class="flag-difficulty-labels"><span data-level="1">Łatwe</span><span data-level="2">Średnie</span><span data-level="3">Trudne</span></div>
-   <p class="flag-difficulty-help">W obrębie kontynentu poziomy biegną od krajów najbliższych Polsce do najdalszych.</p>`;
-  const range=choices.querySelector('.flag-difficulty-range');
-  updateSlider(choices,value);
-  range.addEventListener('input',()=>updateSlider(choices,range.value));
-  choices.querySelectorAll('[data-level]').forEach(label=>label.addEventListener('click',()=>{
-   updateSlider(choices,label.dataset.level);
-   range.dispatchEvent(new Event('change',{bubbles:true}));
-  }));
+function syncPanel(){
+ const panel=root.querySelector('[data-continent-panel]');
+ const open=state.scope==='continents';
+ if(panel){
+  panel.classList.toggle('is-open',open);
+  panel.setAttribute('aria-hidden',open?'false':'true');
  }
+ root.querySelectorAll('input[name="flagScope"]').forEach(input=>{input.checked=input.value===state.scope;});
+}
 
- syncVisibility();
+function syncHidden(dispatch=true){
+ const category=root.querySelector('input[name="category"]');
+ if(!category)return;
+ const next=encodeCategory();
+ const changed=category.value!==next;
+ category.value=next;
+ saveState();
+ if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
+}
+
+function setWorldFromAllContinents(){
+ if(state.continents.length!==CONTINENTS.length)return false;
+ state.scope='world';
+ state.continents=['europe'];
+ return true;
+}
+
+function install(){
+ if(!root||root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
+ const card=root.querySelector('.setup-card');
+ if(!card||card.dataset.flagsWizardV2==='true')return;
+
+ const existingDuration=Number(root.querySelector('input[name="duration"]:checked')?.value)||60;
+ state=state||readState(existingDuration);
+ if(![60,120,180,300].includes(state.duration))state.duration=existingDuration;
+
+ card.dataset.flagsWizardV2='true';
+ card.classList.add('flag-wizard-v2');
+ card.innerHTML=`
+  <input id="category" type="hidden" name="category" value="${escape(encodeCategory())}">
+  <input type="hidden" name="difficulty" value="1">
+
+  <fieldset class="flag-v2-section flag-v2-game">
+   <legend><span class="step-dot">1</span>Rodzaj rozgrywki</legend>
+   <div class="flag-v2-game-grid">${gameTypeChoices()}</div>
+  </fieldset>
+
+  <fieldset class="flag-v2-section flag-v2-scope">
+   <legend><span class="step-dot">2</span>Zakres</legend>
+   ${scopeChoices()}
+   <div class="flag-continent-panel ${state.scope==='continents'?'is-open':''}" data-continent-panel aria-hidden="${state.scope==='continents'?'false':'true'}">
+    <div class="flag-continent-grid">${continentChoices()}</div>
+   </div>
+  </fieldset>
+
+  <fieldset class="flag-v2-section flag-v2-time">
+   <legend><span class="step-dot">3</span>Jak długo dasz radę?</legend>
+   <div class="choices four">${durationChoices()}</div>
+  </fieldset>`;
+
+ updateStartButton(false);
+ updateNote();
+ syncPanel();
+ syncHidden(true);
 }
 
 root?.addEventListener('change',event=>{
- if(event.target?.id==='category')requestAnimationFrame(()=>requestAnimationFrame(syncVisibility));
+ if(root.dataset.mode!=='flags'||root.dataset.view!=='wizard'||!state)return;
+ const target=event.target;
+ if(target?.name==='flagGameType'){
+  state.gameType=target.value;
+  updateNote();
+  syncHidden(true);
+  return;
+ }
+ if(target?.name==='flagScope'){
+  state.scope=target.value==='continents'?'continents':'world';
+  if(state.scope==='continents'&&!state.continents.length)state.continents=['europe'];
+  syncPanel();
+  syncHidden(true);
+  return;
+ }
+ if(target?.name==='flagContinents'){
+  const checked=[...root.querySelectorAll('input[name="flagContinents"]:checked')].map(input=>input.value);
+  if(!checked.length){
+   state.continents=['europe'];
+   const europe=root.querySelector('input[name="flagContinents"][value="europe"]');
+   if(europe)europe.checked=true;
+  }else{
+   state.continents=checked;
+  }
+  const switched=setWorldFromAllContinents();
+  syncPanel();
+  syncHidden(true);
+  if(switched)requestAnimationFrame(syncPanel);
+  return;
+ }
+ if(target?.name==='duration'){
+  state.duration=Number(target.value)||60;
+  saveState();
+  updateStartButton(true);
+ }
 });
-const observer=new MutationObserver(()=>requestAnimationFrame(enhance));
-if(root){observer.observe(root,{childList:true,subtree:true});enhance();}
+
+const observer=new MutationObserver(()=>requestAnimationFrame(install));
+if(root){
+ observer.observe(root,{childList:true,subtree:true});
+ install();
+}

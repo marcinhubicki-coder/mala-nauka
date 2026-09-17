@@ -1,0 +1,194 @@
+#app[data-mode="flags"][data-view="wizard"] .setup-card.flag-wizard-v2{
+  padding:18px 18px 20px;
+}
+
+#app[data-mode="flags"] .flag-v2-section{
+  border:0;
+  padding:0;
+  margin:0;
+}
+
+#app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
+  margin-top:24px;
+}
+
+#app[data-mode="flags"] .flag-v2-section legend{
+  width:100%;
+  margin-bottom:12px;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+
+#app[data-mode="flags"] .flag-v2-choice,
+#app[data-mode="flags"] .flag-scope-toggle label,
+#app[data-mode="flags"] .flag-continent-chip{
+  position:relative;
+  display:flex;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+
+#app[data-mode="flags"] .flag-v2-choice input,
+#app[data-mode="flags"] .flag-scope-toggle input,
+#app[data-mode="flags"] .flag-continent-chip input{
+  position:absolute;
+  inline-size:1px;
+  block-size:1px;
+  opacity:0;
+  pointer-events:none;
+}
+
+#app[data-mode="flags"] .flag-v2-choice span{
+  display:grid;
+  place-items:center;
+  width:100%;
+  min-height:50px;
+  padding:9px 5px;
+  border:1px solid #dfe6f0;
+  border-radius:14px;
+  background:#f8faff;
+  color:#20375b;
+  font-size:13px;
+  line-height:1.15;
+  font-weight:800;
+  transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
+}
+
+#app[data-mode="flags"] .flag-v2-choice input:checked + span{
+  border:2px solid #549781;
+  padding:8px 4px;
+  background:#e4f4ed;
+  color:#256b58;
+}
+
+#app[data-mode="flags"] .flag-scope-toggle{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4px;
+  padding:4px;
+  border:1px solid #dfe6f0;
+  border-radius:16px;
+  background:#f2f5f9;
+}
+
+#app[data-mode="flags"] .flag-scope-toggle span{
+  display:grid;
+  place-items:center;
+  min-height:43px;
+  padding:8px 10px;
+  border-radius:12px;
+  color:#697a91;
+  font-size:12px;
+  font-weight:800;
+  transition:background .24s ease,color .24s ease,box-shadow .24s ease,transform .24s ease;
+}
+
+#app[data-mode="flags"] .flag-scope-toggle input:checked + span{
+  background:#fff;
+  color:#2f745d;
+  box-shadow:0 3px 10px rgba(32,55,91,.08);
+}
+
+#app[data-mode="flags"] .flag-continent-panel{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-5px);
+  margin-top:0;
+  transition:max-height .34s cubic-bezier(.2,.8,.25,1),opacity .24s ease,transform .34s cubic-bezier(.2,.8,.25,1),margin-top .34s ease;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open{
+  max-height:210px;
+  opacity:1;
+  transform:translateY(0);
+  margin-top:12px;
+}
+
+#app[data-mode="flags"] .flag-continent-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+#app[data-mode="flags"] .flag-continent-chip{
+  flex:1 1 29%;
+}
+
+#app[data-mode="flags"] .flag-continent-chip.wide{
+  flex-basis:46%;
+}
+
+#app[data-mode="flags"] .flag-continent-chip span{
+  display:grid;
+  place-items:center;
+  min-height:37px;
+  width:100%;
+  padding:7px 10px;
+  border:1px solid #dfe6f0;
+  border-radius:999px;
+  background:#f8faff;
+  color:#607086;
+  font-size:10.5px;
+  line-height:1.15;
+  font-weight:750;
+  text-align:center;
+  transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
+}
+
+#app[data-mode="flags"] .flag-continent-chip input:checked + span{
+  border-color:#79b49e;
+  background:#e4f4ed;
+  color:#256b58;
+  font-weight:850;
+}
+
+#app[data-mode="flags"] .flag-v2-time .choices{
+  gap:7px;
+}
+
+#app[data-mode="flags"] .flag-v2-time .choice span{
+  min-height:50px;
+}
+
+#app[data-mode="flags"] .start-button [data-start-copy]{
+  display:inline-block;
+}
+
+#app[data-mode="flags"] .start-button.flag-start-pop [data-start-copy]{
+  animation:flag-start-copy-pop .34s cubic-bezier(.2,.8,.25,1) both;
+}
+
+@keyframes flag-start-copy-pop{
+  0%{opacity:.45;transform:translateY(5px) scale(.97)}
+  68%{opacity:1;transform:translateY(-1px) scale(1.025)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media (max-height:760px){
+  #app[data-mode="flags"][data-view="wizard"] .setup-card.flag-wizard-v2{
+    padding-top:15px;
+    padding-bottom:16px;
+  }
+  #app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
+    margin-top:18px;
+  }
+  #app[data-mode="flags"] .flag-continent-panel.is-open{
+    margin-top:9px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  #app[data-mode="flags"] .flag-continent-panel,
+  #app[data-mode="flags"] .flag-v2-choice span,
+  #app[data-mode="flags"] .flag-scope-toggle span,
+  #app[data-mode="flags"] .flag-continent-chip span,
+  #app[data-mode="flags"] .start-button [data-start-copy]{
+    animation:none!important;
+    transition:none!important;
+  }
+}

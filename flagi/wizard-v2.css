@@ -169,11 +169,57 @@
   font-weight:800;
   text-align:center;
   transition:color .24s ease;
+  transform-origin:center;
+  will-change:transform,color,text-shadow,filter;
 }
 
 #app[data-mode="flags"] .flag-v2-choice input:checked + span,
 #app[data-mode="flags"] .flag-time-choice input:checked + span{
   color:#2f745d;
+}
+
+
+/* Typography bump is synced with the trailing edge reaching overshoot (~44%). */
+#app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-v2-choice input:checked + span,
+#app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-time-choice input:checked + span{
+  animation:flag-segment-type-bump var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes flag-segment-type-bump{
+  0%,43%{
+    transform:scale(1);
+    color:#2f745d;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
+  47%{
+    transform:scale(1.085);
+    color:#3c856d;
+    text-shadow:
+      0 0 3px rgba(255,255,255,.78),
+      0 0 8px rgba(220,255,241,.56);
+    filter:brightness(1.08);
+  }
+  56%{
+    transform:scale(1.045);
+    color:#347b64;
+    text-shadow:
+      0 0 2px rgba(255,255,255,.42),
+      0 0 5px rgba(220,255,241,.28);
+    filter:brightness(1.04);
+  }
+  74%{
+    transform:scale(1.012);
+    color:#307660;
+    text-shadow:0 0 2px rgba(255,255,255,.14);
+    filter:brightness(1.01);
+  }
+  89%,100%{
+    transform:scale(1);
+    color:#2f745d;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
 }
 
 #app[data-mode="flags"] .flag-continent-panel{

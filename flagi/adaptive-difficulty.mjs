@@ -111,154 +111,120 @@ function segmentGeometry(container,index){
  const left=Math.max(inset,targetRect.left-containerRect.left+inset);
  const right=Math.max(inset,containerRect.right-targetRect.right+inset);
  const width=Math.max(0,containerRect.width-left-right);
- const center=left+(width/2);
- return {left,right,width,center};
+ return {left,right,width,center:left+width/2};
 }
 
-function applyIndicator(indicator,geometry){
- indicator.style.left=`${geometry.left}px`;
- indicator.style.right=`${geometry.right}px`;
-}
-
-function currentGeometry(container,indicator){
- if(!indicator)return null;
+function indicatorGeometry(container,indicator){
  const containerRect=container.getBoundingClientRect();
  const rect=indicator.getBoundingClientRect();
- if(rect.width>0){
-  const left=Math.max(0,rect.left-containerRect.left);
-  const right=Math.max(0,containerRect.right-rect.right);
-  const width=Math.max(0,containerRect.width-left-right);
-  return {left,right,width,center:left+(width/2)};
- }
- const left=parseFloat(indicator.style.left);
- const right=parseFloat(indicator.style.right);
- if(Number.isFinite(left)&&Number.isFinite(right)){
-  const width=Math.max(0,containerRect.width-left-right);
-  return {left,right,width,center:left+(width/2)};
- }
- const activeIndex=Number(container.dataset.activeIndex);
- return segmentGeometry(container,Number.isFinite(activeIndex)?activeIndex:0);
+ const left=Math.max(0,rect.left-containerRect.left);
+ const right=Math.max(0,containerRect.right-rect.right);
+ const width=Math.max(0,containerRect.width-left-right);
+ return {left,right,width,center:left+width/2};
 }
 
-function stopSegmentAnimation(container,indicator){
- const visual=currentGeometry(container,indicator);
- const animation=segmentAnimations.get(container);
- if(animation){
-  try{animation.cancel();}catch{}
-  segmentAnimations.delete(container);
- }
- if(visual)applyIndicator(indicator,visual);
- return visual;
+function lerp(a,b,t){
+ return a+(b-a)*t;
 }
 
-function motionTiming(distancePx){
- const total=Math.min(1180,Math.max(780,Math.round(780+distancePx*0.72)));
- return {total};
+function motionTiming(current,target){
+ const distance=Math.abs(target.center-current.center);
+ const total=Math.min(1280,Math.max(860,Math.round(860+distance*.72)));
+ const overshoot=Math.min(24,Math.max(8,Math.round(distance*.10)));
+ return {total,overshoot};
 }
 
-// The leading side always moves first and never overshoots.
-// The trailing side waits, stretches the bubble, overshoots once, then eases back home.
-function buildSegmentFrames(previous,next,forward,overshoot){
- const leadingMid=.57;
- const trailingStart=.16;
- const trailingOvershoot=.72;
- const trailingSettle=.88;
- const trailingEase='cubic-bezier(.22,.02,.18,1)';
- const leadingEase='cubic-bezier(.24,.06,.18,1)';
- const settleEase='cubic-bezier(.18,.62,.2,1)';
+function jellyFrames(current,target,forward,overshoot){
+ const back=Math.max(4,Math.round(overshoot*.50));
+ const bounce=Math.max(2,Math.round(overshoot*.20));
 
  if(forward){
-  // Forward = right side leads (right offset shrinks); left side trails.
-  const leadMid=previous.right+(next.right-previous.right)*.72;
-  const trailMid=previous.left+(next.left-previous.left)*.42;
-  const trailOver=next.left+overshoot;
-  const trailReturn=next.left-Math.max(2,overshoot*.18);
   return [
-   {offset:0,left:`${previous.left}px`,right:`${previous.right}px`,easing:leadingEase},
-   // Leading/right side accelerates first. Trailing/left edge stays put.
-   {offset:trailingStart,left:`${previous.left}px`,right:`${leadMid}px`,easing:leadingEase},
-   // Leading edge brakes into its final position without any overshoot.
-   {offset:leadingMid,left:`${trailMid}px`,right:`${next.right}px`,easing:trailingEase},
-   // Leading edge is parked. Trailing edge softly stretches past its target.
-   {offset:trailingOvershoot,left:`${trailOver}px`,right:`${next.right}px`,easing:'cubic-bezier(.2,.12,.16,1)'},
-   // Gentle recoil, deliberately a touch too far in the other direction.
-   {offset:trailingSettle,left:`${trailReturn}px`,right:`${next.right}px`,easing:settleEase},
-   // Long, soft landing.
-   {offset:1,left:`${next.left}px`,right:`${next.right}px`}
+   {offset:0,left:`${current.left}px`,right:`${current.right}px`,easing:'cubic-bezier(.30,.04,.22,1)'},
+   {offset:.16,left:`${current.left}px`,right:`${lerp(current.right,target.right,.58)}px`,easing:'cubic-bezier(.18,.78,.22,1)'},
+   {offset:.38,left:`${lerp(current.left,target.left,.26)}px`,right:`${lerp(current.right,target.right,.93)}px`,easing:'cubic-bezier(.16,.84,.20,1)'},
+   {offset:.54,left:`${target.left+overshoot}px`,right:`${lerp(current.right,target.right,.992)}px`,easing:'cubic-bezier(.14,.80,.18,1)'},
+   {offset:.70,left:`${target.left-back}px`,right:`${target.right}px`,easing:'cubic-bezier(.20,.72,.22,1)'},
+   {offset:.82,left:`${target.left+bounce}px`,right:`${target.right}px`,easing:'cubic-bezier(.16,.68,.20,1)'},
+   {offset:1,left:`${target.left}px`,right:`${target.right}px`}
   ];
  }
 
- // Backward = left side leads (left offset shrinks); right side trails.
- const leadMid=previous.left+(next.left-previous.left)*.72;
- const trailMid=previous.right+(next.right-previous.right)*.42;
- const trailOver=next.right+overshoot;
- const trailReturn=next.right-Math.max(2,overshoot*.18);
  return [
-  {offset:0,left:`${previous.left}px`,right:`${previous.right}px`,easing:leadingEase},
-  {offset:trailingStart,left:`${leadMid}px`,right:`${previous.right}px`,easing:leadingEase},
-  {offset:leadingMid,left:`${next.left}px`,right:`${trailMid}px`,easing:trailingEase},
-  {offset:trailingOvershoot,left:`${next.left}px`,right:`${trailOver}px`,easing:'cubic-bezier(.2,.12,.16,1)'},
-  {offset:trailingSettle,left:`${next.left}px`,right:`${trailReturn}px`,easing:settleEase},
-  {offset:1,left:`${next.left}px`,right:`${next.right}px`}
+  {offset:0,left:`${current.left}px`,right:`${current.right}px`,easing:'cubic-bezier(.30,.04,.22,1)'},
+  {offset:.16,left:`${lerp(current.left,target.left,.58)}px`,right:`${current.right}px`,easing:'cubic-bezier(.18,.78,.22,1)'},
+  {offset:.38,left:`${lerp(current.left,target.left,.93)}px`,right:`${lerp(current.right,target.right,.26)}px`,easing:'cubic-bezier(.16,.84,.20,1)'},
+  {offset:.54,left:`${lerp(current.left,target.left,.992)}px`,right:`${target.right+overshoot}px`,easing:'cubic-bezier(.14,.80,.18,1)'},
+  {offset:.70,left:`${target.left}px`,right:`${target.right-back}px`,easing:'cubic-bezier(.20,.72,.22,1)'},
+  {offset:.82,left:`${target.left}px`,right:`${target.right+bounce}px`,easing:'cubic-bezier(.16,.68,.20,1)'},
+  {offset:1,left:`${target.left}px`,right:`${target.right}px`}
  ];
+}
+
+function stopSegmentAnimation(container,indicator){
+ const animation=segmentAnimations.get(container);
+ if(!animation)return indicatorGeometry(container,indicator);
+ const visual=indicatorGeometry(container,indicator);
+ try{animation.cancel();}catch{}
+ segmentAnimations.delete(container);
+ indicator.style.left=`${visual.left}px`;
+ indicator.style.right=`${visual.right}px`;
+ return visual;
 }
 
 function updateSegment(container,index,count,animate=true){
  if(!container)return;
  const indicator=container.querySelector('.flag-segment-indicator');
  if(!indicator)return;
+
  const previousIndex=Number(container.dataset.activeIndex);
  const nextIndex=Math.max(0,Math.min(count-1,index));
- const nextGeometry=segmentGeometry(container,nextIndex);
- if(!nextGeometry)return;
- const hasPrevious=Number.isFinite(previousIndex);
- const changed=hasPrevious&&previousIndex!==nextIndex;
- const forward=!hasPrevious?true:nextIndex>previousIndex;
- container.dataset.direction=forward?'forward':'backward';
- container.dataset.activeIndex=String(nextIndex);
+ const target=segmentGeometry(container,nextIndex);
+ if(!target)return;
 
- const previousGeometry=stopSegmentAnimation(container,indicator)||nextGeometry;
+ const changed=Number.isFinite(previousIndex)&&previousIndex!==nextIndex;
+ const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+ const current=stopSegmentAnimation(container,indicator);
+
+ container.dataset.activeIndex=String(nextIndex);
+ container.dataset.direction=changed&&nextIndex<previousIndex?'backward':'forward';
+
  const timer=segmentTimers.get(container);
  if(timer)window.clearTimeout(timer);
 
- if(!animate||!changed){
-  container.classList.add('is-segment-instant');
-  applyIndicator(indicator,nextGeometry);
-  requestAnimationFrame(()=>container.classList.remove('is-segment-instant'));
+ if(!animate||!changed||reduced||typeof indicator.animate!=='function'){
+  indicator.style.left=`${target.left}px`;
+  indicator.style.right=`${target.right}px`;
   container.classList.remove('is-segment-moving');
   return;
  }
 
- const distancePx=Math.abs(nextGeometry.center-previousGeometry.center);
- const {total}=motionTiming(distancePx);
- const overshoot=Math.min(22,Math.max(8,Math.round(distancePx*0.10)));
- const keyframes=buildSegmentFrames(previousGeometry,nextGeometry,forward,overshoot);
-
- applyIndicator(indicator,previousGeometry);
- container.classList.remove('is-segment-instant');
+ const forward=nextIndex>previousIndex;
+ const timing=motionTiming(current,target);
+ container.style.setProperty('--segment-total-ms',`${timing.total}ms`);
  container.classList.remove('is-segment-moving');
  void container.offsetWidth;
  container.classList.add('is-segment-moving');
- container.style.setProperty('--segment-total-ms',`${total}ms`);
 
- const animation=indicator.animate(keyframes,{duration:total,easing:'linear',fill:'forwards'});
+ const animation=indicator.animate(
+  jellyFrames(current,target,forward,timing.overshoot),
+  {duration:timing.total,easing:'linear',fill:'both'}
+ );
  segmentAnimations.set(container,animation);
- const token=`${Date.now()}-${Math.random()}`;
- container.dataset.segmentToken=token;
+
+ indicator.style.left=`${target.left}px`;
+ indicator.style.right=`${target.right}px`;
 
  const finish=()=>{
-  if(container.dataset.segmentToken!==token)return;
-  applyIndicator(indicator,nextGeometry);
-  if(segmentAnimations.get(container)===animation)segmentAnimations.delete(container);
-  try{animation.cancel();}catch{}
-  container.classList.remove('is-segment-moving');
+  if(segmentAnimations.get(container)===animation){
+   segmentAnimations.delete(container);
+   try{animation.cancel();}catch{}
+   container.classList.remove('is-segment-moving');
+  }
  };
-
- animation.finished.then(finish).catch(finish);
- segmentTimers.set(container,window.setTimeout(()=>{
-  finish();
-  segmentTimers.delete(container);
- },total+120));
+ animation.addEventListener('finish',finish,{once:true});
+ const cleanup=window.setTimeout(finish,timing.total+120);
+ segmentTimers.set(container,cleanup);
 }
 
 function syncSegmentedControls(animate=false){

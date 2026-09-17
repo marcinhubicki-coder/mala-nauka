@@ -17,10 +17,57 @@
   margin-bottom:12px;
 }
 
-#app[data-mode="flags"] .flag-v2-game-grid{
+#app[data-mode="flags"] .flag-segmented{
+  position:relative;
+  isolation:isolate;
   display:grid;
+  overflow:hidden;
+  border:1px solid #dfe6f0;
+  border-radius:16px;
+  background:#f2f5f9;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid{
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
+  min-height:54px;
+}
+
+#app[data-mode="flags"] .flag-scope-toggle{
+  grid-template-columns:1fr 1fr;
+  min-height:51px;
+}
+
+#app[data-mode="flags"] .flag-segment-indicator{
+  position:absolute;
+  z-index:0;
+  top:4px;
+  bottom:4px;
+  left:calc(var(--segment-left,0%) + 4px);
+  right:calc(var(--segment-right,66.666%) + 4px);
+  border:1px solid rgba(84,151,129,.32);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 13px rgba(32,55,91,.08);
+  pointer-events:none;
+  will-change:left,right;
+}
+
+#app[data-mode="flags"] .flag-segmented[data-direction="forward"] .flag-segment-indicator{
+  transition:
+    right .28s cubic-bezier(.14,.92,.22,1) 0s,
+    left .44s cubic-bezier(.16,1,.28,1) .075s,
+    box-shadow .26s ease;
+}
+
+#app[data-mode="flags"] .flag-segmented[data-direction="backward"] .flag-segment-indicator{
+  transition:
+    left .28s cubic-bezier(.14,.92,.22,1) 0s,
+    right .44s cubic-bezier(.16,1,.28,1) .075s,
+    box-shadow .26s ease;
+}
+
+#app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator{
+  box-shadow:0 7px 18px rgba(47,116,93,.13);
 }
 
 #app[data-mode="flags"] .flag-v2-choice,
@@ -30,6 +77,11 @@
   display:flex;
   cursor:pointer;
   touch-action:manipulation;
+}
+
+#app[data-mode="flags"] .flag-v2-choice,
+#app[data-mode="flags"] .flag-scope-toggle label{
+  z-index:1;
 }
 
 #app[data-mode="flags"] .flag-v2-choice input,
@@ -42,55 +94,32 @@
   pointer-events:none;
 }
 
-#app[data-mode="flags"] .flag-v2-choice span{
-  display:grid;
-  place-items:center;
-  width:100%;
-  min-height:50px;
-  padding:9px 5px;
-  border:1px solid #dfe6f0;
-  border-radius:14px;
-  background:#f8faff;
-  color:#20375b;
-  font-size:13px;
-  line-height:1.15;
-  font-weight:800;
-  transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease;
-}
-
-#app[data-mode="flags"] .flag-v2-choice input:checked + span{
-  border:2px solid #549781;
-  padding:8px 4px;
-  background:#e4f4ed;
-  color:#256b58;
-}
-
-#app[data-mode="flags"] .flag-scope-toggle{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:4px;
-  padding:4px;
-  border:1px solid #dfe6f0;
-  border-radius:16px;
-  background:#f2f5f9;
-}
-
+#app[data-mode="flags"] .flag-v2-choice span,
 #app[data-mode="flags"] .flag-scope-toggle span{
   display:grid;
   place-items:center;
-  min-height:43px;
-  padding:8px 10px;
-  border-radius:12px;
+  width:100%;
+  min-height:100%;
+  padding:9px 8px;
   color:#697a91;
-  font-size:12px;
+  font-size:13px;
+  line-height:1.15;
   font-weight:800;
-  transition:background .24s ease,color .24s ease,box-shadow .24s ease,transform .24s ease;
+  transition:color .22s ease,transform .22s cubic-bezier(.2,.8,.25,1);
 }
 
+#app[data-mode="flags"] .flag-scope-toggle span{
+  font-size:12px;
+}
+
+#app[data-mode="flags"] .flag-v2-choice input:checked + span,
 #app[data-mode="flags"] .flag-scope-toggle input:checked + span{
-  background:#fff;
   color:#2f745d;
-  box-shadow:0 3px 10px rgba(32,55,91,.08);
+}
+
+#app[data-mode="flags"] .flag-v2-choice:active span,
+#app[data-mode="flags"] .flag-scope-toggle label:active span{
+  transform:scale(.985);
 }
 
 #app[data-mode="flags"] .flag-continent-panel{
@@ -99,11 +128,11 @@
   opacity:0;
   transform:translateY(-5px);
   margin-top:0;
-  transition:max-height .34s cubic-bezier(.2,.8,.25,1),opacity .24s ease,transform .34s cubic-bezier(.2,.8,.25,1),margin-top .34s ease;
+  transition:max-height .38s cubic-bezier(.16,1,.28,1),opacity .24s ease,transform .38s cubic-bezier(.16,1,.28,1),margin-top .38s cubic-bezier(.16,1,.28,1);
 }
 
 #app[data-mode="flags"] .flag-continent-panel.is-open{
-  max-height:210px;
+  max-height:155px;
   opacity:1;
   transform:translateY(0);
   margin-top:12px;
@@ -184,6 +213,7 @@
 
 @media (prefers-reduced-motion:reduce){
   #app[data-mode="flags"] .flag-continent-panel,
+  #app[data-mode="flags"] .flag-segment-indicator,
   #app[data-mode="flags"] .flag-v2-choice span,
   #app[data-mode="flags"] .flag-scope-toggle span,
   #app[data-mode="flags"] .flag-continent-chip span,

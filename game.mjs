@@ -43,13 +43,16 @@ export class Session {
     if (!DURATIONS.includes(duration)) throw Error('Nieprawidłowy czas gry.');
     Object.assign(this, { source, pool: Array.isArray(source) ? source : [], duration, now, random,
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
-      state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0 });
+      state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
+      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [] });
     this.next();
   }
   tick() {
     if (['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
+    const previousState = this.state;
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
+    if (previousState === 'playing') this.questionElapsed += elapsed;
     this.remaining = Math.max(0, this.remaining - elapsed);
     if (this.remaining === 0) { this.state = 'ended'; return; }
     if (this.state === 'exposing') {
@@ -62,7 +65,7 @@ export class Session {
   }
   next() {
     if (this.state === 'paused' || this.state === 'ended') return;
-    if (typeof this.source === 'function') this.current = this.source();
+    if (typeof this.source === 'function') this.current = this.source(this);
     else {
       if (!this.queue.length) {
         this.queue = shuffle(this.pool, this.random);
@@ -75,6 +78,7 @@ export class Session {
     this.exposureRemaining = this.current.exposureMs || 0;
     this.state = this.exposureRemaining ? 'exposing' : 'playing';
     this.selected = null;
+    this.questionElapsed = 0;
     this.lastTime = this.now();
   }
   answer(option) {
@@ -83,9 +87,17 @@ export class Session {
     if (this.state !== 'playing' || !this.options.includes(option)) return false;
     this.selected = option;
     const correct = option === this.current.answer;
+    this.lastResponseMs = Math.max(0, this.questionElapsed);
+    this.recentAnswers.push({
+      correct,
+      difficulty: Number(this.current?.difficulty) || 1,
+      responseMs: this.lastResponseMs,
+      question: this.question
+    });
+    if (this.recentAnswers.length > 12) this.recentAnswers.shift();
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? 700 : 0;
+    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||700) : 0;
     return true;
   }
   skipFeedback() {

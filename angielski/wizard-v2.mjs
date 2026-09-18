@@ -14,6 +14,7 @@ const START_COPY={60:'Szybka akcja!',120:'Zaczynamy!',180:'Dłuższa misja!',300
 let state=null;
 let editingCategories=false;
 let editorClosing=false;
+let editorSaving=false;
 let editSnapshot=null;
 let draftCategories=[];
 let suppressClickUntil=0;
@@ -224,7 +225,10 @@ function segmentCount(container){
 
 function activeIndexFor(container){
  const type=container?.dataset.segmented;
- if(type==='scope')return editingCategories||state.scope==='categories'?1:0;
+ if(type==='scope'){
+  if(editorClosing)return state.scope==='categories'?1:0;
+  return editingCategories||state.scope==='categories'?1:0;
+ }
  if(type==='level')return Math.max(0,LEVELS.findIndex(([value])=>value===state.difficulty));
  if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
  if(type==='edit'){
@@ -278,15 +282,19 @@ function syncEditorUI(animate=false,{resetAction=false}={}){
  const form=root.querySelector('#setup-form');
  const panel=root.querySelector('[data-category-panel]');
  const actions=root.querySelector('[data-category-actions]');
- form?.classList.toggle('english-category-editing',editingCategories);
+ const editingLayout=editingCategories||editorClosing;
+ form?.classList.toggle('english-category-editing',editingLayout);
  form?.classList.toggle('english-category-closing',editorClosing);
+ form?.classList.toggle('english-category-saving',editorSaving);
  if(panel){
-  panel.classList.toggle('is-open',editingCategories&&!editorClosing);
-  panel.setAttribute('aria-hidden',editingCategories&&!editorClosing?'false':'true');
+  const open=editingCategories&&!editorClosing;
+  panel.classList.toggle('is-open',open);
+  panel.setAttribute('aria-hidden',open?'false':'true');
  }
  if(actions){
-  actions.classList.toggle('is-open',editingCategories&&!editorClosing);
-  actions.setAttribute('aria-hidden',editingCategories&&!editorClosing?'false':'true');
+  const open=editingCategories&&!editorClosing;
+  actions.classList.toggle('is-open',open);
+  actions.setAttribute('aria-hidden',open?'false':'true');
   if(resetAction){
    const cancel=actions.querySelector('input[value="cancel"]');
    if(cancel)cancel.checked=true;
@@ -295,18 +303,17 @@ function syncEditorUI(animate=false,{resetAction=false}={}){
   }
  }
  root.querySelectorAll('input[name="englishScope"]').forEach(input=>{
-  input.checked=input.value===(editingCategories?'categories':state.scope);
+  input.checked=input.value===((editingCategories&&!editorClosing)?'categories':state.scope);
  });
  root.querySelectorAll('input[name="englishCategories"],input[name="englishEditAction"]').forEach(input=>{
-  input.disabled=!editingCategories||editorClosing;
+  input.disabled=!editingCategories||editorClosing||editorSaving;
  });
  root.querySelectorAll('input[name="difficulty"],input[name="duration"]').forEach(input=>{
-  input.disabled=editingCategories;
+  input.disabled=editingLayout;
  });
  refreshCategoryChecks();
  requestAnimationFrame(()=>syncSegments(animate));
 }
-
 function syncHidden(dispatch=true){
  const category=root.querySelector('input[name="category"]');
  if(!category)return;
@@ -318,11 +325,12 @@ function syncHidden(dispatch=true){
 }
 
 function enterCategoryEditor(){
- if(editingCategories||editorClosing)return;
+ if(editingCategories||editorClosing||editorSaving)return;
  editSnapshot={scope:state.scope,categories:[...state.categories]};
- draftCategories=state.scope==='categories'?[...state.categories]:[...(state.categories.length?state.categories:['numbers'])];
+ draftCategories=[...(state.categories.length?state.categories:['numbers'])];
  editingCategories=true;
  editorClosing=false;
+ editorSaving=false;
  syncEditorUI(true,{resetAction:true});
  requestAnimationFrame(()=>installDrag());
 }
@@ -336,50 +344,59 @@ function revealLowerSections(){
  window.setTimeout(()=>form.classList.remove('english-editor-reveal'),1150);
 }
 
-function closeCategoryEditor({save=false}={}){
- if(!editingCategories||editorClosing)return;
- if(save){
-  if(!draftCategories.length)draftCategories=['numbers'];
-  state.scope='categories';
-  state.categories=[...new Set(draftCategories)];
-  syncHidden(true);
- }else if(editSnapshot){
-  state.scope=editSnapshot.scope;
-  state.categories=[...editSnapshot.categories];
- }
- editorClosing=true;
- syncEditorUI(false);
+function finishEditorClose(){
+ editingCategories=false;
+ editorClosing=false;
+ editorSaving=false;
+ draftCategories=[];
+ editSnapshot=null;
+ syncEditorUI(false,{resetAction:true});
+ revealLowerSections();
+}
 
- window.setTimeout(()=>{
-  editingCategories=false;
-  editorClosing=false;
-  draftCategories=[];
-  editSnapshot=null;
-  syncEditorUI(false);
-  revealLowerSections();
- },430);
+function beginEditorClose(){
+ if(!editingCategories||editorClosing)return;
+ editorClosing=true;
+ editorSaving=false;
+ syncEditorUI(true);
+ window.setTimeout(finishEditorClose,430);
 }
 
 function cancelCategoryEditor(){
- closeCategoryEditor({save:false});
+ if(!editingCategories||editorClosing||editorSaving)return;
+ if(editSnapshot){
+  state.scope=editSnapshot.scope;
+  state.categories=[...editSnapshot.categories];
+ }
+ syncHidden(true);
+ beginEditorClose();
+}
+
+function switchToAllWords(){
+ if(!editingCategories||editorClosing||editorSaving)return;
+ // Keep the last saved category set in state.categories; only disable the filter.
+ state.scope='all';
+ draftCategories=[];
+ syncHidden(true);
+ beginEditorClose();
 }
 
 function saveCategoryEditorAfterJelly(container){
- if(!editingCategories||editorClosing)return;
+ if(!editingCategories||editorClosing||editorSaving)return;
  const raw=getComputedStyle(container).getPropertyValue('--segment-total-ms');
  const motionMs=Math.max(0,parseFloat(raw)||1000);
- editorClosing=true;
- root.querySelectorAll('input[name="englishCategories"],input[name="englishEditAction"]').forEach(input=>{input.disabled=true;});
+ editorSaving=true;
+ syncEditorUI(false);
  window.setTimeout(()=>{
-  editorClosing=false;
+  if(!editingCategories)return;
   if(!draftCategories.length)draftCategories=['numbers'];
   state.scope='categories';
   state.categories=[...new Set(draftCategories)];
   syncHidden(true);
-  closeCategoryEditor({save:false});
+  editorSaving=false;
+  beginEditorClose();
  },motionMs+400);
 }
-
 function applySegmentSelection(input){
  if(!input||input.disabled)return;
  const container=input.closest('.english-segmented');
@@ -530,15 +547,12 @@ root?.addEventListener('change',event=>{
  if(target?.name==='englishScope'){
   if(target.value==='categories'){
    if(!editingCategories)enterCategoryEditor();
+  }else if(editingCategories){
+   switchToAllWords();
   }else{
-   if(editingCategories){
-    editingCategories=false;
-    draftCategories=[];
-    editSnapshot=null;
-   }
    state.scope='all';
-   syncEditorUI(true);
    syncHidden(true);
+   syncEditorUI(true);
   }
   return;
  }
@@ -561,7 +575,9 @@ root?.addEventListener('change',event=>{
  }
  if(target?.name==='englishEditAction'){
   const container=target.closest('.english-segmented');
-  syncSegments(true);
+  const labels=[...container.querySelectorAll(':scope > label')];
+  const index=Math.max(0,labels.findIndex(label=>label.querySelector('input')===target));
+  updateSegment(container,index,labels.length,true);
   if(target.value==='save')saveCategoryEditorAfterJelly(container);
   else cancelCategoryEditor();
   return;

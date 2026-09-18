@@ -411,7 +411,7 @@
 }
 
 #app[data-mode="english"] .english-v2-level-grid{
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
 }
 
 #app[data-mode="english"] .english-time-segmented{
@@ -443,7 +443,7 @@
 
 #app[data-mode="english"] .english-category-actions{
   grid-template-columns:repeat(2,minmax(0,1fr));
-  margin-top:10px;
+  margin-top:0;
   opacity:0;
   max-height:0;
   min-height:0;
@@ -455,6 +455,7 @@
 }
 
 #app[data-mode="english"] .english-category-actions.is-open{
+  margin-top:10px;
   opacity:1;
   height:56px;
   min-height:56px;
@@ -542,4 +543,48 @@ body:has(#app[data-mode="english"])::before{
 #app[data-mode="english"][data-view="wizard"] .page-head{
   position:relative;
   z-index:1;
+}
+
+
+#app[data-mode="english"] #setup-form.english-category-saving .english-category-panel{
+  pointer-events:none;
+}
+
+#app[data-mode="english"] #setup-form.english-category-saving .english-category-chip{
+  opacity:.82;
+}
+
+/* After the editor closes, restore lower content as a short cascade. */
+#app[data-mode="english"] #setup-form.english-editor-reveal .english-v2-level{
+  animation:english-lower-section-in .44s .02s cubic-bezier(.16,1,.28,1) both;
+}
+#app[data-mode="english"] #setup-form.english-editor-reveal .english-v2-time{
+  animation:english-lower-section-in .44s .12s cubic-bezier(.16,1,.28,1) both;
+}
+#app[data-mode="english"] #setup-form.english-editor-reveal .wizard-note{
+  animation:english-lower-section-in .42s .22s cubic-bezier(.16,1,.28,1) both;
+}
+#app[data-mode="english"] #setup-form.english-editor-reveal .start-button{
+  animation:english-lower-section-in .46s .31s cubic-bezier(.16,1,.28,1) both;
+}
+
+@keyframes english-lower-section-in{
+  0%{opacity:0;transform:translateY(-7px) scale(.992)}
+  68%{opacity:1;transform:translateY(1px) scale(1.004)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Two-state sliders are always exact halves; no ghost third slot may affect geometry. */
+#app[data-mode="english"] .english-v2-scope-grid,
+#app[data-mode="english"] .english-v2-level-grid,
+#app[data-mode="english"] .english-category-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+
+#app[data-mode="english"] .english-v2-scope-grid > label,
+#app[data-mode="english"] .english-v2-level-grid > label,
+#app[data-mode="english"] .english-category-actions > label{
+  width:100%;
+  min-width:0;
+  max-width:none;
 }

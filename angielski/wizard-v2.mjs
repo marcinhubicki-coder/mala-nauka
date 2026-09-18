@@ -386,7 +386,9 @@ function saveCategoryEditorAfterJelly(container){
  const raw=getComputedStyle(container).getPropertyValue('--segment-total-ms');
  const motionMs=Math.max(0,parseFloat(raw)||1000);
  editorSaving=true;
- syncEditorUI(false);
+ const form=root.querySelector('#setup-form');
+ form?.classList.add('english-category-saving');
+ root.querySelectorAll('input[name="englishCategories"],input[name="englishEditAction"]').forEach(input=>{input.disabled=true;});
  window.setTimeout(()=>{
   if(!editingCategories)return;
   if(!draftCategories.length)draftCategories=['numbers'];
@@ -394,6 +396,7 @@ function saveCategoryEditorAfterJelly(container){
   state.categories=[...new Set(draftCategories)];
   syncHidden(true);
   editorSaving=false;
+  form?.classList.remove('english-category-saving');
   beginEditorClose();
  },motionMs+400);
 }

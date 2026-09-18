@@ -16,12 +16,12 @@
 }
 
 #app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
-  margin-top:24px;
+  margin-top:18px;
 }
 
 #app[data-mode="flags"] .flag-v2-section legend{
   width:100%;
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
 
 #app[data-mode="flags"] .flag-segmented{
@@ -228,18 +228,19 @@
   box-sizing:border-box;
   overflow:hidden;
   opacity:0;
-  transform:translateY(-5px);
+  transform:translateY(-7px) scaleY(.94);
+  transform-origin:top center;
   margin-top:0;
   padding-top:0;
-  transition:max-height .42s cubic-bezier(.16,1,.28,1),opacity .28s ease,transform .42s cubic-bezier(.16,1,.28,1),margin-top .42s cubic-bezier(.16,1,.28,1),padding-top .42s cubic-bezier(.16,1,.28,1);
+  transition:max-height .44s cubic-bezier(.16,1,.28,1),opacity .26s ease,transform .44s cubic-bezier(.16,1,.28,1),padding-top .44s cubic-bezier(.16,1,.28,1);
 }
 
 #app[data-mode="flags"] .flag-continent-panel.is-open{
-  max-height:188px;
+  max-height:180px;
   opacity:1;
-  transform:translateY(0);
+  transform:translateY(0) scaleY(1);
   margin-top:0;
-  padding-top:12px;
+  padding-top:8px;
 }
 
 #app[data-mode="flags"] .flag-continent-grid{
@@ -256,17 +257,31 @@
 }
 
 #app[data-mode="flags"] .flag-continent-grid::before{
-  content:"";
-  position:absolute;
-  left:75%;
-  top:-13px;
-  width:58px;
-  height:14px;
-  transform:translateX(-50%);
-  background:
-    radial-gradient(circle at 0 50%,transparent 0 7px,#f2f5f9 7.5px) left/50% 100% no-repeat,
-    radial-gradient(circle at 100% 50%,transparent 0 7px,#f2f5f9 7.5px) right/50% 100% no-repeat;
-  pointer-events:none;
+  content:none;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-grid{
+  animation:flag-continent-panel-reveal .46s cubic-bezier(.16,1,.28,1) both;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip{
+  animation:flag-continent-chip-reveal .34s cubic-bezier(.18,.78,.22,1) both;
+}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(2){animation-delay:.025s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(3){animation-delay:.05s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(4){animation-delay:.075s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(5){animation-delay:.10s}
+
+@keyframes flag-continent-panel-reveal{
+  0%{opacity:.25;transform:translateY(-6px) scale(.992,.92);box-shadow:0 0 0 rgba(47,116,93,0)}
+  58%{opacity:1;transform:translateY(1px) scale(1.005,1.025);box-shadow:0 8px 24px rgba(47,116,93,.08)}
+  100%{opacity:1;transform:translateY(0) scale(1);box-shadow:0 0 0 rgba(47,116,93,0)}
+}
+
+@keyframes flag-continent-chip-reveal{
+  0%{opacity:0;transform:translateY(-5px) scale(.96)}
+  72%{opacity:1;transform:translateY(1px) scale(1.02)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
 }
 
 #app[data-mode="flags"] .flag-continent-chip{
@@ -355,10 +370,11 @@
     padding-bottom:16px;
   }
   #app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
-    margin-top:18px;
+    margin-top:15px;
   }
   #app[data-mode="flags"] .flag-continent-panel.is-open{
-    margin-top:8px;
+    margin-top:0;
+    padding-top:6px;
   }
   #app[data-mode="flags"] .flag-continent-grid{
     padding:12px;

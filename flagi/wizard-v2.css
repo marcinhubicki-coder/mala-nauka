@@ -259,12 +259,14 @@
   content:"";
   position:absolute;
   left:75%;
-  top:-12px;
-  width:44px;
-  height:13px;
+  top:-13px;
+  width:58px;
+  height:14px;
   transform:translateX(-50%);
-  background:#f2f5f9;
-  clip-path:polygon(39% 0,61% 0,100% 100%,0 100%);
+  background:
+    radial-gradient(circle at 0 50%,transparent 0 7px,#f2f5f9 7.5px) left/50% 100% no-repeat,
+    radial-gradient(circle at 100% 50%,transparent 0 7px,#f2f5f9 7.5px) right/50% 100% no-repeat;
+  pointer-events:none;
 }
 
 #app[data-mode="flags"] .flag-continent-chip{
@@ -292,6 +294,8 @@
   line-height:1.15;
   font-weight:760;
   text-align:center;
+  transform-origin:center;
+  will-change:transform,filter,box-shadow;
   transition:background .26s ease,border-color .26s ease,color .26s ease,box-shadow .26s ease,transform .26s cubic-bezier(.2,.8,.25,1);
 }
 
@@ -305,6 +309,30 @@
 
 #app[data-mode="flags"] .flag-continent-chip:active span{
   transform:scale(.985);
+}
+
+
+#app[data-mode="flags"] .flag-continent-chip.is-selecting span{
+  animation:flag-continent-chip-in .50s cubic-bezier(.18,.78,.22,1) both;
+}
+
+#app[data-mode="flags"] .flag-continent-chip.is-deselecting span{
+  animation:flag-continent-chip-out .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes flag-continent-chip-in{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.09);filter:brightness(1.08)}
+  66%{transform:scale(.982);filter:brightness(1.02)}
+  84%{transform:scale(1.018);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+@keyframes flag-continent-chip-out{
+  0%{transform:scale(1);filter:brightness(1)}
+  36%{transform:scale(.92);filter:brightness(.98)}
+  68%{transform:scale(1.025);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
 }
 
 #app[data-mode="flags"] .start-button [data-start-copy]{

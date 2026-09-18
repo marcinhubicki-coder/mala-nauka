@@ -1,0 +1,36 @@
+/* v0.4.2 final polish — typography and mockup-like finish. */
+.spelling-title{
+  -webkit-text-stroke:.28px rgba(7,31,82,.28);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.88),
+    0 2px 0 rgba(7,31,82,.035),
+    0 6px 14px rgba(28,28,78,.065)!important;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.28));
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{
+  -webkit-text-stroke:.22px rgba(7,31,82,.24);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.92),
+    0 2px 0 rgba(12,38,91,.035),
+    0 4px 9px rgba(40,32,91,.085)!important;
+}
+#app[data-view="game"][data-mode="spelling"].spelling-art-ready .answer{
+  -webkit-text-stroke:.18px rgba(7,31,82,.20);
+  text-shadow:0 1px 0 rgba(255,255,255,.94),0 3px 8px rgba(33,30,85,.055)!important;
+}
+.spelling-hint{letter-spacing:-.12px}
+
+/* Slightly more organic shell, closer to the design mockup. */
+.spelling-visual{
+  --blob-radius:42% 58% 51% 49% / 46% 43% 57% 54%;
+}
+[data-art-scene="bunny"] .spelling-visual{--scene-scale:1.09}
+[data-art-scene="rose"] .spelling-visual{--scene-scale:1.10}
+[data-art-scene="mountains"] .spelling-visual{--scene-scale:1.06}
+[data-art-scene="clouds"] .spelling-visual{--scene-scale:1.08}
+[data-art-scene="king"] .spelling-visual{--scene-scale:1.10}
+
+@media (max-width:600px){
+  .spelling-title{font-size:clamp(33px,8.65vw,39px)!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{font-size:clamp(38px,10.2vw,48px)!important}
+}

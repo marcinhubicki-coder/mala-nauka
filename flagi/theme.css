@@ -1,0 +1,106 @@
+#app[data-mode="flags"]{
+  --accent:#3f8f72;
+  --tint:#e4f4ed;
+  --flag-theme:#3f8f72;
+  --flag-theme-dark:#2f745d;
+  --flag-theme-deep:#256b58;
+  --flag-theme-soft:#e4f4ed;
+  --flag-theme-pale:#f3faf7;
+  --flag-theme-line:#abd4c4;
+}
+
+/* Keep the existing neutral greys and semantic red error state, but replace the
+   former brown / amber module accents with the flags green palette. */
+#app[data-mode="flags"] .primary{
+  background:var(--flag-theme);
+  box-shadow:0 5px 14px rgba(47,116,93,.16);
+}
+
+#app[data-mode="flags"] .game-meta strong,
+#app[data-mode="flags"] .badge:not(.level){
+  background:var(--flag-theme-soft);
+  color:var(--flag-theme-deep);
+}
+
+#app[data-mode="flags"] progress::-webkit-progress-value{
+  background:var(--flag-theme);
+}
+
+#app[data-mode="flags"] progress::-moz-progress-bar{
+  background:var(--flag-theme);
+}
+
+#app[data-mode="flags"] .question-card.wrong{
+  background:var(--flag-theme-pale);
+  border-color:var(--flag-theme-line);
+}
+
+#app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2{
+  border-color:var(--flag-theme-line)!important;
+}
+
+#app[data-mode="flags"] .flag-continent-label{
+  color:var(--flag-theme-dark);
+}
+
+#app[data-mode="flags"] .flag-language-toggle{
+  border-color:rgba(63,143,114,.22)!important;
+  color:var(--flag-theme-deep)!important;
+  box-shadow:0 5px 16px rgba(47,116,93,.10)!important;
+}
+
+#app[data-mode="flags"] .flag-language-toggle.in-game{
+  background:#f5fbf8!important;
+}
+
+#app[data-mode="flags"] .continent-map-copy strong{
+  color:var(--flag-theme-dark);
+}
+
+#app[data-mode="flags"] .continent-map-canvas .country.is-highlighted{
+  fill:#55a382;
+  filter:drop-shadow(0 0 6px rgba(47,116,93,.42));
+}
+
+#app[data-mode="flags"] .continent-map-host.is-loading .continent-map-canvas::before{
+  border-top-color:var(--flag-theme);
+}
+
+#app[data-mode="flags"] .result-star{
+  color:#55a382;
+  text-shadow:0 5px 0 #d9eee5;
+}
+
+#app[data-mode="flags"] .result>.badge{
+  background:var(--flag-theme-soft);
+  color:var(--flag-theme-deep);
+}
+
+#app[data-mode="flags"] .empty>span,
+#app[data-mode="flags"] .home-foot span{
+  color:var(--flag-theme);
+}
+
+
+body:has(#app[data-mode="flags"]){
+  background:#f5f8ff;
+  position:relative;
+}
+body:has(#app[data-mode="flags"])::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 92% -4%,rgba(226,235,255,.82),transparent 50%),
+    radial-gradient(ellipse at 2% 70%,rgba(226,247,239,.56),transparent 54%),
+    #f5f8ff;
+}
+#app[data-mode="flags"]{
+  background:transparent;
+}
+#app[data-mode="flags"][data-view="wizard"] .page-head{
+  position:relative;
+  z-index:1;
+}

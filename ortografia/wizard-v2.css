@@ -1,0 +1,501 @@
+#app[data-mode="spelling"][data-view="wizard"] .setup-card.spelling-wizard-v2{
+  padding:18px 18px 20px;
+}
+
+#app[data-mode="spelling"] button,
+#app[data-mode="spelling"] label,
+#app[data-mode="spelling"] .spelling-segmented,
+#app[data-mode="spelling"] .spelling-category-chip{
+  -webkit-tap-highlight-color:transparent;
+}
+
+#app[data-mode="spelling"] .spelling-v2-section{
+  border:0;
+  padding:0;
+  margin:0;
+}
+
+#app[data-mode="spelling"] .spelling-v2-section + .spelling-v2-section{
+  margin-top:18px;
+}
+
+#app[data-mode="spelling"] .spelling-v2-section legend{
+  width:100%;
+  margin-bottom:10px;
+}
+
+#app[data-mode="spelling"] .spelling-segmented{
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  overflow:hidden;
+  box-sizing:border-box;
+  height:56px;
+  min-height:56px;
+  border:1px solid #dfe6f0;
+  border-radius:16px;
+  background:#f2f5f9;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+#app[data-mode="spelling"] .spelling-v2-game-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-v2-scope-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-time-segmented{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-segment-indicator{
+  position:absolute;
+  z-index:0;
+  top:4px;
+  bottom:4px;
+  left:4px;
+  right:calc(100% - 4px);
+  border:1px solid rgba(182,84,115,.34);
+  border-radius:14px;
+  background:linear-gradient(180deg,#fcebf1 0%,#f6cfdb 100%);
+  box-shadow:0 4px 12px rgba(166,72,103,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  pointer-events:none;
+  overflow:hidden;
+  will-change:left,right,box-shadow,filter;
+}
+
+#app[data-mode="spelling"] .spelling-segment-indicator::after{
+  content:"";
+  position:absolute;
+  inset:-18% -10%;
+  border-radius:inherit;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,.98) 0%,
+    rgba(255,255,255,.72) 24%,
+    rgba(255,255,255,.28) 46%,
+    rgba(255,255,255,0) 72%
+  );
+  opacity:0;
+  transform:scaleX(.74) scaleY(.9);
+  pointer-events:none;
+}
+
+#app[data-mode="spelling"] .spelling-segmented.is-segment-moving .spelling-segment-indicator{
+  animation:spelling-segment-shadow var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes spelling-segment-shadow{
+  0%{
+    box-shadow:0 4px 12px rgba(166,72,103,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
+  18%{
+    box-shadow:0 6px 16px rgba(173,77,108,.13), inset 0 1px 0 rgba(255,255,255,.66);
+  }
+  42%{
+    box-shadow:0 10px 23px rgba(182,84,115,.17), inset 0 1px 0 rgba(255,255,255,.78);
+  }
+  68%{
+    box-shadow:0 8px 19px rgba(176,80,111,.14), inset 0 1px 0 rgba(255,255,255,.70);
+  }
+  86%{
+    box-shadow:0 5px 14px rgba(169,75,106,.11), inset 0 1px 0 rgba(255,255,255,.62);
+  }
+  100%{
+    box-shadow:0 4px 12px rgba(166,72,103,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
+}
+
+#app[data-mode="spelling"] .spelling-segmented.is-segment-moving .spelling-segment-indicator::after{
+  animation:spelling-segment-center-glow var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes spelling-segment-center-glow{
+  0%{opacity:0;transform:scaleX(.72) scaleY(.90)}
+  16%{opacity:.48;transform:scaleX(.86) scaleY(.96)}
+  36%{opacity:1;transform:scaleX(1.08) scaleY(1.02)}
+  56%{opacity:.72;transform:scaleX(1.02) scaleY(1)}
+  72%{opacity:.9;transform:scaleX(1.05) scaleY(1.01)}
+  88%{opacity:.28;transform:scaleX(.90) scaleY(.97)}
+  100%{opacity:0;transform:scaleX(.82) scaleY(.94)}
+}
+
+#app[data-mode="spelling"] .spelling-segmented.is-segment-instant .spelling-segment-indicator{
+  transition:none!important;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice,
+#app[data-mode="spelling"] .spelling-time-choice,
+#app[data-mode="spelling"] .spelling-category-chip{
+  position:relative;
+  display:flex;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice,
+#app[data-mode="spelling"] .spelling-time-choice{
+  z-index:1;
+  min-width:0;
+  height:100%;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice input,
+#app[data-mode="spelling"] .spelling-time-choice input,
+#app[data-mode="spelling"] .spelling-category-chip input{
+  position:absolute;
+  inline-size:1px;
+  block-size:1px;
+  opacity:0;
+  pointer-events:none;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice span,
+#app[data-mode="spelling"] .spelling-time-choice span{
+  display:grid;
+  place-items:center;
+  width:100%;
+  min-width:0;
+  min-height:100%;
+  box-sizing:border-box;
+  padding:10px 8px;
+  color:#697a91;
+  font-size:13px;
+  line-height:1.15;
+  font-weight:800;
+  text-align:center;
+  transition:color .24s ease;
+  transform-origin:center;
+  will-change:transform,color,text-shadow,filter;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice input:checked + span,
+#app[data-mode="spelling"] .spelling-time-choice input:checked + span{
+  color:#a74869;
+}
+
+
+/* Typography bump is synced with the trailing edge reaching overshoot (~44%). */
+#app[data-mode="spelling"] .spelling-segmented.is-segment-moving .spelling-v2-choice input:checked + span,
+#app[data-mode="spelling"] .spelling-segmented.is-segment-moving .spelling-time-choice input:checked + span{
+  animation:spelling-segment-type-bump var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes spelling-segment-type-bump{
+  0%,43%{
+    transform:scale(1);
+    color:#a74869;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
+  47%{
+    transform:scale(1.085);
+    color:#bb5f7d;
+    text-shadow:
+      0 0 3px rgba(255,255,255,.78),
+      0 0 8px rgba(255,225,235,.62);
+    filter:brightness(1.08);
+  }
+  56%{
+    transform:scale(1.045);
+    color:#b15373;
+    text-shadow:
+      0 0 2px rgba(255,255,255,.42),
+      0 0 5px rgba(255,225,235,.32);
+    filter:brightness(1.04);
+  }
+  74%{
+    transform:scale(1.012);
+    color:#ab4c6d;
+    text-shadow:0 0 2px rgba(255,255,255,.14);
+    filter:brightness(1.01);
+  }
+  89%,100%{
+    transform:scale(1);
+    color:#a74869;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
+}
+
+#app[data-mode="spelling"] .spelling-category-panel{
+  width:100%;
+  max-height:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-7px) scaleY(.94);
+  transform-origin:top center;
+  margin-top:0;
+  padding-top:0;
+  transition:max-height .44s cubic-bezier(.16,1,.28,1),opacity .26s ease,transform .44s cubic-bezier(.16,1,.28,1),padding-top .44s cubic-bezier(.16,1,.28,1);
+}
+
+#app[data-mode="spelling"] .spelling-category-panel.is-open{
+  max-height:180px;
+  opacity:1;
+  transform:translateY(0) scaleY(1);
+  margin-top:0;
+  padding-top:8px;
+}
+
+#app[data-mode="spelling"] .spelling-category-grid{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:8px;
+  width:100%;
+  box-sizing:border-box;
+  padding:12px 10px 10px;
+  border:1px solid #dfe6f0;
+  border-radius:16px;
+  background:#f2f5f9;
+}
+
+#app[data-mode="spelling"] .spelling-category-grid::before{
+  content:none;
+}
+
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-grid{
+  animation:spelling-category-panel-reveal .46s cubic-bezier(.16,1,.28,1) both;
+}
+
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-chip{
+  animation:spelling-category-chip-reveal .34s cubic-bezier(.18,.78,.22,1) both;
+}
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-chip:nth-child(2){animation-delay:.025s}
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-chip:nth-child(3){animation-delay:.05s}
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-chip:nth-child(4){animation-delay:.075s}
+#app[data-mode="spelling"] .spelling-category-panel.is-open .spelling-category-chip:nth-child(5){animation-delay:.10s}
+
+@keyframes spelling-category-panel-reveal{
+  0%{opacity:.25;transform:translateY(-6px) scale(.992,.92);box-shadow:0 0 0 rgba(47,116,93,0)}
+  58%{opacity:1;transform:translateY(1px) scale(1.005,1.025);box-shadow:0 8px 24px rgba(182,84,115,.08)}
+  100%{opacity:1;transform:translateY(0) scale(1);box-shadow:0 0 0 rgba(47,116,93,0)}
+}
+
+@keyframes spelling-category-chip-reveal{
+  0%{opacity:0;transform:translateY(-5px) scale(.96)}
+  72%{opacity:1;transform:translateY(1px) scale(1.02)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+#app[data-mode="spelling"] .spelling-category-chip{
+  grid-column:span 2;
+  min-width:0;
+}
+
+#app[data-mode="spelling"] .spelling-category-chip.wide{
+  grid-column:span 3;
+}
+
+#app[data-mode="spelling"] .spelling-category-chip span{
+  display:grid;
+  place-items:center;
+  min-height:39px;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  padding:8px 10px;
+  border:1px solid #d7e0ea;
+  border-radius:14px;
+  background:#fbfcfe;
+  color:#607086;
+  font-size:10.5px;
+  line-height:1.15;
+  font-weight:760;
+  text-align:center;
+  transform-origin:center;
+  will-change:transform,filter,box-shadow;
+  transition:background .26s ease,border-color .26s ease,color .26s ease,box-shadow .26s ease,transform .26s cubic-bezier(.2,.8,.25,1);
+}
+
+#app[data-mode="spelling"] .spelling-category-chip input:checked + span{
+  border-color:#cf8fa4;
+  background:linear-gradient(180deg,#fcebf1 0%,#f6cfdb 100%);
+  color:#9f3f61;
+  font-weight:850;
+  box-shadow:0 5px 12px rgba(166,72,103,.10);
+}
+
+#app[data-mode="spelling"] .spelling-category-chip:active span{
+  transform:scale(.985);
+}
+
+
+#app[data-mode="spelling"] .spelling-category-chip.is-selecting span{
+  animation:spelling-category-chip-in .50s cubic-bezier(.18,.78,.22,1) both;
+}
+
+#app[data-mode="spelling"] .spelling-category-chip.is-deselecting span{
+  animation:spelling-category-chip-out .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes spelling-category-chip-in{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.09);filter:brightness(1.08)}
+  66%{transform:scale(.982);filter:brightness(1.02)}
+  84%{transform:scale(1.018);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+@keyframes spelling-category-chip-out{
+  0%{transform:scale(1);filter:brightness(1)}
+  36%{transform:scale(.92);filter:brightness(.98)}
+  68%{transform:scale(1.025);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+#app[data-mode="spelling"] .start-button [data-start-copy]{
+  display:inline-block;
+}
+
+#app[data-mode="spelling"] .start-button.spelling-start-pop [data-start-copy]{
+  animation:spelling-start-copy-pop .34s cubic-bezier(.2,.8,.25,1) both;
+}
+
+@keyframes spelling-start-copy-pop{
+  0%{opacity:.45;transform:translateY(5px) scale(.97)}
+  68%{opacity:1;transform:translateY(-1px) scale(1.025)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media (max-height:760px){
+  #app[data-mode="spelling"][data-view="wizard"] .setup-card.spelling-wizard-v2{
+    padding-top:15px;
+    padding-bottom:16px;
+  }
+  #app[data-mode="spelling"] .spelling-v2-section + .spelling-v2-section{
+    margin-top:15px;
+  }
+  #app[data-mode="spelling"] .spelling-category-panel.is-open{
+    margin-top:0;
+    padding-top:6px;
+  }
+  #app[data-mode="spelling"] .spelling-category-grid{
+    padding:12px;
+    gap:8px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  #app[data-mode="spelling"] .spelling-category-panel,
+  #app[data-mode="spelling"] .spelling-segment-indicator,
+  #app[data-mode="spelling"] .spelling-segment-indicator::after,
+  #app[data-mode="spelling"] .spelling-v2-choice span,
+  #app[data-mode="spelling"] .spelling-scope-toggle span,
+  #app[data-mode="spelling"] .spelling-time-choice span,
+  #app[data-mode="spelling"] .spelling-category-chip span,
+  #app[data-mode="spelling"] .start-button [data-start-copy]{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+
+
+#app[data-mode="spelling"] .spelling-segmented{
+  touch-action:pan-y;
+}
+
+#app[data-mode="spelling"] .spelling-segmented.is-dragging{
+  cursor:grabbing;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice.is-tap-bump span,
+#app[data-mode="spelling"] .spelling-time-choice.is-tap-bump span{
+  animation:spelling-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes spelling-active-tap-bump{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.075);filter:brightness(1.08)}
+  68%{transform:scale(.986);filter:brightness(1.02)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+
+#app[data-mode="spelling"]{
+  --accent:#b65473;
+  --tint:#fbe8ee;
+}
+
+#app[data-mode="spelling"] .wizard-intro.pink{
+  background:#fbe8ee;
+}
+
+#app[data-mode="spelling"] .spelling-v2-scope-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-v2-level-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-time-segmented{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+#app[data-mode="spelling"] .spelling-category-panel.is-open{
+  max-height:150px;
+  padding-top:8px;
+}
+
+#app[data-mode="spelling"] .spelling-category-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  padding:10px;
+  gap:8px;
+}
+
+#app[data-mode="spelling"] .spelling-category-chip,
+#app[data-mode="spelling"] .spelling-category-chip.wide{
+  grid-column:auto;
+}
+
+#app[data-mode="spelling"] .spelling-category-chip span{
+  min-height:36px;
+  padding:6px 5px;
+  font-size:11px;
+}
+
+#app[data-mode="spelling"] .spelling-segmented{
+  touch-action:pan-y;
+}
+
+#app[data-mode="spelling"] .spelling-v2-choice.is-tap-bump span,
+#app[data-mode="spelling"] .spelling-time-choice.is-tap-bump span{
+  animation:spelling-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes spelling-active-tap-bump{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.075);filter:brightness(1.08)}
+  68%{transform:scale(.986);filter:brightness(1.02)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+body:has(#app[data-mode="spelling"]){
+  background:#f5f3ff;
+  position:relative;
+}
+body:has(#app[data-mode="spelling"])::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 92% -4%,rgba(243,226,247,.76),transparent 50%),
+    radial-gradient(ellipse at 2% 72%,rgba(251,232,238,.64),transparent 54%),
+    #f5f3ff;
+}
+#app[data-mode="spelling"]{background:transparent}
+
+@media(max-height:760px){
+  #app[data-mode="spelling"] .spelling-category-panel.is-open{max-height:132px;padding-top:6px}
+  #app[data-mode="spelling"] .spelling-category-grid{padding:8px;gap:6px}
+  #app[data-mode="spelling"] .spelling-category-chip span{min-height:32px;padding:5px 4px}
+}

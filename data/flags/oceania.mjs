@@ -1,0 +1,16 @@
+export const OCEANIA = [
+  { id:'pw', country:'Palau', countryEn:'Palau', capital:'Ngerulmud', distanceKm:10895, distanceRank:179, difficulty:3 },
+  { id:'au', country:'Australia', countryEn:'Australia', capital:'Canberra', distanceKm:11869, distanceRank:183, difficulty:3 },
+  { id:'pg', country:'Papua-Nowa Gwinea', countryEn:'Papua New Guinea', capital:'Port Moresby', distanceKm:12114, distanceRank:184, difficulty:3 },
+  { id:'fm', country:'Mikronezja', countryEn:'Micronesia', capital:'Palikir', distanceKm:12294, distanceRank:185, difficulty:3 },
+  { id:'mh', country:'Wyspy Marshalla', countryEn:'Marshall Islands', capital:'Majuro', distanceKm:12516, distanceRank:186, difficulty:3 },
+  { id:'nr', country:'Nauru', countryEn:'Nauru', capital:'Yaren', distanceKm:13451, distanceRank:187, difficulty:3 },
+  { id:'sb', country:'Wyspy Salomona', countryEn:'Solomon Islands', capital:'Honiara', distanceKm:13470, distanceRank:188, difficulty:3 },
+  { id:'ki', country:'Kiribati', countryEn:'Kiribati', capital:'Bairiki', distanceKm:13499, distanceRank:189, difficulty:3 },
+  { id:'tv', country:'Tuvalu', countryEn:'Tuvalu', capital:'Vaiaku', distanceKm:14670, distanceRank:190, difficulty:3 },
+  { id:'vu', country:'Vanuatu', countryEn:'Vanuatu', capital:'Port Vila', distanceKm:14816, distanceRank:191, difficulty:3 },
+  { id:'ws', country:'Samoa', countryEn:'Samoa', capital:'Apia', distanceKm:15556, distanceRank:192, difficulty:3 },
+  { id:'fj', country:'Fidżi', countryEn:'Fiji', capital:'Suva', distanceKm:15678, distanceRank:193, difficulty:3 },
+  { id:'to', country:'Tonga', countryEn:'Tonga', capital:'Nuku’alofa', distanceKm:16173, distanceRank:194, difficulty:3 },
+  { id:'nz', country:'Nowa Zelandia', countryEn:'New Zealand', capital:'Wellington', distanceKm:16936, distanceRank:195, difficulty:3 },
+];

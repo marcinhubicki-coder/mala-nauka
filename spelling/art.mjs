@@ -1,4 +1,4 @@
-import { sceneFor, chooseLayout, sceneUrl } from './scenes.mjs';
+import { sceneFor, sceneUrl } from './scenes.mjs';
 import { mountHintButton } from './hints.mjs';
 import { decorateWord } from './word-reveal.mjs';
 
@@ -21,29 +21,62 @@ function maskedFromAria(word){
   return '';
 }
 
-function mountScene(scene){
-  const layer=document.createElement('div');
-  layer.className='spelling-scene spelling-scene-calm';
-  layer.setAttribute('aria-hidden','true');
-  if(scene){
+function ensureScreenBackground(){
+  let bg=app.querySelector(':scope > .spelling-screen-bg');
+  if(bg)return bg;
+  bg=document.createElement('img');
+  bg.className='spelling-screen-bg';
+  bg.src='assets/ortografia/spelling-bg-v053.webp';
+  bg.alt='';
+  bg.decoding='async';
+  bg.loading='eager';
+  bg.setAttribute('aria-hidden','true');
+  app.prepend(bg);
+  return bg;
+}
+
+function mountVisual(scene,title){
+  app.querySelector('.spelling-visual')?.remove();
+
+  const bubble=document.createElement('div');
+  bubble.className='spelling-visual scene-missing';
+  bubble.setAttribute('aria-hidden','true');
+  if(scene?.scale)bubble.style.setProperty('--scene-scale',String(scene.scale));
+
+  const media=document.createElement('div');
+  media.className='spelling-visual-media';
+  bubble.append(media);
+
+  if(scene?.asset){
     const img=document.createElement('img');
     img.src=sceneUrl(scene);
     img.alt='';
     img.decoding='async';
     img.loading='eager';
-    img.addEventListener('load',()=>{
-      layer.classList.remove('spelling-scene-calm','scene-missing');
-      layer.classList.add('scene-loaded');
-    },{once:true});
-    img.addEventListener('error',()=>{
-      img.remove();
-      layer.classList.add('scene-missing');
-    },{once:true});
-    layer.append(img);
-  }else{
-    layer.classList.add('scene-missing');
+    if(scene.position)img.style.objectPosition=scene.position;
+    img.addEventListener('load',()=>bubble.classList.remove('scene-missing'),{once:true});
+    img.addEventListener('error',()=>img.remove(),{once:true});
+    media.append(img);
   }
-  app.prepend(layer);
+
+  const frame=document.createElement('img');
+  frame.className='spelling-bubble-frame';
+  frame.src='assets/ortografia/bubble-frame-v053.webp';
+  frame.alt='';
+  frame.decoding='async';
+  frame.loading='eager';
+  frame.setAttribute('aria-hidden','true');
+  bubble.append(frame);
+
+  for(const suffix of ['a','b','c']){
+    const orb=document.createElement('i');
+    orb.className=`scene-orb scene-orb-${suffix}`;
+    orb.setAttribute('aria-hidden','true');
+    bubble.append(orb);
+  }
+
+  title.insertAdjacentElement('afterend',bubble);
+  return bubble;
 }
 
 function scheduleCorrectAutoAdvance(card){
@@ -63,6 +96,7 @@ function scheduleCorrectAutoAdvance(card){
 function decorate(){
   scheduled=false;
   if(app.dataset.view!=='game'||app.dataset.mode!=='spelling')return;
+  ensureScreenBackground();
   if(app.querySelector('.spelling-title'))return;
 
   const word=app.querySelector('.word');
@@ -76,20 +110,19 @@ function decorate(){
   else masked=questionMemory.get(question)||'';
 
   const scene=sceneFor(masked);
-  const layout=chooseLayout(masked,question,scene);
   const category=app.querySelector('.badge')?.textContent?.trim()||'';
   const feedback=!!word.querySelector('.filled');
   const options=[...answers.querySelectorAll('.answer')].map(el=>el.textContent.trim()).filter(Boolean);
 
   app.classList.add('spelling-art-ready');
-  app.dataset.artLayout=layout;
+  app.dataset.artLayout='bubble';
   app.dataset.artScene=scene?.key||'calm';
-  mountScene(scene);
 
   const title=document.createElement('h2');
   title.className='spelling-title';
-  title.innerHTML='<span>Jak jest</span><span>poprawnie?</span><i aria-hidden="true"></i>';
+  title.textContent='Jak jest poprawnie?';
   card.insertAdjacentElement('beforebegin',title);
+  mountVisual(scene,title);
 
   card.classList.add('spelling-question-card');
   app.querySelector('.badges')?.setAttribute('aria-hidden','true');
@@ -98,9 +131,12 @@ function decorate(){
   decorateWord(word,options,feedback);
   mountHintButton(app,answers,category);
 
-  const n=question||1;
   const small=app.querySelector('.time-block small');
-  if(small)small.textContent=`Przygoda · zadanie ${n}`;
+  if(small){
+    small.textContent='';
+    small.hidden=true;
+    small.setAttribute('aria-hidden','true');
+  }
 
   if(feedback){
     app.classList.add('spelling-has-feedback');

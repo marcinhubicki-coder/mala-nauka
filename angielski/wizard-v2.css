@@ -40,7 +40,7 @@
 }
 
 #app[data-mode="english"] .english-v2-level-grid{
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
 }
 
 #app[data-mode="english"] .english-v2-scope-grid{
@@ -419,16 +419,14 @@
 }
 
 #app[data-mode="english"] .english-category-panel.is-open{
-  max-height:196px;
+  max-height:360px;
   padding-top:8px;
 }
 
 #app[data-mode="english"] .english-category-grid{
   grid-template-columns:repeat(3,minmax(0,1fr));
-  max-height:184px;
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  scrollbar-width:thin;
+  max-height:none;
+  overflow:visible;
   padding:10px 8px;
 }
 
@@ -443,18 +441,105 @@
   font-size:9.7px;
 }
 
-#app[data-mode="english"] .english-category-grid::-webkit-scrollbar{width:4px}
-#app[data-mode="english"] .english-category-grid::-webkit-scrollbar-thumb{
-  background:#d9c48e;
-  border-radius:4px;
+#app[data-mode="english"] .english-category-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  margin-top:10px;
+  opacity:0;
+  max-height:0;
+  min-height:0;
+  height:0;
+  pointer-events:none;
+  transform:translateY(-6px) scaleY(.94);
+  transform-origin:top center;
+  transition:opacity .24s ease,transform .34s cubic-bezier(.16,1,.28,1),height .34s cubic-bezier(.16,1,.28,1),max-height .34s cubic-bezier(.16,1,.28,1),min-height .34s cubic-bezier(.16,1,.28,1);
 }
 
-#app[data-mode="english"] .english-v2-level-grid .english-v2-choice:last-child span{
-  font-size:11px;
+#app[data-mode="english"] .english-category-actions.is-open{
+  opacity:1;
+  height:56px;
+  min-height:56px;
+  max-height:56px;
+  pointer-events:auto;
+  transform:translateY(0) scaleY(1);
+}
+
+#app[data-mode="english"] #setup-form.english-category-editing .english-v2-level,
+#app[data-mode="english"] #setup-form.english-category-editing .english-v2-time,
+#app[data-mode="english"] #setup-form.english-category-editing .wizard-note,
+#app[data-mode="english"] #setup-form.english-category-editing .start-button,
+#app[data-mode="english"] #setup-form.english-category-editing #setup-error{
+  display:none!important;
+}
+
+#app[data-mode="english"] .english-segmented{
+  touch-action:pan-y;
+}
+
+#app[data-mode="english"] .english-segmented.is-dragging{
+  cursor:grabbing;
+}
+
+#app[data-mode="english"] .english-v2-choice.is-tap-bump span,
+#app[data-mode="english"] .english-time-choice.is-tap-bump span{
+  animation:english-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes english-active-tap-bump{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.075);filter:brightness(1.08)}
+  68%{transform:scale(.986);filter:brightness(1.02)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+#app[data-mode="english"] .start-button [data-start-copy]{
+  display:inline-block;
+}
+
+#app[data-mode="english"] .start-button.english-start-pop [data-start-copy]{
+  animation:english-start-copy-pop .34s cubic-bezier(.2,.8,.25,1) both;
+}
+
+@keyframes english-start-copy-pop{
+  0%{opacity:.45;transform:translateY(5px) scale(.97)}
+  68%{opacity:1;transform:translateY(-1px) scale(1.025)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
 }
 
 @media(max-height:760px){
-  #app[data-mode="english"] .english-category-panel.is-open{max-height:166px;padding-top:6px}
-  #app[data-mode="english"] .english-category-grid{max-height:156px}
-  #app[data-mode="english"] .english-category-chip span{min-height:32px}
+  #app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2{
+    padding-top:15px;
+    padding-bottom:15px;
+  }
+  #app[data-mode="english"] .english-v2-section + .english-v2-section{
+    margin-top:14px;
+  }
+  #app[data-mode="english"] .english-v2-section legend{
+    margin-bottom:8px;
+  }
+  #app[data-mode="english"] .english-category-panel.is-open{max-height:330px;padding-top:6px}
+  #app[data-mode="english"] .english-category-chip span{min-height:31px;padding:5px 4px}
+}
+
+
+body:has(#app[data-mode="english"]){
+  background:#f5f8ff;
+  position:relative;
+}
+body:has(#app[data-mode="english"])::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 92% -4%,rgba(236,220,255,.68),transparent 48%),
+    radial-gradient(ellipse at 4% 70%,rgba(255,244,204,.38),transparent 54%),
+    #f5f8ff;
+}
+#app[data-mode="english"]{
+  background:transparent;
+}
+#app[data-mode="english"][data-view="wizard"] .page-head{
+  position:relative;
+  z-index:1;
 }

@@ -398,7 +398,7 @@ function saveCategoryEditorAfterJelly(container){
   editorSaving=false;
   form?.classList.remove('english-category-saving');
   beginEditorClose();
- },motionMs+400);
+ },motionMs+200);
 }
 function applySegmentSelection(input){
  if(!input||input.disabled)return;

@@ -104,9 +104,9 @@ root.addEventListener('submit',e=>{if(e.target.id==='setup-form'){e.preventDefau
 root.addEventListener('change',e=>{
  if(view==='wizard'){
   const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration'))});save('configs',configs);
-  // Some approved spelling categories have no records at a given difficulty.
+  // Preview filters can leave a selected spelling pool without available words.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
-  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tej parze nie ma słów na tym poziomie. Wybierz „Wszystkie” lub inną parę.':'';root.querySelector('.start-button').disabled=empty;
+  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów w tej puli. Wybierz „Wszystkie” lub inne kategorie.':'';root.querySelector('.start-button').disabled=empty;
  }
  if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
 });

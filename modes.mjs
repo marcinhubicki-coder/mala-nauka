@@ -11,14 +11,55 @@ export const MODES = {
  reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
 };
 export const modeIds = Object.keys(MODES);
+
+const ENGLISH_CATEGORY_IDS=MODES.english.categories.filter(([id])=>id!=='all').map(([id])=>id);
+const ENGLISH_CATEGORY_LABELS=Object.fromEntries(MODES.english.categories);
+
+function parseEnglishCategory(raw='all'){
+ const value=String(raw||'all');
+ if(value.startsWith('engcfg:')){
+  const [,scopeRaw,categoriesRaw='']=value.split(':');
+  const categories=categoriesRaw.split(',').filter(id=>ENGLISH_CATEGORY_IDS.includes(id));
+  return {
+   scope:scopeRaw==='categories'&&categories.length?'categories':'all',
+   categories:categories.length?categories:['numbers']
+  };
+ }
+ if(value==='all')return {scope:'all',categories:['numbers']};
+ if(ENGLISH_CATEGORY_IDS.includes(value))return {scope:'categories',categories:[value]};
+ return {scope:'all',categories:['numbers']};
+}
+
+function encodeEnglishCategory({scope='all',categories=['numbers']}={}){
+ const selected=[...new Set(categories)].filter(id=>ENGLISH_CATEGORY_IDS.includes(id));
+ if(scope!=='categories'||!selected.length||selected.length===ENGLISH_CATEGORY_IDS.length)return 'engcfg:all:';
+ return `engcfg:categories:${selected.join(',')}`;
+}
+
 export function cleanConfig(mode, value) {
+ if(mode==='english'){
+  const parsed=parseEnglishCategory(value?.category);
+  return {
+   category:encodeEnglishCategory(parsed),
+   difficulty:[1,2,3].includes(value?.difficulty)?value.difficulty:1,
+   duration:DURATIONS.includes(value?.duration)?value.duration:180
+  };
+ }
  const categories = MODES[mode].categories.map(([id])=>id);
  return { category:categories.includes(value?.category)?value.category:'all',
   difficulty:[1,2,3,...(mode==='spelling'?[0]:[])].includes(value?.difficulty)?value.difficulty:(mode==='spelling'?0:1),
   duration:DURATIONS.includes(value?.duration)?value.duration:180 };
 }
 export function levelLabel(mode, level) { return MODES[mode].levels[mode==='spelling'?level:level-1]; }
-export function categoryLabel(mode, category) { return MODES[mode].categories.find(([id])=>id===category)?.[1] || ''; }
+export function categoryLabel(mode, category) {
+ if(mode==='english'){
+  const parsed=parseEnglishCategory(category);
+  return parsed.scope==='all'
+   ? 'Wszystkie słówka'
+   : parsed.categories.map(id=>ENGLISH_CATEGORY_LABELS[id]).join(', ');
+ }
+ return MODES[mode].categories.find(([id])=>id===category)?.[1] || '';
+}
 const integer = (min,max,random) => min+Math.floor(random()*(max-min+1));
 export function mathQuestion(config, random = Math.random) {
  const level=config.difficulty, limit=[0,10,50,100][level];
@@ -42,7 +83,9 @@ export function createSource(mode, config, words, random = Math.random) {
   .map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
  if(mode==='math') return ()=>mathQuestion(config,random);
  if(mode==='english') {
-  let pool=ENGLISH.filter(w=>config.category==='all'||w.category===config.category);
+  const parsed=parseEnglishCategory(config.category);
+  const selected=new Set(parsed.categories);
+  let pool=ENGLISH.filter(w=>parsed.scope==='all'||selected.has(w.category));
   if(config.difficulty===3) { const harder=pool.filter(w=>w.difficulty>=2);if(harder.length)pool=harder; }
   return pool.map(w=>({kind:'english',text:w.meaning,answer:w.word,full:w.word,
    options:config.difficulty===1?[w.word,...shuffle(ENGLISH.filter(o=>o.category===w.category&&o.word!==w.word),random).slice(0,3).map(o=>o.word)]:[w.word,...w.mistakes],

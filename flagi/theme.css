@@ -80,3 +80,27 @@
 #app[data-mode="flags"] .home-foot span{
   color:var(--flag-theme);
 }
+
+
+body:has(#app[data-mode="flags"]){
+  background:#f5f8ff;
+  position:relative;
+}
+body:has(#app[data-mode="flags"])::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 92% -4%,rgba(226,235,255,.82),transparent 50%),
+    radial-gradient(ellipse at 2% 70%,rgba(226,247,239,.56),transparent 54%),
+    #f5f8ff;
+}
+#app[data-mode="flags"]{
+  background:transparent;
+}
+#app[data-mode="flags"][data-view="wizard"] .page-head{
+  position:relative;
+  z-index:1;
+}

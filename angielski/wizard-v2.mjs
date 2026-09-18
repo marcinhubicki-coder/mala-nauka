@@ -207,6 +207,7 @@ function syncPanel(animate=false){
   panel.setAttribute('aria-hidden',open?'false':'true');
  }
  root.querySelectorAll('input[name="englishScope"]').forEach(input=>{input.checked=input.value===state.scope;});
+ root.querySelectorAll('input[name="englishCategories"]').forEach(input=>{input.checked=state.categories.includes(input.value);});
  syncSegments(animate);
 }
 

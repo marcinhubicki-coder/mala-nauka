@@ -7,11 +7,18 @@ const CATEGORIES=[
  ['nature','Natura'],['places','Miejsca'],['transport','Transport'],['clothes','Ubrania'],['jobs','Zawody'],
  ['verbs','Czasowniki'],['adjectives','Przymiotniki'],['time','Czas']
 ];
-const LEVELS=[[1,'Znaczenie'],[2,'Pisownia'],[3,'Trudniejsza pisownia']];
+const LEVELS=[[1,'Znaczenie'],[2,'Pisownia']];
 const DURATIONS=[60,120,180,300];
+const START_COPY={60:'Szybka akcja!',120:'Zaczynamy!',180:'Dłuższa misja!',300:'Jesteś pewien?'};
+
 let state=null;
+let editingCategories=false;
+let editSnapshot=null;
+let draftCategories=[];
+let suppressClickUntil=0;
 const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
+const dragStates=new WeakMap();
 
 function parseCategory(value){
  const raw=String(value||'all');
@@ -32,17 +39,26 @@ function readState(fallback){
    return {
     scope:saved.scope==='categories'?'categories':'all',
     categories:categories.length?categories:['numbers'],
-    difficulty:[1,2,3].includes(Number(saved.difficulty))?Number(saved.difficulty):fallback.difficulty,
+    difficulty:[1,2].includes(Number(saved.difficulty))?Number(saved.difficulty):1,
     duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration
    };
   }
  }catch{}
  const parsed=parseCategory(fallback.category);
- return {scope:parsed.scope,categories:parsed.categories,difficulty:fallback.difficulty,duration:fallback.duration};
+ return {
+  scope:parsed.scope,
+  categories:parsed.categories,
+  difficulty:[1,2].includes(Number(fallback.difficulty))?Number(fallback.difficulty):1,
+  duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180
+ };
 }
 
 function saveState(){
  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}
+}
+
+function currentCategories(){
+ return editingCategories?draftCategories:state.categories;
 }
 
 function encodeCategory(){
@@ -61,14 +77,15 @@ function indicator(){
 function scopeChoices(){
  return '<div class="english-v2-scope-grid english-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres słówek">'+
   indicator()+
-  '<label class="english-v2-choice"><input type="radio" name="englishScope" value="all" '+(state.scope==='all'?'checked':'')+'><span>Wszystkie słówka</span></label>'+
-  '<label class="english-v2-choice"><input type="radio" name="englishScope" value="categories" '+(state.scope==='categories'?'checked':'')+'><span>Kategorie</span></label>'+
+  '<label class="english-v2-choice"><input type="radio" name="englishScope" value="all" '+(state.scope==='all'&&!editingCategories?'checked':'')+'><span>Wszystkie słówka</span></label>'+
+  '<label class="english-v2-choice"><input type="radio" name="englishScope" value="categories" '+((state.scope==='categories'||editingCategories)?'checked':'')+'><span>Kategorie</span></label>'+
   '</div>';
 }
 
 function categoryChoices(){
+ const selected=currentCategories();
  return CATEGORIES.map(([id,label])=>
-  '<label class="english-category-chip"><input type="checkbox" name="englishCategories" value="'+id+'" '+(state.categories.includes(id)?'checked':'')+'><span>'+esc(label)+'</span></label>'
+  '<label class="english-category-chip"><input type="checkbox" name="englishCategories" value="'+id+'" '+(selected.includes(id)?'checked':'')+'><span>'+esc(label)+'</span></label>'
  ).join('');
 }
 
@@ -82,6 +99,12 @@ function durationChoices(){
  return indicator()+DURATIONS.map(seconds=>
   '<label class="english-time-choice"><input type="radio" name="duration" value="'+seconds+'" '+(state.duration===seconds?'checked':'')+'><span>'+(seconds/60)+' min</span></label>'
  ).join('');
+}
+
+function editActionChoices(){
+ return indicator()+
+  '<label class="english-v2-choice"><input type="radio" name="englishEditAction" value="cancel" checked><span>Anuluj</span></label>'+
+  '<label class="english-v2-choice"><input type="radio" name="englishEditAction" value="save"><span>Zapisz</span></label>';
 }
 
 function segmentGeometry(container,index){
@@ -107,18 +130,19 @@ function indicatorGeometry(container,indicatorNode){
 }
 
 function lerp(a,b,t){return a+(b-a)*t;}
+function clamp(value,min,max){return Math.max(min,Math.min(max,value));}
 
 function motionTiming(current,target){
  const distance=Math.abs(target.center-current.center);
  const base=Math.min(1280,Math.max(860,Math.round(860+distance*.72)));
  const total=Math.round(base*1.23);
- const overshoot=Math.min(18,Math.max(6,Math.round(distance*.075)));
+ const overshoot=Math.min(16,Math.max(5,Math.round(distance*.065)));
  return {total,overshoot};
 }
 
 function jellyFrames(current,target,forward,overshoot){
- const back=Math.max(3,Math.round(overshoot*.38));
- const bounce=Math.max(1,Math.round(overshoot*.12));
+ const back=Math.max(2,Math.round(overshoot*.34));
+ const bounce=Math.max(1,Math.round(overshoot*.10));
  if(forward){
   return [
    {offset:0,left:current.left+'px',right:current.right+'px',easing:'cubic-bezier(.30,.04,.22,1)'},
@@ -160,7 +184,7 @@ function updateSegment(container,index,count,animate=true){
  const nextIndex=Math.max(0,Math.min(count-1,index));
  const target=segmentGeometry(container,nextIndex);
  if(!target)return;
- const changed=Number.isFinite(previousIndex)&&previousIndex!==nextIndex;
+ const changed=Number.isFinite(previousIndex)&&Math.abs(previousIndex-nextIndex)>.001;
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
  const current=stopSegmentAnimation(container,indicatorNode);
  container.dataset.activeIndex=String(nextIndex);
@@ -193,21 +217,78 @@ function updateSegment(container,index,count,animate=true){
  segmentTimers.set(container,window.setTimeout(finish,timing.total+120));
 }
 
-function syncSegments(animate=false){
- updateSegment(root.querySelector('[data-segmented="scope"]'),state.scope==='categories'?1:0,2,animate);
- updateSegment(root.querySelector('[data-segmented="level"]'),Math.max(0,LEVELS.findIndex(([value])=>value===state.difficulty)),3,animate);
- updateSegment(root.querySelector('[data-segmented="time"]'),Math.max(0,DURATIONS.indexOf(state.duration)),4,animate);
+function segmentCount(container){
+ return container?.querySelectorAll(':scope > label').length||0;
 }
 
-function syncPanel(animate=false){
- const panel=root.querySelector('[data-category-panel]');
- const open=state.scope==='categories';
- if(panel){
-  panel.classList.toggle('is-open',open);
-  panel.setAttribute('aria-hidden',open?'false':'true');
+function activeIndexFor(container){
+ const type=container?.dataset.segmented;
+ if(type==='scope')return editingCategories||state.scope==='categories'?1:0;
+ if(type==='level')return Math.max(0,LEVELS.findIndex(([value])=>value===state.difficulty));
+ if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
+ if(type==='edit')return 0;
+ return 0;
+}
+
+function syncSegments(animate=false){
+ root.querySelectorAll('.english-segmented').forEach(container=>{
+  updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
+ });
+}
+
+function bumpLabel(label){
+ if(!label)return;
+ label.classList.remove('is-tap-bump');
+ void label.offsetWidth;
+ label.classList.add('is-tap-bump');
+ window.setTimeout(()=>label.classList.remove('is-tap-bump'),430);
+}
+
+function updateStartButton(animate=false){
+ const button=root.querySelector('.start-button');
+ if(!button)return;
+ const next=START_COPY[state.duration]||'Zaczynamy!';
+ let copy=button.querySelector('[data-start-copy]');
+ if(!copy){
+  button.innerHTML='<span data-start-copy></span><span aria-hidden="true">→</span>';
+  copy=button.querySelector('[data-start-copy]');
  }
- root.querySelectorAll('input[name="englishScope"]').forEach(input=>{input.checked=input.value===state.scope;});
- root.querySelectorAll('input[name="englishCategories"]').forEach(input=>{input.checked=state.categories.includes(input.value);});
+ if(copy.textContent!==next){
+  copy.textContent=next;
+  if(animate){
+   button.classList.remove('english-start-pop');
+   void button.offsetWidth;
+   button.classList.add('english-start-pop');
+  }
+ }
+}
+
+function refreshCategoryChecks(){
+ const selected=currentCategories();
+ root.querySelectorAll('input[name="englishCategories"]').forEach(input=>{input.checked=selected.includes(input.value);});
+}
+
+function syncEditorUI(animate=false){
+ const form=root.querySelector('#setup-form');
+ const panel=root.querySelector('[data-category-panel]');
+ const actions=root.querySelector('[data-category-actions]');
+ form?.classList.toggle('english-category-editing',editingCategories);
+ if(panel){
+  panel.classList.toggle('is-open',editingCategories);
+  panel.setAttribute('aria-hidden',editingCategories?'false':'true');
+ }
+ if(actions){
+  actions.classList.toggle('is-open',editingCategories);
+  actions.setAttribute('aria-hidden',editingCategories?'false':'true');
+  const cancel=actions.querySelector('input[value="cancel"]');
+  if(cancel)cancel.checked=true;
+  const save=actions.querySelector('input[value="save"]');
+  if(save)save.checked=false;
+ }
+ root.querySelectorAll('input[name="englishScope"]').forEach(input=>{
+  input.checked=input.value===(editingCategories?'categories':state.scope);
+ });
+ refreshCategoryChecks();
  syncSegments(animate);
 }
 
@@ -221,41 +302,196 @@ function syncHidden(dispatch=true){
  if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
+function enterCategoryEditor(){
+ if(editingCategories)return;
+ editSnapshot={scope:state.scope,categories:[...state.categories]};
+ draftCategories=state.scope==='categories'?[...state.categories]:[...(state.categories.length?state.categories:['numbers'])];
+ editingCategories=true;
+ syncEditorUI(true);
+}
+
+function cancelCategoryEditor(){
+ if(!editingCategories)return;
+ if(editSnapshot){
+  state.scope=editSnapshot.scope;
+  state.categories=[...editSnapshot.categories];
+ }
+ editingCategories=false;
+ draftCategories=[];
+ editSnapshot=null;
+ syncEditorUI(true);
+}
+
+function saveCategoryEditor(){
+ if(!editingCategories)return;
+ if(!draftCategories.length)draftCategories=['numbers'];
+ state.scope='categories';
+ state.categories=[...new Set(draftCategories)];
+ editingCategories=false;
+ draftCategories=[];
+ editSnapshot=null;
+ syncEditorUI(true);
+ syncHidden(true);
+}
+
+function applySegmentSelection(input){
+ if(!input)return;
+ const container=input.closest('.english-segmented');
+ const label=input.closest('label');
+ const wasChecked=input.checked;
+ if(wasChecked){
+  bumpLabel(label);
+  if(input.name==='englishScope'&&input.value==='categories'&&!editingCategories)enterCategoryEditor();
+  else if(input.name==='englishEditAction'&&input.value==='cancel'&&editingCategories)cancelCategoryEditor();
+  return;
+ }
+ input.checked=true;
+ input.dispatchEvent(new Event('change',{bubbles:true}));
+}
+
+function setupDrag(container){
+ if(!container||container.dataset.dragReady==='true')return;
+ container.dataset.dragReady='true';
+ container.addEventListener('pointerdown',event=>{
+  if(event.button!==undefined&&event.button!==0)return;
+  const indicatorNode=container.querySelector('.english-segment-indicator');
+  if(!indicatorNode)return;
+  const rect=container.getBoundingClientRect();
+  const currentIndex=activeIndexFor(container);
+  dragStates.set(container,{
+   pointerId:event.pointerId,
+   startX:event.clientX,
+   x:event.clientX,
+   moved:false,
+   rect,
+   currentIndex
+  });
+  stopSegmentAnimation(container,indicatorNode);
+  container.classList.add('is-dragging');
+  try{container.setPointerCapture(event.pointerId);}catch{}
+ });
+ container.addEventListener('pointermove',event=>{
+  const drag=dragStates.get(container);
+  if(!drag||drag.pointerId!==event.pointerId)return;
+  drag.x=event.clientX;
+  if(Math.abs(drag.x-drag.startX)>4)drag.moved=true;
+  if(!drag.moved)return;
+  event.preventDefault();
+  const count=segmentCount(container);
+  const rect=drag.rect;
+  const local=clamp(event.clientX-rect.left,4,rect.width-4);
+  const progress=clamp((local-4)/Math.max(1,rect.width-8),0,1)*(count-1);
+  const low=Math.floor(progress),high=Math.ceil(progress),mix=progress-low;
+  const a=segmentGeometry(container,low),b=segmentGeometry(container,high);
+  const indicatorNode=container.querySelector('.english-segment-indicator');
+  if(!a||!b||!indicatorNode)return;
+  indicatorNode.style.left=lerp(a.left,b.left,mix)+'px';
+  indicatorNode.style.right=lerp(a.right,b.right,mix)+'px';
+  container.dataset.activeIndex=String(progress);
+ });
+ const finishDrag=(event,cancelled=false)=>{
+  const drag=dragStates.get(container);
+  if(!drag||drag.pointerId!==event.pointerId)return;
+  dragStates.delete(container);
+  container.classList.remove('is-dragging');
+  try{container.releasePointerCapture(event.pointerId);}catch{}
+  if(cancelled){
+   updateSegment(container,activeIndexFor(container),segmentCount(container),true);
+   return;
+  }
+  if(!drag.moved)return;
+  suppressClickUntil=performance.now()+350;
+  const labels=[...container.querySelectorAll(':scope > label')];
+  const rect=container.getBoundingClientRect();
+  const x=clamp(event.clientX,rect.left,rect.right);
+  let index=0,best=Infinity;
+  labels.forEach((label,i)=>{
+   const r=label.getBoundingClientRect();
+   const d=Math.abs(x-(r.left+r.right)/2);
+   if(d<best){best=d;index=i;}
+  });
+  const input=labels[index]?.querySelector('input');
+  if(input)applySegmentSelection(input);
+  else updateSegment(container,activeIndexFor(container),labels.length,true);
+ };
+ container.addEventListener('pointerup',event=>finishDrag(event,false));
+ container.addEventListener('pointercancel',event=>finishDrag(event,true));
+}
+
+function installDrag(){
+ root.querySelectorAll('.english-segmented').forEach(setupDrag);
+}
+
 function install(){
  if(!root||root.dataset.mode!=='english'||root.dataset.view!=='wizard')return;
  const card=root.querySelector('.setup-card');
- if(!card||card.dataset.englishWizardV2==='true')return;
+ if(!card||card.dataset.englishWizardV3==='true')return;
  const fallback={
   category:card.querySelector('[name="category"]')?.value||'all',
   difficulty:Number(card.querySelector('[name="difficulty"]:checked')?.value)||1,
   duration:Number(card.querySelector('[name="duration"]:checked')?.value)||180
  };
- state=state||readState(fallback);
- card.dataset.englishWizardV2='true';
+ state=readState(fallback);
+ card.dataset.englishWizardV3='true';
  card.classList.add('english-wizard-v2');
  card.innerHTML=
   '<input id="category" type="hidden" name="category" value="'+esc(encodeCategory())+'">'+
   '<fieldset class="english-v2-section english-v2-scope"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+
    scopeChoices()+
-   '<div class="english-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="english-category-grid">'+categoryChoices()+'</div></div>'+
+   '<div class="english-category-panel" data-category-panel aria-hidden="true"><div class="english-category-grid">'+categoryChoices()+'</div>'+
+    '<div class="english-category-actions english-segmented" data-segmented="edit" data-category-actions aria-hidden="true">'+editActionChoices()+'</div>'+
+   '</div>'+
   '</fieldset>'+
-  '<fieldset class="english-v2-section english-v2-level"><legend><span class="step-dot">2</span>Wybierz poziom</legend><div class="english-v2-level-grid english-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
+  '<fieldset class="english-v2-section english-v2-level"><legend><span class="step-dot">2</span>Wybierz formę zabawy</legend><div class="english-v2-level-grid english-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
   '<fieldset class="english-v2-section english-v2-time"><legend><span class="step-dot">3</span>Jak długo dasz radę?</legend><div class="english-time-segmented english-segmented" data-segmented="time">'+durationChoices()+'</div></fieldset>';
  const note=root.querySelector('.wizard-note');
  if(note)note.textContent='Wybierz słówka, które chcesz dziś poćwiczyć.';
- syncPanel(false);
+ updateStartButton(false);
+ syncEditorUI(false);
  syncHidden(true);
- requestAnimationFrame(()=>syncSegments(false));
+ requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
+
+root?.addEventListener('click',event=>{
+ if(root.dataset.mode!=='english'||root.dataset.view!=='wizard')return;
+ if(performance.now()<suppressClickUntil){
+  const label=event.target.closest('.english-segmented > label');
+  if(label){event.preventDefault();event.stopPropagation();return;}
+ }
+ const label=event.target.closest('.english-segmented > label');
+ if(!label)return;
+ const input=label.querySelector('input');
+ if(!input)return;
+ if(input.checked){
+  event.preventDefault();
+  if(input.name==='englishScope'&&input.value==='categories'&&!editingCategories){
+   bumpLabel(label);
+   enterCategoryEditor();
+  }else if(input.name==='englishEditAction'&&input.value==='cancel'&&editingCategories){
+   bumpLabel(label);
+   cancelCategoryEditor();
+  }else{
+   bumpLabel(label);
+  }
+ }
+});
 
 root?.addEventListener('change',event=>{
  if(root.dataset.mode!=='english'||root.dataset.view!=='wizard'||!state)return;
  const target=event.target;
  if(target?.name==='englishScope'){
-  state.scope=target.value==='categories'?'categories':'all';
-  if(state.scope==='categories'&&(!state.categories.length||state.categories.length===CATEGORIES.length))state.categories=['numbers'];
-  syncPanel(true);
-  syncHidden(true);
+  if(target.value==='categories'){
+   if(!editingCategories)enterCategoryEditor();
+  }else{
+   if(editingCategories){
+    editingCategories=false;
+    draftCategories=[];
+    editSnapshot=null;
+   }
+   state.scope='all';
+   syncEditorUI(true);
+   syncHidden(true);
+  }
   return;
  }
  if(target?.name==='englishCategories'){
@@ -272,12 +508,12 @@ root?.addEventListener('change',event=>{
    const fallback=root.querySelector('input[name="englishCategories"][value="numbers"]');
    if(fallback)fallback.checked=true;
   }
-  state.categories=checked;
-  if(checked.length===CATEGORIES.length){
-   state.scope='all';
-   syncPanel(true);
-  }
-  syncHidden(true);
+  draftCategories=checked;
+  return;
+ }
+ if(target?.name==='englishEditAction'){
+  if(target.value==='save')saveCategoryEditor();
+  else cancelCategoryEditor();
   return;
  }
  if(target?.name==='difficulty'){
@@ -290,6 +526,7 @@ root?.addEventListener('change',event=>{
   state.duration=Number(target.value)||180;
   saveState();
   syncSegments(true);
+  updateStartButton(true);
  }
 });
 

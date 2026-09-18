@@ -4,21 +4,32 @@ import { READING } from './data/reading.mjs';
 import { FLAGS } from './data/flags.mjs';
 import { filterSpellingPreview } from './spelling/preview.mjs';
 export const MODES = {
- spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Łatwe','Średnie','Trudne']},
+ spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Podstawowe','Trudne']},
  math: {name:'Matematyka',icon:'1+2',hint:'Małe działania, wielkie odkrycia',color:'blue',categories:[['all','Mieszane'],['add','Dodawanie'],['subtract','Odejmowanie'],['multiply','Mnożenie'],['divide','Dzielenie']],levels:['Łatwe','Średnie','Trudne']},
  english: {name:'Angielski',icon:'🇬🇧',hint:'Słówka i ich pisownia',color:'yellow',categories:[['all','Wszystkie słówka'],['numbers','Liczby'],['objects','Przedmioty'],['verbs','Czasowniki'],['jobs','Zawody'],['home','Dom'],['nature','Natura'],['animals','Zwierzęta']],levels:['Znaczenie','Pisownia','Trudniejsza pisownia']},
  flags: {name:'Flagi',icon:'🌍',hint:'Mała podróż dookoła świata',color:'green',categories:[['all','Cały świat'],['europe','Europa'],['world','Poza Europą']],levels:['Łatwe','Średnie','Trudne']},
  reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
 };
 export const modeIds = Object.keys(MODES);
-export function cleanConfig(mode, value) {
+export export function cleanConfig(mode, value) {
  const categories = MODES[mode].categories.map(([id])=>id);
- return { category:categories.includes(value?.category)?value.category:'all',
-  difficulty:[1,2,3,...(mode==='spelling'?[0]:[])].includes(value?.difficulty)?value.difficulty:(mode==='spelling'?0:1),
-  duration:DURATIONS.includes(value?.duration)?value.duration:180 };
+ const duration=DURATIONS.includes(value?.duration)?value.duration:180;
+ if(mode==='spelling'){
+  const raw=String(value?.category??'all'),parts=raw==='all'?[]:raw.split(','),selected=CATEGORIES.filter(id=>parts.includes(id));
+  const category=!selected.length||selected.length===CATEGORIES.length?'all':selected.join(',');
+  const rawDifficulty=Number(value?.difficulty),difficulty=rawDifficulty===3?2:[0,1,2].includes(rawDifficulty)?rawDifficulty:0;
+  return {category,difficulty,duration};
+ }
+ return {category:categories.includes(value?.category)?value.category:'all',difficulty:[1,2,3].includes(value?.difficulty)?value.difficulty:1,duration};
 }
 export function levelLabel(mode, level) { return MODES[mode].levels[mode==='spelling'?level:level-1]; }
-export function categoryLabel(mode, category) { return MODES[mode].categories.find(([id])=>id===category)?.[1] || ''; }
+export export function categoryLabel(mode, category) {
+ if(mode==='spelling'&&category!=='all'){
+  const selected=CATEGORIES.filter(id=>String(category).split(',').includes(id));
+  if(selected.length)return selected.map(id=>id.replace('/', ' / ')).join(', ');
+ }
+ return MODES[mode].categories.find(([id])=>id===category)?.[1] || '';
+}
 const integer = (min,max,random) => min+Math.floor(random()*(max-min+1));
 export function mathQuestion(config, random = Math.random) {
  const level=config.difficulty, limit=[0,10,50,100][level];
@@ -37,9 +48,12 @@ export function mathQuestion(config, random = Math.random) {
  return {kind:'math',text:`${a} ${symbol} ${b} = ?`,answer:String(result),options,full:`${a} ${symbol} ${b} = ${result}`,prompt:'Wybierz wynik działania',difficulty:level};
 }
 export function createSource(mode, config, words, random = Math.random) {
- if(mode==='spelling') return filterSpellingPreview(words)
-  .filter(w=>(config.category==='all'||w.category===config.category)&&(!config.difficulty||w.difficulty===config.difficulty))
+ if(mode==='spelling') {
+  const selected=config.category==='all'?null:String(config.category).split(',');
+  return filterSpellingPreview(words)
+  .filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty))
   .map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
+ }
  if(mode==='math') return ()=>mathQuestion(config,random);
  if(mode==='english') {
   let pool=ENGLISH.filter(w=>config.category==='all'||w.category===config.category);

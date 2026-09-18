@@ -11,7 +11,7 @@ export const MODES = {
  reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
 };
 export const modeIds = Object.keys(MODES);
-export export function cleanConfig(mode, value) {
+export function cleanConfig(mode, value) {
  const categories = MODES[mode].categories.map(([id])=>id);
  const duration=DURATIONS.includes(value?.duration)?value.duration:180;
  if(mode==='spelling'){
@@ -23,7 +23,7 @@ export export function cleanConfig(mode, value) {
  return {category:categories.includes(value?.category)?value.category:'all',difficulty:[1,2,3].includes(value?.difficulty)?value.difficulty:1,duration};
 }
 export function levelLabel(mode, level) { return MODES[mode].levels[mode==='spelling'?level:level-1]; }
-export export function categoryLabel(mode, category) {
+export function categoryLabel(mode, category) {
  if(mode==='spelling'&&category!=='all'){
   const selected=CATEGORIES.filter(id=>String(category).split(',').includes(id));
   if(selected.length)return selected.map(id=>id.replace('/', ' / ')).join(', ');

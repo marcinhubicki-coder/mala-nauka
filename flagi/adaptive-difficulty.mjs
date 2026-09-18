@@ -26,8 +26,10 @@ const NOTES={
 };
 
 let state=null;
+let suppressClickUntil=0;
 const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
+const dragStates=new WeakMap();
 
 function readState(fallbackDuration=60){
  try{
@@ -126,6 +128,9 @@ function indicatorGeometry(container,indicator){
 function lerp(a,b,t){
  return a+(b-a)*t;
 }
+function clamp(value,min,max){
+ return Math.max(min,Math.min(max,value));
+}
 
 function motionTiming(current,target){
  const distance=Math.abs(target.center-current.center);
@@ -186,7 +191,7 @@ function updateSegment(container,index,count,animate=true){
  const target=segmentGeometry(container,nextIndex);
  if(!target)return;
 
- const changed=Number.isFinite(previousIndex)&&previousIndex!==nextIndex;
+ const changed=Number.isFinite(previousIndex)&&Math.abs(previousIndex-nextIndex)>.001;
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
  const current=stopSegmentAnimation(container,indicator);
 
@@ -231,17 +236,113 @@ function updateSegment(container,index,count,animate=true){
  segmentTimers.set(container,cleanup);
 }
 
+function segmentCount(container){
+ return container?.querySelectorAll(':scope > label').length||0;
+}
+function activeIndexFor(container){
+ const type=container?.dataset.segmented;
+ if(type==='game')return Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
+ if(type==='scope')return state.scope==='continents'?1:0;
+ if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
+ return 0;
+}
 function syncSegmentedControls(animate=false){
- const game=root.querySelector('[data-segmented="game"]');
- const gameIndex=Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
- updateSegment(game,gameIndex,GAME_TYPES.length,animate);
+ root.querySelectorAll('.flag-segmented').forEach(container=>{
+  if(!container.offsetWidth||!container.offsetHeight)return;
+  updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
+ });
+}
 
- const scope=root.querySelector('[data-segmented="scope"]');
- updateSegment(scope,state.scope==='continents'?1:0,2,animate);
+function bumpLabel(label){
+ if(!label)return;
+ label.classList.remove('is-tap-bump');
+ void label.offsetWidth;
+ label.classList.add('is-tap-bump');
+ window.setTimeout(()=>label.classList.remove('is-tap-bump'),430);
+}
 
- const time=root.querySelector('[data-segmented="time"]');
- const timeIndex=Math.max(0,DURATIONS.indexOf(state.duration));
- updateSegment(time,timeIndex,DURATIONS.length,animate);
+function applySegmentSelection(input){
+ if(!input||input.disabled)return;
+ const container=input.closest('.flag-segmented');
+ const label=input.closest('label');
+ const labels=[...container.querySelectorAll(':scope > label')];
+ const index=Math.max(0,labels.indexOf(label));
+ if(input.checked){
+  updateSegment(container,index,labels.length,true);
+  bumpLabel(label);
+  return;
+ }
+ input.checked=true;
+ input.dispatchEvent(new Event('change',{bubbles:true}));
+}
+
+function setupDrag(container){
+ if(!container||container.dataset.dragReady==='true')return;
+ container.dataset.dragReady='true';
+ container.addEventListener('pointerdown',event=>{
+  if(event.button!==undefined&&event.button!==0)return;
+  const indicator=container.querySelector('.flag-segment-indicator');
+  if(!indicator)return;
+  const rect=container.getBoundingClientRect();
+  dragStates.set(container,{pointerId:event.pointerId,startX:event.clientX,moved:false,rect,currentIndex:activeIndexFor(container)});
+  stopSegmentAnimation(container,indicator);
+  container.classList.add('is-dragging');
+  try{container.setPointerCapture(event.pointerId);}catch{}
+ });
+ container.addEventListener('pointermove',event=>{
+  const drag=dragStates.get(container);
+  if(!drag||drag.pointerId!==event.pointerId)return;
+  if(Math.abs(event.clientX-drag.startX)>4)drag.moved=true;
+  if(!drag.moved)return;
+  event.preventDefault();
+  const count=segmentCount(container);
+  const local=clamp(event.clientX-drag.rect.left,4,drag.rect.width-4);
+  const progress=clamp((local-4)/Math.max(1,drag.rect.width-8),0,1)*(count-1);
+  const low=Math.floor(progress),high=Math.ceil(progress),mix=progress-low;
+  const a=segmentGeometry(container,low),b=segmentGeometry(container,high);
+  const indicator=container.querySelector('.flag-segment-indicator');
+  if(!a||!b||!indicator)return;
+  indicator.style.left=lerp(a.left,b.left,mix)+'px';
+  indicator.style.right=lerp(a.right,b.right,mix)+'px';
+  container.dataset.activeIndex=String(progress);
+ });
+ const finish=(event,cancelled=false)=>{
+  const drag=dragStates.get(container);
+  if(!drag||drag.pointerId!==event.pointerId)return;
+  dragStates.delete(container);
+  container.classList.remove('is-dragging');
+  try{container.releasePointerCapture(event.pointerId);}catch{}
+  if(cancelled){
+   updateSegment(container,activeIndexFor(container),segmentCount(container),true);
+   return;
+  }
+  if(!drag.moved){
+   updateSegment(container,activeIndexFor(container),segmentCount(container),true);
+   return;
+  }
+  suppressClickUntil=performance.now()+350;
+  const labels=[...container.querySelectorAll(':scope > label')];
+  let index=drag.currentIndex;
+  if(event.clientX>drag.startX){
+   for(let i=drag.currentIndex+1;i<labels.length;i++){
+    const r=labels[i].getBoundingClientRect();
+    if(event.clientX>=(r.left+r.right)/2)index=i;
+   }
+  }else{
+   for(let i=drag.currentIndex-1;i>=0;i--){
+    const r=labels[i].getBoundingClientRect();
+    if(event.clientX<=(r.left+r.right)/2)index=i;
+   }
+  }
+  const input=labels[index]?.querySelector('input');
+  if(input)applySegmentSelection(input);
+ };
+ container.addEventListener('pointerup',event=>finish(event,false));
+ container.addEventListener('pointercancel',event=>finish(event,true));
+}
+
+function installDrag(){
+ root.querySelectorAll('.flag-segmented').forEach(setupDrag);
 }
 
 function updateStartButton(animate=false){
@@ -333,8 +434,22 @@ function install(){
  updateNote();
  syncPanel(false);
  syncHidden(true);
- requestAnimationFrame(()=>syncSegmentedControls(false));
+ requestAnimationFrame(()=>{syncSegmentedControls(false);installDrag();});
 }
+
+root?.addEventListener('click',event=>{
+ if(root.dataset.mode!=='flags'||root.dataset.view!=='wizard')return;
+ const label=event.target.closest('.flag-segmented > label');
+ if(!label)return;
+ event.preventDefault();
+ if(performance.now()<suppressClickUntil){
+  event.stopPropagation();
+  return;
+ }
+ const input=label.querySelector('input');
+ if(!input||input.disabled)return;
+ applySegmentSelection(input);
+});
 
 root?.addEventListener('change',event=>{
  if(root.dataset.mode!=='flags'||root.dataset.view!=='wizard'||!state)return;

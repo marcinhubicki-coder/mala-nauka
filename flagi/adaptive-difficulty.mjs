@@ -317,7 +317,7 @@ function install(){
   </fieldset>
 
   <fieldset class="flag-v2-section flag-v2-scope">
-   <legend><span class="step-dot">2</span>Zakres</legend>
+   <legend><span class="step-dot">2</span>Co Cię interesuje?</legend>
    ${scopeChoices()}
    <div class="flag-continent-panel ${state.scope==='continents'?'is-open':''}" data-continent-panel aria-hidden="${state.scope==='continents'?'false':'true'}">
     <div class="flag-continent-grid">${continentChoices()}</div>

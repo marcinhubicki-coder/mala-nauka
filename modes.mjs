@@ -234,7 +234,7 @@ function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
  if(config.flagGameType==='capitals'){
   return {...common,kind:'flag-capital',flagGameType:'capitals',text:flag.capital,full:flag.country,
    answer:flag.country,options:[flag.country,...distractors.map(other=>other.country)],
-   prompt:'Które państwo ma tę stolicę?'};
+   prompt:'Które państwo ma tę stolicę?',feedbackMs:2000};
  }
  return {...common,kind:'flags',flagGameType:'flags',text:'Co to za kraj?',full:flag.country,
   answer:flag.country,options:[flag.country,...distractors.map(other=>other.country)],

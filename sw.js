@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v06';
+const CACHE='mala-nauka-spelling-v07';
 const CORE=[
   './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-quality-v052.css','./spelling-asset-swap-v053.css','./spelling-art.js','./debug-tools.js',

@@ -354,6 +354,13 @@ root?.addEventListener('change',event=>{
   return;
  }
  if(target?.name==='flagContinents'){
+  const chip=target.closest('.flag-continent-chip');
+  if(chip){
+   chip.classList.remove('is-selecting','is-deselecting');
+   void chip.offsetWidth;
+   chip.classList.add(target.checked?'is-selecting':'is-deselecting');
+   window.setTimeout(()=>chip.classList.remove('is-selecting','is-deselecting'),560);
+  }
   const checked=[...root.querySelectorAll('input[name="flagContinents"]:checked')].map(input=>input.value);
   if(!checked.length){
    state.continents=['europe'];

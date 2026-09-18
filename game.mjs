@@ -97,7 +97,7 @@ export class Session {
     if (this.recentAnswers.length > 12) this.recentAnswers.shift();
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? 700 : 0;
+    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||700) : 0;
     return true;
   }
   skipFeedback() {

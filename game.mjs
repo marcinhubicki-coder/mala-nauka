@@ -31,7 +31,7 @@ export function cleanSettings(value) {
     sound: typeof value?.sound === 'boolean' ? value.sound : true,
     difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true };
 }
-export export function validResult(r) {
+export function validResult(r) {
  const selected=r?.category==='all'?CATEGORIES:String(r?.category??'').split(',').filter(Boolean);
  const categoryValid=selected.length>0&&new Set(selected).size===selected.length&&selected.every(category=>CATEGORIES.includes(category));
  return r && categoryValid && DURATIONS.includes(r.duration) &&

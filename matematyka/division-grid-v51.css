@@ -1,0 +1,74 @@
+/* v51 — clean division grid rebuilt from the multiplication baseline.
+   One geometry owner only. Normal spacing is 2px. A cut replaces that normal
+   gap with a dedicated 7px spacer: 3px + 1px line + 3px. */
+
+.quiz-stage[data-operation="divide"] .array,
+.quiz-stage[data-operation="divide"] .row-labels,
+.quiz-stage[data-operation="divide"] .row-expressions {
+  row-gap: 0 !important;
+}
+
+.quiz-stage[data-operation="divide"] .array,
+.quiz-stage[data-operation="divide"] .column-labels {
+  column-gap: 2px !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell,
+.quiz-stage[data-operation="divide"] .row-labels > *,
+.quiz-stage[data-operation="divide"] .row-expressions > * {
+  align-self: start !important;
+}
+
+/* Disable every legacy separator implementation. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after,
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after,
+.quiz-stage[data-operation="divide"] .division-cut-overlay {
+  content: none !important;
+  display: none !important;
+}
+
+/* Restore the same active-cell outline as multiplication. Old division layers
+   used to remove/replace the bottom shadow on separator rows. */
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active,
+.quiz-stage[data-operation="divide"] .array-cell.is-active {
+  border-color: rgba(74,94,216,.76) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), 0 2px 7px rgba(71,85,170,.18) !important;
+  overflow: visible !important;
+}
+
+.quiz-stage[data-operation="divide"] .division-separator-v51 {
+  position: absolute;
+  z-index: 4;
+  height: 1px;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72);
+  pointer-events: none;
+}
+
+/* Same actions rhythm as multiplication. */
+.quiz-stage[data-operation="divide"] .explainer-actions-panel {
+  margin-top: 18px !important;
+}
+
+@media (max-width: 430px) {
+  .quiz-stage[data-operation="divide"] .explainer-actions-panel {
+    margin-top: 16px !important;
+  }
+}
+
+@media (max-height: 760px) {
+  .quiz-stage[data-operation="divide"] .explainer-actions-panel {
+    margin-top: 10px !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active,
+  .quiz-stage[data-operation="divide"] .array-cell.is-active {
+    border-color: rgba(158,169,255,.78) !important;
+  }
+
+  .quiz-stage[data-operation="divide"] .division-separator-v51 {
+    background: rgba(154,167,255,.76);
+  }
+}

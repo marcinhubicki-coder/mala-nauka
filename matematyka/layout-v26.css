@@ -105,8 +105,8 @@
 }
 
 /* Wszystkie trzy pionowe warstwy dostają dokładnie te same tory. Dzięki temu
-   w mnożeniu odstępy rzędów są identyczne, a w dzieleniu kreska powiększa
-   tylko tor, po którym faktycznie występuje. */
+   w mnożeniu odstępy rzędów są identyczne, a w dzieleniu separator ma jeden,
+   wspólny tor kontrolowany wyłącznie przez layout-v26.js. */
 .array,
 .row-labels,
 .row-expressions {
@@ -141,11 +141,12 @@
   align-self: start !important;
 }
 
-/* 6 px dodatkowego toru = po 3 px nad i pod linią. Linia ma 1 px i siedzi
-   dokładnie na środku przerwy między sąsiednimi kwadratami. */
+/* 7 px toru separatora = 3 px wolnego miejsca + 1 px kreski + 3 px wolnego
+   miejsca. Kreska siedzi dokładnie pośrodku, więc optyczny padding góra/dół
+   jest identyczny niezależnie od wysokości planszy. */
 .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
   left: var(--division-cut-left, -8px) !important;
-  bottom: calc(-1 * var(--division-cut-half-pad, 3px) - .5px) !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 3.5px) - .5px) !important;
   width: calc(100% + var(--division-cut-extra, 16px)) !important;
   height: 1px !important;
 }

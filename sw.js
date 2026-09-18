@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-prod-v68';
+const CACHE='mala-nauka-prod-v69';
 const CORE=[
   './',
   './index.html',
@@ -66,6 +66,14 @@ const CORE=[
   './matematyka/stability-v33.css',
   './matematyka/stability-v33.js',
   './matematyka/pwa-polish-v37.css',
+  './matematyka/pwa-polish-v42.css',
+  './matematyka/interaction-v45.css',
+  './matematyka/score-badge-v53.css',
+  './matematyka/interaction-v45.js',
+  './matematyka/wrong-sequence-v46.css',
+  './matematyka/wrong-sequence-v46.js',
+  './matematyka/division-grid-v51.css',
+  './matematyka/division-grid-v51.js',
   './matematyka/score-badge-v38.js',
   './matematyka/app.js',
   './angielski/',

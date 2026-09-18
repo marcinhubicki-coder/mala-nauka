@@ -395,3 +395,24 @@
     transition:none!important;
   }
 }
+
+
+#app[data-mode="flags"] .flag-segmented{
+  touch-action:pan-y;
+}
+
+#app[data-mode="flags"] .flag-segmented.is-dragging{
+  cursor:grabbing;
+}
+
+#app[data-mode="flags"] .flag-v2-choice.is-tap-bump span,
+#app[data-mode="flags"] .flag-time-choice.is-tap-bump span{
+  animation:flag-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes flag-active-tap-bump{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.075);filter:brightness(1.08)}
+  68%{transform:scale(.986);filter:brightness(1.02)}
+  100%{transform:scale(1);filter:brightness(1)}
+}

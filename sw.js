@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v28-spelling-real-image-layers-v054';
+const CACHE='mala-nauka-spelling-v06';
 const CORE=[
   './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-quality-v052.css','./spelling-asset-swap-v053.css','./spelling-art.js','./debug-tools.js',
@@ -10,7 +10,7 @@ const CORE=[
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
-  './ortografia/','./ortografia/index.html',
+  './ortografia/','./ortografia/index.html','./ortografia/wizard-v2.mjs','./ortografia/wizard-v2.css',
   './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/correct-transition.js','./matematyka/app.js',
   './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
 ];

@@ -1,6 +1,6 @@
-const CACHE='mala-nauka-spelling-v07';
+const CACHE='mala-nauka-spelling-v08';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./module-router.js','./spelling-assets-setting.js','./game.mjs','./modes.mjs','./progress.mjs',
+  './','./index.html','./app.css','./app.js','./app.js?v=2','./module-router.js','./spelling-assets-setting.js','./game.mjs','./game.mjs?v=2','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
   './spelling-art.css','./spelling-mobile.css','./spelling-quality-v052.css','./spelling-asset-swap-v053.css','./spelling-art.js','./debug-tools.js',
   './spelling-art.css?v=10','./spelling-mobile.css?v=10','./spelling-quality-v052.css?v=1','./spelling-asset-swap-v053.css?v=3','./spelling-art.js?v=13','./debug-tools.js?v=7','./spelling/art.mjs?v=11',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',

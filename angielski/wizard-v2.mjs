@@ -13,6 +13,7 @@ const START_COPY={60:'Szybka akcja!',120:'Zaczynamy!',180:'Dłuższa misja!',300
 
 let state=null;
 let editingCategories=false;
+let editorClosing=false;
 let editSnapshot=null;
 let draftCategories=[];
 let suppressClickUntil=0;
@@ -226,12 +227,17 @@ function activeIndexFor(container){
  if(type==='scope')return editingCategories||state.scope==='categories'?1:0;
  if(type==='level')return Math.max(0,LEVELS.findIndex(([value])=>value===state.difficulty));
  if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
- if(type==='edit')return 0;
+ if(type==='edit'){
+  const labels=[...container.querySelectorAll(':scope > label')];
+  const checked=labels.findIndex(label=>label.querySelector('input')?.checked);
+  return checked>=0?checked:0;
+ }
  return 0;
 }
 
 function syncSegments(animate=false){
  root.querySelectorAll('.english-segmented').forEach(container=>{
+  if(!container.offsetWidth||!container.offsetHeight)return;
   updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
  });
 }
@@ -268,28 +274,37 @@ function refreshCategoryChecks(){
  root.querySelectorAll('input[name="englishCategories"]').forEach(input=>{input.checked=selected.includes(input.value);});
 }
 
-function syncEditorUI(animate=false){
+function syncEditorUI(animate=false,{resetAction=false}={}){
  const form=root.querySelector('#setup-form');
  const panel=root.querySelector('[data-category-panel]');
  const actions=root.querySelector('[data-category-actions]');
  form?.classList.toggle('english-category-editing',editingCategories);
+ form?.classList.toggle('english-category-closing',editorClosing);
  if(panel){
-  panel.classList.toggle('is-open',editingCategories);
-  panel.setAttribute('aria-hidden',editingCategories?'false':'true');
+  panel.classList.toggle('is-open',editingCategories&&!editorClosing);
+  panel.setAttribute('aria-hidden',editingCategories&&!editorClosing?'false':'true');
  }
  if(actions){
-  actions.classList.toggle('is-open',editingCategories);
-  actions.setAttribute('aria-hidden',editingCategories?'false':'true');
-  const cancel=actions.querySelector('input[value="cancel"]');
-  if(cancel)cancel.checked=true;
-  const save=actions.querySelector('input[value="save"]');
-  if(save)save.checked=false;
+  actions.classList.toggle('is-open',editingCategories&&!editorClosing);
+  actions.setAttribute('aria-hidden',editingCategories&&!editorClosing?'false':'true');
+  if(resetAction){
+   const cancel=actions.querySelector('input[value="cancel"]');
+   if(cancel)cancel.checked=true;
+   const save=actions.querySelector('input[value="save"]');
+   if(save)save.checked=false;
+  }
  }
  root.querySelectorAll('input[name="englishScope"]').forEach(input=>{
   input.checked=input.value===(editingCategories?'categories':state.scope);
  });
+ root.querySelectorAll('input[name="englishCategories"],input[name="englishEditAction"]').forEach(input=>{
+  input.disabled=!editingCategories||editorClosing;
+ });
+ root.querySelectorAll('input[name="difficulty"],input[name="duration"]').forEach(input=>{
+  input.disabled=editingCategories;
+ });
  refreshCategoryChecks();
- syncSegments(animate);
+ requestAnimationFrame(()=>syncSegments(animate));
 }
 
 function syncHidden(dispatch=true){
@@ -303,48 +318,84 @@ function syncHidden(dispatch=true){
 }
 
 function enterCategoryEditor(){
- if(editingCategories)return;
+ if(editingCategories||editorClosing)return;
  editSnapshot={scope:state.scope,categories:[...state.categories]};
  draftCategories=state.scope==='categories'?[...state.categories]:[...(state.categories.length?state.categories:['numbers'])];
  editingCategories=true;
- syncEditorUI(true);
+ editorClosing=false;
+ syncEditorUI(true,{resetAction:true});
+ requestAnimationFrame(()=>installDrag());
 }
 
-function cancelCategoryEditor(){
- if(!editingCategories)return;
- if(editSnapshot){
+function revealLowerSections(){
+ const form=root.querySelector('#setup-form');
+ if(!form)return;
+ form.classList.remove('english-editor-reveal');
+ void form.offsetWidth;
+ form.classList.add('english-editor-reveal');
+ window.setTimeout(()=>form.classList.remove('english-editor-reveal'),1150);
+}
+
+function closeCategoryEditor({save=false}={}){
+ if(!editingCategories||editorClosing)return;
+ if(save){
+  if(!draftCategories.length)draftCategories=['numbers'];
+  state.scope='categories';
+  state.categories=[...new Set(draftCategories)];
+  syncHidden(true);
+ }else if(editSnapshot){
   state.scope=editSnapshot.scope;
   state.categories=[...editSnapshot.categories];
  }
- editingCategories=false;
- draftCategories=[];
- editSnapshot=null;
- syncEditorUI(true);
+ editorClosing=true;
+ syncEditorUI(false);
+
+ window.setTimeout(()=>{
+  editingCategories=false;
+  editorClosing=false;
+  draftCategories=[];
+  editSnapshot=null;
+  syncEditorUI(false);
+  revealLowerSections();
+ },430);
 }
 
-function saveCategoryEditor(){
- if(!editingCategories)return;
- if(!draftCategories.length)draftCategories=['numbers'];
- state.scope='categories';
- state.categories=[...new Set(draftCategories)];
- editingCategories=false;
- draftCategories=[];
- editSnapshot=null;
- syncEditorUI(true);
- syncHidden(true);
+function cancelCategoryEditor(){
+ closeCategoryEditor({save:false});
+}
+
+function saveCategoryEditorAfterJelly(container){
+ if(!editingCategories||editorClosing)return;
+ const raw=getComputedStyle(container).getPropertyValue('--segment-total-ms');
+ const motionMs=Math.max(0,parseFloat(raw)||1000);
+ editorClosing=true;
+ root.querySelectorAll('input[name="englishCategories"],input[name="englishEditAction"]').forEach(input=>{input.disabled=true;});
+ window.setTimeout(()=>{
+  editorClosing=false;
+  if(!draftCategories.length)draftCategories=['numbers'];
+  state.scope='categories';
+  state.categories=[...new Set(draftCategories)];
+  syncHidden(true);
+  closeCategoryEditor({save:false});
+ },motionMs+400);
 }
 
 function applySegmentSelection(input){
- if(!input)return;
+ if(!input||input.disabled)return;
  const container=input.closest('.english-segmented');
  const label=input.closest('label');
+ const labels=[...container.querySelectorAll(':scope > label')];
+ const index=Math.max(0,labels.indexOf(label));
  const wasChecked=input.checked;
+
  if(wasChecked){
+  updateSegment(container,index,labels.length,true);
   bumpLabel(label);
   if(input.name==='englishScope'&&input.value==='categories'&&!editingCategories)enterCategoryEditor();
   else if(input.name==='englishEditAction'&&input.value==='cancel'&&editingCategories)cancelCategoryEditor();
   return;
  }
+
  input.checked=true;
  input.dispatchEvent(new Event('change',{bubbles:true}));
 }
@@ -402,14 +453,21 @@ function setupDrag(container){
   if(!drag.moved)return;
   suppressClickUntil=performance.now()+350;
   const labels=[...container.querySelectorAll(':scope > label')];
-  const rect=container.getBoundingClientRect();
-  const x=clamp(event.clientX,rect.left,rect.right);
-  let index=0,best=Infinity;
-  labels.forEach((label,i)=>{
-   const r=label.getBoundingClientRect();
-   const d=Math.abs(x-(r.left+r.right)/2);
-   if(d<best){best=d;index=i;}
-  });
+  const x=event.clientX;
+  let index=drag.currentIndex;
+  if(x>drag.startX){
+   for(let i=drag.currentIndex+1;i<labels.length;i++){
+    const r=labels[i].getBoundingClientRect();
+    const center=(r.left+r.right)/2;
+    if(x>=center)index=i;
+   }
+  }else if(x<drag.startX){
+   for(let i=drag.currentIndex-1;i>=0;i--){
+    const r=labels[i].getBoundingClientRect();
+    const center=(r.left+r.right)/2;
+    if(x<=center)index=i;
+   }
+  }
   const input=labels[index]?.querySelector('input');
   if(input)applySegmentSelection(input);
   else updateSegment(container,activeIndexFor(container),labels.length,true);
@@ -447,33 +505,23 @@ function install(){
  const note=root.querySelector('.wizard-note');
  if(note)note.textContent='Wybierz słówka, które chcesz dziś poćwiczyć.';
  updateStartButton(false);
- syncEditorUI(false);
+ syncEditorUI(false,{resetAction:true});
  syncHidden(true);
  requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 
 root?.addEventListener('click',event=>{
  if(root.dataset.mode!=='english'||root.dataset.view!=='wizard')return;
- if(performance.now()<suppressClickUntil){
-  const label=event.target.closest('.english-segmented > label');
-  if(label){event.preventDefault();event.stopPropagation();return;}
- }
  const label=event.target.closest('.english-segmented > label');
  if(!label)return;
- const input=label.querySelector('input');
- if(!input)return;
- if(input.checked){
-  event.preventDefault();
-  if(input.name==='englishScope'&&input.value==='categories'&&!editingCategories){
-   bumpLabel(label);
-   enterCategoryEditor();
-  }else if(input.name==='englishEditAction'&&input.value==='cancel'&&editingCategories){
-   bumpLabel(label);
-   cancelCategoryEditor();
-  }else{
-   bumpLabel(label);
-  }
+ event.preventDefault();
+ if(performance.now()<suppressClickUntil){
+  event.stopPropagation();
+  return;
  }
+ const input=label.querySelector('input');
+ if(!input||input.disabled)return;
+ applySegmentSelection(input);
 });
 
 root?.addEventListener('change',event=>{
@@ -512,7 +560,9 @@ root?.addEventListener('change',event=>{
   return;
  }
  if(target?.name==='englishEditAction'){
-  if(target.value==='save')saveCategoryEditor();
+  const container=target.closest('.english-segmented');
+  syncSegments(true);
+  if(target.value==='save')saveCategoryEditorAfterJelly(container);
   else cancelCategoryEditor();
   return;
  }

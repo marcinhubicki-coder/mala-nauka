@@ -1,4 +1,4 @@
-import { CATEGORIES, DURATIONS, shuffle } from './game.mjs';
+import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=reading-memory-1';
 import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';

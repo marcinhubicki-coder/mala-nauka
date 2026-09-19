@@ -344,14 +344,14 @@
   async function showWrongMap(card, key = feedbackKey(card)) {
     const map = window.MalaNaukaContinentMap || window.MalaNaukaEuropeMap;
     const content = card.querySelector('.question-content');
-    if (!map || !content || card.dataset.flagMapKey === key) return;
+    if (!map || !content || card.dataset.flagMapKey === key) return false;
 
     const countryId = countryIdFromCard(card);
     const language = window.MalaNaukaFlagLanguage;
     const flagRecord = language?.recordForId?.(countryId);
     const continent = flagRecord?.continent || '';
     const continentIds = language?.recordsForContinent?.(continent)?.map(flag => flag.id) || [];
-    if (!flagRecord || !map.supports(countryId, continent)) return;
+    if (!flagRecord || !map.supports(countryId, continent)) return false;
 
     const countryName = language?.nameForId(countryId)
       || card.querySelector('.flag-name')?.getAttribute('aria-label')
@@ -374,20 +374,22 @@
       showCopy: false
     });
 
-    if (!card.isConnected || feedbackKey(card) !== key) return;
+    if (!card.isConnected || feedbackKey(card) !== key) return false;
     if (!result.found) {
       holder.remove();
       delete card.dataset.flagMapKey;
-      return;
+      return false;
     }
 
     const { continentLabel } = ensureMapMeta(card, flagRecord);
-    if (!freezeStageOne(card)) return;
+    if (!freezeStageOne(card)) return false;
     await nextFrame();
     await nextFrame();
-    if (!card.isConnected || feedbackKey(card) !== key) return;
+    if (!card.isConnected || feedbackKey(card) !== key) return false;
     card.classList.add('map-feedback-stage-2');
     if (continentLabel) continentLabel.hidden = false;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) await wait(560);
+    return card.isConnected && feedbackKey(card) === key;
   }
 
   function animateCorrectFlagFeedback(card, app) {
@@ -419,8 +421,14 @@
     card.dataset.flagAnimatedKey = key;
     card.classList.remove('wrong-resolved');
 
+    const nextButton = card.closest('#app')?.querySelector('.feedback [data-action="next"]');
+    nextButton?.classList.remove('flag-next-ready');
+
     const name = card.querySelector('.flag-name');
-    if (!name) return;
+    if (!name) {
+      nextButton?.classList.add('flag-next-ready');
+      return;
+    }
     prepareLocalizedName(card);
     name.dataset.flagAnimated = 'true';
 
@@ -469,7 +477,10 @@
 
     card.classList.add('wrong-resolved');
     await wait(360);
-    if (card.isConnected && feedbackKey(card) === key) showWrongMap(card, key);
+    if (!card.isConnected || feedbackKey(card) !== key) return;
+    await showWrongMap(card, key);
+    if (!card.isConnected || feedbackKey(card) !== key) return;
+    nextButton?.classList.add('flag-next-ready');
   }
 
   function animateFlagFeedback() {

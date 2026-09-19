@@ -50,6 +50,25 @@
   min-height:82px;
 }
 
+#app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"]{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(7px) scale(.985);
+  transition:
+    opacity .34s ease,
+    transform .42s cubic-bezier(.2,.8,.25,1),
+    visibility 0s linear .34s;
+}
+
+#app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"].flag-next-ready{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+  transition-delay:0s;
+}
+
 #app[data-mode="flags"] .question-card.wrong:not(.wrong-resolved){
   background:var(--flag-error-bg);
   border-color:var(--flag-error-line);

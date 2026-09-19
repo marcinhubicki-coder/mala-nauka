@@ -26,10 +26,25 @@ function badge(card,label){
  if(item&&item.textContent!==label)item.textContent=label;
 }
 
+function decorateTextAnswers(){
+ const answers=root.querySelector('.answers');
+ if(!answers)return;
+ answers.classList.remove('flag-image-answers');
+ answers.classList.add('flag-text-answers');
+
+ answers.querySelectorAll('.answer').forEach(button=>{
+  const length=Array.from((button.textContent||'').trim()).length;
+  button.classList.add('flag-text-answer');
+  button.classList.toggle('long-label',length>17);
+  button.classList.toggle('very-long-label',length>24);
+ });
+}
+
 function decorateFlagAnswers(card){
  const answers=root.querySelector('.answers');
  if(!answers)return;
  root.dataset.flagGameVariant='countries';
+ answers.classList.remove('flag-text-answers');
  if(!answers.classList.contains('flag-image-answers'))answers.classList.add('flag-image-answers');
 
  answers.querySelectorAll('.answer').forEach(button=>{
@@ -108,6 +123,7 @@ function enhanceCard(){
   card.dataset.flagVariant='capitals';
   root.dataset.flagGameVariant='capitals';
   badge(card,'Stolice');
+  decorateTextAnswers();
 
   if(feedback)feedbackFlag(card,record);
   else if(record&&capitalQuestion.textContent!==record.capital)capitalQuestion.textContent=record.capital;
@@ -115,6 +131,7 @@ function enhanceCard(){
  }
 
  root.dataset.flagGameVariant='flags';
+ decorateTextAnswers();
 }
 
 function scheduleEnhance(){

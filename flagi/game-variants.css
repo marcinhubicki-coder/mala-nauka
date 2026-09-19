@@ -12,6 +12,35 @@
   gap:12px;
 }
 
+#app[data-mode="flags"]{
+  --flag-text-answer-height:88px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers{
+  grid-template-rows:repeat(2,var(--flag-text-answer-height));
+  grid-auto-rows:var(--flag-text-answer-height);
+  align-content:start;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+  height:var(--flag-text-answer-height);
+  min-height:var(--flag-text-answer-height);
+  max-height:var(--flag-text-answer-height);
+  padding:11px 10px;
+  box-sizing:border-box;
+  line-height:1.12;
+  text-wrap:balance;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+  font-size:17px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+  font-size:15px;
+  line-height:1.08;
+}
+
 #app[data-mode="flags"] .answers .answer.flag-option-answer{
   min-height:112px;
   padding:10px 12px;
@@ -39,6 +68,15 @@
 }
 
 @media (max-height:760px){
+  #app[data-mode="flags"]{
+    --flag-text-answer-height:76px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+    font-size:16px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+    font-size:14px;
+  }
   #app[data-mode="flags"] .answers .answer.flag-option-answer{
     min-height:90px;
   }
@@ -115,5 +153,22 @@
     width:min(28%,96px);
     max-width:96px;
     max-height:64px;
+  }
+}
+
+@media (max-height:560px){
+  #app[data-mode="flags"]{
+    --flag-text-answer-height:62px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+    padding:7px 8px;
+    font-size:15px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+    font-size:14px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+    font-size:13px;
+    line-height:1.04;
   }
 }

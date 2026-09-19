@@ -402,6 +402,7 @@
     const key = feedbackKey(card);
     if (card.dataset.flagAnimatedKey === key) return;
     card.dataset.flagAnimatedKey = key;
+    card.classList.remove('wrong-resolved');
 
     const name = card.querySelector('.flag-name');
     if (!name) return;
@@ -435,15 +436,19 @@
       .map((_, index) => index)
       .sort((a, b) => Math.abs(a - midpoint) - Math.abs(b - midpoint));
 
-    for (const index of order) {
+    const resolveStep = Math.max(0, order.length - 3);
+    for (let step = 0; step < order.length; step += 1) {
       if (!card.isConnected || feedbackKey(card) !== key) return;
+      const index = order[step];
       const slot = slots[index];
       slot.classList.remove('is-cycling');
       slot.textContent = targetLetters[index];
       slot.classList.add('is-settled');
+      if (step === resolveStep) card.classList.add('wrong-resolved');
       await wait(30);
     }
 
+    card.classList.add('wrong-resolved');
     await wait(360);
     if (card.isConnected && feedbackKey(card) === key) showWrongMap(card, key);
   }

@@ -186,13 +186,28 @@
     #app[data-mode="flags"] .flag-letter-in.from-right { animation-name: flag-letter-from-right; }
     #app[data-mode="flags"] .flag-letter-in.from-left { animation-name: flag-letter-from-left; }
     #app[data-mode="flags"] .flag-letter-slot {
-      display: inline-block;
-      min-width: .56em;
+      display: inline-grid;
+      position: relative;
+      place-items: center;
+      min-width: 0;
       text-align: center;
       transform-origin: center;
+      vertical-align: baseline;
     }
-    #app[data-mode="flags"] .flag-letter-slot.is-cycling { animation: flag-letter-cycle .13s ease both; }
-    #app[data-mode="flags"] .flag-letter-slot.is-settled { animation: flag-letter-settle .24s cubic-bezier(.2,.8,.25,1) both; }
+    #app[data-mode="flags"] .flag-letter-target,
+    #app[data-mode="flags"] .flag-letter-face {
+      grid-area: 1 / 1;
+    }
+    #app[data-mode="flags"] .flag-letter-target {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #app[data-mode="flags"] .flag-letter-face {
+      display: inline-block;
+      transform-origin: center;
+    }
+    #app[data-mode="flags"] .flag-letter-slot.is-cycling .flag-letter-face { animation: flag-letter-cycle .13s ease both; }
+    #app[data-mode="flags"] .flag-letter-slot.is-settled .flag-letter-face { animation: flag-letter-settle .24s cubic-bezier(.2,.8,.25,1) both; }
     #app[data-mode="flags"] .flag-letter-space { display: inline-block; width: .28em; }
 
     @keyframes flag-letter-from-right {
@@ -414,7 +429,7 @@
     name.setAttribute('aria-label', text);
     name.innerHTML = characters.map(character => {
       if (/\s/.test(character)) return '<span class="flag-letter-space" aria-hidden="true"> </span>';
-      return `<span class="flag-letter-slot is-cycling" aria-hidden="true">${safe(randomLetter(character))}</span>`;
+      return `<span class="flag-letter-slot is-cycling" aria-hidden="true"><span class="flag-letter-target">${safe(character)}</span><span class="flag-letter-face">${safe(randomLetter(character))}</span></span>`;
     }).join('');
 
     const slots = [...name.querySelectorAll('.flag-letter-slot')];
@@ -423,9 +438,11 @@
     for (let frame = 0; frame < 5; frame += 1) {
       if (!card.isConnected || feedbackKey(card) !== key) return;
       slots.forEach((slot, index) => {
+        const face = slot.querySelector('.flag-letter-face');
+        if (!face) return;
         slot.classList.remove('is-cycling');
         void slot.offsetWidth;
-        slot.textContent = randomLetter(targetLetters[index]);
+        face.textContent = randomLetter(targetLetters[index]);
         slot.classList.add('is-cycling');
       });
       await wait(82);
@@ -441,8 +458,10 @@
       if (!card.isConnected || feedbackKey(card) !== key) return;
       const index = order[step];
       const slot = slots[index];
+      const face = slot.querySelector('.flag-letter-face');
+      if (!face) continue;
       slot.classList.remove('is-cycling');
-      slot.textContent = targetLetters[index];
+      face.textContent = targetLetters[index];
       slot.classList.add('is-settled');
       if (step === resolveStep) card.classList.add('wrong-resolved');
       await wait(30);

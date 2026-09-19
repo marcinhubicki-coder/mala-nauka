@@ -134,6 +134,10 @@ body:has(#app[data-mode="flags"])::before{
 #app[data-mode="flags"]{
   background:transparent;
 }
+
+#app[data-mode="flags"][data-view="game"]{
+  overflow-anchor:none;
+}
 #app[data-mode="flags"][data-view="wizard"] .page-head{
   position:relative;
   z-index:1;

@@ -1,5 +1,5 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-1';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-1';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const prefix='malaNauka.v1.';

@@ -1,6 +1,6 @@
-import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=reading-memory-3';
+import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=reading-phrase-1';
 import { ENGLISH } from './data/english.mjs';
-import { READING } from './data/reading.mjs?v=2';
+import { READING } from './data/reading.mjs?v=3';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';
 import { filterSpellingPreview } from './spelling/preview.mjs';
 
@@ -342,6 +342,31 @@ function memoryQuestion(session,random=Math.random){
  };
 }
 
+
+function phraseQuestion(record,random=Math.random){
+ const target=String(record.text||'').trim().split(/\s+/).filter(Boolean);
+ const targetSet=new Set(target.map(word=>word.toLocaleLowerCase('pl')));
+ const candidates=(record.options||[])
+  .slice(1)
+  .flatMap(option=>String(option||'').trim().split(/\s+/))
+  .filter(word=>word&&!targetSet.has(word.toLocaleLowerCase('pl')));
+ const unique=[...new Set(candidates)];
+ let distractor=unique.length?unique[Math.floor(random()*unique.length)]:'razem';
+ if(targetSet.has(distractor.toLocaleLowerCase('pl')))distractor='teraz';
+ const answer=target.join('|');
+ return {
+  ...record,
+  kind:'reading-phrase',
+  full:record.text,
+  answer,
+  options:[...target,distractor],
+  phraseWords:target,
+  prompt:'Ułóż frazę',
+  difficulty:2,
+  feedbackMs:900
+ };
+}
+
 export function createSource(mode, config, words, random = Math.random) {
  if(mode==='spelling') return filterSpellingPreview(words)
   .filter(w=>(config.category==='all'||w.category===config.category)&&(!config.difficulty||w.difficulty===config.difficulty))
@@ -374,7 +399,9 @@ export function createSource(mode, config, words, random = Math.random) {
  }
  if(mode==='reading'){
   if(config.category==='memory')return session=>memoryQuestion(session,random);
-  return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
+  const pool=READING.filter(r=>r.level===config.difficulty);
+  if(config.difficulty===2)return pool.map(r=>phraseQuestion(r,random));
+  return pool.map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
  }
  throw Error('Nieznany tryb.');
 }

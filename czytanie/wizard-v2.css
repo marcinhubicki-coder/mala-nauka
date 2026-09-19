@@ -95,6 +95,18 @@ body:has(#app[data-mode="reading"])::before{
  89%,100%{transform:scale(1);color:#68459c;text-shadow:0 0 0 rgba(255,255,255,0);filter:brightness(1)}
 }
 #app[data-mode="reading"] .reading-choice.is-tap-bump span{animation:reading-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both}
+#app[data-mode="reading"] .reading-question-prompt{
+ width:100%;
+ max-width:18ch;
+ margin-inline:auto;
+ text-align:center;
+ text-wrap:balance;
+}
+#app[data-mode="reading"] .reading-question-prompt .reading-prompt-line{
+ display:block;
+ width:100%;
+ white-space:nowrap;
+}
 @keyframes reading-active-tap-bump{
  0%{transform:scale(1);filter:brightness(1)}
  38%{transform:scale(1.075);filter:brightness(1.08)}

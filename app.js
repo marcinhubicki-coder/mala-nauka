@@ -1,6 +1,6 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-1';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-1';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-memory-1';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-2';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-2';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-memory-2';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}

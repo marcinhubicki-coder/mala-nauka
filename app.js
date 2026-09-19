@@ -1,7 +1,9 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=2';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=6-scene';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=2';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs';
+import { createSpellingArt } from './spelling/art.mjs?v=6-scene';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
+const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
@@ -23,6 +25,7 @@ const englishFlag='<svg viewBox="0 0 60 40" aria-hidden="true"><defs><clipPath i
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ spellingArt.reset();
  view=next;root.dataset.view=view;root.dataset.mode=selectedMode;
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
@@ -57,7 +60,7 @@ function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||au
 function start() {
  const config=configs[selectedMode];
  try{game=new Session(createSource(selectedMode,config,words),config.duration);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
+ game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
 }
 function questionContent(q,feedback,exposing) {
  if(q.kind==='spelling') {const [before,after]=q.masked.split('_');return `<div class="word" aria-label="${escape(feedback?q.word:q.masked.replace('_',' – luka – '))}">${escape(before)}<span class="${feedback?'filled':'gap'}">${feedback?escape(q.answer):'_'}</span>${escape(after)}</div>`;}
@@ -67,6 +70,7 @@ function questionContent(q,feedback,exposing) {
 }
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
+ if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
  const feedback=game.state.startsWith('feedback'),correct=game.state==='feedback-correct',exposing=game.state==='exposing',q=game.current;
  root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${game.state==='feedback-wrong'?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
  <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" aria-label="Pytanie"><div class="badges"><span class="badge">${q.kind==='spelling'?escape(q.category):q.kind==='reading'?(exposing?'Czytaj uważnie':'Pomyśl i odpowiedz'):escape(MODES[game.mode].name)}</span>${settings.difficulty?`<span class="badge level">${escape(levelLabel(game.mode,q.difficulty))}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
@@ -78,10 +82,11 @@ function renderGame() {
 function updateClock(){const timer=root.querySelector('.timer');if(!timer||!game)return;const seconds=Math.ceil(game.remaining/1000);const value=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;if(timer.textContent!==value)timer.textContent=value;timer.classList.toggle('urgent',seconds<=15);root.querySelector('progress').value=game.remaining;const exposure=root.querySelector('.exposure-track span');if(exposure)exposure.style.transform=`scaleX(${game.exposureRemaining/game.current.exposureMs})`;}
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;game.pause();syncGame();if(game.state==='ended')return;root.classList.add('paused');showModal(exit?'Wrócić do wyboru przygód?':'Mała przerwa',`<p>${exit?'Zapiszemy dotychczasowy wynik.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zapisz i wróć do startu':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
-function resume(){modal.close();root.classList.remove('paused');game?.resume();syncGame();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
+function pause(exit=false){if(!game||view!=='game')return;spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Wrócić do wyboru przygód?':'Mała przerwa',`<p>${exit?'Zapiszemy dotychczasowy wynik.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zapisz i wróć do startu':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
+function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
+ spellingArt.reset();
  const result={...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early};
  const record=recordResult(progress,result);save('progress',progress);lastResult=result;
  if(goHome){navigate('home');return;}view='results';root.dataset.view=view;

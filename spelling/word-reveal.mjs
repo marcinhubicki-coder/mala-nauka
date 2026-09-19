@@ -1,58 +1,31 @@
-export function decorateWord(word, options, feedback){
-  if(!word||word.dataset.artWord==='1')return;
-  const slot=word.querySelector('.gap,.filled');
-  if(!slot)return;
-
-  const before=slot.previousSibling?.textContent||'';
-  const after=slot.nextSibling?.textContent||'';
-  const revealed=slot.classList.contains('filled');
-  const answer=revealed?slot.textContent:'';
-  const maxLen=Math.max(1,...options.map(v=>[...v.trim()].length));
-
-  word.textContent='';
-  const beforeSpan=document.createElement('span');
-  beforeSpan.className='word-part word-before';
-  beforeSpan.textContent=before;
-  const afterSpan=document.createElement('span');
-  afterSpan.className='word-part word-after';
-  afterSpan.textContent=after;
-
-  slot.textContent='';
-  slot.dataset.maxLen=String(maxLen);
-  slot.style.setProperty('--slot-len',String(maxLen));
-
-  if(revealed){
-    const text=document.createElement('span');
-    text.className='revealed-chunk';
-    text.textContent=answer;
-    slot.append(text);
-    slot.classList.add('revealing');
-    const baseEm=maxLen>1?1.72:1.08;
-    slot.style.width=`${baseEm}em`;
-    requestAnimationFrame(()=>{
-      const measure=document.createElement('span');
-      measure.className='word-slot-measure';
-      measure.textContent=answer;
-      word.append(measure);
-      const target=Math.max(.72*parseFloat(getComputedStyle(word).fontSize),measure.getBoundingClientRect().width+4);
-      measure.remove();
-      requestAnimationFrame(()=>{slot.style.width=`${target}px`;});
-      setTimeout(()=>{slot.style.width='';},480);
+function letters(text) {
+  return [...text].map(char => {
+    const span = document.createElement('span'); span.className = 'ink-letter'; span.textContent = char; return span;
+  });
+}
+export function createWord(masked) {
+  const word = document.createElement('div'); word.className = 'word'; word.setAttribute('aria-hidden', 'true');
+  const [before, after] = masked.split('_');
+  const gap = document.createElement('span'); gap.className = 'gap';
+  gap.innerHTML = '<span class="bubble-glass"></span><i class="word-spark star-a"></i><i class="word-spark star-b"></i><i class="word-spark star-c"></i><i class="word-spark star-d"></i>';
+  word.append(...letters(before), gap, ...letters(after)); return word;
+}
+export function revealWord(word, answer, reduced) {
+  const gap = word.querySelector('.gap'); if (!gap) return;
+  // Keep the gap geometry until the word washes away, even for CH / DZI.
+  const text = document.createElement('span'); text.className = 'revealed-chunk'; text.textContent = answer;
+  text.style.setProperty('--answer-length', String([...answer].length)); gap.append(text); gap.classList.add('is-revealed');
+  if (!reduced) flowInk([text], 'in').forEach(animation => animation.finished.then(() => animation.cancel()).catch(() => {}));
+}
+export function flowInk(elements, direction) {
+  const entering = direction === 'in';
+  return elements.map((element, index) => {
+    const delay = 24 + Math.random() * 130 + (index % 4) * 24;
+    const clear = { opacity: 1, filter: 'blur(0px)', transform: 'translate(0, 0) scale(1)', maskSize: '280% 280%' };
+    const dissolved = { opacity: 0, filter: 'blur(5px)', transform: `translate(${Math.random() * 3 - 1.5}px, ${entering ? 3 : -3}px) scale(1.025)`, maskSize: '1% 1%' };
+    const mist = { opacity: entering ? .42 : .3, filter: 'blur(2px)', transform: 'translate(0, 1px) scale(1.01)', maskSize: '120% 130%', offset: entering ? .5 : .65 };
+    return element.animate(entering ? [dissolved, mist, clear] : [clear, mist, dissolved], {
+      duration: entering ? 760 : 520, delay, easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'both',
     });
-  }else{
-    const glass=document.createElement('span');
-    glass.className='bubble-glass';
-    glass.innerHTML='<span class="bubble-reflect bubble-reflect-a"></span><span class="bubble-reflect bubble-reflect-b"></span>';
-    slot.append(glass);
-    for(let i=0;i<4;i+=1){
-      const sparkle=document.createElement('i');
-      sparkle.className=`bubble-sparkle sparkle-${i+1}`;
-      sparkle.textContent='✦';
-      slot.append(sparkle);
-    }
-  }
-
-  word.append(beforeSpan,slot,afterSpan);
-  word.dataset.artWord='1';
-  if(feedback)word.classList.add('word-feedback');
+  });
 }

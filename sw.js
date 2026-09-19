@@ -1,16 +1,17 @@
-const CACHE='mala-nauka-spelling-v08';
+const CACHE='mala-nauka-spelling-v09-fluid';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./app.js?v=2','./module-router.js','./spelling-assets-setting.js','./game.mjs','./game.mjs?v=2','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
-  './spelling-art.css','./spelling-mobile.css','./spelling-quality-v052.css','./spelling-asset-swap-v053.css','./spelling-art.js','./debug-tools.js',
-  './spelling-art.css?v=10','./spelling-mobile.css?v=10','./spelling-quality-v052.css?v=1','./spelling-asset-swap-v053.css?v=3','./spelling-art.js?v=13','./debug-tools.js?v=7','./spelling/art.mjs?v=11',
+  './','./index.html','./app.css','./app.js','./app.js?v=6-scene','./module-router.js','./spelling-assets-setting.js',
+  './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
+  './spelling-art.css','./spelling-art.css?v=6-scene','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
-  './assets/scenes/spelling-bg.webp','./assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
-  './assets/ortografia/spelling-bg-v052.svg','./assets/ortografia/spelling-bg-v053.webp','./assets/ortografia/title-jak-jest-poprawnie.png','./assets/ortografia/bubble-frame-v051.svg','./assets/ortografia/bubble-frame-v053.webp','./assets/ortografia/bubble-mask-v051.svg','./assets/ortografia/answer-button-v051.svg','./assets/ortografia/hint-button-v051.svg',
-  './spelling/art.mjs','./spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs',
+  './assets/ortografia/lake-background.webp','./assets/fonts/dynapuff-polish-700.woff',
+  './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
+  './spelling/art.mjs','./spelling/art.mjs?v=6-scene','./spelling/bubble.mjs','./spelling/bubble.mjs?v=6-scene',
+  './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=6-scene',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
-  './ortografia/','./ortografia/index.html','./ortografia/wizard-v2.mjs','./ortografia/wizard-v2.css',
+  './ortografia/','./ortografia/index.html','./ortografia/wizard-v2.mjs','./ortografia/wizard-v2.mjs?v=3','./ortografia/wizard-v2.css','./ortografia/wizard-v2.css?v=2',
   './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/correct-transition.js','./matematyka/app.js',
   './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
 ];
@@ -21,7 +22,7 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(Promise.all([
-    caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))),
+    caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('mala-nauka-')&&key!==CACHE).map(key=>caches.delete(key)))),
     self.clients.claim()
   ]));
 });

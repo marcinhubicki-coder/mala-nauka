@@ -50,7 +50,7 @@ export class Session {
     this.next();
   }
   tick() {
-    if (['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
+    if (this.presentationHeld || ['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
     this.remaining = Math.max(0, this.remaining - elapsed);
@@ -81,17 +81,18 @@ export class Session {
     this.lastTime = this.now();
   }
   answer(option) {
-    if (this.state !== 'playing') return false;
+    if (this.presentationHeld || this.state !== 'playing') return false;
     this.tick();
     if (this.state !== 'playing' || !this.options.includes(option)) return false;
     this.selected = option;
     const correct = option === this.current.answer;
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? 700 : 0;
+    this.feedbackRemaining = correct ? (this.feedbackMs ?? 700) : 0;
     return true;
   }
   skipFeedback() {
+    if (this.presentationHeld) return;
     if (!this.state.startsWith('feedback')) return;
     const question = this.question;
     this.tick();
@@ -103,6 +104,11 @@ export class Session {
     if (this.state === 'ended') return;
     this.resumeState = this.state;
     this.state = 'paused';
+  }
+  // Decorative transitions do not consume the child's answer time.
+  setPresentationHold(held) {
+    this.presentationHeld = held;
+    this.lastTime = this.now();
   }
   resume() {
     if (this.state !== 'paused') return;

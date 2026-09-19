@@ -10,7 +10,7 @@ const START_COPY={
   60:'Szybka runda!',
   120:'Zaczynamy!',
   180:'Dłuższa misja!',
-  300:'Trening pamięci!'
+  300:'Pełna misja!'
 };
 
 const movingTimers=new WeakMap();

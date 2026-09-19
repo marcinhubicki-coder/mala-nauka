@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-prod-v70-reading-memory';
+const CACHE='mala-nauka-prod-v71-reading-polish';
 const CORE=[
   './',
   './index.html',
@@ -29,6 +29,7 @@ const CORE=[
   './data/english.mjs',
   './data/flags.mjs',
   './data/reading.mjs',
+  './data/reading.mjs?v=2',
   './data/words-01.json',
   './data/words-02.json',
   './data/words-03.json',
@@ -82,12 +83,12 @@ const CORE=[
   './flagi/index.html',
   './czytanie/',
   './czytanie/index.html',
-  './czytanie/wizard-v2.css?v=2',
+  './czytanie/wizard-v2.css?v=3',
   './czytanie/wizard-v2.mjs?v=2',
-  './app.js?v=reading-memory-1',
-  './game.mjs?v=reading-memory-1',
-  './modes.mjs?v=reading-memory-1',
-  './progress.mjs?v=reading-memory-1',
+  './app.js?v=reading-memory-2',
+  './game.mjs?v=reading-memory-2',
+  './modes.mjs?v=reading-memory-2',
+  './progress.mjs?v=reading-memory-2',
   './data/english/numbers.mjs',
   './data/english/colors.mjs',
   './data/english/family.mjs',

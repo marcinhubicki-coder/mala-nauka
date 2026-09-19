@@ -9,7 +9,7 @@ export const MODES = {
  math: {name:'Matematyka',icon:'1+2',hint:'Małe działania, wielkie odkrycia',color:'blue',categories:[['all','Mieszane'],['add','Dodawanie'],['subtract','Odejmowanie'],['multiply','Mnożenie'],['divide','Dzielenie']],levels:['Łatwe','Średnie','Trudne']},
  english: {name:'Angielski',icon:'🇬🇧',hint:'Słówka i ich pisownia',color:'yellow',categories:[['all','Wszystkie słówka'],['numbers','Liczby'],['colors','Kolory'],['family','Rodzina'],['people','Ludzie'],['body','Ciało'],['home','Dom'],['objects','Przedmioty'],['school','Szkoła'],['food','Jedzenie'],['animals','Zwierzęta'],['nature','Natura'],['places','Miejsca'],['transport','Transport'],['clothes','Ubrania'],['jobs','Zawody'],['verbs','Czasowniki'],['adjectives','Przymiotniki'],['time','Czas']],levels:['Znaczenie','Pisownia']},
  flags: {name:'Flagi',icon:'🌍',hint:'Mała podróż dookoła świata',color:'green',categories:FLAG_CATEGORIES,levels:['Łatwe','Średnie','Trudne']},
- reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['all','Trening czytania']],levels:['Słowa','Frazy','Zdania']}
+ reading: {name:'Czytanie',icon:'book',hint:'Czytaj, zapamiętuj, rozumiej',color:'purple',categories:[['reading','Czytanie'],['memory','Pamięć']],levels:['Słowa','Frazy','Zdania']}
 };
 export const modeIds = Object.keys(MODES);
 
@@ -75,6 +75,13 @@ export function cleanConfig(mode, value) {
    flagContinents:parsed.continents
   };
  }
+ if(mode==='reading'){
+  return {
+   category:value?.category==='memory'?'memory':'reading',
+   difficulty:[1,2,3].includes(value?.difficulty)?value.difficulty:1,
+   duration:DURATIONS.includes(value?.duration)?value.duration:180
+  };
+ }
  if(mode==='english'){
   const parsed=parseEnglishCategory(value?.category);
   return {
@@ -98,6 +105,7 @@ export function categoryLabel(mode, category) {
    : parsed.continents.map(id=>FLAG_CONTINENT_LABELS[id]).join(', ');
   return `${FLAG_TYPE_LABELS[parsed.gameType]} · ${scope}`;
  }
+ if(mode==='reading')return category==='memory'?'Pamięć · liczby':'Czytanie';
  if(mode==='english'){
   const parsed=parseEnglishCategory(category);
   return parsed.scope==='all'
@@ -277,6 +285,63 @@ function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
   prompt:'Który kraj ma taką flagę?'};
 }
 
+
+const MEMORY_VALUES=['1','2','3','4','5','6','7','8','9','10'];
+const MEMORY_STEP_MS=1800;
+const MEMORY_VISIBLE_MS=1450;
+
+function updateMemorySpan(session){
+ if(!Number.isInteger(session.memorySpan))session.memorySpan=3;
+ if(!Number.isInteger(session.memoryCorrectStreak))session.memoryCorrectStreak=0;
+ if(!Number.isInteger(session.memoryWrongStreak))session.memoryWrongStreak=0;
+ const last=session.recentAnswers?.[session.recentAnswers.length-1];
+ if(!last||last.question!==session.question||session.memoryProcessedQuestion===session.question)return;
+ session.memoryProcessedQuestion=session.question;
+ if(last.correct){
+  session.memoryCorrectStreak++;
+  session.memoryWrongStreak=0;
+  if(session.memoryCorrectStreak>=2){
+   session.memorySpan=Math.min(10,session.memorySpan+1);
+   session.memoryCorrectStreak=0;
+  }
+ }else{
+  session.memoryWrongStreak++;
+  session.memoryCorrectStreak=0;
+  if(session.memoryWrongStreak>=2){
+   session.memorySpan=Math.max(3,session.memorySpan-1);
+   session.memoryWrongStreak=0;
+  }
+ }
+}
+
+function memoryQuestion(session,random=Math.random){
+ updateMemorySpan(session);
+ const span=Math.max(3,Math.min(10,Number(session.memorySpan)||3));
+ const sequence=[];
+ for(let i=0;i<span;i++){
+  let value=MEMORY_VALUES[Math.floor(random()*MEMORY_VALUES.length)];
+  if(i&&value===sequence[i-1]&&MEMORY_VALUES.length>1){
+   value=MEMORY_VALUES[(MEMORY_VALUES.indexOf(value)+1+Math.floor(random()*(MEMORY_VALUES.length-1)))%MEMORY_VALUES.length];
+  }
+  sequence.push(value);
+ }
+ const answer=sequence.join('|');
+ return {
+  kind:'memory',
+  text:'',
+  full:sequence.join(' '),
+  answer,
+  options:[answer],
+  prompt:'Odtwórz sekwencję',
+  difficulty:span,
+  sequence,
+  stepMs:MEMORY_STEP_MS,
+  visibleMs:MEMORY_VISIBLE_MS,
+  exposureMs:span*MEMORY_STEP_MS,
+  feedbackMs:900
+ };
+}
+
 export function createSource(mode, config, words, random = Math.random) {
  if(mode==='spelling') return filterSpellingPreview(words)
   .filter(w=>(config.category==='all'||w.category===config.category)&&(!config.difficulty||w.difficulty===config.difficulty))
@@ -307,6 +372,9 @@ export function createSource(mode, config, words, random = Math.random) {
    });
   };
  }
- if(mode==='reading') return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
+ if(mode==='reading'){
+  if(config.category==='memory')return session=>memoryQuestion(session,random);
+  return READING.filter(r=>r.level===config.difficulty).map(r=>({...r,kind:'reading',full:r.text,difficulty:r.level}));
+ }
  throw Error('Nieznany tryb.');
 }

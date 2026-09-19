@@ -1,5 +1,5 @@
-import { DURATIONS, validResult } from './game.mjs';
-import { modeIds, cleanConfig } from './modes.mjs';
+import { DURATIONS, validResult } from './game.mjs?v=reading-memory-1';
+import { modeIds, cleanConfig } from './modes.mjs?v=reading-memory-1';
 export const localDay = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 const count = n => Number.isSafeInteger(n) && n >= 0;
 export function cleanProgress(value) {

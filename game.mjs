@@ -84,7 +84,7 @@ export class Session {
   answer(option) {
     if (this.state !== 'playing') return false;
     this.tick();
-    if (this.state !== 'playing' || !this.options.includes(option)) return false;
+    if (this.state !== 'playing' || (this.current?.kind !== 'memory' && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
     this.lastResponseMs = Math.max(0, this.questionElapsed);

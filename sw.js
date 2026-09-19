@@ -87,6 +87,7 @@ const CORE=[
   './app.js?v=reading-memory-1',
   './game.mjs?v=reading-memory-1',
   './modes.mjs?v=reading-memory-1',
+  './progress.mjs?v=reading-memory-1',
   './data/english/numbers.mjs',
   './data/english/colors.mjs',
   './data/english/family.mjs',

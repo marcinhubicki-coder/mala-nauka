@@ -1,6 +1,6 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-3';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-3';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-memory-3';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-phrase-1';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-phrase-1';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-phrase-1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
@@ -12,7 +12,7 @@ let configs=Object.fromEntries(modeIds.map(mode=>[mode,cleanConfig(mode,savedCon
 let progress=read(prefix+'progress');
 progress=progress===null?migrateProgress(read('maleDyktando.history.v1',[]),read('maleDyktando.best.v1',{})):cleanProgress(progress);
 save('progress',progress);
-let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[];
+let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let offlineReady=false;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
@@ -58,7 +58,7 @@ function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||au
 function start() {
  const config=configs[selectedMode];
  try{game=new Session(createSource(selectedMode,config,words),config.duration);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
+ game.mode=selectedMode;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
 }
 function balancedReadingPrompt(text){
  const words=String(text||'').trim().split(/\s+/).filter(Boolean);
@@ -84,6 +84,18 @@ function questionContent(q,feedback,exposing) {
   }
   return `<div class="memory-recall" style="--memory-length:${length}"><div class="memory-slots" aria-label="Wpisana sekwencja">${Array.from({length},(_,i)=>`<span class="memory-slot ${i<memoryInput.length?'is-filled':''} ${i===memoryInput.length?'is-current':''}">${escape(memoryInput[i]??'')}</span>`).join('')}</div><button type="button" class="memory-backspace" data-action="memory-backspace" aria-label="Usuń ostatnią liczbę" ${memoryInput.length?'':'disabled'}>⌫</button></div>`;
  }
+ if(q.kind==='reading-phrase'){
+  const words=q.phraseWords||String(q.text||'').trim().split(/\s+/);
+  const slots=(items,interactive=false,rowClass='')=>`<div class="phrase-slots ${rowClass}" style="--phrase-length:${words.length}">${words.map((_,i)=>interactive
+   ?`<button type="button" class="phrase-slot ${items[i]?'is-filled':''}" data-action="phrase-remove" data-index="${i}" aria-label="${items[i]?'Usuń '+escape(items[i]):'Puste miejsce '+(i+1)}" ${items[i]?'':'disabled'}>${escape(items[i]||'')}</button>`
+   :`<span class="phrase-slot ${items[i]?'is-filled':''}">${escape(items[i]||'–')}</span>`).join('')}</div>`;
+  if(exposing)return `<div class="reading-text phrase-exposure">${escape(q.text)}</div>`;
+  if(feedback){
+   const picked=String(game?.selected||'').split('|').filter(Boolean);
+   return `<div class="phrase-feedback"><div class="phrase-feedback-row"><small>Twoja fraza</small>${slots(picked,false)}</div><div class="phrase-feedback-row correct-row"><small>Poprawna fraza</small>${slots(words,false)}</div></div>`;
+  }
+  return `<div class="phrase-build"><p>Ułóż zapamiętaną frazę</p>${slots(phraseInput,true)}</div>`;
+ }
  if(q.kind==='spelling') {const [before,after]=q.masked.split('_');return `<div class="word" aria-label="${escape(feedback?q.word:q.masked.replace('_',' – luka – '))}">${escape(before)}<span class="${feedback?'filled':'gap'}">${feedback?escape(q.answer):'_'}</span>${escape(after)}</div>`;}
  if(q.kind==='flags')return `<img class="flag" src="${q.image}" alt="${feedback?'Flaga: '+escape(q.answer):'Flaga do rozpoznania'}" width="240" height="160">${feedback?`<div class="flag-name">${escape(q.answer)}</div>`:''}`;
  if(q.kind==='reading'){
@@ -104,20 +116,50 @@ function renderMemoryInput() {
  const back=root.querySelector('[data-action="memory-backspace"]');
  if(back)back.disabled=!memoryInput.length;
 }
+function renderPhraseInput() {
+ if(!game||game.current?.kind!=='reading-phrase'||game.state!=='playing')return;
+ const slots=[...root.querySelectorAll('.phrase-slot[data-action="phrase-remove"]')];
+ slots.forEach((slot,index)=>{
+  const value=phraseInput[index]||'';
+  slot.textContent=value;
+  slot.disabled=!value;
+  slot.classList.toggle('is-filled',Boolean(value));
+  slot.setAttribute('aria-label',value?'Usuń '+value:'Puste miejsce '+(index+1));
+ });
+ root.querySelectorAll('[data-action="phrase-word"]').forEach(button=>{
+  const value=button.dataset.value;
+  const used=phraseInput.includes(value);
+  button.disabled=used;
+  button.classList.toggle('is-used',used);
+ });
+}
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  const feedback=game.state.startsWith('feedback'),correct=game.state==='feedback-correct',exposing=game.state==='exposing',q=game.current;
  if(q.kind==='memory'&&renderedQuestion!==game.question)memoryInput=[];
- const badgeLabel=q.kind==='spelling'?escape(q.category):q.kind==='reading'?(exposing?'Czytaj uważnie':'Pomyśl i odpowiedz'):q.kind==='memory'?(exposing?'Zapamiętaj':'Odtwórz'):escape(MODES[game.mode].name);
+ if(q.kind==='reading-phrase'&&renderedQuestion!==game.question)phraseInput=[];
+ const readingAction=q.kind==='reading'
+  ?(q.difficulty===1?'Rozpoznaj':'Zrozum')
+  :q.kind==='reading-phrase'?'Ułóż':null;
+ const badgeLabel=q.kind==='spelling'?escape(q.category)
+  :q.kind==='memory'?(exposing?'Zapamiętaj':'Odtwórz')
+  :readingAction?(exposing?'Przeczytaj':readingAction)
+  :escape(MODES[game.mode].name);
  const levelCopy=q.kind==='memory'?`${q.sequence.length} liczb`:levelLabel(game.mode,q.difficulty);
  const promptText=q.kind==='memory'
   ?(exposing?'Zapamiętaj kolejność':feedback?'Porównaj sekwencje':'Wpisz liczby w tej samej kolejności')
-  :(exposing?'Za chwilę tekst zniknie…':q.kind==='reading'?'Wybierz odpowiedź':escape(q.prompt));
+  :q.kind==='reading-phrase'
+   ?(exposing?'Przeczytaj i zapamiętaj':feedback?'Porównaj kolejność':'Dotknij słów we właściwej kolejności')
+   :(exposing?'Za chwilę tekst zniknie…':q.kind==='reading'?(q.difficulty===1?'Wybierz słowo':'Odpowiedz na pytanie'):escape(q.prompt));
  let answersBlock='';
  if(q.kind==='memory'){
   if(exposing)answersBlock='<div class="answers memory-keypad concealed" inert aria-hidden="true"><div class="memory-wait"><p>Po chwili odtworzysz liczby w tej samej kolejności.</p></div></div>';
   else if(feedback)answersBlock='<div class="answers memory-keypad"><div class="memory-feedback-space"><p>Poprawna sekwencja jest pokazana wyżej.</p></div></div>';
   else answersBlock=`<div class="answers memory-keypad">${Array.from({length:10},(_,i)=>btn(String(i+1),'memory-digit','answer memory-key',`data-value="${i+1}" aria-label="Liczba ${i+1}"`)).join('')}</div>`;
+ }else if(q.kind==='reading-phrase'){
+  if(exposing)answersBlock='<div class="phrase-word-bank is-waiting" inert aria-hidden="true"><p>Za chwilę ułożysz ją z pojedynczych słów.</p></div>';
+  else if(feedback)answersBlock='<div class="phrase-word-bank phrase-feedback-bank"><p>Poprawna kolejność jest pokazana wyżej.</p></div>';
+  else answersBlock=`<div class="phrase-word-bank">${game.options.map((word,i)=>btn(escape(word),'phrase-word','answer phrase-word',`data-value="${escape(word)}" data-index="${i}"`)).join('')}</div>`;
  }else{
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
@@ -126,7 +168,7 @@ function renderGame() {
  <p class="prompt">${promptText}</p>${answersBlock}
  <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?'Tak właśnie!':'Czas czeka na Ciebie.'}</small></div>${correct?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
  renderedState=game.state;renderedQuestion=game.question;updateClock();
- if(feedback&&!correct)root.querySelector('[data-action="next"]')?.focus({preventScroll:true});else if(!feedback&&!exposing)root.querySelector(q.kind==='memory'?'.memory-key':'.answer')?.focus({preventScroll:true});
+ if(feedback&&!correct)root.querySelector('[data-action="next"]')?.focus({preventScroll:true});else if(!feedback&&!exposing)root.querySelector(q.kind==='memory'?'.memory-key':q.kind==='reading-phrase'?'.phrase-word':'.answer')?.focus({preventScroll:true});
 }
 function updateClock(){
  const timer=root.querySelector('.timer');if(!timer||!game)return;
@@ -174,6 +216,21 @@ function dispatch(event){const button=event.target.closest('button[data-action]'
  if(['home','settings','history'].includes(action))navigate(action);
  if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
+ if(action==='phrase-word'&&view==='game'&&!modal.open&&game?.current?.kind==='reading-phrase'&&game.state==='playing'){
+  if(phraseInput.length<game.current.phraseWords.length&&!phraseInput.includes(button.dataset.value))phraseInput.push(button.dataset.value);
+  renderPhraseInput();
+  if(phraseInput.length===game.current.phraseWords.length){
+   if(game.answer(phraseInput.join('|')))beep(game.state==='feedback-correct');
+   syncGame();
+  }
+  return;
+ }
+ if(action==='phrase-remove'&&view==='game'&&!modal.open&&game?.current?.kind==='reading-phrase'&&game.state==='playing'){
+  const index=Number(button.dataset.index);
+  if(Number.isInteger(index)&&index>=0&&index<phraseInput.length)phraseInput.splice(index,1);
+  renderPhraseInput();
+  return;
+ }
  if(action==='memory-digit'&&view==='game'&&!modal.open&&game?.current?.kind==='memory'&&game.state==='playing'){
   if(memoryInput.length<game.current.sequence.length)memoryInput.push(button.dataset.value);
   renderMemoryInput();

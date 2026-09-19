@@ -153,7 +153,13 @@ body:has(#app[data-mode="reading"])::before{
 #app[data-mode="reading"] .answers.memory-keypad .answer:active{transform:scale(.97)}
 #app[data-mode="reading"] .memory-wait,
 #app[data-mode="reading"] .memory-feedback-space{
- display:grid;place-items:center;min-height:116px;text-align:center;color:#7b6a91;font-size:12px;padding:0 22px;
+ grid-column:1/-1;
+ display:grid;place-items:center;width:100%;min-width:0;min-height:116px;
+ text-align:center;color:#7b6a91;font-size:12px;padding:0 22px;
+}
+#app[data-mode="reading"] .memory-wait p,
+#app[data-mode="reading"] .memory-feedback-space p{
+ width:100%;max-width:none;text-align:center;
 }
 #app[data-mode="reading"] .memory-feedback{display:grid;gap:12px;width:100%}
 #app[data-mode="reading"] .memory-feedback-row{display:grid;gap:6px}

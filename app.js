@@ -1,6 +1,6 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-2';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-2';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-memory-2';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=reading-memory-3';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=reading-memory-3';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-memory-3';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
@@ -60,6 +60,19 @@ function start() {
  try{game=new Session(createSource(selectedMode,config,words),config.duration);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
 }
+function balancedReadingPrompt(text){
+ const words=String(text||'').trim().split(/\s+/).filter(Boolean);
+ if(words.length<4||String(text).length<22)return escape(text);
+ let split=1,best=Infinity;
+ for(let i=1;i<words.length;i++){
+  const left=words.slice(0,i).join(' '),right=words.slice(i).join(' ');
+  const delta=Math.abs(left.length-right.length);
+  if(delta<best){best=delta;split=i;}
+ }
+ const left=escape(words.slice(0,split).join(' '));
+ const right=escape(words.slice(split).join(' '));
+ return '<span class="reading-prompt-line">'+left+'</span><span class="reading-prompt-line">'+right+'</span>';
+}
 function questionContent(q,feedback,exposing) {
  if(q.kind==='memory'){
   const length=q.sequence.length;
@@ -73,7 +86,11 @@ function questionContent(q,feedback,exposing) {
  }
  if(q.kind==='spelling') {const [before,after]=q.masked.split('_');return `<div class="word" aria-label="${escape(feedback?q.word:q.masked.replace('_',' – luka – '))}">${escape(before)}<span class="${feedback?'filled':'gap'}">${feedback?escape(q.answer):'_'}</span>${escape(after)}</div>`;}
  if(q.kind==='flags')return `<img class="flag" src="${q.image}" alt="${feedback?'Flaga: '+escape(q.answer):'Flaga do rozpoznania'}" width="240" height="160">${feedback?`<div class="flag-name">${escape(q.answer)}</div>`:''}`;
- if(q.kind==='reading')return `<div class="reading-text">${escape(feedback||exposing?q.text:q.prompt)}</div>${feedback&&q.answer!==q.text?`<div class="reading-answer">${escape(q.answer)}</div>`:''}`;
+ if(q.kind==='reading'){
+  const content=feedback||exposing?escape(q.text):balancedReadingPrompt(q.prompt);
+  const promptClass=!feedback&&!exposing?' reading-question-prompt':'';
+  return `<div class="reading-text${promptClass}">${content}</div>${feedback&&q.answer!==q.text?`<div class="reading-answer">${escape(q.answer)}</div>`:''}`;
+ }
  return `<div class="question-text ${q.kind}">${escape(feedback?q.full:q.text)}</div>${q.kind==='english'&&feedback?`<p class="translation">${escape(q.text)}</p>`:''}`;
 }
 function renderMemoryInput() {

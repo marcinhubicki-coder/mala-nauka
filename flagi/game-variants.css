@@ -172,3 +172,101 @@
     line-height:1.04;
   }
 }
+
+/* Keep flag-option tiles physically identical in neutral, correct and wrong states. */
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.correct,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.wrong{
+  width:100%;
+  box-sizing:border-box;
+  border-width:2px;
+  padding:10px 12px;
+  transform:none;
+}
+
+/* Text answers roll in letter-by-letter instead of popping between questions. */
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+#app[data-mode="flags"] .flag-answer-letter{
+  display:inline-block;
+  transform-origin:center 60%;
+  animation:flag-answer-letter-roll .46s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay:calc(var(--flag-letter-index,0) * 9ms);
+}
+
+@keyframes flag-answer-letter-roll{
+  0%{
+    opacity:0;
+    transform:translateY(.62em) rotateX(-55deg) scale(.96);
+    filter:blur(1.4px);
+  }
+  68%{
+    opacity:1;
+    transform:translateY(-.05em) rotateX(4deg) scale(1.01);
+    filter:blur(0);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0) rotateX(0) scale(1);
+    filter:blur(0);
+  }
+}
+
+/* New flag choices fade/settle in without affecting their fixed tile geometry. */
+#app[data-mode="flags"] .answers.flag-image-answers.flag-options-enter .flag-option-image{
+  animation:flag-option-enter .52s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay:calc(var(--flag-option-index,0) * 34ms);
+}
+
+@keyframes flag-option-enter{
+  from{opacity:.18;transform:translateY(4px) scale(.975);filter:blur(1px) drop-shadow(0 3px 4px rgba(32,55,91,.12))}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 3px 4px rgba(32,55,91,.12))}
+}
+
+/* Flagi mode: preserve the old flag briefly and dissolve it into the new one. */
+#app[data-mode="flags"] .question-content.flag-question-crossfade{
+  position:relative;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-old{
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin:0;
+  transform:translate(-50%,-50%) scale(1);
+  z-index:2;
+  pointer-events:none;
+  animation:flag-question-old-out .64s cubic-bezier(.2,.8,.25,1) both;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-new{
+  position:relative;
+  z-index:1;
+  animation:flag-question-new-in .64s cubic-bezier(.2,.8,.25,1) both;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-first{
+  animation-duration:.42s;
+}
+
+@keyframes flag-question-old-out{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0) drop-shadow(0 3px 3px #20375b12)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.018);filter:blur(1.2px) drop-shadow(0 3px 3px #20375b12)}
+}
+
+@keyframes flag-question-new-in{
+  0%{opacity:0;transform:translateY(3px) scale(.982);filter:blur(1.2px) drop-shadow(0 3px 3px #20375b12)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 3px 3px #20375b12)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #app[data-mode="flags"] .flag-answer-letter,
+  #app[data-mode="flags"] .answers.flag-image-answers.flag-options-enter .flag-option-image,
+  #app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-old,
+  #app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-new{
+    animation:none!important;
+  }
+}

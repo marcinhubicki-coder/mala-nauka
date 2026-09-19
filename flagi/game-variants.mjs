@@ -6,6 +6,72 @@ const byPl=new Map(FLAGS.map(flag=>[flag.country.toLocaleLowerCase('pl-PL'),flag
 const byEn=new Map(FLAGS.map(flag=>[flag.countryEn.toLocaleLowerCase('en-US'),flag]));
 const byCapital=new Map(FLAGS.map(flag=>[String(flag.capital||'').toLocaleLowerCase('pl-PL'),flag]));
 let enhanceQueued=false;
+let lastPrimaryFlagSrc='';
+
+function safeHtml(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[char]));
+}
+
+function animateTextAnswer(button,index){
+ if(!button||button.dataset.flagTextAnimated==='true'||button.disabled)return;
+ const text=(button.textContent||'').trim();
+ if(!text)return;
+ button.dataset.flagTextAnimated='true';
+ button.setAttribute('aria-label',text);
+
+ let letterIndex=0;
+ const html=text.split(/(\s+)/).map(token=>{
+  if(/^\s+$/.test(token))return ' ';
+  const letters=Array.from(token).map(character=>{
+   const delay=Math.min(letterIndex,28);
+   letterIndex+=1;
+   return `<span class="flag-answer-letter" style="--flag-letter-index:${delay}">${safeHtml(character)}</span>`;
+  }).join('');
+  return `<span class="flag-answer-word" aria-hidden="true">${letters}</span>`;
+ }).join('');
+ button.innerHTML=html;
+}
+
+function animateTextAnswers(answers){
+ if(!answers)return;
+ answers.querySelectorAll('.answer.flag-text-answer').forEach((button,index)=>animateTextAnswer(button,index));
+}
+
+function animateFlagOptions(answers){
+ if(!answers||answers.dataset.flagOptionsAnimated==='true')return;
+ answers.dataset.flagOptionsAnimated='true';
+ answers.classList.add('flag-options-enter');
+ answers.querySelectorAll('.flag-option-answer').forEach((button,index)=>{
+  button.style.setProperty('--flag-option-index',String(index));
+ });
+}
+
+function crossfadePrimaryFlag(card){
+ if(!card||card.classList.contains('correct')||card.classList.contains('wrong'))return;
+ const content=card.querySelector('.question-content');
+ const flag=content?.querySelector(':scope > .flag');
+ if(!content||!flag)return;
+
+ const nextSrc=flag.currentSrc||flag.getAttribute('src')||'';
+ if(!nextSrc)return;
+
+ content.classList.add('flag-question-crossfade');
+ if(lastPrimaryFlagSrc&&lastPrimaryFlagSrc!==nextSrc){
+  const previous=document.createElement('img');
+  previous.className='flag flag-transition-old';
+  previous.src=lastPrimaryFlagSrc;
+  previous.alt='';
+  previous.setAttribute('aria-hidden','true');
+  content.append(previous);
+  flag.classList.add('flag-transition-new');
+  window.setTimeout(()=>previous.remove(),720);
+ }else{
+  flag.classList.add('flag-transition-new','flag-transition-first');
+ }
+ lastPrimaryFlagSrc=nextSrc;
+}
 
 function recordFromCountryName(value){
  const text=String(value||'').trim();
@@ -29,7 +95,7 @@ function badge(card,label){
 function decorateTextAnswers(){
  const answers=root.querySelector('.answers');
  if(!answers)return;
- answers.classList.remove('flag-image-answers');
+ answers.classList.remove('flag-image-answers','flag-options-enter');
  answers.classList.add('flag-text-answers');
 
  answers.querySelectorAll('.answer').forEach(button=>{
@@ -38,6 +104,10 @@ function decorateTextAnswers(){
   button.classList.toggle('long-label',length>17);
   button.classList.toggle('very-long-label',length>24);
  });
+
+ const card=root.querySelector('.question-card');
+ const feedback=card?.classList.contains('correct')||card?.classList.contains('wrong');
+ if(!feedback)animateTextAnswers(answers);
 }
 
 function decorateFlagAnswers(card){
@@ -73,6 +143,9 @@ function decorateFlagAnswers(card){
   image.height=104;
   button.append(image);
  });
+
+ const feedback=card?.classList.contains('correct')||card?.classList.contains('wrong');
+ if(!feedback)animateFlagOptions(answers);
 }
 
 function feedbackFlag(card,record){
@@ -132,6 +205,7 @@ function enhanceCard(){
 
  root.dataset.flagGameVariant='flags';
  decorateTextAnswers();
+ if(!feedback)crossfadePrimaryFlag(card);
 }
 
 function scheduleEnhance(){

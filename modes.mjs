@@ -221,7 +221,7 @@ function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
   countryId:flag.id,continent:flag.continent,capital:flag.capital,image:flag.flagSvg,
   distanceKm:flag.distanceKm,distanceRank:flag.distanceRank,
   distanceJump:Boolean(extra.distanceJump),countriesSeen:Number(extra.countriesSeen)||0,
-  difficulty
+  difficulty,feedbackMs:1000
  };
  const distractors=shuffle(optionRegion.filter(other=>other.id!==flag.id),random).slice(0,3);
 
@@ -234,7 +234,7 @@ function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
  if(config.flagGameType==='capitals'){
   return {...common,kind:'flag-capital',flagGameType:'capitals',text:flag.capital,full:flag.country,
    answer:flag.country,options:[flag.country,...distractors.map(other=>other.country)],
-   prompt:'Które państwo ma tę stolicę?',feedbackMs:2000};
+   prompt:'Które państwo ma tę stolicę?',feedbackMs:1250};
  }
  return {...common,kind:'flags',flagGameType:'flags',text:'Co to za kraj?',full:flag.country,
   answer:flag.country,options:[flag.country,...distractors.map(other=>other.country)],

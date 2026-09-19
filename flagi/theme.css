@@ -36,6 +36,20 @@
   background:var(--flag-theme);
 }
 
+#app[data-mode="flags"] .question-card,
+#app[data-mode="flags"] .answer,
+#app[data-mode="flags"] .answers .answer.flag-option-answer{
+  transition:
+    background-color .30s cubic-bezier(.2,.8,.25,1),
+    border-color .30s cubic-bezier(.2,.8,.25,1),
+    color .22s ease,
+    box-shadow .30s cubic-bezier(.2,.8,.25,1);
+}
+
+#app[data-mode="flags"] .feedback{
+  min-height:82px;
+}
+
 #app[data-mode="flags"] .question-card.wrong:not(.wrong-resolved){
   background:var(--flag-error-bg);
   border-color:var(--flag-error-line);

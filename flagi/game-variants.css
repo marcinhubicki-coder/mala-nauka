@@ -70,24 +70,29 @@
   max-height:112px;
 }
 
-/* Correct/wrong country feedback changes only the content inside the main card. */
+/* Correct/wrong country feedback stays centered without changing the card geometry. */
 #app[data-mode="flags"] .question-card.country-feedback .question-content{
-  justify-content:flex-start;
-  gap:10px;
-  padding-top:clamp(34px,6.2vh,54px);
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:8px 0;
 }
 
 #app[data-mode="flags"] .question-card.country-feedback .question-content .flag{
-  width:min(38%,132px);
-  max-width:132px;
-  max-height:88px;
+  width:min(30%,108px);
+  max-width:108px;
+  max-height:72px;
   margin:0;
   object-fit:contain;
 }
 
 #app[data-mode="flags"] .question-card.country-feedback .flag-name{
+  position:static;
+  width:auto;
   margin:0;
-  font-size:clamp(25px,7vw,32px);
+  transform:none;
+  text-align:center;
+  font-size:clamp(24px,6.5vw,30px);
   line-height:1.04;
 }
 
@@ -104,11 +109,11 @@
     max-height:90px;
   }
   #app[data-mode="flags"] .question-card.country-feedback .question-content{
-    padding-top:26px;
+    padding:6px 0;
   }
   #app[data-mode="flags"] .question-card.country-feedback .question-content .flag{
-    width:min(34%,112px);
-    max-width:112px;
-    max-height:74px;
+    width:min(28%,96px);
+    max-width:96px;
+    max-height:64px;
   }
 }

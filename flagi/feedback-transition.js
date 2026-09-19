@@ -32,7 +32,7 @@
       margin: 0;
     }
 
-    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.map-feedback-prep) .flag-name {
+    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.country-feedback):not(.map-feedback-prep) .flag-name {
       position: absolute;
       left: 50%;
       top: calc(50% + clamp(78px, 20vw, 86px));

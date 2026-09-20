@@ -1,4 +1,4 @@
-import { sceneFor, sceneUrl } from './scenes.mjs?v=9-assets';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=10-batch40';
 import { createBubble } from './bubble.mjs?v=8-mechanics';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=8-mechanics';
 import { RULES, lightbulbSvg } from './hints.mjs';
@@ -89,7 +89,7 @@ export function createSpellingArt(app) {
     nodes.answers.forEach(button => { button.disabled = true; });
     nodes.hint.disabled = true; nodes.next.hidden = true;
 
-    const q = game.current, scene = sceneFor(q.masked);
+    const q = game.current, scene = sceneFor(q.masked, q.word);
     if (!first) await animateInk('out');
     if (token !== generation || session !== game) return;
 

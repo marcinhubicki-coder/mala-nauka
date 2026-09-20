@@ -45,7 +45,50 @@ export const SCENES = new Map([
   ['sok_ł', { key:'falcon', layouts:['bubble'] }],
 ]);
 
-export function sceneFor(masked){ return SCENES.get(masked) || null; }
+export const WORD_SCENES = new Map([
+  ['źródło', { key:'mountain-source', asset:'mountains.webp', layouts:['bubble'] }],
+  ['półwysep', { key:'mountain-peninsula', asset:'mountains.webp', layouts:['bubble'] }],
+  ['horyzont', { key:'mountain-horizon', asset:'mountains.webp', layouts:['bubble'] }],
+  ['niebo', { key:'sky', asset:'swallow.avif', layouts:['bubble'] }],
+  ['chmura', { key:'cloud', asset:'clouds-review.webp', layouts:['bubble'] }],
+  ['burza', { key:'storm-cloud', asset:'clouds-review.webp', layouts:['bubble'] }],
+  ['dach', { key:'castle-roof', asset:'castle-review.webp', layouts:['bubble'] }],
+  ['chata', { key:'castle-cottage', asset:'castle-review.webp', layouts:['bubble'] }],
+  ['wieża', { key:'castle-tower', asset:'castle-review.webp', layouts:['bubble'] }],
+  ['tulipan', { key:'garden-tulip', asset:'rose.webp', layouts:['bubble'] }],
+  ['rzodkiewka', { key:'garden-radish', asset:'rose.webp', layouts:['bubble'] }],
+  ['korzeń', { key:'garden-root', asset:'rose.webp', layouts:['bubble'] }],
+  ['brzoza', { key:'garden-birch', asset:'rose.webp', layouts:['bubble'] }],
+  ['krzak', { key:'garden-bush', asset:'rose.webp', layouts:['bubble'] }],
+  ['wrzos', { key:'garden-heather', asset:'rose.webp', layouts:['bubble'] }],
+  ['przyroda', { key:'nature', asset:'mountains.webp', layouts:['bubble'] }],
+  ['przygoda', { key:'adventure', asset:'mountains.webp', layouts:['bubble'] }],
+  ['historia', { key:'story', asset:'ksiazka.avif', layouts:['bubble'] }],
+  ['państwo', { key:'kingdom', asset:'krol.avif', layouts:['bubble'] }],
+  ['herb', { key:'royal-crest', asset:'krol.avif', layouts:['bubble'] }],
+  ['honor', { key:'royal-honor', asset:'krol.avif', layouts:['bubble'] }],
+  ['bohater', { key:'hero', asset:'krol.avif', layouts:['bubble'] }],
+  ['chleb', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['herbata', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['kuchnia', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['kuchenka', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['kucharz', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['ciasto', { key:'cottage-table', asset:'stol.avif', layouts:['bubble'] }],
+  ['rzemiosło', { key:'leather-craft', asset:'skora.avif', layouts:['bubble'] }],
+  ['fartuch', { key:'leather-craft', asset:'skora.avif', layouts:['bubble'] }],
+  ['choroba', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['chory', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['chirurg', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['pomóc', { key:'medical-help', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['mózg', { key:'medical-brain', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['dziecko', { key:'child', asset:'wozek.avif', layouts:['bubble'] }],
+  ['maluch', { key:'child', asset:'wozek.avif', layouts:['bubble'] }],
+  ['śmiech', { key:'happy-bunny', asset:'bunny.webp', layouts:['bubble'] }],
+  ['siedem', { key:'number-play', asset:'osemka.avif', layouts:['bubble'] }],
+  ['usterka', { key:'car-service', asset:'samochod.avif', layouts:['bubble'] }],
+]);
+
+export function sceneFor(masked, word=''){ return WORD_SCENES.get(word) || SCENES.get(masked) || null; }
 export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';

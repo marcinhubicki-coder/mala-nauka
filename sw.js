@@ -1,15 +1,15 @@
-const CACHE='mala-nauka-spelling-v11-scenes-02';
+const CACHE='mala-nauka-spelling-v12-mechanics-03';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./app.js?v=6-scene','./module-router.js','./spelling-assets-setting.js',
+  './','./index.html','./app.css','./app.js','./app.js?v=8-mechanics','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
-  './spelling-art.css','./spelling-art.css?v=6-scene','./debug-tools.js','./debug-tools.js?v=7',
+  './spelling-art.css','./spelling-art.css?v=8-mechanics','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
   './assets/ortografia/lake-background.webp','./assets/fonts/dynapuff-polish-700.woff',
   './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
   './assets/scenes/turtle.avif','./assets/scenes/sparrow.avif','./assets/scenes/swallow.avif','./assets/scenes/comb.avif',
-  './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif',
-  './spelling/art.mjs','./spelling/art.mjs?v=6-scene','./spelling/bubble.mjs','./spelling/bubble.mjs?v=6-scene',
-  './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=6-scene',
+  './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
+  './spelling/art.mjs','./spelling/art.mjs?v=8-mechanics','./spelling/bubble.mjs','./spelling/bubble.mjs?v=8-mechanics',
+  './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/scenes.mjs?v=8-mechanics','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=8-mechanics',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',

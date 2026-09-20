@@ -1,6 +1,6 @@
-import { sceneFor, sceneUrl } from './scenes.mjs';
-import { createBubble } from './bubble.mjs?v=6-scene';
-import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=6-scene';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=8-mechanics';
+import { createBubble } from './bubble.mjs?v=8-mechanics';
+import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=8-mechanics';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
@@ -88,9 +88,11 @@ export function createSpellingArt(app) {
     game.setPresentationHold(true); app.classList.add('ink-changing');
     nodes.answers.forEach(button => { button.disabled = true; });
     nodes.hint.disabled = true; nodes.next.hidden = true;
-    if (!first) await Promise.all([animateInk('out'), bubble.washOut()]);
-    if (token !== generation || session !== game) return;
+
     const q = game.current, scene = sceneFor(q.masked);
+    if (!first) await animateInk('out');
+    if (token !== generation || session !== game) return;
+
     app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback');
     nodes.word.replaceChildren(createWord(q.masked));
     nodes.word.setAttribute('aria-label', `Uzupełnij: ${q.masked.replace('_', ' — luka — ')}`);
@@ -99,10 +101,11 @@ export function createSpellingArt(app) {
       button.classList.remove('correct', 'wrong'); button.setAttribute('aria-label', game.options[index]);
     });
     nodes.feedback.textContent = ''; nodes.hint.hidden = false; fitWord();
-    await bubble.setScene(scene?.asset ? sceneUrl(scene) : '', scene);
+
+    const pictureChange = bubble.transitionToScene(scene?.asset ? sceneUrl(scene) : '', scene, first);
+    await Promise.all([animateInk('in'), pictureChange]);
     if (token !== generation || session !== game) return;
-    await Promise.all([animateInk('in'), bubble.paintIn()]);
-    if (token !== generation || session !== game) return;
+
     game.setPresentationHold(false); app.classList.remove('ink-changing');
     nodes.answers.forEach(button => { button.disabled = false; }); nodes.hint.disabled = false;
     if (document.body.classList.contains('keyboard')) nodes.answers[0].focus({ preventScroll: true });
@@ -115,7 +118,7 @@ export function createSpellingArt(app) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
-      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches);
+      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game) fitWord(); });
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
         button.classList.toggle('correct', game.options[index] === game.current.answer);

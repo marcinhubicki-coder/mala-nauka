@@ -361,3 +361,89 @@
     --flag-answer-row-height:88px;
   }
 }
+
+
+/* Feedback stabilization v3: keep variant geometry fixed through correct/wrong states. */
+#app[data-mode="flags"] .question-card.country-feedback .question-content{
+  justify-content:center!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:8px 0 14px!important;
+  transform:translateY(-8px);
+}
+
+#app[data-mode="flags"] .question-card.country-feedback .question-content > .flag{
+  position:static!important;
+  width:92px!important;
+  height:62px!important;
+  min-width:92px!important;
+  max-width:92px!important;
+  min-height:62px!important;
+  max-height:62px!important;
+  margin:0!important;
+  transform:none!important;
+  object-fit:contain!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback .flag-name{
+  position:static!important;
+  left:auto!important;
+  top:auto!important;
+  width:auto!important;
+  max-width:90%!important;
+  margin:0!important;
+  transform:none!important;
+  text-align:center!important;
+  white-space:normal!important;
+  font-size:28px!important;
+  line-height:1.02!important;
+}
+
+/* Same image box before and after an answer: only border/background may change. */
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .flag-option-image,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.correct .flag-option-image,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.wrong .flag-option-image{
+  display:block;
+  width:min(156px,90%)!important;
+  height:72px!important;
+  min-height:72px!important;
+  max-height:72px!important;
+  margin:0!important;
+  object-fit:contain!important;
+  transform:none;
+}
+
+/* Keep the soft question-to-question entrance, but never scale flag artwork. */
+@keyframes flag-option-enter{
+  from{
+    opacity:.18;
+    transform:translateY(4px);
+    filter:blur(1px) drop-shadow(0 3px 4px rgba(32,55,91,.12));
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0) drop-shadow(0 3px 4px rgba(32,55,91,.12));
+  }
+}
+
+/* State changes must never alter answer-box geometry. */
+#app[data-mode="flags"] .answers .answer,
+#app[data-mode="flags"] .answers .answer.correct,
+#app[data-mode="flags"] .answers .answer.wrong{
+  box-sizing:border-box;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"] .question-card.country-feedback .question-content > .flag{
+    width:86px!important;
+    min-width:86px!important;
+    max-width:86px!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+  }
+  #app[data-mode="flags"] .question-card.country-feedback .flag-name{
+    font-size:26px!important;
+  }
+}

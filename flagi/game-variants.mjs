@@ -58,8 +58,13 @@ function animateTextAnswer(button){
 
 function prepareStaticTextAnswer(button){
  if(!button)return;
- const text=(button.textContent||'').trim();
+ const text=(button.getAttribute('aria-label')||button.textContent||'').trim();
  if(!text)return;
+ if(button.dataset.flagTextStatic===text&&button.querySelector('.flag-answer-label')){
+  requestAnimationFrame(()=>fitTextAnswer(button));
+  return;
+ }
+ button.dataset.flagTextStatic=text;
  button.setAttribute('aria-label',text);
  button.innerHTML=textAnswerMarkup(text,false);
  requestAnimationFrame(()=>fitTextAnswer(button));
@@ -196,18 +201,28 @@ function enhanceCard(){
  const capitalQuestion=card.querySelector('.question-text.flag-capital');
  const feedback=card.classList.contains('correct')||card.classList.contains('wrong');
 
- if(countryQuestion){
-  const record=byId.get(card.dataset.countryId)||recordFromCountryName(countryQuestion.textContent);
+ // Keep the variant once detected. Feedback replaces the question DOM, so relying
+ // only on .flag-country/.flag-capital would incorrectly fall back to "flags".
+ const detectedVariant=countryQuestion
+  ? 'countries'
+  : capitalQuestion
+   ? 'capitals'
+   : (card.dataset.flagVariant||root.dataset.flagGameVariant||'flags');
+
+ if(detectedVariant==='countries'){
+  let record=byId.get(card.dataset.countryId);
+  if(!record&&countryQuestion)record=recordFromCountryName(countryQuestion.textContent);
   if(record)card.dataset.countryId=record.id;
+
   card.dataset.flagVariant='countries';
   root.dataset.flagGameVariant='countries';
   badge(card,'Państwa');
-
   decorateFlagAnswers(card);
   card.classList.toggle('country-feedback',feedback);
+
   if(feedback){
    feedbackFlag(card,record);
-  }else if(record){
+  }else if(record&&countryQuestion){
    const name=localizedName(record);
    if(countryQuestion.textContent!==name)countryQuestion.textContent=name;
   }
@@ -216,23 +231,24 @@ function enhanceCard(){
 
  card.classList.remove('country-feedback');
 
- if(capitalQuestion){
+ if(detectedVariant==='capitals'){
   let record=byId.get(card.dataset.countryId);
-  if(!record){
-   if(feedback)record=recordFromCountryName(capitalQuestion.textContent);
-   else record=byCapital.get(capitalQuestion.textContent.trim().toLocaleLowerCase('pl-PL'));
+  if(!record&&capitalQuestion){
+   record=byCapital.get(capitalQuestion.textContent.trim().toLocaleLowerCase('pl-PL'));
   }
   if(record)card.dataset.countryId=record.id;
+
   card.dataset.flagVariant='capitals';
   root.dataset.flagGameVariant='capitals';
   badge(card,'Stolice');
   decorateTextAnswers();
 
   if(feedback)feedbackFlag(card,record);
-  else if(record&&capitalQuestion.textContent!==record.capital)capitalQuestion.textContent=record.capital;
+  else if(record&&capitalQuestion&&capitalQuestion.textContent!==record.capital)capitalQuestion.textContent=record.capital;
   return;
  }
 
+ card.dataset.flagVariant='flags';
  root.dataset.flagGameVariant='flags';
  decorateTextAnswers();
  if(!feedback)crossfadePrimaryFlag(card);

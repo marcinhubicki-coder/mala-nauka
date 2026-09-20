@@ -244,6 +244,7 @@ function enhanceCard(){
   root.dataset.flagGameVariant='capitals';
   badge(card,'Stolice');
   decorateTextAnswers();
+  card.classList.toggle('country-feedback',feedback);
 
   if(feedback)feedbackFlag(card,record);
   else if(record&&capitalQuestion&&capitalQuestion.textContent!==record.capital)capitalQuestion.textContent=record.capital;

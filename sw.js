@@ -218,7 +218,24 @@ const CORE=[
   './assets/scenes/drzewo.webp',
   './assets/scenes/zima.webp',
   './assets/scenes/ogorek.webp',
-  './assets/scenes/wiewiorka.webp'
+  './assets/scenes/wiewiorka.webp',
+  './spelling/word-reveal.mjs?v=9-simple-text',
+  './ortografia/wizard-v2.css?v=2',
+  './ortografia/wizard-v2.mjs?v=3',
+  './angielski/wizard-v2.css?v=4',
+  './angielski/wizard-v2.mjs?v=7',
+  './angielski/feedback-transition.js?v=2',
+  './angielski/word-exposure.js?v=1',
+  './flagi/map-layout.css?v=9',
+  './flagi/wizard-v2.css?v=15',
+  './flagi/wizard-v2-tuning.css?v=5',
+  './flagi/game-variants.css?v=12',
+  './flagi/theme.css?v=6',
+  './flagi/adaptive-difficulty.mjs?v=15',
+  './flagi/game-variants.mjs?v=16',
+  './flagi/europe-map.js?v=6',
+  './flagi/map-microstates.js?v=1',
+  './flagi/feedback-transition.js?v=10'
 ];
 
 self.addEventListener('install',event=>{

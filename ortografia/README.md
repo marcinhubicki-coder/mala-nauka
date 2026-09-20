@@ -46,3 +46,20 @@ Osiem AVIF-ów w poprzednim commicie nie przechodziło pełnego dekodowania: grz
 Przed dodaniem obrazów uruchom `python scripts/validate_spelling_assets.py` (Pillow 11.3+). Test dekoduje pełne dane wszystkich przypisanych grafik i działa również w GitHub Actions. Przy przesyłaniu plików sprawdzaj SHA blobów; nie kopiuj uciętego wyjścia base64. Przypisania po `masked` i po pełnym słowie są obsługiwane także w filtrze ilustracji.
 
 Zdjęcia są natywnymi elementami SVG `image`, bez `foreignObject`. Falowanie działa do 30 klatek/s, tempo 1,8 zamiast 1,28. Tło jest stałą warstwą poza kontenerem gry, obejmuje duży viewport i safe areas; kolory strony i theme-color są przywracane po rundzie. PWA korzysta z `black-translucent`; istniejący skrót może wymagać ponownego dodania po zmianie metadanych. Sam interfejs Safari nadal jest kontrolowany przez iOS — rzeczywisty wygląd przezroczystych pasków trzeba odebrać na telefonie.
+
+## Gotowe ilustracje dołączone w v23
+
+Dodano sześć pominiętych scen ze wcześniej przygotowanych oryginałów. Wszystkie mają 1080 × 1080 px i pełne dekodowanie po eksporcie do WebP.
+
+| Plik | Słowa korzystające ze sceny |
+| --- | --- |
+| `sokol.webp` | sokół — nowy rekord słowa; poprawione wcześniejsze przypisanie do jaskółki |
+| `huragan.webp` | huragan — nowy rekord słowa; poprawione wcześniejsze przypisanie do nieba |
+| `drzewo.webp` | drzewo, zielony, korzeń |
+| `zima.webp` | zima, śnieg |
+| `ogorek.webp` | ogórek — nowy rekord słowa |
+| `wiewiorka.webp` | wiewiórka — nowy rekord słowa |
+
+Razem 923 588 bajtów nowych obrazów. Baza ma 404 słowa, z czego 127 ma przypisanie do ilustracji (30 różnych plików; część przypisań jest kontekstowa). 277 słów nadal nie ma obrazu: potrzebują kolejnego etapu przygotowania grafik, a nie przypadkowego przypisania istniejącej sceny. Nie generowano nowych obrazów.
+
+Podgląd tylko tej paczki: `/ortografia/?assets=1&scene=sokol,huragan,drzewo,zima,ogorek,wiewiorka`. Parametr `scene` przyjmuje pojedynczy klucz lub listę oddzieloną przecinkami.

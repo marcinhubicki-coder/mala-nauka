@@ -13,8 +13,8 @@ export function shuffle(items, random = Math.random) {
   return result;
 }
 export function validateWords(words) {
-  const counts = [130, 130, 90, 10, 10, 10, 10, 10];
-  if (!Array.isArray(words) || words.length !== 400 || new Set(words.map(w => w.word)).size !== 400) throw Error('Niepełna baza słów.');
+  const counts = [133, 130, 91, 10, 10, 10, 10, 10];
+  if (!Array.isArray(words) || words.length !== 404 || new Set(words.map(w => w.word)).size !== 404) throw Error('Niepełna baza słów.');
   for (const w of words) {
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
@@ -22,7 +22,7 @@ export function validateWords(words) {
       w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
   }
   if (CATEGORIES.some((c, i) => words.filter(w => w.category === c).length !== counts[i]) ||
-    [240, 160].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count) ||
+    [241, 163].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count) ||
     CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
 }

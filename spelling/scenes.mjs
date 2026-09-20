@@ -40,12 +40,19 @@ export const SCENES = new Map([
   ['_śmiech', { key:'bunny', asset:'bunny.webp', layouts:['bubble'] }],
   ['_rlop', { key:'mountains', asset:'mountains.webp', layouts:['bubble'] }],
   ['_rodziny', { key:'birthday', asset:'osemka.avif', layouts:['bubble'] }],
-  ['_uragan', { key:'storm', asset:'clouds-review.webp', layouts:['bubble'] }],
+  ['_uragan', { key:'huragan', asset:'huragan.webp', layouts:['bubble'] }],
   ['g_ebień', { key:'comb', asset:'comb.avif', layouts:['bubble'] }],
-  ['sok_ł', { key:'falcon', asset:'swallow.avif', layouts:['bubble'] }],
+  ['sok_ł', { key:'sokol', asset:'sokol.webp', layouts:['bubble'] }],
 ]);
 
 export const WORD_SCENES = new Map([
+  // Distinct prepared illustrations added in v23.
+  ['drzewo', { key:'drzewo', asset:'drzewo.webp', layouts:['bubble'] }],
+  ['zima', { key:'zima', asset:'zima.webp', layouts:['bubble'] }],
+  ['śnieg', { key:'zima', asset:'zima.webp', layouts:['bubble'] }],
+  ['ogórek', { key:'ogorek', asset:'ogorek.webp', layouts:['bubble'] }],
+  ['wiewiórka', { key:'wiewiorka', asset:'wiewiorka.webp', layouts:['bubble'] }],
+
   ['źródło', { key:'mountain-source', asset:'mountains.webp', layouts:['bubble'] }],
   ['półwysep', { key:'mountain-peninsula', asset:'mountains.webp', layouts:['bubble'] }],
   ['horyzont', { key:'mountain-horizon', asset:'mountains.webp', layouts:['bubble'] }],
@@ -57,7 +64,7 @@ export const WORD_SCENES = new Map([
   ['wieża', { key:'castle-tower', asset:'castle-review.webp', layouts:['bubble'] }],
   ['tulipan', { key:'garden-tulip', asset:'rose.webp', layouts:['bubble'] }],
   ['rzodkiewka', { key:'garden-radish', asset:'rose.webp', layouts:['bubble'] }],
-  ['korzeń', { key:'garden-root', asset:'rose.webp', layouts:['bubble'] }],
+  ['korzeń', { key:'drzewo', asset:'drzewo.webp', layouts:['bubble'] }],
   ['brzoza', { key:'garden-birch', asset:'rose.webp', layouts:['bubble'] }],
   ['krzak', { key:'garden-bush', asset:'rose.webp', layouts:['bubble'] }],
   ['wrzos', { key:'garden-heather', asset:'rose.webp', layouts:['bubble'] }],
@@ -98,7 +105,7 @@ export const WORD_SCENES = new Map([
   ['rzepa', { key:'garden-turnip', asset:'rose.webp', layouts:['bubble'] }],
   ['zioło', { key:'garden-herb', asset:'rose.webp', layouts:['bubble'] }],
   ['ziemia', { key:'garden-earth', asset:'rose.webp', layouts:['bubble'] }],
-  ['zielony', { key:'garden-green', asset:'rose.webp', layouts:['bubble'] }],
+  ['zielony', { key:'drzewo', asset:'drzewo.webp', layouts:['bubble'] }],
   ['trzcina', { key:'garden-reed', asset:'rose.webp', layouts:['bubble'] }],
   ['chmiel', { key:'garden-hops', asset:'rose.webp', layouts:['bubble'] }],
   ['chrzan', { key:'garden-horseradish', asset:'rose.webp', layouts:['bubble'] }],
@@ -134,6 +141,6 @@ export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
   const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
-  url.searchParams.set('v', '22-repaired-assets');
+  url.searchParams.set('v', '23-art-library');
   return url.href;
 }

@@ -1,4 +1,4 @@
-import { SCENES, sceneFor } from './scenes.mjs?v=22-repaired-assets';
+import { SCENES, sceneFor } from './scenes.mjs?v=23-art-library';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');
@@ -42,7 +42,8 @@ export function filterSpellingPreview(words){
   }
 
   if(SPELLING_PREVIEW.scene){
-    pool = pool.filter(word => normalize(sceneFor(word.masked, word.word)?.key) === SPELLING_PREVIEW.scene);
+    const scenes = new Set(SPELLING_PREVIEW.scene.split(',').map(normalize).filter(Boolean));
+    pool = pool.filter(word => scenes.has(normalize(sceneFor(word.masked, word.word)?.key)));
   }
 
   return pool;

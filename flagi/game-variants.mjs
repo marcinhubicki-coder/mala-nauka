@@ -14,23 +14,67 @@ function safeHtml(value){
  }[char]));
 }
 
-function labelFitsTwoLines(label){
- const style=getComputedStyle(label);
- const lineHeight=parseFloat(style.lineHeight)||20;
- const words=[...label.querySelectorAll('.flag-answer-word')];
- const widestWord=words.reduce((width,word)=>Math.max(width,word.scrollWidth),0);
- return label.scrollHeight<=lineHeight*2+1&&widestWord<=label.clientWidth+1;
-}
-
 function fitTextAnswer(button){
  const label=button?.querySelector('.flag-answer-label');
  if(!label)return;
+
+ const words=[...label.querySelectorAll('.flag-answer-word')];
+ if(!words.length)return;
+
+ const rebuild=breakAt=>{
+  const fragments=words.map(word=>word);
+  label.replaceChildren();
+  const first=document.createElement('span');
+  first.className='flag-answer-line';
+  fragments.slice(0,breakAt||fragments.length).forEach(word=>first.append(word));
+  label.append(first);
+  if(breakAt&&breakAt<fragments.length){
+   const second=document.createElement('span');
+   second.className='flag-answer-line';
+   fragments.slice(breakAt).forEach(word=>second.append(word));
+   label.append(second);
+  }
+ };
+
+ const measureLine=(items,size)=>{
+  const gap=size*.28;
+  return items.reduce((sum,word,index)=>sum+word.getBoundingClientRect().width+(index?gap:0),0);
+ };
+
  let size=18;
- button.style.setProperty('--flag-answer-font-size',`${size}px`);
- while(size>13&&!labelFitsTwoLines(label)){
-  size-=1;
+ while(size>=13){
   button.style.setProperty('--flag-answer-font-size',`${size}px`);
+  rebuild(null);
+  const available=label.clientWidth;
+  const oneLine=measureLine(words,size);
+
+  if(oneLine<=available+1){
+   label.dataset.lines='1';
+   return;
+  }
+
+  let best=null;
+  for(let split=1;split<words.length;split+=1){
+   const first=measureLine(words.slice(0,split),size);
+   const second=measureLine(words.slice(split),size);
+   if(first<=available+1&&second<=available+1){
+    const score=Math.max(first,second)+Math.abs(first-second)*.12;
+    if(!best||score<best.score)best={split,score};
+   }
+  }
+
+  if(best){
+   rebuild(best.split);
+   label.dataset.lines='2';
+   return;
+  }
+
+  size-=1;
  }
+
+ button.style.setProperty('--flag-answer-font-size','13px');
+ rebuild(words.length>1?Math.ceil(words.length/2):null);
+ label.dataset.lines=words.length>1?'2':'1';
 }
 
 function textAnswerMarkup(text,animated){
@@ -45,7 +89,7 @@ function textAnswerMarkup(text,animated){
   }).join('');
   return `<span class="flag-answer-word" aria-hidden="true">${letters}</span>`;
  }).join('');
- return `<span class="flag-answer-label">${content}</span>`;
+ return `<span class="flag-answer-label"><span class="flag-answer-line">${content}</span></span>`;
 }
 
 function animateTextAnswer(button){
@@ -254,6 +298,7 @@ function enhanceCard(){
  card.dataset.flagVariant='flags';
  root.dataset.flagGameVariant='flags';
  decorateTextAnswers();
+ card.classList.toggle('country-feedback',feedback);
  if(!feedback)crossfadePrimaryFlag(card);
 }
 

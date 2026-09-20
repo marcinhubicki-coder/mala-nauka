@@ -21,8 +21,12 @@ export function createBubble(host) {
     <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="24" opacity=".075" transform="translate(0 5)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
-      <image class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
-      <image class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
+      <foreignObject class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="soap-picture-frame"><img class="soap-picture-img" alt="" draggable="false" decoding="async"/></div>
+      </foreignObject>
+      <foreignObject class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="soap-picture-frame"><img class="soap-picture-img" alt="" draggable="false" decoding="async"/></div>
+      </foreignObject>
       <rect width="400" height="400" fill="url(#${id}-film)"/>
     </g>
     <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="20" opacity=".42"/>
@@ -100,14 +104,20 @@ export function createBubble(host) {
 
   const FALLBACK_URL = new URL('../assets/scenes/bunny.webp', import.meta.url).href;
   const imageLoads = new Map();
+  function pictureImage(picture) { return picture?.querySelector('.soap-picture-img'); }
+  function hasPictureSource(picture) { return Boolean(pictureImage(picture)?.getAttribute('src')); }
   function setPictureSource(picture, url='') {
-    if (url) {
-      picture.setAttribute('href', url);
-      picture.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', url);
-    } else {
-      picture.removeAttribute('href');
-      picture.removeAttributeNS('http://www.w3.org/1999/xlink', 'href');
-    }
+    const img = pictureImage(picture);
+    if (!img) return;
+    if (url) img.src = url;
+    else img.removeAttribute('src');
+  }
+  function setPictureAlignment(picture, alignment='xMidYMid slice') {
+    const img = pictureImage(picture);
+    if (!img) return;
+    const x = alignment.includes('xMin') ? 'left' : alignment.includes('xMax') ? 'right' : 'center';
+    const y = alignment.includes('YMin') ? 'top' : alignment.includes('YMax') ? 'bottom' : 'center';
+    img.style.objectPosition = `${x} ${y}`;
   }
   function waitForImage(url) {
     if (imageLoads.has(url)) return imageLoads.get(url);
@@ -133,12 +143,12 @@ export function createBubble(host) {
   }
   async function transitionToScene(url, scene, first=false) {
     const token=++loadToken;
-    if (url===currentUrl && activePicture.getAttribute('href')) return true;
+    if (url===currentUrl && hasPictureSource(activePicture)) return true;
 
     if (!url) {
       const old=activePicture;
       currentUrl='';
-      if (!old.getAttribute('href')) return true;
+      if (!hasPictureSource(old)) return true;
       if (reduced.matches) { old.style.opacity='0'; setPictureSource(old); return true; }
       const animation=old.animate([{opacity:1},{opacity:0}],{duration:260,easing:'ease-out',fill:'both'});
       transitions=[animation]; if(paused) animation.pause();
@@ -160,9 +170,9 @@ export function createBubble(host) {
 
     const next=standbyPicture, old=activePicture;
     setPictureSource(next,displayUrl);
-    next.setAttribute('preserveAspectRatio',scene?.alignment || 'xMidYMid slice');
+    setPictureAlignment(next, scene?.alignment || 'xMidYMid slice');
     next.style.opacity='0';
-    const hasOld=Boolean(old.getAttribute('href'));
+    const hasOld=hasPictureSource(old);
 
     if (reduced.matches) {
       old.style.opacity='0'; setPictureSource(old);

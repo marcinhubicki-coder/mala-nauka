@@ -1,6 +1,6 @@
 import { sceneFor, sceneUrl } from './scenes.mjs?v=13-scene-assets';
-import { createBubble } from './bubble.mjs?v=9-scene-loader';
-import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=8-mechanics';
+import { createBubble } from './bubble.mjs?v=10-html-picture';
+import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
@@ -75,8 +75,8 @@ export function createSpellingArt(app) {
   }
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
-    const letters = [...nodes.word.querySelectorAll('.ink-letter,.gap'), ...app.querySelectorAll('.answer-ink')];
-    animations = flowInk(letters, direction);
+    const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    animations = flowInk(blocks, direction);
     if (session?.state === 'paused') animations.forEach(animation => animation.pause());
     const active = animations;
     await Promise.all(active.map(animation => animation.finished.catch(() => {})));

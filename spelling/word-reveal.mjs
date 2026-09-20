@@ -1,29 +1,21 @@
-function letters(text) {
-  return [...text].map(char => {
-    const span = document.createElement('span');
-    span.className = 'ink-letter';
-    span.textContent = char;
-    return span;
-  });
-}
-
 export function createWord(masked) {
   const word = document.createElement('div');
   word.className = 'word';
   word.setAttribute('aria-hidden', 'true');
+
   const [before, after] = masked.split('_');
 
   const left = document.createElement('span');
   left.className = 'word-side word-before';
-  left.append(...letters(before));
-
-  const right = document.createElement('span');
-  right.className = 'word-side word-after';
-  right.append(...letters(after));
+  left.textContent = before;
 
   const gap = document.createElement('span');
   gap.className = 'gap';
   gap.innerHTML = '<span class="bubble-glass"></span><i class="word-spark star-a"></i><i class="word-spark star-b"></i><i class="word-spark star-c"></i><i class="word-spark star-d"></i>';
+
+  const right = document.createElement('span');
+  right.className = 'word-side word-after';
+  right.textContent = after;
 
   word.append(left, gap, right);
   return word;
@@ -33,19 +25,23 @@ export function revealWord(word, answer, reduced) {
   const gap = word.querySelector('.gap');
   if (!gap || gap.classList.contains('is-revealed')) return Promise.resolve();
 
-  const slot = document.createElement('span');
-  slot.className = 'revealed-slot';
   const text = document.createElement('span');
   text.className = 'revealed-chunk';
   text.textContent = answer;
-  slot.append(text);
-  gap.append(slot);
+  gap.append(text);
 
   const startWidth = gap.getBoundingClientRect().width;
-  const textWidth = Math.ceil(text.getBoundingClientRect().width + 2);
-  const targetWidth = Math.max(18, textWidth);
+  text.style.visibility = 'hidden';
+  text.style.position = 'absolute';
+  const targetWidth = Math.max(18, Math.ceil(text.getBoundingClientRect().width + 2));
+  text.style.removeProperty('visibility');
+  text.style.removeProperty('position');
+
   gap.style.width = `${startWidth}px`;
   gap.style.flexBasis = `${startWidth}px`;
+
+  // One simple text box: reveal the answer and let flexbox move both word sides.
+  void gap.offsetWidth;
   gap.classList.add('is-revealed');
 
   if (reduced) {
@@ -54,51 +50,38 @@ export function revealWord(word, answer, reduced) {
     return Promise.resolve();
   }
 
-  flowInk([text], 'in').forEach(animation => animation.finished.then(() => animation.cancel()).catch(() => {}));
-
-  const delta = targetWidth - startWidth;
-  const overshoot = targetWidth + (delta < 0 ? -2 : 2);
-  const settle = targetWidth + (delta < 0 ? 1 : -1);
-  const compact = gap.animate([
-    {width:`${startWidth}px`,flexBasis:`${startWidth}px`},
-    {width:`${overshoot}px`,flexBasis:`${overshoot}px`,offset:.62},
-    {width:`${settle}px`,flexBasis:`${settle}px`,offset:.82},
-    {width:`${targetWidth}px`,flexBasis:`${targetWidth}px`}
-  ], {duration:430,delay:150,easing:'cubic-bezier(.22,.8,.32,1)',fill:'forwards'});
-
-  const left = word.querySelector('.word-before');
-  const right = word.querySelector('.word-after');
-  [left,right].forEach((side,index)=>{
-    if(!side) return;
-    const sign=index===0?1:-1;
-    const animation=side.animate([
-      {transform:'translateX(0) scaleX(1)'},
-      {transform:`translateX(${sign*2.4}px) scaleX(.985)`,offset:.55},
-      {transform:`translateX(${-sign*.8}px) scaleX(1.008)`,offset:.8},
-      {transform:'translateX(0) scaleX(1)'}
-    ],{duration:430,delay:150,easing:'cubic-bezier(.22,.8,.32,1)'});
-    animation.finished.then(()=>animation.cancel()).catch(()=>{});
+  return new Promise(resolve => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      gap.removeEventListener('transitionend', onEnd);
+      gap.style.width = `${targetWidth}px`;
+      gap.style.flexBasis = `${targetWidth}px`;
+      resolve();
+    };
+    const onEnd = event => {
+      if (event.target === gap && (event.propertyName === 'width' || event.propertyName === 'flex-basis')) finish();
+    };
+    gap.addEventListener('transitionend', onEnd);
+    requestAnimationFrame(() => {
+      gap.style.width = `${targetWidth}px`;
+      gap.style.flexBasis = `${targetWidth}px`;
+    });
+    setTimeout(finish, 320);
   });
-
-  return compact.finished.then(()=>{
-    gap.style.width = `${targetWidth}px`;
-    gap.style.flexBasis = `${targetWidth}px`;
-    compact.cancel();
-  }).catch(()=>{});
 }
 
 export function flowInk(elements, direction) {
   const entering = direction === 'in';
-  return elements.map((element, index) => {
-    const delay = 12 + Math.random() * 55 + (index % 4) * 14;
-    const clear = { opacity: 1, transform: 'translate3d(0,0,0) scale(1)' };
-    const dissolved = { opacity: 0, transform: `translate3d(${Math.random()*2-1}px,${entering?7:-7}px,0) scale(.985)` };
-    const middle = { opacity: .58, transform: `translate3d(0,${entering?1.5:-1.5}px,0) scale(1.012)`, offset: .56 };
-    return element.animate(entering ? [dissolved,middle,clear] : [clear,middle,dissolved], {
-      duration: entering ? 430 : 320,
-      delay,
-      easing: 'cubic-bezier(.22,.61,.36,1)',
+  return elements.map(element => element.animate(
+    entering
+      ? [{ opacity: 0, transform: 'translateY(3px)' }, { opacity: 1, transform: 'translateY(0)' }]
+      : [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-3px)' }],
+    {
+      duration: entering ? 180 : 140,
+      easing: 'ease-out',
       fill: 'both',
-    });
-  });
+    }
+  ));
 }

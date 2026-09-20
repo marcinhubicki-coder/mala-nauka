@@ -51,7 +51,7 @@ export class Session {
     this.next();
   }
   tick() {
-    if (['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
+    if (this.presentationHeld || ['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
     const previousState = this.state;
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
@@ -85,7 +85,7 @@ export class Session {
     this.lastTime = this.now();
   }
   answer(option) {
-    if (this.state !== 'playing') return false;
+    if (this.presentationHeld || this.state !== 'playing') return false;
     this.tick();
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
@@ -100,10 +100,11 @@ export class Session {
     if (this.recentAnswers.length > 12) this.recentAnswers.shift();
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||700) : 0;
+    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||Number(this.feedbackMs)||700) : 0;
     return true;
   }
   skipFeedback() {
+    if (this.presentationHeld) return;
     if (!this.state.startsWith('feedback')) return;
     const question = this.question;
     this.tick();
@@ -116,6 +117,11 @@ export class Session {
     this.resumeState = this.state;
     this.state = 'paused';
   }
+  // Decorative transitions do not consume answer time.
+  setPresentationHold(held) {
+    this.presentationHeld = held;
+    this.lastTime = this.now();
+  }
   resume() {
     if (this.state !== 'paused') return;
     this.state = this.resumeState;
@@ -126,7 +132,8 @@ export class Session {
 // Keep the original spelling API and its approved dataset validation.
 export class Game extends Session {
   constructor(words, category, duration, now, random) {
-    super(words.filter(w => category === 'all' || w.category === category), duration, now, random);
+    const selected=category==='all'?null:String(category).split(',');
+    super(words.filter(w => !selected || selected.includes(w.category)), duration, now, random);
     this.category = category;
   }
 }

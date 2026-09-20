@@ -1,157 +1,150 @@
-import { sceneFor, sceneUrl } from './scenes.mjs';
-import { mountHintButton } from './hints.mjs';
-import { decorateWord } from './word-reveal.mjs';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=23-art-library';
+import { createBubble } from './bubble.mjs?v=23-art-library';
+import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
+import { RULES, lightbulbSvg } from './hints.mjs';
 
-const app=document.querySelector('#app');
-if(!app)throw new Error('Missing #app root');
-
-const questionMemory=new Map();
-const autoAdvanceButtons=new WeakSet();
-let scheduled=false;
-
-function currentQuestionNumber(){
-  const text=app.querySelector('.game-meta span')?.textContent||'';
-  return Number(text.match(/\d+/)?.[0]||0);
-}
-
-function maskedFromAria(word){
-  const aria=word?.getAttribute('aria-label')||'';
-  if(!aria)return '';
-  if(/luka/i.test(aria))return aria.replace(/\s*[–—-]\s*luka\s*[–—-]\s*/i,'_').replace(/\s+/g,'');
-  return '';
-}
-
-function ensureScreenBackground(){
-  let bg=app.querySelector(':scope > .spelling-screen-bg');
-  if(bg)return bg;
-  bg=document.createElement('img');
-  bg.className='spelling-screen-bg';
-  bg.src='assets/ortografia/spelling-bg-v053.webp';
-  bg.alt='';
-  bg.decoding='async';
-  bg.loading='eager';
-  bg.setAttribute('aria-hidden','true');
-  app.prepend(bg);
-  return bg;
-}
-
-function mountVisual(scene,title){
-  app.querySelector('.spelling-visual')?.remove();
-
-  const bubble=document.createElement('div');
-  bubble.className='spelling-visual scene-missing';
-  bubble.setAttribute('aria-hidden','true');
-  if(scene?.scale)bubble.style.setProperty('--scene-scale',String(scene.scale));
-
-  const media=document.createElement('div');
-  media.className='spelling-visual-media';
-  bubble.append(media);
-
-  if(scene?.asset){
-    const img=document.createElement('img');
-    img.src=sceneUrl(scene);
-    img.alt='';
-    img.decoding='async';
-    img.loading='eager';
-    if(scene.position)img.style.objectPosition=scene.position;
-    img.addEventListener('load',()=>bubble.classList.remove('scene-missing'),{once:true});
-    img.addEventListener('error',()=>img.remove(),{once:true});
-    media.append(img);
+// One session owns one scene. Only its picture and ink change between questions.
+export function createSpellingArt(app) {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
+  let animations = [], resizeObserver, background;
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const originalTheme = themeMeta?.getAttribute('content');
+  function closeHint() {
+    if (!hint) return;
+    hint.close(); hint.remove(); hint = null;
+    if (session?.state === 'paused' && session.resumeState === 'playing') session.resume();
+    app.classList.remove('spelling-hint-open');
+    bubble?.setPaused(app.classList.contains('paused'));
+    nodes?.hint.focus({ preventScroll: true });
   }
-
-  const frame=document.createElement('img');
-  frame.className='spelling-bubble-frame';
-  frame.src='assets/ortografia/bubble-frame-v053.webp';
-  frame.alt='';
-  frame.decoding='async';
-  frame.loading='eager';
-  frame.setAttribute('aria-hidden','true');
-  bubble.append(frame);
-
-  for(const suffix of ['a','b','c']){
-    const orb=document.createElement('i');
-    orb.className=`scene-orb scene-orb-${suffix}`;
-    orb.setAttribute('aria-hidden','true');
-    bubble.append(orb);
+  function reset() {
+    generation++;
+    if (hint) { hint.close(); hint.remove(); hint = null; }
+    animations.forEach(animation => animation.cancel()); animations = [];
+    bubble?.destroy(); bubble = null;
+    resizeObserver?.disconnect();
+    session?.setPresentationHold(false);
+    session = nodes = undefined; shownQuestion = 0; shownState = '';
+    app.classList.remove('spelling-art-ready', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
+    delete app.dataset.artScene;
+    background?.remove(); background = null;
+    document.documentElement.classList.remove('spelling-playing');
+    if (originalTheme) themeMeta?.setAttribute('content', originalTheme);
   }
-
-  title.insertAdjacentElement('afterend',bubble);
-  return bubble;
-}
-
-function scheduleCorrectAutoAdvance(card){
-  if(!card.classList.contains('correct'))return;
-  const next=app.querySelector('[data-action="next"]');
-  if(!next)return;
-  next.hidden=true;
-  next.setAttribute('aria-hidden','true');
-  next.tabIndex=-1;
-  if(autoAdvanceButtons.has(next))return;
-  autoAdvanceButtons.add(next);
-  setTimeout(()=>{
-    if(next.isConnected&&app.dataset.view==='game'&&card.isConnected)next.click();
-  },1050);
-}
-
-function decorate(){
-  scheduled=false;
-  if(app.dataset.view!=='game'||app.dataset.mode!=='spelling')return;
-  ensureScreenBackground();
-  if(app.querySelector('.spelling-title'))return;
-
-  const word=app.querySelector('.word');
-  const card=app.querySelector('.question-card');
-  const answers=app.querySelector('.answers');
-  if(!word||!card||!answers)return;
-
-  const question=currentQuestionNumber();
-  let masked=maskedFromAria(word);
-  if(masked)questionMemory.set(question,masked);
-  else masked=questionMemory.get(question)||'';
-
-  const scene=sceneFor(masked);
-  const category=app.querySelector('.badge')?.textContent?.trim()||'';
-  const feedback=!!word.querySelector('.filled');
-  const options=[...answers.querySelectorAll('.answer')].map(el=>el.textContent.trim()).filter(Boolean);
-
-  app.classList.add('spelling-art-ready');
-  app.dataset.artLayout='bubble';
-  app.dataset.artScene=scene?.key||'calm';
-
-  const title=document.createElement('h2');
-  title.className='spelling-title';
-  title.textContent='Jak jest poprawnie?';
-  card.insertAdjacentElement('beforebegin',title);
-  mountVisual(scene,title);
-
-  card.classList.add('spelling-question-card');
-  app.querySelector('.badges')?.setAttribute('aria-hidden','true');
-  app.querySelector('.prompt')?.setAttribute('aria-hidden','true');
-
-  decorateWord(word,options,feedback);
-  mountHintButton(app,answers,category);
-
-  const small=app.querySelector('.time-block small');
-  if(small){
-    small.textContent='';
-    small.hidden=true;
-    small.setAttribute('aria-hidden','true');
+  function openHint() {
+    if (!session || session.state !== 'playing' || session.presentationHeld) return;
+    session.pause(); bubble.setPaused(true);
+    app.classList.add('spelling-hint-open');
+    hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
+    hint.setAttribute('aria-labelledby', 'spelling-hint-title');
+    hint.innerHTML = `<div class="hint-sheet-head">${lightbulbSvg()}<h2 id="spelling-hint-title">Mała podpowiedź</h2><button type="button" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p>${RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hint.querySelector('button').addEventListener('click', closeHint);
+    hint.addEventListener('cancel', event => { event.preventDefault(); closeHint(); });
+    hint.addEventListener('keydown', event => event.stopPropagation());
+    hint.addEventListener('click', event => { if (event.target === hint) closeHint(); });
+    app.append(hint); hint.showModal();
   }
-
-  if(feedback){
-    app.classList.add('spelling-has-feedback');
-    app.querySelector('.spelling-hint')?.setAttribute('hidden','');
-    scheduleCorrectAutoAdvance(card);
-  }else{
-    app.classList.remove('spelling-has-feedback');
+  function mount(game) {
+    reset(); session = game; app.classList.add('spelling-art-ready');
+    document.documentElement.classList.add('spelling-playing');
+    themeMeta?.setAttribute('content', '#dfddf8');
+    background = document.createElement('img');
+    background.className = 'spelling-screen-bg'; background.alt = '';
+    background.src = new URL('../assets/ortografia/lake-background.webp', import.meta.url).href;
+    background.width = 711; background.height = 1536;
+    background.decoding = 'async'; background.fetchPriority = 'high';
+    document.body.prepend(background);
+    app.innerHTML = `
+      <header class="game-bar">
+        <button type="button" class="icon" data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+        <div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>
+        <button type="button" class="icon" data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+      </header>
+      <h1 class="spelling-title">Jak jest poprawnie?</h1>
+      <div class="spelling-visual" aria-hidden="true"></div>
+      <section class="spelling-question-card" aria-label="Uzupełnij słowo"><div class="question-content"></div></section>
+      <div class="answers count-2">
+        <button type="button" class="answer" data-action="answer" data-index="0"><span class="answer-ink"></span></button>
+        <button type="button" class="answer" data-action="answer" data-index="1"><span class="answer-ink"></span></button>
+      </div>
+      <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><button type="button" class="spelling-next" data-action="next" hidden>Dalej <span aria-hidden="true">→</span></button></div>
+      <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
+    nodes = {
+      word: app.querySelector('.question-content'), answers: [...app.querySelectorAll('.answer')],
+      hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
+    };
+    nodes.hint.addEventListener('click', openHint);
+    bubble = createBubble(app.querySelector('.spelling-visual'));
+    resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
+    document.fonts.ready.then(() => { if (session === game) fitWord(); });
   }
-}
+  function fitWord() {
+    const word = nodes?.word.firstElementChild; if (!word) return;
+    word.style.removeProperty('font-size');
+    const width = word.getBoundingClientRect().width, available = nodes.word.clientWidth - 8;
+    if (width > available) word.style.fontSize = `${parseFloat(getComputedStyle(word).fontSize) * available / width}px`;
+  }
+  async function animateInk(direction) {
+    if (reduced.matches || !nodes) return;
+    const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    animations = flowInk(blocks, direction);
+    if (session?.state === 'paused') animations.forEach(animation => animation.pause());
+    const active = animations;
+    await Promise.all(active.map(animation => animation.finished.catch(() => {})));
+    active.forEach(animation => animation.cancel());
+    if (animations === active) animations = [];
+  }
+  async function present(game, first) {
+    const token = ++generation;
+    game.setPresentationHold(true); app.classList.add('ink-changing');
+    nodes.answers.forEach(button => { button.disabled = true; });
+    nodes.hint.disabled = true; nodes.next.hidden = true;
 
-function scheduleDecorate(){
-  if(scheduled)return;
-  scheduled=true;
-  requestAnimationFrame(decorate);
-}
+    const q = game.current, scene = sceneFor(q.masked, q.word);
+    if (!first) await animateInk('out');
+    if (token !== generation || session !== game) return;
 
-new MutationObserver(scheduleDecorate).observe(app,{childList:true,subtree:true});
-scheduleDecorate();
+    app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback');
+    nodes.word.replaceChildren(createWord(q.masked));
+    nodes.word.setAttribute('aria-label', `Uzupełnij: ${q.masked.replace('_', ' — luka — ')}`);
+    nodes.answers.forEach((button, index) => {
+      button.querySelector('.answer-ink').textContent = game.options[index];
+      button.classList.remove('correct', 'wrong'); button.setAttribute('aria-label', game.options[index]);
+    });
+    nodes.feedback.textContent = ''; nodes.hint.hidden = false; fitWord();
+
+    const pictureChange = bubble.transitionToScene(scene?.asset ? sceneUrl(scene) : '', scene, first);
+    await Promise.all([animateInk('in'), pictureChange]);
+    if (token !== generation || session !== game) return;
+
+    game.setPresentationHold(false); app.classList.remove('ink-changing');
+    nodes.answers.forEach(button => { button.disabled = false; }); nodes.hint.disabled = false;
+    if (document.body.classList.contains('keyboard')) nodes.answers[0].focus({ preventScroll: true });
+  }
+  function render(game) {
+    if (session !== game || !nodes?.word.isConnected) mount(game);
+    if (shownQuestion !== game.question) {
+      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; present(game, first);
+    } else if (shownState !== game.state && game.state.startsWith('feedback')) {
+      shownState = game.state; const correct = game.state === 'feedback-correct';
+      app.classList.add('spelling-has-feedback');
+      nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
+      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game) fitWord(); });
+      nodes.answers.forEach((button, index) => {
+        button.disabled = true;
+        button.classList.toggle('correct', game.options[index] === game.current.answer);
+        button.classList.toggle('wrong', !correct && game.options[index] === game.selected);
+      });
+      nodes.hint.hidden = !correct; nodes.hint.disabled = true; nodes.next.hidden = correct;
+      nodes.feedback.textContent = correct ? 'Pięknie!' : `Zapamiętaj: ${game.current.word}.`;
+      if (!correct) nodes.next.focus({ preventScroll: true });
+    }
+  }
+  function setPaused(paused) {
+    bubble?.setPaused(paused || Boolean(hint));
+    animations.forEach(animation => paused ? animation.pause() : animation.play());
+  }
+  reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
+  return { render, reset, setPaused, closeHint };
+}

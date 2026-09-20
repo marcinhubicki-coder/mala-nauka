@@ -270,3 +270,94 @@
     animation:none!important;
   }
 }
+
+
+/* Stable answer geometry v2 */
+#app[data-mode="flags"]{
+  --flag-answer-row-height:clamp(90px,24vw,96px);
+  --flag-answer-grid-gap:12px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{
+  gap:var(--flag-answer-grid-gap);
+  grid-template-rows:repeat(2,var(--flag-answer-row-height));
+  grid-auto-rows:var(--flag-answer-row-height);
+  height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  min-height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  max-height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  align-content:start;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer,
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.correct,
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.wrong,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.correct,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.wrong{
+  width:100%;
+  height:var(--flag-answer-row-height);
+  min-height:var(--flag-answer-row-height);
+  max-height:var(--flag-answer-row-height);
+  margin:0;
+  padding:10px;
+  box-sizing:border-box;
+  border-width:2px;
+  transform:none;
+  flex:none;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-size:var(--flag-answer-font-size,18px);
+  line-height:1.12;
+  text-align:center;
+  text-wrap:normal;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-label{
+  display:block;
+  width:100%;
+  max-width:100%;
+  max-height:2.24em;
+  margin:auto;
+  overflow:hidden;
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+#app[data-mode="flags"] .flag-answer-space{
+  display:inline;
+  white-space:pre;
+}
+
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer .flag-option-image{
+  width:min(90%,156px);
+  height:auto;
+  max-height:calc(var(--flag-answer-row-height) - 18px);
+  object-fit:contain;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"]{
+    --flag-answer-row-height:88px;
+  }
+}

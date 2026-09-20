@@ -14,16 +14,28 @@ function safeHtml(value){
  }[char]));
 }
 
-function animateTextAnswer(button,index){
- if(!button||button.dataset.flagTextAnimated==='true'||button.disabled)return;
- const text=(button.textContent||'').trim();
- if(!text)return;
- button.dataset.flagTextAnimated='true';
- button.setAttribute('aria-label',text);
+function labelFitsTwoLines(label){
+ const style=getComputedStyle(label);
+ const lineHeight=parseFloat(style.lineHeight)||20;
+ return label.scrollHeight<=lineHeight*2+1&&label.scrollWidth<=label.clientWidth+1;
+}
 
+function fitTextAnswer(button){
+ const label=button?.querySelector('.flag-answer-label');
+ if(!label)return;
+ let size=18;
+ button.style.setProperty('--flag-answer-font-size',`${size}px`);
+ while(size>13&&!labelFitsTwoLines(label)){
+  size-=1;
+  button.style.setProperty('--flag-answer-font-size',`${size}px`);
+ }
+}
+
+function textAnswerMarkup(text,animated){
  let letterIndex=0;
- const html=text.split(/(\s+)/).map(token=>{
-  if(/^\s+$/.test(token))return ' ';
+ const content=text.split(/(\s+)/).map(token=>{
+  if(/^\s+$/.test(token))return '<span class="flag-answer-space" aria-hidden="true"> </span>';
+  if(!animated)return `<span class="flag-answer-word">${safeHtml(token)}</span>`;
   const letters=Array.from(token).map(character=>{
    const delay=Math.min(letterIndex,28);
    letterIndex+=1;
@@ -31,12 +43,31 @@ function animateTextAnswer(button,index){
   }).join('');
   return `<span class="flag-answer-word" aria-hidden="true">${letters}</span>`;
  }).join('');
- button.innerHTML=html;
+ return `<span class="flag-answer-label">${content}</span>`;
+}
+
+function animateTextAnswer(button){
+ if(!button||button.dataset.flagTextAnimated==='true'||button.disabled)return;
+ const text=(button.textContent||'').trim();
+ if(!text)return;
+ button.dataset.flagTextAnimated='true';
+ button.setAttribute('aria-label',text);
+ button.innerHTML=textAnswerMarkup(text,true);
+ requestAnimationFrame(()=>fitTextAnswer(button));
+}
+
+function prepareStaticTextAnswer(button){
+ if(!button)return;
+ const text=(button.textContent||'').trim();
+ if(!text)return;
+ button.setAttribute('aria-label',text);
+ button.innerHTML=textAnswerMarkup(text,false);
+ requestAnimationFrame(()=>fitTextAnswer(button));
 }
 
 function animateTextAnswers(answers){
  if(!answers)return;
- answers.querySelectorAll('.answer.flag-text-answer').forEach((button,index)=>animateTextAnswer(button,index));
+ answers.querySelectorAll('.answer.flag-text-answer').forEach(button=>animateTextAnswer(button));
 }
 
 function animateFlagOptions(answers){
@@ -99,15 +130,14 @@ function decorateTextAnswers(){
  answers.classList.add('flag-text-answers');
 
  answers.querySelectorAll('.answer').forEach(button=>{
-  const length=Array.from((button.textContent||'').trim()).length;
   button.classList.add('flag-text-answer');
-  button.classList.toggle('long-label',length>17);
-  button.classList.toggle('very-long-label',length>24);
+  button.classList.remove('long-label','very-long-label');
  });
 
  const card=root.querySelector('.question-card');
  const feedback=card?.classList.contains('correct')||card?.classList.contains('wrong');
  if(!feedback)animateTextAnswers(answers);
+ else answers.querySelectorAll('.answer.flag-text-answer').forEach(button=>prepareStaticTextAnswer(button));
 }
 
 function decorateFlagAnswers(card){

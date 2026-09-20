@@ -2,9 +2,23 @@
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.spellingWizardV2';
 const CATEGORIES=[['u/ó','u / ó'],['rz/ż','rz / ż'],['ch/h','ch / h'],['ć/ci','ć / ci'],['ś/si','ś / si'],['ź/zi','ź / zi'],['ń/ni','ń / ni'],['dź/dzi','dź / dzi']];
-const LEVELS=[[0,'Wszystkie'],[1,'Łatwe'],[2,'Średnie'],[3,'Trudne']];
+const LEVELS=[[0,'Wszystkie'],[1,'Podstawowe'],[2,'Trudne']];
 const DURATIONS=[60,120,180,300];
 const START_COPY={60:'Szybka akcja!',120:'Zaczynamy!',180:'Dłuższa misja!',300:'Jesteś pewien?'};
+const ALL_CATEGORY_IDS=CATEGORIES.map(([id])=>id);
+
+function categoryList(value){
+ const raw=Array.isArray(value)?value:String(value??'').split(',');
+ return ALL_CATEGORY_IDS.filter(id=>raw.includes(id));
+}
+function categoriesOr(value,fallback=['u/ó']){
+ const picked=categoryList(value);if(picked.length)return picked;
+ const safeFallback=categoryList(fallback);return safeFallback.length?safeFallback:['u/ó'];
+}
+function spellingDifficulty(value,fallback=0){
+ const number=Number(value);if(number===3)return 2;
+ return [0,1,2].includes(number)?number:fallback;
+}
 
 let state=null;
 let suppressClickUntil=0;
@@ -13,25 +27,18 @@ const segmentTimers=new WeakMap();
 const dragStates=new WeakMap();
 
 function readState(fallback){
+ const fallbackCategories=categoriesOr(fallback.category);
  try{
   const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');
   if(saved&&typeof saved==='object'){
-   const category=CATEGORIES.some(([id])=>id===saved.category)?saved.category:'u/ó';
-   return {
-    scope:saved.scope==='categories'?'categories':'all',
-    category,
-    difficulty:[0,1,2,3].includes(Number(saved.difficulty))?Number(saved.difficulty):fallback.difficulty,
-    duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration
-   };
+   const categories=categoriesOr(saved.categories??saved.category,fallbackCategories);
+   const previousCategories=categoriesOr(saved.previousCategories,categories.length<ALL_CATEGORY_IDS.length?categories:fallbackCategories);
+   const scope=saved.scope==='categories'&&categories.length<ALL_CATEGORY_IDS.length?'categories':'all';
+   return {scope,categories,previousCategories,difficulty:spellingDifficulty(saved.difficulty,spellingDifficulty(fallback.difficulty,0)),duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration};
   }
  }catch{}
- const category=CATEGORIES.some(([id])=>id===fallback.category)?fallback.category:'u/ó';
- return {
-  scope:fallback.category==='all'?'all':'categories',
-  category,
-  difficulty:[0,1,2,3].includes(Number(fallback.difficulty))?Number(fallback.difficulty):0,
-  duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180
- };
+ const categories=fallback.category==='all'?fallbackCategories:categoriesOr(fallback.category,fallbackCategories);
+ return {scope:fallback.category==='all'?'all':'categories',categories,previousCategories:[...categories],difficulty:spellingDifficulty(fallback.difficulty,0),duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180};
 }
 
 function saveState(){
@@ -50,7 +57,7 @@ function scopeChoices(){
 }
 function categoryChoices(){
  return CATEGORIES.map(([id,label])=>
-  '<label class="spelling-category-chip"><input type="radio" name="spellingCategory" value="'+esc(id)+'" '+(state.category===id?'checked':'')+'><span>'+esc(label)+'</span></label>'
+  '<label class="spelling-category-chip"><input type="checkbox" name="spellingCategory" value="'+esc(id)+'" '+(state.categories.includes(id)?'checked':'')+'><span>'+esc(label)+'</span></label>'
  ).join('');
 }
 function levelChoices(){
@@ -201,11 +208,12 @@ function syncPanel(animate=false){
  const panel=root.querySelector('[data-category-panel]'),open=state.scope==='categories';
  if(panel){panel.classList.toggle('is-open',open);panel.setAttribute('aria-hidden',open?'false':'true');}
  root.querySelectorAll('input[name="spellingScope"]').forEach(input=>{input.checked=input.value===state.scope;});
+ root.querySelectorAll('input[name="spellingCategory"]').forEach(input=>{input.checked=state.categories.includes(input.value);});
  syncSegments(animate);
 }
 function syncHidden(dispatch=true){
  const category=root.querySelector('input[name="category"]');if(!category)return;
- const next=state.scope==='all'?'all':state.category,changed=category.value!==next;category.value=next;saveState();
+ const next=state.scope==='all'?'all':state.categories.join(','),changed=category.value!==next;category.value=next;saveState();
  if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
@@ -215,10 +223,10 @@ function install(){
  const fallback={category:card.querySelector('[name="category"]')?.value||'all',difficulty:Number(card.querySelector('[name="difficulty"]:checked')?.value)||0,duration:Number(card.querySelector('[name="duration"]:checked')?.value)||180};
  state=readState(fallback);card.dataset.spellingWizardV2='true';card.classList.add('spelling-wizard-v2');
  card.innerHTML=
-  '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='all'?'all':state.category)+'">'+
+  '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='all'?'all':state.categories.join(','))+'">'+
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
    '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div></fieldset>'+
-  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz poziom</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
+  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">3</span>Jak długo dasz radę?</legend><div class="spelling-time-segmented spelling-segmented" data-segmented="time">'+durationChoices()+'</div></fieldset>';
  updateStartButton(false);syncPanel(false);syncHidden(true);requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
@@ -233,13 +241,20 @@ root?.addEventListener('change',event=>{
  if(root.dataset.mode!=='spelling'||root.dataset.view!=='wizard'||!state)return;
  const target=event.target;
  if(target?.name==='spellingScope'){
-  state.scope=target.value==='categories'?'categories':'all';syncPanel(true);syncHidden(true);return;
+  const nextScope=target.value==='categories'?'categories':'all';
+  if(nextScope==='categories'&&state.categories.length===ALL_CATEGORY_IDS.length){state.categories=categoriesOr(state.previousCategories,['u/ó']);}
+  state.scope=nextScope;saveState();syncPanel(true);syncHidden(true);return;
  }
  if(target?.name==='spellingCategory'){
-  const chip=target.closest('.spelling-category-chip');if(chip){chip.classList.remove('is-selecting');void chip.offsetWidth;chip.classList.add('is-selecting');window.setTimeout(()=>chip.classList.remove('is-selecting'),520);}
-  state.category=target.value;saveState();syncHidden(true);return;
+  const chip=target.closest('.spelling-category-chip'),before=[...state.categories];
+  let next=target.checked?[...before,target.value]:before.filter(id=>id!==target.value);
+  next=ALL_CATEGORY_IDS.filter(id=>next.includes(id));
+  if(!next.length){target.checked=true;return;}
+  if(chip){const cls=target.checked?'is-selecting':'is-deselecting';chip.classList.remove('is-selecting','is-deselecting');void chip.offsetWidth;chip.classList.add(cls);window.setTimeout(()=>chip.classList.remove(cls),520);}
+  if(next.length===ALL_CATEGORY_IDS.length){state.previousCategories=before.length&&before.length<ALL_CATEGORY_IDS.length?before:categoriesOr(state.previousCategories,['u/ó']);state.categories=[...ALL_CATEGORY_IDS];state.scope='all';saveState();syncPanel(true);syncHidden(true);return;}
+  state.categories=next;state.previousCategories=[...next];state.scope='categories';saveState();syncHidden(true);return;
  }
- if(target?.name==='difficulty'){state.difficulty=Number(target.value)||0;saveState();syncSegments(true);return;}
+ if(target?.name==='difficulty'){state.difficulty=spellingDifficulty(target.value,0);saveState();syncSegments(true);return;}
  if(target?.name==='duration'){state.duration=Number(target.value)||180;saveState();syncSegments(true);updateStartButton(true);}
 });
 window.addEventListener('resize',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)requestAnimationFrame(()=>syncSegments(false));},{passive:true});

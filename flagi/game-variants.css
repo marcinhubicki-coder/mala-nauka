@@ -12,6 +12,35 @@
   gap:12px;
 }
 
+#app[data-mode="flags"]{
+  --flag-text-answer-height:88px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers{
+  grid-template-rows:repeat(2,var(--flag-text-answer-height));
+  grid-auto-rows:var(--flag-text-answer-height);
+  align-content:start;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+  height:var(--flag-text-answer-height);
+  min-height:var(--flag-text-answer-height);
+  max-height:var(--flag-text-answer-height);
+  padding:11px 10px;
+  box-sizing:border-box;
+  line-height:1.12;
+  text-wrap:balance;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+  font-size:17px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+  font-size:15px;
+  line-height:1.08;
+}
+
 #app[data-mode="flags"] .answers .answer.flag-option-answer{
   min-height:112px;
   padding:10px 12px;
@@ -39,6 +68,15 @@
 }
 
 @media (max-height:760px){
+  #app[data-mode="flags"]{
+    --flag-text-answer-height:76px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+    font-size:16px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+    font-size:14px;
+  }
   #app[data-mode="flags"] .answers .answer.flag-option-answer{
     min-height:90px;
   }
@@ -70,24 +108,29 @@
   max-height:112px;
 }
 
-/* Correct/wrong country feedback changes only the content inside the main card. */
-#app[data-mode="flags"] .question-card.country-feedback .question-content{
-  justify-content:flex-start;
-  gap:10px;
-  padding-top:clamp(34px,6.2vh,54px);
+/* Correct/wrong country feedback stays centered without changing the card geometry. */
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:8px 0;
 }
 
 #app[data-mode="flags"] .question-card.country-feedback .question-content .flag{
-  width:min(38%,132px);
-  max-width:132px;
-  max-height:88px;
+  width:min(30%,108px);
+  max-width:108px;
+  max-height:72px;
   margin:0;
   object-fit:contain;
 }
 
-#app[data-mode="flags"] .question-card.country-feedback .flag-name{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+  position:static;
+  width:auto;
   margin:0;
-  font-size:clamp(25px,7vw,32px);
+  transform:none;
+  text-align:center;
+  font-size:clamp(24px,6.5vw,30px);
   line-height:1.04;
 }
 
@@ -103,12 +146,432 @@
     min-height:90px;
     max-height:90px;
   }
-  #app[data-mode="flags"] .question-card.country-feedback .question-content{
-    padding-top:26px;
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
+    padding:6px 0;
   }
   #app[data-mode="flags"] .question-card.country-feedback .question-content .flag{
-    width:min(34%,112px);
-    max-width:112px;
-    max-height:74px;
+    width:min(28%,96px);
+    max-width:96px;
+    max-height:64px;
   }
+}
+
+@media (max-height:560px){
+  #app[data-mode="flags"]{
+    --flag-text-answer-height:62px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+    padding:7px 8px;
+    font-size:15px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.long-label{
+    font-size:14px;
+  }
+  #app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.very-long-label{
+    font-size:13px;
+    line-height:1.04;
+  }
+}
+
+/* Keep flag-option tiles physically identical in neutral, correct and wrong states. */
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.correct,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.wrong{
+  width:100%;
+  box-sizing:border-box;
+  border-width:2px;
+  padding:10px 12px;
+  transform:none;
+}
+
+/* Text answers roll in letter-by-letter instead of popping between questions. */
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+#app[data-mode="flags"] .flag-answer-letter{
+  display:inline-block;
+  transform-origin:center 60%;
+  animation:flag-answer-letter-roll .46s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay:calc(var(--flag-letter-index,0) * 9ms);
+}
+
+@keyframes flag-answer-letter-roll{
+  0%{
+    opacity:0;
+    transform:translateY(.62em) rotateX(-55deg) scale(.96);
+    filter:blur(1.4px);
+  }
+  68%{
+    opacity:1;
+    transform:translateY(-.05em) rotateX(4deg) scale(1.01);
+    filter:blur(0);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0) rotateX(0) scale(1);
+    filter:blur(0);
+  }
+}
+
+/* New flag choices fade/settle in without affecting their fixed tile geometry. */
+#app[data-mode="flags"] .answers.flag-image-answers.flag-options-enter .flag-option-image{
+  animation:flag-option-enter .52s cubic-bezier(.2,.8,.25,1) both;
+  animation-delay:calc(var(--flag-option-index,0) * 34ms);
+}
+
+@keyframes flag-option-enter{
+  from{opacity:.18;transform:translateY(4px) scale(.975);filter:blur(1px) drop-shadow(0 3px 4px rgba(32,55,91,.12))}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 3px 4px rgba(32,55,91,.12))}
+}
+
+/* Flagi mode: preserve the old flag briefly and dissolve it into the new one. */
+#app[data-mode="flags"] .question-content.flag-question-crossfade{
+  position:relative;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-old{
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin:0;
+  transform:translate(-50%,-50%) scale(1);
+  z-index:2;
+  pointer-events:none;
+  animation:flag-question-old-out .64s cubic-bezier(.2,.8,.25,1) both;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-new{
+  position:relative;
+  z-index:1;
+  animation:flag-question-new-in .64s cubic-bezier(.2,.8,.25,1) both;
+}
+
+#app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-first{
+  animation-duration:.42s;
+}
+
+@keyframes flag-question-old-out{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0) drop-shadow(0 3px 3px #20375b12)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.018);filter:blur(1.2px) drop-shadow(0 3px 3px #20375b12)}
+}
+
+@keyframes flag-question-new-in{
+  0%{opacity:0;transform:translateY(3px) scale(.982);filter:blur(1.2px) drop-shadow(0 3px 3px #20375b12)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 3px 3px #20375b12)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #app[data-mode="flags"] .flag-answer-letter,
+  #app[data-mode="flags"] .answers.flag-image-answers.flag-options-enter .flag-option-image,
+  #app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-old,
+  #app[data-mode="flags"] .question-content.flag-question-crossfade > .flag-transition-new{
+    animation:none!important;
+  }
+}
+
+
+/* Stable answer geometry v2 */
+#app[data-mode="flags"]{
+  --flag-answer-row-height:clamp(90px,24vw,96px);
+  --flag-answer-grid-gap:12px;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{
+  gap:var(--flag-answer-grid-gap);
+  grid-template-rows:repeat(2,var(--flag-answer-row-height));
+  grid-auto-rows:var(--flag-answer-row-height);
+  height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  min-height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  max-height:calc(var(--flag-answer-row-height) * 2 + var(--flag-answer-grid-gap));
+  align-content:start;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer,
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.correct,
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer.wrong,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.correct,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer.wrong{
+  width:100%;
+  height:var(--flag-answer-row-height);
+  min-height:var(--flag-answer-row-height);
+  max-height:var(--flag-answer-row-height);
+  margin:0;
+  padding:10px;
+  box-sizing:border-box;
+  border-width:2px;
+  transform:none;
+  flex:none;
+}
+
+#app[data-mode="flags"] .answers.flag-text-answers .answer.flag-text-answer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-size:var(--flag-answer-font-size,18px);
+  line-height:1.12;
+  text-align:center;
+  text-wrap:normal;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-label{
+  display:block;
+  width:100%;
+  max-width:100%;
+  max-height:2.24em;
+  margin:auto;
+  overflow:hidden;
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-block;
+  white-space:nowrap;
+}
+
+#app[data-mode="flags"] .flag-answer-space{
+  display:inline;
+  white-space:pre;
+}
+
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.flag-option-answer .flag-option-image{
+  width:min(90%,156px);
+  height:auto;
+  max-height:calc(var(--flag-answer-row-height) - 18px);
+  object-fit:contain;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"]{
+    --flag-answer-row-height:88px;
+  }
+}
+
+
+/* Feedback stabilization v3: keep variant geometry fixed through correct/wrong states. */
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
+  justify-content:center!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:8px 0 14px!important;
+  transform:translateY(-8px);
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+  position:static!important;
+  width:92px!important;
+  height:62px!important;
+  min-width:92px!important;
+  max-width:92px!important;
+  min-height:62px!important;
+  max-height:62px!important;
+  margin:0!important;
+  transform:none!important;
+  object-fit:contain!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+  position:static!important;
+  left:auto!important;
+  top:auto!important;
+  width:auto!important;
+  max-width:90%!important;
+  margin:0!important;
+  transform:none!important;
+  text-align:center!important;
+  white-space:normal!important;
+  font-size:28px!important;
+  line-height:1.02!important;
+}
+
+/* Same image box before and after an answer: only border/background may change. */
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .flag-option-image,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.correct .flag-option-image,
+#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer.wrong .flag-option-image{
+  display:block;
+  width:min(156px,90%)!important;
+  height:72px!important;
+  min-height:72px!important;
+  max-height:72px!important;
+  margin:0!important;
+  object-fit:contain!important;
+  transform:none;
+}
+
+/* Keep the soft question-to-question entrance, but never scale flag artwork. */
+@keyframes flag-option-enter{
+  from{
+    opacity:.18;
+    transform:translateY(4px);
+    filter:blur(1px) drop-shadow(0 3px 4px rgba(32,55,91,.12));
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0) drop-shadow(0 3px 4px rgba(32,55,91,.12));
+  }
+}
+
+/* State changes must never alter answer-box geometry. */
+#app[data-mode="flags"] .answers .answer,
+#app[data-mode="flags"] .answers .answer.correct,
+#app[data-mode="flags"] .answers .answer.wrong{
+  box-sizing:border-box;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+    width:86px!important;
+    min-width:86px!important;
+    max-width:86px!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+  }
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+    font-size:26px!important;
+  }
+}
+
+
+/* Text fitting v4: keep the normal font first and wrap whole words into two lines. */
+#app[data-mode="flags"] .flag-answer-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  align-content:center;
+  justify-content:center;
+  column-gap:.28em;
+  row-gap:0;
+  width:100%;
+  max-width:100%;
+  max-height:2.24em;
+  margin:auto;
+  overflow:hidden;
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-flex;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+/* Countries feedback v4: smaller flag, dedicated lower text zone. */
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr) auto minmax(78px,.58fr)!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:0!important;
+  padding:4px 0 2px!important;
+  transform:none!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+  grid-row:2!important;
+  justify-self:center!important;
+  align-self:center!important;
+  position:static!important;
+  width:84px!important;
+  min-width:84px!important;
+  max-width:84px!important;
+  height:56px!important;
+  min-height:56px!important;
+  max-height:56px!important;
+  margin:0!important;
+  transform:none!important;
+  object-fit:contain!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+  grid-row:3!important;
+  align-self:stretch!important;
+  justify-self:stretch!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  position:static!important;
+  left:auto!important;
+  top:auto!important;
+  width:100%!important;
+  max-width:92%!important;
+  min-height:78px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+  white-space:normal!important;
+  font-size:28px!important;
+  line-height:1.04!important;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+    width:80px!important;
+    min-width:80px!important;
+    max-width:80px!important;
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+  }
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+    font-size:26px!important;
+  }
+}
+
+
+/* Text fitting v5: one line -> two lines at the same font -> only then shrink. */
+#app[data-mode="flags"] .flag-answer-label{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  max-width:100%;
+  height:100%;
+  max-height:none;
+  margin:0;
+  overflow:visible;
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-line{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  column-gap:.28em;
+  width:100%;
+  min-width:0;
+  white-space:nowrap;
+  line-height:1.12;
+}
+
+#app[data-mode="flags"] .flag-answer-label[data-lines="2"]{
+  gap:0;
+}
+
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-flex;
+  flex:0 0 auto;
+  white-space:nowrap;
 }

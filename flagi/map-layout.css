@@ -4,7 +4,7 @@
 
 #app[data-mode="flags"][data-view="game"]:has(.question-card.wrong.map-feedback-stage-2){
   grid-template-rows:auto 6px auto var(--flag-map-card-height) auto minmax(104px,1fr);
-  gap:9px;
+  gap:12px;
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2{
@@ -128,8 +128,8 @@
     --flag-map-card-height:350px;
   }
   #app[data-mode="flags"][data-view="game"]:has(.question-card.wrong.map-feedback-stage-2){
-    grid-template-rows:auto 6px auto var(--flag-map-card-height) auto minmax(96px,1fr);
-    gap:7px;
+    grid-template-rows:auto 5px auto var(--flag-map-card-height) auto minmax(96px,1fr);
+    gap:9px;
   }
   #app[data-mode="flags"]:has(.question-card.wrong.map-feedback-stage-2) .feedback{
     min-height:96px;

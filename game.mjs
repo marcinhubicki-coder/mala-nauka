@@ -2,7 +2,7 @@ export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', '
 export const DURATIONS = [60, 120, 180, 300];
 export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
 export const accuracy = (correct, wrong) => correct + wrong ? Math.round(100 * correct / (correct + wrong)) : 0;
-export const modeName = category => category === 'all' ? 'Wszystkie słowa' : category.replace('/', ' / ');
+export const modeName = category => category === 'all' ? 'Wszystkie słowa' : String(category).split(',').map(value=>value.replace('/', ' / ')).join(', ');
 export const bestKey = (category, duration) => `${category}:${duration}`;
 export function shuffle(items, random = Math.random) {
   const result = [...items];
@@ -13,16 +13,17 @@ export function shuffle(items, random = Math.random) {
   return result;
 }
 export function validateWords(words) {
-  const counts = [130, 130, 90, 10, 10, 10, 10, 10];
-  if (!Array.isArray(words) || words.length !== 400 || new Set(words.map(w => w.word)).size !== 400) throw Error('Niepełna baza słów.');
+  const counts = [133, 130, 91, 10, 10, 10, 10, 10];
+  if (!Array.isArray(words) || words.length !== 404 || new Set(words.map(w => w.word)).size !== 404) throw Error('Niepełna baza słów.');
   for (const w of words) {
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
-      w.masked.replace('_', w.answer) !== w.word || ![1, 2, 3].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
+      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
   }
   if (CATEGORIES.some((c, i) => words.filter(w => w.category === c).length !== counts[i]) ||
-    [236, 132, 32].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count)) throw Error('Niepełne kategorie lub poziomy.');
+    [241, 163].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count) ||
+    CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
 }
 export function cleanSettings(value) {
@@ -31,7 +32,9 @@ export function cleanSettings(value) {
     difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true };
 }
 export function validResult(r) {
-  return r && (r.category === 'all' || CATEGORIES.includes(r.category)) && DURATIONS.includes(r.duration) &&
+ const selected=r?.category==='all'?CATEGORIES:String(r?.category??'').split(',').filter(Boolean);
+ const categoryValid=selected.length>0&&new Set(selected).size===selected.length&&selected.every(category=>CATEGORIES.includes(category));
+ return r && categoryValid && DURATIONS.includes(r.duration) &&
     Number.isInteger(r.correct) && r.correct >= 0 && Number.isInteger(r.wrong) && r.wrong >= 0 &&
     typeof r.date === 'string' && Number.isFinite(Date.parse(r.date));
 }
@@ -48,7 +51,7 @@ export class Session {
     this.next();
   }
   tick() {
-    if (['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
+    if (this.presentationHeld || ['paused', 'ended', 'feedback-wrong'].includes(this.state)) return;
     const previousState = this.state;
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
@@ -82,9 +85,9 @@ export class Session {
     this.lastTime = this.now();
   }
   answer(option) {
-    if (this.state !== 'playing') return false;
+    if (this.presentationHeld || this.state !== 'playing') return false;
     this.tick();
-    if (this.state !== 'playing' || !this.options.includes(option)) return false;
+    if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
     this.lastResponseMs = Math.max(0, this.questionElapsed);
@@ -97,10 +100,11 @@ export class Session {
     if (this.recentAnswers.length > 12) this.recentAnswers.shift();
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||700) : 0;
+    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||Number(this.feedbackMs)||700) : 0;
     return true;
   }
   skipFeedback() {
+    if (this.presentationHeld) return;
     if (!this.state.startsWith('feedback')) return;
     const question = this.question;
     this.tick();
@@ -113,6 +117,11 @@ export class Session {
     this.resumeState = this.state;
     this.state = 'paused';
   }
+  // Decorative transitions do not consume answer time.
+  setPresentationHold(held) {
+    this.presentationHeld = held;
+    this.lastTime = this.now();
+  }
   resume() {
     if (this.state !== 'paused') return;
     this.state = this.resumeState;
@@ -123,7 +132,8 @@ export class Session {
 // Keep the original spelling API and its approved dataset validation.
 export class Game extends Session {
   constructor(words, category, duration, now, random) {
-    super(words.filter(w => category === 'all' || w.category === category), duration, now, random);
+    const selected=category==='all'?null:String(category).split(',');
+    super(words.filter(w => !selected || selected.includes(w.category)), duration, now, random);
     this.category = category;
   }
 }

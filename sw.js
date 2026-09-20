@@ -1,4 +1,6 @@
-const CACHE='mala-nauka-prod-v69';
+const CACHE='mala-nauka-prod-v76-all-modes-20260920';
+const FLAG_CDN_HOST='cdn.jsdelivr.net';
+const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   './',
   './index.html',
@@ -29,6 +31,7 @@ const CORE=[
   './data/english.mjs',
   './data/flags.mjs',
   './data/reading.mjs',
+  './data/reading.mjs?v=3',
   './data/words-01.json',
   './data/words-02.json',
   './data/words-03.json',
@@ -82,6 +85,12 @@ const CORE=[
   './flagi/index.html',
   './czytanie/',
   './czytanie/index.html',
+  './czytanie/wizard-v2.css?v=5',
+  './czytanie/wizard-v2.mjs?v=2',
+  './app.js?v=reading-phrase-1',
+  './game.mjs?v=reading-phrase-1',
+  './modes.mjs?v=reading-phrase-1',
+  './progress.mjs?v=reading-phrase-1',
   './data/english/numbers.mjs',
   './data/english/colors.mjs',
   './data/english/family.mjs',
@@ -192,7 +201,41 @@ const CORE=[
   './assets/ortografia/hint-button-v051.svg',
   './ortografia/wizard-v2.mjs',
   './ortografia/wizard-v2.css',
-  './matematyka/correct-transition.js'
+  './matematyka/correct-transition.js',
+  './app.js?v=23-art-library',
+  './game.mjs?v=23-art-library',
+  './modes.mjs?v=23-art-library',
+  './spelling-art.css?v=23-art-library',
+  './spelling/art.mjs?v=23-art-library',
+  './spelling/bubble.mjs',
+  './spelling/bubble.mjs?v=23-art-library',
+  './spelling/preview.mjs?v=23-art-library',
+  './spelling/scenes.mjs?v=23-art-library',
+  './assets/fonts/dynapuff-polish-700.woff',
+  './assets/ortografia/lake-background.webp',
+  './assets/scenes/sokol.webp',
+  './assets/scenes/huragan.webp',
+  './assets/scenes/drzewo.webp',
+  './assets/scenes/zima.webp',
+  './assets/scenes/ogorek.webp',
+  './assets/scenes/wiewiorka.webp',
+  './spelling/word-reveal.mjs?v=9-simple-text',
+  './ortografia/wizard-v2.css?v=2',
+  './ortografia/wizard-v2.mjs?v=3',
+  './angielski/wizard-v2.css?v=4',
+  './angielski/wizard-v2.mjs?v=7',
+  './angielski/feedback-transition.js?v=2',
+  './angielski/word-exposure.js?v=1',
+  './flagi/map-layout.css?v=9',
+  './flagi/wizard-v2.css?v=15',
+  './flagi/wizard-v2-tuning.css?v=5',
+  './flagi/game-variants.css?v=12',
+  './flagi/theme.css?v=6',
+  './flagi/adaptive-difficulty.mjs?v=15',
+  './flagi/game-variants.mjs?v=16',
+  './flagi/europe-map.js?v=6',
+  './flagi/map-microstates.js?v=1',
+  './flagi/feedback-transition.js?v=10'
 ];
 
 self.addEventListener('install',event=>{
@@ -210,6 +253,18 @@ self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;
   const url=new URL(request.url);
+
+  if(url.hostname===FLAG_CDN_HOST&&url.pathname.startsWith(FLAG_CDN_PATH)){
+    event.respondWith(caches.open(CACHE).then(async cache=>{
+      const cached=await cache.match(request);
+      if(cached)return cached;
+      const response=await fetch(request);
+      if(response.ok)await cache.put(request,response.clone());
+      return response;
+    }));
+    return;
+  }
+
   if(url.origin!==self.location.origin)return;
 
   if(request.mode==='navigate'){

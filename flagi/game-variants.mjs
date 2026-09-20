@@ -107,7 +107,6 @@ function prepareStaticTextAnswer(button){
  const text=(button.getAttribute('aria-label')||button.textContent||'').trim();
  if(!text)return;
  if(button.dataset.flagTextStatic===text&&button.querySelector('.flag-answer-label')){
-  requestAnimationFrame(()=>fitTextAnswer(button));
   return;
  }
  button.dataset.flagTextStatic=text;

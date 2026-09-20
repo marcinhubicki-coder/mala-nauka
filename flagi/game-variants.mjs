@@ -203,11 +203,9 @@ function enhanceCard(){
 
  // Keep the variant once detected. Feedback replaces the question DOM, so relying
  // only on .flag-country/.flag-capital would incorrectly fall back to "flags".
- const detectedVariant=countryQuestion
-  ? 'countries'
-  : capitalQuestion
-   ? 'capitals'
-   : (card.dataset.flagVariant||root.dataset.flagGameVariant||'flags');
+ const detectedVariant=!feedback
+  ? (countryQuestion?'countries':capitalQuestion?'capitals':'flags')
+  : (countryQuestion?'countries':capitalQuestion?'capitals':root.dataset.flagGameVariant||'flags');
 
  if(detectedVariant==='countries'){
   let record=byId.get(card.dataset.countryId);
@@ -234,7 +232,9 @@ function enhanceCard(){
  if(detectedVariant==='capitals'){
   let record=byId.get(card.dataset.countryId);
   if(!record&&capitalQuestion){
-   record=byCapital.get(capitalQuestion.textContent.trim().toLocaleLowerCase('pl-PL'));
+   record=feedback
+    ? recordFromCountryName(capitalQuestion.textContent)
+    : byCapital.get(capitalQuestion.textContent.trim().toLocaleLowerCase('pl-PL'));
   }
   if(record)card.dataset.countryId=record.id;
 

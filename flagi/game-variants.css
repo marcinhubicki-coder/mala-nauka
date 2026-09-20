@@ -109,7 +109,7 @@
 }
 
 /* Correct/wrong country feedback stays centered without changing the card geometry. */
-#app[data-mode="flags"] .question-card.country-feedback .question-content{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
   justify-content:center;
   align-items:center;
   gap:8px;
@@ -124,7 +124,7 @@
   object-fit:contain;
 }
 
-#app[data-mode="flags"] .question-card.country-feedback .flag-name{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
   position:static;
   width:auto;
   margin:0;
@@ -146,7 +146,7 @@
     min-height:90px;
     max-height:90px;
   }
-  #app[data-mode="flags"] .question-card.country-feedback .question-content{
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
     padding:6px 0;
   }
   #app[data-mode="flags"] .question-card.country-feedback .question-content .flag{
@@ -364,7 +364,7 @@
 
 
 /* Feedback stabilization v3: keep variant geometry fixed through correct/wrong states. */
-#app[data-mode="flags"] .question-card.country-feedback .question-content{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
   justify-content:center!important;
   align-items:center!important;
   gap:7px!important;
@@ -372,7 +372,7 @@
   transform:translateY(-8px);
 }
 
-#app[data-mode="flags"] .question-card.country-feedback .question-content > .flag{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
   position:static!important;
   width:92px!important;
   height:62px!important;
@@ -385,7 +385,7 @@
   object-fit:contain!important;
 }
 
-#app[data-mode="flags"] .question-card.country-feedback .flag-name{
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
   position:static!important;
   left:auto!important;
   top:auto!important;
@@ -435,7 +435,7 @@
 }
 
 @media (max-width:374px){
-  #app[data-mode="flags"] .question-card.country-feedback .question-content > .flag{
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
     width:86px!important;
     min-width:86px!important;
     max-width:86px!important;
@@ -443,7 +443,7 @@
     min-height:58px!important;
     max-height:58px!important;
   }
-  #app[data-mode="flags"] .question-card.country-feedback .flag-name{
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
     font-size:26px!important;
   }
 }

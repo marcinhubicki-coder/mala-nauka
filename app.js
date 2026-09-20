@@ -92,6 +92,7 @@ function questionContent(q,feedback,exposing) {
   if(exposing)return `<div class="reading-text phrase-exposure">${escape(q.text)}</div>`;
   if(feedback){
    const picked=String(game?.selected||'').split('|').filter(Boolean);
+   if(game?.state==='feedback-correct')return `<div class="phrase-complete">${slots(words,false,'correct-row')}</div>`;
    return `<div class="phrase-feedback"><div class="phrase-feedback-row"><small>Twoja fraza</small>${slots(picked,false)}</div><div class="phrase-feedback-row correct-row"><small>Poprawna fraza</small>${slots(words,false)}</div></div>`;
   }
   return `<div class="phrase-build"><p>Ułóż zapamiętaną frazę</p>${slots(phraseInput,true)}</div>`;
@@ -149,7 +150,7 @@ function renderGame() {
  const promptText=q.kind==='memory'
   ?(exposing?'Zapamiętaj kolejność':feedback?'Porównaj sekwencje':'Wpisz liczby w tej samej kolejności')
   :q.kind==='reading-phrase'
-   ?(exposing?'Przeczytaj i zapamiętaj':feedback?'Porównaj kolejność':'Dotknij słów we właściwej kolejności')
+   ?(exposing?'Przeczytaj i zapamiętaj':feedback?(correct?'Świetnie ułożone!':'Porównaj kolejność'):'Dotknij słów we właściwej kolejności')
    :(exposing?'Za chwilę tekst zniknie…':q.kind==='reading'?(q.difficulty===1?'Wybierz słowo':'Odpowiedz na pytanie'):escape(q.prompt));
  let answersBlock='';
  if(q.kind==='memory'){
@@ -158,7 +159,7 @@ function renderGame() {
   else answersBlock=`<div class="answers memory-keypad">${Array.from({length:10},(_,i)=>btn(String(i+1),'memory-digit','answer memory-key',`data-value="${i+1}" aria-label="Liczba ${i+1}"`)).join('')}</div>`;
  }else if(q.kind==='reading-phrase'){
   if(exposing)answersBlock='<div class="phrase-word-bank is-waiting" inert aria-hidden="true"><p>Za chwilę ułożysz ją z pojedynczych słów.</p></div>';
-  else if(feedback)answersBlock='<div class="phrase-word-bank phrase-feedback-bank"><p>Poprawna kolejność jest pokazana wyżej.</p></div>';
+  else if(feedback)answersBlock=`<div class="phrase-word-bank phrase-feedback-bank ${correct?'is-correct':''}"><p>${correct?'Następna fraza za chwilę.':'Poprawna kolejność jest pokazana wyżej.'}</p></div>`;
   else answersBlock=`<div class="phrase-word-bank">${game.options.map((word,i)=>btn(escape(word),'phrase-word','answer phrase-word',`data-value="${escape(word)}" data-index="${i}"`)).join('')}</div>`;
  }else{
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;

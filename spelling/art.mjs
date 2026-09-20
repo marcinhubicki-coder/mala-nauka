@@ -1,4 +1,4 @@
-import { sceneFor, sceneUrl } from './scenes.mjs?v=8-mechanics';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=9-assets';
 import { createBubble } from './bubble.mjs?v=8-mechanics';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=8-mechanics';
 import { RULES, lightbulbSvg } from './hints.mjs';

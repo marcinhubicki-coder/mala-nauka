@@ -1,4 +1,4 @@
-# Ortografia — płynna scena v0.6
+# Ortografia — płynna scena, poprawka v22
 
 Aktualny widok działa na branchu `design/spelling-bubble-v0.4`. Podgląd: `/ortografia/?assets=1&scene=bunny`; wybierz czas i rozpocznij rundę. Bez `scene` losują się ilustracje. `?assets=0` udostępnia również słowa bez ilustracji, a `?word=dźwig&assets=0` pozwala obejrzeć konkretny zapis.
 
@@ -11,7 +11,7 @@ Tło, nagłówek, ramka bańki i dwa przyciski powstają raz na rundę. `app.js`
 - `spelling/art.mjs` — trwały układ, przejścia, podpowiedź i dopasowanie długich słów.
 - `spelling-art.css` — jedyna warstwa stylów rozgrywki. Bez kolejnych arkuszy z nadpisaniami `!important`.
 
-Przed zmianą zadania słowo rozmywa się przez około 0,7 s, po czym nowa treść pojawia się przez około 1 s. W tym czasie odpowiedzi są zablokowane, a zegar czeka. Pauza zatrzymuje przejście i falowanie. Ukrycie karty zatrzymuje animację; `prefers-reduced-motion` wyłącza ruch i dekoracyjne przejścia.
+Tekst pozostaje zwykłym fontem: dwie części słowa i osobny bąbel luki. Zmiana zadania używa lekkiego przejścia całych bloków (140/180 ms), a obrazy przenikają się przez 520 ms. W tym czasie odpowiedzi są zablokowane, a zegar czeka. Pauza zatrzymuje przejście i falowanie. Ukrycie karty zatrzymuje animację; `prefers-reduced-motion` wyłącza ruch i dekoracyjne przejścia.
 
 ## Grafiki i rozmiary
 
@@ -38,3 +38,11 @@ Nie dodawaj pełnej planszy dla każdego słowa. Tło, font, bańki i efekty są
 ## Weryfikacja
 
 Celowane sprawdzenie obejmuje układ przy szerokościach telefonu 320–430 px, krótszy viewport Safari, poprawną i błędną odpowiedź, stałość węzłów/pozycji przycisków, pauzę podczas przejścia, zatrzymanie czasu przy podpowiedzi, tryb ograniczonego ruchu i ponowny start offline. To emulacja przeglądarkowa; końcowy odbiór płynności odbywa się na rzeczywistym iPhonie.
+
+## Naprawa plików i Safari (20.09.2026)
+
+Osiem AVIF-ów w poprzednim commicie nie przechodziło pełnego dekodowania: grzyb, jeż, książka, samochód, schody, skóra, stół i żółty. Pliki istniały pod właściwymi nazwami, więc sam HTTP 200 nie wykrywał błędu. Odtworzono je jako WebP 1080 × 1080 z zachowanych PNG, bez generowania nowych ilustracji. Ubranie korzysta teraz ze sceny z płaszczem przeciwdeszczowym, zamiast ze skórzaną torbą.
+
+Przed dodaniem obrazów uruchom `python scripts/validate_spelling_assets.py` (Pillow 11.3+). Test dekoduje pełne dane wszystkich przypisanych grafik i działa również w GitHub Actions. Przy przesyłaniu plików sprawdzaj SHA blobów; nie kopiuj uciętego wyjścia base64. Przypisania po `masked` i po pełnym słowie są obsługiwane także w filtrze ilustracji.
+
+Zdjęcia są natywnymi elementami SVG `image`, bez `foreignObject`. Falowanie działa do 30 klatek/s, tempo 1,8 zamiast 1,28. Tło jest stałą warstwą poza kontenerem gry, obejmuje duży viewport i safe areas; kolory strony i theme-color są przywracane po rundzie. PWA korzysta z `black-translucent`; istniejący skrót może wymagać ponownego dodania po zmianie metadanych. Sam interfejs Safari nadal jest kontrolowany przez iOS — rzeczywisty wygląd przezroczystych pasków trzeba odebrać na telefonie.

@@ -1,14 +1,18 @@
 @font-face{font-family:Spelling;src:url('assets/fonts/dynapuff-polish-700.woff') format('woff');font-style:normal;font-weight:700;font-display:swap}
 /* One scene, one stylesheet. All geometry is independent of the current word. */
 #app[data-view="game"][data-mode="spelling"]{
-  --ink:#101866;--purple:#662bb7;
+  --ink:#101866;--purple:#662bb7;--answer-space:clamp(16px,2.5svh,22px);
   position:relative;isolation:isolate;box-sizing:border-box;width:100%;max-width:480px;
-  height:100svh;min-height:0;overflow:hidden;display:grid;
-  grid-template-rows:clamp(44px,6.6svh,58px) clamp(46px,8svh,68px) minmax(0,1fr) clamp(60px,9.2svh,80px) clamp(72px,11.3svh,98px) 46px 22px;
-  gap:clamp(5px,1svh,9px);padding:max(14px,env(safe-area-inset-top)) 20px max(18px,7.5svh,env(safe-area-inset-bottom));
-  background:#e8e6fc;color:var(--ink);
+  height:100dvh;min-height:0;overflow:hidden;display:grid;
+  grid-template-rows:clamp(44px,6.6svh,58px) clamp(46px,8svh,68px) minmax(0,1fr) clamp(60px,9.2svh,80px) calc(clamp(72px,11.3svh,98px) + var(--answer-space)) 46px 22px;
+  gap:clamp(5px,1svh,9px);padding:max(14px,env(safe-area-inset-top)) 20px max(12px,calc(7.5svh - var(--answer-space)),env(safe-area-inset-bottom));
+  background:transparent;color:var(--ink);
 }
-#app[data-view="game"][data-mode="spelling"]>.spelling-screen-bg{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;object-position:center bottom;pointer-events:none;user-select:none}
+/* Root canvas paints overscroll/browser chrome; the fixed photo fills safe areas.
+   Only controls are inset. The background outlives each question. */
+html.spelling-playing{background:#dfddf8 url('assets/ortografia/lake-background.webp') center bottom/cover no-repeat}
+html.spelling-playing body{position:relative;isolation:isolate;background:transparent}
+body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100vh;height:100lvh;object-fit:cover;object-position:center bottom;pointer-events:none;user-select:none;transform:translateZ(0)}
 #app[data-view="game"][data-mode="spelling"] .game-bar{grid-row:1;display:flex;align-items:center;justify-content:space-between;min-height:0;margin:0;gap:18px}
 #app[data-view="game"][data-mode="spelling"] .game-bar .icon{width:46px;height:46px;min-width:46px;border-radius:50%;border:1px solid #ffffffdc;background:#ffffffa6;box-shadow:inset 0 1px 2px white,0 5px 16px #6b529620;color:#582497;backdrop-filter:blur(9px)}
 .game-bar .icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round}
@@ -22,7 +26,7 @@
 .spelling-title{grid-row:2;display:flex;align-items:center;justify-content:center;align-self:stretch;margin:0;white-space:nowrap;text-align:center;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(26px,8.1vw,38px);letter-spacing:-1.35px;line-height:1.3;color:var(--ink);text-shadow:0 2px 0 #ffffff48}
 .spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 22px);justify-self:center;pointer-events:none}
 .soap-svg{display:block;width:100%;height:100%;overflow:visible}
-.soap-picture{opacity:0;will-change:opacity}.soap-picture-frame{width:100%;height:100%;overflow:hidden}.soap-picture-img{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}
+.soap-picture{opacity:0}
 .soap-star{animation:soap-twinkle var(--spark-duration) ease-in-out var(--spark-delay) infinite;transform-box:fill-box;transform-origin:center}
 .soap-satellite{animation:soap-drift var(--orb-duration) ease-in-out var(--orb-delay) infinite;transform-box:fill-box;transform-origin:center}
 .soap-still *,.paused .spelling-visual *{animation-play-state:paused!important}
@@ -47,7 +51,7 @@
 .gap.is-revealed .bubble-glass{opacity:0;scale:1.03;animation:none}.gap.is-revealed .word-spark{opacity:0;animation:none}
 .revealed-chunk{position:relative;color:#7545bd;font-size:1em;line-height:1.2;letter-spacing:-.025em;white-space:nowrap;opacity:0;transition:opacity .14s ease-out .04s}.gap.is-revealed .revealed-chunk{opacity:1}
 @keyframes small-soap{0%,100%{transform:translateY(0) rotate(-3deg)}43%{transform:translateY(-1px) rotate(3deg)}}
-#app[data-view="game"][data-mode="spelling"] .answers{grid-row:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:0;min-height:0;height:100%}
+#app[data-view="game"][data-mode="spelling"] .answers{grid-row:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:0;min-height:0;height:100%;padding-top:var(--answer-space)}
 #app[data-view="game"][data-mode="spelling"] .answers .answer{
  position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:0;padding:0 6px;border-radius:36px;border:1.2px solid #c09beeb0;
  background:radial-gradient(ellipse at 82% 18%,#e4fbffdd,transparent 58%),radial-gradient(ellipse at 12% 20%,#ffd9fbe0,transparent 60%),radial-gradient(ellipse at 83% 96%,#c2c7fbba,transparent 62%),linear-gradient(120deg,#f8eafaba,#e7f6ffb8 55%,#f6eafcc4);
@@ -68,11 +72,10 @@
 .spelling-hint-sheet::backdrop{background:#8474a944;backdrop-filter:blur(7px)}
 .hint-sheet-head{display:flex;align-items:center;gap:9px}.hint-sheet-head>svg{width:27px;height:27px;color:#7b43bf}.hint-sheet-head h2{font-size:19px;text-align:left;flex:1}.hint-dismiss{border:0;border-radius:50%;background:#ffffffbc;width:34px;height:34px;font-size:25px;color:#653599}.spelling-hint-sheet p{font-size:16px;line-height:1.65;text-align:left;margin:20px 0 0;color:#544c77}
 #app.paused[data-mode="spelling"] .spelling-visual,#app.paused[data-mode="spelling"] .spelling-question-card{visibility:hidden}
-@media(max-height:700px){#app[data-view="game"][data-mode="spelling"]{padding-bottom:max(14px,env(safe-area-inset-bottom));gap:5px;grid-template-rows:44px 47px minmax(0,1fr) 61px 74px 46px 22px}.spelling-title{font-size:clamp(26px,7.8vw,33px)}#app[data-view="game"][data-mode="spelling"] .word{font-size:clamp(39px,12.5vw,53px)}}
+@media(max-height:700px){#app[data-view="game"][data-mode="spelling"]{padding-bottom:max(8px,env(safe-area-inset-bottom));gap:5px;grid-template-rows:44px 47px minmax(0,1fr) 61px calc(74px + var(--answer-space)) 46px 22px}.spelling-title{font-size:clamp(26px,7.8vw,33px)}#app[data-view="game"][data-mode="spelling"] .word{font-size:clamp(39px,12.5vw,53px)}}
 @media(max-width:350px){#app[data-view="game"][data-mode="spelling"]{padding-left:13px;padding-right:13px}.spelling-title{font-size:26px}.spelling-hint{font-size:12px;gap:5px}#app[data-view="game"][data-mode="spelling"] .answers{gap:10px}}
-@media(orientation:landscape) and (max-height:500px){#app[data-view="game"][data-mode="spelling"]{height:100svh;max-width:840px;grid-template-columns:1fr 1fr;grid-template-rows:44px 38px minmax(50px,1fr) 70px 46px 22px;padding:8px 20px;gap:5px 20px}#app[data-view="game"][data-mode="spelling"] .game-bar{grid-column:1/-1}.spelling-title{grid-column:1/-1;grid-row:2;font-size:27px}.spelling-visual{grid-column:1;grid-row:3/7}#app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-column:2;grid-row:3}#app[data-view="game"][data-mode="spelling"] .answers{grid-column:2;grid-row:4}.spelling-action-row{grid-column:2;grid-row:5}#app[data-view="game"][data-mode="spelling"] .feedback{grid-column:2;grid-row:6}}
+@media(orientation:landscape) and (max-height:500px){#app[data-view="game"][data-mode="spelling"]{--answer-space:0px;height:100dvh;max-width:840px;grid-template-columns:1fr 1fr;grid-template-rows:44px 38px minmax(50px,1fr) 70px 46px 22px;padding:8px 20px;gap:5px 20px}#app[data-view="game"][data-mode="spelling"] .game-bar{grid-column:1/-1}.spelling-title{grid-column:1/-1;grid-row:2;font-size:27px}.spelling-visual{grid-column:1;grid-row:3/7}#app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-column:2;grid-row:3}#app[data-view="game"][data-mode="spelling"] .answers{grid-column:2;grid-row:4}.spelling-action-row{grid-column:2;grid-row:5}#app[data-view="game"][data-mode="spelling"] .feedback{grid-column:2;grid-row:6}}
 @media(prefers-reduced-motion:reduce){.soap-star{opacity:.75}.soap-star,.soap-satellite,.bubble-glass,.word-spark{animation:none!important}}
 .spelling-title{word-spacing:3px}
 .spelling-visual{contain:layout paint style}
-#app[data-view="game"][data-mode="spelling"]>.spelling-screen-bg{transform:translateZ(0)}
 #app.paused[data-mode="spelling"] .bubble-glass,#app.paused[data-mode="spelling"] .word-spark{animation-play-state:paused}

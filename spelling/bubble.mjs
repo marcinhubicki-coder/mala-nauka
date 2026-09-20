@@ -21,12 +21,8 @@ export function createBubble(host) {
     <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="24" opacity=".075" transform="translate(0 5)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
-      <foreignObject class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="soap-picture-frame"><img class="soap-picture-img" alt="" draggable="false" decoding="async"/></div>
-      </foreignObject>
-      <foreignObject class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384">
-        <div xmlns="http://www.w3.org/1999/xhtml" class="soap-picture-frame"><img class="soap-picture-img" alt="" draggable="false" decoding="async"/></div>
-      </foreignObject>
+      <image class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
+      <image class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
       <rect width="400" height="400" fill="url(#${id}-film)"/>
     </g>
     <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="20" opacity=".42"/>
@@ -83,8 +79,8 @@ export function createBubble(host) {
   function loop(now) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
-    if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 1.28 : 0;
+    if (!last || now-last >= 1000/30) {
+      elapsed += last ? Math.min((now-last)/1000,.1) * 1.8 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);
@@ -102,22 +98,14 @@ export function createBubble(host) {
   }
   reduced.addEventListener('change',motionPreferenceChanged);
 
-  const FALLBACK_URL = new URL('../assets/scenes/bunny.webp', import.meta.url).href;
   const imageLoads = new Map();
-  function pictureImage(picture) { return picture?.querySelector('.soap-picture-img'); }
-  function hasPictureSource(picture) { return Boolean(pictureImage(picture)?.getAttribute('src')); }
+  function hasPictureSource(picture) { return Boolean(picture?.getAttribute('href')); }
   function setPictureSource(picture, url='') {
-    const img = pictureImage(picture);
-    if (!img) return;
-    if (url) img.src = url;
-    else img.removeAttribute('src');
+    if (url) picture.setAttribute('href', url);
+    else picture.removeAttribute('href');
   }
   function setPictureAlignment(picture, alignment='xMidYMid slice') {
-    const img = pictureImage(picture);
-    if (!img) return;
-    const x = alignment.includes('xMin') ? 'left' : alignment.includes('xMax') ? 'right' : 'center';
-    const y = alignment.includes('YMin') ? 'top' : alignment.includes('YMax') ? 'bottom' : 'center';
-    img.style.objectPosition = `${x} ${y}`;
+    picture.setAttribute('preserveAspectRatio', alignment);
   }
   function waitForImage(url) {
     if (imageLoads.has(url)) return imageLoads.get(url);
@@ -133,10 +121,10 @@ export function createBubble(host) {
         else reject(new Error('scene-load-failed'));
       };
       const timeout=setTimeout(()=>finish(false),6000);
-      img.onload=()=>finish(true);
+      img.onload=()=>img.decode().then(()=>finish(true),()=>finish(false));
       img.onerror=()=>finish(false);
       img.src=url;
-      if (img.complete) queueMicrotask(()=>finish(Boolean(img.naturalWidth)));
+      if (img.complete && img.naturalWidth) img.decode().then(()=>finish(true),()=>finish(false));
     }).catch(error=>{ imageLoads.delete(url); throw error; });
     imageLoads.set(url, load);
     return load;
@@ -162,11 +150,15 @@ export function createBubble(host) {
     try {
       await waitForImage(displayUrl);
     } catch (error) {
-      console.warn('[spelling-scene] asset failed, using fallback', { url, scene: scene?.key, error });
-      displayUrl=FALLBACK_URL;
-      try { await waitForImage(displayUrl); } catch { return false; }
+      if (destroyed || token!==loadToken) return false;
+      console.warn('[spelling-scene] image could not be decoded', { url, scene: scene?.key, error });
+      host.dataset.imageState='error';
+      // Never teach the wrong association by substituting an unrelated rabbit.
+      await transitionToScene('', scene);
+      return false;
     }
     if (destroyed || token!==loadToken) return false;
+    host.dataset.imageState='ready';
 
     const next=standbyPicture, old=activePicture;
     setPictureSource(next,displayUrl);

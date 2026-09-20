@@ -1,5 +1,5 @@
-import { sceneFor, sceneUrl } from './scenes.mjs?v=13-scene-assets';
-import { createBubble } from './bubble.mjs?v=10-html-picture';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=22-repaired-assets';
+import { createBubble } from './bubble.mjs?v=22-repaired-assets';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
@@ -7,7 +7,9 @@ import { RULES, lightbulbSvg } from './hints.mjs';
 export function createSpellingArt(app) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver;
+  let animations = [], resizeObserver, background;
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const originalTheme = themeMeta?.getAttribute('content');
   function closeHint() {
     if (!hint) return;
     hint.close(); hint.remove(); hint = null;
@@ -26,6 +28,9 @@ export function createSpellingArt(app) {
     session = nodes = undefined; shownQuestion = 0; shownState = '';
     app.classList.remove('spelling-art-ready', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
     delete app.dataset.artScene;
+    background?.remove(); background = null;
+    document.documentElement.classList.remove('spelling-playing');
+    if (originalTheme) themeMeta?.setAttribute('content', originalTheme);
   }
   function openHint() {
     if (!session || session.state !== 'playing' || session.presentationHeld) return;
@@ -42,8 +47,15 @@ export function createSpellingArt(app) {
   }
   function mount(game) {
     reset(); session = game; app.classList.add('spelling-art-ready');
+    document.documentElement.classList.add('spelling-playing');
+    themeMeta?.setAttribute('content', '#dfddf8');
+    background = document.createElement('img');
+    background.className = 'spelling-screen-bg'; background.alt = '';
+    background.src = new URL('../assets/ortografia/lake-background.webp', import.meta.url).href;
+    background.width = 711; background.height = 1536;
+    background.decoding = 'async'; background.fetchPriority = 'high';
+    document.body.prepend(background);
     app.innerHTML = `
-      <img class="spelling-screen-bg" src="assets/ortografia/lake-background.webp" alt="" width="711" height="1536" decoding="async" fetchpriority="high">
       <header class="game-bar">
         <button type="button" class="icon" data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
         <div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>

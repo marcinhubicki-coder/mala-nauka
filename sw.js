@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-prod-v69';
+const CACHE='mala-nauka-prod-v74-reading-phrases-retry';
 const CORE=[
   './',
   './index.html',
@@ -29,6 +29,7 @@ const CORE=[
   './data/english.mjs',
   './data/flags.mjs',
   './data/reading.mjs',
+  './data/reading.mjs?v=3',
   './data/words-01.json',
   './data/words-02.json',
   './data/words-03.json',
@@ -82,6 +83,12 @@ const CORE=[
   './flagi/index.html',
   './czytanie/',
   './czytanie/index.html',
+  './czytanie/wizard-v2.css?v=5',
+  './czytanie/wizard-v2.mjs?v=2',
+  './app.js?v=reading-phrase-1',
+  './game.mjs?v=reading-phrase-1',
+  './modes.mjs?v=reading-phrase-1',
+  './progress.mjs?v=reading-phrase-1',
   './data/english/numbers.mjs',
   './data/english/colors.mjs',
   './data/english/family.mjs',

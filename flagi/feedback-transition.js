@@ -32,7 +32,7 @@
       margin: 0;
     }
 
-    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.map-feedback-prep) .flag-name {
+    #app[data-mode="flags"] .question-card:is(.correct,.wrong):not(.country-feedback):not(.map-feedback-prep) .flag-name {
       position: absolute;
       left: 50%;
       top: calc(50% + clamp(78px, 20vw, 86px));
@@ -186,13 +186,28 @@
     #app[data-mode="flags"] .flag-letter-in.from-right { animation-name: flag-letter-from-right; }
     #app[data-mode="flags"] .flag-letter-in.from-left { animation-name: flag-letter-from-left; }
     #app[data-mode="flags"] .flag-letter-slot {
-      display: inline-block;
-      min-width: .56em;
+      display: inline-grid;
+      position: relative;
+      place-items: center;
+      min-width: 0;
       text-align: center;
       transform-origin: center;
+      vertical-align: baseline;
     }
-    #app[data-mode="flags"] .flag-letter-slot.is-cycling { animation: flag-letter-cycle .13s ease both; }
-    #app[data-mode="flags"] .flag-letter-slot.is-settled { animation: flag-letter-settle .24s cubic-bezier(.2,.8,.25,1) both; }
+    #app[data-mode="flags"] .flag-letter-target,
+    #app[data-mode="flags"] .flag-letter-face {
+      grid-area: 1 / 1;
+    }
+    #app[data-mode="flags"] .flag-letter-target {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #app[data-mode="flags"] .flag-letter-face {
+      display: inline-block;
+      transform-origin: center;
+    }
+    #app[data-mode="flags"] .flag-letter-slot.is-cycling .flag-letter-face { animation: flag-letter-cycle .13s ease both; }
+    #app[data-mode="flags"] .flag-letter-slot.is-settled .flag-letter-face { animation: flag-letter-settle .24s cubic-bezier(.2,.8,.25,1) both; }
     #app[data-mode="flags"] .flag-letter-space { display: inline-block; width: .28em; }
 
     @keyframes flag-letter-from-right {
@@ -329,14 +344,14 @@
   async function showWrongMap(card, key = feedbackKey(card)) {
     const map = window.MalaNaukaContinentMap || window.MalaNaukaEuropeMap;
     const content = card.querySelector('.question-content');
-    if (!map || !content || card.dataset.flagMapKey === key) return;
+    if (!map || !content || card.dataset.flagMapKey === key) return false;
 
     const countryId = countryIdFromCard(card);
     const language = window.MalaNaukaFlagLanguage;
     const flagRecord = language?.recordForId?.(countryId);
     const continent = flagRecord?.continent || '';
     const continentIds = language?.recordsForContinent?.(continent)?.map(flag => flag.id) || [];
-    if (!flagRecord || !map.supports(countryId, continent)) return;
+    if (!flagRecord || !map.supports(countryId, continent)) return false;
 
     const countryName = language?.nameForId(countryId)
       || card.querySelector('.flag-name')?.getAttribute('aria-label')
@@ -359,20 +374,22 @@
       showCopy: false
     });
 
-    if (!card.isConnected || feedbackKey(card) !== key) return;
+    if (!card.isConnected || feedbackKey(card) !== key) return false;
     if (!result.found) {
       holder.remove();
       delete card.dataset.flagMapKey;
-      return;
+      return false;
     }
 
     const { continentLabel } = ensureMapMeta(card, flagRecord);
-    if (!freezeStageOne(card)) return;
+    if (!freezeStageOne(card)) return false;
     await nextFrame();
     await nextFrame();
-    if (!card.isConnected || feedbackKey(card) !== key) return;
+    if (!card.isConnected || feedbackKey(card) !== key) return false;
     card.classList.add('map-feedback-stage-2');
     if (continentLabel) continentLabel.hidden = false;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) await wait(560);
+    return card.isConnected && feedbackKey(card) === key;
   }
 
   function animateCorrectFlagFeedback(card, app) {
@@ -402,9 +419,16 @@
     const key = feedbackKey(card);
     if (card.dataset.flagAnimatedKey === key) return;
     card.dataset.flagAnimatedKey = key;
+    card.classList.remove('wrong-resolved');
+
+    const nextButton = card.closest('#app')?.querySelector('.feedback [data-action="next"]');
+    nextButton?.classList.remove('flag-next-ready');
 
     const name = card.querySelector('.flag-name');
-    if (!name) return;
+    if (!name) {
+      nextButton?.classList.add('flag-next-ready');
+      return;
+    }
     prepareLocalizedName(card);
     name.dataset.flagAnimated = 'true';
 
@@ -413,7 +437,7 @@
     name.setAttribute('aria-label', text);
     name.innerHTML = characters.map(character => {
       if (/\s/.test(character)) return '<span class="flag-letter-space" aria-hidden="true"> </span>';
-      return `<span class="flag-letter-slot is-cycling" aria-hidden="true">${safe(randomLetter(character))}</span>`;
+      return `<span class="flag-letter-slot is-cycling" aria-hidden="true"><span class="flag-letter-target">${safe(character)}</span><span class="flag-letter-face">${safe(randomLetter(character))}</span></span>`;
     }).join('');
 
     const slots = [...name.querySelectorAll('.flag-letter-slot')];
@@ -422,9 +446,11 @@
     for (let frame = 0; frame < 5; frame += 1) {
       if (!card.isConnected || feedbackKey(card) !== key) return;
       slots.forEach((slot, index) => {
+        const face = slot.querySelector('.flag-letter-face');
+        if (!face) return;
         slot.classList.remove('is-cycling');
         void slot.offsetWidth;
-        slot.textContent = randomLetter(targetLetters[index]);
+        face.textContent = randomLetter(targetLetters[index]);
         slot.classList.add('is-cycling');
       });
       await wait(82);
@@ -435,17 +461,26 @@
       .map((_, index) => index)
       .sort((a, b) => Math.abs(a - midpoint) - Math.abs(b - midpoint));
 
-    for (const index of order) {
+    const resolveStep = Math.max(0, order.length - 3);
+    for (let step = 0; step < order.length; step += 1) {
       if (!card.isConnected || feedbackKey(card) !== key) return;
+      const index = order[step];
       const slot = slots[index];
+      const face = slot.querySelector('.flag-letter-face');
+      if (!face) continue;
       slot.classList.remove('is-cycling');
-      slot.textContent = targetLetters[index];
+      face.textContent = targetLetters[index];
       slot.classList.add('is-settled');
+      if (step === resolveStep) card.classList.add('wrong-resolved');
       await wait(30);
     }
 
+    card.classList.add('wrong-resolved');
     await wait(360);
-    if (card.isConnected && feedbackKey(card) === key) showWrongMap(card, key);
+    if (!card.isConnected || feedbackKey(card) !== key) return;
+    await showWrongMap(card, key);
+    if (!card.isConnected || feedbackKey(card) !== key) return;
+    nextButton?.classList.add('flag-next-ready');
   }
 
   function animateFlagFeedback() {

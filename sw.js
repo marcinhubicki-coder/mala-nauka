@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v10-scenes-01';
+const CACHE='mala-nauka-spelling-v11-scenes-02';
 const CORE=[
   './','./index.html','./app.css','./app.js','./app.js?v=6-scene','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
@@ -7,6 +7,7 @@ const CORE=[
   './assets/ortografia/lake-background.webp','./assets/fonts/dynapuff-polish-700.woff',
   './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
   './assets/scenes/turtle.avif','./assets/scenes/sparrow.avif','./assets/scenes/swallow.avif','./assets/scenes/comb.avif',
+  './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif',
   './spelling/art.mjs','./spelling/art.mjs?v=6-scene','./spelling/bubble.mjs','./spelling/bubble.mjs?v=6-scene',
   './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=6-scene',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',

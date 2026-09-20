@@ -133,5 +133,7 @@ export function sceneFor(masked, word=''){ return WORD_SCENES.get(word) || SCENE
 export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
-  return new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url).href;
+  const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
+  url.searchParams.set('v', '13-scene-assets');
+  return url.href;
 }

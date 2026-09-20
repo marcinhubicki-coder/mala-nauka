@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v14-assets-05';
+const CACHE='mala-nauka-spelling-v15-assets-06';
 const CORE=[
   './','./index.html','./app.css','./app.js','./app.js?v=8-mechanics','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
@@ -9,6 +9,7 @@ const CORE=[
   './assets/scenes/turtle.avif','./assets/scenes/sparrow.avif','./assets/scenes/swallow.avif','./assets/scenes/comb.avif',
   './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
   './assets/scenes/skora.avif','./assets/scenes/zolty.avif','./assets/scenes/stol.avif','./assets/scenes/samochod.avif',
+  './assets/scenes/lekarz.avif','./assets/scenes/zaba.avif','./assets/scenes/grzyb.avif','./assets/scenes/schody.avif',
   './spelling/art.mjs','./spelling/art.mjs?v=8-mechanics','./spelling/bubble.mjs','./spelling/bubble.mjs?v=8-mechanics',
   './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/scenes.mjs?v=8-mechanics','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=8-mechanics',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
@@ -22,20 +23,17 @@ const CORE=[
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
 });
-
 self.addEventListener('activate',event=>{
   event.waitUntil(Promise.all([
     caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('mala-nauka-')&&key!==CACHE).map(key=>caches.delete(key)))),
     self.clients.claim()
   ]));
 });
-
 self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
-
   if(request.mode==='navigate'){
     event.respondWith(fetch(request).then(response=>{
       const copy=response.clone();
@@ -44,7 +42,6 @@ self.addEventListener('fetch',event=>{
     }).catch(async()=>await caches.match(request)||await caches.match(request,{ignoreSearch:true})||await caches.match('./index.html')));
     return;
   }
-
   event.respondWith(caches.match(request).then(cached=>{
     const update=fetch(request).then(response=>{
       if(response.ok)caches.open(CACHE).then(cache=>cache.put(request,response.clone()));

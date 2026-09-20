@@ -16,9 +16,11 @@ export const SCENES = new Map([
   ['ż_łty', { key:'zolty', asset:'zolty.avif', layouts:['bubble'] }],
   ['st_ł', { key:'stol', asset:'stol.avif', layouts:['bubble'] }],
   ['samoch_d', { key:'samochod', asset:'samochod.avif', layouts:['bubble'] }],
-  ['_aba', { key:'frog', layouts:['bubble'] }],
+  ['_aba', { key:'zaba', asset:'zaba.avif', layouts:['bubble'] }],
+  ['leka_', { key:'lekarz', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['g_yb', { key:'grzyb', asset:'grzyb.avif', layouts:['bubble'] }],
+  ['s_ody', { key:'schody', asset:'schody.avif', layouts:['bubble'] }],
   ['_uragan', { key:'storm', layouts:['bubble'] }],
-  ['leka_', { key:'doctor', layouts:['bubble'] }],
   ['g_ebień', { key:'comb', asset:'comb.avif', layouts:['bubble'] }],
   ['sok_ł', { key:'falcon', layouts:['bubble'] }],
 ]);

@@ -31,7 +31,7 @@
 #app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-row:4;margin:0;padding:0;min-height:0;border:0;background:none;box-shadow:none;display:flex;align-items:center;justify-content:center}
 .spelling-question-card .question-content{height:100%;width:100%;padding:0;min-width:0;display:flex;align-items:center;justify-content:center;overflow:visible}
 #app[data-view="game"][data-mode="spelling"] .word{display:inline-flex;align-items:center;justify-content:center;max-width:none;white-space:nowrap;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(42px,14.5vw,65px);line-height:1.2;letter-spacing:-1.7px;color:var(--ink);text-shadow:0 2px 0 #ffffff5c;padding:.12em .04em .08em;overflow:visible}
-.word-side{display:inline-flex;align-items:center;overflow:visible}.ink-letter,.answer-ink,.revealed-chunk{display:inline-block;overflow:visible;will-change:transform,opacity}
+.word-side{display:inline-flex;align-items:center;overflow:visible;padding:.12em 0 .18em;margin:-.12em 0 -.18em}.ink-letter{display:inline-block;line-height:1.32;overflow:visible;padding:.08em 0 .16em;margin:-.08em 0 -.16em}.answer-ink,.revealed-chunk{display:inline-block;overflow:visible}
 #app[data-view="game"][data-mode="spelling"] .gap{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 1.04em;width:1.04em;height:1.04em;min-width:0;margin:0 .025em;border:0;color:inherit;line-height:1;overflow:visible}
 .bubble-glass{position:absolute;inset:.01em;border-radius:50%;border:1px solid #fff;background:
  radial-gradient(ellipse 17% 12% at 31% 20%,#fff 15%,#ffffffbb 50%,transparent 75%),

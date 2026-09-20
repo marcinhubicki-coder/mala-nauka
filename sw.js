@@ -1,8 +1,8 @@
-const CACHE='mala-nauka-spelling-v12-mechanics-03';
+const CACHE='mala-nauka-spelling-v13-glyphs-04';
 const CORE=[
   './','./index.html','./app.css','./app.js','./app.js?v=8-mechanics','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
-  './spelling-art.css','./spelling-art.css?v=8-mechanics','./debug-tools.js','./debug-tools.js?v=7',
+  './spelling-art.css','./spelling-art.css?v=9-glyphs','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
   './assets/ortografia/lake-background.webp','./assets/fonts/dynapuff-polish-700.woff',
   './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',

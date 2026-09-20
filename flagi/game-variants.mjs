@@ -17,7 +17,9 @@ function safeHtml(value){
 function labelFitsTwoLines(label){
  const style=getComputedStyle(label);
  const lineHeight=parseFloat(style.lineHeight)||20;
- return label.scrollHeight<=lineHeight*2+1&&label.scrollWidth<=label.clientWidth+1;
+ const words=[...label.querySelectorAll('.flag-answer-word')];
+ const widestWord=words.reduce((width,word)=>Math.max(width,word.scrollWidth),0);
+ return label.scrollHeight<=lineHeight*2+1&&widestWord<=label.clientWidth+1;
 }
 
 function fitTextAnswer(button){
@@ -33,8 +35,8 @@ function fitTextAnswer(button){
 
 function textAnswerMarkup(text,animated){
  let letterIndex=0;
- const content=text.split(/(\s+)/).map(token=>{
-  if(/^\s+$/.test(token))return '<span class="flag-answer-space" aria-hidden="true"> </span>';
+ const words=text.trim().split(/\s+/).filter(Boolean);
+ const content=words.map(token=>{
   if(!animated)return `<span class="flag-answer-word">${safeHtml(token)}</span>`;
   const letters=Array.from(token).map(character=>{
    const delay=Math.min(letterIndex,28);

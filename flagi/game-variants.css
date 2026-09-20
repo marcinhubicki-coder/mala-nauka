@@ -447,3 +447,92 @@
     font-size:26px!important;
   }
 }
+
+
+/* Text fitting v4: keep the normal font first and wrap whole words into two lines. */
+#app[data-mode="flags"] .flag-answer-label{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  align-content:center;
+  justify-content:center;
+  column-gap:.28em;
+  row-gap:0;
+  width:100%;
+  max-width:100%;
+  max-height:2.24em;
+  margin:auto;
+  overflow:hidden;
+  line-height:1.12;
+  text-align:center;
+  white-space:normal;
+}
+
+#app[data-mode="flags"] .flag-answer-word{
+  display:inline-flex;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+/* Countries feedback v4: smaller flag, dedicated lower text zone. */
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content{
+  display:grid!important;
+  grid-template-rows:minmax(0,1fr) auto minmax(78px,.58fr)!important;
+  justify-items:center!important;
+  align-items:center!important;
+  gap:0!important;
+  padding:4px 0 2px!important;
+  transform:none!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+  grid-row:2!important;
+  justify-self:center!important;
+  align-self:center!important;
+  position:static!important;
+  width:84px!important;
+  min-width:84px!important;
+  max-width:84px!important;
+  height:56px!important;
+  min-height:56px!important;
+  max-height:56px!important;
+  margin:0!important;
+  transform:none!important;
+  object-fit:contain!important;
+}
+
+#app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+  grid-row:3!important;
+  align-self:stretch!important;
+  justify-self:stretch!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  position:static!important;
+  left:auto!important;
+  top:auto!important;
+  width:100%!important;
+  max-width:92%!important;
+  min-height:78px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+  white-space:normal!important;
+  font-size:28px!important;
+  line-height:1.04!important;
+}
+
+@media (max-width:374px){
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .question-content > .flag{
+    width:80px!important;
+    min-width:80px!important;
+    max-width:80px!important;
+    height:54px!important;
+    min-height:54px!important;
+    max-height:54px!important;
+  }
+  #app[data-mode="flags"] .question-card.country-feedback:not(.map-feedback-prep):not(.map-feedback-stage-2) .flag-name{
+    font-size:26px!important;
+  }
+}

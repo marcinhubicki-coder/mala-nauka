@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v13-glyphs-04';
+const CACHE='mala-nauka-spelling-v14-assets-05';
 const CORE=[
   './','./index.html','./app.css','./app.js','./app.js?v=8-mechanics','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
@@ -8,6 +8,7 @@ const CORE=[
   './assets/scenes/bunny.webp','./assets/scenes/mountains.webp','./assets/scenes/rose.webp','./assets/scenes/clouds-review.webp','./assets/scenes/castle-review.webp',
   './assets/scenes/turtle.avif','./assets/scenes/sparrow.avif','./assets/scenes/swallow.avif','./assets/scenes/comb.avif',
   './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
+  './assets/scenes/skora.avif','./assets/scenes/zolty.avif','./assets/scenes/stol.avif','./assets/scenes/samochod.avif',
   './spelling/art.mjs','./spelling/art.mjs?v=8-mechanics','./spelling/bubble.mjs','./spelling/bubble.mjs?v=8-mechanics',
   './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/scenes.mjs?v=8-mechanics','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=8-mechanics',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',

@@ -186,11 +186,142 @@ body:has(#app[data-mode="reading"])::before{
  background:#eef8f2;border-color:#c5e5d2;color:#25744f;
 }
 
+
+/* Reading phrases: reconstruct instead of choosing between long answers. */
+#app[data-mode="reading"] .phrase-exposure{
+ font-size:clamp(28px,7.5vw,36px);
+ line-height:1.22;
+ max-width:18ch;
+ margin-inline:auto;
+}
+#app[data-mode="reading"] .phrase-build{
+ display:grid;
+ gap:16px;
+ width:100%;
+ max-width:360px;
+ margin-inline:auto;
+}
+#app[data-mode="reading"] .phrase-build>p{
+ color:#7a6b91;
+ font-size:11px;
+ font-weight:800;
+ letter-spacing:.4px;
+}
+#app[data-mode="reading"] .phrase-slots{
+ display:grid;
+ grid-template-columns:repeat(var(--phrase-length),minmax(0,1fr));
+ gap:7px;
+ width:100%;
+}
+#app[data-mode="reading"] .phrase-slot{
+ display:grid;
+ place-items:center;
+ min-width:0;
+ min-height:52px;
+ padding:7px 5px;
+ border:1.5px dashed #d6c8e9;
+ border-radius:14px;
+ background:#faf8ff;
+ color:#68459c;
+ font-size:clamp(13px,3.8vw,17px);
+ line-height:1.12;
+ font-weight:850;
+ text-align:center;
+ overflow-wrap:anywhere;
+ box-shadow:none;
+}
+#app[data-mode="reading"] button.phrase-slot:disabled{
+ opacity:1;
+ color:transparent;
+ cursor:default;
+}
+#app[data-mode="reading"] .phrase-slot.is-filled{
+ border-style:solid;
+ border-color:#c6afe6;
+ background:#efe8fa;
+ color:#68459c;
+}
+#app[data-mode="reading"] button.phrase-slot.is-filled:active{
+ transform:scale(.98);
+}
+#app[data-mode="reading"] .phrase-word-bank{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:9px;
+ width:100%;
+}
+#app[data-mode="reading"] .phrase-word-bank .phrase-word{
+ min-height:56px;
+ padding:8px 10px;
+ border-radius:17px;
+ font-size:17px;
+ background:linear-gradient(180deg,#fff,#faf8ff);
+ border-color:#ded5eb;
+ color:#263f64;
+ box-shadow:0 4px 0 #e8e2f0;
+}
+#app[data-mode="reading"] .phrase-word-bank .phrase-word:last-child:nth-child(odd){
+ grid-column:1/-1;
+ width:calc(50% - 5px);
+ justify-self:center;
+}
+#app[data-mode="reading"] .phrase-word-bank .phrase-word.is-used,
+#app[data-mode="reading"] .phrase-word-bank .phrase-word:disabled{
+ opacity:.28;
+ transform:none;
+ box-shadow:none;
+}
+#app[data-mode="reading"] .phrase-word-bank.is-waiting,
+#app[data-mode="reading"] .phrase-word-bank.phrase-feedback-bank{
+ grid-template-columns:1fr;
+ min-height:116px;
+ place-items:center;
+ color:#7b6a91;
+ font-size:12px;
+ text-align:center;
+}
+#app[data-mode="reading"] .phrase-word-bank.phrase-feedback-bank.is-correct{
+ min-height:64px;
+ color:#4f7f69;
+}
+#app[data-mode="reading"] .phrase-feedback{
+ display:grid;
+ gap:15px;
+ width:100%;
+ max-width:360px;
+ margin-inline:auto;
+}
+#app[data-mode="reading"] .phrase-feedback-row{
+ display:grid;
+ gap:7px;
+}
+#app[data-mode="reading"] .phrase-feedback-row small{
+ font-size:10px;
+ text-transform:uppercase;
+ letter-spacing:1.2px;
+ font-weight:850;
+ color:#7c6d91;
+}
+#app[data-mode="reading"] .phrase-feedback-row.correct-row .phrase-slot,
+#app[data-mode="reading"] .phrase-complete .phrase-slot,
+#app[data-mode="reading"] .phrase-slots.correct-row .phrase-slot{
+ background:#eef8f2;
+ border:1px solid #c5e5d2;
+ color:#25744f;
+}
+#app[data-mode="reading"] .phrase-complete{
+ width:100%;
+ max-width:360px;
+ margin-inline:auto;
+}
+
 @media(max-height:760px){
  #app[data-mode="reading"][data-view="wizard"] .setup-card.reading-wizard-v2{padding-top:15px;padding-bottom:16px}
  #app[data-mode="reading"] .reading-v2-section + .reading-v2-section{margin-top:15px}
  #app[data-mode="reading"] .memory-flash{min-height:92px;font-size:62px}
  #app[data-mode="reading"] .answers.memory-keypad .answer{min-height:50px}
+ #app[data-mode="reading"] .phrase-word-bank .phrase-word{min-height:50px}
+ #app[data-mode="reading"] .phrase-slot{min-height:46px}
 }
 @media(prefers-reduced-motion:reduce){
  #app[data-mode="reading"] .reading-segment-indicator,

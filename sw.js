@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-prod-v73-reading-phrases';
+const CACHE='mala-nauka-prod-v74-reading-phrases-retry';
 const CORE=[
   './',
   './index.html',

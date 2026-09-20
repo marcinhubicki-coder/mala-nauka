@@ -1,4 +1,6 @@
-const CACHE='mala-nauka-prod-v74-reading-phrases-retry';
+const CACHE='mala-nauka-prod-v76-all-modes-20260920';
+const FLAG_CDN_HOST='cdn.jsdelivr.net';
+const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   './',
   './index.html',
@@ -199,7 +201,24 @@ const CORE=[
   './assets/ortografia/hint-button-v051.svg',
   './ortografia/wizard-v2.mjs',
   './ortografia/wizard-v2.css',
-  './matematyka/correct-transition.js'
+  './matematyka/correct-transition.js',
+  './app.js?v=23-art-library',
+  './game.mjs?v=23-art-library',
+  './modes.mjs?v=23-art-library',
+  './spelling-art.css?v=23-art-library',
+  './spelling/art.mjs?v=23-art-library',
+  './spelling/bubble.mjs',
+  './spelling/bubble.mjs?v=23-art-library',
+  './spelling/preview.mjs?v=23-art-library',
+  './spelling/scenes.mjs?v=23-art-library',
+  './assets/fonts/dynapuff-polish-700.woff',
+  './assets/ortografia/lake-background.webp',
+  './assets/scenes/sokol.webp',
+  './assets/scenes/huragan.webp',
+  './assets/scenes/drzewo.webp',
+  './assets/scenes/zima.webp',
+  './assets/scenes/ogorek.webp',
+  './assets/scenes/wiewiorka.webp'
 ];
 
 self.addEventListener('install',event=>{
@@ -217,6 +236,18 @@ self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;
   const url=new URL(request.url);
+
+  if(url.hostname===FLAG_CDN_HOST&&url.pathname.startsWith(FLAG_CDN_PATH)){
+    event.respondWith(caches.open(CACHE).then(async cache=>{
+      const cached=await cache.match(request);
+      if(cached)return cached;
+      const response=await fetch(request);
+      if(response.ok)await cache.put(request,response.clone());
+      return response;
+    }));
+    return;
+  }
+
   if(url.origin!==self.location.origin)return;
 
   if(request.mode==='navigate'){

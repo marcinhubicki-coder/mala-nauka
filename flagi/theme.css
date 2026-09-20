@@ -7,6 +7,12 @@
   --flag-theme-soft:#e4f4ed;
   --flag-theme-pale:#f3faf7;
   --flag-theme-line:#abd4c4;
+  --flag-error-bg:#fff0ed;
+  --flag-error-line:#d48b7b;
+  --flag-error-ink:#944d3d;
+  --flag-error-shadow:#f0d9d2;
+  --flag-correct-bg:#edf9f0;
+  --flag-correct-line:#c4e6ce;
 }
 
 /* Keep the existing neutral greys and semantic red error state, but replace the
@@ -30,13 +36,60 @@
   background:var(--flag-theme);
 }
 
-#app[data-mode="flags"] .question-card.wrong{
-  background:var(--flag-theme-pale);
-  border-color:var(--flag-theme-line);
+#app[data-mode="flags"] .question-card,
+#app[data-mode="flags"] .answer,
+#app[data-mode="flags"] .answers .answer.flag-option-answer{
+  transition:
+    background-color .30s cubic-bezier(.2,.8,.25,1),
+    border-color .30s cubic-bezier(.2,.8,.25,1),
+    color .22s ease,
+    box-shadow .30s cubic-bezier(.2,.8,.25,1);
+}
+
+#app[data-mode="flags"] .feedback{
+  min-height:82px;
+}
+
+#app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"]{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(7px) scale(.985);
+  transition:
+    opacity .34s ease,
+    transform .42s cubic-bezier(.2,.8,.25,1),
+    visibility 0s linear .34s;
+}
+
+#app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"].flag-next-ready{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+  transition-delay:0s;
+}
+
+#app[data-mode="flags"] .question-card.wrong:not(.wrong-resolved){
+  background:var(--flag-error-bg);
+  border-color:var(--flag-error-line);
+}
+
+#app[data-mode="flags"] .question-card.wrong.wrong-resolved{
+  background:var(--flag-correct-bg);
+  border-color:var(--flag-correct-line);
 }
 
 #app[data-mode="flags"] .question-card.wrong.map-feedback-stage-2{
-  border-color:var(--flag-theme-line)!important;
+  background:var(--flag-correct-bg);
+  border-color:var(--flag-correct-line)!important;
+}
+
+#app[data-mode="flags"] .answer.wrong,
+#app[data-mode="flags"] .answers .answer.flag-option-answer.wrong{
+  background:var(--flag-error-bg);
+  border-color:var(--flag-error-line);
+  color:var(--flag-error-ink);
+  box-shadow:0 4px 0 var(--flag-error-shadow);
 }
 
 #app[data-mode="flags"] .flag-continent-label{
@@ -99,6 +152,10 @@ body:has(#app[data-mode="flags"])::before{
 }
 #app[data-mode="flags"]{
   background:transparent;
+}
+
+#app[data-mode="flags"][data-view="game"]{
+  overflow-anchor:none;
 }
 #app[data-mode="flags"][data-view="wizard"] .page-head{
   position:relative;

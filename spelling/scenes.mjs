@@ -40,9 +40,9 @@ export const SCENES = new Map([
   ['_śmiech', { key:'bunny', asset:'bunny.webp', layouts:['bubble'] }],
   ['_rlop', { key:'mountains', asset:'mountains.webp', layouts:['bubble'] }],
   ['_rodziny', { key:'birthday', asset:'osemka.avif', layouts:['bubble'] }],
-  ['_uragan', { key:'storm', layouts:['bubble'] }],
+  ['_uragan', { key:'storm', asset:'clouds-review.webp', layouts:['bubble'] }],
   ['g_ebień', { key:'comb', asset:'comb.avif', layouts:['bubble'] }],
-  ['sok_ł', { key:'falcon', layouts:['bubble'] }],
+  ['sok_ł', { key:'falcon', asset:'swallow.avif', layouts:['bubble'] }],
 ]);
 
 export const WORD_SCENES = new Map([

@@ -98,15 +98,38 @@ export function createBubble(host) {
   }
   reduced.addEventListener('change',motionPreferenceChanged);
 
+  const FALLBACK_URL = new URL('../assets/scenes/bunny.webp', import.meta.url).href;
+  const imageLoads = new Map();
+  function setPictureSource(picture, url='') {
+    if (url) {
+      picture.setAttribute('href', url);
+      picture.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', url);
+    } else {
+      picture.removeAttribute('href');
+      picture.removeAttributeNS('http://www.w3.org/1999/xlink', 'href');
+    }
+  }
   function waitForImage(url) {
-    return new Promise((resolve,reject)=>{
+    if (imageLoads.has(url)) return imageLoads.get(url);
+    const load = new Promise((resolve,reject)=>{
       const img=new Image();
       img.decoding='async';
-      img.onload=()=>resolve();
-      img.onerror=()=>reject(new Error('scene-load-failed'));
+      let settled=false;
+      const finish=(ok)=>{
+        if(settled) return;
+        settled=true;
+        clearTimeout(timeout);
+        if(ok && img.naturalWidth>0 && img.naturalHeight>0) resolve(url);
+        else reject(new Error('scene-load-failed'));
+      };
+      const timeout=setTimeout(()=>finish(false),6000);
+      img.onload=()=>finish(true);
+      img.onerror=()=>finish(false);
       img.src=url;
-      if (img.complete && img.naturalWidth) resolve();
-    });
+      if (img.complete) queueMicrotask(()=>finish(Boolean(img.naturalWidth)));
+    }).catch(error=>{ imageLoads.delete(url); throw error; });
+    imageLoads.set(url, load);
+    return load;
   }
   async function transitionToScene(url, scene, first=false) {
     const token=++loadToken;
@@ -116,28 +139,35 @@ export function createBubble(host) {
       const old=activePicture;
       currentUrl='';
       if (!old.getAttribute('href')) return true;
-      if (reduced.matches) { old.style.opacity='0'; old.removeAttribute('href'); return true; }
+      if (reduced.matches) { old.style.opacity='0'; setPictureSource(old); return true; }
       const animation=old.animate([{opacity:1},{opacity:0}],{duration:260,easing:'ease-out',fill:'both'});
       transitions=[animation]; if(paused) animation.pause();
       await animation.finished.catch(()=>{});
-      if(token===loadToken){ old.style.opacity='0'; old.removeAttribute('href'); }
+      if(token===loadToken){ old.style.opacity='0'; setPictureSource(old); }
       animation.cancel(); transitions=[];
       return true;
     }
 
-    try { await waitForImage(url); } catch { return false; }
+    let displayUrl=url;
+    try {
+      await waitForImage(displayUrl);
+    } catch (error) {
+      console.warn('[spelling-scene] asset failed, using fallback', { url, scene: scene?.key, error });
+      displayUrl=FALLBACK_URL;
+      try { await waitForImage(displayUrl); } catch { return false; }
+    }
     if (destroyed || token!==loadToken) return false;
 
     const next=standbyPicture, old=activePicture;
-    next.setAttribute('href',url);
+    setPictureSource(next,displayUrl);
     next.setAttribute('preserveAspectRatio',scene?.alignment || 'xMidYMid slice');
     next.style.opacity='0';
     const hasOld=Boolean(old.getAttribute('href'));
 
     if (reduced.matches) {
-      old.style.opacity='0'; old.removeAttribute('href');
+      old.style.opacity='0'; setPictureSource(old);
       next.style.opacity='1';
-      activePicture=next; standbyPicture=old; currentUrl=url;
+      activePicture=next; standbyPicture=old; currentUrl=displayUrl;
       return true;
     }
 
@@ -156,10 +186,10 @@ export function createBubble(host) {
     if (destroyed || token!==loadToken) {
       transitions.forEach(animation=>animation.cancel()); transitions=[]; return false;
     }
-    old.style.opacity='0'; old.removeAttribute('href');
+    old.style.opacity='0'; setPictureSource(old);
     next.style.opacity='1';
     transitions.forEach(animation=>animation.cancel()); transitions=[];
-    activePicture=next; standbyPicture=old; currentUrl=url;
+    activePicture=next; standbyPicture=old; currentUrl=displayUrl;
     return true;
   }
 

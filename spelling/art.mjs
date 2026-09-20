@@ -1,5 +1,5 @@
-import { sceneFor, sceneUrl } from './scenes.mjs?v=11-batch80';
-import { createBubble } from './bubble.mjs?v=8-mechanics';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=12-scene-loader';
+import { createBubble } from './bubble.mjs?v=9-scene-loader';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=8-mechanics';
 import { RULES, lightbulbSvg } from './hints.mjs';
 

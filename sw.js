@@ -1,6 +1,6 @@
-const CACHE='mala-nauka-spelling-v18-assets-09';
+const CACHE='mala-nauka-spelling-v19-scene-loader';
 const CORE=[
-  './','./index.html','./app.css','./app.js','./app.js?v=11-batch80','./module-router.js','./spelling-assets-setting.js',
+  './','./index.html','./app.css','./app.js','./app.js?v=12-scene-loader','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=6-scene','./modes.mjs','./modes.mjs?v=2','./progress.mjs',
   './spelling-art.css','./spelling-art.css?v=9-glyphs','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
@@ -10,8 +10,8 @@ const CORE=[
   './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
   './assets/scenes/skora.avif','./assets/scenes/zolty.avif','./assets/scenes/stol.avif','./assets/scenes/samochod.avif',
   './assets/scenes/lekarz.avif','./assets/scenes/zaba.avif','./assets/scenes/grzyb.avif','./assets/scenes/schody.avif','./assets/scenes/jez.avif','./assets/scenes/ksiazka.avif',
-  './spelling/art.mjs','./spelling/art.mjs?v=11-batch80','./spelling/bubble.mjs','./spelling/bubble.mjs?v=8-mechanics',
-  './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/scenes.mjs?v=11-batch80','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=8-mechanics',
+  './spelling/art.mjs','./spelling/art.mjs?v=12-scene-loader','./spelling/bubble.mjs','./spelling/bubble.mjs?v=9-scene-loader',
+  './spelling/hints.mjs','./spelling/preview.mjs','./spelling/scenes.mjs','./spelling/scenes.mjs?v=12-scene-loader','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=8-mechanics',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',

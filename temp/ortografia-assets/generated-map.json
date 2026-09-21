@@ -1,0 +1,16 @@
+{
+  "batch": "2026-09-21-01",
+  "status": "temp-unwired",
+  "format": "webp",
+  "resolution": "1080x1080",
+  "alternatives": false,
+  "files": {
+    "generated/miod.webp": "miód",
+    "generated/sol.webp": "sól",
+    "generated/kolko.webp": "kółko",
+    "generated/kura.webp": "kura",
+    "generated/budzik.webp": "budzik",
+    "generated/muszla.webp": "muszla",
+    "generated/pudelko.webp": "pudełko"
+  }
+}

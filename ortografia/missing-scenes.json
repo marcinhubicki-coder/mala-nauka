@@ -1,0 +1,1345 @@
+{
+  "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
+  "totalWords": 404,
+  "assignedWords": 183,
+  "uniqueImages": 77,
+  "missingWords": 221,
+  "missingByCategory": {
+    "u/ó": 46,
+    "rz/ż": 81,
+    "ch/h": 59,
+    "ć/ci": 6,
+    "ś/si": 8,
+    "ź/zi": 5,
+    "ń/ni": 8,
+    "dź/dzi": 8
+  },
+  "missing": [
+    {
+      "word": "próżny",
+      "masked": "pr_żny",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "sposób",
+      "masked": "spos_b",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "który",
+      "masked": "kt_ry",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "mój",
+      "masked": "m_j",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "twój",
+      "masked": "tw_j",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "swój",
+      "masked": "sw_j",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "mówić",
+      "masked": "m_wić",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "wójt",
+      "masked": "w_jt",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "włókno",
+      "masked": "wł_kno",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "krótki",
+      "masked": "kr_tki",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "krótko",
+      "masked": "kr_tko",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "skrót",
+      "masked": "skr_t",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "obrót",
+      "masked": "obr_t",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "wybór",
+      "masked": "wyb_r",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "zbiór",
+      "masked": "zbi_r",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "twórca",
+      "masked": "tw_rca",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "szczegół",
+      "masked": "szczeg_ł",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "ogół",
+      "masked": "og_ł",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "wspólny",
+      "masked": "wsp_lny",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "główny",
+      "masked": "gł_wny",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "kłótnia",
+      "masked": "kł_tnia",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "kula",
+      "masked": "k_la",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "urząd",
+      "masked": "_rząd",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "umyć",
+      "masked": "_myć",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "umieć",
+      "masked": "_mieć",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "układ",
+      "masked": "_kład",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "ukryć",
+      "masked": "_kryć",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "buda",
+      "masked": "b_da",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "murawa",
+      "masked": "m_rawa",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "duży",
+      "masked": "d_ży",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "drugi",
+      "masked": "dr_gi",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "gruby",
+      "masked": "gr_by",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "grupa",
+      "masked": "gr_pa",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "nuty",
+      "masked": "n_ty",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "kupić",
+      "masked": "k_pić",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "ludzie",
+      "masked": "l_dzie",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "lupa",
+      "masked": "l_pa",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "nudny",
+      "masked": "n_dny",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "rudy",
+      "masked": "r_dy",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "pudło",
+      "masked": "p_dło",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "rura",
+      "masked": "r_ra",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "ruszyć",
+      "masked": "r_szyć",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "sukienka",
+      "masked": "s_kienka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "trudny",
+      "masked": "tr_dny",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "tutaj",
+      "masked": "t_taj",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "autobus",
+      "masked": "a_tobus",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "rzadki",
+      "masked": "_adki",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "rzecz",
+      "masked": "_ecz",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "brzydki",
+      "masked": "b_ydki",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "grzech",
+      "masked": "g_ech",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "trzeci",
+      "masked": "t_eci",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "przód",
+      "masked": "p_ód",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "przed",
+      "masked": "p_ed",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "przez",
+      "masked": "p_ez",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "przyjaciel",
+      "masked": "p_yjaciel",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "sprzątać",
+      "masked": "sp_ątać",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "wrzątek",
+      "masked": "w_ątek",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "krzyż",
+      "masked": "k_yż",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "malarz",
+      "masked": "mala_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "piekarz",
+      "masked": "pieka_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "piłkarz",
+      "masked": "piłka_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "kolejarz",
+      "masked": "koleja_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "murarz",
+      "masked": "mura_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "pisarz",
+      "masked": "pisa_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "rycerz",
+      "masked": "ryce_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "talerz",
+      "masked": "tale_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "kalendarz",
+      "masked": "kalenda_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "cmentarz",
+      "masked": "cmenta_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "korytarz",
+      "masked": "koryta_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "komentarz",
+      "masked": "komenta_",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "zwierzę",
+      "masked": "zwie_ę",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "zwierzak",
+      "masked": "zwie_ak",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "jarzębina",
+      "masked": "ja_ębina",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "porządek",
+      "masked": "po_ądek",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "porzeczka",
+      "masked": "po_eczka",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "marzenie",
+      "masked": "ma_enie",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "marzyć",
+      "masked": "ma_yć",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "orzech",
+      "masked": "o_ech",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "brzuch",
+      "masked": "b_uch",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "grzmot",
+      "masked": "g_mot",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "zmarznąć",
+      "masked": "zma_nąć",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "przedszkole",
+      "masked": "p_edszkole",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "przerwa",
+      "masked": "p_erwa",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "przepraszam",
+      "masked": "p_epraszam",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "przepis",
+      "masked": "p_epis",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żółtko",
+      "masked": "_ółtko",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "łyżka",
+      "masked": "ły_ka",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "ważny",
+      "masked": "wa_ny",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "jeżyna",
+      "masked": "je_yna",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żart",
+      "masked": "_art",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żarówka",
+      "masked": "_arówka",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żelazo",
+      "masked": "_elazo",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żona",
+      "masked": "_ona",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żurek",
+      "masked": "_urek",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "życie",
+      "masked": "_ycie",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żyto",
+      "masked": "_yto",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "życzenie",
+      "masked": "_yczenie",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "życzliwy",
+      "masked": "_yczliwy",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żegnać",
+      "masked": "_egnać",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żołądek",
+      "masked": "_ołądek",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żołnierz",
+      "masked": "_ołnierz",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żniwa",
+      "masked": "_niwa",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "żwir",
+      "masked": "_wir",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "żartować",
+      "masked": "_artować",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "odważny",
+      "masked": "odwa_ny",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "uważny",
+      "masked": "uwa_ny",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "podróż",
+      "masked": "podró_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "podróżnik",
+      "masked": "podró_nik",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "garaż",
+      "masked": "gara_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "bagaż",
+      "masked": "baga_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "plaża",
+      "masked": "pla_a",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "straż",
+      "masked": "stra_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "strażak",
+      "masked": "stra_ak",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "kałuża",
+      "masked": "kału_a",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "wąż",
+      "masked": "wą_",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "pożar",
+      "masked": "po_ar",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "pożegnać",
+      "masked": "po_egnać",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "pożyczyć",
+      "masked": "po_yczyć",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "możliwość",
+      "masked": "mo_liwość",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "możliwy",
+      "masked": "mo_liwy",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "każdy",
+      "masked": "ka_dy",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "drużyna",
+      "masked": "dru_yna",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "koleżanka",
+      "masked": "kole_anka",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "mężczyzna",
+      "masked": "mę_czyzna",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "ciężki",
+      "masked": "cię_ki",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "ciężar",
+      "masked": "cię_ar",
+      "category": "rz/ż",
+      "difficulty": 1
+    },
+    {
+      "word": "ciężarówka",
+      "masked": "cię_arówka",
+      "category": "rz/ż",
+      "difficulty": 2
+    },
+    {
+      "word": "mucha",
+      "masked": "mu_a",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chłopiec",
+      "masked": "_łopiec",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "zachód",
+      "masked": "za_ód",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "wschód",
+      "masked": "ws_ód",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chustka",
+      "masked": "_ustka",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chudy",
+      "masked": "_udy",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chrupki",
+      "masked": "_rupki",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chrząszcz",
+      "masked": "_rząszcz",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chwila",
+      "masked": "_wila",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chwalić",
+      "masked": "_walić",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chować",
+      "masked": "_ować",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chodzić",
+      "masked": "_odzić",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chłód",
+      "masked": "_łód",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chłodny",
+      "masked": "_łodny",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chłopak",
+      "masked": "_łopak",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chrapać",
+      "masked": "_rapać",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chcieć",
+      "masked": "_cieć",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chociaż",
+      "masked": "_ociaż",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "chemia",
+      "masked": "_emia",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "chór",
+      "masked": "_ór",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "cichy",
+      "masked": "ci_y",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "cicho",
+      "masked": "ci_o",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "suchy",
+      "masked": "su_y",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "puchar",
+      "masked": "pu_ar",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "duch",
+      "masked": "du_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "ruch",
+      "masked": "ru_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "puch",
+      "masked": "pu_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "mech",
+      "masked": "me_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "pech",
+      "masked": "pe_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "pośpiech",
+      "masked": "pośpie_",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "strach",
+      "masked": "stra_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "zapach",
+      "masked": "zapa_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "łańcuch",
+      "masked": "łańcu_",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "wybuch",
+      "masked": "wybu_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "wydech",
+      "masked": "wyde_",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hotel",
+      "masked": "_otel",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hamak",
+      "masked": "_amak",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hulajnoga",
+      "masked": "_ulajnoga",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hokej",
+      "masked": "_okej",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "humor",
+      "masked": "_umor",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hala",
+      "masked": "_ala",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hałas",
+      "masked": "_ałas",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hak",
+      "masked": "_ak",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "harcerz",
+      "masked": "_arcerz",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hamulec",
+      "masked": "_amulec",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hipopotam",
+      "masked": "_ipopotam",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hiena",
+      "masked": "_iena",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hektar",
+      "masked": "_ektar",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "huta",
+      "masked": "_uta",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "hodować",
+      "masked": "_odować",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hodowla",
+      "masked": "_odowla",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hymn",
+      "masked": "_ymn",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hokeista",
+      "masked": "_okeista",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "harmonia",
+      "masked": "_armonia",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "harfa",
+      "masked": "_arfa",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "hobby",
+      "masked": "_obby",
+      "category": "ch/h",
+      "difficulty": 1
+    },
+    {
+      "word": "wahadło",
+      "masked": "wa_adło",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "druh",
+      "masked": "dru_",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "druhna",
+      "masked": "dru_na",
+      "category": "ch/h",
+      "difficulty": 2
+    },
+    {
+      "word": "ciocia",
+      "masked": "_ocia",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "cień",
+      "masked": "_eń",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "ciepło",
+      "masked": "_epło",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "ciemno",
+      "masked": "_emno",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "ćma",
+      "masked": "_ma",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "spać",
+      "masked": "spa_",
+      "category": "ć/ci",
+      "difficulty": 1
+    },
+    {
+      "word": "siostra",
+      "masked": "_ostra",
+      "category": "ś/si",
+      "difficulty": 2
+    },
+    {
+      "word": "siano",
+      "masked": "_ano",
+      "category": "ś/si",
+      "difficulty": 1
+    },
+    {
+      "word": "sierpień",
+      "masked": "_erpień",
+      "category": "ś/si",
+      "difficulty": 2
+    },
+    {
+      "word": "siedzieć",
+      "masked": "_edzieć",
+      "category": "ś/si",
+      "difficulty": 2
+    },
+    {
+      "word": "świat",
+      "masked": "_wiat",
+      "category": "ś/si",
+      "difficulty": 1
+    },
+    {
+      "word": "środa",
+      "masked": "_roda",
+      "category": "ś/si",
+      "difficulty": 1
+    },
+    {
+      "word": "ślimak",
+      "masked": "_limak",
+      "category": "ś/si",
+      "difficulty": 1
+    },
+    {
+      "word": "ślad",
+      "masked": "_lad",
+      "category": "ś/si",
+      "difficulty": 1
+    },
+    {
+      "word": "ziarno",
+      "masked": "_arno",
+      "category": "ź/zi",
+      "difficulty": 1
+    },
+    {
+      "word": "źrebak",
+      "masked": "_rebak",
+      "category": "ź/zi",
+      "difficulty": 2
+    },
+    {
+      "word": "źle",
+      "masked": "_le",
+      "category": "ź/zi",
+      "difficulty": 1
+    },
+    {
+      "word": "woźny",
+      "masked": "wo_ny",
+      "category": "ź/zi",
+      "difficulty": 1
+    },
+    {
+      "word": "groźny",
+      "masked": "gro_ny",
+      "category": "ź/zi",
+      "difficulty": 1
+    },
+    {
+      "word": "niedziela",
+      "masked": "_edziela",
+      "category": "ń/ni",
+      "difficulty": 2
+    },
+    {
+      "word": "niebieski",
+      "masked": "_ebieski",
+      "category": "ń/ni",
+      "difficulty": 2
+    },
+    {
+      "word": "anioł",
+      "masked": "a_oł",
+      "category": "ń/ni",
+      "difficulty": 1
+    },
+    {
+      "word": "koniec",
+      "masked": "ko_ec",
+      "category": "ń/ni",
+      "difficulty": 1
+    },
+    {
+      "word": "bańka",
+      "masked": "ba_ka",
+      "category": "ń/ni",
+      "difficulty": 1
+    },
+    {
+      "word": "tańczyć",
+      "masked": "ta_czyć",
+      "category": "ń/ni",
+      "difficulty": 2
+    },
+    {
+      "word": "kończyć",
+      "masked": "ko_czyć",
+      "category": "ń/ni",
+      "difficulty": 2
+    },
+    {
+      "word": "hańba",
+      "masked": "ha_ba",
+      "category": "ń/ni",
+      "difficulty": 2
+    },
+    {
+      "word": "dzik",
+      "masked": "_k",
+      "category": "dź/dzi",
+      "difficulty": 1
+    },
+    {
+      "word": "dziadek",
+      "masked": "_adek",
+      "category": "dź/dzi",
+      "difficulty": 1
+    },
+    {
+      "word": "dziewczyna",
+      "masked": "_ewczyna",
+      "category": "dź/dzi",
+      "difficulty": 2
+    },
+    {
+      "word": "dźwig",
+      "masked": "_wig",
+      "category": "dź/dzi",
+      "difficulty": 2
+    },
+    {
+      "word": "dźwięk",
+      "masked": "_więk",
+      "category": "dź/dzi",
+      "difficulty": 2
+    },
+    {
+      "word": "dźwięczny",
+      "masked": "_więczny",
+      "category": "dź/dzi",
+      "difficulty": 2
+    },
+    {
+      "word": "dźwignia",
+      "masked": "_wignia",
+      "category": "dź/dzi",
+      "difficulty": 2
+    },
+    {
+      "word": "niedźwiedź",
+      "masked": "nie_wiedź",
+      "category": "dź/dzi",
+      "difficulty": 2
+    }
+  ]
+}

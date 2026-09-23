@@ -19,7 +19,8 @@ words = {word['word'] for path in (ROOT / 'data').glob('words-*.json')
          for word in json.loads(path.read_text())}
 worker = (ROOT / 'sw.js').read_text()
 uploaded = json.loads((ROOT / 'assets/scenes/uploaded-batch-v25.json').read_text())
-for entry in uploaded['images']:
+generated = json.loads((ROOT / 'assets/scenes/generated-batch-v26.json').read_text())
+for entry in uploaded['images'] + generated['images']:
     asset = entry['asset']
     for word in entry['words']:
         mapping = rf"\['{re.escape(word)}',\s*\{{[^}}]*asset:\s*'{re.escape(asset)}'"

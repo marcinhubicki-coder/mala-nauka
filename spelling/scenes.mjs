@@ -46,6 +46,17 @@ export const SCENES = new Map([
 ]);
 
 export const WORD_SCENES = new Map([
+  // Generated batch v26; prompts and provenance in assets/scenes/generated-batch-v26.json.
+  ['żubr', { key:'zubr', asset:'zubr.webp', layouts:['bubble'] }],
+  ['żyrafa', { key:'zyrafa', asset:'zyrafa.webp', layouts:['bubble'] }],
+  ['żuk', { key:'zuk', asset:'zuk.webp', layouts:['bubble'] }],
+  ['żmija', { key:'zmija', asset:'zmija.webp', layouts:['bubble'] }],
+  ['żuraw', { key:'zuraw', asset:'zuraw.webp', layouts:['bubble'] }],
+  ['żagiel', { key:'zagiel', asset:'zagiel.webp', layouts:['bubble'] }],
+  ['nożyczki', { key:'nozyczki', asset:'nozyczki.webp', layouts:['bubble'] }],
+  ['łyżwy', { key:'lyzwy', asset:'lyzwy.webp', layouts:['bubble'] }],
+  ['huśtawka', { key:'hustawka', asset:'hustawka.webp', layouts:['bubble'] }],
+  ['helikopter', { key:'helikopter', asset:'helikopter.webp', layouts:['bubble'] }],
   // Uploaded narrative batch v25; provenance: assets/scenes/uploaded-batch-v25.json.
   ['dół', { key:'dol', asset:'dol.webp', layouts:['bubble'] }],
   ['dziura', { key:'dol', asset:'dol.webp', layouts:['bubble'] }],
@@ -191,6 +202,6 @@ export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
   const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
-  url.searchParams.set('v', '25-uploaded-scenes');
+  url.searchParams.set('v', '26-generated-scenes');
   return url.href;
 }

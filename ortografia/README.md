@@ -1,5 +1,15 @@
 # Ortografia — płynna scena, poprawka v22
 
+## Aktualizacja v26 — dziesięć nowych ilustracji
+
+Przed każdą kolejną paczką uruchom `node scripts/report_spelling_coverage.mjs`. Raport korzysta z rzeczywistych przypisań gry, nie z historycznych plansz w `temp/`. Aktualna lista to `ortografia/missing-scenes.json`; wybieraj kolejne słowa z tablicy `missing`. Po integracji odśwież raport i sprawdź go przez `node scripts/report_spelling_coverage.mjs --check`. Samo przypisanie obrazu nie jest oceną jakości jego dopasowania semantycznego.
+
+Dodano osobne ilustracje do słów: **żubr, żyrafa, żuk, żmija, żuraw, żagiel, nożyczki, łyżwy, huśtawka, helikopter**. Żuraw przedstawia ptaka, żmija ma charakterystyczny zygzak, a łyżwy widoczne płozy. Każda scena powstała osobno we wbudowanym generatorze obrazów, bez napisów, interfejsu i narysowanej maski. Pełne prompty i przypisania znajdują się w `assets/scenes/generated-batch-v26.json`; grafiki runtime w `assets/scenes/*.webp` (1080 × 1080 px, jakość 80).
+
+Aktualnie **183 z 404 słów** ma przypisaną ilustrację (**77 różnych scen**); 221 słów pozostaje bez obrazu. Nowe sceny uwzględniono w cache PWA v26 i walidatorze. Nie zmieniano geometrii ani animacji gry.
+
+Podgląd tylko tej paczki: `/ortografia/?assets=1&scene=zubr,zyrafa,zuk,zmija,zuraw,zagiel,nozyczki,lyzwy,hustawka,helikopter`.
+
 ## Aktualizacja v25 — pełna paczka użytkownika
 
 Wczytano 36 PNG 1254 × 1254 px. Trzydzieści nowych scen wyeksportowano do WebP 1080 × 1080, jakość 80, bez rozciągania. Sześć scen (sól, kółko, muszla, kura, pudełko, budzik) było już w grze — pozostawiono istniejące pliki bez dublowania. Nie generowano dodatkowych ilustracji.

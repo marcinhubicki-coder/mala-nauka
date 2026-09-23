@@ -1,6 +1,8 @@
 # Ortografia — temp assets
 
-Katalog przejściowy do przeglądu brakujących grafik. **Nie jest podłączony do gry** i nie zmienia `spelling/scenes.mjs`.
+Katalog przejściowy do przeglądu brakujących grafik. Siedem gotowych ilustracji z `generated-map.json` jest od v24 podłączonych do gry: miód, sól, kółko, kura, budzik, muszla i pudełko. Kopie runtime znajdują się w `assets/scenes/`, przypisania w `spelling/scenes.mjs`, a pliki są uwzględnione w cache PWA.
+
+Poniższe liczby oraz `manifest.json`, `missing-assets.csv` i plansze SVG są **historycznym wykazem braków sprzed integracji**, nie aktualnym rejestrem gry. Obecnie 134 słowa mają ilustrację, 270 pozostaje bez niej. Same kafelki/symbole na planszach nie są docelowymi ilustracjami.
 
 - baza słów: 404
 - słowa z już istniejącym assetem: 127
@@ -24,4 +26,4 @@ Katalog przejściowy do przeglądu brakujących grafik. **Nie jest podłączony 
 - `missing-assets.csv` — ta sama lista w formie tabeli
 - `sheets/*.svg` — plansze przeglądowe kandydatów, po jednym kafelku na brakujące słowo
 
-Grafiki są celowo odseparowane od katalogu produkcyjnego. Po akceptacji konkretne kafelki można zastąpić docelowymi ilustracjami i dopiero wtedy przenieść do `assets/scenes/` oraz dodać mapowanie w kodzie.
+Pozostałe propozycje są odseparowane od katalogu produkcyjnego. Po przygotowaniu kolejnych docelowych ilustracji trzeba przenieść je do `assets/scenes/`, dodać mapowanie w kodzie oraz cache PWA i uruchomić walidator. Sam commit plików do `temp/` nie udostępnia ich w grze.

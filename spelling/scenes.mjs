@@ -46,6 +46,15 @@ export const SCENES = new Map([
 ]);
 
 export const WORD_SCENES = new Map([
+  // Approved narrative illustrations promoted from the temporary review batch.
+  ['miód', { key:'miod', asset:'miod.webp', layouts:['bubble'] }],
+  ['sól', { key:'sol', asset:'sol.webp', layouts:['bubble'] }],
+  ['kółko', { key:'kolko', asset:'kolko.webp', layouts:['bubble'] }],
+  ['kura', { key:'kura', asset:'kura.webp', layouts:['bubble'] }],
+  ['budzik', { key:'budzik', asset:'budzik.webp', layouts:['bubble'] }],
+  ['muszla', { key:'muszla', asset:'muszla.webp', layouts:['bubble'] }],
+  ['pudełko', { key:'pudelko', asset:'pudelko.webp', layouts:['bubble'] }],
+
   // Distinct prepared illustrations added in v23.
   ['drzewo', { key:'drzewo', asset:'drzewo.webp', layouts:['bubble'] }],
   ['zima', { key:'zima', asset:'zima.webp', layouts:['bubble'] }],
@@ -141,6 +150,6 @@ export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
   const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
-  url.searchParams.set('v', '23-art-library');
+  url.searchParams.set('v', '24-narrative-assets');
   return url.href;
 }

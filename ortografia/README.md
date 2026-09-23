@@ -63,3 +63,11 @@ Dodano sześć pominiętych scen ze wcześniej przygotowanych oryginałów. Wszy
 Razem 923 588 bajtów nowych obrazów. Baza ma 404 słowa, z czego 127 ma przypisanie do ilustracji (30 różnych plików; część przypisań jest kontekstowa). 277 słów nadal nie ma obrazu: potrzebują kolejnego etapu przygotowania grafik, a nie przypadkowego przypisania istniejącej sceny. Nie generowano nowych obrazów.
 
 Podgląd tylko tej paczki: `/ortografia/?assets=1&scene=sokol,huragan,drzewo,zima,ogorek,wiewiorka`. Parametr `scene` przyjmuje pojedynczy klucz lub listę oddzieloną przecinkami.
+
+## Integracja paczki narracyjnej w v24
+
+Siedem gotowych WebP z `temp/ortografia-assets/generated/` skopiowano bez rekompresji do `assets/scenes/` i przypisano po pełnym słowie: miód → `miod.webp`, sól → `sol.webp`, kółko → `kolko.webp`, kura → `kura.webp`, budzik → `budzik.webp`, muszla → `muszla.webp`, pudełko → `pudelko.webp`. Wszystkie mają 1080 × 1080 px; razem 798 872 bajty. Nie generowano nowych grafik ani nie zmieniano wyglądu bańki.
+
+Aktualnie 134 z 404 słów mają przypisanie (37 różnych obrazów); 270 nadal wymaga ilustracji. Historyczne plansze SVG w `temp/` to propozycje, a nie gotowe obrazy do gry. Zaktualizowano wersje modułów i cache PWA; nowe pliki są dostępne offline po instalacji cache. Walidator sprawdza też przypisania paczki do istniejących słów, zgodność plików z oryginałami i obecność w cache.
+
+Podgląd nowej paczki: `/ortografia/?assets=1&scene=miod,sol,kolko,kura,budzik,muszla,pudelko`. Można też wybrać pojedyncze słowo, np. `/ortografia/?word=miód`.

@@ -2,7 +2,7 @@ import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=2';
 import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs';
 import { FLAGS } from './data/flags.mjs';
-import { filterSpellingPreview } from './spelling/preview.mjs?v=23-art-library';
+import { filterSpellingPreview } from './spelling/preview.mjs?v=24-narrative-assets';
 export const MODES = {
  spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Podstawowe','Trudne']},
  math: {name:'Matematyka',icon:'1+2',hint:'Małe działania, wielkie odkrycia',color:'blue',categories:[['all','Mieszane'],['add','Dodawanie'],['subtract','Odejmowanie'],['multiply','Mnożenie'],['divide','Dzielenie']],levels:['Łatwe','Średnie','Trudne']},

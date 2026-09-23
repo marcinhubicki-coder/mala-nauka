@@ -1,6 +1,7 @@
 {
   "batch": "2026-09-21-01",
-  "status": "temp-unwired",
+  "status": "integrated-v24",
+  "runtimeDirectory": "assets/scenes/",
   "format": "webp",
   "resolution": "1080x1080",
   "alternatives": false,

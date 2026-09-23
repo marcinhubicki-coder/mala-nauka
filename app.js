@@ -1,7 +1,7 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=24-narrative-assets';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=24-narrative-assets';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=25-uploaded-scenes';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=25-uploaded-scenes';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs';
-import { createSpellingArt } from './spelling/art.mjs?v=24-narrative-assets';
+import { createSpellingArt } from './spelling/art.mjs?v=25-uploaded-scenes';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';

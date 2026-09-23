@@ -1,4 +1,4 @@
-import { SCENES, sceneFor } from './scenes.mjs?v=24-narrative-assets';
+import { SCENES, sceneFor } from './scenes.mjs?v=25-uploaded-scenes';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');

@@ -1,5 +1,13 @@
 # Ortografia — płynna scena, poprawka v22
 
+## Aktualizacja v25 — pełna paczka użytkownika
+
+Wczytano 36 PNG 1254 × 1254 px. Trzydzieści nowych scen wyeksportowano do WebP 1080 × 1080, jakość 80, bez rozciągania. Sześć scen (sól, kółko, muszla, kura, pudełko, budzik) było już w grze — pozostawiono istniejące pliki bez dublowania. Nie generowano dodatkowych ilustracji.
+
+Dokładny wykaz źródło → plik → słowa znajduje się w `assets/scenes/uploaded-batch-v25.json`. Nowe sceny obsługują 39 słów; tam, gdzie obraz jest jednoznaczny, wykorzystano go również dla bliskiego znaczenia, np. dół/dziura, rzut/rzucić, wrócić/powrót. W grze jest teraz **173 z 404 słów z ilustracjami i 67 różnych scen**. Pozostałe 231 słów nadal nie ma przypisania; nie wypełniamy ich przypadkowymi obrazami.
+
+Nowe sceny dodano do cache PWA v25. Walidator sprawdza dekodowanie wszystkich obrazów, przypisania całej paczki i dostępność offline. Podgląd wszystkich ilustrowanych słów: `/ortografia/?assets=1`, pojedynczego nowego obrazu: `/ortografia/?word=trzmiel`. Starsze sekcje poniżej opisują stan historyczny.
+
 Aktualny widok działa na branchu `design/spelling-bubble-v0.4`. Podgląd: `/ortografia/?assets=1&scene=bunny`; wybierz czas i rozpocznij rundę. Bez `scene` losują się ilustracje. `?assets=0` udostępnia również słowa bez ilustracji, a `?word=dźwig&assets=0` pozwala obejrzeć konkretny zapis.
 
 ## Co zostaje na ekranie

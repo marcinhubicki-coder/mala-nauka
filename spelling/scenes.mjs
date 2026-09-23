@@ -46,6 +46,47 @@ export const SCENES = new Map([
 ]);
 
 export const WORD_SCENES = new Map([
+  // Uploaded narrative batch v25; provenance: assets/scenes/uploaded-batch-v25.json.
+  ['dół', { key:'dol', asset:'dol.webp', layouts:['bubble'] }],
+  ['dziura', { key:'dol', asset:'dol.webp', layouts:['bubble'] }],
+  ['ból', { key:'bol', asset:'bol.webp', layouts:['bubble'] }],
+  ['późno', { key:'pozno', asset:'pozno.webp', layouts:['bubble'] }],
+  ['późny', { key:'pozno', asset:'pozno.webp', layouts:['bubble'] }],
+  ['później', { key:'pozniej', asset:'pozniej.webp', layouts:['bubble'] }],
+  ['wrócić', { key:'wrocic', asset:'wrocic.webp', layouts:['bubble'] }],
+  ['powrót', { key:'wrocic', asset:'wrocic.webp', layouts:['bubble'] }],
+  ['próba', { key:'proba', asset:'proba.webp', layouts:['bubble'] }],
+  ['pusty', { key:'pusty', asset:'pusty.webp', layouts:['bubble'] }],
+  ['rząd', { key:'rzad', asset:'rzad.webp', layouts:['bubble'] }],
+  ['równo', { key:'rowno', asset:'rowno.webp', layouts:['bubble'] }],
+  ['równy', { key:'rowno', asset:'rowno.webp', layouts:['bubble'] }],
+  ['różny', { key:'rozny', asset:'rozny.webp', layouts:['bubble'] }],
+  ['różnica', { key:'rozny', asset:'rozny.webp', layouts:['bubble'] }],
+  ['krzesło', { key:'krzeslo', asset:'krzeslo.webp', layouts:['bubble'] }],
+  ['wrzesień', { key:'wrzesien', asset:'wrzesien.webp', layouts:['bubble'] }],
+  ['rzęsa', { key:'rzesa', asset:'rzesa.webp', layouts:['bubble'] }],
+  ['rzut', { key:'rzut', asset:'rzut.webp', layouts:['bubble'] }],
+  ['rzucić', { key:'rzut', asset:'rzut.webp', layouts:['bubble'] }],
+  ['grzejnik', { key:'grzejnik', asset:'grzejnik.webp', layouts:['bubble'] }],
+  ['grzać', { key:'grzejnik', asset:'grzejnik.webp', layouts:['bubble'] }],
+  ['ogrzać', { key:'grzejnik', asset:'grzejnik.webp', layouts:['bubble'] }],
+  ['drzwi', { key:'drzwi', asset:'drzwi.webp', layouts:['bubble'] }],
+  ['drzemka', { key:'drzemka', asset:'drzemka.webp', layouts:['bubble'] }],
+  ['trzmiel', { key:'trzmiel', asset:'trzmiel.webp', layouts:['bubble'] }],
+  ['choinka', { key:'choinka', asset:'choinka.webp', layouts:['bubble'] }],
+  ['chomik', { key:'chomik', asset:'chomik.webp', layouts:['bubble'] }],
+  ['głód', { key:'glod', asset:'glod.webp', layouts:['bubble'] }],
+  ['próg', { key:'prog', asset:'prog.webp', layouts:['bubble'] }],
+  ['wzór', { key:'wzor', asset:'wzor.webp', layouts:['bubble'] }],
+  ['gumka', { key:'gumka', asset:'gumka.webp', layouts:['bubble'] }],
+  ['muzyka', { key:'muzyka', asset:'muzyka.webp', layouts:['bubble'] }],
+  ['utwór', { key:'muzyka', asset:'muzyka.webp', layouts:['bubble'] }],
+  ['sufit', { key:'sufit', asset:'sufit.webp', layouts:['bubble'] }],
+  ['szuflada', { key:'szuflada', asset:'szuflada.webp', layouts:['bubble'] }],
+  ['tuba', { key:'tuba', asset:'tuba.webp', layouts:['bubble'] }],
+  ['tunel', { key:'tunel', asset:'tunel.webp', layouts:['bubble'] }],
+  ['upominek', { key:'upominek', asset:'upominek.webp', layouts:['bubble'] }],
+
   // Approved narrative illustrations promoted from the temporary review batch.
   ['miód', { key:'miod', asset:'miod.webp', layouts:['bubble'] }],
   ['sól', { key:'sol', asset:'sol.webp', layouts:['bubble'] }],
@@ -150,6 +191,6 @@ export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
   const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
-  url.searchParams.set('v', '24-narrative-assets');
+  url.searchParams.set('v', '25-uploaded-scenes');
   return url.href;
 }

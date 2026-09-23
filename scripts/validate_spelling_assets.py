@@ -18,6 +18,15 @@ batch = json.loads((batch_dir / 'generated-map.json').read_text())
 words = {word['word'] for path in (ROOT / 'data').glob('words-*.json')
          for word in json.loads(path.read_text())}
 worker = (ROOT / 'sw.js').read_text()
+uploaded = json.loads((ROOT / 'assets/scenes/uploaded-batch-v25.json').read_text())
+for entry in uploaded['images']:
+    asset = entry['asset']
+    for word in entry['words']:
+        mapping = rf"\['{re.escape(word)}',\s*\{{[^}}]*asset:\s*'{re.escape(asset)}'"
+        if word not in words or not re.search(mapping, registry):
+            failures.append(f'{word}: uploaded image is not wired to an existing word')
+    if f"'./assets/scenes/{asset}'" not in worker:
+        failures.append(f'{asset}: uploaded image missing from offline cache')
 if batch['status'].startswith('integrated'):
     for source, word in batch['files'].items():
         asset = Path(source).name

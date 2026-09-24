@@ -14,13 +14,12 @@ export function createBubble(host) {
       </linearGradient>
       <radialGradient id="${id}-film" cx=".36" cy=".25" r=".86"><stop stop-color="#fff" stop-opacity=".035"/><stop offset=".58" stop-color="#e8f7ff" stop-opacity=".012"/><stop offset=".82" stop-color="#ccbaff" stop-opacity=".09"/><stop offset=".94" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".68"/></radialGradient>
       <linearGradient id="${id}-sheen" x1=".12" y1=".08" x2=".88" y2=".94"><stop stop-color="#fff" stop-opacity=".34"/><stop offset=".24" stop-color="#fff" stop-opacity=".03"/><stop offset=".62" stop-color="#c8f2ff" stop-opacity=".02"/><stop offset=".9" stop-color="#f4c9ff" stop-opacity=".14"/></linearGradient>
-      <radialGradient id="${id}-shadow" cx=".5" cy=".58" r=".58"><stop offset=".58" stop-color="#4f447c" stop-opacity=".11"/><stop offset=".82" stop-color="#5a4b86" stop-opacity=".055"/><stop offset="1" stop-color="#5a4b86" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-empty"><stop stop-color="#fff8ed" stop-opacity=".72"/><stop offset=".6" stop-color="#d7d9ff" stop-opacity=".24"/><stop offset="1" stop-color="#b3ebf4" stop-opacity=".4"/></radialGradient>
       <radialGradient id="${id}-star"><stop stop-color="#fff"/><stop offset=".27" stop-color="#fff9df" stop-opacity=".85"/><stop offset="1" stop-color="#ffe4a5" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-orb" cx=".3" cy=".22" r=".9"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".21" stop-color="#f7c5f8" stop-opacity=".55"/><stop offset=".55" stop-color="#c3e7ff" stop-opacity=".1"/><stop offset=".81" stop-color="#9fecfa" stop-opacity=".68"/><stop offset=".94" stop-color="#e6b2fc" stop-opacity=".88"/><stop offset="1" stop-color="#fff"/></radialGradient>
     </defs>
-    <ellipse class="soap-shadow" cx="200" cy="216" rx="170" ry="166" fill="url(#${id}-shadow)" opacity=".76"/>
-    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
+    <use href="#${id}-shape" class="soap-shadow" fill="#51456f" opacity=".052" transform="translate(0 7)"/>
+    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".055" transform="translate(0 4)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
       <image class="soap-picture soap-picture-a" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
@@ -60,31 +59,63 @@ export function createBubble(host) {
   let frame = 0, elapsed = Math.random() * 50, last = 0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
 
-  function point(angle, time) {
-    const radius = 169 + (9 + 1.5 * Math.sin(time*.24+seed[4])) * Math.sin(3*angle + .28*Math.sin(time*.22+seed[0]) + seed[1])
-      + 4.5*Math.sin(2*angle+time*.31+seed[2]) + 2.5*Math.sin(5*angle-time*.19+seed[3]);
-    return [200 + Math.cos(angle)*radius, 200 + Math.sin(angle)*radius];
-  }
+  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+  const wave=value=>(Math.sin(value)+1)*.5;
+  const inset=(phase,min,max,power=2.5)=>min+(max-min)*Math.pow(wave(phase),power);
+  const fmt=value=>value.toFixed(2);
+
+  // The source art remains a square. The mask now behaves like a soft squircle:
+  // top/bottom stay within 1–6% of the source edge, while each side can breathe
+  // between 1–20%. Side phases are offset so the shape "bounces" rather than
+  // simply shrinking around the centre.
   function draw(time) {
-    const count=18, points = Array.from({length:count}, (_,i) => point(i/count*TAU,time));
-    const xy=p=>p.map(v=>v.toFixed(2)).join(' ');
-    let contour=`M${xy(points[0])}`;
-    for(let i=0;i<count;i++){
-      const a=points[(i+count-1)%count],b=points[i],c=points[(i+1)%count],d=points[(i+2)%count];
-      contour+=`C${xy([b[0]+(c[0]-a[0])/6,b[1]+(c[1]-a[1])/6])} ${xy([c[0]-(d[0]-b[0])/6,c[1]-(d[1]-b[1])/6])} ${xy(c)}`;
-    }
-    shape.setAttribute('d',contour+'Z');
-    [-1.24,-.52].forEach((angle,index)=>{
-      const p=point(angle,time), prev=point(angle-.025,time), next=point(angle+.025,time);
-      const rotation=Math.atan2(next[1]-prev[1],next[0]-prev[0])*180/Math.PI;
-      glints[index].setAttribute('transform',`translate(${p[0]} ${p[1]}) rotate(${rotation})`);
-    });
+    const bounce=Math.sin(time*.92+seed[5])*8;
+    const left=clamp(inset(time*.67+seed[0],4,80,2.85)+bounce,4,80);
+    const right=clamp(inset(time*.67+seed[0]+2.36,4,80,2.85)-bounce,4,80);
+    const top=clamp(inset(time*.82+seed[1],4,24,2.35),4,24);
+    const bottom=clamp(inset(time*.76+seed[2]+1.43,4,24,2.35),4,24);
+
+    const xL=left, xR=400-right, yT=top, yB=400-bottom;
+    const width=xR-xL, height=yB-yT;
+    const maxRadius=Math.min(98,width*.31,height*.31);
+    const baseRadius=clamp(78+8*Math.sin(time*.71+seed[3]),62,maxRadius);
+    const corner=phase=>clamp(baseRadius+11*Math.sin(time*1.08+phase),56,maxRadius);
+    const rTL=corner(seed[0]),rTR=corner(seed[1]+.9),rBR=corner(seed[2]+1.8),rBL=corner(seed[3]+2.7);
+
+    // A few pixels of inward flex keep the outline organic without sacrificing
+    // useful image area or adding another filter/animation layer.
+    const topA=1.2+2.6*wave(time*1.31+seed[4]);
+    const topB=1.2+2.6*wave(time*1.17+seed[0]);
+    const rightA=1.5+3.4*wave(time*1.23+seed[1]);
+    const rightB=1.5+3.4*wave(time*1.09+seed[2]);
+    const bottomA=1.2+2.6*wave(time*1.19+seed[3]);
+    const bottomB=1.2+2.6*wave(time*1.29+seed[4]);
+    const leftA=1.5+3.4*wave(time*1.13+seed[5]);
+    const leftB=1.5+3.4*wave(time*1.25+seed[0]);
+    const k=.55228475;
+
+    const contour=[
+      `M${fmt(xL+rTL)} ${fmt(yT)}`,
+      `C${fmt(xL+rTL+width*.18)} ${fmt(yT+topA)} ${fmt(xR-rTR-width*.18)} ${fmt(yT+topB)} ${fmt(xR-rTR)} ${fmt(yT)}`,
+      `C${fmt(xR-rTR+k*rTR)} ${fmt(yT)} ${fmt(xR)} ${fmt(yT+rTR-k*rTR)} ${fmt(xR)} ${fmt(yT+rTR)}`,
+      `C${fmt(xR-rightA)} ${fmt(yT+rTR+height*.18)} ${fmt(xR-rightB)} ${fmt(yB-rBR-height*.18)} ${fmt(xR)} ${fmt(yB-rBR)}`,
+      `C${fmt(xR)} ${fmt(yB-rBR+k*rBR)} ${fmt(xR-rBR+k*rBR)} ${fmt(yB)} ${fmt(xR-rBR)} ${fmt(yB)}`,
+      `C${fmt(xR-rBR-width*.18)} ${fmt(yB-bottomA)} ${fmt(xL+rBL+width*.18)} ${fmt(yB-bottomB)} ${fmt(xL+rBL)} ${fmt(yB)}`,
+      `C${fmt(xL+rBL-k*rBL)} ${fmt(yB)} ${fmt(xL)} ${fmt(yB-rBL+k*rBL)} ${fmt(xL)} ${fmt(yB-rBL)}`,
+      `C${fmt(xL+leftA)} ${fmt(yB-rBL-height*.18)} ${fmt(xL+leftB)} ${fmt(yT+rTL+height*.18)} ${fmt(xL)} ${fmt(yT+rTL)}`,
+      `C${fmt(xL)} ${fmt(yT+rTL-k*rTL)} ${fmt(xL+rTL-k*rTL)} ${fmt(yT)} ${fmt(xL+rTL)} ${fmt(yT)}Z`
+    ].join('');
+    shape.setAttribute('d',contour);
+
+    const shimmer=Math.sin(time*1.12+seed[4]);
+    glints[0].setAttribute('transform',`translate(${fmt(xL+width*(.25+.018*shimmer))} ${fmt(yT+7)}) rotate(${fmt(-8+shimmer*3)})`);
+    glints[1].setAttribute('transform',`translate(${fmt(xR-5)} ${fmt(yT+height*(.34+.018*Math.sin(time*.97+seed[1])))}) rotate(${fmt(86+shimmer*4)})`);
   }
   function loop(now) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 2.6 : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * 3.15 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

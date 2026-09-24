@@ -61,70 +61,121 @@ export function createBubble(host) {
 
   const fmt=value=>value.toFixed(2);
   const sign=value=>value<0?-1:1;
+  const wave=value=>(Math.sin(value)+1)*.5;
   const cornerAngles=[.25,.75,1.25,1.75].map(value=>value*Math.PI);
   const primaryCorner=Math.floor(seed[0]/TAU*4)%4;
   const secondaryCorner=(primaryCorner+(seed[1]>Math.PI?1:3))%4;
   const angleDelta=(a,b)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
-  const cornerInfluence=(angle,corner,width=.46)=>{
-    const delta=Math.abs(angleDelta(angle,corner));
+  const influence=(angle,center,width,power=2)=>{
+    const delta=Math.abs(angleDelta(angle,center));
     if(delta>=width)return 0;
-    const phase=(delta/width)*(Math.PI*.5);
-    return Math.pow(Math.cos(phase),2.15);
+    return Math.pow(Math.cos(delta/width*Math.PI*.5),power);
   };
+  let membrane=null, membraneVelocity=null;
 
-  // Smooth organic squircle: 64 sampled points, each segment converted from
-  // closed Catmull-Rom to cubic Bezier. The base superellipse exposes about
-  // 85–90% of the square artwork; movement lives mostly in the corners.
+  // The outline behaves like a softly tensioned membrane rather than an
+  // animated rounded rectangle. Three control waves live on both the top and
+  // bottom edge; their motion is spread to neighbouring points before the
+  // closed Catmull-Rom spline is converted to cubic Beziers.
   function draw(time) {
     const count=64;
-    const exponent=3.65 + .16*Math.sin(time*.16+seed[4]);
-    const halfW=195.0 + .65*Math.sin(time*.14+seed[0]);
-    const halfH=195.0 + .60*Math.sin(time*.13+seed[1]);
-    const centerX=200 + 1.65*Math.sin(time*.17+seed[5]);
-    const centerY=200 + 1.05*Math.sin(time*.14+seed[2]);
+    const exponent=3.28 + .14*Math.sin(time*.15+seed[4]);
+    const halfW=196.4 + .45*Math.sin(time*.13+seed[0]);
+    const halfH=196.2 + .42*Math.sin(time*.12+seed[1]);
+    const centerX=200 + 1.45*Math.sin(time*.16+seed[5]);
+    const centerY=200 + .9*Math.sin(time*.13+seed[2]);
     const primaryAngle=cornerAngles[primaryCorner];
     const secondaryAngle=cornerAngles[secondaryCorner];
 
-    const points=Array.from({length:count},(_,i)=>{
+    const target=Array.from({length:count},(_,i)=>{
       const angle=i/count*TAU;
       const c=Math.cos(angle), s=Math.sin(angle);
       const power=2/exponent;
-      let x=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
-      let y=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
+      const baseX=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
+      const baseY=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
+      let dx=0, dy=0;
 
-      // Broad, slow waves keep the outline alive without making the frame busy.
-      const cornerWeight=Math.pow(Math.abs(Math.sin(2*angle)),2.45);
-      const edgeWeight=1-cornerWeight;
-      const cornerWave=cornerWeight*(
-        3.6*Math.sin(3*angle + time*.19 + seed[0]) +
-        2.0*Math.sin(5*angle - time*.13 + seed[1])
-      );
-      const edgeWave=edgeWeight*(
-        .85*Math.sin(2*angle + time*.13 + seed[2]) +
-        .55*Math.sin(4*angle - time*.10 + seed[3])
-      );
+      // Broad low-frequency breathing around the whole membrane.
+      const radial=.75*Math.sin(angle*2+time*.12+seed[0])
+        +.48*Math.sin(angle*3-time*.085+seed[3]);
+      dx+=c*radial; dy+=s*radial;
 
-      // One corner is always more "soap-bubble" rounded; a second one is softer.
-      // Their shoulders also breathe a little, which recreates the earlier blob feel.
-      const primary=cornerInfluence(angle,primaryAngle,.52);
-      const secondary=cornerInfluence(angle,secondaryAngle,.46);
-      const cornerRound=-(5.8+1.4*Math.sin(time*.16+seed[3]))*primary
-        -(3.1+.8*Math.sin(time*.14+seed[4]))*secondary;
-      const shoulderWave=2.0*primary*Math.sin(angle*2 + time*.15 + seed[5])
-        +1.15*secondary*Math.sin(angle*2 - time*.12 + seed[2]);
+      // Three shallow travelling control points across the top and bottom.
+      // They mostly move inward, so the frame keeps almost all of the artwork.
+      const topCenters=[-.34,0,.34].map(offset=>TAU*.75+offset);
+      const bottomCenters=[-.34,0,.34].map(offset=>TAU*.25+offset);
+      topCenters.forEach((center,index)=>{
+        const amount=.7+2.15*wave(time*(.14+index*.012)+seed[index]);
+        dy+=amount*influence(angle,center,.31,2.15);
+      });
+      bottomCenters.forEach((center,index)=>{
+        const amount=.7+2.15*wave(time*(.135+index*.011)+seed[index+2]);
+        dy-=amount*influence(angle,center,.31,2.15);
+      });
 
-      const local=cornerWave+edgeWave+cornerRound+shoulderWave;
-      x+=Math.cos(angle)*local;
-      y+=Math.sin(angle)*local;
-      return [x,y];
+      // Smaller side ripples stop the vertical edges from reading as a frame.
+      const leftCenters=[Math.PI-.23,Math.PI+.23];
+      const rightCenters=[-.23,.23];
+      leftCenters.forEach((center,index)=>{
+        dx+=( .55+1.35*wave(time*(.12+index*.014)+seed[index+1]) )
+          *influence(angle,center,.32,2.1);
+      });
+      rightCenters.forEach((center,index)=>{
+        dx-=( .55+1.35*wave(time*(.125+index*.013)+seed[index+3]) )
+          *influence(angle,center,.32,2.1);
+      });
+
+      // One corner forms a persistent soft bubble lobe; a second corner gets
+      // a lighter version. The shoulders are pulled slightly inward so the
+      // corner becomes a rounded wave instead of a geometric radius.
+      const cornerLobe=(corner,strength,phase)=>{
+        const core=influence(angle,corner,.27,1.8);
+        const shoulder=influence(angle,corner,.58,2.0)-core*.72;
+        const pulse=strength*(.82+.18*Math.sin(time*.14+phase));
+        const radialOffset=pulse*core-1.55*strength/6*shoulder;
+        dx+=c*radialOffset;
+        dy+=s*radialOffset;
+      };
+      cornerLobe(primaryAngle,5.6,seed[3]);
+      cornerLobe(secondaryAngle,3.25,seed[4]);
+
+      return [baseX+dx,baseY+dy];
     });
 
+    // Surface tension: each control point shares part of its intended movement
+    // with the first and second neighbours. A moving point therefore produces
+    // an arc, not a dent.
+    for(let pass=0;pass<3;pass++){
+      const previous=target.map(point=>point.slice());
+      for(let i=0;i<count;i++){
+        const p=previous[i];
+        const p1=previous[(i+count-1)%count], n1=previous[(i+1)%count];
+        const p2=previous[(i+count-2)%count], n2=previous[(i+2)%count];
+        target[i][0]=p[0]*.52+(p1[0]+n1[0])*.18+(p2[0]+n2[0])*.06;
+        target[i][1]=p[1]*.52+(p1[1]+n1[1])*.18+(p2[1]+n2[1])*.06;
+      }
+    }
+
+    // A damped spring adds the slight delayed response of a real soap film.
+    if(!membrane){
+      membrane=target.map(point=>point.slice());
+      membraneVelocity=target.map(()=>[0,0]);
+    }else{
+      for(let i=0;i<count;i++){
+        const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
+        velocity[0]=(velocity[0]+(goal[0]-point[0])*.105)*.79;
+        velocity[1]=(velocity[1]+(goal[1]-point[1])*.105)*.79;
+        point[0]+=velocity[0];
+        point[1]+=velocity[1];
+      }
+    }
+
+    const points=membrane;
     const xy=p=>p.map(fmt).join(' ');
-    const tension=.96;
+    const k=1/6;
     let contour=`M${xy(points[0])}`;
     for(let i=0;i<count;i++){
       const a=points[(i+count-1)%count], b=points[i], c=points[(i+1)%count], d=points[(i+2)%count];
-      const k=tension/6;
       const cp1=[b[0]+(c[0]-a[0])*k,b[1]+(c[1]-a[1])*k];
       const cp2=[c[0]-(d[0]-b[0])*k,c[1]-(d[1]-b[1])*k];
       contour+=`C${xy(cp1)} ${xy(cp2)} ${xy(c)}`;

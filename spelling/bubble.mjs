@@ -12,22 +12,29 @@ export function createBubble(host) {
       <linearGradient id="${id}-rainbow" x1="0" y1="0" x2="1" y2="1">
         <stop stop-color="#d4a8ff"/><stop offset=".14" stop-color="#f6bbf4"/><stop offset=".27" stop-color="#bcf5ff"/><stop offset=".40" stop-color="#c2c7ff"/><stop offset=".53" stop-color="#ffd4ee"/><stop offset=".67" stop-color="#beecff"/><stop offset=".81" stop-color="#e2b2ff"/><stop offset=".93" stop-color="#fff2d3"/><stop offset="1" stop-color="#d4c5ff"/>
       </linearGradient>
-      <radialGradient id="${id}-film" cx=".38" cy=".27" r=".8"><stop stop-color="#fff" stop-opacity=".08"/><stop offset=".64" stop-color="#d5efff" stop-opacity="0"/><stop offset=".86" stop-color="#d5c4ff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity=".65"/></radialGradient>
+      <radialGradient id="${id}-film" cx=".36" cy=".25" r=".86"><stop stop-color="#fff" stop-opacity=".035"/><stop offset=".58" stop-color="#e8f7ff" stop-opacity=".012"/><stop offset=".82" stop-color="#ccbaff" stop-opacity=".09"/><stop offset=".94" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".68"/></radialGradient>
+      <linearGradient id="${id}-sheen" x1=".12" y1=".08" x2=".88" y2=".94"><stop stop-color="#fff" stop-opacity=".34"/><stop offset=".24" stop-color="#fff" stop-opacity=".03"/><stop offset=".62" stop-color="#c8f2ff" stop-opacity=".02"/><stop offset=".9" stop-color="#f4c9ff" stop-opacity=".14"/></linearGradient>
+      <radialGradient id="${id}-innerLift" cx=".5" cy=".46" r=".68"><stop offset="0" stop-color="#fff" stop-opacity=".055"/><stop offset=".55" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-empty"><stop stop-color="#fff8ed" stop-opacity=".72"/><stop offset=".6" stop-color="#d7d9ff" stop-opacity=".24"/><stop offset="1" stop-color="#b3ebf4" stop-opacity=".4"/></radialGradient>
-      <filter id="${id}-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".75"/></filter>
       <radialGradient id="${id}-star"><stop stop-color="#fff"/><stop offset=".27" stop-color="#fff9df" stop-opacity=".85"/><stop offset="1" stop-color="#ffe4a5" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-orb" cx=".3" cy=".22" r=".9"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".21" stop-color="#f7c5f8" stop-opacity=".55"/><stop offset=".55" stop-color="#c3e7ff" stop-opacity=".1"/><stop offset=".81" stop-color="#9fecfa" stop-opacity=".68"/><stop offset=".94" stop-color="#e6b2fc" stop-opacity=".88"/><stop offset="1" stop-color="#fff"/></radialGradient>
     </defs>
-    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="24" opacity=".075" transform="translate(0 5)"/>
+    <use href="#${id}-shape" class="soap-shadow" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
+    <use href="#${id}-shape" class="soap-shadow" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
+    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
-      <image class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
-      <image class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
+      <image class="soap-picture soap-picture-a" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
+      <image class="soap-picture soap-picture-b" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
       <rect width="400" height="400" fill="url(#${id}-film)"/>
+      <rect width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
+      <rect width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
     </g>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="20" opacity=".42"/>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="10" opacity=".83"/>
-    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.65" opacity=".93"/>
+    <use href="#${id}-shape" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
+    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
+    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
+    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
+    <use href="#${id}-shape" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
     <use href="#${id}-shape" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
     <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
     <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
@@ -56,31 +63,144 @@ export function createBubble(host) {
   let frame = 0, elapsed = Math.random() * 50, last = 0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
 
-  function point(angle, time) {
-    const radius = 164 + (12 + 2 * Math.sin(time*.19+seed[4])) * Math.sin(3*angle + .23*Math.sin(time*.17+seed[0]) + seed[1])
-      + 6*Math.sin(2*angle+time*.23+seed[2]) + 3*Math.sin(5*angle-time*.13+seed[3]);
-    return [200 + Math.cos(angle)*radius, 200 + Math.sin(angle)*radius];
-  }
+  const fmt=value=>value.toFixed(2);
+  const sign=value=>value<0?-1:1;
+  const wave=value=>(Math.sin(value)+1)*.5;
+  const cornerAngles=[.25,.75,1.25,1.75].map(value=>value*Math.PI);
+  const primaryCorner=Math.floor(seed[0]/TAU*4)%4;
+  const secondaryCorner=(primaryCorner+(seed[1]>Math.PI?1:3))%4;
+  const angleDelta=(a,b)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
+  const influence=(angle,center,width,power=2)=>{
+    const delta=Math.abs(angleDelta(angle,center));
+    if(delta>=width)return 0;
+    return Math.pow(Math.cos(delta/width*Math.PI*.5),power);
+  };
+  let membrane=null, membraneVelocity=null;
+
+  // The outline behaves like a softly tensioned membrane rather than an
+  // animated rounded rectangle. Three control waves live on both the top and
+  // bottom edge; their motion is spread to neighbouring points before the
+  // closed Catmull-Rom spline is converted to cubic Beziers.
   function draw(time) {
-    const count=24, points = Array.from({length:count}, (_,i) => point(i/count*TAU,time));
-    const xy=p=>p.map(v=>v.toFixed(2)).join(' ');
+    const count=64;
+    const exponent=3.28 + .14*Math.sin(time*.15+seed[4]);
+    const halfW=196.4 + .45*Math.sin(time*.13+seed[0]);
+    const halfH=196.2 + .42*Math.sin(time*.12+seed[1]);
+    const centerX=200 + 1.45*Math.sin(time*.16+seed[5]);
+    const centerY=200 + .9*Math.sin(time*.13+seed[2]);
+    const primaryAngle=cornerAngles[primaryCorner];
+    const secondaryAngle=cornerAngles[secondaryCorner];
+
+    const target=Array.from({length:count},(_,i)=>{
+      const angle=i/count*TAU;
+      const c=Math.cos(angle), s=Math.sin(angle);
+      const power=2/exponent;
+      const baseX=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
+      const baseY=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
+      let dx=0, dy=0;
+
+      // Broad low-frequency breathing around the whole membrane.
+      const radial=1.15*Math.sin(angle*2+time*.12+seed[0])
+        +.78*Math.sin(angle*3-time*.085+seed[3]);
+      const drift=.42*Math.sin(time*.09+seed[0]+angle*1.7)
+        +.28*Math.sin(time*.065+seed[1]-angle*2.3);
+      dx+=c*(radial+drift); dy+=s*(radial+drift);
+
+      // Three shallow travelling control points across the top and bottom.
+      // They mostly move inward, so the frame keeps almost all of the artwork.
+      const topCenters=[-.34,0,.34].map(offset=>TAU*.75+offset);
+      const bottomCenters=[-.34,0,.34].map(offset=>TAU*.25+offset);
+      topCenters.forEach((center,index)=>{
+        const amount=.9+2.85*wave(time*(.14+index*.012)+seed[index]);
+        dy+=amount*influence(angle,center,.31,2.15);
+      });
+      bottomCenters.forEach((center,index)=>{
+        const amount=.9+2.85*wave(time*(.135+index*.011)+seed[index+2]);
+        dy-=amount*influence(angle,center,.31,2.15);
+      });
+
+      // Smaller side ripples stop the vertical edges from reading as a frame.
+      const leftCenters=[Math.PI-.23,Math.PI+.23];
+      const rightCenters=[-.23,.23];
+      leftCenters.forEach((center,index)=>{
+        dx+=( .7+1.75*wave(time*(.12+index*.014)+seed[index+1]) )
+          *influence(angle,center,.32,2.1);
+      });
+      rightCenters.forEach((center,index)=>{
+        dx-=( .7+1.75*wave(time*(.125+index*.013)+seed[index+3]) )
+          *influence(angle,center,.32,2.1);
+      });
+
+      // One corner forms a persistent soft bubble lobe; a second corner gets
+      // a lighter version. The shoulders are pulled slightly inward so the
+      // corner becomes a rounded wave instead of a geometric radius.
+      const cornerLobe=(corner,strength,phase)=>{
+        const core=influence(angle,corner,.27,1.8);
+        const shoulder=influence(angle,corner,.58,2.0)-core*.72;
+        const pulse=strength*(.82+.18*Math.sin(time*.14+phase));
+        const radialOffset=pulse*core-1.55*strength/6*shoulder;
+        dx+=c*radialOffset;
+        dy+=s*radialOffset;
+      };
+      cornerLobe(primaryAngle,6.4,seed[3]);
+      cornerLobe(secondaryAngle,3.9,seed[4]);
+
+      return [baseX+dx,baseY+dy];
+    });
+
+    // Surface tension: each control point shares part of its intended movement
+    // with the first and second neighbours. A moving point therefore produces
+    // an arc, not a dent.
+    for(let pass=0;pass<2;pass++){
+      const previous=target.map(point=>point.slice());
+      for(let i=0;i<count;i++){
+        const p=previous[i];
+        const p1=previous[(i+count-1)%count], n1=previous[(i+1)%count];
+        const p2=previous[(i+count-2)%count], n2=previous[(i+2)%count];
+        target[i][0]=p[0]*.60+(p1[0]+n1[0])*.15+(p2[0]+n2[0])*.05;
+        target[i][1]=p[1]*.60+(p1[1]+n1[1])*.15+(p2[1]+n2[1])*.05;
+      }
+    }
+
+    // A damped spring adds the slight delayed response of a real soap film.
+    if(!membrane){
+      membrane=target.map(point=>point.slice());
+      membraneVelocity=target.map(()=>[0,0]);
+    }else{
+      for(let i=0;i<count;i++){
+        const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
+        velocity[0]=(velocity[0]+(goal[0]-point[0])*.125)*.80;
+        velocity[1]=(velocity[1]+(goal[1]-point[1])*.125)*.80;
+        point[0]+=velocity[0];
+        point[1]+=velocity[1];
+      }
+    }
+
+    const points=membrane;
+    const xy=p=>p.map(fmt).join(' ');
+    const k=1/6;
     let contour=`M${xy(points[0])}`;
     for(let i=0;i<count;i++){
-      const a=points[(i+count-1)%count],b=points[i],c=points[(i+1)%count],d=points[(i+2)%count];
-      contour+=`C${xy([b[0]+(c[0]-a[0])/6,b[1]+(c[1]-a[1])/6])} ${xy([c[0]-(d[0]-b[0])/6,c[1]-(d[1]-b[1])/6])} ${xy(c)}`;
+      const a=points[(i+count-1)%count], b=points[i], c=points[(i+1)%count], d=points[(i+2)%count];
+      const cp1=[b[0]+(c[0]-a[0])*k,b[1]+(c[1]-a[1])*k];
+      const cp2=[c[0]-(d[0]-b[0])*k,c[1]-(d[1]-b[1])*k];
+      contour+=`C${xy(cp1)} ${xy(cp2)} ${xy(c)}`;
     }
     shape.setAttribute('d',contour+'Z');
-    [-1.24,-.52].forEach((angle,index)=>{
-      const p=point(angle,time), prev=point(angle-.025,time), next=point(angle+.025,time);
+
+    [10,22].forEach((pointIndex,index)=>{
+      const p=points[pointIndex];
+      const prev=points[(pointIndex+count-1)%count];
+      const next=points[(pointIndex+1)%count];
       const rotation=Math.atan2(next[1]-prev[1],next[0]-prev[0])*180/Math.PI;
-      glints[index].setAttribute('transform',`translate(${p[0]} ${p[1]}) rotate(${rotation})`);
+      glints[index].setAttribute('transform',`translate(${fmt(p[0])} ${fmt(p[1])}) rotate(${fmt(rotation)})`);
     });
   }
   function loop(now) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
-    if (!last || now-last >= 1000/30) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 1.8 : 0;
+    if (!last || now-last >= 1000/24) {
+      elapsed += last ? Math.min((now-last)/1000,.1) * 4.4 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

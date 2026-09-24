@@ -24,7 +24,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] progress::-webkit-progress-value{background:linear-gradient(90deg,#b969fa,#9c50f2,#8242df);border-radius:20px;box-shadow:inset 0 1px 2px #ffffff7a}
 #app[data-view="game"][data-mode="spelling"] progress::-moz-progress-bar{background:linear-gradient(90deg,#b969fa,#8242df);border-radius:20px}
 .spelling-title{grid-row:2;display:flex;align-items:center;justify-content:center;align-self:stretch;margin:0;white-space:nowrap;text-align:center;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(26px,8.1vw,38px);letter-spacing:-1.35px;line-height:1.3;color:var(--ink);text-shadow:0 2px 0 #ffffff48}
-.spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 22px);justify-self:center;pointer-events:none}
+.spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 36px);justify-self:center;pointer-events:none}
 .soap-svg{display:block;width:100%;height:100%;overflow:visible}
 .soap-picture{opacity:0}
 .soap-star{animation:soap-twinkle var(--spark-duration) ease-in-out var(--spark-delay) infinite;transform-box:fill-box;transform-origin:center}
@@ -77,5 +77,5 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 @media(orientation:landscape) and (max-height:500px){#app[data-view="game"][data-mode="spelling"]{--answer-space:0px;height:100dvh;max-width:840px;grid-template-columns:1fr 1fr;grid-template-rows:44px 38px minmax(50px,1fr) 70px 46px 22px;padding:8px 20px;gap:5px 20px}#app[data-view="game"][data-mode="spelling"] .game-bar{grid-column:1/-1}.spelling-title{grid-column:1/-1;grid-row:2;font-size:27px}.spelling-visual{grid-column:1;grid-row:3/7}#app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-column:2;grid-row:3}#app[data-view="game"][data-mode="spelling"] .answers{grid-column:2;grid-row:4}.spelling-action-row{grid-column:2;grid-row:5}#app[data-view="game"][data-mode="spelling"] .feedback{grid-column:2;grid-row:6}}
 @media(prefers-reduced-motion:reduce){.soap-star{opacity:.75}.soap-star,.soap-satellite,.bubble-glass,.word-spark{animation:none!important}}
 .spelling-title{word-spacing:3px}
-.spelling-visual{contain:layout paint style}
+.spelling-visual{contain:layout style;overflow:visible}
 #app.paused[data-mode="spelling"] .bubble-glass,#app.paused[data-mode="spelling"] .word-spark{animation-play-state:paused}

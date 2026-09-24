@@ -1,4 +1,4 @@
-import { SCENES, sceneFor } from './scenes.mjs?v=23-art-library';
+import { SCENES, sceneFor } from './scenes.mjs?v=26-generated-scenes';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');

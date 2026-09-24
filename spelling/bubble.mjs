@@ -14,23 +14,27 @@ export function createBubble(host) {
       </linearGradient>
       <radialGradient id="${id}-film" cx=".36" cy=".25" r=".86"><stop stop-color="#fff" stop-opacity=".035"/><stop offset=".58" stop-color="#e8f7ff" stop-opacity=".012"/><stop offset=".82" stop-color="#ccbaff" stop-opacity=".09"/><stop offset=".94" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".68"/></radialGradient>
       <linearGradient id="${id}-sheen" x1=".12" y1=".08" x2=".88" y2=".94"><stop stop-color="#fff" stop-opacity=".34"/><stop offset=".24" stop-color="#fff" stop-opacity=".03"/><stop offset=".62" stop-color="#c8f2ff" stop-opacity=".02"/><stop offset=".9" stop-color="#f4c9ff" stop-opacity=".14"/></linearGradient>
+      <radialGradient id="${id}-innerLift" cx=".5" cy=".46" r=".68"><stop offset="0" stop-color="#fff" stop-opacity=".055"/><stop offset=".55" stop-color="#fff" stop-opacity=".02"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-empty"><stop stop-color="#fff8ed" stop-opacity=".72"/><stop offset=".6" stop-color="#d7d9ff" stop-opacity=".24"/><stop offset="1" stop-color="#b3ebf4" stop-opacity=".4"/></radialGradient>
       <radialGradient id="${id}-star"><stop stop-color="#fff"/><stop offset=".27" stop-color="#fff9df" stop-opacity=".85"/><stop offset="1" stop-color="#ffe4a5" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-orb" cx=".3" cy=".22" r=".9"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".21" stop-color="#f7c5f8" stop-opacity=".55"/><stop offset=".55" stop-color="#c3e7ff" stop-opacity=".1"/><stop offset=".81" stop-color="#9fecfa" stop-opacity=".68"/><stop offset=".94" stop-color="#e6b2fc" stop-opacity=".88"/><stop offset="1" stop-color="#fff"/></radialGradient>
     </defs>
-    <use href="#${id}-shape" class="soap-shadow" fill="#51456f" opacity=".052" transform="translate(0 7)"/>
-    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".055" transform="translate(0 4)"/>
+    <use href="#${id}-shape" class="soap-shadow" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
+    <use href="#${id}-shape" class="soap-shadow" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
+    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
       <image class="soap-picture soap-picture-a" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
       <image class="soap-picture soap-picture-b" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
       <rect width="400" height="400" fill="url(#${id}-film)"/>
       <rect width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
+      <rect width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
     </g>
     <use href="#${id}-shape" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
     <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
     <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
-    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.55" opacity=".94"/>
+    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
+    <use href="#${id}-shape" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
     <use href="#${id}-shape" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
     <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
     <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
@@ -194,7 +198,7 @@ export function createBubble(host) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 2.6 : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * 3.4 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

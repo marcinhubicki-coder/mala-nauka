@@ -1,5 +1,5 @@
 import { sceneFor, sceneUrl } from './scenes.mjs?v=26-generated-scenes';
-import { createBubble } from './bubble.mjs?v=31-membrane';
+import { createBubble } from './bubble.mjs?v=32-glass-speed';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 

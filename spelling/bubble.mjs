@@ -200,7 +200,7 @@ export function createBubble(host) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 3.4 : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * 4.4 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

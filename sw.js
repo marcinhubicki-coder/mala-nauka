@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v33-livelier-morph';
+const CACHE='mala-nauka-spelling-v34-shadow-speed';
 const CORE=[
   './assets/scenes/zubr.webp',
   './assets/scenes/zyrafa.webp',
@@ -41,9 +41,9 @@ const CORE=[
   './assets/scenes/tunel.webp',
   './assets/scenes/upominek.webp',
 
-  './','./index.html','./app.css','./app.js','./app.js?v=33-livelier-morph','./module-router.js','./spelling-assets-setting.js',
+  './','./index.html','./app.css','./app.js','./app.js?v=34-shadow-speed','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=26-generated-scenes','./modes.mjs','./modes.mjs?v=26-generated-scenes','./progress.mjs',
-  './spelling-art.css','./spelling-art.css?v=27-bubble-polish','./debug-tools.js','./debug-tools.js?v=7',
+  './spelling-art.css','./spelling-art.css?v=34-shadow-speed','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
   './assets/ortografia/lake-background.webp','./assets/fonts/dynapuff-polish-700.woff',
   './assets/scenes/miod.webp','./assets/scenes/sol.webp','./assets/scenes/kolko.webp','./assets/scenes/kura.webp','./assets/scenes/budzik.webp','./assets/scenes/muszla.webp','./assets/scenes/pudelko.webp',
@@ -53,7 +53,7 @@ const CORE=[
   './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
   './assets/scenes/skora.webp','./assets/scenes/zolty.webp','./assets/scenes/stol.webp','./assets/scenes/samochod.webp',
   './assets/scenes/lekarz.avif','./assets/scenes/zaba.avif','./assets/scenes/grzyb.webp','./assets/scenes/schody.webp','./assets/scenes/jez.webp','./assets/scenes/ksiazka.webp',
-  './spelling/art.mjs','./spelling/art.mjs?v=33-livelier-morph','./spelling/bubble.mjs','./spelling/bubble.mjs?v=33-livelier-morph',
+  './spelling/art.mjs','./spelling/art.mjs?v=34-shadow-speed','./spelling/bubble.mjs','./spelling/bubble.mjs?v=34-shadow-speed',
   './spelling/hints.mjs','./spelling/preview.mjs','./spelling/preview.mjs?v=26-generated-scenes','./spelling/scenes.mjs','./spelling/scenes.mjs?v=26-generated-scenes','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=9-simple-text',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',

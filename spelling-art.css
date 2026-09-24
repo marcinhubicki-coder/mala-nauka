@@ -77,5 +77,5 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 @media(orientation:landscape) and (max-height:500px){#app[data-view="game"][data-mode="spelling"]{--answer-space:0px;height:100dvh;max-width:840px;grid-template-columns:1fr 1fr;grid-template-rows:44px 38px minmax(50px,1fr) 70px 46px 22px;padding:8px 20px;gap:5px 20px}#app[data-view="game"][data-mode="spelling"] .game-bar{grid-column:1/-1}.spelling-title{grid-column:1/-1;grid-row:2;font-size:27px}.spelling-visual{grid-column:1;grid-row:3/7}#app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-column:2;grid-row:3}#app[data-view="game"][data-mode="spelling"] .answers{grid-column:2;grid-row:4}.spelling-action-row{grid-column:2;grid-row:5}#app[data-view="game"][data-mode="spelling"] .feedback{grid-column:2;grid-row:6}}
 @media(prefers-reduced-motion:reduce){.soap-star{opacity:.75}.soap-star,.soap-satellite,.bubble-glass,.word-spark{animation:none!important}}
 .spelling-title{word-spacing:3px}
-.spelling-visual{contain:layout paint style}
+.spelling-visual{contain:layout style;overflow:visible}
 #app.paused[data-mode="spelling"] .bubble-glass,#app.paused[data-mode="spelling"] .word-spark{animation-play-state:paused}

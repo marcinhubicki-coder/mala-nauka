@@ -1,13 +1,13 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 186,
-  "uniqueImages": 80,
-  "missingWords": 218,
+  "assignedWords": 217,
+  "uniqueImages": 111,
+  "missingWords": 187,
   "missingByCategory": {
-    "u/ó": 43,
-    "rz/ż": 81,
-    "ch/h": 59,
+    "u/ó": 29,
+    "rz/ż": 65,
+    "ch/h": 58,
     "ć/ci": 6,
     "ś/si": 8,
     "ź/zi": 5,
@@ -100,12 +100,6 @@
       "difficulty": 1
     },
     {
-      "word": "szczegół",
-      "masked": "szczeg_ł",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
       "word": "ogół",
       "masked": "og_ł",
       "category": "u/ó",
@@ -136,12 +130,6 @@
       "difficulty": 2
     },
     {
-      "word": "umyć",
-      "masked": "_myć",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "umieć",
       "masked": "_mieć",
       "category": "u/ó",
@@ -154,12 +142,6 @@
       "difficulty": 2
     },
     {
-      "word": "ukryć",
-      "masked": "_kryć",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "buda",
       "masked": "b_da",
       "category": "u/ó",
@@ -168,12 +150,6 @@
     {
       "word": "murawa",
       "masked": "m_rawa",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "duży",
-      "masked": "d_ży",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -190,44 +166,8 @@
       "difficulty": 1
     },
     {
-      "word": "grupa",
-      "masked": "gr_pa",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "nuty",
-      "masked": "n_ty",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "kupić",
-      "masked": "k_pić",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "ludzie",
-      "masked": "l_dzie",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "lupa",
-      "masked": "l_pa",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "nudny",
       "masked": "n_dny",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "rudy",
-      "masked": "r_dy",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -244,34 +184,10 @@
       "difficulty": 1
     },
     {
-      "word": "ruszyć",
-      "masked": "r_szyć",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "sukienka",
-      "masked": "s_kienka",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
-      "word": "trudny",
-      "masked": "tr_dny",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "tutaj",
       "masked": "t_taj",
       "category": "u/ó",
       "difficulty": 1
-    },
-    {
-      "word": "autobus",
-      "masked": "a_tobus",
-      "category": "u/ó",
-      "difficulty": 2
     },
     {
       "word": "rzadki",
@@ -322,12 +238,6 @@
       "difficulty": 1
     },
     {
-      "word": "przyjaciel",
-      "masked": "p_yjaciel",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "sprzątać",
       "masked": "sp_ątać",
       "category": "rz/ż",
@@ -344,18 +254,6 @@
       "masked": "k_yż",
       "category": "rz/ż",
       "difficulty": 1
-    },
-    {
-      "word": "malarz",
-      "masked": "mala_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "piekarz",
-      "masked": "pieka_",
-      "category": "rz/ż",
-      "difficulty": 2
     },
     {
       "word": "piłkarz",
@@ -382,12 +280,6 @@
       "difficulty": 1
     },
     {
-      "word": "rycerz",
-      "masked": "ryce_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "talerz",
       "masked": "tale_",
       "category": "rz/ż",
@@ -402,12 +294,6 @@
     {
       "word": "cmentarz",
       "masked": "cmenta_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "korytarz",
-      "masked": "koryta_",
       "category": "rz/ż",
       "difficulty": 2
     },
@@ -446,18 +332,6 @@
       "masked": "po_eczka",
       "category": "rz/ż",
       "difficulty": 2
-    },
-    {
-      "word": "marzenie",
-      "masked": "ma_enie",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "marzyć",
-      "masked": "ma_yć",
-      "category": "rz/ż",
-      "difficulty": 1
     },
     {
       "word": "orzech",
@@ -574,12 +448,6 @@
       "difficulty": 1
     },
     {
-      "word": "życzenie",
-      "masked": "_yczenie",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "życzliwy",
       "masked": "_yczliwy",
       "category": "rz/ż",
@@ -622,30 +490,6 @@
       "difficulty": 2
     },
     {
-      "word": "odważny",
-      "masked": "odwa_ny",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "uważny",
-      "masked": "uwa_ny",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "podróż",
-      "masked": "podró_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "podróżnik",
-      "masked": "podró_nik",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "garaż",
       "masked": "gara_",
       "category": "rz/ż",
@@ -668,12 +512,6 @@
       "masked": "stra_",
       "category": "rz/ż",
       "difficulty": 1
-    },
-    {
-      "word": "strażak",
-      "masked": "stra_ak",
-      "category": "rz/ż",
-      "difficulty": 2
     },
     {
       "word": "kałuża",
@@ -724,12 +562,6 @@
       "difficulty": 1
     },
     {
-      "word": "drużyna",
-      "masked": "dru_yna",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "koleżanka",
       "masked": "kole_anka",
       "category": "rz/ż",
@@ -740,18 +572,6 @@
       "masked": "mę_czyzna",
       "category": "rz/ż",
       "difficulty": 2
-    },
-    {
-      "word": "ciężki",
-      "masked": "cię_ki",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "ciężar",
-      "masked": "cię_ar",
-      "category": "rz/ż",
-      "difficulty": 1
     },
     {
       "word": "ciężarówka",
@@ -818,12 +638,6 @@
       "masked": "_walić",
       "category": "ch/h",
       "difficulty": 2
-    },
-    {
-      "word": "chować",
-      "masked": "_ować",
-      "category": "ch/h",
-      "difficulty": 1
     },
     {
       "word": "chodzić",

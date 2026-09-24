@@ -61,17 +61,29 @@ export function createBubble(host) {
 
   const fmt=value=>value.toFixed(2);
   const sign=value=>value<0?-1:1;
+  const cornerAngles=[.25,.75,1.25,1.75].map(value=>value*Math.PI);
+  const primaryCorner=Math.floor(seed[0]/TAU*4)%4;
+  const secondaryCorner=(primaryCorner+(seed[1]>Math.PI?1:3))%4;
+  const angleDelta=(a,b)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
+  const cornerInfluence=(angle,corner,width=.46)=>{
+    const delta=Math.abs(angleDelta(angle,corner));
+    if(delta>=width)return 0;
+    const phase=(delta/width)*(Math.PI*.5);
+    return Math.pow(Math.cos(phase),2.15);
+  };
 
-  // Calm organic squircle. The square source image stays untouched; only the
-  // mask moves. Most of the frame remains visible (roughly 85–90%), while the
-  // corners carry most of the deformation so it still reads as a soap bubble.
+  // Smooth organic squircle: 64 sampled points, each segment converted from
+  // closed Catmull-Rom to cubic Bezier. The base superellipse exposes about
+  // 85–90% of the square artwork; movement lives mostly in the corners.
   function draw(time) {
-    const count=32;
-    const exponent=4.45 + .28*Math.sin(time*.18+seed[4]);
-    const halfW=193.5 + 1.8*Math.sin(time*.16+seed[0]);
-    const halfH=194.0 + 1.6*Math.sin(time*.14+seed[1]);
-    const centerX=200 + 2.8*Math.sin(time*.20+seed[5]);
-    const centerY=200 + 1.4*Math.sin(time*.15+seed[2]);
+    const count=64;
+    const exponent=3.65 + .16*Math.sin(time*.16+seed[4]);
+    const halfW=195.0 + .65*Math.sin(time*.14+seed[0]);
+    const halfH=195.0 + .60*Math.sin(time*.13+seed[1]);
+    const centerX=200 + 1.65*Math.sin(time*.17+seed[5]);
+    const centerY=200 + 1.05*Math.sin(time*.14+seed[2]);
+    const primaryAngle=cornerAngles[primaryCorner];
+    const secondaryAngle=cornerAngles[secondaryCorner];
 
     const points=Array.from({length:count},(_,i)=>{
       const angle=i/count*TAU;
@@ -80,33 +92,46 @@ export function createBubble(host) {
       let x=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
       let y=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
 
-      // Corner weight peaks around 45°, 135°, 225° and 315°. This allows up to
-      // ~10–12% local corner inset while the mid-sides remain close to 1–5%.
-      const cornerWeight=Math.pow(Math.abs(Math.sin(2*angle)),3.2);
+      // Broad, slow waves keep the outline alive without making the frame busy.
+      const cornerWeight=Math.pow(Math.abs(Math.sin(2*angle)),2.45);
       const edgeWeight=1-cornerWeight;
-      const cornerMorph=cornerWeight*(
-        7.0*Math.sin(3*angle + time*.24 + seed[0]) +
-        4.0*Math.sin(5*angle - time*.17 + seed[1])
+      const cornerWave=cornerWeight*(
+        3.6*Math.sin(3*angle + time*.19 + seed[0]) +
+        2.0*Math.sin(5*angle - time*.13 + seed[1])
       );
-      const edgeMorph=edgeWeight*(
-        1.6*Math.sin(2*angle + time*.16 + seed[2]) +
-        1.1*Math.sin(4*angle - time*.12 + seed[3])
+      const edgeWave=edgeWeight*(
+        .85*Math.sin(2*angle + time*.13 + seed[2]) +
+        .55*Math.sin(4*angle - time*.10 + seed[3])
       );
-      const local=cornerMorph+edgeMorph;
+
+      // One corner is always more "soap-bubble" rounded; a second one is softer.
+      // Their shoulders also breathe a little, which recreates the earlier blob feel.
+      const primary=cornerInfluence(angle,primaryAngle,.52);
+      const secondary=cornerInfluence(angle,secondaryAngle,.46);
+      const cornerRound=-(5.8+1.4*Math.sin(time*.16+seed[3]))*primary
+        -(3.1+.8*Math.sin(time*.14+seed[4]))*secondary;
+      const shoulderWave=2.0*primary*Math.sin(angle*2 + time*.15 + seed[5])
+        +1.15*secondary*Math.sin(angle*2 - time*.12 + seed[2]);
+
+      const local=cornerWave+edgeWave+cornerRound+shoulderWave;
       x+=Math.cos(angle)*local;
       y+=Math.sin(angle)*local;
       return [x,y];
     });
 
     const xy=p=>p.map(fmt).join(' ');
+    const tension=.96;
     let contour=`M${xy(points[0])}`;
     for(let i=0;i<count;i++){
       const a=points[(i+count-1)%count], b=points[i], c=points[(i+1)%count], d=points[(i+2)%count];
-      contour+=`C${xy([b[0]+(c[0]-a[0])/6,b[1]+(c[1]-a[1])/6])} ${xy([c[0]-(d[0]-b[0])/6,c[1]-(d[1]-b[1])/6])} ${xy(c)}`;
+      const k=tension/6;
+      const cp1=[b[0]+(c[0]-a[0])*k,b[1]+(c[1]-a[1])*k];
+      const cp2=[c[0]-(d[0]-b[0])*k,c[1]-(d[1]-b[1])*k];
+      contour+=`C${xy(cp1)} ${xy(cp2)} ${xy(c)}`;
     }
     shape.setAttribute('d',contour+'Z');
 
-    [5,11].forEach((pointIndex,index)=>{
+    [10,22].forEach((pointIndex,index)=>{
       const p=points[pointIndex];
       const prev=points[(pointIndex+count-1)%count];
       const next=points[(pointIndex+1)%count];

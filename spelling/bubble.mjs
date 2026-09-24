@@ -59,63 +59,66 @@ export function createBubble(host) {
   let frame = 0, elapsed = Math.random() * 50, last = 0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
 
-  const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
-  const wave=value=>(Math.sin(value)+1)*.5;
-  const inset=(phase,min,max,power=2.5)=>min+(max-min)*Math.pow(wave(phase),power);
   const fmt=value=>value.toFixed(2);
+  const sign=value=>value<0?-1:1;
 
-  // The source art remains a square. The mask now behaves like a soft squircle:
-  // top/bottom stay within 1–6% of the source edge, while each side can breathe
-  // between 1–20%. Side phases are offset so the shape "bounces" rather than
-  // simply shrinking around the centre.
+  // Calm organic squircle. The square source image stays untouched; only the
+  // mask moves. Most of the frame remains visible (roughly 85–90%), while the
+  // corners carry most of the deformation so it still reads as a soap bubble.
   function draw(time) {
-    const bounce=Math.sin(time*.92+seed[5])*8;
-    const left=clamp(inset(time*.67+seed[0],4,80,2.85)+bounce,4,80);
-    const right=clamp(inset(time*.67+seed[0]+2.36,4,80,2.85)-bounce,4,80);
-    const top=clamp(inset(time*.82+seed[1],4,24,2.35),4,24);
-    const bottom=clamp(inset(time*.76+seed[2]+1.43,4,24,2.35),4,24);
+    const count=32;
+    const exponent=4.45 + .28*Math.sin(time*.18+seed[4]);
+    const halfW=193.5 + 1.8*Math.sin(time*.16+seed[0]);
+    const halfH=194.0 + 1.6*Math.sin(time*.14+seed[1]);
+    const centerX=200 + 2.8*Math.sin(time*.20+seed[5]);
+    const centerY=200 + 1.4*Math.sin(time*.15+seed[2]);
 
-    const xL=left, xR=400-right, yT=top, yB=400-bottom;
-    const width=xR-xL, height=yB-yT;
-    const maxRadius=Math.min(98,width*.31,height*.31);
-    const baseRadius=clamp(78+8*Math.sin(time*.71+seed[3]),62,maxRadius);
-    const corner=phase=>clamp(baseRadius+11*Math.sin(time*1.08+phase),56,maxRadius);
-    const rTL=corner(seed[0]),rTR=corner(seed[1]+.9),rBR=corner(seed[2]+1.8),rBL=corner(seed[3]+2.7);
+    const points=Array.from({length:count},(_,i)=>{
+      const angle=i/count*TAU;
+      const c=Math.cos(angle), s=Math.sin(angle);
+      const power=2/exponent;
+      let x=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
+      let y=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
 
-    // A few pixels of inward flex keep the outline organic without sacrificing
-    // useful image area or adding another filter/animation layer.
-    const topA=1.2+2.6*wave(time*1.31+seed[4]);
-    const topB=1.2+2.6*wave(time*1.17+seed[0]);
-    const rightA=1.5+3.4*wave(time*1.23+seed[1]);
-    const rightB=1.5+3.4*wave(time*1.09+seed[2]);
-    const bottomA=1.2+2.6*wave(time*1.19+seed[3]);
-    const bottomB=1.2+2.6*wave(time*1.29+seed[4]);
-    const leftA=1.5+3.4*wave(time*1.13+seed[5]);
-    const leftB=1.5+3.4*wave(time*1.25+seed[0]);
-    const k=.55228475;
+      // Corner weight peaks around 45°, 135°, 225° and 315°. This allows up to
+      // ~10–12% local corner inset while the mid-sides remain close to 1–5%.
+      const cornerWeight=Math.pow(Math.abs(Math.sin(2*angle)),3.2);
+      const edgeWeight=1-cornerWeight;
+      const cornerMorph=cornerWeight*(
+        7.0*Math.sin(3*angle + time*.24 + seed[0]) +
+        4.0*Math.sin(5*angle - time*.17 + seed[1])
+      );
+      const edgeMorph=edgeWeight*(
+        1.6*Math.sin(2*angle + time*.16 + seed[2]) +
+        1.1*Math.sin(4*angle - time*.12 + seed[3])
+      );
+      const local=cornerMorph+edgeMorph;
+      x+=Math.cos(angle)*local;
+      y+=Math.sin(angle)*local;
+      return [x,y];
+    });
 
-    const contour=[
-      `M${fmt(xL+rTL)} ${fmt(yT)}`,
-      `C${fmt(xL+rTL+width*.18)} ${fmt(yT+topA)} ${fmt(xR-rTR-width*.18)} ${fmt(yT+topB)} ${fmt(xR-rTR)} ${fmt(yT)}`,
-      `C${fmt(xR-rTR+k*rTR)} ${fmt(yT)} ${fmt(xR)} ${fmt(yT+rTR-k*rTR)} ${fmt(xR)} ${fmt(yT+rTR)}`,
-      `C${fmt(xR-rightA)} ${fmt(yT+rTR+height*.18)} ${fmt(xR-rightB)} ${fmt(yB-rBR-height*.18)} ${fmt(xR)} ${fmt(yB-rBR)}`,
-      `C${fmt(xR)} ${fmt(yB-rBR+k*rBR)} ${fmt(xR-rBR+k*rBR)} ${fmt(yB)} ${fmt(xR-rBR)} ${fmt(yB)}`,
-      `C${fmt(xR-rBR-width*.18)} ${fmt(yB-bottomA)} ${fmt(xL+rBL+width*.18)} ${fmt(yB-bottomB)} ${fmt(xL+rBL)} ${fmt(yB)}`,
-      `C${fmt(xL+rBL-k*rBL)} ${fmt(yB)} ${fmt(xL)} ${fmt(yB-rBL+k*rBL)} ${fmt(xL)} ${fmt(yB-rBL)}`,
-      `C${fmt(xL+leftA)} ${fmt(yB-rBL-height*.18)} ${fmt(xL+leftB)} ${fmt(yT+rTL+height*.18)} ${fmt(xL)} ${fmt(yT+rTL)}`,
-      `C${fmt(xL)} ${fmt(yT+rTL-k*rTL)} ${fmt(xL+rTL-k*rTL)} ${fmt(yT)} ${fmt(xL+rTL)} ${fmt(yT)}Z`
-    ].join('');
-    shape.setAttribute('d',contour);
+    const xy=p=>p.map(fmt).join(' ');
+    let contour=`M${xy(points[0])}`;
+    for(let i=0;i<count;i++){
+      const a=points[(i+count-1)%count], b=points[i], c=points[(i+1)%count], d=points[(i+2)%count];
+      contour+=`C${xy([b[0]+(c[0]-a[0])/6,b[1]+(c[1]-a[1])/6])} ${xy([c[0]-(d[0]-b[0])/6,c[1]-(d[1]-b[1])/6])} ${xy(c)}`;
+    }
+    shape.setAttribute('d',contour+'Z');
 
-    const shimmer=Math.sin(time*1.12+seed[4]);
-    glints[0].setAttribute('transform',`translate(${fmt(xL+width*(.25+.018*shimmer))} ${fmt(yT+7)}) rotate(${fmt(-8+shimmer*3)})`);
-    glints[1].setAttribute('transform',`translate(${fmt(xR-5)} ${fmt(yT+height*(.34+.018*Math.sin(time*.97+seed[1])))}) rotate(${fmt(86+shimmer*4)})`);
+    [5,11].forEach((pointIndex,index)=>{
+      const p=points[pointIndex];
+      const prev=points[(pointIndex+count-1)%count];
+      const next=points[(pointIndex+1)%count];
+      const rotation=Math.atan2(next[1]-prev[1],next[0]-prev[0])*180/Math.PI;
+      glints[index].setAttribute('transform',`translate(${fmt(p[0])} ${fmt(p[1])}) rotate(${fmt(rotation)})`);
+    });
   }
   function loop(now) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 3.15 : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * 2.6 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

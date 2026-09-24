@@ -20,7 +20,7 @@ function addMappings(text,items){
   if(at<0)throw new Error('Nie znaleziono WORD_SCENES.');
   const active=items.filter(x=>!text.includes(`['${esc(x.word)}',`));
   if(!active.length)return {text,active};
-  const lines='\n  // Manual assets added with admin loader.\n'+active.map(x=>`  ['${esc(x.word)}', { key:'${esc(x.filename.replace(/\.webp$/,''))}', asset:'${esc(x.filename)}', layouts:['bubble'] }],`).join('\n');
+  const lines='\n  // Manual assets added with admin loader.\n'+active.map(x=>`  ['${esc(x.word)}', { key:'${esc(x.filename.replace(/\.(?:webp|jpe?g)$/,''))}', asset:'${esc(x.filename)}', layouts:['bubble'] }],`).join('\n');
   return {text:text.slice(0,at+marker.length)+lines+text.slice(at+marker.length),active};
 }
 function addOffline(text,items){
@@ -49,7 +49,7 @@ module.exports=async function handler(req,res){
     const items=req.body?.items;
     if(!Array.isArray(items)||!items.length||items.length>100)return res.status(400).json({error:'Nieprawidłowa paczka.'});
     for(const x of items){
-      if(typeof x.word!=='string'||x.word.length>80||!/^[a-z0-9-]{1,80}\.webp$/.test(x.filename||'')||!/^[0-9a-f]{40}$/.test(x.blobSha||''))return res.status(400).json({error:'Nieprawidłowe dane elementu.'});
+      if(typeof x.word!=='string'||x.word.length>80||!/^[a-z0-9-]{1,80}\.(?:webp|jpe?g)$/.test(x.filename||'')||!/^[0-9a-f]{40}$/.test(x.blobSha||''))return res.status(400).json({error:'Nieprawidłowe dane elementu.'});
     }
     const ref=await github('/git/ref/heads/'+BRANCH);
     const baseSha=ref.object.sha;

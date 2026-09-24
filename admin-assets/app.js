@@ -45,13 +45,26 @@ function render(){
 function setView(next){view=next;ui.missingTab.classList.toggle('active',next==='missing');ui.assignedTab.classList.toggle('active',next==='assigned');render()}
 function pick(item){if(busy)return;selected=item;ui.file.value='';ui.file.click()}
 function loadImage(file){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Nie udało się odczytać obrazu.'))};img.src=url})}
-function toWebp(canvas,q){return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Nie udało się zakodować WebP.')),'image/webp',q))}
+function encode(canvas,type,q){return new Promise(resolve=>canvas.toBlob(resolve,type,q))}
+async function bestEncoding(canvas){
+  for(const format of [{type:'image/webp',ext:'webp'},{type:'image/jpeg',ext:'jpg'}]){
+    let last=null;
+    for(const q of [...QUALITIES,.68,.64]){
+      const blob=await encode(canvas,format.type,q);
+      if(!blob||blob.type!==format.type){last=null;break}
+      last=blob;
+      if(blob.size<=MAX_BYTES)return {blob,ext:format.ext};
+    }
+    if(last)return {blob:last,ext:format.ext};
+  }
+  throw new Error('Nie udało się przygotować obrazu w obsługiwanym formacie.');
+}
 async function resize(file){
   const img=await loadImage(file),side=Math.min(img.naturalWidth,img.naturalHeight),sx=(img.naturalWidth-side)/2,sy=(img.naturalHeight-side)/2;
   let source=img,sourceX=sx,sourceY=sy,sourceSide=side;
   if(side>TARGET*2){const mid=document.createElement('canvas');mid.width=TARGET*2;mid.height=TARGET*2;const m=mid.getContext('2d',{alpha:false});m.imageSmoothingEnabled=true;m.imageSmoothingQuality='high';m.drawImage(img,sx,sy,side,side,0,0,mid.width,mid.height);source=mid;sourceX=0;sourceY=0;sourceSide=mid.width}
   const out=document.createElement('canvas');out.width=TARGET;out.height=TARGET;const ctx=out.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(source,sourceX,sourceY,sourceSide,sourceSide,0,0,TARGET,TARGET);
-  let blob;for(const q of QUALITIES){blob=await toWebp(out,q);if(blob.type!=='image/webp')throw new Error('Ta przeglądarka nie obsługuje zapisu WebP.');if(blob.size<=MAX_BYTES)break}return blob;
+  return bestEncoding(out);
 }
 async function asBase64(blob){const bytes=new Uint8Array(await blob.arrayBuffer());let s='';for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s)}
 async function post(path,body){const r=await fetch(path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||('Błąd '+r.status));return data}
@@ -59,7 +72,7 @@ async function onFile(){
   const file=ui.file.files?.[0],item=selected;selected=null;if(!file||!item)return;
   busy=true;render();setStatus('Przygotowuję „'+item.word+'”…');
   try{
-    const blob=await resize(file),filename=slug(item.word)+'.webp';
+    const prepared=await resize(file),blob=prepared.blob,filename=slug(item.word)+'.'+prepared.ext;
     const staged=await post('/api/asset-stage',{filename,content:await asBase64(blob)});
     await dbPut({word:item.word,masked:item.masked,category:item.category,difficulty:item.difficulty,filename,blobSha:staged.sha,blob,size:blob.size,createdAt:Date.now()});
     queue=await dbAll();setStatus(item.word+' · 1080×1080 · '+kb(blob.size),'ok');

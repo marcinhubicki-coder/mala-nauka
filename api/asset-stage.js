@@ -17,7 +17,7 @@ module.exports=async function handler(req,res){
   if(process.env.VERCEL_GIT_COMMIT_REF&&process.env.VERCEL_GIT_COMMIT_REF!==BRANCH)return res.status(403).json({error:'Nieprawidłowy branch preview.'});
   try{
     const {filename,content}=req.body||{};
-    if(!/^[a-z0-9-]{1,80}\.webp$/.test(filename||''))return res.status(400).json({error:'Nieprawidłowa nazwa pliku.'});
+    if(!/^[a-z0-9-]{1,80}\.(?:webp|jpe?g)$/.test(filename||''))return res.status(400).json({error:'Nieprawidłowa nazwa pliku.'});
     if(typeof content!=='string'||content.length<100||content.length>600000)return res.status(400).json({error:'Nieprawidłowy rozmiar obrazu.'});
     const blob=await github('/git/blobs',{method:'POST',body:JSON.stringify({content,encoding:'base64'})});
     return res.status(200).json({sha:blob.sha});

@@ -100,20 +100,22 @@ export function createBubble(host) {
       let dx=0, dy=0;
 
       // Broad low-frequency breathing around the whole membrane.
-      const radial=.75*Math.sin(angle*2+time*.12+seed[0])
-        +.48*Math.sin(angle*3-time*.085+seed[3]);
-      dx+=c*radial; dy+=s*radial;
+      const radial=1.15*Math.sin(angle*2+time*.12+seed[0])
+        +.78*Math.sin(angle*3-time*.085+seed[3]);
+      const drift=.42*Math.sin(time*.09+seed[0]+angle*1.7)
+        +.28*Math.sin(time*.065+seed[1]-angle*2.3);
+      dx+=c*(radial+drift); dy+=s*(radial+drift);
 
       // Three shallow travelling control points across the top and bottom.
       // They mostly move inward, so the frame keeps almost all of the artwork.
       const topCenters=[-.34,0,.34].map(offset=>TAU*.75+offset);
       const bottomCenters=[-.34,0,.34].map(offset=>TAU*.25+offset);
       topCenters.forEach((center,index)=>{
-        const amount=.7+2.15*wave(time*(.14+index*.012)+seed[index]);
+        const amount=.9+2.85*wave(time*(.14+index*.012)+seed[index]);
         dy+=amount*influence(angle,center,.31,2.15);
       });
       bottomCenters.forEach((center,index)=>{
-        const amount=.7+2.15*wave(time*(.135+index*.011)+seed[index+2]);
+        const amount=.9+2.85*wave(time*(.135+index*.011)+seed[index+2]);
         dy-=amount*influence(angle,center,.31,2.15);
       });
 
@@ -121,11 +123,11 @@ export function createBubble(host) {
       const leftCenters=[Math.PI-.23,Math.PI+.23];
       const rightCenters=[-.23,.23];
       leftCenters.forEach((center,index)=>{
-        dx+=( .55+1.35*wave(time*(.12+index*.014)+seed[index+1]) )
+        dx+=( .7+1.75*wave(time*(.12+index*.014)+seed[index+1]) )
           *influence(angle,center,.32,2.1);
       });
       rightCenters.forEach((center,index)=>{
-        dx-=( .55+1.35*wave(time*(.125+index*.013)+seed[index+3]) )
+        dx-=( .7+1.75*wave(time*(.125+index*.013)+seed[index+3]) )
           *influence(angle,center,.32,2.1);
       });
 
@@ -140,8 +142,8 @@ export function createBubble(host) {
         dx+=c*radialOffset;
         dy+=s*radialOffset;
       };
-      cornerLobe(primaryAngle,5.6,seed[3]);
-      cornerLobe(secondaryAngle,3.25,seed[4]);
+      cornerLobe(primaryAngle,6.4,seed[3]);
+      cornerLobe(secondaryAngle,3.9,seed[4]);
 
       return [baseX+dx,baseY+dy];
     });
@@ -149,14 +151,14 @@ export function createBubble(host) {
     // Surface tension: each control point shares part of its intended movement
     // with the first and second neighbours. A moving point therefore produces
     // an arc, not a dent.
-    for(let pass=0;pass<3;pass++){
+    for(let pass=0;pass<2;pass++){
       const previous=target.map(point=>point.slice());
       for(let i=0;i<count;i++){
         const p=previous[i];
         const p1=previous[(i+count-1)%count], n1=previous[(i+1)%count];
         const p2=previous[(i+count-2)%count], n2=previous[(i+2)%count];
-        target[i][0]=p[0]*.52+(p1[0]+n1[0])*.18+(p2[0]+n2[0])*.06;
-        target[i][1]=p[1]*.52+(p1[1]+n1[1])*.18+(p2[1]+n2[1])*.06;
+        target[i][0]=p[0]*.60+(p1[0]+n1[0])*.15+(p2[0]+n2[0])*.05;
+        target[i][1]=p[1]*.60+(p1[1]+n1[1])*.15+(p2[1]+n2[1])*.05;
       }
     }
 
@@ -167,8 +169,8 @@ export function createBubble(host) {
     }else{
       for(let i=0;i<count;i++){
         const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
-        velocity[0]=(velocity[0]+(goal[0]-point[0])*.105)*.79;
-        velocity[1]=(velocity[1]+(goal[1]-point[1])*.105)*.79;
+        velocity[0]=(velocity[0]+(goal[0]-point[0])*.125)*.80;
+        velocity[1]=(velocity[1]+(goal[1]-point[1])*.125)*.80;
         point[0]+=velocity[0];
         point[1]+=velocity[1];
       }

@@ -73,15 +73,20 @@ async function onFile(){
   busy=true;render();setStatus('Przygotowuję „'+item.word+'”…');
   try{
     const prepared=await resize(file),blob=prepared.blob,filename=slug(item.word)+'.'+prepared.ext;
-    const staged=await post('/api/asset-stage',{filename,content:await asBase64(blob)});
-    await dbPut({word:item.word,masked:item.masked,category:item.category,difficulty:item.difficulty,filename,blobSha:staged.sha,blob,size:blob.size,createdAt:Date.now()});
-    queue=await dbAll();setStatus(item.word+' · 1080×1080 · '+kb(blob.size),'ok');
+    await dbPut({word:item.word,masked:item.masked,category:item.category,difficulty:item.difficulty,filename,blob,size:blob.size,createdAt:Date.now()});
+    queue=await dbAll();setStatus(item.word+' · 1080×1080 · '+kb(blob.size)+' · w kolejce','ok');
   }catch(e){setStatus(e.message||String(e),'error')}finally{busy=false;render()}
 }
 async function commit(){
   if(busy||!queue.length)return;busy=true;render();setStatus('Tworzę jeden zbiorczy commit…');
   try{
-    const items=queue.map(({word,masked,category,difficulty,filename,blobSha})=>({word,masked,category,difficulty,filename,blobSha}));
+    const items=[];
+    for(const item of queue){
+      setStatus('Wysyłam „'+item.word+'” do paczki…');
+      const staged=await post('/api/asset-stage',{filename:item.filename,content:await asBase64(item.blob)});
+      items.push({word:item.word,masked:item.masked,category:item.category,difficulty:item.difficulty,filename:item.filename,blobSha:staged.sha});
+    }
+    setStatus('Tworzę jeden zbiorczy commit…');
     const result=await post('/api/asset-commit',{items});
     items.forEach(x=>committedNow.add(x.word));sessionStorage.setItem('assetLoaderCommitted',JSON.stringify([...committedNow]));await dbClear();queue=[];setView('assigned');setStatus('Gotowe — '+result.count+' grafik w jednym commicie.','ok');
   }catch(e){setStatus(e.message||String(e),'error')}finally{busy=false;render()}

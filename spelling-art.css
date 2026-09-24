@@ -24,7 +24,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] progress::-webkit-progress-value{background:linear-gradient(90deg,#b969fa,#9c50f2,#8242df);border-radius:20px;box-shadow:inset 0 1px 2px #ffffff7a}
 #app[data-view="game"][data-mode="spelling"] progress::-moz-progress-bar{background:linear-gradient(90deg,#b969fa,#8242df);border-radius:20px}
 .spelling-title{grid-row:2;display:flex;align-items:center;justify-content:center;align-self:stretch;margin:0;white-space:nowrap;text-align:center;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(26px,8.1vw,38px);letter-spacing:-1.35px;line-height:1.3;color:var(--ink);text-shadow:0 2px 0 #ffffff48}
-.spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 22px);justify-self:center;pointer-events:none}
+.spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 36px);justify-self:center;pointer-events:none}
 .soap-svg{display:block;width:100%;height:100%;overflow:visible}
 .soap-picture{opacity:0}
 .soap-star{animation:soap-twinkle var(--spark-duration) ease-in-out var(--spark-delay) infinite;transform-box:fill-box;transform-origin:center}

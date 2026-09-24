@@ -12,22 +12,26 @@ export function createBubble(host) {
       <linearGradient id="${id}-rainbow" x1="0" y1="0" x2="1" y2="1">
         <stop stop-color="#d4a8ff"/><stop offset=".14" stop-color="#f6bbf4"/><stop offset=".27" stop-color="#bcf5ff"/><stop offset=".40" stop-color="#c2c7ff"/><stop offset=".53" stop-color="#ffd4ee"/><stop offset=".67" stop-color="#beecff"/><stop offset=".81" stop-color="#e2b2ff"/><stop offset=".93" stop-color="#fff2d3"/><stop offset="1" stop-color="#d4c5ff"/>
       </linearGradient>
-      <radialGradient id="${id}-film" cx=".38" cy=".27" r=".8"><stop stop-color="#fff" stop-opacity=".08"/><stop offset=".64" stop-color="#d5efff" stop-opacity="0"/><stop offset=".86" stop-color="#d5c4ff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity=".65"/></radialGradient>
+      <radialGradient id="${id}-film" cx=".36" cy=".25" r=".86"><stop stop-color="#fff" stop-opacity=".035"/><stop offset=".58" stop-color="#e8f7ff" stop-opacity=".012"/><stop offset=".82" stop-color="#ccbaff" stop-opacity=".09"/><stop offset=".94" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity=".68"/></radialGradient>
+      <linearGradient id="${id}-sheen" x1=".12" y1=".08" x2=".88" y2=".94"><stop stop-color="#fff" stop-opacity=".34"/><stop offset=".24" stop-color="#fff" stop-opacity=".03"/><stop offset=".62" stop-color="#c8f2ff" stop-opacity=".02"/><stop offset=".9" stop-color="#f4c9ff" stop-opacity=".14"/></linearGradient>
+      <radialGradient id="${id}-shadow" cx=".5" cy=".58" r=".58"><stop offset=".58" stop-color="#4f447c" stop-opacity=".11"/><stop offset=".82" stop-color="#5a4b86" stop-opacity=".055"/><stop offset="1" stop-color="#5a4b86" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-empty"><stop stop-color="#fff8ed" stop-opacity=".72"/><stop offset=".6" stop-color="#d7d9ff" stop-opacity=".24"/><stop offset="1" stop-color="#b3ebf4" stop-opacity=".4"/></radialGradient>
-      <filter id="${id}-soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".75"/></filter>
       <radialGradient id="${id}-star"><stop stop-color="#fff"/><stop offset=".27" stop-color="#fff9df" stop-opacity=".85"/><stop offset="1" stop-color="#ffe4a5" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-orb" cx=".3" cy=".22" r=".9"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".21" stop-color="#f7c5f8" stop-opacity=".55"/><stop offset=".55" stop-color="#c3e7ff" stop-opacity=".1"/><stop offset=".81" stop-color="#9fecfa" stop-opacity=".68"/><stop offset=".94" stop-color="#e6b2fc" stop-opacity=".88"/><stop offset="1" stop-color="#fff"/></radialGradient>
     </defs>
-    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="24" opacity=".075" transform="translate(0 5)"/>
+    <ellipse class="soap-shadow" cx="200" cy="216" rx="170" ry="166" fill="url(#${id}-shadow)" opacity=".76"/>
+    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
-      <image class="soap-picture soap-picture-a" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
-      <image class="soap-picture soap-picture-b" x="8" y="8" width="384" height="384" preserveAspectRatio="xMidYMid slice"/>
+      <image class="soap-picture soap-picture-a" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
+      <image class="soap-picture soap-picture-b" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
       <rect width="400" height="400" fill="url(#${id}-film)"/>
+      <rect width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
     </g>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="20" opacity=".42"/>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="10" opacity=".83"/>
-    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.65" opacity=".93"/>
+    <use href="#${id}-shape" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
+    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
+    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
+    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.55" opacity=".94"/>
     <use href="#${id}-shape" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
     <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
     <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
@@ -57,12 +61,12 @@ export function createBubble(host) {
   let currentUrl = '', loadToken = 0, transitions = [];
 
   function point(angle, time) {
-    const radius = 164 + (12 + 2 * Math.sin(time*.19+seed[4])) * Math.sin(3*angle + .23*Math.sin(time*.17+seed[0]) + seed[1])
-      + 6*Math.sin(2*angle+time*.23+seed[2]) + 3*Math.sin(5*angle-time*.13+seed[3]);
+    const radius = 169 + (9 + 1.5 * Math.sin(time*.24+seed[4])) * Math.sin(3*angle + .28*Math.sin(time*.22+seed[0]) + seed[1])
+      + 4.5*Math.sin(2*angle+time*.31+seed[2]) + 2.5*Math.sin(5*angle-time*.19+seed[3]);
     return [200 + Math.cos(angle)*radius, 200 + Math.sin(angle)*radius];
   }
   function draw(time) {
-    const count=24, points = Array.from({length:count}, (_,i) => point(i/count*TAU,time));
+    const count=18, points = Array.from({length:count}, (_,i) => point(i/count*TAU,time));
     const xy=p=>p.map(v=>v.toFixed(2)).join(' ');
     let contour=`M${xy(points[0])}`;
     for(let i=0;i<count;i++){
@@ -79,8 +83,8 @@ export function createBubble(host) {
   function loop(now) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
-    if (!last || now-last >= 1000/30) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 1.8 : 0;
+    if (!last || now-last >= 1000/24) {
+      elapsed += last ? Math.min((now-last)/1000,.1) * 2.6 : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);

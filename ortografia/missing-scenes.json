@@ -1,11 +1,11 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 183,
-  "uniqueImages": 77,
-  "missingWords": 221,
+  "assignedWords": 186,
+  "uniqueImages": 80,
+  "missingWords": 218,
   "missingByCategory": {
-    "u/ó": 46,
+    "u/ó": 43,
     "rz/ż": 81,
     "ch/h": 59,
     "ć/ci": 6,
@@ -64,12 +64,6 @@
       "difficulty": 2
     },
     {
-      "word": "włókno",
-      "masked": "wł_kno",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
       "word": "krótki",
       "masked": "kr_tki",
       "category": "u/ó",
@@ -90,12 +84,6 @@
     {
       "word": "obrót",
       "masked": "obr_t",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "wybór",
-      "masked": "wyb_r",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -134,12 +122,6 @@
       "masked": "gł_wny",
       "category": "u/ó",
       "difficulty": 1
-    },
-    {
-      "word": "kłótnia",
-      "masked": "kł_tnia",
-      "category": "u/ó",
-      "difficulty": 2
     },
     {
       "word": "kula",

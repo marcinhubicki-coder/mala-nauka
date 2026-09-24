@@ -60,7 +60,10 @@ const CORE=[
   './data/words-05.json','./data/words-06.json','./data/words-07.json','./data/words-08.json',
   './ortografia/','./ortografia/index.html','./ortografia/wizard-v2.mjs','./ortografia/wizard-v2.mjs?v=3','./ortografia/wizard-v2.css','./ortografia/wizard-v2.css?v=2',
   './matematyka/','./matematyka/index.html','./matematyka/app.css','./matematyka/board.css','./matematyka/board-v3.css','./matematyka/board-v4.css','./matematyka/pointer-polish.js','./matematyka/difference-feedback.css','./matematyka/difference-feedback.js','./matematyka/difference-order-v2.js','./matematyka/round-timer.css','./matematyka/round-timer.js','./matematyka/correct-transition.css','./matematyka/correct-transition.js','./matematyka/app.js',
-  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html'
+  './angielski/','./angielski/index.html','./flagi/','./flagi/index.html','./czytanie/','./czytanie/index.html',
+  './assets/scenes/klotnia.jpg',
+  './assets/scenes/wybor.jpg',
+  './assets/scenes/wlokno.jpg',
 ];
 
 self.addEventListener('install',event=>{

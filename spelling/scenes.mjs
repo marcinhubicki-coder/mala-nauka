@@ -46,6 +46,10 @@ export const SCENES = new Map([
 ]);
 
 export const WORD_SCENES = new Map([
+  // Manual assets added with admin loader.
+  ['kłótnia', { key:'klotnia', asset:'klotnia.jpg', layouts:['bubble'] }],
+  ['wybór', { key:'wybor', asset:'wybor.jpg', layouts:['bubble'] }],
+  ['włókno', { key:'wlokno', asset:'wlokno.jpg', layouts:['bubble'] }],
   // Generated batch v26; prompts and provenance in assets/scenes/generated-batch-v26.json.
   ['żubr', { key:'zubr', asset:'zubr.webp', layouts:['bubble'] }],
   ['żyrafa', { key:'zyrafa', asset:'zyrafa.webp', layouts:['bubble'] }],

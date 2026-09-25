@@ -16,12 +16,24 @@ function esc(value){return String(value).replace(/\\/g,'\\\\').replace(/'/g,"\\'
 async function textBlob(content){return github('/git/blobs',{method:'POST',body:JSON.stringify({content,encoding:'utf-8'})})}
 function addMappings(text,items){
   const marker='export const WORD_SCENES = new Map([';
-  const at=text.indexOf(marker);
-  if(at<0)throw new Error('Nie znaleziono WORD_SCENES.');
-  const active=items.filter(x=>!text.includes(`['${esc(x.word)}',`));
-  if(!active.length)return {text,active};
-  const lines='\n  // Manual assets added with admin loader.\n'+active.map(x=>`  ['${esc(x.word)}', { key:'${esc(x.filename.replace(/\.(?:webp|jpe?g)$/,''))}', asset:'${esc(x.filename)}', layouts:['bubble'] }],`).join('\n');
-  return {text:text.slice(0,at+marker.length)+lines+text.slice(at+marker.length),active};
+  const markerAt=text.indexOf(marker);
+  if(markerAt<0)throw new Error('Nie znaleziono WORD_SCENES.');
+  let next=text;
+  for(const x of items){
+    const line=`  ['${esc(x.word)}', { key:'${esc(x.filename.replace(/\.(?:webp|jpe?g)$/,''))}', asset:'${esc(x.filename)}', layouts:['bubble'] }],`;
+    const needle=`['${esc(x.word)}',`;
+    const at=next.indexOf(needle);
+    if(at>=0){
+      const start=next.lastIndexOf('\n',at)+1;
+      const lineEnd=next.indexOf('\n',at);
+      const end=lineEnd<0?next.length:lineEnd;
+      next=next.slice(0,start)+line+next.slice(end);
+    }else{
+      const insertAt=next.indexOf(marker)+marker.length;
+      next=next.slice(0,insertAt)+'\n  // Manual assets added with admin loader.\n'+line+next.slice(insertAt);
+    }
+  }
+  return {text:next,active:items};
 }
 function addOffline(text,items){
   const start=text.indexOf('const CORE=['),end=text.indexOf('];',start);
@@ -37,7 +49,8 @@ function updateCoverage(text,items){
   report.missing=(report.missing||[]).filter(x=>!names.has(x.word));
   report.missingWords=report.missing.length;
   report.assignedWords=report.totalWords-report.missingWords;
-  report.uniqueImages=(report.uniqueImages||0)+items.length;
+  const newlyAssigned=items.filter(x=>(report.missing||[]).some(m=>m.word===x.word)).length;
+  report.uniqueImages=(report.uniqueImages||0)+newlyAssigned;
   report.missingByCategory=Object.fromEntries(Object.keys(report.missingByCategory||{}).map(category=>[category,report.missing.filter(x=>x.category===category).length]));
   return JSON.stringify(report,null,2)+'\n';
 }
@@ -61,13 +74,7 @@ module.exports=async function handler(req,res){
       github('/contents/ortografia/missing-scenes.json?ref='+enc)
     ]);
     const mapped=addMappings(decodeFile(sceneFile),items),active=mapped.active;
-    if(!active.length)return res.status(409).json({error:'Te słowa są już przypisane w repo.'});
-    for(const x of active){
-      try{
-        await github('/contents/assets/scenes/'+x.filename+'?ref='+enc);
-        return res.status(409).json({error:`Plik ${x.filename} już istnieje.`});
-      }catch(e){if(e.status!==404)throw e}
-    }
+    if(!active.length)return res.status(409).json({error:'Brak zmian do zapisania.'});
     const nextSw=addOffline(decodeFile(swFile),active);
     const nextReport=updateCoverage(decodeFile(reportFile),active);
     const [sceneBlob,swBlob,reportBlob]=await Promise.all([textBlob(mapped.text),textBlob(nextSw),textBlob(nextReport)]);
@@ -77,7 +84,7 @@ module.exports=async function handler(req,res){
       {path:'sw.js',mode:'100644',type:'blob',sha:swBlob.sha},
       {path:'ortografia/missing-scenes.json',mode:'100644',type:'blob',sha:reportBlob.sha}
     ]})});
-    const made=await github('/git/commits',{method:'POST',body:JSON.stringify({message:`Add ${active.length} manual spelling asset${active.length===1?'':'s'}`,tree:tree.sha,parents:[baseSha]})});
+    const made=await github('/git/commits',{method:'POST',body:JSON.stringify({message:`Update ${active.length} manual spelling asset${active.length===1?'':'s'}`,tree:tree.sha,parents:[baseSha]})});
     await github('/git/refs/heads/'+BRANCH,{method:'PATCH',body:JSON.stringify({sha:made.sha,force:false})});
     return res.status(200).json({sha:made.sha,count:active.length,url:`https://github.com/${OWNER}/${REPO}/commit/${made.sha}`});
   }catch(error){return res.status(error.status||500).json({error:error.message||'Błąd tworzenia commita.'})}

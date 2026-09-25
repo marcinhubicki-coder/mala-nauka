@@ -545,24 +545,45 @@ export function createBubble(host, options={}) {
       return true;
     }
 
-    const duration=first || !hasOld ? 240 : 300;
+    const duration=first || !hasOld ? 240 : 280;
+    const blur=first || !hasOld ? 1.6 : 2.25;
+    next.style.transformBox='fill-box';
+    next.style.transformOrigin='center';
+    old.style.transformBox='fill-box';
+    old.style.transformOrigin='center';
+
     const incoming=next.animate(
-      [{opacity:0},{opacity:.72,offset:.48},{opacity:1}],
+      [
+        {opacity:0,filter:`blur(${blur}px)`,transform:'scale(1.01)'},
+        {opacity:.76,filter:`blur(${(blur*.36).toFixed(2)}px)`,transform:'scale(1.003)',offset:.54},
+        {opacity:1,filter:'blur(0px)',transform:'scale(1)'}
+      ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
-      [{opacity:1},{opacity:.58,offset:.48},{opacity:0}],
-      {duration:Math.round(duration*.92),easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
+      [
+        {opacity:1,filter:'blur(0px)',transform:'scale(1)'},
+        {opacity:.52,filter:`blur(${(blur*.58).toFixed(2)}px)`,transform:'scale(.998)',offset:.48},
+        {opacity:0,filter:`blur(${blur}px)`,transform:'scale(.995)'}
+      ],
+      {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;
+
     transitions=[incoming,...(outgoing?[outgoing]:[])];
     if(paused) transitions.forEach(animation=>animation.pause());
     await Promise.all(transitions.map(animation=>animation.finished.catch(()=>{})));
     if (destroyed || token!==loadToken) {
-      transitions.forEach(animation=>animation.cancel()); transitions=[]; return false;
+      transitions.forEach(animation=>animation.cancel()); transitions=[];
+      next.style.removeProperty('filter'); next.style.removeProperty('transform');
+      old.style.removeProperty('filter'); old.style.removeProperty('transform');
+      return false;
     }
+
+    transitions.forEach(animation=>animation.cancel()); transitions=[];
     old.style.opacity='0'; setPictureSource(old);
     next.style.opacity='1';
-    transitions.forEach(animation=>animation.cancel()); transitions=[];
+    next.style.removeProperty('filter'); next.style.removeProperty('transform');
+    old.style.removeProperty('filter'); old.style.removeProperty('transform');
     activePicture=next; standbyPicture=old; currentUrl=displayUrl;
     return true;
   }

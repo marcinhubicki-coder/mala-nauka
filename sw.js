@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v79-master-fast';
+const CACHE='mala-nauka-spelling-v80-blur-crossfade';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -236,10 +236,10 @@ const CORE=[
   './flagi/europe-map.js?v=6',
   './flagi/map-microstates.js?v=1',
   './flagi/feedback-transition.js?v=10'
-  './app.js?v=37-master-fast',
+  './app.js?v=38-blur-crossfade',
   './spelling-art.css?v=35-main-bubble',
-  './spelling/art.mjs?v=37-master-fast',
-  './spelling/bubble.mjs?v=37-master-fast',
+  './spelling/art.mjs?v=38-blur-crossfade',
+  './spelling/bubble.mjs?v=38-blur-crossfade',
   './spelling/scenes.mjs?v=26-generated-scenes',
   './assets/scenes/bol.webp',
   './assets/scenes/budzik.webp',

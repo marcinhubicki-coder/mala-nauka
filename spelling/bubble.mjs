@@ -19,6 +19,15 @@ export const BUBBLE_EFFECT_DEFAULTS = Object.freeze({
   rim: 1.05,
 });
 
+export const BUBBLE_CHAOS_DEFAULTS = Object.freeze({
+  amplitude: 1,
+  frequency: 1,
+  orbit: 1,
+  magnet: 0,
+  jelly: 1,
+  squash: 0,
+});
+
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
 function normalizeTuning(input={}){
   const merged={...BUBBLE_TUNING_DEFAULTS,...input};
@@ -50,6 +59,21 @@ function normalizeEffects(input={}){
     rim:clampValue(numeric(merged.rim,BUBBLE_EFFECT_DEFAULTS.rim),0,2),
   };
 }
+function normalizeChaos(input={}){
+  const merged={...BUBBLE_CHAOS_DEFAULTS,...input};
+  const numeric=(value,fallback)=>{
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?parsed:fallback;
+  };
+  return {
+    amplitude:clampValue(numeric(merged.amplitude,BUBBLE_CHAOS_DEFAULTS.amplitude),-2,4),
+    frequency:clampValue(numeric(merged.frequency,BUBBLE_CHAOS_DEFAULTS.frequency),-2,4),
+    orbit:clampValue(numeric(merged.orbit,BUBBLE_CHAOS_DEFAULTS.orbit),-2,4),
+    magnet:clampValue(numeric(merged.magnet,BUBBLE_CHAOS_DEFAULTS.magnet),-3,3),
+    jelly:clampValue(numeric(merged.jelly,BUBBLE_CHAOS_DEFAULTS.jelly),0,2),
+    squash:clampValue(numeric(merged.squash,BUBBLE_CHAOS_DEFAULTS.squash),-1,1),
+  };
+}
 
 export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
@@ -57,6 +81,7 @@ export function createBubble(host, options={}) {
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
   let tuning = normalizeTuning(options.tuning);
   let effects = normalizeEffects(options.effects);
+  let chaos = normalizeChaos(options.chaos);
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
@@ -168,11 +193,16 @@ export function createBubble(host, options={}) {
   function draw(time) {
     const count=tuning.points;
     const irregularity=tuning.random;
+    const spatial=chaos.frequency;
+    const squashWave=.14*chaos.squash*Math.sin(time*.21+seed[1]);
     const exponent=3.28 + .14*irregularity*Math.sin(time*.15+seed[4]);
-    const halfW=196.4 + .45*irregularity*Math.sin(time*.13+seed[0]);
-    const halfH=196.2 + .42*irregularity*Math.sin(time*.12+seed[1]);
-    const centerX=200 + 1.45*irregularity*Math.sin(time*.16+seed[5]);
-    const centerY=200 + .9*irregularity*Math.sin(time*.13+seed[2]);
+    const halfW=(196.4 + .45*irregularity*Math.sin(time*.13+seed[0]))*(1+squashWave);
+    const halfH=(196.2 + .42*irregularity*Math.sin(time*.12+seed[1]))*(1-squashWave);
+    const orbitDelta=chaos.orbit-1;
+    const centerX=200 + 1.45*irregularity*chaos.orbit*Math.sin(time*.16+seed[5])
+      +9*orbitDelta*Math.cos(time*.23+seed[0]);
+    const centerY=200 + .9*irregularity*chaos.orbit*Math.sin(time*.13+seed[2])
+      +7*orbitDelta*Math.sin(time*.19+seed[3]);
     const primaryAngle=cornerAngles[primaryCorner];
     const secondaryAngle=cornerAngles[secondaryCorner];
 
@@ -185,10 +215,10 @@ export function createBubble(host, options={}) {
       let dx=0, dy=0;
 
       // Broad low-frequency breathing around the whole membrane.
-      const radial=irregularity*(1.15*Math.sin(angle*2+time*.12+seed[0])
-        +.78*Math.sin(angle*3-time*.085+seed[3]));
-      const drift=irregularity*(.42*Math.sin(time*.09+seed[0]+angle*1.7)
-        +.28*Math.sin(time*.065+seed[1]-angle*2.3));
+      const radial=irregularity*(1.15*Math.sin(angle*2*spatial+time*.12+seed[0])
+        +.78*Math.sin(angle*3*spatial-time*.085+seed[3]));
+      const drift=irregularity*(.42*Math.sin(time*.09+seed[0]+angle*1.7*spatial)
+        +.28*Math.sin(time*.065+seed[1]-angle*2.3*spatial));
       dx+=c*(radial+drift); dy+=s*(radial+drift);
 
       // Tuned baseline keeps dedicated top/bottom pulses disabled. Broad radial
@@ -220,7 +250,23 @@ export function createBubble(host, options={}) {
       cornerLobe(primaryAngle,12.8*tuning.corners,seed[3]);
       cornerLobe(secondaryAngle,7.8*tuning.corners,seed[4]);
 
-      return [baseX+dx,baseY+dy];
+      // A moving local force travels around the perimeter. Positive values make
+      // a travelling bulge; negative values pull the film inward like a magnet.
+      const magnetAngle=time*.24+seed[5];
+      const magnetWeight=influence(angle,magnetAngle,.52,1.65);
+      const magnetOffset=chaos.magnet*18*(.72+.28*Math.sin(time*.31+seed[2]))*magnetWeight;
+      dx+=c*magnetOffset;
+      dy+=s*magnetOffset;
+
+      // Global morph multiplier can even be negative: bulges become dents and
+      // the familiar motion turns inside-out.
+      dx*=chaos.amplitude;
+      dy*=chaos.amplitude;
+
+      return [
+        clampValue(baseX+dx,-90,490),
+        clampValue(baseY+dy,-90,490)
+      ];
     });
 
     // Surface tension: each control point shares part of its intended movement
@@ -245,8 +291,10 @@ export function createBubble(host, options={}) {
       membrane=target.map(point=>point.slice());
       membraneVelocity=target.map(()=>[0,0]);
     }else{
-      const stiffness=.10+.0495*tuning.bounce;
-      const damping=.73+.042*tuning.bounce;
+      const baseStiffness=.10+.0495*tuning.bounce;
+      const baseDamping=.73+.042*tuning.bounce;
+      const stiffness=clampValue(baseStiffness*(1.65-.65*chaos.jelly),.025,.35);
+      const damping=clampValue(baseDamping+(chaos.jelly-1)*.11,.48,.94);
       for(let i=0;i<count;i++){
         const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
         velocity[0]=(velocity[0]+(goal[0]-point[0])*stiffness)*damping;
@@ -412,6 +460,12 @@ export function createBubble(host, options={}) {
     return {...effects};
   }
   function getEffects(){ return {...effects}; }
+  function setChaos(patch={}){
+    chaos=normalizeChaos({...chaos,...patch});
+    draw(elapsed);
+    return {...chaos};
+  }
+  function getChaos(){ return {...chaos}; }
 
   return {
     transitionToScene,
@@ -419,6 +473,8 @@ export function createBubble(host, options={}) {
     getTuning,
     setEffects,
     getEffects,
+    setChaos,
+    getChaos,
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

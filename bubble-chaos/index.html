@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dfddf8">
+<title>Mała Nauka · Bubble Lab</title>
+<link rel="stylesheet" href="../spelling-art.css?v=chaos-1">
+<link rel="stylesheet" href="../bubble-tuner/tuner.css?v=chaos-1">
+<link rel="stylesheet" href="./chaos.css?v=1">
+</head>
+<body>
+<img class="spelling-screen-bg" src="../assets/ortografia/lake-background.webp" alt="">
+<main id="app" class="bubble-tuner" data-view="game" data-mode="spelling">
+  <header class="game-bar">
+    <button type="button" class="icon tuner-close" aria-label="Wróć"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+    <div class="time-block"><span class="timer">0:52</span><progress max="100" value="78" aria-label="Podgląd paska czasu"></progress></div>
+    <button type="button" class="icon tuner-pause" aria-label="Pauza animacji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+  </header>
+  <h1 class="spelling-title">Jak jest poprawnie?</h1>
+  <div class="spelling-visual tuner-visual" role="button" tabindex="0" aria-label="Stuknij obrazek, aby pokazać kolejny asset"></div>
+  <section class="spelling-question-card" aria-label="Podgląd słowa"><div class="question-content"></div></section>
+  <section class="tuner-panel" aria-label="Laboratorium ruchu bańki">
+    <div class="tuner-tabs" role="tablist" aria-label="Wybierz eksperyment">
+      <button type="button" class="tuner-tab is-active" data-param="amplitude" aria-selected="true">A</button>
+      <button type="button" class="tuner-tab" data-param="frequency" aria-selected="false">F</button>
+      <button type="button" class="tuner-tab" data-param="orbit" aria-selected="false">O</button>
+      <button type="button" class="tuner-tab" data-param="magnet" aria-selected="false">M</button>
+      <button type="button" class="tuner-tab" data-param="jelly" aria-selected="false">G</button>
+      <button type="button" class="tuner-tab" data-param="squash" aria-selected="false">Z</button>
+    </div>
+    <div class="tuner-slider-card">
+      <label class="tuner-slider-label" for="chaos-range">Amplituda</label>
+      <input id="chaos-range" type="range" min="-2" max="4" step=".05" value="1">
+      <output class="tuner-current" for="chaos-range">1.00×</output>
+    </div>
+    <div class="tuner-values" aria-label="Aktualne eksperymenty">
+      <span data-readout="amplitude"><b>A</b><em>1.00×</em></span>
+      <span data-readout="frequency"><b>F</b><em>1.00×</em></span>
+      <span data-readout="orbit"><b>O</b><em>1.00×</em></span>
+      <span data-readout="magnet"><b>M</b><em>0.00</em></span>
+      <span data-readout="jelly"><b>G</b><em>1.00×</em></span>
+      <span data-readout="squash"><b>Z</b><em>0%</em></span>
+    </div>
+  </section>
+</main>
+<script type="module" src="./chaos.mjs?v=1"></script>
+</body>
+</html>

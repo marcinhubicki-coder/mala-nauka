@@ -1,16 +1,16 @@
-import { createBubble, BUBBLE_TUNING_DEFAULTS } from '../spelling/bubble.mjs?v=tuner-2';
+import { createBubble, BUBBLE_TUNING_DEFAULTS } from '../spelling/bubble.mjs?v=tuner-3';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=26-generated-scenes';
 import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 
 document.documentElement.classList.add('spelling-playing');
 
 const PARAMS={
-  speed:{short:'S',label:'Szybkość',min:2.2,max:6.6,step:.1,base:4.4,format:v=>Number(v).toFixed(1)},
-  points:{short:'P',label:'Punkty',min:24,max:72,step:4,base:48,format:v=>String(Math.round(v))},
-  random:{short:'R',label:'Random',min:0,max:5.7,step:.05,base:2.85,format:v=>Number(v).toFixed(2)+'×'},
-  smoothing:{short:'W',label:'Wygładzanie',min:.35,max:2.35,step:.05,base:1.35,format:v=>Number(v).toFixed(2)+'×'},
-  bounce:{short:'B',label:'Bounce',min:.2,max:1.3,step:.05,base:.75,format:v=>Number(v).toFixed(2)+'×'},
-  corners:{short:'N',label:'Narożniki',min:0,max:4,step:.05,base:2,format:v=>Number(v).toFixed(2)+'×'},
+  speed:{short:'S',label:'Szybkość',min:2.2,max:6.6,step:.1,base:4.7,format:v=>Number(v).toFixed(1)},
+  points:{short:'P',label:'Punkty',min:24,max:72,step:4,base:28,format:v=>String(Math.round(v))},
+  random:{short:'R',label:'Random',min:0,max:5.7,step:.05,base:1.70,format:v=>Number(v).toFixed(2)+'×'},
+  smoothing:{short:'W',label:'Wygładzanie',min:.35,max:2.35,step:.05,base:1.10,format:v=>Number(v).toFixed(2)+'×'},
+  bounce:{short:'B',label:'Bounce',min:.2,max:1.3,step:.05,base:.85,format:v=>Number(v).toFixed(2)+'×'},
+  corners:{short:'N',label:'Narożniki',min:0,max:4,step:.05,base:.90,format:v=>Number(v).toFixed(2)+'×'},
 };
 
 const samples=[

@@ -38,12 +38,12 @@ export const BUBBLE_HEAVY_DEFAULTS = Object.freeze({
 });
 
 export const BUBBLE_TRANSITION_DEFAULTS = Object.freeze({
-  duration: .35,
-  blur: 2.25,
-  zoom: 1,
-  rotate: 0,
-  hue: 0,
-  sparks: 0,
+  duration: 1.20,
+  blur: 5.3,
+  zoom: 12,
+  rotate: 4,
+  hue: 180,
+  sparks: 18,
 });
 
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));

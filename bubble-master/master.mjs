@@ -5,7 +5,7 @@ import {
   BUBBLE_CHAOS_DEFAULTS,
   BUBBLE_HEAVY_DEFAULTS,
   BUBBLE_TRANSITION_DEFAULTS
-} from '../spelling/bubble.mjs?v=master-3';
+} from '../spelling/bubble.mjs?v=master-4';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=26-generated-scenes';
 import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 
@@ -63,12 +63,12 @@ const CATEGORIES={
   transition:{
     title:'Przejście',setter:'setTransition',defaults:BUBBLE_TRANSITION_DEFAULTS,
     params:[
-      {key:'duration',short:'C',label:'Czas',min:.12,max:1.2,step:.01,base:.35,format:v=>Number(v).toFixed(2)+'s'},
-      {key:'blur',short:'B',label:'Blur',min:0,max:8,step:.1,base:2.25,format:v=>Number(v).toFixed(1)+'px'},
-      {key:'zoom',short:'Z',label:'Zoom',min:-6,max:12,step:.25,base:1,format:v=>signed(v)+'%'},
-      {key:'rotate',short:'O',label:'Obrót',min:-12,max:12,step:.25,base:0,format:v=>signed(v)+'°'},
-      {key:'hue',short:'K',label:'Kolor',min:-180,max:180,step:5,base:0,format:v=>signed(v)+'°'},
-      {key:'sparks',short:'P',label:'Pył',min:0,max:36,step:1,base:0,format:v=>String(Math.round(v))},
+      {key:'duration',short:'C',label:'Czas',min:.12,max:1.2,step:.01,base:1.20,format:v=>Number(v).toFixed(2)+'s'},
+      {key:'blur',short:'B',label:'Blur',min:0,max:8,step:.1,base:5.3,format:v=>Number(v).toFixed(1)+'px'},
+      {key:'zoom',short:'Z',label:'Zoom',min:-6,max:12,step:.25,base:12,format:v=>signed(v)+'%'},
+      {key:'rotate',short:'O',label:'Obrót',min:-12,max:12,step:.25,base:4,format:v=>signed(v)+'°'},
+      {key:'hue',short:'K',label:'Kolor',min:-180,max:180,step:5,base:180,format:v=>signed(v)+'°'},
+      {key:'sparks',short:'P',label:'Pył',min:0,max:36,step:1,base:18,format:v=>String(Math.round(v))},
     ]
   }
 };

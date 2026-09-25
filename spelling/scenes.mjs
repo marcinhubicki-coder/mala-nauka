@@ -47,6 +47,52 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['życzliwy', { key:'zyczliwy', asset:'zyczliwy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['życie', { key:'zycie', asset:'zycie.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żart', { key:'zart', asset:'zart.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zmarznąć', { key:'zmarznac', asset:'zmarznac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['tutaj', { key:'tutaj', asset:'tutaj.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['sprzątać', { key:'sprzatac', asset:'sprzatac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rzadki', { key:'rzadki', asset:'rzadki.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rura', { key:'rura', asset:'rura.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pudło', { key:'pudlo', asset:'pudlo.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przerwa', { key:'przerwa', asset:'przerwa.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przepraszam', { key:'przepraszam', asset:'przepraszam.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przedszkole', { key:'przedszkole', asset:'przedszkole.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['porządek', { key:'porzadek', asset:'porzadek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['porzeczka', { key:'porzeczka', asset:'porzeczka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['orzech', { key:'orzech', asset:'orzech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ogół', { key:'ogol', asset:'ogol.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['kula', { key:'kula', asset:'kula.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['król', { key:'krol', asset:'krol.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['jarzębina', { key:'jarzebina', asset:'jarzebina.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['grzmot', { key:'grzmot', asset:'grzmot.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['drugi', { key:'drugi', asset:'drugi.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['buda', { key:'buda', asset:'buda.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['brzuch', { key:'brzuch', asset:'brzuch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['cmentarz', { key:'cmentarz', asset:'cmentarz.jpg', layouts:['bubble'] }],
   ['kalendarz', { key:'kalendarz', asset:'kalendarz.jpg', layouts:['bubble'] }],
   ['kolejarz', { key:'kolejarz', asset:'kolejarz.jpg', layouts:['bubble'] }],
@@ -173,7 +219,7 @@ export const WORD_SCENES = new Map([
   ['horyzont', { key:'mountain-horizon', asset:'mountains.webp', layouts:['bubble'] }],
   ['niebo', { key:'sky', asset:'swallow.avif', layouts:['bubble'] }],
   ['chmura', { key:'cloud', asset:'clouds-review.webp', layouts:['bubble'] }],
-  ['burza', { key:'storm-cloud', asset:'clouds-review.webp', layouts:['bubble'] }],
+  ['burza', { key:'burza', asset:'burza.jpg', layouts:['bubble'] }],
   ['dach', { key:'castle-roof', asset:'castle-review.webp', layouts:['bubble'] }],
   ['chata', { key:'castle-cottage', asset:'castle-review.webp', layouts:['bubble'] }],
   ['wieża', { key:'castle-tower', asset:'castle-review.webp', layouts:['bubble'] }],
@@ -209,7 +255,7 @@ export const WORD_SCENES = new Map([
   ['siedem', { key:'number-play', asset:'osemka.avif', layouts:['bubble'] }],
   ['usterka', { key:'car-service', asset:'samochod.webp', layouts:['bubble'] }],
 
-  ['wulkan', { key:'mountain-volcano', asset:'mountains.webp', layouts:['bubble'] }],
+  ['wulkan', { key:'wulkan', asset:'wulkan.jpg', layouts:['bubble'] }],
   ['rzeka', { key:'mountain-river', asset:'mountains.webp', layouts:['bubble'] }],
   ['brzeg', { key:'mountain-shore', asset:'mountains.webp', layouts:['bubble'] }],
   ['wyżej', { key:'mountain-up', asset:'mountains.webp', layouts:['bubble'] }],

@@ -1,12 +1,12 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 234,
+  "assignedWords": 256,
   "uniqueImages": 128,
-  "missingWords": 170,
+  "missingWords": 148,
   "missingByCategory": {
-    "u/ó": 24,
-    "rz/ż": 53,
+    "u/ó": 17,
+    "rz/ż": 38,
     "ch/h": 58,
     "ć/ci": 6,
     "ś/si": 8,
@@ -88,12 +88,6 @@
       "difficulty": 1
     },
     {
-      "word": "ogół",
-      "masked": "og_ł",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "wspólny",
       "masked": "wsp_lny",
       "category": "u/ó",
@@ -102,12 +96,6 @@
     {
       "word": "główny",
       "masked": "gł_wny",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "kula",
-      "masked": "k_la",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -124,45 +112,9 @@
       "difficulty": 2
     },
     {
-      "word": "buda",
-      "masked": "b_da",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "drugi",
-      "masked": "dr_gi",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "gruby",
       "masked": "gr_by",
       "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "pudło",
-      "masked": "p_dło",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "rura",
-      "masked": "r_ra",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "tutaj",
-      "masked": "t_taj",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "rzadki",
-      "masked": "_adki",
-      "category": "rz/ż",
       "difficulty": 1
     },
     {
@@ -202,74 +154,8 @@
       "difficulty": 1
     },
     {
-      "word": "sprzątać",
-      "masked": "sp_ątać",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "komentarz",
       "masked": "komenta_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "jarzębina",
-      "masked": "ja_ębina",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "porządek",
-      "masked": "po_ądek",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "porzeczka",
-      "masked": "po_eczka",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "orzech",
-      "masked": "o_ech",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "brzuch",
-      "masked": "b_uch",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "grzmot",
-      "masked": "g_mot",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "zmarznąć",
-      "masked": "zma_nąć",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "przedszkole",
-      "masked": "p_edszkole",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "przerwa",
-      "masked": "p_erwa",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "przepraszam",
-      "masked": "p_epraszam",
       "category": "rz/ż",
       "difficulty": 2
     },
@@ -304,12 +190,6 @@
       "difficulty": 2
     },
     {
-      "word": "żart",
-      "masked": "_art",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
       "word": "żarówka",
       "masked": "_arówka",
       "category": "rz/ż",
@@ -334,22 +214,10 @@
       "difficulty": 2
     },
     {
-      "word": "życie",
-      "masked": "_ycie",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
       "word": "żyto",
       "masked": "_yto",
       "category": "rz/ż",
       "difficulty": 1
-    },
-    {
-      "word": "życzliwy",
-      "masked": "_yczliwy",
-      "category": "rz/ż",
-      "difficulty": 2
     },
     {
       "word": "żegnać",

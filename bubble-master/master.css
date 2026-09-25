@@ -69,3 +69,7 @@ html{background:#dfddf8}
   .master-panel{grid-template-rows:50px 72px 34px;padding-top:8px;padding-bottom:9px}
   .master-category-card{min-height:102px}
 }
+
+.master-category-transition{grid-column:1/-1;min-height:94px}
+.master-category-transition .master-category-summary{font-size:12px}
+@media(max-height:720px){.master-category-transition{min-height:82px}}

@@ -3,8 +3,9 @@ import {
   BUBBLE_TUNING_DEFAULTS,
   BUBBLE_EFFECT_DEFAULTS,
   BUBBLE_CHAOS_DEFAULTS,
-  BUBBLE_HEAVY_DEFAULTS
-} from '../spelling/bubble.mjs?v=master-2';
+  BUBBLE_HEAVY_DEFAULTS,
+  BUBBLE_TRANSITION_DEFAULTS
+} from '../spelling/bubble.mjs?v=master-3';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=26-generated-scenes';
 import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 
@@ -18,34 +19,34 @@ const CATEGORIES={
   motion:{
     title:'Ruch',setter:'setTuning',defaults:BUBBLE_TUNING_DEFAULTS,
     params:[
-      {key:'speed',short:'S',label:'Szybkość',min:2.2,max:6.6,step:.1,base:4.4,format:x1},
-      {key:'points',short:'P',label:'Punkty',min:24,max:72,step:4,base:48,format:v=>String(Math.round(v))},
-      {key:'random',short:'R',label:'Random',min:0,max:5.7,step:.05,base:2.85,format:x2},
-      {key:'smoothing',short:'W',label:'Wygładzanie',min:.35,max:2.35,step:.05,base:1.35,format:x2},
-      {key:'bounce',short:'B',label:'Bounce',min:.2,max:1.3,step:.05,base:.75,format:x2},
-      {key:'corners',short:'N',label:'Narożniki',min:0,max:4,step:.05,base:2,format:x2},
+      {key:'speed',short:'S',label:'Szybkość',min:2.2,max:6.6,step:.1,base:4.7,format:x1},
+      {key:'points',short:'P',label:'Punkty',min:24,max:72,step:4,base:28,format:v=>String(Math.round(v))},
+      {key:'random',short:'R',label:'Random',min:0,max:5.7,step:.05,base:1.70,format:x2},
+      {key:'smoothing',short:'W',label:'Wygładzanie',min:.35,max:2.35,step:.05,base:1.10,format:x2},
+      {key:'bounce',short:'B',label:'Bounce',min:.2,max:1.3,step:.05,base:.85,format:x2},
+      {key:'corners',short:'N',label:'Narożniki',min:0,max:4,step:.05,base:.90,format:x2},
     ]
   },
   look:{
     title:'Wygląd',setter:'setEffects',defaults:BUBBLE_EFFECT_DEFAULTS,
     params:[
-      {key:'shadow',short:'C',label:'Cień',min:0,max:2,step:.05,base:1.25,format:x2},
-      {key:'depth',short:'D',label:'Głębia cienia',min:.4,max:1.6,step:.05,base:1.15,format:x2},
+      {key:'shadow',short:'C',label:'Cień',min:0,max:2,step:.05,base:1.80,format:x2},
+      {key:'depth',short:'D',label:'Głębia cienia',min:.4,max:1.6,step:.05,base:1.20,format:x2},
       {key:'glow',short:'P',label:'Poświata',min:0,max:2,step:.05,base:2,format:x2},
       {key:'sheen',short:'B',label:'Blask',min:0,max:2,step:.05,base:1.55,format:x2},
       {key:'rainbow',short:'T',label:'Tęcza',min:0,max:2,step:.05,base:1.25,format:x2},
-      {key:'rim',short:'K',label:'Krawędź',min:0,max:2,step:.05,base:1.05,format:x2},
+      {key:'rim',short:'K',label:'Krawędź',min:0,max:2,step:.05,base:1.10,format:x2},
     ]
   },
   chaos:{
     title:'Chaos',setter:'setChaos',defaults:BUBBLE_CHAOS_DEFAULTS,
     params:[
-      {key:'amplitude',short:'A',label:'Amplituda',min:-2,max:4,step:.05,base:1,format:x2},
-      {key:'frequency',short:'F',label:'Fale',min:-2,max:4,step:.05,base:1,format:x2},
-      {key:'orbit',short:'O',label:'Orbita',min:-2,max:4,step:.05,base:1,format:x2},
-      {key:'magnet',short:'M',label:'Magnes',min:-3,max:3,step:.05,base:0,format:signed},
-      {key:'jelly',short:'G',label:'Galareta',min:0,max:2,step:.05,base:1,format:x2},
-      {key:'squash',short:'Z',label:'Zgniatanie',min:-1,max:1,step:.025,base:0,format:v=>`${Math.round(Number(v)*100)}%`},
+      {key:'amplitude',short:'A',label:'Amplituda',min:-2,max:4,step:.05,base:3.25,format:x2},
+      {key:'frequency',short:'F',label:'Fale',min:-2,max:4,step:.05,base:1.35,format:x2},
+      {key:'orbit',short:'O',label:'Orbita',min:-2,max:4,step:.05,base:1.35,format:x2},
+      {key:'magnet',short:'M',label:'Magnes',min:-3,max:3,step:.05,base:-.20,format:signed},
+      {key:'jelly',short:'G',label:'Galareta',min:0,max:2,step:.05,base:.60,format:x2},
+      {key:'squash',short:'Z',label:'Zgniatanie',min:-1,max:1,step:.025,base:.13,format:v=>`${Math.round(Number(v)*100)}%`},
     ]
   },
   fx:{
@@ -53,10 +54,21 @@ const CATEGORIES={
     params:[
       {key:'blur',short:'B',label:'Blur obrazu',min:0,max:10,step:.25,base:0,format:v=>Number(v).toFixed(2)+'px'},
       {key:'shadowBlur',short:'C',label:'Blur cienia',min:0,max:18,step:.5,base:0,format:v=>Number(v).toFixed(1)+'px'},
-      {key:'particles',short:'P',label:'Particles',min:0,max:48,step:1,base:0,format:v=>String(Math.round(v))},
-      {key:'energy',short:'E',label:'Energia',min:0,max:4,step:.05,base:1,format:x2},
+      {key:'particles',short:'P',label:'Particles',min:0,max:48,step:1,base:32,format:v=>String(Math.round(v))},
+      {key:'energy',short:'E',label:'Energia',min:0,max:4,step:.05,base:.90,format:x2},
       {key:'refraction',short:'R',label:'Refrakcja',min:0,max:36,step:1,base:0,format:v=>String(Math.round(v))},
       {key:'bloom',short:'L',label:'Bloom',min:0,max:3,step:.05,base:0,format:x2},
+    ]
+  },
+  transition:{
+    title:'Przejście',setter:'setTransition',defaults:BUBBLE_TRANSITION_DEFAULTS,
+    params:[
+      {key:'duration',short:'C',label:'Czas',min:.12,max:1.2,step:.01,base:.35,format:v=>Number(v).toFixed(2)+'s'},
+      {key:'blur',short:'B',label:'Blur',min:0,max:8,step:.1,base:2.25,format:v=>Number(v).toFixed(1)+'px'},
+      {key:'zoom',short:'Z',label:'Zoom',min:-6,max:12,step:.25,base:1,format:v=>signed(v)+'%'},
+      {key:'rotate',short:'O',label:'Obrót',min:-12,max:12,step:.25,base:0,format:v=>signed(v)+'°'},
+      {key:'hue',short:'K',label:'Kolor',min:-180,max:180,step:5,base:0,format:v=>signed(v)+'°'},
+      {key:'sparks',short:'P',label:'Pył',min:0,max:36,step:1,base:0,format:v=>String(Math.round(v))},
     ]
   }
 };
@@ -88,6 +100,7 @@ const state={
   look:{...BUBBLE_EFFECT_DEFAULTS},
   chaos:{...BUBBLE_CHAOS_DEFAULTS},
   fx:{...BUBBLE_HEAVY_DEFAULTS},
+  transition:{...BUBBLE_TRANSITION_DEFAULTS},
 };
 
 let activeCategory='motion';
@@ -125,6 +138,7 @@ function resetBubble(){
     effects:state.look,
     chaos:state.chaos,
     heavy:state.fx,
+    transition:state.transition,
     startAtZero:true
   });
   bubble=fresh;

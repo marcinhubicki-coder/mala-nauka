@@ -2,39 +2,48 @@ let instance = 0;
 const TAU = Math.PI * 2;
 
 export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
-  speed: 4.4,
-  points: 48,
-  random: 2.85,
-  smoothing: 1.35,
-  bounce: .75,
-  corners: 2,
+  speed: 4.7,
+  points: 28,
+  random: 1.70,
+  smoothing: 1.10,
+  bounce: .85,
+  corners: .90,
 });
 
 export const BUBBLE_EFFECT_DEFAULTS = Object.freeze({
-  shadow: 1.25,
-  depth: 1.15,
+  shadow: 1.80,
+  depth: 1.20,
   glow: 2,
   sheen: 1.55,
   rainbow: 1.25,
-  rim: 1.05,
+  rim: 1.10,
 });
 
 export const BUBBLE_CHAOS_DEFAULTS = Object.freeze({
-  amplitude: 1,
-  frequency: 1,
-  orbit: 1,
-  magnet: 0,
-  jelly: 1,
-  squash: 0,
+  amplitude: 3.25,
+  frequency: 1.35,
+  orbit: 1.35,
+  magnet: -.20,
+  jelly: .60,
+  squash: .13,
 });
 
 export const BUBBLE_HEAVY_DEFAULTS = Object.freeze({
   blur: 0,
   shadowBlur: 0,
-  particles: 0,
-  energy: 1,
+  particles: 32,
+  energy: .90,
   refraction: 0,
   bloom: 0,
+});
+
+export const BUBBLE_TRANSITION_DEFAULTS = Object.freeze({
+  duration: .35,
+  blur: 2.25,
+  zoom: 1,
+  rotate: 0,
+  hue: 0,
+  sparks: 0,
 });
 
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
@@ -98,6 +107,21 @@ function normalizeHeavy(input={}){
     bloom:clampValue(numeric(merged.bloom,BUBBLE_HEAVY_DEFAULTS.bloom),0,3),
   };
 }
+function normalizeTransition(input={}){
+  const merged={...BUBBLE_TRANSITION_DEFAULTS,...input};
+  const numeric=(value,fallback)=>{
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?parsed:fallback;
+  };
+  return {
+    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.12,1.2),
+    blur:clampValue(numeric(merged.blur,BUBBLE_TRANSITION_DEFAULTS.blur),0,8),
+    zoom:clampValue(numeric(merged.zoom,BUBBLE_TRANSITION_DEFAULTS.zoom),-6,12),
+    rotate:clampValue(numeric(merged.rotate,BUBBLE_TRANSITION_DEFAULTS.rotate),-12,12),
+    hue:clampValue(numeric(merged.hue,BUBBLE_TRANSITION_DEFAULTS.hue),-180,180),
+    sparks:Math.round(clampValue(numeric(merged.sparks,BUBBLE_TRANSITION_DEFAULTS.sparks),0,36)),
+  };
+}
 
 export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
@@ -107,6 +131,7 @@ export function createBubble(host, options={}) {
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
   let heavy = normalizeHeavy(options.heavy);
+  let transitionTuning = normalizeTransition(options.transition);
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
@@ -148,6 +173,7 @@ export function createBubble(host, options={}) {
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
         <g class="soap-heavy-particles"></g>
+        <g class="soap-transition-particles"></g>
       </g>
       <use href="#${id}-shape" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
       <use href="#${id}-shape" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
@@ -170,6 +196,7 @@ export function createBubble(host, options={}) {
   const glints = [...host.querySelectorAll('.soap-glint')];
   const atmosphere = host.querySelector('.soap-atmosphere');
   const particleHost = host.querySelector('.soap-heavy-particles');
+  const transitionParticleHost = host.querySelector('.soap-transition-particles');
   const effectNodes = {
     shadowMain:host.querySelector('.soap-shadow-main'),
     shadowSoft:host.querySelector('.soap-shadow-soft'),
@@ -189,6 +216,7 @@ export function createBubble(host, options={}) {
     shadowBlur:host.querySelector('.soap-shadow-blur-node'),
     bloomBlur:host.querySelector('.soap-bloom-blur-node'),
     bloom:host.querySelector('.soap-heavy-bloom'),
+    shadowGroup:host.querySelector('.soap-shadow-group'),
   };
   const spots = [[41,89,6],[114,27,8],[284,30,5],[363,126,6],[369,263,8],[299,375,7],[75,349,5],[22,256,9],[327,337,4]];
   atmosphere.innerHTML = spots.map(([x,y,r]) => `<g class="soap-star" style="--spark-delay:${-Math.random()*6}s;--spark-duration:${3.8+Math.random()*4.5}s" transform="translate(${x} ${y})"><circle r="${r*2.2}" fill="url(#${id}-star)"/><path d="M0 ${-r} Q${r*.13} ${-r*.13} ${r*.65} 0 Q${r*.13} ${r*.13} 0 ${r} Q${-r*.13} ${r*.13} ${-r*.65} 0 Q${-r*.13} ${-r*.13} 0 ${-r}" fill="#fffef4"/><circle r="1" fill="white"/></g>`).join('') +
@@ -207,6 +235,27 @@ export function createBubble(host, options={}) {
     return `<circle class="soap-heavy-particle" cx="0" cy="0" r="${particle.radius.toFixed(2)}" fill="${fill}" opacity="0"/>`;
   }).join('');
   const particleNodes=[...particleHost.querySelectorAll('.soap-heavy-particle')];
+
+  const transitionParticleData=Array.from({length:36},(_,index)=>{
+    const angle=index/36*TAU+(Math.random()-.5)*.24;
+    const distance=46+Math.random()*128;
+    return {
+      dx:Math.cos(angle)*distance,
+      dy:Math.sin(angle)*distance,
+      radius:1.2+Math.random()*3.2,
+      delay:Math.random()*.22,
+      hue:index%3,
+    };
+  });
+  transitionParticleHost.innerHTML=transitionParticleData.map((particle,index)=>{
+    const fill=particle.hue===0?'#fff':particle.hue===1?'#bff5ff':'#ffd0f5';
+    return `<circle class="soap-transition-particle" cx="200" cy="200" r="${particle.radius.toFixed(2)}" fill="${fill}" opacity="0"/>`;
+  }).join('');
+  const transitionParticleNodes=[...transitionParticleHost.querySelectorAll('.soap-transition-particle')];
+  transitionParticleNodes.forEach(node=>{
+    node.style.transformBox='fill-box';
+    node.style.transformOrigin='center';
+  });
 
   host.querySelectorAll('use,[clip-path],[filter],[fill],[stroke]').forEach(element => {
     for (const attribute of ['href','clip-path','filter','fill','stroke']) {
@@ -236,12 +285,28 @@ export function createBubble(host, options={}) {
   applyEffects();
 
   function applyHeavy(){
+    const needsPictureFilter=heavy.blur>0.001 || heavy.refraction>0.001;
+    const needsShadowFilter=heavy.shadowBlur>0.001;
+    const pictureFilter=`url("${documentUrl}#${id}-pictureFx")`;
+    const shadowFilter=`url("${documentUrl}#${id}-shadowFx")`;
+
     heavyNodes.refraction.setAttribute('scale',heavy.refraction.toFixed(2));
     heavyNodes.pictureBlur.setAttribute('stdDeviation',heavy.blur.toFixed(2));
+    pictures.forEach(picture=>{
+      if(needsPictureFilter) picture.setAttribute('filter',pictureFilter);
+      else picture.removeAttribute('filter');
+    });
+
     heavyNodes.shadowBlur.setAttribute('stdDeviation',(heavy.shadowBlur*.5).toFixed(2));
+    if(needsShadowFilter) heavyNodes.shadowGroup.setAttribute('filter',shadowFilter);
+    else heavyNodes.shadowGroup.removeAttribute('filter');
+
+    const bloomActive=heavy.bloom>0.001;
+    heavyNodes.bloom.style.display=bloomActive?'':'none';
     heavyNodes.bloomBlur.setAttribute('stdDeviation',(2.5+heavy.bloom*3.4).toFixed(2));
     heavyNodes.bloom.setAttribute('opacity',Math.min(.72,heavy.bloom*.18).toFixed(3));
     heavyNodes.bloom.setAttribute('stroke-width',(5.5+heavy.bloom*3.5).toFixed(2));
+
     particleNodes.forEach((node,index)=>{
       node.style.display=index<heavy.particles?'':'none';
       if(index>=heavy.particles) node.setAttribute('opacity','0');
@@ -267,9 +332,12 @@ export function createBubble(host, options={}) {
   let membrane=null, membraneVelocity=null;
   const SAFE_EDGE=14;
   const SAFE_MAX=400-SAFE_EDGE;
+  let particleFrame=0;
 
-  function updateParticles(time){
+  function updateParticles(time,force=false){
     if(!heavy.particles)return;
+    particleFrame++;
+    if(!force && particleFrame%2)return;
     const energy=heavy.energy;
     particleNodes.forEach((node,index)=>{
       if(index>=heavy.particles)return;
@@ -476,6 +544,28 @@ export function createBubble(host, options={}) {
     imageLoads.set(url, load);
     return load;
   }
+  function preloadScene(url){
+    if(!url) return Promise.resolve(true);
+    return waitForImage(url).then(()=>true).catch(()=>false);
+  }
+
+  function makeTransitionParticles(duration){
+    const count=transitionTuning.sparks;
+    if(!count)return [];
+    return transitionParticleNodes.slice(0,count).map((node,index)=>{
+      const data=transitionParticleData[index];
+      const delay=Math.round(duration*data.delay);
+      return node.animate(
+        [
+          {opacity:0,transform:'translate(0px, 0px) scale(.2)'},
+          {opacity:.92,transform:`translate(${(data.dx*.28).toFixed(1)}px, ${(data.dy*.28).toFixed(1)}px) scale(1.15)`,offset:.34},
+          {opacity:0,transform:`translate(${data.dx.toFixed(1)}px, ${data.dy.toFixed(1)}px) scale(.45)`}
+        ],
+        {duration:Math.max(180,duration-delay),delay,easing:'cubic-bezier(.18,.72,.34,1)',fill:'both'}
+      );
+    });
+  }
+
   async function transitionToScene(url, scene, first=false) {
     const token=++loadToken;
     if (url===currentUrl && hasPictureSource(activePicture)) return true;
@@ -520,24 +610,54 @@ export function createBubble(host, options={}) {
       return true;
     }
 
-    const duration=first || !hasOld ? 380 : 520;
+    const duration=Math.round(transitionTuning.duration*1000);
+    const blur=first || !hasOld ? transitionTuning.blur*.72 : transitionTuning.blur;
+    const zoom=transitionTuning.zoom/100;
+    const rotation=transitionTuning.rotate;
+    const hue=transitionTuning.hue;
+    const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
+    const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
+    const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
+    const outgoingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${(-hue*.52).toFixed(1)}deg)`;
+
+    next.style.transformBox='fill-box';
+    next.style.transformOrigin='center';
+    old.style.transformBox='fill-box';
+    old.style.transformOrigin='center';
+
     const incoming=next.animate(
-      [{opacity:0},{opacity:.62,offset:.52},{opacity:1}],
+      [
+        {opacity:0,filter:incomingFilter,transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
+        {opacity:.76,filter:incomingMidFilter,transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
+        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'}
+      ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
-      [{opacity:1},{opacity:.72,offset:.42},{opacity:0}],
-      {duration:Math.round(duration*.92),easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
+      [
+        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'},
+        {opacity:.52,filter:outgoingMidFilter,transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
+        {opacity:0,filter:outgoingFilter,transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
+      ],
+      {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;
-    transitions=[incoming,...(outgoing?[outgoing]:[])];
+    const sparkAnimations=makeTransitionParticles(duration);
+
+    transitions=[incoming,...(outgoing?[outgoing]:[]),...sparkAnimations];
     if(paused) transitions.forEach(animation=>animation.pause());
     await Promise.all(transitions.map(animation=>animation.finished.catch(()=>{})));
     if (destroyed || token!==loadToken) {
-      transitions.forEach(animation=>animation.cancel()); transitions=[]; return false;
+      transitions.forEach(animation=>animation.cancel()); transitions=[];
+      next.style.removeProperty('filter'); next.style.removeProperty('transform');
+      old.style.removeProperty('filter'); old.style.removeProperty('transform');
+      return false;
     }
+
+    transitions.forEach(animation=>animation.cancel()); transitions=[];
     old.style.opacity='0'; setPictureSource(old);
     next.style.opacity='1';
-    transitions.forEach(animation=>animation.cancel()); transitions=[];
+    next.style.removeProperty('filter'); next.style.removeProperty('transform');
+    old.style.removeProperty('filter'); old.style.removeProperty('transform');
     activePicture=next; standbyPicture=old; currentUrl=displayUrl;
     return true;
   }
@@ -568,12 +688,19 @@ export function createBubble(host, options={}) {
   function setHeavy(patch={}){
     heavy=normalizeHeavy({...heavy,...patch});
     applyHeavy();
+    updateParticles(elapsed,true);
     draw(elapsed);
     return {...heavy};
   }
   function getHeavy(){ return {...heavy}; }
+  function setTransition(patch={}){
+    transitionTuning=normalizeTransition({...transitionTuning,...patch});
+    return {...transitionTuning};
+  }
+  function getTransition(){ return {...transitionTuning}; }
 
   return {
+    preloadScene,
     transitionToScene,
     setTuning,
     getTuning,
@@ -583,6 +710,8 @@ export function createBubble(host, options={}) {
     getChaos,
     setHeavy,
     getHeavy,
+    setTransition,
+    getTransition,
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

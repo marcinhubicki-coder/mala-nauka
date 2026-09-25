@@ -1,18 +1,18 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 256,
+  "assignedWords": 280,
   "uniqueImages": 128,
-  "missingWords": 148,
+  "missingWords": 124,
   "missingByCategory": {
     "u/ó": 17,
-    "rz/ż": 38,
-    "ch/h": 58,
-    "ć/ci": 6,
-    "ś/si": 8,
+    "rz/ż": 33,
+    "ch/h": 42,
+    "ć/ci": 5,
+    "ś/si": 7,
     "ź/zi": 5,
     "ń/ni": 8,
-    "dź/dzi": 8
+    "dź/dzi": 7
   },
   "missing": [
     {
@@ -178,12 +178,6 @@
       "difficulty": 1
     },
     {
-      "word": "ważny",
-      "masked": "wa_ny",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
       "word": "jeżyna",
       "masked": "je_yna",
       "category": "rz/ż",
@@ -250,12 +244,6 @@
       "difficulty": 1
     },
     {
-      "word": "żartować",
-      "masked": "_artować",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "garaż",
       "masked": "gara_",
       "category": "rz/ż",
@@ -298,20 +286,8 @@
       "difficulty": 1
     },
     {
-      "word": "pożegnać",
-      "masked": "po_egnać",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "pożyczyć",
       "masked": "po_yczyć",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "możliwość",
-      "masked": "mo_liwość",
       "category": "rz/ż",
       "difficulty": 2
     },
@@ -326,12 +302,6 @@
       "masked": "ka_dy",
       "category": "rz/ż",
       "difficulty": 1
-    },
-    {
-      "word": "koleżanka",
-      "masked": "kole_anka",
-      "category": "rz/ż",
-      "difficulty": 2
     },
     {
       "word": "mężczyzna",
@@ -350,12 +320,6 @@
       "masked": "mu_a",
       "category": "ch/h",
       "difficulty": 1
-    },
-    {
-      "word": "chłopiec",
-      "masked": "_łopiec",
-      "category": "ch/h",
-      "difficulty": 2
     },
     {
       "word": "zachód",
@@ -382,12 +346,6 @@
       "difficulty": 1
     },
     {
-      "word": "chrupki",
-      "masked": "_rupki",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
       "word": "chrząszcz",
       "masked": "_rząszcz",
       "category": "ch/h",
@@ -408,24 +366,6 @@
     {
       "word": "chodzić",
       "masked": "_odzić",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
-      "word": "chłód",
-      "masked": "_łód",
-      "category": "ch/h",
-      "difficulty": 1
-    },
-    {
-      "word": "chłodny",
-      "masked": "_łodny",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
-      "word": "chłopak",
-      "masked": "_łopak",
       "category": "ch/h",
       "difficulty": 2
     },
@@ -490,12 +430,6 @@
       "difficulty": 1
     },
     {
-      "word": "ruch",
-      "masked": "ru_",
-      "category": "ch/h",
-      "difficulty": 1
-    },
-    {
       "word": "puch",
       "masked": "pu_",
       "category": "ch/h",
@@ -550,30 +484,6 @@
       "difficulty": 1
     },
     {
-      "word": "hotel",
-      "masked": "_otel",
-      "category": "ch/h",
-      "difficulty": 1
-    },
-    {
-      "word": "hamak",
-      "masked": "_amak",
-      "category": "ch/h",
-      "difficulty": 1
-    },
-    {
-      "word": "hulajnoga",
-      "masked": "_ulajnoga",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
-      "word": "hokej",
-      "masked": "_okej",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
       "word": "humor",
       "masked": "_umor",
       "category": "ch/h",
@@ -586,32 +496,14 @@
       "difficulty": 1
     },
     {
-      "word": "hałas",
-      "masked": "_ałas",
-      "category": "ch/h",
-      "difficulty": 1
-    },
-    {
       "word": "hak",
       "masked": "_ak",
       "category": "ch/h",
       "difficulty": 1
     },
     {
-      "word": "harcerz",
-      "masked": "_arcerz",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
       "word": "hamulec",
       "masked": "_amulec",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
-      "word": "hipopotam",
-      "masked": "_ipopotam",
       "category": "ch/h",
       "difficulty": 2
     },
@@ -652,28 +544,10 @@
       "difficulty": 2
     },
     {
-      "word": "hokeista",
-      "masked": "_okeista",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
       "word": "harmonia",
       "masked": "_armonia",
       "category": "ch/h",
       "difficulty": 2
-    },
-    {
-      "word": "harfa",
-      "masked": "_arfa",
-      "category": "ch/h",
-      "difficulty": 2
-    },
-    {
-      "word": "hobby",
-      "masked": "_obby",
-      "category": "ch/h",
-      "difficulty": 1
     },
     {
       "word": "wahadło",
@@ -718,12 +592,6 @@
       "difficulty": 1
     },
     {
-      "word": "ćma",
-      "masked": "_ma",
-      "category": "ć/ci",
-      "difficulty": 1
-    },
-    {
       "word": "spać",
       "masked": "spa_",
       "category": "ć/ci",
@@ -762,12 +630,6 @@
     {
       "word": "środa",
       "masked": "_roda",
-      "category": "ś/si",
-      "difficulty": 1
-    },
-    {
-      "word": "ślimak",
-      "masked": "_limak",
       "category": "ś/si",
       "difficulty": 1
     },
@@ -866,12 +728,6 @@
       "masked": "_adek",
       "category": "dź/dzi",
       "difficulty": 1
-    },
-    {
-      "word": "dziewczyna",
-      "masked": "_ewczyna",
-      "category": "dź/dzi",
-      "difficulty": 2
     },
     {
       "word": "dźwig",

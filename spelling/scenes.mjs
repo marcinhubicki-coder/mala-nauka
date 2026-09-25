@@ -47,6 +47,54 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['żartować', { key:'zartowac', asset:'zartowac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ślimak', { key:'slimak', asset:'slimak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ćma', { key:'cma', asset:'cma.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ważny', { key:'wazny', asset:'wazny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ruch', { key:'ruch', asset:'ruch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pożegnać', { key:'pozegnac', asset:'pozegnac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['możliwość', { key:'mozliwosc', asset:'mozliwosc.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['koleżanka', { key:'kolezanka', asset:'kolezanka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hulajnoga', { key:'hulajnoga', asset:'hulajnoga.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hotel', { key:'hotel', asset:'hotel.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hokej', { key:'hokej', asset:'hokej.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hokeista', { key:'hokeista', asset:'hokeista.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hobby', { key:'hobby', asset:'hobby.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hipopotam', { key:'hipopotam', asset:'hipopotam.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hałas', { key:'halas', asset:'halas.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['harfa', { key:'harfa', asset:'harfa.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['harcerz', { key:'harcerz', asset:'harcerz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hamak', { key:'hamak', asset:'hamak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dziewczyna', { key:'dziewczyna', asset:'dziewczyna.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłód', { key:'chlod', asset:'chlod.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłopiec', { key:'chlopiec', asset:'chlopiec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłopak', { key:'chlopak', asset:'chlopak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłodny', { key:'chlodny', asset:'chlodny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chrupki', { key:'chrupki', asset:'chrupki.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['życzliwy', { key:'zyczliwy', asset:'zyczliwy.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['życie', { key:'zycie', asset:'zycie.jpg', layouts:['bubble'] }],

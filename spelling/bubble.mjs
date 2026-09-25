@@ -2,37 +2,37 @@ let instance = 0;
 const TAU = Math.PI * 2;
 
 export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
-  speed: 4.4,
-  points: 48,
-  random: 2.85,
-  smoothing: 1.35,
-  bounce: .75,
-  corners: 2,
+  speed: 4.7,
+  points: 28,
+  random: 1.70,
+  smoothing: 1.10,
+  bounce: .85,
+  corners: .90,
 });
 
 export const BUBBLE_EFFECT_DEFAULTS = Object.freeze({
-  shadow: 1.25,
-  depth: 1.15,
+  shadow: 1.80,
+  depth: 1.20,
   glow: 2,
   sheen: 1.55,
   rainbow: 1.25,
-  rim: 1.05,
+  rim: 1.10,
 });
 
 export const BUBBLE_CHAOS_DEFAULTS = Object.freeze({
-  amplitude: 1,
-  frequency: 1,
-  orbit: 1,
-  magnet: 0,
-  jelly: 1,
-  squash: 0,
+  amplitude: 3.25,
+  frequency: 1.35,
+  orbit: 1.35,
+  magnet: -.20,
+  jelly: .60,
+  squash: .13,
 });
 
 export const BUBBLE_HEAVY_DEFAULTS = Object.freeze({
   blur: 0,
   shadowBlur: 0,
-  particles: 0,
-  energy: 1,
+  particles: 32,
+  energy: .90,
   refraction: 0,
   bloom: 0,
 });

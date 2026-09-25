@@ -47,6 +47,24 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['cmentarz', { key:'cmentarz', asset:'cmentarz.jpg', layouts:['bubble'] }],
+  ['kalendarz', { key:'kalendarz', asset:'kalendarz.jpg', layouts:['bubble'] }],
+  ['kolejarz', { key:'kolejarz', asset:'kolejarz.jpg', layouts:['bubble'] }],
+  ['krzyż', { key:'krzyz', asset:'krzyz.jpg', layouts:['bubble'] }],
+  ['murarz', { key:'murarz', asset:'murarz.jpg', layouts:['bubble'] }],
+  ['murawa', { key:'murawa', asset:'murawa.jpg', layouts:['bubble'] }],
+  ['nudny', { key:'nudny', asset:'nudny.jpg', layouts:['bubble'] }],
+  ['pisarz', { key:'pisarz', asset:'pisarz.jpg', layouts:['bubble'] }],
+  ['piłkarz', { key:'pilkarz', asset:'pilkarz.jpg', layouts:['bubble'] }],
+  ['przez', { key:'przez', asset:'przez.jpg', layouts:['bubble'] }],
+  ['skrót', { key:'skrot', asset:'skrot.jpg', layouts:['bubble'] }],
+  ['talerz', { key:'talerz', asset:'talerz.jpg', layouts:['bubble'] }],
+  ['urząd', { key:'urzad', asset:'urzad.jpg', layouts:['bubble'] }],
+  ['wrzątek', { key:'wrzatek', asset:'wrzatek.jpg', layouts:['bubble'] }],
+  ['wójt', { key:'wojt', asset:'wojt.jpg', layouts:['bubble'] }],
+  ['zwierzak', { key:'zwierzak', asset:'zwierzak.jpg', layouts:['bubble'] }],
+  ['zwierzę', { key:'zwierze', asset:'zwierze.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['autobus', { key:'autobus', asset:'autobus.jpg', layouts:['bubble'] }],
   ['chować', { key:'chowac', asset:'chowac.jpg', layouts:['bubble'] }],
   ['ciężar', { key:'ciezar', asset:'ciezar.jpg', layouts:['bubble'] }],

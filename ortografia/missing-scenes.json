@@ -1,12 +1,12 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 217,
-  "uniqueImages": 111,
-  "missingWords": 187,
+  "assignedWords": 234,
+  "uniqueImages": 128,
+  "missingWords": 170,
   "missingByCategory": {
-    "u/ó": 29,
-    "rz/ż": 65,
+    "u/ó": 24,
+    "rz/ż": 53,
     "ch/h": 58,
     "ć/ci": 6,
     "ś/si": 8,
@@ -58,12 +58,6 @@
       "difficulty": 1
     },
     {
-      "word": "wójt",
-      "masked": "w_jt",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
       "word": "krótki",
       "masked": "kr_tki",
       "category": "u/ó",
@@ -72,12 +66,6 @@
     {
       "word": "krótko",
       "masked": "kr_tko",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "skrót",
-      "masked": "skr_t",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -124,12 +112,6 @@
       "difficulty": 1
     },
     {
-      "word": "urząd",
-      "masked": "_rząd",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
       "word": "umieć",
       "masked": "_mieć",
       "category": "u/ó",
@@ -148,12 +130,6 @@
       "difficulty": 1
     },
     {
-      "word": "murawa",
-      "masked": "m_rawa",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
       "word": "drugi",
       "masked": "dr_gi",
       "category": "u/ó",
@@ -162,12 +138,6 @@
     {
       "word": "gruby",
       "masked": "gr_by",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "nudny",
-      "masked": "n_dny",
       "category": "u/ó",
       "difficulty": 1
     },
@@ -232,86 +202,14 @@
       "difficulty": 1
     },
     {
-      "word": "przez",
-      "masked": "p_ez",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
       "word": "sprzątać",
       "masked": "sp_ątać",
       "category": "rz/ż",
       "difficulty": 2
     },
     {
-      "word": "wrzątek",
-      "masked": "w_ątek",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "krzyż",
-      "masked": "k_yż",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "piłkarz",
-      "masked": "piłka_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "kolejarz",
-      "masked": "koleja_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "murarz",
-      "masked": "mura_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "pisarz",
-      "masked": "pisa_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "talerz",
-      "masked": "tale_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "kalendarz",
-      "masked": "kalenda_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "cmentarz",
-      "masked": "cmenta_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
       "word": "komentarz",
       "masked": "komenta_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "zwierzę",
-      "masked": "zwie_ę",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "zwierzak",
-      "masked": "zwie_ak",
       "category": "rz/ż",
       "difficulty": 2
     },

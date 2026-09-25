@@ -95,6 +95,23 @@ const CORE=[
   './assets/scenes/umyc.jpg',
   './assets/scenes/uwazny.jpg',
   './assets/scenes/zyczenie.jpg',
+  './assets/scenes/cmentarz.jpg',
+  './assets/scenes/kalendarz.jpg',
+  './assets/scenes/kolejarz.jpg',
+  './assets/scenes/krzyz.jpg',
+  './assets/scenes/murarz.jpg',
+  './assets/scenes/murawa.jpg',
+  './assets/scenes/nudny.jpg',
+  './assets/scenes/pisarz.jpg',
+  './assets/scenes/pilkarz.jpg',
+  './assets/scenes/przez.jpg',
+  './assets/scenes/skrot.jpg',
+  './assets/scenes/talerz.jpg',
+  './assets/scenes/urzad.jpg',
+  './assets/scenes/wrzatek.jpg',
+  './assets/scenes/wojt.jpg',
+  './assets/scenes/zwierzak.jpg',
+  './assets/scenes/zwierze.jpg',
 ];
 
 self.addEventListener('install',event=>{

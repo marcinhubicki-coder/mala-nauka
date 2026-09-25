@@ -1,4 +1,4 @@
-import { createBubble, BUBBLE_TUNING_DEFAULTS } from '../spelling/bubble.mjs?v=tuner-1';
+import { createBubble, BUBBLE_TUNING_DEFAULTS } from '../spelling/bubble.mjs?v=tuner-2';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=26-generated-scenes';
 import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 

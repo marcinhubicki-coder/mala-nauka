@@ -10,6 +10,15 @@ export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
   corners: 2,
 });
 
+export const BUBBLE_EFFECT_DEFAULTS = Object.freeze({
+  shadow: 1.25,
+  depth: 1.15,
+  glow: 2,
+  sheen: 1.55,
+  rainbow: 1.25,
+  rim: 1.05,
+});
+
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
 function normalizeTuning(input={}){
   const merged={...BUBBLE_TUNING_DEFAULTS,...input};
@@ -26,12 +35,28 @@ function normalizeTuning(input={}){
     corners:clampValue(numeric(merged.corners,BUBBLE_TUNING_DEFAULTS.corners),0,4),
   };
 }
+function normalizeEffects(input={}){
+  const merged={...BUBBLE_EFFECT_DEFAULTS,...input};
+  const numeric=(value,fallback)=>{
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?parsed:fallback;
+  };
+  return {
+    shadow:clampValue(numeric(merged.shadow,BUBBLE_EFFECT_DEFAULTS.shadow),0,2),
+    depth:clampValue(numeric(merged.depth,BUBBLE_EFFECT_DEFAULTS.depth),.4,1.6),
+    glow:clampValue(numeric(merged.glow,BUBBLE_EFFECT_DEFAULTS.glow),0,2),
+    sheen:clampValue(numeric(merged.sheen,BUBBLE_EFFECT_DEFAULTS.sheen),0,2),
+    rainbow:clampValue(numeric(merged.rainbow,BUBBLE_EFFECT_DEFAULTS.rainbow),0,2),
+    rim:clampValue(numeric(merged.rim,BUBBLE_EFFECT_DEFAULTS.rim),0,2),
+  };
+}
 
 export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
   let tuning = normalizeTuning(options.tuning);
+  let effects = normalizeEffects(options.effects);
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
@@ -46,23 +71,23 @@ export function createBubble(host, options={}) {
       <radialGradient id="${id}-star"><stop stop-color="#fff"/><stop offset=".27" stop-color="#fff9df" stop-opacity=".85"/><stop offset="1" stop-color="#ffe4a5" stop-opacity="0"/></radialGradient>
       <radialGradient id="${id}-orb" cx=".3" cy=".22" r=".9"><stop stop-color="#fff" stop-opacity=".9"/><stop offset=".21" stop-color="#f7c5f8" stop-opacity=".55"/><stop offset=".55" stop-color="#c3e7ff" stop-opacity=".1"/><stop offset=".81" stop-color="#9fecfa" stop-opacity=".68"/><stop offset=".94" stop-color="#e6b2fc" stop-opacity=".88"/><stop offset="1" stop-color="#fff"/></radialGradient>
     </defs>
-    <use href="#${id}-shape" class="soap-shadow" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
-    <use href="#${id}-shape" class="soap-shadow" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
-    <use href="#${id}-shape" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
+    <use href="#${id}-shape" class="soap-shadow soap-shadow-main" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
+    <use href="#${id}-shape" class="soap-shadow soap-shadow-soft" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
+    <use href="#${id}-shape" class="soap-shadow-ring" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
     <g clip-path="url(#${id}-clip)">
       <rect width="400" height="400" fill="url(#${id}-empty)"/>
       <image class="soap-picture soap-picture-a" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
       <image class="soap-picture soap-picture-b" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
-      <rect width="400" height="400" fill="url(#${id}-film)"/>
-      <rect width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
-      <rect width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
+      <rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
+      <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
+      <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
     </g>
-    <use href="#${id}-shape" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
-    <use href="#${id}-shape" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
-    <use href="#${id}-shape" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
-    <use href="#${id}-shape" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
-    <use href="#${id}-shape" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
+    <use href="#${id}-shape" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
+    <use href="#${id}-shape" class="soap-rainbow-outer" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
+    <use href="#${id}-shape" class="soap-rainbow-inner" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
+    <use href="#${id}-shape" class="soap-rim-main" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
+    <use href="#${id}-shape" class="soap-rim-soft" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
+    <use href="#${id}-shape" class="soap-rim-inner" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
     <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
     <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
     <g class="soap-glint"><ellipse rx="15" ry="5" fill="white" opacity=".22"/><ellipse rx="11" ry="3" fill="white" opacity=".91"/></g>
@@ -75,6 +100,19 @@ export function createBubble(host, options={}) {
   let activePicture = pictures[0], standbyPicture = pictures[1];
   const glints = [...host.querySelectorAll('.soap-glint')];
   const atmosphere = host.querySelector('.soap-atmosphere');
+  const effectNodes = {
+    shadowMain:host.querySelector('.soap-shadow-main'),
+    shadowSoft:host.querySelector('.soap-shadow-soft'),
+    shadowRing:host.querySelector('.soap-shadow-ring'),
+    innerLift:host.querySelector('.soap-inner-lift'),
+    sheen:host.querySelector('.soap-sheen-overlay'),
+    rainbowOuter:host.querySelector('.soap-rainbow-outer'),
+    rainbowInner:host.querySelector('.soap-rainbow-inner'),
+    rimDark:host.querySelector('.soap-rim-dark'),
+    rimMain:host.querySelector('.soap-rim-main'),
+    rimSoft:host.querySelector('.soap-rim-soft'),
+    rimInner:host.querySelector('.soap-rim-inner'),
+  };
   const spots = [[41,89,6],[114,27,8],[284,30,5],[363,126,6],[369,263,8],[299,375,7],[75,349,5],[22,256,9],[327,337,4]];
   atmosphere.innerHTML = spots.map(([x,y,r]) => `<g class="soap-star" style="--spark-delay:${-Math.random()*6}s;--spark-duration:${3.8+Math.random()*4.5}s" transform="translate(${x} ${y})"><circle r="${r*2.2}" fill="url(#${id}-star)"/><path d="M0 ${-r} Q${r*.13} ${-r*.13} ${r*.65} 0 Q${r*.13} ${r*.13} 0 ${r} Q${-r*.13} ${r*.13} ${-r*.65} 0 Q${-r*.13} ${-r*.13} 0 ${-r}" fill="#fffef4"/><circle r="1" fill="white"/></g>`).join('') +
     [[63,43,12],[367,188,14],[39,310,10],[262,382,11]].map(([x,y,r],index) => `<g class="soap-satellite" style="--orb-delay:${-index*2.3}s;--orb-duration:${7.2+index*1.9}s" transform="translate(${x} ${y})"><circle r="${r}" fill="url(#${id}-orb)" stroke="#fff" stroke-width=".9"/><ellipse cx="${-r*.3}" cy="${-r*.5}" rx="${r*.26}" ry="${r*.14}" transform="rotate(-24)" fill="white" opacity=".9"/></g>`).join('');
@@ -86,6 +124,25 @@ export function createBubble(host, options={}) {
       else if (value?.includes('url(#')) element.setAttribute(attribute, value.replace(/url\(#([^)]*)\)/g, (_,name) => `url("${documentUrl}#${name}")`));
     }
   });
+
+  function applyEffects(){
+    const shadow=effects.shadow, depth=effects.depth;
+    effectNodes.shadowMain.setAttribute('opacity',(0.085*shadow).toFixed(3));
+    effectNodes.shadowSoft.setAttribute('opacity',(0.035*shadow).toFixed(3));
+    effectNodes.shadowRing.setAttribute('opacity',(0.06*shadow).toFixed(3));
+    effectNodes.shadowMain.setAttribute('transform',`translate(0 ${(9*depth).toFixed(2)})`);
+    effectNodes.shadowSoft.setAttribute('transform',`translate(200 200) scale(.995) translate(-199 ${(-200+5*depth).toFixed(2)})`);
+    effectNodes.shadowRing.setAttribute('transform',`translate(0 ${(4*depth).toFixed(2)})`);
+    effectNodes.innerLift.setAttribute('opacity',(0.92*effects.glow).toFixed(3));
+    effectNodes.sheen.setAttribute('opacity',(0.78*effects.sheen).toFixed(3));
+    effectNodes.rainbowOuter.setAttribute('opacity',(0.38*effects.rainbow).toFixed(3));
+    effectNodes.rainbowInner.setAttribute('opacity',(0.82*effects.rainbow).toFixed(3));
+    effectNodes.rimDark.setAttribute('opacity',(0.12*effects.rim).toFixed(3));
+    effectNodes.rimMain.setAttribute('opacity',(0.96*effects.rim).toFixed(3));
+    effectNodes.rimSoft.setAttribute('opacity',(0.14*effects.rim).toFixed(3));
+    effectNodes.rimInner.setAttribute('opacity',(0.52*effects.rim).toFixed(3));
+  }
+  applyEffects();
 
   let frame = 0, elapsed = Math.random() * 50, last = 0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
@@ -349,11 +406,19 @@ export function createBubble(host, options={}) {
     return {...tuning};
   }
   function getTuning(){ return {...tuning}; }
+  function setEffects(patch={}){
+    effects=normalizeEffects({...effects,...patch});
+    applyEffects();
+    return {...effects};
+  }
+  function getEffects(){ return {...effects}; }
 
   return {
     transitionToScene,
     setTuning,
     getTuning,
+    setEffects,
+    getEffects,
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

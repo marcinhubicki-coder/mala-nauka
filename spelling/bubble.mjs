@@ -1,10 +1,37 @@
 let instance = 0;
 const TAU = Math.PI * 2;
 
-export function createBubble(host) {
+export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
+  speed: 4.4,
+  points: 64,
+  random: 1,
+  smoothing: 1,
+  top: 1,
+  bottom: 1,
+});
+
+const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
+function normalizeTuning(input={}){
+  const merged={...BUBBLE_TUNING_DEFAULTS,...input};
+  const numeric=(value,fallback)=>{
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?parsed:fallback;
+  };
+  return {
+    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,6.6),
+    points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),32,96)/4)*4,
+    random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,2),
+    smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),0,2),
+    top:clampValue(numeric(merged.top,BUBBLE_TUNING_DEFAULTS.top),0,2),
+    bottom:clampValue(numeric(merged.bottom,BUBBLE_TUNING_DEFAULTS.bottom),0,2),
+  };
+}
+
+export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
+  let tuning = normalizeTuning(options.tuning);
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
@@ -82,12 +109,13 @@ export function createBubble(host) {
   // bottom edge; their motion is spread to neighbouring points before the
   // closed Catmull-Rom spline is converted to cubic Beziers.
   function draw(time) {
-    const count=64;
-    const exponent=3.28 + .14*Math.sin(time*.15+seed[4]);
-    const halfW=196.4 + .45*Math.sin(time*.13+seed[0]);
-    const halfH=196.2 + .42*Math.sin(time*.12+seed[1]);
-    const centerX=200 + 1.45*Math.sin(time*.16+seed[5]);
-    const centerY=200 + .9*Math.sin(time*.13+seed[2]);
+    const count=tuning.points;
+    const irregularity=tuning.random;
+    const exponent=3.28 + .14*irregularity*Math.sin(time*.15+seed[4]);
+    const halfW=196.4 + .45*irregularity*Math.sin(time*.13+seed[0]);
+    const halfH=196.2 + .42*irregularity*Math.sin(time*.12+seed[1]);
+    const centerX=200 + 1.45*irregularity*Math.sin(time*.16+seed[5]);
+    const centerY=200 + .9*irregularity*Math.sin(time*.13+seed[2]);
     const primaryAngle=cornerAngles[primaryCorner];
     const secondaryAngle=cornerAngles[secondaryCorner];
 
@@ -100,10 +128,10 @@ export function createBubble(host) {
       let dx=0, dy=0;
 
       // Broad low-frequency breathing around the whole membrane.
-      const radial=1.15*Math.sin(angle*2+time*.12+seed[0])
-        +.78*Math.sin(angle*3-time*.085+seed[3]);
-      const drift=.42*Math.sin(time*.09+seed[0]+angle*1.7)
-        +.28*Math.sin(time*.065+seed[1]-angle*2.3);
+      const radial=irregularity*(1.15*Math.sin(angle*2+time*.12+seed[0])
+        +.78*Math.sin(angle*3-time*.085+seed[3]));
+      const drift=irregularity*(.42*Math.sin(time*.09+seed[0]+angle*1.7)
+        +.28*Math.sin(time*.065+seed[1]-angle*2.3));
       dx+=c*(radial+drift); dy+=s*(radial+drift);
 
       // Three shallow travelling control points across the top and bottom.
@@ -111,11 +139,11 @@ export function createBubble(host) {
       const topCenters=[-.34,0,.34].map(offset=>TAU*.75+offset);
       const bottomCenters=[-.34,0,.34].map(offset=>TAU*.25+offset);
       topCenters.forEach((center,index)=>{
-        const amount=.9+2.85*wave(time*(.14+index*.012)+seed[index]);
+        const amount=tuning.top*(.9+2.85*wave(time*(.14+index*.012)+seed[index]));
         dy+=amount*influence(angle,center,.31,2.15);
       });
       bottomCenters.forEach((center,index)=>{
-        const amount=.9+2.85*wave(time*(.135+index*.011)+seed[index+2]);
+        const amount=tuning.bottom*(.9+2.85*wave(time*(.135+index*.011)+seed[index+2]));
         dy-=amount*influence(angle,center,.31,2.15);
       });
 
@@ -123,11 +151,11 @@ export function createBubble(host) {
       const leftCenters=[Math.PI-.23,Math.PI+.23];
       const rightCenters=[-.23,.23];
       leftCenters.forEach((center,index)=>{
-        dx+=( .7+1.75*wave(time*(.12+index*.014)+seed[index+1]) )
+        dx+=irregularity*( .7+1.75*wave(time*(.12+index*.014)+seed[index+1]) )
           *influence(angle,center,.32,2.1);
       });
       rightCenters.forEach((center,index)=>{
-        dx-=( .7+1.75*wave(time*(.125+index*.013)+seed[index+3]) )
+        dx-=irregularity*( .7+1.75*wave(time*(.125+index*.013)+seed[index+3]) )
           *influence(angle,center,.32,2.1);
       });
 
@@ -142,8 +170,8 @@ export function createBubble(host) {
         dx+=c*radialOffset;
         dy+=s*radialOffset;
       };
-      cornerLobe(primaryAngle,6.4,seed[3]);
-      cornerLobe(secondaryAngle,3.9,seed[4]);
+      cornerLobe(primaryAngle,6.4*irregularity,seed[3]);
+      cornerLobe(secondaryAngle,3.9*irregularity,seed[4]);
 
       return [baseX+dx,baseY+dy];
     });
@@ -151,26 +179,31 @@ export function createBubble(host) {
     // Surface tension: each control point shares part of its intended movement
     // with the first and second neighbours. A moving point therefore produces
     // an arc, not a dent.
+    const neighbor1=.15*tuning.smoothing;
+    const neighbor2=.05*tuning.smoothing;
+    const selfWeight=1-2*(neighbor1+neighbor2);
     for(let pass=0;pass<2;pass++){
       const previous=target.map(point=>point.slice());
       for(let i=0;i<count;i++){
         const p=previous[i];
         const p1=previous[(i+count-1)%count], n1=previous[(i+1)%count];
         const p2=previous[(i+count-2)%count], n2=previous[(i+2)%count];
-        target[i][0]=p[0]*.60+(p1[0]+n1[0])*.15+(p2[0]+n2[0])*.05;
-        target[i][1]=p[1]*.60+(p1[1]+n1[1])*.15+(p2[1]+n2[1])*.05;
+        target[i][0]=p[0]*selfWeight+(p1[0]+n1[0])*neighbor1+(p2[0]+n2[0])*neighbor2;
+        target[i][1]=p[1]*selfWeight+(p1[1]+n1[1])*neighbor1+(p2[1]+n2[1])*neighbor2;
       }
     }
 
     // A damped spring adds the slight delayed response of a real soap film.
-    if(!membrane){
+    if(!membrane || membrane.length!==count){
       membrane=target.map(point=>point.slice());
       membraneVelocity=target.map(()=>[0,0]);
     }else{
+      const stiffness=.09+.035*tuning.smoothing;
+      const damping=.84-.04*tuning.smoothing;
       for(let i=0;i<count;i++){
         const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
-        velocity[0]=(velocity[0]+(goal[0]-point[0])*.125)*.80;
-        velocity[1]=(velocity[1]+(goal[1]-point[1])*.125)*.80;
+        velocity[0]=(velocity[0]+(goal[0]-point[0])*stiffness)*damping;
+        velocity[1]=(velocity[1]+(goal[1]-point[1])*stiffness)*damping;
         point[0]+=velocity[0];
         point[1]+=velocity[1];
       }
@@ -200,7 +233,7 @@ export function createBubble(host) {
     frame = 0;
     if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
-      elapsed += last ? Math.min((now-last)/1000,.1) * 4.4 : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * tuning.speed : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);
@@ -315,8 +348,22 @@ export function createBubble(host) {
     return true;
   }
 
+  function setTuning(patch={}){
+    const previousPoints=tuning.points;
+    tuning=normalizeTuning({...tuning,...patch});
+    if(tuning.points!==previousPoints){
+      membrane=null;
+      membraneVelocity=null;
+    }
+    draw(elapsed);
+    return {...tuning};
+  }
+  function getTuning(){ return {...tuning}; }
+
   return {
     transitionToScene,
+    setTuning,
+    getTuning,
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

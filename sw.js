@@ -161,6 +161,12 @@ const CORE=[
   './assets/scenes/cma.jpg',
   './assets/scenes/slimak.jpg',
   './assets/scenes/zartowac.jpg',
+  './assets/scenes/ciasto.jpg',
+  './assets/scenes/honor.jpg',
+  './assets/scenes/przygoda.jpg',
+  './assets/scenes/rzemioslo.jpg',
+  './assets/scenes/usmiech.jpg',
+  './assets/scenes/zupa.jpg',
 ];
 
 self.addEventListener('install',event=>{

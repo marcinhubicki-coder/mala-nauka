@@ -47,6 +47,8 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['uśmiech', { key:'usmiech', asset:'usmiech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['żartować', { key:'zartowac', asset:'zartowac.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['ślimak', { key:'slimak', asset:'slimak.jpg', layouts:['bubble'] }],
@@ -278,19 +280,19 @@ export const WORD_SCENES = new Map([
   ['krzak', { key:'garden-bush', asset:'rose.webp', layouts:['bubble'] }],
   ['wrzos', { key:'garden-heather', asset:'rose.webp', layouts:['bubble'] }],
   ['przyroda', { key:'nature', asset:'mountains.webp', layouts:['bubble'] }],
-  ['przygoda', { key:'adventure', asset:'mountains.webp', layouts:['bubble'] }],
+  ['przygoda', { key:'przygoda', asset:'przygoda.jpg', layouts:['bubble'] }],
   ['historia', { key:'story', asset:'ksiazka.webp', layouts:['bubble'] }],
   ['państwo', { key:'kingdom', asset:'krol.avif', layouts:['bubble'] }],
   ['herb', { key:'royal-crest', asset:'krol.avif', layouts:['bubble'] }],
-  ['honor', { key:'royal-honor', asset:'krol.avif', layouts:['bubble'] }],
+  ['honor', { key:'honor', asset:'honor.jpg', layouts:['bubble'] }],
   ['bohater', { key:'hero', asset:'krol.avif', layouts:['bubble'] }],
   ['chleb', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['herbata', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kuchnia', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kuchenka', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kucharz', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
-  ['ciasto', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
-  ['rzemiosło', { key:'leather-craft', asset:'skora.webp', layouts:['bubble'] }],
+  ['ciasto', { key:'ciasto', asset:'ciasto.jpg', layouts:['bubble'] }],
+  ['rzemiosło', { key:'rzemioslo', asset:'rzemioslo.jpg', layouts:['bubble'] }],
   ['fartuch', { key:'leather-craft', asset:'skora.webp', layouts:['bubble'] }],
   ['choroba', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
   ['chory', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
@@ -319,7 +321,7 @@ export const WORD_SCENES = new Map([
   ['chmiel', { key:'garden-hops', asset:'rose.webp', layouts:['bubble'] }],
   ['chrzan', { key:'garden-horseradish', asset:'rose.webp', layouts:['bubble'] }],
   ['cukier', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
-  ['zupa', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
+  ['zupa', { key:'zupa', asset:'zupa.jpg', layouts:['bubble'] }],
   ['burak', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
   ['ugotować', { key:'table-cooking', asset:'stol.webp', layouts:['bubble'] }],
   ['hamburger', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],

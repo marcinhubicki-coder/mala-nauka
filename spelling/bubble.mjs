@@ -2,12 +2,12 @@ let instance = 0;
 const TAU = Math.PI * 2;
 
 export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
-  speed: 5.2,
-  points: 76,
-  random: 2,
-  smoothing: 1.7,
-  bounce: 1,
-  corners: 1,
+  speed: 4.4,
+  points: 48,
+  random: 2.85,
+  smoothing: 1.35,
+  bounce: .75,
+  corners: 2,
 });
 
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
@@ -18,12 +18,12 @@ function normalizeTuning(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.6,7.8),
-    points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),48,104)/4)*4,
-    random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,4),
-    smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),.9,2.5),
-    bounce:clampValue(numeric(merged.bounce,BUBBLE_TUNING_DEFAULTS.bounce),.3,1.7),
-    corners:clampValue(numeric(merged.corners,BUBBLE_TUNING_DEFAULTS.corners),0,2),
+    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,6.6),
+    points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),24,72)/4)*4,
+    random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,5.7),
+    smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),.35,2.35),
+    bounce:clampValue(numeric(merged.bounce,BUBBLE_TUNING_DEFAULTS.bounce),.2,1.3),
+    corners:clampValue(numeric(merged.corners,BUBBLE_TUNING_DEFAULTS.corners),0,4),
   };
 }
 

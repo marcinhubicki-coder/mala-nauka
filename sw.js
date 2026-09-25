@@ -167,6 +167,7 @@ const CORE=[
   './assets/scenes/rzemioslo.jpg',
   './assets/scenes/usmiech.jpg',
   './assets/scenes/zupa.jpg',
+  './assets/scenes/mowic.jpg',
 ];
 
 self.addEventListener('install',event=>{

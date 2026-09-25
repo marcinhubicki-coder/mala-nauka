@@ -1,11 +1,11 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 404,
-  "assignedWords": 280,
+  "assignedWords": 281,
   "uniqueImages": 128,
-  "missingWords": 124,
+  "missingWords": 123,
   "missingByCategory": {
-    "u/ó": 17,
+    "u/ó": 16,
     "rz/ż": 33,
     "ch/h": 42,
     "ć/ci": 5,
@@ -48,12 +48,6 @@
     {
       "word": "swój",
       "masked": "sw_j",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "mówić",
-      "masked": "m_wić",
       "category": "u/ó",
       "difficulty": 1
     },

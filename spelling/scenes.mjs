@@ -47,6 +47,8 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['mówić', { key:'mowic', asset:'mowic.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['uśmiech', { key:'usmiech', asset:'usmiech.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['żartować', { key:'zartowac', asset:'zartowac.jpg', layouts:['bubble'] }],

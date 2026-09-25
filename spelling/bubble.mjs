@@ -189,6 +189,7 @@ export function createBubble(host, options={}) {
     shadowBlur:host.querySelector('.soap-shadow-blur-node'),
     bloomBlur:host.querySelector('.soap-bloom-blur-node'),
     bloom:host.querySelector('.soap-heavy-bloom'),
+    shadowGroup:host.querySelector('.soap-shadow-group'),
   };
   const spots = [[41,89,6],[114,27,8],[284,30,5],[363,126,6],[369,263,8],[299,375,7],[75,349,5],[22,256,9],[327,337,4]];
   atmosphere.innerHTML = spots.map(([x,y,r]) => `<g class="soap-star" style="--spark-delay:${-Math.random()*6}s;--spark-duration:${3.8+Math.random()*4.5}s" transform="translate(${x} ${y})"><circle r="${r*2.2}" fill="url(#${id}-star)"/><path d="M0 ${-r} Q${r*.13} ${-r*.13} ${r*.65} 0 Q${r*.13} ${r*.13} 0 ${r} Q${-r*.13} ${r*.13} ${-r*.65} 0 Q${-r*.13} ${-r*.13} 0 ${-r}" fill="#fffef4"/><circle r="1" fill="white"/></g>`).join('') +
@@ -236,12 +237,28 @@ export function createBubble(host, options={}) {
   applyEffects();
 
   function applyHeavy(){
+    const needsPictureFilter=heavy.blur>0.001 || heavy.refraction>0.001;
+    const needsShadowFilter=heavy.shadowBlur>0.001;
+    const pictureFilter=`url("${documentUrl}#${id}-pictureFx")`;
+    const shadowFilter=`url("${documentUrl}#${id}-shadowFx")`;
+
     heavyNodes.refraction.setAttribute('scale',heavy.refraction.toFixed(2));
     heavyNodes.pictureBlur.setAttribute('stdDeviation',heavy.blur.toFixed(2));
+    pictures.forEach(picture=>{
+      if(needsPictureFilter) picture.setAttribute('filter',pictureFilter);
+      else picture.removeAttribute('filter');
+    });
+
     heavyNodes.shadowBlur.setAttribute('stdDeviation',(heavy.shadowBlur*.5).toFixed(2));
+    if(needsShadowFilter) heavyNodes.shadowGroup.setAttribute('filter',shadowFilter);
+    else heavyNodes.shadowGroup.removeAttribute('filter');
+
+    const bloomActive=heavy.bloom>0.001;
+    heavyNodes.bloom.style.display=bloomActive?'':'none';
     heavyNodes.bloomBlur.setAttribute('stdDeviation',(2.5+heavy.bloom*3.4).toFixed(2));
     heavyNodes.bloom.setAttribute('opacity',Math.min(.72,heavy.bloom*.18).toFixed(3));
     heavyNodes.bloom.setAttribute('stroke-width',(5.5+heavy.bloom*3.5).toFixed(2));
+
     particleNodes.forEach((node,index)=>{
       node.style.display=index<heavy.particles?'':'none';
       if(index>=heavy.particles) node.setAttribute('opacity','0');
@@ -267,9 +284,12 @@ export function createBubble(host, options={}) {
   let membrane=null, membraneVelocity=null;
   const SAFE_EDGE=14;
   const SAFE_MAX=400-SAFE_EDGE;
+  let particleFrame=0;
 
-  function updateParticles(time){
+  function updateParticles(time,force=false){
     if(!heavy.particles)return;
+    particleFrame++;
+    if(!force && particleFrame%2)return;
     const energy=heavy.energy;
     particleNodes.forEach((node,index)=>{
       if(index>=heavy.particles)return;
@@ -476,6 +496,11 @@ export function createBubble(host, options={}) {
     imageLoads.set(url, load);
     return load;
   }
+  function preloadScene(url){
+    if(!url) return Promise.resolve(true);
+    return waitForImage(url).then(()=>true).catch(()=>false);
+  }
+
   async function transitionToScene(url, scene, first=false) {
     const token=++loadToken;
     if (url===currentUrl && hasPictureSource(activePicture)) return true;
@@ -520,13 +545,13 @@ export function createBubble(host, options={}) {
       return true;
     }
 
-    const duration=first || !hasOld ? 380 : 520;
+    const duration=first || !hasOld ? 240 : 300;
     const incoming=next.animate(
-      [{opacity:0},{opacity:.62,offset:.52},{opacity:1}],
+      [{opacity:0},{opacity:.72,offset:.48},{opacity:1}],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
-      [{opacity:1},{opacity:.72,offset:.42},{opacity:0}],
+      [{opacity:1},{opacity:.58,offset:.48},{opacity:0}],
       {duration:Math.round(duration*.92),easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;
     transitions=[incoming,...(outgoing?[outgoing]:[])];
@@ -568,12 +593,14 @@ export function createBubble(host, options={}) {
   function setHeavy(patch={}){
     heavy=normalizeHeavy({...heavy,...patch});
     applyHeavy();
+    updateParticles(elapsed,true);
     draw(elapsed);
     return {...heavy};
   }
   function getHeavy(){ return {...heavy}; }
 
   return {
+    preloadScene,
     transitionToScene,
     setTuning,
     getTuning,

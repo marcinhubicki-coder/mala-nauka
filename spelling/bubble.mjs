@@ -2,12 +2,12 @@ let instance = 0;
 const TAU = Math.PI * 2;
 
 export const BUBBLE_TUNING_DEFAULTS = Object.freeze({
-  speed: 4.4,
-  points: 64,
-  random: 1,
-  smoothing: 1,
-  top: 1,
-  bottom: 1,
+  speed: 5.2,
+  points: 76,
+  random: 2,
+  smoothing: 1.7,
+  bounce: 1,
+  corners: 1,
 });
 
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
@@ -18,12 +18,12 @@ function normalizeTuning(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,6.6),
-    points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),32,96)/4)*4,
-    random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,2),
-    smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),0,2),
-    top:clampValue(numeric(merged.top,BUBBLE_TUNING_DEFAULTS.top),0,2),
-    bottom:clampValue(numeric(merged.bottom,BUBBLE_TUNING_DEFAULTS.bottom),0,2),
+    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.6,7.8),
+    points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),48,104)/4)*4,
+    random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,4),
+    smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),.9,2.5),
+    bounce:clampValue(numeric(merged.bounce,BUBBLE_TUNING_DEFAULTS.bounce),.3,1.7),
+    corners:clampValue(numeric(merged.corners,BUBBLE_TUNING_DEFAULTS.corners),0,2),
   };
 }
 
@@ -134,18 +134,8 @@ export function createBubble(host, options={}) {
         +.28*Math.sin(time*.065+seed[1]-angle*2.3));
       dx+=c*(radial+drift); dy+=s*(radial+drift);
 
-      // Three shallow travelling control points across the top and bottom.
-      // They mostly move inward, so the frame keeps almost all of the artwork.
-      const topCenters=[-.34,0,.34].map(offset=>TAU*.75+offset);
-      const bottomCenters=[-.34,0,.34].map(offset=>TAU*.25+offset);
-      topCenters.forEach((center,index)=>{
-        const amount=tuning.top*(.9+2.85*wave(time*(.14+index*.012)+seed[index]));
-        dy+=amount*influence(angle,center,.31,2.15);
-      });
-      bottomCenters.forEach((center,index)=>{
-        const amount=tuning.bottom*(.9+2.85*wave(time*(.135+index*.011)+seed[index+2]));
-        dy-=amount*influence(angle,center,.31,2.15);
-      });
+      // Tuned baseline keeps dedicated top/bottom pulses disabled. Broad radial
+      // motion plus neighbour smoothing now shape those edges more naturally.
 
       // Smaller side ripples stop the vertical edges from reading as a frame.
       const leftCenters=[Math.PI-.23,Math.PI+.23];
@@ -170,8 +160,8 @@ export function createBubble(host, options={}) {
         dx+=c*radialOffset;
         dy+=s*radialOffset;
       };
-      cornerLobe(primaryAngle,6.4*irregularity,seed[3]);
-      cornerLobe(secondaryAngle,3.9*irregularity,seed[4]);
+      cornerLobe(primaryAngle,12.8*tuning.corners,seed[3]);
+      cornerLobe(secondaryAngle,7.8*tuning.corners,seed[4]);
 
       return [baseX+dx,baseY+dy];
     });
@@ -198,8 +188,8 @@ export function createBubble(host, options={}) {
       membrane=target.map(point=>point.slice());
       membraneVelocity=target.map(()=>[0,0]);
     }else{
-      const stiffness=.09+.035*tuning.smoothing;
-      const damping=.84-.04*tuning.smoothing;
+      const stiffness=.10+.0495*tuning.bounce;
+      const damping=.73+.042*tuning.bounce;
       for(let i=0;i<count;i++){
         const point=membrane[i], velocity=membraneVelocity[i], goal=target[i];
         velocity[0]=(velocity[0]+(goal[0]-point[0])*stiffness)*damping;

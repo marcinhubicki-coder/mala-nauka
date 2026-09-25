@@ -5,12 +5,12 @@ import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 document.documentElement.classList.add('spelling-playing');
 
 const PARAMS={
-  speed:{short:'S',label:'Szybkość',min:2.2,max:6.6,step:.1,base:4.4,format:v=>Number(v).toFixed(1)},
-  points:{short:'P',label:'Punkty',min:32,max:96,step:4,base:64,format:v=>String(Math.round(v))},
-  random:{short:'R',label:'Random',min:0,max:2,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
-  smoothing:{short:'W',label:'Wygładzanie',min:0,max:2,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
-  top:{short:'G',label:'Góra',min:0,max:2,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
-  bottom:{short:'D',label:'Dół',min:0,max:2,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
+  speed:{short:'S',label:'Szybkość',min:2.6,max:7.8,step:.1,base:5.2,format:v=>Number(v).toFixed(1)},
+  points:{short:'P',label:'Punkty',min:48,max:104,step:4,base:76,format:v=>String(Math.round(v))},
+  random:{short:'R',label:'Random',min:0,max:4,step:.05,base:2,format:v=>Number(v).toFixed(2)+'×'},
+  smoothing:{short:'W',label:'Wygładzanie',min:.9,max:2.5,step:.05,base:1.7,format:v=>Number(v).toFixed(2)+'×'},
+  bounce:{short:'B',label:'Bounce',min:.3,max:1.7,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
+  corners:{short:'N',label:'Narożniki',min:0,max:2,step:.05,base:1,format:v=>Number(v).toFixed(2)+'×'},
 };
 
 const samples=[

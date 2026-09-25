@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dfddf8">
+<title>Mała Nauka · Master Effect</title>
+<link rel="stylesheet" href="../spelling-art.css?v=master-1">
+<link rel="stylesheet" href="../bubble-tuner/tuner.css?v=master-1">
+<link rel="stylesheet" href="./master.css?v=1">
+</head>
+<body>
+<img class="spelling-screen-bg" src="../assets/ortografia/lake-background.webp" alt="">
+<main id="app" class="bubble-tuner master-tuner" data-view="game" data-mode="spelling">
+  <header class="game-bar">
+    <button type="button" class="icon master-reset" aria-label="Resetuj bańkę">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+    </button>
+    <div class="time-block"><span class="timer">0:52</span><progress max="100" value="78" aria-label="Podgląd paska czasu"></progress></div>
+    <button type="button" class="icon master-categories" aria-label="Kategorie ustawień">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="5" width="5" height="5" rx="1.3"/><rect x="14" y="5" width="5" height="5" rx="1.3"/>
+        <rect x="5" y="14" width="5" height="5" rx="1.3"/><rect x="14" y="14" width="5" height="5" rx="1.3"/>
+      </svg>
+    </button>
+  </header>
+
+  <h1 class="spelling-title">Jak jest poprawnie?</h1>
+  <div class="spelling-visual tuner-visual" role="button" tabindex="0" aria-label="Stuknij obrazek, aby pokazać kolejny asset"></div>
+  <section class="spelling-question-card" aria-label="Podgląd słowa"><div class="question-content"></div></section>
+
+  <section class="tuner-panel master-panel" aria-label="Master effect">
+    <div class="tuner-tabs" role="tablist" aria-label="Parametry aktywnej kategorii"></div>
+    <div class="tuner-slider-card">
+      <label class="tuner-slider-label" for="tuner-range">Szybkość</label>
+      <input id="tuner-range" type="range">
+      <output class="tuner-current" for="tuner-range"></output>
+    </div>
+    <div class="tuner-values" aria-label="Aktualne ustawienia kategorii"></div>
+  </section>
+</main>
+
+<dialog class="master-category-dialog" aria-labelledby="master-dialog-title">
+  <div class="master-dialog-sheet">
+    <div class="master-dialog-head">
+      <div><h2 id="master-dialog-title">Master effect</h2><p>Wybierz kategorię lub zrób screen całego zestawu.</p></div>
+      <button type="button" class="master-dialog-close" aria-label="Zamknij">×</button>
+    </div>
+    <div class="master-category-grid">
+      <button type="button" class="master-category-card" data-category="motion">
+        <strong>Ruch</strong><span class="master-category-summary" data-summary="motion"></span>
+      </button>
+      <button type="button" class="master-category-card" data-category="look">
+        <strong>Wygląd</strong><span class="master-category-summary" data-summary="look"></span>
+      </button>
+      <button type="button" class="master-category-card" data-category="chaos">
+        <strong>Chaos</strong><span class="master-category-summary" data-summary="chaos"></span>
+      </button>
+      <button type="button" class="master-category-card" data-category="fx">
+        <strong>FX</strong><span class="master-category-summary" data-summary="fx"></span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script type="module" src="./master.mjs?v=1"></script>
+</body>
+</html>

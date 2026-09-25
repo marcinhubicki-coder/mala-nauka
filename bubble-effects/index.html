@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dfddf8">
+<title>Mała Nauka · Bubble Effects</title>
+<link rel="stylesheet" href="../spelling-art.css?v=effects-1">
+<link rel="stylesheet" href="../bubble-tuner/tuner.css?v=effects-1">
+</head>
+<body>
+<img class="spelling-screen-bg" src="../assets/ortografia/lake-background.webp" alt="">
+<main id="app" class="bubble-tuner" data-view="game" data-mode="spelling">
+  <header class="game-bar">
+    <button type="button" class="icon tuner-close" aria-label="Wróć"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+    <div class="time-block"><span class="timer">0:52</span><progress max="100" value="78" aria-label="Podgląd paska czasu"></progress></div>
+    <button type="button" class="icon tuner-pause" aria-label="Pauza animacji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+  </header>
+  <h1 class="spelling-title">Jak jest poprawnie?</h1>
+  <div class="spelling-visual tuner-visual" role="button" tabindex="0" aria-label="Stuknij obrazek, aby pokazać kolejny asset"></div>
+  <section class="spelling-question-card" aria-label="Podgląd słowa"><div class="question-content"></div></section>
+  <section class="tuner-panel" aria-label="Efekty wizualne bańki">
+    <div class="tuner-tabs" role="tablist" aria-label="Wybierz efekt">
+      <button type="button" class="tuner-tab is-active" data-param="shadow" aria-selected="true">C</button>
+      <button type="button" class="tuner-tab" data-param="depth" aria-selected="false">D</button>
+      <button type="button" class="tuner-tab" data-param="glow" aria-selected="false">P</button>
+      <button type="button" class="tuner-tab" data-param="sheen" aria-selected="false">B</button>
+      <button type="button" class="tuner-tab" data-param="rainbow" aria-selected="false">T</button>
+      <button type="button" class="tuner-tab" data-param="rim" aria-selected="false">K</button>
+    </div>
+    <div class="tuner-slider-card">
+      <label class="tuner-slider-label" for="effects-range">Cień</label>
+      <input id="effects-range" type="range" min="0" max="2" step=".05" value="1">
+      <output class="tuner-current" for="effects-range">1.00×</output>
+    </div>
+    <div class="tuner-values" aria-label="Aktualne efekty">
+      <span data-readout="shadow"><b>C</b><em>1.00×</em></span>
+      <span data-readout="depth"><b>D</b><em>1.00×</em></span>
+      <span data-readout="glow"><b>P</b><em>1.00×</em></span>
+      <span data-readout="sheen"><b>B</b><em>1.00×</em></span>
+      <span data-readout="rainbow"><b>T</b><em>1.00×</em></span>
+      <span data-readout="rim"><b>K</b><em>1.00×</em></span>
+    </div>
+  </section>
+</main>
+<script type="module" src="./effects.mjs?v=1"></script>
+</body>
+</html>

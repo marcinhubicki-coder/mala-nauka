@@ -4,7 +4,7 @@ import {
   BUBBLE_EFFECT_DEFAULTS,
   BUBBLE_CHAOS_DEFAULTS,
   BUBBLE_HEAVY_DEFAULTS
-} from '../spelling/bubble.mjs?v=master-1';
+} from '../spelling/bubble.mjs?v=master-2';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=26-generated-scenes';
 import { createWord } from '../spelling/word-reveal.mjs?v=9-simple-text';
 
@@ -29,12 +29,12 @@ const CATEGORIES={
   look:{
     title:'Wygląd',setter:'setEffects',defaults:BUBBLE_EFFECT_DEFAULTS,
     params:[
-      {key:'shadow',short:'C',label:'Cień',min:0,max:2.5,step:.05,base:1.25,format:x2},
-      {key:'depth',short:'D',label:'Głębia cienia',min:.3,max:2,step:.05,base:1.15,format:x2},
-      {key:'glow',short:'P',label:'Poświata',min:0,max:4,step:.05,base:2,format:x2},
-      {key:'sheen',short:'B',label:'Blask',min:0,max:3.1,step:.05,base:1.55,format:x2},
-      {key:'rainbow',short:'T',label:'Tęcza',min:0,max:2.5,step:.05,base:1.25,format:x2},
-      {key:'rim',short:'K',label:'Krawędź',min:0,max:2.1,step:.05,base:1.05,format:x2},
+      {key:'shadow',short:'C',label:'Cień',min:0,max:2,step:.05,base:1.25,format:x2},
+      {key:'depth',short:'D',label:'Głębia cienia',min:.4,max:1.6,step:.05,base:1.15,format:x2},
+      {key:'glow',short:'P',label:'Poświata',min:0,max:2,step:.05,base:2,format:x2},
+      {key:'sheen',short:'B',label:'Blask',min:0,max:2,step:.05,base:1.55,format:x2},
+      {key:'rainbow',short:'T',label:'Tęcza',min:0,max:2,step:.05,base:1.25,format:x2},
+      {key:'rim',short:'K',label:'Krawędź',min:0,max:2,step:.05,base:1.05,format:x2},
     ]
   },
   chaos:{

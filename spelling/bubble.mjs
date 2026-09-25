@@ -37,6 +37,15 @@ export const BUBBLE_HEAVY_DEFAULTS = Object.freeze({
   bloom: 0,
 });
 
+export const BUBBLE_TRANSITION_DEFAULTS = Object.freeze({
+  duration: 1.20,
+  blur: 5.3,
+  zoom: 12,
+  rotate: 4,
+  hue: 180,
+  sparks: 18,
+});
+
 const clampValue=(value,min,max)=>Math.max(min,Math.min(max,value));
 function normalizeTuning(input={}){
   const merged={...BUBBLE_TUNING_DEFAULTS,...input};
@@ -98,6 +107,21 @@ function normalizeHeavy(input={}){
     bloom:clampValue(numeric(merged.bloom,BUBBLE_HEAVY_DEFAULTS.bloom),0,3),
   };
 }
+function normalizeTransition(input={}){
+  const merged={...BUBBLE_TRANSITION_DEFAULTS,...input};
+  const numeric=(value,fallback)=>{
+    const parsed=Number(value);
+    return Number.isFinite(parsed)?parsed:fallback;
+  };
+  return {
+    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.12,1.2),
+    blur:clampValue(numeric(merged.blur,BUBBLE_TRANSITION_DEFAULTS.blur),0,8),
+    zoom:clampValue(numeric(merged.zoom,BUBBLE_TRANSITION_DEFAULTS.zoom),-6,12),
+    rotate:clampValue(numeric(merged.rotate,BUBBLE_TRANSITION_DEFAULTS.rotate),-12,12),
+    hue:clampValue(numeric(merged.hue,BUBBLE_TRANSITION_DEFAULTS.hue),-180,180),
+    sparks:Math.round(clampValue(numeric(merged.sparks,BUBBLE_TRANSITION_DEFAULTS.sparks),0,36)),
+  };
+}
 
 export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
@@ -107,6 +131,7 @@ export function createBubble(host, options={}) {
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
   let heavy = normalizeHeavy(options.heavy);
+  let transitionTuning = normalizeTransition(options.transition);
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
@@ -148,6 +173,7 @@ export function createBubble(host, options={}) {
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
         <g class="soap-heavy-particles"></g>
+        <g class="soap-transition-particles"></g>
       </g>
       <use href="#${id}-shape" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
       <use href="#${id}-shape" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
@@ -170,6 +196,7 @@ export function createBubble(host, options={}) {
   const glints = [...host.querySelectorAll('.soap-glint')];
   const atmosphere = host.querySelector('.soap-atmosphere');
   const particleHost = host.querySelector('.soap-heavy-particles');
+  const transitionParticleHost = host.querySelector('.soap-transition-particles');
   const effectNodes = {
     shadowMain:host.querySelector('.soap-shadow-main'),
     shadowSoft:host.querySelector('.soap-shadow-soft'),
@@ -208,6 +235,27 @@ export function createBubble(host, options={}) {
     return `<circle class="soap-heavy-particle" cx="0" cy="0" r="${particle.radius.toFixed(2)}" fill="${fill}" opacity="0"/>`;
   }).join('');
   const particleNodes=[...particleHost.querySelectorAll('.soap-heavy-particle')];
+
+  const transitionParticleData=Array.from({length:36},(_,index)=>{
+    const angle=index/36*TAU+(Math.random()-.5)*.24;
+    const distance=46+Math.random()*128;
+    return {
+      dx:Math.cos(angle)*distance,
+      dy:Math.sin(angle)*distance,
+      radius:1.2+Math.random()*3.2,
+      delay:Math.random()*.22,
+      hue:index%3,
+    };
+  });
+  transitionParticleHost.innerHTML=transitionParticleData.map((particle,index)=>{
+    const fill=particle.hue===0?'#fff':particle.hue===1?'#bff5ff':'#ffd0f5';
+    return `<circle class="soap-transition-particle" cx="200" cy="200" r="${particle.radius.toFixed(2)}" fill="${fill}" opacity="0"/>`;
+  }).join('');
+  const transitionParticleNodes=[...transitionParticleHost.querySelectorAll('.soap-transition-particle')];
+  transitionParticleNodes.forEach(node=>{
+    node.style.transformBox='fill-box';
+    node.style.transformOrigin='center';
+  });
 
   host.querySelectorAll('use,[clip-path],[filter],[fill],[stroke]').forEach(element => {
     for (const attribute of ['href','clip-path','filter','fill','stroke']) {
@@ -501,6 +549,23 @@ export function createBubble(host, options={}) {
     return waitForImage(url).then(()=>true).catch(()=>false);
   }
 
+  function makeTransitionParticles(duration){
+    const count=transitionTuning.sparks;
+    if(!count)return [];
+    return transitionParticleNodes.slice(0,count).map((node,index)=>{
+      const data=transitionParticleData[index];
+      const delay=Math.round(duration*data.delay);
+      return node.animate(
+        [
+          {opacity:0,transform:'translate(0px, 0px) scale(.2)'},
+          {opacity:.92,transform:`translate(${(data.dx*.28).toFixed(1)}px, ${(data.dy*.28).toFixed(1)}px) scale(1.15)`,offset:.34},
+          {opacity:0,transform:`translate(${data.dx.toFixed(1)}px, ${data.dy.toFixed(1)}px) scale(.45)`}
+        ],
+        {duration:Math.max(180,duration-delay),delay,easing:'cubic-bezier(.18,.72,.34,1)',fill:'both'}
+      );
+    });
+  }
+
   async function transitionToScene(url, scene, first=false) {
     const token=++loadToken;
     if (url===currentUrl && hasPictureSource(activePicture)) return true;
@@ -545,8 +610,16 @@ export function createBubble(host, options={}) {
       return true;
     }
 
-    const duration=first || !hasOld ? 240 : 280;
-    const blur=first || !hasOld ? 1.6 : 2.25;
+    const duration=Math.round(transitionTuning.duration*1000);
+    const blur=first || !hasOld ? transitionTuning.blur*.72 : transitionTuning.blur;
+    const zoom=transitionTuning.zoom/100;
+    const rotation=transitionTuning.rotate;
+    const hue=transitionTuning.hue;
+    const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
+    const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
+    const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
+    const outgoingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${(-hue*.52).toFixed(1)}deg)`;
+
     next.style.transformBox='fill-box';
     next.style.transformOrigin='center';
     old.style.transformBox='fill-box';
@@ -554,22 +627,23 @@ export function createBubble(host, options={}) {
 
     const incoming=next.animate(
       [
-        {opacity:0,filter:`blur(${blur}px)`,transform:'scale(1.01)'},
-        {opacity:.76,filter:`blur(${(blur*.36).toFixed(2)}px)`,transform:'scale(1.003)',offset:.54},
-        {opacity:1,filter:'blur(0px)',transform:'scale(1)'}
+        {opacity:0,filter:incomingFilter,transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
+        {opacity:.76,filter:incomingMidFilter,transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
+        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
       [
-        {opacity:1,filter:'blur(0px)',transform:'scale(1)'},
-        {opacity:.52,filter:`blur(${(blur*.58).toFixed(2)}px)`,transform:'scale(.998)',offset:.48},
-        {opacity:0,filter:`blur(${blur}px)`,transform:'scale(.995)'}
+        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'},
+        {opacity:.52,filter:outgoingMidFilter,transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
+        {opacity:0,filter:outgoingFilter,transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;
+    const sparkAnimations=makeTransitionParticles(duration);
 
-    transitions=[incoming,...(outgoing?[outgoing]:[])];
+    transitions=[incoming,...(outgoing?[outgoing]:[]),...sparkAnimations];
     if(paused) transitions.forEach(animation=>animation.pause());
     await Promise.all(transitions.map(animation=>animation.finished.catch(()=>{})));
     if (destroyed || token!==loadToken) {
@@ -619,6 +693,11 @@ export function createBubble(host, options={}) {
     return {...heavy};
   }
   function getHeavy(){ return {...heavy}; }
+  function setTransition(patch={}){
+    transitionTuning=normalizeTransition({...transitionTuning,...patch});
+    return {...transitionTuning};
+  }
+  function getTransition(){ return {...transitionTuning}; }
 
   return {
     preloadScene,
@@ -631,6 +710,8 @@ export function createBubble(host, options={}) {
     getChaos,
     setHeavy,
     getHeavy,
+    setTransition,
+    getTransition,
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

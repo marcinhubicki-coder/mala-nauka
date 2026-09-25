@@ -1,7 +1,7 @@
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=23-art-library';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=23-art-library';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-phrase-1';
-import { createSpellingArt } from './spelling/art.mjs?v=38-blur-crossfade';
+import { createSpellingArt } from './spelling/art.mjs?v=39-transition-preset';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';

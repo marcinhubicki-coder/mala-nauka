@@ -1,11 +1,11 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
-  "totalWords": 404,
+  "totalWords": 455,
   "assignedWords": 281,
-  "uniqueImages": 128,
-  "missingWords": 123,
+  "uniqueImages": 184,
+  "missingWords": 174,
   "missingByCategory": {
-    "u/ó": 16,
+    "u/ó": 67,
     "rz/ż": 33,
     "ch/h": 42,
     "ć/ci": 5,
@@ -64,6 +64,132 @@
       "difficulty": 1
     },
     {
+      "word": "łóżko",
+      "masked": "ł_żko",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "zbiórka",
+      "masked": "zbi_rka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wóz",
+      "masked": "w_z",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "nóżka",
+      "masked": "n_żka",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "siódemka",
+      "masked": "si_demka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "pszczółka",
+      "masked": "pszcz_łka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "ołówek",
+      "masked": "oł_wek",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "trójkąt",
+      "masked": "tr_jkąt",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "siatkówka",
+      "masked": "siatk_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "złotówka",
+      "masked": "złot_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "rodziców",
+      "masked": "rodzic_w",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "krzyżówka",
+      "masked": "krzyż_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "Kraków",
+      "masked": "Krak_w",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "zwierzaków",
+      "masked": "zwierzak_w",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "pomysłów",
+      "masked": "pomysł_w",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wróżba",
+      "masked": "wr_żba",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "równanie",
+      "masked": "r_wnanie",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "spóźniony",
+      "masked": "sp_źniony",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wzgórze",
+      "masked": "wzg_rze",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "ósmy",
+      "masked": "_smy",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "ówczesny",
+      "masked": "_wczesny",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
       "word": "obrót",
       "masked": "obr_t",
       "category": "u/ó",
@@ -116,6 +242,186 @@
       "masked": "_ecz",
       "category": "rz/ż",
       "difficulty": 1
+    },
+    {
+      "word": "lektura",
+      "masked": "lekt_ra",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "ratunek",
+      "masked": "rat_nek",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "rysunek",
+      "masked": "rys_nek",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "klawiatura",
+      "masked": "klawiat_ra",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "temperatura",
+      "masked": "temperat_ra",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "obrus",
+      "masked": "obr_s",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "racuch",
+      "masked": "rac_ch",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "kapelusz",
+      "masked": "kapel_sz",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "tłum",
+      "masked": "tł_m",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "zakupy",
+      "masked": "zak_py",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "południe",
+      "masked": "poł_dnie",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "już",
+      "masked": "j_ż",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "szukać",
+      "masked": "sz_kać",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "uparty",
+      "masked": "_party",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "upiór",
+      "masked": "_piór",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "uroczy",
+      "masked": "_roczy",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "udo",
+      "masked": "_do",
+      "category": "u/ó",
+      "difficulty": 1
+    },
+    {
+      "word": "umysł",
+      "masked": "_mysł",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "rysujemy",
+      "masked": "rys_jemy",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wędrujemy",
+      "masked": "wędr_jemy",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "żartujesz",
+      "masked": "żart_jesz",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "leniuchujesz",
+      "masked": "leniuch_jesz",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "pilnujesz",
+      "masked": "piln_jesz",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "kupujecie",
+      "masked": "kup_jecie",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "skuwka",
+      "masked": "sk_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "zasuwka",
+      "masked": "zas_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wsuwka",
+      "masked": "ws_wka",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "wsuwać",
+      "masked": "ws_wać",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "zasuwać",
+      "masked": "zas_wać",
+      "category": "u/ó",
+      "difficulty": 2
+    },
+    {
+      "word": "zakuwać",
+      "masked": "zak_wać",
+      "category": "u/ó",
+      "difficulty": 2
     },
     {
       "word": "brzydki",

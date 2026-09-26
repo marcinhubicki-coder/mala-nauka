@@ -18,7 +18,7 @@ export function cleanConfig(mode, value) {
   const raw=String(value?.category??'all'),parts=raw==='all'?[]:raw.split(','),selected=CATEGORIES.filter(id=>parts.includes(id));
   const category=!selected.length||selected.length===CATEGORIES.length?'all':selected.join(',');
   const rawDifficulty=Number(value?.difficulty),difficulty=rawDifficulty===3?2:[0,1,2].includes(rawDifficulty)?rawDifficulty:0;
-  return {category,difficulty,duration};
+  return {category,difficulty,duration,dyktando:value?.dyktando===true};
  }
  return {category:categories.includes(value?.category)?value.category:'all',difficulty:[1,2,3].includes(value?.difficulty)?value.difficulty:1,duration};
 }
@@ -51,7 +51,7 @@ export function createSource(mode, config, words, random = Math.random) {
  if(mode==='spelling') {
   const selected=config.category==='all'?null:String(config.category).split(',');
   return filterSpellingPreview(words)
-  .filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty))
+  .filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty)&&(!config.dyktando||(w.tags||[]).includes('dyktando')))
   .map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
  }
  if(mode==='math') return ()=>mathQuestion(config,random);

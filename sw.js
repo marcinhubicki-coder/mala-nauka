@@ -198,6 +198,16 @@ const CORE=[
   './assets/scenes/zelazo.jpg',
   './assets/scenes/zona.jpg',
   './assets/scenes/zoltko.jpg',
+  './assets/scenes/bagaz.jpg',
+  './assets/scenes/garaz.jpg',
+  './assets/scenes/plaza.jpg',
+  './assets/scenes/zegnac.jpg',
+  './assets/scenes/zniwa.jpg',
+  './assets/scenes/zolnierz.jpg',
+  './assets/scenes/zoladek.jpg',
+  './assets/scenes/zurek.jpg',
+  './assets/scenes/zwir.jpg',
+  './assets/scenes/zyto.jpg',
 ];
 
 self.addEventListener('install',event=>{

@@ -47,6 +47,26 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['żyto', { key:'zyto', asset:'zyto.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żwir', { key:'zwir', asset:'zwir.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żurek', { key:'zurek', asset:'zurek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żołądek', { key:'zoladek', asset:'zoladek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żołnierz', { key:'zolnierz', asset:'zolnierz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żniwa', { key:'zniwa', asset:'zniwa.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żegnać', { key:'zegnac', asset:'zegnac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['plaża', { key:'plaza', asset:'plaza.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['garaż', { key:'garaz', asset:'garaz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['bagaż', { key:'bagaz', asset:'bagaz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['żółtko', { key:'zoltko', asset:'zoltko.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['żona', { key:'zona', asset:'zona.jpg', layouts:['bubble'] }],

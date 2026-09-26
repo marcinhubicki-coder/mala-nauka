@@ -1,12 +1,12 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 455,
-  "assignedWords": 311,
+  "assignedWords": 321,
   "uniqueImages": 184,
-  "missingWords": 144,
+  "missingWords": 134,
   "missingByCategory": {
     "u/ó": 51,
-    "rz/ż": 19,
+    "rz/ż": 9,
     "ch/h": 42,
     "ć/ci": 5,
     "ś/si": 7,
@@ -320,66 +320,6 @@
       "masked": "zak_wać",
       "category": "u/ó",
       "difficulty": 2
-    },
-    {
-      "word": "żurek",
-      "masked": "_urek",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żyto",
-      "masked": "_yto",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "żegnać",
-      "masked": "_egnać",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "żołądek",
-      "masked": "_ołądek",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żołnierz",
-      "masked": "_ołnierz",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żniwa",
-      "masked": "_niwa",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żwir",
-      "masked": "_wir",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "garaż",
-      "masked": "gara_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "bagaż",
-      "masked": "baga_",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "plaża",
-      "masked": "pla_a",
-      "category": "rz/ż",
-      "difficulty": 1
     },
     {
       "word": "straż",

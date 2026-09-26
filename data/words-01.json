@@ -1,1 +1,906 @@
-[{"word":"król","masked":"kr_l","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"góra","masked":"g_ra","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"córka","masked":"c_rka","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"wózek","masked":"w_zek","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"pióro","masked":"pi_ro","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"ósemka","masked":"_semka","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"róża","masked":"r_ża","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"skóra","masked":"sk_ra","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"żółw","masked":"ż_łw","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"żółty","masked":"ż_łty","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"stół","masked":"st_ł","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"wróbel","masked":"wr_bel","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"jaskółka","masked":"jask_łka","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"królik","masked":"kr_lik","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"ogród","masked":"ogr_d","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"samochód","masked":"samoch_d","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"miód","masked":"mi_d","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"dół","masked":"d_ł","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"ból","masked":"b_l","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"sól","masked":"s_l","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"kółko","masked":"k_łko","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"półka","masked":"p_łka","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"północ","masked":"p_łnoc","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"półwysep","masked":"p_łwysep","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"późno","masked":"p_źno","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"później","masked":"p_źniej","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"późny","masked":"p_źny","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"źródło","masked":"źr_dło","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"próba","masked":"pr_ba","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"próżny","masked":"pr_żny","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"równo","masked":"r_wno","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"równy","masked":"r_wny","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"różny","masked":"r_żny","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"różnica","masked":"r_żnica","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"różowy","masked":"r_żowy","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"sposób","masked":"spos_b","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"który","masked":"kt_ry","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"mój","masked":"m_j","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"twój","masked":"tw_j","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"swój","masked":"sw_j","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"mówić","masked":"m_wić","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"wrócić","masked":"wr_cić","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"pomóc","masked":"pom_c","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"mózg","masked":"m_zg","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"wójt","masked":"w_jt","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"włókno","masked":"wł_kno","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"góral","masked":"g_ral","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"górski","masked":"g_rski","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"krótki","masked":"kr_tki","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"krótko","masked":"kr_tko","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"ogórek","masked":"og_rek","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":1},{"word":"wiewiórka","masked":"wiewi_rka","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2},{"word":"sokół","masked":"sok_ł","category":"u/ó","options":["u","ó"],"answer":"ó","difficulty":2}]
+[
+  {
+    "word": "król",
+    "masked": "kr_l",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "góra",
+    "masked": "g_ra",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "córka",
+    "masked": "c_rka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "wózek",
+    "masked": "w_zek",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "pióro",
+    "masked": "pi_ro",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "ósemka",
+    "masked": "_semka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "róża",
+    "masked": "r_ża",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "skóra",
+    "masked": "sk_ra",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "żółw",
+    "masked": "ż_łw",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "żółty",
+    "masked": "ż_łty",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "stół",
+    "masked": "st_ł",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "wróbel",
+    "masked": "wr_bel",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "jaskółka",
+    "masked": "jask_łka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "królik",
+    "masked": "kr_lik",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "ogród",
+    "masked": "ogr_d",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "samochód",
+    "masked": "samoch_d",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "miód",
+    "masked": "mi_d",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "dół",
+    "masked": "d_ł",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "ból",
+    "masked": "b_l",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "sól",
+    "masked": "s_l",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "kółko",
+    "masked": "k_łko",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "półka",
+    "masked": "p_łka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "północ",
+    "masked": "p_łnoc",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "półwysep",
+    "masked": "p_łwysep",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "późno",
+    "masked": "p_źno",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "później",
+    "masked": "p_źniej",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "późny",
+    "masked": "p_źny",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "źródło",
+    "masked": "źr_dło",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "próba",
+    "masked": "pr_ba",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "próżny",
+    "masked": "pr_żny",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "równo",
+    "masked": "r_wno",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "równy",
+    "masked": "r_wny",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "różny",
+    "masked": "r_żny",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "różnica",
+    "masked": "r_żnica",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "różowy",
+    "masked": "r_żowy",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "sposób",
+    "masked": "spos_b",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "który",
+    "masked": "kt_ry",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "mój",
+    "masked": "m_j",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "twój",
+    "masked": "tw_j",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "swój",
+    "masked": "sw_j",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "mówić",
+    "masked": "m_wić",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "wrócić",
+    "masked": "wr_cić",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "pomóc",
+    "masked": "pom_c",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "mózg",
+    "masked": "m_zg",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "wójt",
+    "masked": "w_jt",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "włókno",
+    "masked": "wł_kno",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "góral",
+    "masked": "g_ral",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "górski",
+    "masked": "g_rski",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "krótki",
+    "masked": "kr_tki",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "krótko",
+    "masked": "kr_tko",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1
+  },
+  {
+    "word": "ogórek",
+    "masked": "og_rek",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "wiewiórka",
+    "masked": "wiewi_rka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "sokół",
+    "masked": "sok_ł",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2
+  },
+  {
+    "word": "łóżko",
+    "masked": "ł_żko",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "zbiórka",
+    "masked": "zbi_rka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "wóz",
+    "masked": "w_z",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "nóżka",
+    "masked": "n_żka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "siódemka",
+    "masked": "si_demka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "pszczółka",
+    "masked": "pszcz_łka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "ołówek",
+    "masked": "oł_wek",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "trójkąt",
+    "masked": "tr_jkąt",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "siatkówka",
+    "masked": "siatk_wka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "złotówka",
+    "masked": "złot_wka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "rodziców",
+    "masked": "rodzic_w",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "krzyżówka",
+    "masked": "krzyż_wka",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "Kraków",
+    "masked": "Krak_w",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "zwierzaków",
+    "masked": "zwierzak_w",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "pomysłów",
+    "masked": "pomysł_w",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "wróżba",
+    "masked": "wr_żba",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "równanie",
+    "masked": "r_wnanie",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "spóźniony",
+    "masked": "sp_źniony",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "wzgórze",
+    "masked": "wzg_rze",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "ósmy",
+    "masked": "_smy",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 1,
+    "tags": [
+      "dyktando"
+    ]
+  },
+  {
+    "word": "ówczesny",
+    "masked": "_wczesny",
+    "category": "u/ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "answer": "ó",
+    "difficulty": 2,
+    "tags": [
+      "dyktando"
+    ]
+  }
+]

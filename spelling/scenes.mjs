@@ -47,6 +47,110 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['żartujesz', { key:'zartujesz', asset:'zartujesz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['łóżko', { key:'lozko', asset:'lozko.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ówczesny', { key:'owczesny', asset:'owczesny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ósmy', { key:'osmy', asset:'osmy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['złotówka', { key:'zlotowka', asset:'zlotowka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zwierzaków', { key:'zwierzakow', asset:'zwierzakow.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zbiórka', { key:'zbiorka', asset:'zbiorka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zasuwka', { key:'zasuwka', asset:'zasuwka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zasuwać', { key:'zasuwac', asset:'zasuwac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zakuwać', { key:'zakuwac', asset:'zakuwac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zakupy', { key:'zakupy', asset:'zakupy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wędrujemy', { key:'wedrujemy', asset:'wedrujemy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wóz', { key:'woz', asset:'woz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wzgórze', { key:'wzgorze', asset:'wzgorze.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wsuwka', { key:'wsuwka', asset:'wsuwka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wsuwać', { key:'wsuwac', asset:'wsuwac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wróżba', { key:'wrozba', asset:'wrozba.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['uroczy', { key:'uroczy', asset:'uroczy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['upiór', { key:'upior', asset:'upior.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['uparty', { key:'uparty', asset:'uparty.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['umysł', { key:'umysl', asset:'umysl.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['udo', { key:'udo', asset:'udo.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['tłum', { key:'tlum', asset:'tlum.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['trójkąt', { key:'trojkat', asset:'trojkat.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['temperatura', { key:'temperatura', asset:'temperatura.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['szukać', { key:'szukac', asset:'szukac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['spóźniony', { key:'spozniony', asset:'spozniony.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['skuwka', { key:'skuwka', asset:'skuwka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['siódemka', { key:'siodemka', asset:'siodemka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['siatkówka', { key:'siatkowka', asset:'siatkowka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['równanie', { key:'rownanie', asset:'rownanie.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rysunek', { key:'rysunek', asset:'rysunek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rysujemy', { key:'rysujemy', asset:'rysujemy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rodziców', { key:'rodzicow', asset:'rodzicow.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ratunek', { key:'ratunek', asset:'ratunek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['racuch', { key:'racuch', asset:'racuch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pszczółka', { key:'pszczolka', asset:'pszczolka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['południe', { key:'poludnie', asset:'poludnie.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pomysłów', { key:'pomyslow', asset:'pomyslow.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pilnujesz', { key:'pilnujesz', asset:'pilnujesz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ołówek', { key:'olowek', asset:'olowek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['obrus', { key:'obrus', asset:'obrus.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['nóżka', { key:'nozka', asset:'nozka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['leniuchujesz', { key:'leniuchujesz', asset:'leniuchujesz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['lektura', { key:'lektura', asset:'lektura.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['kupujecie', { key:'kupujecie', asset:'kupujecie.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['krzyżówka', { key:'krzyzowka', asset:'krzyzowka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['klawiatura', { key:'klawiatura', asset:'klawiatura.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['kapelusz', { key:'kapelusz', asset:'kapelusz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['już', { key:'juz', asset:'juz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hamulec', { key:'hamulec', asset:'hamulec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['Kraków', { key:'krakow', asset:'krakow.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['żyto', { key:'zyto', asset:'zyto.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['żwir', { key:'zwir', asset:'zwir.jpg', layouts:['bubble'] }],

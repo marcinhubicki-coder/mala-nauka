@@ -1,5 +1,5 @@
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=26-generated-scenes';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=26-generated-scenes';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=27-dyktando';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs';
 import { createSpellingArt } from './spelling/art.mjs?v=34-shadow-speed';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
@@ -108,10 +108,10 @@ modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume()
 root.addEventListener('submit',e=>{if(e.target.id==='setup-form'){e.preventDefault();start();}});
 root.addEventListener('change',e=>{
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1'});save('configs',configs);
   // Preview filters can leave a selected spelling pool without available words.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
-  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów w tej puli. Wybierz „Wszystkie” lub inne kategorie.':'';root.querySelector('.start-button').disabled=empty;
+  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wyłącz „Tylko dyktando”.':'';root.querySelector('.start-button').disabled=empty;
  }
  if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
 });

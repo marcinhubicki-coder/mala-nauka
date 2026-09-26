@@ -47,6 +47,66 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['żółtko', { key:'zoltko', asset:'zoltko.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żona', { key:'zona', asset:'zona.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żelazo', { key:'zelazo', asset:'zelazo.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żarówka', { key:'zarowka', asset:'zarowka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['łyżka', { key:'lyzka', asset:'lyzka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zbiór', { key:'zbior', asset:'zbior.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wspólny', { key:'wspolny', asset:'wspolny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['umieć', { key:'umiec', asset:'umiec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['układ', { key:'uklad', asset:'uklad.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['twórca', { key:'tworca', asset:'tworca.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['twój', { key:'twoj', asset:'twoj.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['trzeci', { key:'trzeci', asset:'trzeci.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['swój', { key:'swoj', asset:'swoj.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['sposób', { key:'sposob', asset:'sposob.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['rzecz', { key:'rzecz', asset:'rzecz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['próżny', { key:'prozny', asset:'prozny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przód', { key:'przod', asset:'przod.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przepis', { key:'przepis', asset:'przepis.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['przed', { key:'przed', asset:'przed.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['obrót', { key:'obrot', asset:'obrot.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['mój', { key:'moj', asset:'moj.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['który', { key:'ktory', asset:'ktory.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['krótko', { key:'krotko', asset:'krotko.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['krótki', { key:'krotki', asset:'krotki.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['komentarz', { key:'komentarz', asset:'komentarz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['jeżyna', { key:'jezyna', asset:'jezyna.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['główny', { key:'glowny', asset:'glowny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['grzech', { key:'grzech', asset:'grzech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['gruby', { key:'gruby', asset:'gruby.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['brzydki', { key:'brzydki', asset:'brzydki.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['mówić', { key:'mowic', asset:'mowic.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['uśmiech', { key:'usmiech', asset:'usmiech.jpg', layouts:['bubble'] }],

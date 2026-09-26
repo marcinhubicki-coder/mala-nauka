@@ -1,12 +1,12 @@
 {
   "source": "data/words-*.json + spelling/scenes.mjs (actual runtime mappings)",
   "totalWords": 455,
-  "assignedWords": 281,
+  "assignedWords": 311,
   "uniqueImages": 184,
-  "missingWords": 174,
+  "missingWords": 144,
   "missingByCategory": {
-    "u/ó": 67,
-    "rz/ż": 33,
+    "u/ó": 51,
+    "rz/ż": 19,
     "ch/h": 42,
     "ć/ci": 5,
     "ś/si": 7,
@@ -15,54 +15,6 @@
     "dź/dzi": 7
   },
   "missing": [
-    {
-      "word": "próżny",
-      "masked": "pr_żny",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "sposób",
-      "masked": "spos_b",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "który",
-      "masked": "kt_ry",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "mój",
-      "masked": "m_j",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "twój",
-      "masked": "tw_j",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "swój",
-      "masked": "sw_j",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "krótki",
-      "masked": "kr_tki",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "krótko",
-      "masked": "kr_tko",
-      "category": "u/ó",
-      "difficulty": 1
-    },
     {
       "word": "łóżko",
       "masked": "ł_żko",
@@ -188,60 +140,6 @@
       "masked": "_wczesny",
       "category": "u/ó",
       "difficulty": 2
-    },
-    {
-      "word": "obrót",
-      "masked": "obr_t",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "zbiór",
-      "masked": "zbi_r",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "twórca",
-      "masked": "tw_rca",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "wspólny",
-      "masked": "wsp_lny",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
-      "word": "główny",
-      "masked": "gł_wny",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "umieć",
-      "masked": "_mieć",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "układ",
-      "masked": "_kład",
-      "category": "u/ó",
-      "difficulty": 2
-    },
-    {
-      "word": "gruby",
-      "masked": "gr_by",
-      "category": "u/ó",
-      "difficulty": 1
-    },
-    {
-      "word": "rzecz",
-      "masked": "_ecz",
-      "category": "rz/ż",
-      "difficulty": 1
     },
     {
       "word": "lektura",
@@ -422,84 +320,6 @@
       "masked": "zak_wać",
       "category": "u/ó",
       "difficulty": 2
-    },
-    {
-      "word": "brzydki",
-      "masked": "b_ydki",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "grzech",
-      "masked": "g_ech",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "trzeci",
-      "masked": "t_eci",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "przód",
-      "masked": "p_ód",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "przed",
-      "masked": "p_ed",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "komentarz",
-      "masked": "komenta_",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "przepis",
-      "masked": "p_epis",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żółtko",
-      "masked": "_ółtko",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "łyżka",
-      "masked": "ły_ka",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "jeżyna",
-      "masked": "je_yna",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żarówka",
-      "masked": "_arówka",
-      "category": "rz/ż",
-      "difficulty": 2
-    },
-    {
-      "word": "żelazo",
-      "masked": "_elazo",
-      "category": "rz/ż",
-      "difficulty": 1
-    },
-    {
-      "word": "żona",
-      "masked": "_ona",
-      "category": "rz/ż",
-      "difficulty": 1
     },
     {
       "word": "żurek",

@@ -1,5 +1,5 @@
 import { sceneFor, sceneUrl } from './scenes.mjs?v=26-generated-scenes';
-import { createBubble } from './bubble.mjs?v=34-shadow-speed';
+import { createBubble } from './bubble.mjs?v=40-transition-preset';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
@@ -95,6 +95,13 @@ export function createSpellingArt(app) {
     active.forEach(animation => animation.cancel());
     if (animations === active) animations = [];
   }
+  function preloadQueuedScene(game) {
+    const next = game?.queue?.[0];
+    if (!next?.masked) return;
+    const nextScene = sceneFor(next.masked, next.word);
+    if (nextScene?.asset) bubble?.preloadScene(sceneUrl(nextScene));
+  }
+
   async function present(game, first) {
     const token = ++generation;
     game.setPresentationHold(true); app.classList.add('ink-changing');
@@ -102,6 +109,12 @@ export function createSpellingArt(app) {
     nodes.hint.disabled = true; nodes.next.hidden = true;
 
     const q = game.current, scene = sceneFor(q.masked, q.word);
+    const pictureUrl = scene?.asset ? sceneUrl(scene) : '';
+
+    // Keep the current question visible while the next picture decodes.
+    // Once ready, text/answers and picture start entering together.
+    if (pictureUrl) await bubble.preloadScene(pictureUrl);
+    if (token !== generation || session !== game) return;
     if (!first) await animateInk('out');
     if (token !== generation || session !== game) return;
 
@@ -114,12 +127,14 @@ export function createSpellingArt(app) {
     });
     nodes.feedback.textContent = ''; nodes.hint.hidden = false; fitWord();
 
-    const pictureChange = bubble.transitionToScene(scene?.asset ? sceneUrl(scene) : '', scene, first);
-    await Promise.all([animateInk('in'), pictureChange]);
+    const pictureChange = bubble.transitionToScene(pictureUrl, scene, first);
+    const inkChange = animateInk('in');
+    await Promise.all([inkChange, pictureChange]);
     if (token !== generation || session !== game) return;
 
     game.setPresentationHold(false); app.classList.remove('ink-changing');
     nodes.answers.forEach(button => { button.disabled = false; }); nodes.hint.disabled = false;
+    preloadQueuedScene(game);
     if (document.body.classList.contains('keyboard')) nodes.answers[0].focus({ preventScroll: true });
   }
   function render(game) {
@@ -131,6 +146,7 @@ export function createSpellingArt(app) {
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
       revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game) fitWord(); });
+      preloadQueuedScene(game);
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
         button.classList.toggle('correct', game.options[index] === game.current.answer);

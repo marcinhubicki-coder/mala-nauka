@@ -41,7 +41,7 @@ const CORE=[
   './assets/scenes/tunel.webp',
   './assets/scenes/upominek.webp',
 
-  './','./index.html','./app.css','./app.js','./app.js?v=34-shadow-speed','./app.js?v=35-dyktando','./module-router.js','./spelling-assets-setting.js',
+  './','./index.html','./app.css','./app.js','./app.js?v=34-shadow-speed','./app.js?v=35-dyktando','./app.js?v=40-transition-preset','./module-router.js','./spelling-assets-setting.js',
   './game.mjs','./game.mjs?v=2','./game.mjs?v=26-generated-scenes','./modes.mjs','./modes.mjs?v=26-generated-scenes','./modes.mjs?v=27-dyktando','./progress.mjs',
   './spelling-art.css','./spelling-art.css?v=34-shadow-speed','./debug-tools.js','./debug-tools.js?v=7',
   './manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/lion.svg',
@@ -53,7 +53,7 @@ const CORE=[
   './assets/scenes/corka.avif','./assets/scenes/wozek.avif','./assets/scenes/pioro.avif','./assets/scenes/osemka.avif','./assets/scenes/krol.avif',
   './assets/scenes/skora.webp','./assets/scenes/zolty.webp','./assets/scenes/stol.webp','./assets/scenes/samochod.webp',
   './assets/scenes/lekarz.avif','./assets/scenes/zaba.avif','./assets/scenes/grzyb.webp','./assets/scenes/schody.webp','./assets/scenes/jez.webp','./assets/scenes/ksiazka.webp',
-  './spelling/art.mjs','./spelling/art.mjs?v=34-shadow-speed','./spelling/bubble.mjs','./spelling/bubble.mjs?v=34-shadow-speed',
+  './spelling/art.mjs','./spelling/art.mjs?v=34-shadow-speed','./spelling/art.mjs?v=40-transition-preset','./spelling/bubble.mjs','./spelling/bubble.mjs?v=34-shadow-speed','./spelling/bubble.mjs?v=40-transition-preset',
   './spelling/hints.mjs','./spelling/preview.mjs','./spelling/preview.mjs?v=26-generated-scenes','./spelling/scenes.mjs','./spelling/scenes.mjs?v=26-generated-scenes','./spelling/word-reveal.mjs','./spelling/word-reveal.mjs?v=9-simple-text',
   './data/english.mjs','./data/flags.mjs','./data/reading.mjs',
   './data/words-01.json','./data/words-02.json','./data/words-03.json','./data/words-04.json',

@@ -47,6 +47,58 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['mówić', { key:'mowic', asset:'mowic.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['uśmiech', { key:'usmiech', asset:'usmiech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['żartować', { key:'zartowac', asset:'zartowac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ślimak', { key:'slimak', asset:'slimak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ćma', { key:'cma', asset:'cma.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ważny', { key:'wazny', asset:'wazny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ruch', { key:'ruch', asset:'ruch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pożegnać', { key:'pozegnac', asset:'pozegnac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['możliwość', { key:'mozliwosc', asset:'mozliwosc.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['koleżanka', { key:'kolezanka', asset:'kolezanka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hulajnoga', { key:'hulajnoga', asset:'hulajnoga.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hotel', { key:'hotel', asset:'hotel.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hokej', { key:'hokej', asset:'hokej.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hokeista', { key:'hokeista', asset:'hokeista.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hobby', { key:'hobby', asset:'hobby.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hipopotam', { key:'hipopotam', asset:'hipopotam.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hałas', { key:'halas', asset:'halas.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['harfa', { key:'harfa', asset:'harfa.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['harcerz', { key:'harcerz', asset:'harcerz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hamak', { key:'hamak', asset:'hamak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dziewczyna', { key:'dziewczyna', asset:'dziewczyna.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłód', { key:'chlod', asset:'chlod.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłopiec', { key:'chlopiec', asset:'chlopiec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłopak', { key:'chlopak', asset:'chlopak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chłodny', { key:'chlodny', asset:'chlodny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chrupki', { key:'chrupki', asset:'chrupki.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['życzliwy', { key:'zyczliwy', asset:'zyczliwy.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['życie', { key:'zycie', asset:'zycie.jpg', layouts:['bubble'] }],
@@ -230,19 +282,19 @@ export const WORD_SCENES = new Map([
   ['krzak', { key:'garden-bush', asset:'rose.webp', layouts:['bubble'] }],
   ['wrzos', { key:'garden-heather', asset:'rose.webp', layouts:['bubble'] }],
   ['przyroda', { key:'nature', asset:'mountains.webp', layouts:['bubble'] }],
-  ['przygoda', { key:'adventure', asset:'mountains.webp', layouts:['bubble'] }],
+  ['przygoda', { key:'przygoda', asset:'przygoda.jpg', layouts:['bubble'] }],
   ['historia', { key:'story', asset:'ksiazka.webp', layouts:['bubble'] }],
   ['państwo', { key:'kingdom', asset:'krol.avif', layouts:['bubble'] }],
   ['herb', { key:'royal-crest', asset:'krol.avif', layouts:['bubble'] }],
-  ['honor', { key:'royal-honor', asset:'krol.avif', layouts:['bubble'] }],
+  ['honor', { key:'honor', asset:'honor.jpg', layouts:['bubble'] }],
   ['bohater', { key:'hero', asset:'krol.avif', layouts:['bubble'] }],
   ['chleb', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['herbata', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kuchnia', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kuchenka', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
   ['kucharz', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
-  ['ciasto', { key:'cottage-table', asset:'stol.webp', layouts:['bubble'] }],
-  ['rzemiosło', { key:'leather-craft', asset:'skora.webp', layouts:['bubble'] }],
+  ['ciasto', { key:'ciasto', asset:'ciasto.jpg', layouts:['bubble'] }],
+  ['rzemiosło', { key:'rzemioslo', asset:'rzemioslo.jpg', layouts:['bubble'] }],
   ['fartuch', { key:'leather-craft', asset:'skora.webp', layouts:['bubble'] }],
   ['choroba', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
   ['chory', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
@@ -271,7 +323,7 @@ export const WORD_SCENES = new Map([
   ['chmiel', { key:'garden-hops', asset:'rose.webp', layouts:['bubble'] }],
   ['chrzan', { key:'garden-horseradish', asset:'rose.webp', layouts:['bubble'] }],
   ['cukier', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
-  ['zupa', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
+  ['zupa', { key:'zupa', asset:'zupa.jpg', layouts:['bubble'] }],
   ['burak', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
   ['ugotować', { key:'table-cooking', asset:'stol.webp', layouts:['bubble'] }],
   ['hamburger', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],

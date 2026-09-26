@@ -13,17 +13,16 @@ export function shuffle(items, random = Math.random) {
   return result;
 }
 export function validateWords(words) {
-  const counts = [133, 130, 91, 10, 10, 10, 10, 10];
-  if (!Array.isArray(words) || words.length !== 404 || new Set(words.map(w => w.word)).size !== 404) throw Error('Niepełna baza słów.');
+  if (!Array.isArray(words) || !words.length || new Set(words.map(w => w.word)).size !== words.length) throw Error('Niepełna baza słów.');
   for (const w of words) {
+    const tagsValid = w.tags === undefined || (Array.isArray(w.tags) && new Set(w.tags).size === w.tags.length &&
+      w.tags.every(tag => typeof tag === 'string' && tag.trim().length > 0));
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
-      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
+      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty) || !tagsValid) throw Error('Nieprawidłowy rekord słowa.');
   }
-  if (CATEGORIES.some((c, i) => words.filter(w => w.category === c).length !== counts[i]) ||
-    [241, 163].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count) ||
-    CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
+  if (CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
 }
 export function cleanSettings(value) {

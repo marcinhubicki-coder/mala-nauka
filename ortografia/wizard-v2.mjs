@@ -237,7 +237,7 @@ function installDrag(){root.querySelectorAll('.spelling-segmented').forEach(setu
 
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');if(!button)return;
- const next=state.dyktando?'ćwiczymy dyktando!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
+ const next=state.dyktando?'super, dasz radę!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
  if(!copy){button.innerHTML='<span data-start-copy></span><span aria-hidden="true">→</span>';copy=button.querySelector('[data-start-copy]');}
  if(copy.textContent!==next){copy.textContent=next;if(animate){button.classList.remove('spelling-start-pop');void button.offsetWidth;button.classList.add('spelling-start-pop');}}
 }

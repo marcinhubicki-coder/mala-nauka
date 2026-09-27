@@ -500,11 +500,23 @@ body:has(#app[data-mode="spelling"])::before{
   #app[data-mode="spelling"] .spelling-category-chip span{min-height:32px;padding:5px 4px}
 }
 
-#app[data-mode="spelling"] .spelling-dyktando-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding:10px 12px;border:1px solid rgba(80,72,110,.12);border-radius:14px;background:rgba(255,255,255,.72);cursor:pointer;touch-action:manipulation}
-#app[data-mode="spelling"] .spelling-dyktando-toggle span{display:flex;flex:1;flex-direction:column;gap:2px;min-width:0}
-#app[data-mode="spelling"] .spelling-dyktando-toggle strong{font-size:13px;line-height:1.2}
-#app[data-mode="spelling"] .spelling-dyktando-toggle small{font-size:10px;line-height:1.3;color:#777483}
-#app[data-mode="spelling"] .spelling-dyktando-toggle input{appearance:none;-webkit-appearance:none;position:relative;width:44px;height:26px;flex:0 0 44px;margin:0;border:0;border-radius:999px;background:#d9d7df;transition:background .18s ease}
-#app[data-mode="spelling"] .spelling-dyktando-toggle input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:transform .18s cubic-bezier(.2,.8,.2,1)}
-#app[data-mode="spelling"] .spelling-dyktando-toggle input:checked{background:#7d6bd6}
-#app[data-mode="spelling"] .spelling-dyktando-toggle input:checked::after{transform:translateX(18px)}
+#app[data-mode="spelling"] .spelling-dyktando-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:10px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#app[data-mode="spelling"] .spelling-dyktando-copy{display:flex;flex:1;flex-direction:column;gap:2px;min-width:0;color:#607086}
+#app[data-mode="spelling"] .spelling-dyktando-copy strong{font-size:13px;line-height:1.2}
+#app[data-mode="spelling"] .spelling-dyktando-copy small{font-size:10px;line-height:1.3;color:#8a8793}
+#app[data-mode="spelling"] .spelling-dyktando-toggle>input{position:absolute;inline-size:1px;block-size:1px;opacity:0;pointer-events:none}
+#app[data-mode="spelling"] .spelling-dyktando-control{position:relative;display:block;flex:0 0 76px;width:76px;height:40px;box-sizing:border-box;border:1px solid #dfe6f0;border-radius:14px;background:#f2f5f9;box-shadow:inset 0 1px 0 rgba(255,255,255,.72);overflow:hidden;transform-origin:center}
+#app[data-mode="spelling"] .spelling-dyktando-knob{position:absolute;top:4px;left:4px;width:30px;height:30px;border:1px solid rgba(182,84,115,.34);border-radius:11px;background:linear-gradient(180deg,#fcebf1 0%,#f6cfdb 100%);box-shadow:0 4px 12px rgba(166,72,103,.10),inset 0 1px 0 rgba(255,255,255,.68);transition:transform .52s cubic-bezier(.18,.78,.22,1),width .52s cubic-bezier(.18,.78,.22,1)}
+#app[data-mode="spelling"] .spelling-dyktando-toggle>input:checked+.spelling-dyktando-control .spelling-dyktando-knob{transform:translateX(36px);width:30px}
+#app[data-mode="spelling"] .spelling-dyktando-toggle>input:checked~.spelling-dyktando-control{border-color:#e3c0cb}
+#app[data-mode="spelling"] .spelling-dyktando-toggle.is-selecting .spelling-dyktando-control{animation:spelling-category-chip-in .50s cubic-bezier(.18,.78,.22,1) both}
+#app[data-mode="spelling"] .spelling-dyktando-toggle.is-deselecting .spelling-dyktando-control{animation:spelling-category-chip-out .42s cubic-bezier(.18,.78,.22,1) both}
+#app[data-mode="spelling"] .spelling-dyktando-toggle:active .spelling-dyktando-control{filter:brightness(1.02)}
+
+#app[data-mode="spelling"] .spelling-time-segmented .spelling-time-choice span{transition:opacity .26s ease,color .24s ease,transform .36s cubic-bezier(.18,.78,.22,1)}
+#app[data-mode="spelling"] .spelling-dyktando-time-copy{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:0 18px;color:#a74869;font-size:13px;line-height:1.15;font-weight:850;text-align:center;opacity:0;transform:scale(.94);pointer-events:none;transition:opacity .24s ease,transform .48s cubic-bezier(.18,.78,.22,1)}
+#app[data-mode="spelling"] .spelling-time-segmented.is-dyktando{cursor:default}
+#app[data-mode="spelling"] .spelling-time-segmented.is-dyktando .spelling-time-choice{pointer-events:none}
+#app[data-mode="spelling"] .spelling-time-segmented.is-dyktando .spelling-time-choice span{opacity:0;transform:scale(.94)}
+#app[data-mode="spelling"] .spelling-time-segmented.is-dyktando .spelling-dyktando-time-copy{opacity:1;transform:scale(1)}
+#app[data-mode="spelling"] .spelling-time-segmented.is-dyktando.is-segment-moving .spelling-dyktando-time-copy{animation:spelling-segment-type-bump var(--segment-total-ms,1080ms) linear both}

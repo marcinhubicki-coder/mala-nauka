@@ -79,3 +79,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 .spelling-title{word-spacing:3px}
 .spelling-visual{contain:layout style;overflow:visible}
 #app.paused[data-mode="spelling"] .bubble-glass,#app.paused[data-mode="spelling"] .word-spark{animation-play-state:paused}
+
+#app[data-view="game"][data-mode="spelling"] .dictation-count{gap:4px}
+#app[data-view="game"][data-mode="spelling"] .dictation-count .timer{font-size:25px;line-height:.95}
+#app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}

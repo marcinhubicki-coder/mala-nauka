@@ -50,9 +50,11 @@ export function mathQuestion(config, random = Math.random) {
 export function createSource(mode, config, words, random = Math.random) {
  if(mode==='spelling') {
   const selected=config.category==='all'?null:String(config.category).split(',');
-  return filterSpellingPreview(words)
-  .filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty)&&(!config.dyktando||(w.tags||[]).includes('dyktando')))
-  .map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
+  const preview=filterSpellingPreview(words);
+  const pool=config.dyktando
+    ? preview.filter(w=>(w.tags||[]).includes('dyktando'))
+    : preview.filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty));
+  return pool.map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
  }
  if(mode==='math') return ()=>mathQuestion(config,random);
  if(mode==='english') {

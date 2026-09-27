@@ -297,7 +297,7 @@ root?.addEventListener('change',event=>{
  if(target?.name==='difficulty'){state.difficulty=spellingDifficulty(target.value,0);saveState();syncSegments(true);return;}
  if(target?.name==='spellingDyktando'){
   state.dyktando=target.checked;const label=target.closest('.spelling-dyktando-toggle');
-  if(label){const cls=target.checked?'is-selecting':'is-deselecting';label.classList.remove('is-selecting','is-deselecting');void label.offsetWidth;label.classList.add(cls);window.setTimeout(()=>label.classList.remove(cls),560);}
+  if(label){const cls=target.checked?'is-selecting':'is-deselecting';label.classList.remove('is-selecting','is-deselecting');void label.offsetWidth;label.classList.add(cls);window.setTimeout(()=>label.classList.remove(cls),720);}
   saveState();syncSegments(true);syncHidden(true);updateStartButton(true);return;
  }
  if(target?.name==='duration'){state.duration=Number(target.value)||180;saveState();syncSegments(true);updateStartButton(true);}

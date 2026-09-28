@@ -1,7 +1,7 @@
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-wordbase455';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
-import { createSpellingArt } from './spelling/art.mjs?v=39-transition-preset';
+import { createSpellingArt } from './spelling/art.mjs?v=40-final-assets';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';

@@ -1,3 +1,4 @@
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=1';
 
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.spellingWizardV2';
@@ -25,6 +26,7 @@ let suppressClickUntil=0;
 const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
 const dragStates=new WeakMap();
+const jellyV4=createJellyV4({indicatorSelector:'.spelling-segment-indicator'});
 
 function readState(fallback){
  const fallbackCategories=categoriesOr(fallback.category);
@@ -123,24 +125,7 @@ function stopSegmentAnimation(container,indicatorNode){
 }
 function updateSegment(container,index,count,animate=true){
  if(!container)return;
- const indicatorNode=container.querySelector('.spelling-segment-indicator');
- if(!indicatorNode)return;
- const previousIndex=Number(container.dataset.activeIndex),nextIndex=Math.max(0,Math.min(count-1,index));
- const target=segmentGeometry(container,nextIndex);if(!target)return;
- const changed=Number.isFinite(previousIndex)&&Math.abs(previousIndex-nextIndex)>.001;
- const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
- const current=stopSegmentAnimation(container,indicatorNode);
- container.dataset.activeIndex=String(nextIndex);
- const timer=segmentTimers.get(container);if(timer)window.clearTimeout(timer);
- if(!animate||!changed||reduced||typeof indicatorNode.animate!=='function'){
-  indicatorNode.style.left=target.left+'px';indicatorNode.style.right=target.right+'px';container.classList.remove('is-segment-moving');return;
- }
- const timing=motionTiming(current,target);container.style.setProperty('--segment-total-ms',timing.total+'ms');
- container.classList.remove('is-segment-moving');void container.offsetWidth;container.classList.add('is-segment-moving');
- const animation=indicatorNode.animate(jellyFrames(current,target,nextIndex>previousIndex,timing.overshoot),{duration:timing.total,easing:'linear',fill:'both'});
- segmentAnimations.set(container,animation);indicatorNode.style.left=target.left+'px';indicatorNode.style.right=target.right+'px';
- const finish=()=>{if(segmentAnimations.get(container)===animation){segmentAnimations.delete(container);try{animation.cancel();}catch{}container.classList.remove('is-segment-moving');}};
- animation.addEventListener('finish',finish,{once:true});segmentTimers.set(container,window.setTimeout(finish,timing.total+120));
+ jellyV4.update(container,index,{animate});
 }
 function segmentCount(container){return container?.querySelectorAll(':scope > label').length||0;}
 function activeIndexFor(container){
@@ -156,10 +141,7 @@ function syncSegments(animate=false){
   updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
  });
 }
-function bumpLabel(label){
- if(!label)return;label.classList.remove('is-tap-bump');void label.offsetWidth;label.classList.add('is-tap-bump');
- window.setTimeout(()=>label.classList.remove('is-tap-bump'),430);
-}
+function bumpLabel(){}
 function applySegmentSelection(input){
  if(!input||input.disabled)return;
  const container=input.closest('.spelling-segmented'),label=input.closest('label'),labels=[...container.querySelectorAll(':scope > label')];
@@ -168,33 +150,16 @@ function applySegmentSelection(input){
  input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));
 }
 function setupDrag(container){
- if(!container||container.dataset.dragReady==='true')return;container.dataset.dragReady='true';
- container.addEventListener('pointerdown',event=>{
-  if(event.button!==undefined&&event.button!==0)return;
-  const indicatorNode=container.querySelector('.spelling-segment-indicator');if(!indicatorNode)return;
-  const rect=container.getBoundingClientRect();
-  dragStates.set(container,{pointerId:event.pointerId,startX:event.clientX,moved:false,rect,currentIndex:activeIndexFor(container)});
-  stopSegmentAnimation(container,indicatorNode);container.classList.add('is-dragging');try{container.setPointerCapture(event.pointerId);}catch{}
+ if(!container||container.dataset.jellyV4DragReady==='true')return;
+ jellyV4.setupDrag(container,{
+  getActiveIndex:()=>activeIndexFor(container),
+  commitIndex:index=>{
+   const list=[...container.querySelectorAll(':scope > label')];
+   const input=list[index]?.querySelector('input');
+   if(input)applySegmentSelection(input);
+  },
+  suppressClick:ms=>{suppressClickUntil=performance.now()+ms;}
  });
- container.addEventListener('pointermove',event=>{
-  const drag=dragStates.get(container);if(!drag||drag.pointerId!==event.pointerId)return;
-  if(Math.abs(event.clientX-drag.startX)>4)drag.moved=true;if(!drag.moved)return;event.preventDefault();
-  const count=segmentCount(container),local=clamp(event.clientX-drag.rect.left,4,drag.rect.width-4);
-  const progress=clamp((local-4)/Math.max(1,drag.rect.width-8),0,1)*(count-1),low=Math.floor(progress),high=Math.ceil(progress),mix=progress-low;
-  const a=segmentGeometry(container,low),b=segmentGeometry(container,high),indicatorNode=container.querySelector('.spelling-segment-indicator');
-  if(!a||!b||!indicatorNode)return;
-  indicatorNode.style.left=lerp(a.left,b.left,mix)+'px';indicatorNode.style.right=lerp(a.right,b.right,mix)+'px';container.dataset.activeIndex=String(progress);
- });
- const finish=(event,cancelled=false)=>{
-  const drag=dragStates.get(container);if(!drag||drag.pointerId!==event.pointerId)return;
-  dragStates.delete(container);container.classList.remove('is-dragging');try{container.releasePointerCapture(event.pointerId);}catch{}
-  if(cancelled||!drag.moved){updateSegment(container,activeIndexFor(container),segmentCount(container),true);return;}
-  suppressClickUntil=performance.now()+350;const labels=[...container.querySelectorAll(':scope > label')];let index=drag.currentIndex;
-  if(event.clientX>drag.startX){for(let i=drag.currentIndex+1;i<labels.length;i++){const r=labels[i].getBoundingClientRect();if(event.clientX>=(r.left+r.right)/2)index=i;}}
-  else{for(let i=drag.currentIndex-1;i>=0;i--){const r=labels[i].getBoundingClientRect();if(event.clientX<=(r.left+r.right)/2)index=i;}}
-  const input=labels[index]?.querySelector('input');if(input)applySegmentSelection(input);
- };
- container.addEventListener('pointerup',e=>finish(e,false));container.addEventListener('pointercancel',e=>finish(e,true));
 }
 function installDrag(){root.querySelectorAll('.spelling-segmented').forEach(setupDrag);}
 

@@ -1,7 +1,7 @@
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=29-dyktando80';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=29-dyktando80';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=2-dyktando80';
-import { createSpellingArt } from './spelling/art.mjs?v=41-dyktando80';
+import { createSpellingArt } from './spelling/art.mjs?v=42-final-assets';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';

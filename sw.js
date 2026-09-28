@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-prod-v84-dyktando-jelly-textfix-20260928';
+const CACHE='mala-nauka-v85-wordbase455-20260928';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -88,7 +88,7 @@ const CORE=[
   './czytanie/wizard-v2.css?v=6',
   './czytanie/wizard-v2.mjs?v=3',
   './app.js?v=reading-phrase-1',
-  './game.mjs?v=reading-phrase-1',
+  './game.mjs?v=31-wordbase455',
   './modes.mjs?v=reading-phrase-1',
   './progress.mjs?v=reading-phrase-1',
   './data/english/numbers.mjs',
@@ -203,7 +203,7 @@ const CORE=[
   './ortografia/wizard-v2.css',
   './matematyka/correct-transition.js',
   './app.js?v=23-art-library',
-  './game.mjs?v=23-art-library',
+  './game.mjs?v=31-wordbase455',
   './modes.mjs?v=23-art-library',
   './spelling-art.css?v=23-art-library',
   './spelling/art.mjs?v=23-art-library',
@@ -239,7 +239,7 @@ const CORE=[
   './flagi/map-microstates.js?v=1',
   './flagi/feedback-transition.js?v=10',
   './app.js?v=43-main-dyktando-jelly',
-  './game.mjs?v=30-dyktando-jelly-v4',
+  './game.mjs?v=31-wordbase455',
   './modes.mjs?v=30-dyktando-jelly-v4',
   './progress.mjs?v=3-dyktando-jelly-v4',
   './spelling-art.css?v=35-main-bubble',

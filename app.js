@@ -1,4 +1,4 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=30-dyktando-jelly-v4';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-wordbase455';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
 import { createSpellingArt } from './spelling/art.mjs?v=39-transition-preset';

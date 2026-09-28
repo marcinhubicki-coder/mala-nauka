@@ -1,6 +1,6 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=23-art-library';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=23-art-library';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=reading-phrase-1';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=30-dyktando-jelly-v4';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
 import { createSpellingArt } from './spelling/art.mjs?v=39-transition-preset';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
@@ -60,7 +60,7 @@ function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioCon
 function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||audio.state!=='running')return;const tone=audio.createOscillator(),gain=audio.createGain(),t=audio.currentTime;tone.type='sine';tone.frequency.setValueAtTime(correct?660:220,t);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.045,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.14);tone.connect(gain);gain.connect(audio.destination);tone.start(t);tone.stop(t+.15);tone.onended=()=>{tone.disconnect();gain.disconnect();};}catch{/* Keep playing without audio. */}}
 function start() {
  const config=configs[selectedMode];
- try{game=new Session(createSource(selectedMode,config,words),config.duration);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
+ try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling'&&config.dyktando){game.untimed=true;game.questionLimit=source.length;}}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();
 }
 function balancedReadingPrompt(text){
@@ -177,10 +177,18 @@ function renderGame() {
 }
 function updateClock(){
  const timer=root.querySelector('.timer');if(!timer||!game)return;
+ const progressNode=root.querySelector('progress');
+ if(game.untimed){
+  const left=game.questionsRemaining(),value=String(left??0);
+  if(timer.textContent!==value)timer.textContent=value;
+  timer.classList.remove('urgent');timer.setAttribute('aria-label','Pozostało pytań: '+value);
+  if(progressNode){progressNode.max=game.questionLimit||80;progressNode.value=left??0;}
+  return;
+ }
  const seconds=Math.ceil(game.remaining/1000),value=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
  if(timer.textContent!==value)timer.textContent=value;
  timer.classList.toggle('urgent',seconds<=15);
- const progressNode=root.querySelector('progress');if(progressNode)progressNode.value=game.remaining;
+ if(progressNode)progressNode.value=game.remaining;
  const exposure=root.querySelector('.exposure-track span');
  if(exposure&&game.current?.exposureMs)exposure.style.transform=`scaleX(${game.exposureRemaining/game.current.exposureMs})`;
  if(game.current?.kind==='memory'&&game.state==='exposing'){
@@ -215,7 +223,7 @@ function finish(early=false,goHome=false){
  const result={...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early};
  const record=recordResult(progress,result);save('progress',progress);lastResult=result;
  if(goHome){navigate('home');return;}view='results';root.dataset.view=view;
- root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
+ root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
@@ -260,10 +268,10 @@ modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume()
 root.addEventListener('submit',e=>{if(e.target.id==='setup-form'){e.preventDefault();start();}});
 root.addEventListener('change',e=>{
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1'});save('configs',configs);
   // Some approved spelling categories have no records at a given difficulty.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
-  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tej parze nie ma słów na tym poziomie. Wybierz „Wszystkie” lub inną parę.':'';root.querySelector('.start-button').disabled=empty;
+  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wyłącz „Tylko dyktando”.':'';root.querySelector('.start-button').disabled=empty;
  }
  if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
 });

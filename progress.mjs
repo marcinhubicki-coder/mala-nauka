@@ -21,8 +21,8 @@ export function migrateProgress(history,best) {
  return migrated;
 }
 export function recordResult(progress,result) {
- const key=`${result.mode}:${result.duration}`,record=result.correct>(progress.best[key]??0);
- progress.best[key]=Math.max(progress.best[key]??0,result.correct);
+ const key=`${result.mode}:${result.duration}`,timed=!result.dyktando,record=timed&&result.correct>(progress.best[key]??0);
+ if(timed)progress.best[key]=Math.max(progress.best[key]??0,result.correct);
  progress.history=[result,...progress.history].slice(0,50);
  const day=localDay(new Date(result.date));
  progress.today={day,count:(progress.today.day===day?progress.today.count:0)+result.correct+result.wrong};

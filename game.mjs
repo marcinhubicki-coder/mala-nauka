@@ -47,7 +47,8 @@ export class Session {
     Object.assign(this, { source, pool: Array.isArray(source) ? source : [], duration, now, random,
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
       state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
-      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [] });
+      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [],
+      untimed: false, questionLimit: 0 });
     this.next();
   }
   tick() {
@@ -56,8 +57,10 @@ export class Session {
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
     if (previousState === 'playing') this.questionElapsed += elapsed;
-    this.remaining = Math.max(0, this.remaining - elapsed);
-    if (this.remaining === 0) { this.state = 'ended'; return; }
+    if (!this.untimed) {
+      this.remaining = Math.max(0, this.remaining - elapsed);
+      if (this.remaining === 0) { this.state = 'ended'; return; }
+    }
     if (this.state === 'exposing') {
       this.exposureRemaining = Math.max(0, this.exposureRemaining - elapsed);
       if (!this.exposureRemaining) this.state = 'playing';
@@ -68,6 +71,7 @@ export class Session {
   }
   next() {
     if (this.state === 'paused' || this.state === 'ended') return;
+    if (this.questionLimit && this.question >= this.questionLimit) { this.current = null; this.state = 'ended'; return; }
     if (typeof this.source === 'function') this.current = this.source(this);
     else {
       if (!this.queue.length) {
@@ -109,6 +113,12 @@ export class Session {
     const question = this.question;
     this.tick();
     if (this.state !== 'ended' && this.question === question) this.next();
+  }
+  questionsRemaining() {
+    if (!this.questionLimit) return null;
+    const effectiveState = this.state === 'paused' ? this.resumeState : this.state;
+    const currentPending = ['playing','exposing'].includes(effectiveState) ? 1 : 0;
+    return Math.max(0, this.questionLimit - this.question + currentPending);
   }
   pause() {
     if (this.state === 'paused' || this.state === 'ended') return;

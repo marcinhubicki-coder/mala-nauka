@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-spelling-v81-transition-preset';
+const CACHE='mala-nauka-spelling-v83-dyktando-jelly-v4';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -220,8 +220,10 @@ const CORE=[
   './assets/scenes/ogorek.webp',
   './assets/scenes/wiewiorka.webp',
   './spelling/word-reveal.mjs?v=9-simple-text',
-  './ortografia/wizard-v2.css?v=2',
-  './ortografia/wizard-v2.mjs?v=3',
+  './ortografia/wizard-v2.css?v=6-dyktando-jelly-v4',
+  './ortografia/wizard-v2.mjs?v=7-dyktando-jelly-v4',
+  './shared/jelly-v4.mjs?v=2',
+  './shared/jelly-v4.css?v=2',
   './angielski/wizard-v2.css?v=4',
   './angielski/wizard-v2.mjs?v=7',
   './angielski/feedback-transition.js?v=2',
@@ -235,8 +237,8 @@ const CORE=[
   './flagi/game-variants.mjs?v=16',
   './flagi/europe-map.js?v=6',
   './flagi/map-microstates.js?v=1',
-  './flagi/feedback-transition.js?v=10'
-  './app.js?v=39-transition-preset',
+  './flagi/feedback-transition.js?v=10',
+  './app.js?v=42-dyktando-jelly-v4',
   './spelling-art.css?v=35-main-bubble',
   './spelling/art.mjs?v=39-transition-preset',
   './spelling/bubble.mjs?v=39-transition-preset',

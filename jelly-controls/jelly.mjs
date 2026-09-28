@@ -42,7 +42,7 @@ const CATEGORIES={
   light:{
     title:'Światło',
     params:[
-      {key:'shadow',short:'C',label:'Cień',min:0,max:2.5,step:.05,base:1,format:x2},
+      {key:'shadow',short:'C',label:'Cień',min:0,max:2.5,step:.05,base:1.25,format:x2},
       {key:'glow',short:'P',label:'Poświata',min:0,max:2.5,step:.05,base:.65,format:x2},
       {key:'shine',short:'B',label:'Blask',min:0,max:2.5,step:.05,base:1.50,format:x2},
       {key:'blur',short:'L',label:'Blur',min:0,max:3,step:.1,base:0,format:px},
@@ -53,11 +53,11 @@ const CATEGORIES={
   text:{
     title:'Tekst',
     params:[
-      {key:'delay',short:'O',label:'Opóźnienie koloru',min:0,max:650,step:10,base:180,format:ms},
-      {key:'duration',short:'C',label:'Czas koloru',min:80,max:800,step:10,base:280,format:ms},
+      {key:'delay',short:'O',label:'Opóźnienie koloru',min:0,max:650,step:10,base:440,format:ms},
+      {key:'duration',short:'C',label:'Czas koloru',min:80,max:800,step:10,base:430,format:ms},
       {key:'bump',short:'B',label:'Bump tekstu',min:0,max:2.5,step:.05,base:1,format:x2},
-      {key:'glow',short:'P',label:'Poświata tekstu',min:0,max:2.5,step:.05,base:1,format:x2},
-      {key:'fade',short:'W',label:'Wygaszenie',min:0,max:2,step:.05,base:1,format:x2},
+      {key:'glow',short:'P',label:'Poświata tekstu',min:0,max:2.5,step:.05,base:.65,format:x2},
+      {key:'fade',short:'W',label:'Wygaszenie',min:0,max:2,step:.05,base:1.10,format:x2},
       {key:'blur',short:'L',label:'Blur tekstu',min:0,max:3,step:.1,base:0,format:px},
     ]
   }
@@ -67,7 +67,7 @@ const defaults={
   motion:{duration:.90,stretch:1.45,recoil:.55,bounce:.75,inertia:2.40,drag:1.80},
   shape:{radius:18,inset:4,squish:15,tilt:1.3,border:1,depth:1},
   light:{shadow:1,glow:.65,shine:1.50,blur:0,saturation:1,contrast:1},
-  text:{delay:180,duration:280,bump:1,glow:1,fade:1,blur:0},
+  text:{delay:440,duration:430,bump:1.25,glow:.65,fade:1.10,blur:0},
 };
 let state=structuredClone(defaults);
 let activeCategory='motion';

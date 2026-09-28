@@ -47,6 +47,174 @@ export const SCENES = new Map([
 
 export const WORD_SCENES = new Map([
   // Manual assets added with admin loader.
+  ['źrebak', { key:'zrebak', asset:'zrebak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['źle', { key:'zle', asset:'zle.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['świat', { key:'swiat', asset:'swiat.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['środa', { key:'sroda', asset:'sroda.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ślad', { key:'slad', asset:'slad.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['łańcuch', { key:'lancuch', asset:'lancuch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ziarno', { key:'ziarno', asset:'ziarno.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zapach', { key:'zapach', asset:'zapach.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['zachód', { key:'zachod', asset:'zachod.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wąż', { key:'waz', asset:'waz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wydech', { key:'wydech', asset:'wydech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wybuch', { key:'wybuch', asset:'wybuch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wschód', { key:'wschod', asset:'wschod.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['woźny', { key:'wozny', asset:'wozny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['wahadło', { key:'wahadlo', asset:'wahadlo.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['urodziny', { key:'urodziny', asset:'urodziny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ulica', { key:'ulica', asset:'ulica.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['tańczyć', { key:'tanczyc', asset:'tanczyc.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['suchy', { key:'suchy', asset:'suchy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['straż', { key:'straz', asset:'straz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['strach', { key:'strach', asset:'strach.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['spać', { key:'spac', asset:'spac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['siostra', { key:'siostra', asset:'siostra.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['sierpień', { key:'sierpien', asset:'sierpien.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['siedzieć', { key:'siedziec', asset:'siedziec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['siano', { key:'siano', asset:'siano.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['puchar', { key:'puchar', asset:'puchar.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['puch', { key:'puch', asset:'puch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pożyczyć', { key:'pozyczyc', asset:'pozyczyc.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pożar', { key:'pozar', asset:'pozar.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pośpiech', { key:'pospiech', asset:'pospiech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['pech', { key:'pech', asset:'pech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['niedźwiedź', { key:'niedzwiedz', asset:'niedzwiedz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['niedziela', { key:'niedziela', asset:'niedziela.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['niebieski', { key:'niebieski', asset:'niebieski.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['mężczyzna', { key:'mezczyzna', asset:'mezczyzna.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['mucha', { key:'mucha', asset:'mucha.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['możliwy', { key:'mozliwy', asset:'mozliwy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['mech', { key:'mech', asset:'mech.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['kończyć', { key:'konczyc', asset:'konczyc.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['koniec', { key:'koniec', asset:'koniec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['każdy', { key:'kazdy', asset:'kazdy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['kałuża', { key:'kaluza', asset:'kaluza.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hymn', { key:'hymn', asset:'hymn.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['huta', { key:'huta', asset:'huta.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['humor', { key:'humor', asset:'humor.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hodowla', { key:'hodowla', asset:'hodowla.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hodować', { key:'hodowac', asset:'hodowac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hiena', { key:'hiena', asset:'hiena.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hektar', { key:'hektar', asset:'hektar.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hańba', { key:'hanba', asset:'hanba.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['harmonia', { key:'harmonia', asset:'harmonia.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hala', { key:'hala', asset:'hala.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['hak', { key:'hak', asset:'hak.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['groźny', { key:'grozny', asset:'grozny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dźwięk', { key:'dzwiek', asset:'dzwiek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dźwięczny', { key:'dzwieczny', asset:'dzwieczny.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dźwignia', { key:'dzwignia', asset:'dzwignia.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dźwig', { key:'dzwig', asset:'dzwig.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dzik', { key:'dzik', asset:'dzik.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['dziadek', { key:'dziadek', asset:'dziadek.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['duch', { key:'duch', asset:'duch.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['druhna', { key:'druhna', asset:'druhna.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['druh', { key:'druh', asset:'druh.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ciężarówka', { key:'ciezarowka', asset:'ciezarowka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ciocia', { key:'ciocia', asset:'ciocia.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['cień', { key:'cien', asset:'cien.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ciepło', { key:'cieplo', asset:'cieplo.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['ciemno', { key:'ciemno', asset:'ciemno.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['cichy', { key:'cichy', asset:'cichy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['cicho', { key:'cicho', asset:'cicho.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chór', { key:'chor', asset:'chor.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chwila', { key:'chwila', asset:'chwila.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chwalić', { key:'chwalic', asset:'chwalic.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chustka', { key:'chustka', asset:'chustka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chudy', { key:'chudy', asset:'chudy.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chrząszcz', { key:'chrzaszcz', asset:'chrzaszcz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chrapać', { key:'chrapac', asset:'chrapac.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chodzić', { key:'chodzic', asset:'chodzic.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chociaż', { key:'chociaz', asset:'chociaz.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chemia', { key:'chemia', asset:'chemia.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['chcieć', { key:'chciec', asset:'chciec.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['bańka', { key:'banka', asset:'banka.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
+  ['anioł', { key:'aniol', asset:'aniol.jpg', layouts:['bubble'] }],
+  // Manual assets added with admin loader.
   ['żartujesz', { key:'zartujesz', asset:'zartujesz.jpg', layouts:['bubble'] }],
   // Manual assets added with admin loader.
   ['łóżko', { key:'lozko', asset:'lozko.jpg', layouts:['bubble'] }],
@@ -450,7 +618,7 @@ export const WORD_SCENES = new Map([
   ['ogórek', { key:'ogorek', asset:'ogorek.webp', layouts:['bubble'] }],
   ['wiewiórka', { key:'wiewiorka', asset:'wiewiorka.webp', layouts:['bubble'] }],
 
-  ['źródło', { key:'mountain-source', asset:'mountains.webp', layouts:['bubble'] }],
+  ['źródło', { key:'zrodlo', asset:'zrodlo.jpg', layouts:['bubble'] }],
   ['półwysep', { key:'mountain-peninsula', asset:'mountains.webp', layouts:['bubble'] }],
   ['horyzont', { key:'mountain-horizon', asset:'mountains.webp', layouts:['bubble'] }],
   ['niebo', { key:'sky', asset:'swallow.avif', layouts:['bubble'] }],
@@ -484,7 +652,7 @@ export const WORD_SCENES = new Map([
   ['chory', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
   ['chirurg', { key:'medical', asset:'lekarz.avif', layouts:['bubble'] }],
   ['pomóc', { key:'medical-help', asset:'lekarz.avif', layouts:['bubble'] }],
-  ['mózg', { key:'medical-brain', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['mózg', { key:'mozg', asset:'mozg.jpg', layouts:['bubble'] }],
   ['dziecko', { key:'child', asset:'wozek.avif', layouts:['bubble'] }],
   ['maluch', { key:'child', asset:'wozek.avif', layouts:['bubble'] }],
   ['śmiech', { key:'happy-bunny', asset:'bunny.webp', layouts:['bubble'] }],
@@ -506,7 +674,7 @@ export const WORD_SCENES = new Map([
   ['trzcina', { key:'garden-reed', asset:'rose.webp', layouts:['bubble'] }],
   ['chmiel', { key:'garden-hops', asset:'rose.webp', layouts:['bubble'] }],
   ['chrzan', { key:'garden-horseradish', asset:'rose.webp', layouts:['bubble'] }],
-  ['cukier', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
+  ['cukier', { key:'cukier', asset:'cukier.jpg', layouts:['bubble'] }],
   ['zupa', { key:'zupa', asset:'zupa.jpg', layouts:['bubble'] }],
   ['burak', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
   ['ugotować', { key:'table-cooking', asset:'stol.webp', layouts:['bubble'] }],
@@ -515,8 +683,8 @@ export const WORD_SCENES = new Map([
   ['okruch', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
   ['łyżeczka', { key:'table-spoon', asset:'stol.webp', layouts:['bubble'] }],
   ['pożywienie', { key:'table-food', asset:'stol.webp', layouts:['bubble'] }],
-  ['ucho', { key:'medical-ear', asset:'lekarz.avif', layouts:['bubble'] }],
-  ['uszy', { key:'medical-ear', asset:'lekarz.avif', layouts:['bubble'] }],
+  ['ucho', { key:'ucho', asset:'ucho.jpg', layouts:['bubble'] }],
+  ['uszy', { key:'uszy', asset:'uszy.jpg', layouts:['bubble'] }],
   ['źrenica', { key:'medical-eye', asset:'lekarz.avif', layouts:['bubble'] }],
   ['oddech', { key:'medical-breath', asset:'lekarz.avif', layouts:['bubble'] }],
   ['higiena', { key:'medical-hygiene', asset:'lekarz.avif', layouts:['bubble'] }],

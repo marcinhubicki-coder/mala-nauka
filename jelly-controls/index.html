@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f4ff">
+<title>Mała Nauka · Jelly Controls Lab</title>
+<link rel="stylesheet" href="./jelly.css?v=1">
+</head>
+<body>
+<main class="jelly-lab" id="jelly-lab">
+  <header class="lab-head">
+    <button type="button" class="round-button reset-button" aria-label="Resetuj ustawienia">×</button>
+    <div>
+      <small>ADMIN TOOL</small>
+      <h1>Jelly controls</h1>
+    </div>
+    <button type="button" class="round-button category-button" aria-label="Zmień kategorię">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="5" width="5" height="5" rx="1.3"/><rect x="14" y="5" width="5" height="5" rx="1.3"/>
+        <rect x="5" y="14" width="5" height="5" rx="1.3"/><rect x="14" y="14" width="5" height="5" rx="1.3"/>
+      </svg>
+    </button>
+  </header>
+
+  <section class="preview-card" aria-label="Podgląd kontrolek jelly">
+    <div class="preview-head">
+      <div><span>LIVE</span><strong>Przeciągnij albo stuknij</strong></div>
+      <p>Każdy wariant korzysta z tych samych parametrów galarety.</p>
+    </div>
+
+    <div class="demo-row">
+      <div class="demo-label"><b>2</b><span>Dwie opcje</span></div>
+      <div class="jelly-segmented cols-2" data-jelly-segmented>
+        <span class="jelly-indicator" aria-hidden="true"></span>
+        <button type="button" class="jelly-choice is-selected">Wszystkie słowa</button>
+        <button type="button" class="jelly-choice">Kategorie</button>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <div class="demo-label"><b>3</b><span>Trzy opcje</span></div>
+      <div class="jelly-segmented cols-3" data-jelly-segmented>
+        <span class="jelly-indicator" aria-hidden="true"></span>
+        <button type="button" class="jelly-choice is-selected">Wszystkie</button>
+        <button type="button" class="jelly-choice">Podstawowe</button>
+        <button type="button" class="jelly-choice">Trudne</button>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <div class="demo-label"><b>4</b><span>Cztery opcje</span></div>
+      <div class="jelly-segmented cols-4" data-jelly-segmented>
+        <span class="jelly-indicator" aria-hidden="true"></span>
+        <button type="button" class="jelly-choice is-selected">1 min</button>
+        <button type="button" class="jelly-choice">2 min</button>
+        <button type="button" class="jelly-choice">3 min</button>
+        <button type="button" class="jelly-choice">5 min</button>
+      </div>
+    </div>
+
+    <div class="demo-row compact-row">
+      <div class="demo-label"><b>1</b><span>Jedna opcja</span></div>
+      <button type="button" class="single-jelly">ćwiczymy dyktando!</button>
+    </div>
+
+    <div class="toggle-row">
+      <div><strong>Tylko dyktando</strong><small>80 słów · bez powtórek</small></div>
+      <button type="button" class="jelly-toggle" role="switch" aria-checked="false" aria-label="Tylko dyktando">
+        <span class="toggle-knob"></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="tuner-panel" aria-label="Strojenie efektu galarety">
+    <div class="panel-head">
+      <div><small>KATEGORIA</small><strong class="category-title">Ruch</strong></div>
+      <button type="button" class="category-pill">Zmień <span>▦</span></button>
+    </div>
+    <div class="param-tabs" role="tablist"></div>
+    <div class="slider-card">
+      <label for="jelly-range">Czas</label>
+      <input id="jelly-range" type="range">
+      <output for="jelly-range"></output>
+    </div>
+    <div class="param-values"></div>
+  </section>
+</main>
+
+<dialog class="category-dialog">
+  <div class="dialog-sheet">
+    <header>
+      <div><small>JELLY LAB</small><h2>Wybierz kategorię</h2></div>
+      <button type="button" class="dialog-close" aria-label="Zamknij">×</button>
+    </header>
+    <div class="category-grid">
+      <button type="button" class="category-card" data-category="motion"><strong>Ruch</strong><span data-summary="motion"></span></button>
+      <button type="button" class="category-card" data-category="shape"><strong>Kształt</strong><span data-summary="shape"></span></button>
+      <button type="button" class="category-card" data-category="light"><strong>Światło</strong><span data-summary="light"></span></button>
+      <button type="button" class="category-card" data-category="touch"><strong>Dotyk</strong><span data-summary="touch"></span></button>
+    </div>
+  </div>
+</dialog>
+
+<script type="module" src="./jelly.mjs?v=1"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v87-final-spelling-assets-20260928';
+const CACHE='mala-nauka-v88-home-v2-20260929';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -87,7 +87,7 @@ const CORE=[
   './czytanie/index.html',
   './czytanie/wizard-v2.css?v=6',
   './czytanie/wizard-v2.mjs?v=3',
-  './app.js?v=45-final-assets',
+  './app.js?v=46-home-v2',
   './game.mjs?v=31-wordbase455',
   './modes.mjs?v=reading-phrase-1',
   './progress.mjs?v=reading-phrase-1',
@@ -202,7 +202,7 @@ const CORE=[
   './ortografia/wizard-v2.mjs',
   './ortografia/wizard-v2.css',
   './matematyka/correct-transition.js',
-  './app.js?v=45-final-assets',
+  './app.js?v=46-home-v2',
   './game.mjs?v=31-wordbase455',
   './modes.mjs?v=23-art-library',
   './spelling-art.css?v=23-art-library',
@@ -238,7 +238,7 @@ const CORE=[
   './flagi/europe-map.js?v=6',
   './flagi/map-microstates.js?v=1',
   './flagi/feedback-transition.js?v=10',
-  './app.js?v=45-final-assets',
+  './app.js?v=46-home-v2',
   './game.mjs?v=31-wordbase455',
   './modes.mjs?v=30-dyktando-jelly-v4',
   './progress.mjs?v=3-dyktando-jelly-v4',

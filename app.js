@@ -33,7 +33,9 @@ const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Ma
 async function refreshPlayers(){players=await playerService.listPlayers();return players;}
 async function persistProgress(){
  if(!activePlayer?.id)return;
- try{await playerService.saveProgress(activePlayer.id,progress);}
+ const playerId=activePlayer.id;
+ const snapshot=globalThis.structuredClone?structuredClone(progress):JSON.parse(JSON.stringify(progress));
+ try{await playerService.saveProgress(playerId,snapshot);}
  catch{const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;}
 }
 async function activatePlayer(player){

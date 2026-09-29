@@ -1,4 +1,6 @@
 import { Session } from '../game.mjs';
+import { cleanProgress, recordResult } from '../progress.mjs?v=3-local-profiles';
+import { playerService } from '../player-service.mjs?v=1-local-profiles';
 
 const CLOCK_SOURCE = () => ({ options: ['_'], answer: '_', exposureMs: 0 });
 const labels = { add: 'Dodawanie', subtract: 'Odejmowanie', multiply: 'Mnożenie', divide: 'Dzielenie' };
@@ -84,6 +86,31 @@ function accuracy() {
   return correct + wrong ? Math.round(correct * 100 / (correct + wrong)) : 0;
 }
 
+async function saveMathProgress() {
+  try {
+    await playerService.init();
+    const player = await playerService.getSessionPlayer();
+    if (!player) return;
+    const progress = cleanProgress(await playerService.getProgress(player.id));
+    const result = {
+      id: globalThis.crypto?.randomUUID?.() || `math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      playerId: player.id,
+      mode: 'math',
+      category: currentMode,
+      difficulty: 1,
+      duration: currentDuration,
+      correct,
+      wrong,
+      date: new Date().toISOString(),
+      early: false,
+    };
+    recordResult(progress, result);
+    await playerService.saveProgress(player.id, progress);
+  } catch {
+    // The round should still finish even when local persistence is unavailable.
+  }
+}
+
 function endRound() {
   if (!clock || cancelled || document.querySelector('.math-result-screen')) return;
   if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
@@ -115,6 +142,7 @@ function endRound() {
       </div>
     </section>
   `;
+  void saveMathProgress();
   clock = null;
   syncTimerSnapshot();
 }

@@ -46,7 +46,7 @@ export class Session {
     Object.assign(this, { source, pool: Array.isArray(source) ? source : [], duration, now, random,
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
       state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
-      untimed: false, questionLimit: 0 });
+      untimed: false, questionLimit: 0, attempts: [] });
     this.next();
   }
   tick() {
@@ -89,6 +89,16 @@ export class Session {
     if (this.state !== 'playing' || !this.options.includes(option)) return false;
     this.selected = option;
     const correct = option === this.current.answer;
+    this.attempts.push({
+      kind: this.current.kind,
+      word: typeof this.current.word === 'string' ? this.current.word : '',
+      masked: typeof this.current.masked === 'string' ? this.current.masked : '',
+      answer: String(this.current.answer ?? ''),
+      selected: String(option ?? ''),
+      correct,
+      category: typeof this.current.category === 'string' ? this.current.category : '',
+      difficulty: Number(this.current.difficulty) || 0,
+    });
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
     this.feedbackRemaining = correct ? (this.feedbackMs ?? 700) : 0;

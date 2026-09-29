@@ -1,7 +1,8 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=29-dyktando80';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=30-learning-feedback';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=29-dyktando80';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=2-dyktando80';
 import { createSpellingArt } from './spelling/art.mjs?v=42-final-assets';
+import { sceneFor, sceneUrl } from './spelling/scenes.mjs?v=27-final-assets';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';
@@ -68,6 +69,71 @@ function questionContent(q,feedback,exposing) {
  if(q.kind==='reading')return `<div class="reading-text">${escape(feedback||exposing?q.text:q.prompt)}</div>${feedback&&q.answer!==q.text?`<div class="reading-answer">${escape(q.answer)}</div>`:''}`;
  return `<div class="question-text ${q.kind}">${escape(feedback?q.full:q.text)}</div>${q.kind==='english'&&feedback?`<p class="translation">${escape(q.text)}</p>`:''}`;
 }
+function spellingResultAttempts(result){
+ return Array.isArray(result?.attempts)?result.attempts.filter(attempt=>attempt&&attempt.kind==='spelling'):[];
+}
+function spellingResultScene(attempt){
+ if(!attempt)return '';
+ const scene=sceneFor(attempt.masked||'',attempt.word||'');
+ return scene?.asset?sceneUrl(scene):'';
+}
+function spellingResultWord(attempt){
+ const masked=String(attempt?.masked||''),answer=String(attempt?.answer||'');
+ if(masked.includes('_')){
+  const [before,...rest]=masked.split('_');
+  return escape(before)+'<span class="result-answer-letter">'+escape(answer)+'</span>'+escape(rest.join('_'));
+ }
+ return escape(attempt?.word||answer);
+}
+function spellingResultRows(attempts,emptyCopy){
+ if(!attempts.length)return '<p class="result-detail-empty">'+escape(emptyCopy)+'</p>';
+ return '<div class="result-word-list">'+attempts.map(attempt=>{
+  const image=spellingResultScene(attempt),retained=attempt.correct===true;
+  return '<article class="result-word-row '+(retained?'is-retained':'is-review')+'">'+
+   (image?'<img class="result-word-thumb" src="'+escape(image)+'" alt="" width="58" height="58">':'<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>')+
+   '<div class="result-word-copy"><strong>'+spellingResultWord(attempt)+'</strong><small>'+(retained?'Dziś poszło dobrze':'Poprawny zapis')+(attempt.category?' · '+escape(attempt.category.replace('/',' / ')):'')+'</small></div>'+
+   '<span class="result-word-state">'+(retained?'Utrwalone':'Wrócimy')+'</span></article>';
+ }).join('')+'</div>';
+}
+function resultStat(label,count,key,open){
+ return '<button type="button" class="stat result-stat '+(open?'is-active':'')+'" data-action="toggle-result" data-result="'+key+'" aria-expanded="'+(open?'true':'false')+'" aria-controls="result-detail-'+key+'" '+(count?'':'disabled')+'><b>'+count+'</b><span>'+label+'</span><small aria-hidden="true">'+(count?'⌄':'')+'</small></button>';
+}
+function renderSpellingResult(result){
+ const attempts=spellingResultAttempts(result),retained=attempts.filter(attempt=>attempt.correct),review=attempts.filter(attempt=>!attempt.correct),total=attempts.length;
+ const open=review.length?'review':retained.length?'retained':'done';
+ const focus=review[0]||retained[retained.length-1],hero=spellingResultScene(focus);
+ const eyebrow=result.early?'Runda zakończona wcześniej':'Przygoda ukończona';
+ const heading=total?'Dobra robota!':'Na dziś wystarczy!';
+ const intro=total?(result.early?'To, co już zrobione, też się liczy. Zobacz, co dziś było pewne i do czego warto wrócić.':'Mały trening, kolejny krok do przodu.'):'Nie zdążyliśmy jeszcze przećwiczyć słowa. Wróć, kiedy będziesz mieć ochotę.';
+ const mindset=review.length?'To nie lista błędów. To mapa tego, co warto jeszcze utrwalić.':'Dziś było pewnie. Wrócimy do tych słów później, żeby sprawdzić, czy zostały w pamięci.';
+ root.innerHTML='<section class="result learning-result">'+
+  (hero?'<div class="result-hero-art"><img src="'+escape(hero)+'" alt="" width="96" height="96"></div>':'<div class="result-star" aria-hidden="true">✦</div>')+
+  '<span class="eyebrow">'+eyebrow+'</span><h1 tabindex="-1">'+heading+'</h1><p>'+intro+'</p>'+
+  '<span class="badge">'+escape(MODES[result.mode].name)+' · '+(result.dyktando?'Dyktando':minutes(result.duration))+'</span>'+
+  '<div class="stats learning-stats">'+
+   resultStat('Utrwalone',retained.length,'retained',open==='retained')+
+   resultStat('Do powtórki',review.length,'review',open==='review')+
+   resultStat('Zrobione',total,'done',open==='done')+
+  '</div>'+
+  '<div class="result-details">'+
+   '<section id="result-detail-retained" class="result-detail" data-result-panel="retained" '+(open==='retained'?'':'hidden')+'><div class="result-detail-head"><strong>To dziś było pewne</strong><span>✓</span></div><p>Te słowa poszły poprawnie. Później wrócimy do nich, żeby sprawdzić pamięć.</p>'+spellingResultRows(retained,'Jeszcze nic tutaj nie ma.')+'</section>'+
+   '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review" '+(open==='review'?'':'hidden')+'><div class="result-detail-head"><strong>Tu warto jeszcze wrócić</strong><span>↻</span></div><p>Super, że już wiemy, co jeszcze się miesza. Spójrz na poprawny zapis — te słowa wrócą w kolejnych powtórkach.</p>'+spellingResultRows(review,'Dziś nic nie wymaga dodatkowej powtórki.')+'</section>'+
+   '<section id="result-detail-done" class="result-detail" data-result-panel="done" '+(open==='done'?'':'hidden')+'><div class="result-detail-head"><strong>Co udało się zrobić</strong><span>✦</span></div><p>Każda odpowiedź daje nam informację, co już jest pewne, a co warto jeszcze poćwiczyć.</p>'+spellingResultRows(attempts,'Runda zakończyła się przed pierwszą odpowiedzią.')+'</section>'+
+  '</div>'+
+  '<p class="result-mindset">'+mindset+'</p>'+
+  '<div class="stack">'+btn('Jeszcze jedna runda →','again','primary')+btn('Wybierz inną przygodę','home')+'</div></section>';
+ root.querySelector('h1')?.focus({preventScroll:true});
+}
+function toggleResultDetail(button){
+ const key=button?.dataset.result,panel=key?root.querySelector('[data-result-panel="'+key+'"]'):null;
+ if(!panel)return;
+ const closing=button.getAttribute('aria-expanded')==='true';
+ root.querySelectorAll('[data-action="toggle-result"]').forEach(item=>{item.classList.remove('is-active');item.setAttribute('aria-expanded','false');});
+ root.querySelectorAll('[data-result-panel]').forEach(item=>{item.hidden=true;});
+ if(closing)return;
+ button.classList.add('is-active');button.setAttribute('aria-expanded','true');panel.hidden=false;
+}
+
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
@@ -82,14 +148,14 @@ function renderGame() {
 function updateClock(){const timer=root.querySelector('.timer');if(!timer||!game)return;const progressBar=root.querySelector('progress');if(game.untimed){const left=game.questionsRemaining();const value=String(left??0);if(timer.textContent!==value)timer.textContent=value;timer.classList.remove('urgent');timer.setAttribute('aria-label','Pozostało pytań: '+value);if(progressBar){progressBar.max=game.questionLimit||80;progressBar.value=left??0;}return;}const seconds=Math.ceil(game.remaining/1000);const value=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;if(timer.textContent!==value)timer.textContent=value;timer.classList.toggle('urgent',seconds<=15);if(progressBar)progressBar.value=game.remaining;const exposure=root.querySelector('.exposure-track span');if(exposure)exposure.style.transform=`scaleX(${game.exposureRemaining/game.current.exposureMs})`;}
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Wrócić do wyboru przygód?':'Mała przerwa',`<p>${exit?'Zapiszemy dotychczasowy wynik.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zapisz i wróć do startu':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
+function pause(exit=false){if(!game||view!=='game')return;spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Pokażemy podsumowanie tego, co już udało Ci się zrobić.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
 function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
-function finish(early=false,goHome=false){
+function finish(early=false){
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
  spellingArt.reset();
- const result={...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early};
- const record=recordResult(progress,result);save('progress',progress);lastResult=result;
- if(goHome){navigate('home');return;}view='results';root.dataset.view=view;
+ const result={...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...(game.attempts||[])]:undefined};
+ const record=recordResult(progress,result);save('progress',progress);lastResult=result;view='results';root.dataset.view=view;
+ if(result.mode==='spelling'){renderSpellingResult(result);return;}
  root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
@@ -99,7 +165,7 @@ function dispatch(event){const button=event.target.closest('button[data-action]'
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&!modal.open){game.skipFeedback();syncGame();}
- if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
+ if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true);if(action==='toggle-result'&&view==='results')toggleResultDetail(button);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);save('progress',progress);modal.close();navigate(view);}
  if(action==='retry')load();
 }

@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v89-local-profiles-20260929';
+const CACHE='mala-nauka-v90-local-profiles-20260929';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -84,6 +84,8 @@ const CORE=[
   './matematyka/division-grid-v51.js',
   './matematyka/score-badge-v38.js',
   './matematyka/app.js',
+  './matematyka/round-timer.js?v=1-local-profiles',
+  './matematyka/app.js?v=1-local-profiles',
   './angielski/',
   './angielski/index.html',
   './flagi/',

@@ -87,6 +87,13 @@ function accuracy() {
 }
 
 async function saveMathProgress() {
+  const snapshot = {
+    category: currentMode,
+    duration: currentDuration,
+    correct,
+    wrong,
+    date: new Date().toISOString(),
+  };
   try {
     await playerService.init();
     const player = await playerService.getSessionPlayer();
@@ -96,12 +103,12 @@ async function saveMathProgress() {
       id: globalThis.crypto?.randomUUID?.() || `math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       playerId: player.id,
       mode: 'math',
-      category: currentMode,
+      category: snapshot.category,
       difficulty: 1,
-      duration: currentDuration,
-      correct,
-      wrong,
-      date: new Date().toISOString(),
+      duration: snapshot.duration,
+      correct: snapshot.correct,
+      wrong: snapshot.wrong,
+      date: snapshot.date,
       early: false,
     };
     recordResult(progress, result);

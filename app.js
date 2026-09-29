@@ -100,25 +100,25 @@ function resultStat(label,count,key,open){
 }
 function renderSpellingResult(result){
  const attempts=spellingResultAttempts(result),retained=attempts.filter(attempt=>attempt.correct),review=attempts.filter(attempt=>!attempt.correct),total=attempts.length;
- const open=review.length?'review':retained.length?'retained':'done';
- const focus=review[0]||retained[retained.length-1],hero=spellingResultScene(focus);
+ const open=review.length?'review':retained.length?'retained':'';
+ const hero=new URL('./assets/scenes/bunny.webp',import.meta.url).href;
+ const scorePct=total?accuracy(retained.length,review.length):0;
  const eyebrow=result.early?'Runda zakończona wcześniej':'Przygoda ukończona';
  const heading=total?'Dobra robota!':'Na dziś wystarczy!';
  const intro=total?(result.early?'To, co już zrobione, też się liczy. Zobacz, co dziś było pewne i do czego warto wrócić.':'Mały trening, kolejny krok do przodu.'):'Nie zdążyliśmy jeszcze przećwiczyć słowa. Wróć, kiedy będziesz mieć ochotę.';
  const mindset=review.length?'To nie lista błędów. To mapa tego, co warto jeszcze utrwalić.':'Dziś było pewnie. Wrócimy do tych słów później, żeby sprawdzić, czy zostały w pamięci.';
  root.innerHTML='<section class="result learning-result">'+
-  (hero?'<div class="result-hero-art"><img src="'+escape(hero)+'" alt="" width="96" height="96"></div>':'<div class="result-star" aria-hidden="true">✦</div>')+
+  '<div class="result-hero-art"><img src="'+escape(hero)+'" alt="" width="96" height="96"></div>'+
   '<span class="eyebrow">'+eyebrow+'</span><h1 tabindex="-1">'+heading+'</h1><p>'+intro+'</p>'+
   '<span class="badge">'+escape(MODES[result.mode].name)+' · '+(result.dyktando?'Dyktando':minutes(result.duration))+'</span>'+
-  '<div class="stats learning-stats">'+
+  '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><strong>'+retained.length+' / '+total+'</strong><span>poprawnie</span><em>'+scorePct+'%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+scorePct+'" aria-label="'+scorePct+' procent poprawnych"><span style="width:'+scorePct+'%"></span></div></div>'+
+  '<div class="stats learning-stats learning-stats-two">'+
    resultStat('Utrwalone',retained.length,'retained',open==='retained')+
    resultStat('Do powtórki',review.length,'review',open==='review')+
-   resultStat('Zrobione',total,'done',open==='done')+
   '</div>'+
   '<div class="result-details">'+
-   '<section id="result-detail-retained" class="result-detail" data-result-panel="retained" '+(open==='retained'?'':'hidden')+'><div class="result-detail-head"><strong>To dziś było pewne</strong><span>✓</span></div><p>Te słowa poszły poprawnie. Później wrócimy do nich, żeby sprawdzić pamięć.</p>'+spellingResultRows(retained,'Jeszcze nic tutaj nie ma.')+'</section>'+
-   '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review" '+(open==='review'?'':'hidden')+'><div class="result-detail-head"><strong>Tu warto jeszcze wrócić</strong><span>↻</span></div><p>Super, że już wiemy, co jeszcze się miesza. Spójrz na poprawny zapis — te słowa wrócą w kolejnych powtórkach.</p>'+spellingResultRows(review,'Dziś nic nie wymaga dodatkowej powtórki.')+'</section>'+
-   '<section id="result-detail-done" class="result-detail" data-result-panel="done" '+(open==='done'?'':'hidden')+'><div class="result-detail-head"><strong>Co udało się zrobić</strong><span>✦</span></div><p>Każda odpowiedź daje nam informację, co już jest pewne, a co warto jeszcze poćwiczyć.</p>'+spellingResultRows(attempts,'Runda zakończyła się przed pierwszą odpowiedzią.')+'</section>'+
+   '<section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" '+(open==='retained'?'':'hidden')+'><div class="result-detail-head"><strong>To dziś było pewne</strong><span>✓</span></div><p>Te słowa poszły poprawnie. Później wrócimy do nich, żeby sprawdzić pamięć.</p>'+spellingResultRows(retained,'Jeszcze nic tutaj nie ma.')+'</section>'+
+   '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review" '+(open==='review'?'':'hidden')+'><div class="result-detail-head"><strong>Do powtórki</strong><span>↻</span></div><p>Tu był błąd, zapamiętaj poprawną formę.</p>'+spellingResultRows(review,'Dziś nic nie wymaga dodatkowej powtórki.')+'</section>'+
   '</div>'+
   '<p class="result-mindset">'+mindset+'</p>'+
   '<div class="stack">'+btn('Jeszcze jedna runda →','again','primary')+btn('Wybierz inną przygodę','home')+'</div></section>';

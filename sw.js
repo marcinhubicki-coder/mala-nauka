@@ -1,11 +1,11 @@
-const CACHE='mala-nauka-spelling-v89-learning-feedback-20260929';
+const CACHE='mala-nauka-spelling-v90-round-stats-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   './',
   './index.html',
   './app.css',
-  './app.css?v=44-learning-feedback',
+  './app.css?v=45-round-stats',
   './viewport-lock.css',
   './app.js',
   './module-router.js',
@@ -89,7 +89,7 @@ const CORE=[
   './czytanie/index.html',
   './czytanie/wizard-v2.css?v=5',
   './czytanie/wizard-v2.mjs?v=2',
-  './app.js?v=44-learning-feedback',
+  './app.js?v=45-round-stats',
   './game.mjs?v=reading-phrase-1',
   './modes.mjs?v=reading-phrase-1',
   './progress.mjs?v=reading-phrase-1',
@@ -204,7 +204,7 @@ const CORE=[
   './ortografia/wizard-v2.mjs',
   './ortografia/wizard-v2.css',
   './matematyka/correct-transition.js',
-  './app.js?v=44-learning-feedback',
+  './app.js?v=45-round-stats',
   './game.mjs?v=23-art-library',
   './modes.mjs?v=23-art-library',
   './spelling-art.css?v=23-art-library',
@@ -240,7 +240,7 @@ const CORE=[
   './flagi/europe-map.js?v=6',
   './flagi/map-microstates.js?v=1',
   './flagi/feedback-transition.js?v=10',
-  './app.js?v=44-learning-feedback',
+  './app.js?v=45-round-stats',
   './spelling-art.css?v=35-main-bubble',
   './spelling/art.mjs?v=42-final-assets',
   './spelling/bubble.mjs?v=39-transition-preset',

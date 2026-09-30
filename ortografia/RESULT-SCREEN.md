@@ -17,3 +17,5 @@ Wzór: zatwierdzony „Pastel Bunny Learning App Screen(1).png”. Ekran obejmuj
 `result-preview.html` pokazuje wspólny renderer wewnątrz widoków 390×844, 393×852, 402×874, 430×932 i Safari 390×700. Przykładowe wyniki nie są zapisywane do historii. Scenariusze: przerwana, ukończona, wszystko poprawnie, długa lista powtórek, dyktando i brak odpowiedzi.
 
 Ilustracje odtworzono w imagegen z zatwierdzonego mockupu: sama ilustracja góry z tym samym radosnym białym królikiem, zamkiem, stokrotkami i bańkami; osobno pas dolnej łąki bez tekstu i interfejsu. Elementy interfejsu pozostają prawdziwym HTML, CSS i SVG.
+
+Viewport verification keeps three complete rows visible at 390 × 700 through 430 × 932, including simulated iPhone safe areas. Preview selectors redraw the shared renderer without navigating the iframe.

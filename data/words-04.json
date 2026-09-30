@@ -924,7 +924,31 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "Zakończenie -erz",
+      "explanation": "W słowie „talerz” zapisujemy zakończenie -erz przez rz. Takie zakończenie spotykamy w wielu rzeczownikach rodzaju męskiego.",
+      "examples": [],
+      "relatedWords": [
+        "talerzyk"
+      ],
+      "forms": [
+        "talerza",
+        "talerzem",
+        "talerze"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: talerz",
+          "url": "https://sjp.pwn.pl/szukaj/talerz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "kalendarz",
@@ -935,7 +959,32 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "Zakończenie -arz",
+      "explanation": "W słowie „kalendarz” końcówkę -arz zapisujemy przez rz. Warto zapamiętać cały wyraz razem z tym zakończeniem.",
+      "examples": [],
+      "relatedWords": [
+        "kalendarzyk",
+        "kalendarzowy"
+      ],
+      "forms": [
+        "kalendarza",
+        "kalendarzem",
+        "kalendarze"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: kalendarz",
+          "url": "https://sjp.pwn.pl/szukaj/kalendarz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "cmentarz",
@@ -946,7 +995,31 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "Zakończenie -arz",
+      "explanation": "W słowie „cmentarz” końcówkę -arz zapisujemy przez rz. Warto zapamiętać cały wyraz razem z tym zakończeniem.",
+      "examples": [],
+      "relatedWords": [
+        "cmentarny"
+      ],
+      "forms": [
+        "cmentarza",
+        "cmentarzem",
+        "cmentarze"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: cmentarz",
+          "url": "https://sjp.pwn.pl/szukaj/cmentarz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "korytarz",
@@ -957,7 +1030,32 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "Zakończenie -arz",
+      "explanation": "W słowie „korytarz” końcówkę -arz zapisujemy przez rz. Warto zapamiętać cały wyraz razem z tym zakończeniem.",
+      "examples": [],
+      "relatedWords": [
+        "korytarzyk",
+        "korytarzowy"
+      ],
+      "forms": [
+        "korytarza",
+        "korytarzem",
+        "korytarze"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: korytarz",
+          "url": "https://sjp.pwn.pl/szukaj/korytarz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "komentarz",
@@ -968,7 +1066,32 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "Zakończenie -arz",
+      "explanation": "W słowie „komentarz” końcówkę -arz zapisujemy przez rz. Warto zapamiętać cały wyraz razem z tym zakończeniem.",
+      "examples": [],
+      "relatedWords": [
+        "komentować",
+        "komentator"
+      ],
+      "forms": [
+        "komentarza",
+        "komentarzem",
+        "komentarze"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: komentarz",
+          "url": "https://sjp.pwn.pl/szukaj/komentarz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "zwierzę",
@@ -979,7 +1102,33 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Zwierzę, zwierzak i zwierzęcy zapisujemy przez rz. W tej rodzinie wyrazów zachowujemy ten sam zapis.",
+      "examples": [],
+      "relatedWords": [
+        "zwierzak",
+        "zwierzęcy",
+        "zwierzyna"
+      ],
+      "forms": [
+        "zwierzęcia",
+        "zwierzęciu",
+        "zwierzęta"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: zwierzę",
+          "url": "https://sjp.pwn.pl/szukaj/zwierz%C4%99.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "zwierzak",
@@ -990,7 +1139,33 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Zwierzak, zwierzę i zwierzęcy zapisujemy przez rz. W tej rodzinie wyrazów zachowujemy ten sam zapis.",
+      "examples": [],
+      "relatedWords": [
+        "zwierzę",
+        "zwierzęcy",
+        "zwierzyna"
+      ],
+      "forms": [
+        "zwierzaka",
+        "zwierzaki",
+        "zwierzaków"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: zwierzak",
+          "url": "https://sjp.pwn.pl/szukaj/zwierzak.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "jarzębina",
@@ -1001,7 +1176,32 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „rz”",
+      "explanation": "Jarzębina zapisuje się przez rz. Pomaga skojarzenie z wyrazem jarząb, który należy do tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [
+        "jarząb",
+        "jarzębinowy"
+      ],
+      "forms": [
+        "jarzębiny",
+        "jarzębinę",
+        "jarzębiną"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: jarzębina",
+          "url": "https://sjp.pwn.pl/szukaj/jarz%C4%99bina.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "porządek",
@@ -1012,7 +1212,33 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Porządek, porządny i porządkować zapisujemy przez rz. Zapamiętaj wspólny zapis tej rodziny wyrazów.",
+      "examples": [],
+      "relatedWords": [
+        "porządny",
+        "porządkować",
+        "uporządkować"
+      ],
+      "forms": [
+        "porządku",
+        "porządkiem",
+        "porządki"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: porządek",
+          "url": "https://sjp.pwn.pl/szukaj/porz%C4%85dek.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "porzeczka",
@@ -1023,7 +1249,31 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „rz”",
+      "explanation": "Porzeczka zapisuje się przez rz. Ten zapis pozostaje także w wyrazach porzeczkowy i porzeczki.",
+      "examples": [],
+      "relatedWords": [
+        "porzeczkowy"
+      ],
+      "forms": [
+        "porzeczki",
+        "porzeczkę",
+        "porzeczkami"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: porzeczka",
+          "url": "https://sjp.pwn.pl/szukaj/porzeczka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "marzenie",
@@ -1078,7 +1328,33 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Marzyć, marzenie i marzyciel zapisujemy przez rz. Zapamiętaj wspólny zapis w tej rodzinie wyrazów.",
+      "examples": [],
+      "relatedWords": [
+        "marzenie",
+        "marzyciel",
+        "marzycielski"
+      ],
+      "forms": [
+        "marzę",
+        "marzysz",
+        "marzymy"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: marzyć",
+          "url": "https://sjp.pwn.pl/szukaj/marzy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "orzech",
@@ -1089,7 +1365,32 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „rz”",
+      "explanation": "Orzech zapisuje się przez rz. Ten sam zapis zachowują wyrazy orzechowy i orzeszek.",
+      "examples": [],
+      "relatedWords": [
+        "orzechowy",
+        "orzeszek"
+      ],
+      "forms": [
+        "orzecha",
+        "orzechem",
+        "orzechy"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: orzech",
+          "url": "https://sjp.pwn.pl/szukaj/orzech.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "brzuch",
@@ -1232,7 +1533,33 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Zmarznąć i marznąć zapisujemy przez rz. Zapamiętaj ten zapis razem z rodziną wyrazów związaną z mrozem.",
+      "examples": [],
+      "relatedWords": [
+        "marznąć",
+        "zmarznięty",
+        "mróz"
+      ],
+      "forms": [
+        "zmarznę",
+        "zmarzniesz",
+        "zmarzli"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: zmarznąć",
+          "url": "https://sjp.pwn.pl/szukaj/zmarzn%C4%85%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "przedszkole",

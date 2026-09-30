@@ -41,5 +41,6 @@
 .jelly-v4-container .jelly-v4-label span{transition:none!important;animation:none!important;will-change:color,opacity,filter,transform,text-shadow}
 .jelly-v4-container .jelly-v4-label input:checked + span{color:var(--jelly-idle-ink)!important}
 .jelly-v4-container .jelly-v4-label span.jelly-v4-text-active{color:var(--jelly-active-ink)!important}
+.jelly-v4-container .jelly-v4-label input:checked + span.jelly-v4-text-active{color:var(--jelly-active-ink)!important}
 @media(pointer:fine){.jelly-v4-buffer{cursor:grab}.jelly-v4-label{cursor:pointer}}
 @media(prefers-reduced-motion:reduce){.jelly-v4-moving .jelly-v4-indicator::after{animation:none!important}}

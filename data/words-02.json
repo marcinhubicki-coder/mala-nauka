@@ -24,7 +24,11 @@
         "skracać",
         "skrócić"
       ],
-      "forms": [],
+      "forms": [
+        "skrótu",
+        "skróty",
+        "skrótem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: skrót",
@@ -65,7 +69,11 @@
         "obracać",
         "obrócić"
       ],
-      "forms": [],
+      "forms": [
+        "obrotu",
+        "obroty",
+        "obrotem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: obrót",
@@ -103,7 +111,11 @@
         "wracać",
         "powrócić"
       ],
-      "forms": [],
+      "forms": [
+        "powrotu",
+        "powroty",
+        "powrotem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: powrót",
@@ -141,7 +153,11 @@
         "wybierać",
         "wybrać"
       ],
-      "forms": [],
+      "forms": [
+        "wyboru",
+        "wybory",
+        "wyborem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: wybór",
@@ -179,7 +195,11 @@
         "zbierać",
         "zbiórka"
       ],
-      "forms": [],
+      "forms": [
+        "zbioru",
+        "zbiory",
+        "zbiorem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: zbiór",
@@ -217,7 +237,11 @@
         "tworzyć",
         "twórca"
       ],
-      "forms": [],
+      "forms": [
+        "utworu",
+        "utwory",
+        "utworem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: utwór",
@@ -255,7 +279,11 @@
         "tworzyć",
         "utwór"
       ],
-      "forms": [],
+      "forms": [
+        "twórcy",
+        "twórcę",
+        "twórcą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: twórca",
@@ -284,7 +312,11 @@
       "explanation": "Słowo „szczegół” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "szczegółu",
+        "szczegóły",
+        "szczegółem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: szczegół",
@@ -313,7 +345,10 @@
       "explanation": "Słowo „ogół” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ogółu",
+        "ogółem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ogół",
@@ -342,7 +377,11 @@
       "explanation": "Słowo „wspólny” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "wspólna",
+        "wspólne",
+        "wspólnego"
+      ],
       "sources": [
         {
           "label": "SJP PWN: wspólny",
@@ -371,7 +410,11 @@
       "explanation": "Słowo „główny” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "główna",
+        "główne",
+        "głównego"
+      ],
       "sources": [
         {
           "label": "SJP PWN: główny",
@@ -412,7 +455,10 @@
         "głodny",
         "głodować"
       ],
-      "forms": [],
+      "forms": [
+        "głodu",
+        "głodem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: głód",
@@ -449,7 +495,11 @@
       "relatedWords": [
         "progi"
       ],
-      "forms": [],
+      "forms": [
+        "progu",
+        "progi",
+        "progiem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: próg",
@@ -487,7 +537,11 @@
         "wzory",
         "wzorować"
       ],
-      "forms": [],
+      "forms": [
+        "wzoru",
+        "wzory",
+        "wzorem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: wzór",
@@ -516,7 +570,11 @@
       "explanation": "Słowo „kłótnia” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kłótni",
+        "kłótnię",
+        "kłótnią"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kłótnia",
@@ -548,7 +606,11 @@
       "explanation": "Słowo „buty” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "butów",
+        "butami",
+        "butach"
+      ],
       "sources": [
         {
           "label": "SJP PWN: buty",
@@ -580,7 +642,10 @@
       "explanation": "Słowo „cukier” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "cukru",
+        "cukrem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: cukier",
@@ -609,7 +674,11 @@
       "explanation": "Słowo „kura” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kury",
+        "kurę",
+        "kurą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kura",
@@ -638,7 +707,11 @@
       "explanation": "Słowo „kubek” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kubka",
+        "kubki",
+        "kubkiem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kubek",
@@ -670,7 +743,11 @@
       "explanation": "Słowo „kula” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kuli",
+        "kulę",
+        "kulą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kula",
@@ -702,7 +779,11 @@
       "explanation": "Słowo „ulica” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ulicy",
+        "ulicę",
+        "ulicą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ulica",
@@ -731,7 +812,11 @@
       "explanation": "Słowo „ubranie” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ubrania",
+        "ubraniu",
+        "ubraniem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ubranie",
@@ -763,7 +848,11 @@
       "explanation": "Słowo „uczeń” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ucznia",
+        "uczniowie",
+        "uczniem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: uczeń",
@@ -792,7 +881,11 @@
       "explanation": "Słowo „uczennica” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "uczennicy",
+        "uczennicę",
+        "uczennicą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: uczennica",
@@ -821,7 +914,11 @@
       "explanation": "Słowo „urząd” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "urzędu",
+        "urzędy",
+        "urzędem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: urząd",
@@ -850,7 +947,11 @@
       "explanation": "Słowo „urlop” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "urlopu",
+        "urlopy",
+        "urlopem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: urlop",
@@ -882,7 +983,11 @@
       "explanation": "Słowo „urodziny” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "urodzin",
+        "urodzinami",
+        "urodzinach"
+      ],
       "sources": [
         {
           "label": "SJP PWN: urodziny",
@@ -911,7 +1016,11 @@
       "explanation": "Słowo „uśmiech” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "uśmiechu",
+        "uśmiechy",
+        "uśmiechem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: uśmiech",
@@ -940,7 +1049,11 @@
       "explanation": "Słowo „umyć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "umyję",
+        "umyjesz",
+        "umyliśmy"
+      ],
       "sources": [
         {
           "label": "SJP PWN: umyć",
@@ -972,7 +1085,11 @@
       "explanation": "Słowo „umieć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "umiem",
+        "umiesz",
+        "umiemy"
+      ],
       "sources": [
         {
           "label": "SJP PWN: umieć",
@@ -1001,7 +1118,11 @@
       "explanation": "Słowo „uszy” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "uszu",
+        "uszami",
+        "uszach"
+      ],
       "sources": [
         {
           "label": "SJP PWN: uszy",
@@ -1030,7 +1151,11 @@
       "explanation": "Słowo „ulewa” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ulewy",
+        "ulewę",
+        "ulewą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ulewa",
@@ -1059,7 +1184,11 @@
       "explanation": "Słowo „układ” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "układu",
+        "układy",
+        "układem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: układ",
@@ -1088,7 +1217,11 @@
       "explanation": "Słowo „ukryć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ukryję",
+        "ukryjesz",
+        "ukryliśmy"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ukryć",
@@ -1117,7 +1250,11 @@
       "explanation": "Słowo „ugotować” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ugotuję",
+        "ugotujesz",
+        "ugotowaliśmy"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ugotować",
@@ -1146,7 +1283,11 @@
       "explanation": "Słowo „buda” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "budy",
+        "budę",
+        "budą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: buda",
@@ -1175,7 +1316,11 @@
       "explanation": "Słowo „budzik” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "budzika",
+        "budziki",
+        "budzikiem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: budzik",
@@ -1204,7 +1349,11 @@
       "explanation": "Słowo „burak” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "buraka",
+        "buraki",
+        "burakiem"
+      ],
       "sources": [
         {
           "label": "SJP PWN: burak",
@@ -1233,7 +1382,11 @@
       "explanation": "Słowo „murawa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "murawy",
+        "murawę",
+        "murawą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: murawa",
@@ -1265,7 +1418,11 @@
       "explanation": "Słowo „duży” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "duża",
+        "duże",
+        "dużego"
+      ],
       "sources": [
         {
           "label": "SJP PWN: duży",
@@ -1294,7 +1451,11 @@
       "explanation": "Słowo „drugi” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "druga",
+        "drugie",
+        "drugiego"
+      ],
       "sources": [
         {
           "label": "SJP PWN: drugi",
@@ -1323,7 +1484,11 @@
       "explanation": "Słowo „gruby” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "gruba",
+        "grube",
+        "grubego"
+      ],
       "sources": [
         {
           "label": "SJP PWN: gruby",
@@ -1352,7 +1517,11 @@
       "explanation": "Słowo „grupa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "grupy",
+        "grupę",
+        "grupą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: grupa",
@@ -1381,7 +1550,11 @@
       "explanation": "Słowo „gumka” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "gumki",
+        "gumkę",
+        "gumką"
+      ],
       "sources": [
         {
           "label": "SJP PWN: gumka",
@@ -1410,7 +1583,11 @@
       "explanation": "Słowo „muszla” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "muszli",
+        "muszlę",
+        "muszlą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: muszla",
@@ -1439,7 +1616,11 @@
       "explanation": "Słowo „nuty” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "nut",
+        "nutami",
+        "nutach"
+      ],
       "sources": [
         {
           "label": "SJP PWN: nuty",
@@ -1468,7 +1649,11 @@
       "explanation": "Słowo „kupić” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kupię",
+        "kupisz",
+        "kupimy"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kupić",
@@ -1500,7 +1685,11 @@
       "explanation": "Słowo „kurtka” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "kurtki",
+        "kurtkę",
+        "kurtką"
+      ],
       "sources": [
         {
           "label": "SJP PWN: kurtka",
@@ -1529,7 +1718,11 @@
       "explanation": "Słowo „ludzie” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "ludzi",
+        "ludziom",
+        "ludźmi"
+      ],
       "sources": [
         {
           "label": "SJP PWN: ludzie",
@@ -1558,7 +1751,11 @@
       "explanation": "Słowo „lupa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
       "examples": [],
       "relatedWords": [],
-      "forms": [],
+      "forms": [
+        "lupy",
+        "lupę",
+        "lupą"
+      ],
       "sources": [
         {
           "label": "SJP PWN: lupa",

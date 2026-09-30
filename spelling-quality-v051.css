@@ -2,10 +2,10 @@
 #app[data-view="game"][data-mode="spelling"].spelling-art-ready{
   --v051-navy:#102b70;
   --v051-purple:#6d36cf;
-  min-height:100svh!important;height:100svh!important;max-height:100svh!important;
+  min-height:calc(100 * var(--app-vh, 1dvh))!important;height:calc(100 * var(--app-vh, 1dvh))!important;max-height:calc(100 * var(--app-vh, 1dvh))!important;
   overflow:hidden!important;
   background:#f2efff url('assets/ortografia/spelling-bg-v051.svg') center/cover no-repeat!important;
-  row-gap:clamp(4px,.65svh,7px)!important;
+  row-gap:clamp(4px,calc(.65 * var(--app-vh, 1dvh)),7px)!important;
   padding:max(10px,env(safe-area-inset-top)) 18px max(10px,env(safe-area-inset-bottom))!important;
 }
 #app[data-view="game"][data-mode="spelling"].spelling-art-ready::before,

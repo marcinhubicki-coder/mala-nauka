@@ -1,0 +1,35 @@
+:root {
+  --app-viewport-height: 100dvh;
+  --app-vh: calc(var(--app-viewport-height) / 100);
+  --app-safe-top: env(safe-area-inset-top, 0px);
+  --app-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  width: 100%;
+  height: var(--app-viewport-height);
+  min-height: 0;
+  max-height: var(--app-viewport-height);
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body { position: fixed; inset: 0; margin: 0; }
+
+main#app, .app-shell {
+  height: var(--app-viewport-height) !important;
+  max-height: var(--app-viewport-height) !important;
+  min-height: 0 !important;
+  overscroll-behavior: none;
+}
+
+/* Short screens and the keyboard can scroll these forms inside the app. */
+#app[data-view="player-create"], #app[data-view="player-pin"] { overflow-y: auto; }
+
+/* Keep decorations behind the home indicator; only controls need an inset. */
+#app[data-view="results"][data-mode="spelling"] {
+  background: #dfddfc url("assets/ortografia/result-background-v6.webp") center / cover no-repeat;
+}
+html:has(#app[data-view="results"][data-mode="spelling"]) { background: #dfddfc; }
+.result-scenery { display: none; }
+.result-sheet { bottom: max(calc(16 * var(--result-u)), var(--result-safe-bottom)); }

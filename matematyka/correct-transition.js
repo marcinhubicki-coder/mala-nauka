@@ -1,83 +1,43 @@
 (() => {
-  const TRANSITION_WINDOW = 1700;
+  const TRANSITION_WINDOW = 1800;
   let pending = null;
-  let ignoreUntil = 0;
 
-  function numberFromText(node) {
-    const value = Number(String(node?.textContent || '').replace(/[^0-9-]/g, ''));
-    return Number.isFinite(value) ? value : null;
+  function currentQuestion() {
+    const stage = document.querySelector('.quiz-stage[data-correct-answer][data-operation]');
+    if (!stage) return null;
+    const correct = Number(stage.dataset.correctAnswer);
+    const operation = stage.dataset.operation || '';
+    const equation = String(stage.querySelector('.equation')?.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!Number.isFinite(correct)) return null;
+    return { stage, correct, operation, key: `${operation}:${equation}` };
   }
 
-  function currentEquation() {
-    const values = [...document.querySelectorAll('.question-block .equation-number')].map(numberFromText);
-    if (values.length < 2 || values.some((value) => value == null)) return null;
-    return { a: values[0], b: values[1], result: values[0] * values[1] };
-  }
-
-  function questionKey() {
-    const q = currentEquation();
-    return q ? `${q.a}x${q.b}` : '';
-  }
-
-  function startOutgoing(chosen, selectedIndex) {
-    const stage = document.querySelector('.quiz-stage');
-    const answers = [...document.querySelectorAll('.answer[data-answer]')];
-    if (!stage || !answers.length) return;
-
-    stage.classList.add('correct-transition-out');
-    answers.forEach((button, index) => {
-      button.disabled = true;
-      if (Number(button.dataset.answer) === chosen) {
-        button.classList.add('correct-transition-hit', 'correct-transition-late');
-      } else {
-        button.classList.add('correct-transition-flip');
-      }
-      if (index === selectedIndex) button.dataset.correctTransitionSlot = '1';
-    });
-  }
-
-  function animateIncoming(selectedIndex) {
-    const stage = document.querySelector('.quiz-stage');
-    const answers = [...document.querySelectorAll('.answer[data-answer]')];
-    if (!stage || !answers.length) return;
-
-    stage.classList.remove('correct-transition-out');
-    stage.classList.add('correct-transition-in');
-    answers.forEach((button, index) => {
-      if (index === selectedIndex) button.classList.add('correct-transition-late-slot');
-    });
-
-    window.setTimeout(() => {
-      stage.classList.remove('correct-transition-in');
-      answers.forEach((button) => button.classList.remove('correct-transition-late-slot'));
-    }, 760);
-  }
-
-  document.addEventListener('click', (event) => {
+  /* Nie animujemy już starego DOM-u. Aplikacja po poprawnej odpowiedzi
+     renderuje ten sam układ ponownie, więc próba flipa podczas tego renderu
+     powodowała zniknięcia i przeskoki. Zielony feedback robi klasa .correct,
+     a animujemy dopiero nowy, docelowy układ pytania. */
+  document.addEventListener('click', event => {
     const answer = event.target.closest?.('.answer[data-answer]');
-    if (!answer || performance.now() < ignoreUntil) return;
+    if (!answer) return;
 
-    const equation = currentEquation();
-    if (!equation) return;
+    const question = currentQuestion();
+    if (!question) return;
     const chosen = Number(answer.dataset.answer);
-    if (!Number.isFinite(chosen) || chosen !== equation.result) return;
+    if (!Number.isFinite(chosen) || chosen !== question.correct) return;
 
-    const answers = [...document.querySelectorAll('.answer[data-answer]')];
-    const selectedIndex = Math.max(0, answers.indexOf(answer));
     pending = {
-      fromKey: questionKey(),
-      chosen,
-      selectedIndex,
+      fromKey: question.key,
       startedAt: performance.now(),
     };
-
-    // Bazowa aplikacja natychmiast renderuje stan „Dobrze!”. Poczekaj na ten render
-    // i animuj właśnie jego kafle, nie stary DOM spod palca.
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      if (!pending) return;
-      startOutgoing(pending.chosen, pending.selectedIndex);
-    }));
   }, true);
+
+  function animateIncoming(stage) {
+    if (!stage?.isConnected) return;
+    stage.classList.add('correct-transition-in');
+    window.setTimeout(() => {
+      if (stage.isConnected) stage.classList.remove('correct-transition-in');
+    }, 560);
+  }
 
   const observer = new MutationObserver(() => {
     if (!pending) return;
@@ -86,13 +46,11 @@
       return;
     }
 
-    const key = questionKey();
-    if (!key || key === pending.fromKey) return;
+    const question = currentQuestion();
+    if (!question || question.key === pending.fromKey) return;
 
-    const selectedIndex = pending.selectedIndex;
     pending = null;
-    ignoreUntil = performance.now() + 180;
-    requestAnimationFrame(() => animateIncoming(selectedIndex));
+    requestAnimationFrame(() => requestAnimationFrame(() => animateIncoming(question.stage)));
   });
 
   observer.observe(document.documentElement, { childList: true, subtree: true });

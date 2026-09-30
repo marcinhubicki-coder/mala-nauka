@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v95-pwa-bleed-20260930';
+const CACHE='mala-nauka-v96-pwa-size-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -328,14 +328,14 @@ const CORE=[
   "./spelling-art.css?v=41-dyktando80",
   "./shared/jelly-v4.css?v=1",
   "./home-screen.mjs",
-  "./home-screen.mjs?v=3-pwa-bleed",
+  "./home-screen.mjs?v=4-pwa-size",
   "./home-screen.css",
-  "./home-screen.css?v=3-pwa-bleed",
+  "./home-screen.css?v=4-pwa-size",
   "./app.js?v=49-home-retina",
   "./app.css?v=5-home-retina",
   "./assets/home/home-retina.webp",
   "./assets/fonts/dosis-variable.woff",
-  "./app.js?v=51-pwa-bleed"
+  "./app.js?v=52-pwa-size"
 ];
 
 self.addEventListener('install',event=>{

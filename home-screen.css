@@ -8,14 +8,16 @@
 
 body:has(#app[data-view="home"]) {
   background: #ddf3ff;
+  height: var(--home-viewport-height, 100dvh);
+  max-height: var(--home-viewport-height, 100dvh);
 }
 
 #app[data-view="home"] {
   --home-safe-top: env(safe-area-inset-top, 0px);
   --home-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --home-canvas-width: min(100vw, 480px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
+  --home-canvas-width: min(100vw, 480px, calc((var(--home-viewport-height, 100dvh) - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
   --home-canvas-height: calc(var(--home-canvas-width) * 1670 / 853);
-  --home-center-gap: max(0px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom) - var(--home-canvas-height)) / 2));
+  --home-center-gap: max(0px, calc((var(--home-viewport-height, 100dvh) - var(--home-safe-top) - var(--home-safe-bottom) - var(--home-canvas-height)) / 2));
   position: relative;
   display: grid;
   place-items: center;
@@ -23,7 +25,8 @@ body:has(#app[data-view="home"]) {
   width: 100%;
   max-width: none;
   height: 100vh;
-  height: 100dvh !important;
+  height: var(--home-viewport-height, 100dvh) !important;
+  max-height: var(--home-viewport-height, 100dvh);
   min-height: 0 !important;
   padding: var(--home-safe-top) 0 var(--home-safe-bottom);
   margin: 0;

@@ -1,4 +1,4 @@
-import { renderHomeScreen } from './home-screen.mjs?v=3-pwa-bleed';
+import { renderHomeScreen } from './home-screen.mjs?v=4-pwa-size';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-wordbase455';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';

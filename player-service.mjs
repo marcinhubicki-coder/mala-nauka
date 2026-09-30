@@ -7,7 +7,14 @@ const now=()=>new Date().toISOString();
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`player-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
 const cleanNickname=value=>String(value||'').trim().replace(/\s+/g,' ').slice(0,20);
 const validPin=pin=>/^\d{4}$/.test(String(pin||''));
-const publicPlayer=player=>player?{id:player.id,nickname:player.nickname,createdAt:player.createdAt,updatedAt:player.updatedAt}:null;
+const AVATARS=['a','b','c','d'];
+const fallbackAvatar=player=>{
+ const source=String(player?.id||player?.nickname||'player');
+ let total=0;for(let i=0;i<source.length;i++)total=(total+source.charCodeAt(i))%AVATARS.length;
+ return AVATARS[total];
+};
+const cleanAvatar=value=>AVATARS.includes(String(value||''))?String(value):null;
+const publicPlayer=player=>player?{id:player.id,nickname:player.nickname,avatarId:cleanAvatar(player.avatarId)||fallbackAvatar(player),createdAt:player.createdAt,updatedAt:player.updatedAt}:null;
 
 function fallbackHash(text){
  let hash=2166136261;
@@ -106,14 +113,15 @@ class LocalPlayerService{
   const tx=this.db.transaction('players','readonly');
   return await requestResult(tx.objectStore('players').get(id))||null;
  }
- async createPlayer({nickname,pin}){
+ async createPlayer({nickname,pin,avatarId}){
   await this.init();
   const safeName=cleanNickname(nickname);
   if(safeName.length<2)throw new Error('Nick powinien mieć co najmniej 2 znaki.');
   if(!validPin(pin))throw new Error('PIN musi mieć 4 cyfry.');
   const salt=randomSalt();
   const stamp=now();
-  const player={id:makeId(),nickname:safeName,pinSalt:salt,pinHash:await sha256(`${salt}:${pin}`),createdAt:stamp,updatedAt:stamp};
+  const id=makeId();
+  const player={id,nickname:safeName,avatarId:cleanAvatar(avatarId)||fallbackAvatar({id,nickname:safeName}),pinSalt:salt,pinHash:await sha256(`${salt}:${pin}`),createdAt:stamp,updatedAt:stamp};
   if(this.fallback){
    const data=readFallback();data.players.push(player);
    if(!writeFallback(data))throw new Error('Nie udało się zapisać profilu.');

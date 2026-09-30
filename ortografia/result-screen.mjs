@@ -1,6 +1,6 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=5-fixed-rule-scroll';
-import { revealResult, settleResult } from './result-motion.mjs?v=3-slower-count-progress';
+import { revealResult, settleResult } from './result-motion.mjs?v=4-tuned-progress';
 
 const resultContexts = new WeakMap();
 

@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v100-retina-release-20260930';
+const CACHE='mala-nauka-v101-retina-release-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -696,12 +696,17 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  event.respondWith(caches.match(request).then(cached=>{
+  // Scene URLs carry an asset-library version. Precache their canonical paths
+  // so a word never seen online can still display its illustration offline.
+  // Code keeps its exact query string to avoid mixing module versions.
+  const cacheKey=url.pathname.startsWith(new URL('./assets/',self.location.href).pathname)
+    ? new Request(url.origin+url.pathname)
+    : request;
+  event.respondWith(caches.match(cacheKey).then(cached=>{
     const update=fetch(request).then(response=>{
-      if(response.ok)caches.open(CACHE).then(cache=>cache.put(request,response.clone()));
+      if(response.ok)caches.open(CACHE).then(cache=>cache.put(cacheKey,response.clone()));
       return response;
     }).catch(()=>cached);
     return cached||update;
   }));
 });
-

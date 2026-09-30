@@ -1,0 +1,31 @@
+/* v42 — blend dolnego safe-area z PWA. Geometria dzielenia jest kontrolowana wyłącznie przez layout-v26. */
+
+/* iOS rysuje dolny obszar PWA kolorem theme-color. Końcówka gradientu wraca
+   więc do tego samego koloru, dzięki czemu nie ma twardego odcięcia. */
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #182133 !important;
+    background-image:
+      linear-gradient(180deg,
+        #182133 0%,
+        #182133 7%,
+        #172034 16%,
+        #141b2a 31%,
+        #111722 52%,
+        #10151f 78%,
+        #121a28 90%,
+        #182133 100%) !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    background-image:
+      linear-gradient(180deg,
+        #f5f8ff 0%,
+        #f5f8ff 7%,
+        #f4f7fb 24%,
+        #f4f7fb 82%,
+        #f5f8ff 100%) !important;
+  }
+}

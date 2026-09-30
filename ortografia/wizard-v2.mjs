@@ -268,7 +268,7 @@ function install(){
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
    '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div></fieldset>'+
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div>'+dictationChoice()+'</fieldset>'+
-  '<fieldset class="spelling-v2-section spelling-round-section"><legend><span class="step-dot">3</span>Ustal swoją misję</legend>'+limitChoices()+
+  '<fieldset class="spelling-v2-section spelling-round-section"><legend><span class="step-dot">3</span>Ustal misję</legend>'+limitChoices()+
    '<div class="spelling-time-segmented spelling-segmented" data-segmented="time" data-round-options="time" role="radiogroup" aria-label="Czas rundy">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div>'+
    '<div class="spelling-time-segmented spelling-segmented" data-segmented="count" data-round-options="count" role="radiogroup" aria-label="Liczba słów w rundzie">'+countChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div></fieldset>';
  const canvas=document.createElement('div');canvas.className='spelling-wizard-canvas';
@@ -280,7 +280,11 @@ function install(){
 
 root?.addEventListener('click',event=>{
  if(root.dataset.mode!=='spelling'||root.dataset.view!=='wizard')return;
- const label=event.target.closest('.spelling-segmented > label');if(!label)return;event.preventDefault();
+ // Pointer capture used by the existing drag animation retargets a tap to its
+ // buffer in Chromium. Resolve that tap to its label without changing motion.
+ const buffer=event.target.closest('.jelly-v4-buffer');
+ const label=event.target.closest('.spelling-segmented > label')||[...(buffer?.querySelectorAll('.spelling-segmented > label')||[])].find(node=>{const r=node.getBoundingClientRect();return event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom;});
+ if(!label)return;event.preventDefault();
  if(performance.now()<suppressClickUntil){event.stopPropagation();return;}
  const input=label.querySelector('input');if(!input||input.disabled)return;applySegmentSelection(input);
 });

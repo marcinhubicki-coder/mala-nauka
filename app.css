@@ -169,10 +169,10 @@ html:has(#app[data-view="results"][data-mode="spelling"]),body:has(#app[data-vie
 .progress-sparks i:nth-child(2){animation-delay:-.8s}.progress-sparks i:nth-child(3){animation-delay:-1.6s}
 .progress-sparks i::after{content:"";position:absolute;right:0;top:22%;width:calc(12 * var(--result-u));height:calc(12 * var(--result-u));background:#fff6d9c9;clip-path:polygon(50% 0,61% 34%,98% 35%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 35%,39% 34%)}
 @keyframes progress-star-travel{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-.progress-logo-star{position:absolute;right:0;top:50%;width:calc(32 * var(--result-u));height:calc(32 * var(--result-u));transform:translate(50%,-50%);overflow:visible;pointer-events:none}
+.progress-logo-star{position:absolute;right:0;top:50%;width:calc(32 * var(--result-u));height:calc(32 * var(--result-u));transform:translate(50%,-50%);overflow:hidden;pointer-events:none}
 .round-score strong .result-count{font:inherit}.result-count{position:relative;display:inline-block}
 .result-counting{position:relative;color:transparent!important}.result-count-handoff{color:var(--count-color)!important}
-.result-number-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:inherit;color:var(--count-color);line-height:inherit;white-space:nowrap}
+.result-v4 .result-counting>.result-number-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:inherit;color:var(--count-color);line-height:inherit;white-space:nowrap}
 .result-count-handoff>.result-number-overlay{opacity:0;transition:opacity 120ms ease}
 .result-entering .result-heading,.result-entering .round-summary,.result-entering .learning-stats-two,.result-entering .result-details,.result-entering .result-actions{animation:result-section-reveal 360ms ease-out both;animation-delay:var(--reveal-delay)}
 .result-entering .round-summary{animation-delay:calc(var(--reveal-delay) + 120ms)}.result-entering .learning-stats-two{animation-delay:calc(var(--reveal-delay) + 260ms)}.result-entering .result-details{animation-delay:calc(var(--reveal-delay) + 380ms)}.result-entering .result-actions{animation-delay:calc(var(--reveal-delay) + 500ms)}

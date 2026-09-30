@@ -101,5 +101,6 @@ export async function transitionToResult(root, freeze, render) {
     preference.removeEventListener('change', preferenceChanged);
     document.documentElement.classList.remove('result-transition', 'result-transition-fallback');
     root.inert = false;
+    if (!document.hidden && root.dataset.view === 'results') root.querySelector('h1')?.focus({preventScroll: true});
   }
 }

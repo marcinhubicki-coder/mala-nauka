@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v91-home-v3-20260930';
+const CACHE='mala-nauka-v91-player-screen-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -10,8 +10,10 @@ const CORE=[
   './module-router.js',
   './player-service.mjs',
   './player-service.mjs?v=1-local-profiles',
+  './player-service.mjs?v=2-player-screen',
   './player-profiles.css',
   './player-profiles.css?v=1-local-profiles',
+  './player-profiles.css?v=2-player-screen',
   './spelling-assets-setting.js',
   './game.mjs',
   './modes.mjs',
@@ -25,6 +27,7 @@ const CORE=[
   './assets/brand/home-mark.webp',
   './assets/scenes/podroznik.jpg',
   './assets/icon.svg',
+  './assets/brand/player-logo.svg',
   './assets/icon-192.png',
   './assets/lion.svg',
   './assets/scenes/bunny.svg',

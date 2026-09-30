@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v90-local-profiles-20260929';
+const CACHE='mala-nauka-v91-home-v3-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -22,6 +22,8 @@ const CORE=[
   './spelling-art.js',
   './debug-tools.js',
   './manifest.webmanifest',
+  './assets/brand/home-mark.webp',
+  './assets/scenes/podroznik.jpg',
   './assets/icon.svg',
   './assets/icon-192.png',
   './assets/lion.svg',
@@ -95,7 +97,7 @@ const CORE=[
   './czytanie/wizard-v2.css?v=6',
   './czytanie/wizard-v2.mjs?v=3',
   './app.js?v=46-home-v2',
-  './app.js?v=47-local-profiles',
+  './app.js?v=48-home-v3',
   './game.mjs?v=31-wordbase455',
   './modes.mjs?v=reading-phrase-1',
   './progress.mjs?v=reading-phrase-1',

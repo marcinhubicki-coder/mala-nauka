@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v110-tuned-progress-20261001';
+const CACHE='mala-nauka-v111-tuned-progress-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -14,9 +14,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261001-tuned-progress-v15",
+  "./app.css?v=20261001-tuned-progress-v16",
   "./app.js",
-  "./app.js?v=20261001-tuned-progress-v15",
+  "./app.js?v=20261001-tuned-progress-v16",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",

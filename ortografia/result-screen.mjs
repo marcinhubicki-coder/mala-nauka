@@ -41,6 +41,19 @@ function ambient() {
   return '<div class="result-ambient" aria-hidden="true">' + sparks.map(([left, top, duration, delay]) => '<i class="result-spark" style="left:' + left + '%;top:' + top + '%;--spark-duration:' + duration + 's;--spark-delay:' + delay + 's"></i>').join('') + orbs.map(([left, top, size, duration, delay]) => '<i class="result-orb" style="--orb-left:' + left + '%;--orb-top:' + top + '%;--orb-size:' + size + ';--orb-duration:' + duration + 's;--orb-delay:' + delay + 's"></i>').join('') + '</div>';
 }
 
+function progressParticles(percent) {
+  if (!percent) return '';
+  const count = 12, spreadBase = 52, sizeBase = 6.5, durationBase = 950, alpha = .592;
+  return '<span class="progress-particles" aria-hidden="true">' + Array.from({ length: count }, (_, index) => {
+    const angle = (-105 + 210 * (index / Math.max(1, count - 1))) * Math.PI / 180;
+    const spread = spreadBase * (.55 + (index % 4) * .15);
+    const x = Math.cos(angle) * spread, y = Math.sin(angle) * spread;
+    const size = sizeBase * (.75 + (index % 3) * .18);
+    const duration = Math.round(durationBase * (.82 + (index % 4) * .08));
+    return '<i style="--particle-x:' + x.toFixed(1) + ';--particle-y:' + y.toFixed(1) + ';--particle-size:' + size.toFixed(1) + ';--particle-ms:' + duration + 'ms;--particle-alpha:' + alpha + '"></i>';
+  }).join('') + '</span>';
+}
+
 export function renderSpellingResult(root, result, words = [], ui = null, motion = null) {
   settleResult(root);
   closeResultRule(root, false);
@@ -60,7 +73,7 @@ export function renderSpellingResult(root, result, words = [], ui = null, motion
     ambient() +
     '<button type="button" class="result-close" data-action="home" aria-label="Zamknij podsumowanie i wróć do wyboru gry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>' +
     '<div class="result-sheet"><div class="result-heading"><div class="result-title-wrap"><svg class="result-rays result-rays-left" viewBox="0 0 26 28" aria-hidden="true"><path d="m5 4 5 9M4 20l8 3"/></svg><h1 tabindex="-1">' + heading + '</h1><svg class="result-rays result-rays-right" viewBox="0 0 26 28" aria-hidden="true"><path d="m21 4-5 9m6 7-8 3"/></svg></div><p>' + intro + '</p></div>' +
-    '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong><span class="result-count" data-count="' + retained.length + '">' + retained.length + '</span> / <span class="result-count" data-count="' + total + '">' + total + '</span></strong><span>poprawnie</span></div><span class="round-mode-pill">' + modeLabel + '</span><em><span class="result-count" data-count="' + scorePct + '">' + scorePct + '</span>%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + scorePct + '" aria-label="' + scorePct + ' procent poprawnych"><span class="round-progress-fill" data-percent="' + scorePct + '" style="width:' + scorePct + '%">' + (scorePct ? '<span class="progress-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>' : '') + '</span></div></div>' +
+    '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong><span class="result-count" data-count="' + retained.length + '">' + retained.length + '</span> / <span class="result-count" data-count="' + total + '">' + total + '</span></strong><span>poprawnie</span></div><span class="round-mode-pill">' + modeLabel + '</span><em><span class="result-count" data-count="' + scorePct + '">' + scorePct + '</span>%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + scorePct + '" aria-label="' + scorePct + ' procent poprawnych"><span class="round-progress-fill" data-percent="' + scorePct + '" style="width:' + scorePct + '%"><span class="round-progress-cap" aria-hidden="true"></span>' + progressParticles(scorePct) + '</span></div></div>' +
     '<div class="learning-stats-two">' + stat('Utrwalone', retained.length, 'retained', false) + stat('Do powtórki', review.length, 'review', true) + '</div>' +
     '<div class="result-details"><section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" hidden><div class="result-detail-head"><div><strong>To dziś było pewne</strong><p>Te słowa poszły poprawnie.</p></div><span aria-hidden="true">' + check + '</span></div>' + resultRows(retained, 'Jeszcze nic tutaj nie ma.') + '</section>' + reviewPanel + '</div>' +
     '<div class="result-actions"><button type="button" class="primary result-again" data-action="again"><i class="cta-star star-1" aria-hidden="true"></i><i class="cta-star star-2" aria-hidden="true"></i><i class="cta-star star-3" aria-hidden="true"></i><i class="cta-star star-4" aria-hidden="true"></i><i class="cta-star star-5" aria-hidden="true"></i><span>Jeszcze jedna runda</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button><button type="button" class="result-collection" data-action="history">Moja kolekcja</button></div>' +

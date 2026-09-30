@@ -1,0 +1,88 @@
+{
+  "version": 26,
+  "generator": "Built-in image_gen",
+  "images": [
+    {
+      "source": "exec-4d6770d5-2061-4711-8a3d-d247883fda19.png",
+      "asset": "zubr.webp",
+      "words": [
+        "żubr"
+      ],
+      "prompt": "Use case: illustration-story. Create ONE square, high-definition 1254x1254 illustration for a Polish children's spelling game, word ŻUBR (European bison). NO text anywhere. Warm, exquisitely detailed storybook 3D animated-film look matching a cozy fairytale world, soft rounded appealing forms, natural textures, golden sunbeams, pastel highlights, cinematic depth of field. Subject: one unmistakable European bison with massive woolly dark-brown shoulders, short curved horns, shaggy beard and friendly expressive eyes, calmly standing in a lush Polish primeval forest glade with ferns and tiny flowers. Bison is the main readable focus, full body compactly framed inside central 70% of square; face and horns away from image corners because the game clips this picture inside a rounded organic bubble. Full scenic background to edges, no bubble, no border, no UI, no lettering, no logo, no watermark. Gentle inviting mood, anatomically coherent four legs, not an American buffalo, not a cow. Rich painterly 3D finish, highly polished educational picture."
+    },
+    {
+      "source": "exec-638d64e2-9449-4c22-aeb6-1b38859ac4fd.png",
+      "asset": "zyrafa.webp",
+      "words": [
+        "żyrafa"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 picture for a Polish children's spelling game. Warm luxurious storybook 3D animated-film illustration, appealing rounded forms and expressive eyes, detailed natural materials, golden light, pastel highlights, cinematic soft depth of field. Main subject is immediately recognizable and compactly framed within central 70% of square, with generous scenic margin for an organic round crop. Full background to all edges. NO text, letters, borders, soap bubbles, UI, logos or watermarks. Word ŻYRAFA: a friendly young giraffe bending its wonderfully long neck down to nibble a leafy acacia branch. Clearly visible patch-pattern golden coat, two little ossicones, long legs, tufted tail; entire animal with head comfortably inside frame. Warm African savanna with soft acacia silhouettes and a few foreground flowers, inviting fairytale adventure, no people."
+    },
+    {
+      "source": "exec-973d12b6-5672-440a-9383-e9f051c264b9.png",
+      "asset": "zuk.webp",
+      "words": [
+        "żuk"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 picture for a Polish children's spelling game. Warm luxurious storybook 3D animated-film illustration, appealing rounded forms and expressive eyes, detailed natural materials, golden light, pastel highlights, cinematic soft depth of field. Main subject is immediately recognizable and compactly framed within central 70% of square, with generous scenic margin for an organic round crop. Full background to all edges. NO text, letters, borders, soap bubbles, UI, logos or watermarks. Word ŻUK: a single charming anatomically coherent black woodland beetle with an iridescent blue-violet shell, exactly six legs and two antennae, walking over moss beside a tiny dew-covered leaf. Low macro view makes this small beetle large and unmistakable. Sunny Polish forest floor, delicate ferns and woodland flowers softly blurred behind. Do not draw a ladybird or bee; smooth solid dark wing covers, no spots, no human hands."
+    },
+    {
+      "source": "exec-63db45c8-1dd8-472e-88f1-698aa709a12f.png",
+      "asset": "zmija.webp",
+      "words": [
+        "żmija"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 picture for a Polish children's spelling game. Warm luxurious storybook 3D animated-film illustration, appealing rounded forms and expressive eyes, detailed natural materials, golden light, pastel highlights, cinematic soft depth of field. Main subject is immediately recognizable and compactly framed within central 70% of square, with generous scenic margin for an organic round crop. Full background to all edges. NO text, letters, borders, soap bubbles, UI, logos or watermarks. Word ŻMIJA: a non-threatening European adder snake basking in a gentle loose coil on a warm forest stone. Unmistakable dark continuous zigzag dorsal stripe along brown-gray body, coherent single body and tail, small natural eyes, closed mouth, no fangs. Entire coiled snake centered with clear head, sunlight, moss, heather and ferns in a magical Polish woodland. Friendly children's educational tone while keeping the identifying snake markings. No humans touching snake."
+    },
+    {
+      "source": "exec-80f6f680-8b8e-47fc-a7f6-9aa2e1b1784f.png",
+      "framingRefinement": "Zoom out strongly; entire crane centered within roughly 52% image height, head at 25% and feet at 77%, preserve wetland style and extend scenic margins.",
+      "asset": "zuraw.webp",
+      "words": [
+        "żuraw"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 illustration for a Polish children's spelling game. Warm highly detailed storybook 3D animated movie look, rounded appealing forms, golden sunlight, pastel highlights, natural textures, soft cinematic depth of field. Main educational subject must be unmistakable, entirely inside central 65-70% of square with generous scenic margins to survive a round organic mask. Full background to edges, no text, no letters, no UI, no soap bubbles, no border, no watermark. Word ŻURAW (bird, not construction machinery): a beautiful common crane standing in shallow water among reeds. Gray plumage, long thin dark legs, long elegant neck, black-and-white face and small red crown patch; not a stork or flamingo. Whole bird including feet centered; gently curved neck keeps head well below top border. Dreamy Polish wetland, shimmering water, pale irises, distant willow trees and a warm dawn sky. Friendly curious natural expression."
+    },
+    {
+      "source": "exec-f3d4029c-846d-4cd7-ae9f-fe529e7084a0.png",
+      "asset": "zagiel.webp",
+      "words": [
+        "żagiel"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 illustration for a Polish children's spelling game. Warm highly detailed storybook 3D animated movie look, rounded appealing forms, golden sunlight, pastel highlights, natural textures, soft cinematic depth of field. Main educational subject must be unmistakable, entirely inside central 65-70% of square with generous scenic margins to survive a round organic mask. Full background to edges, no text, no letters, no UI, no soap bubbles, no border, no watermark. Word ŻAGIEL: a small charming wooden sailboat on a calm sunlit lake, with ONE large billowing cream triangular sail visibly attached to the mast and boom as the unmistakable dominant object. Entire sail and boat fit comfortably in center of image, mast tip below top 18%, water and sky margin all around. A little breeze curves the fabric, subtle stitches and sunlit folds. Cozy storybook lakeside village and green hills softly blurred in distance. No people are needed, no writing on sail. The sail, not the hull, is the focal point."
+    },
+    {
+      "source": "exec-e94ccedd-9a4b-4ca1-b5a0-9155a7ea45ce.png",
+      "framingRefinement": "Higher table viewpoint; smaller entire scissors centered within x 28–73%, y 44–72%, smiling girl behind, generous scenic margins, preserve style.",
+      "asset": "nozyczki.webp",
+      "words": [
+        "nożyczki"
+      ],
+      "prompt": "Use case: illustration-story. One square HD 1254x1254 image for Polish children's spelling word NOŻYCZKI. Cozy highly polished 3D animated-film storybook style consistent with warm cottage children scenes. A cheerful brown-haired girl with expressive brown eyes and a lavender bow is making paper flowers at a sunny wooden craft table. The central unmistakable focus is ONE clearly drawn pair of child-safe scissors with two pink finger loops and two rounded metal blades joined at a pivot, lying open on the table diagonally, very prominent in the central foreground. Girl behind looks delighted at her crafting. Bright paper scraps and a finished paper flower provide context, no competing tools. Golden window light, soft garden outside, rich cozy textures, gentle pastels. Scissors and child's face within central 65-70% for a round organic mask crop. Full scenic background to edges. No text, no lettering, no logo, no watermark, no frame, no soap bubble, no UI. Anatomically coherent hands resting safely away from blades."
+    },
+    {
+      "source": "exec-535c2984-c362-45fc-83a5-8f0952915d3a.png",
+      "asset": "lyzwy.webp",
+      "words": [
+        "łyżwy"
+      ],
+      "prompt": "Use case: illustration-story. One square HD 1254x1254 picture for Polish children's spelling word ŁYŻWY. Warm polished 3D storybook animated-film style. Two beautiful small white leather ice skates with lavender laces, padded cuffs and unmistakable shiny metal skating blades, standing together on a wooden bench next to a frozen village pond. The pair of skates is the clear dominant central foreground subject, entire boots and both blades completely inside central 65% of square with plenty of margin all around. Very subtle skating tracks on ice in background, frosted trees, snow on bench edge, cozy distant cottages, golden winter sunlight. Rich leather, wood and knitted scarf textures, gentle inviting colors, cinematic depth of field. Not roller skates, no wheels. No text, letters, UI, bubble, border, logos or watermark. Full scenic background to edges."
+    },
+    {
+      "source": "exec-31d532ee-ccdc-4386-9f8d-3451bf0fdf91.png",
+      "asset": "hustawka.webp",
+      "words": [
+        "huśtawka"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 picture for Polish children's spelling word HUŚTAWKA. Same warm detailed 3D animated storybook feel as cozy fairytale garden children images. A happy brown-haired young girl wearing a lavender cardigan and light floral dress sits properly on a wooden garden swing, holding its two ropes with both hands, gently swinging with shoes pointed forward. Swing seat and BOTH ropes very clear, suspended from a visible sturdy branch of an old flowering apple tree. The swing is the primary unmistakable subject; girl, seat and most rope length centrally composed within middle 70%, head with ample top margin, no limbs cut off. Enchanting cottage garden, flowers and white picket fence, softly glowing golden afternoon light, inviting natural colors and rich textures. Coherent anatomy and rope attachment. Full scenic background to all edges, no lettering, no text, no bubbles, no UI, no border, no watermark."
+    },
+    {
+      "source": "exec-7ba40db0-31fa-402a-a6a0-d6e5383fb98e.png",
+      "asset": "helikopter.webp",
+      "words": [
+        "helikopter"
+      ],
+      "prompt": "Use case: illustration-story. ONE square HD 1254x1254 image for Polish children's spelling word HELIKOPTER. Charming high-quality 3D animated storybook scene: a clearly recognizable small red-and-cream civilian helicopter hovering above a sunlit flower meadow, three-quarter side view. Compact rounded cockpit with transparent blue-tinted windows, a visible main rotor above, coherent tail boom and tail rotor, two landing skids. Entire aircraft including BOTH rotor ends and tail fits inside central 65% of square with large scenic margin on all sides for round organic cropping. Aircraft is largest unmistakable subject but not cropped. Gentle rotor motion hints; no military weapons, no fire or emergency. Cozy fairytale village and green hills softly blurred below, blue sky with peach clouds, warm golden afternoon light, rich polished materials, joyful adventurous mood. No letters, numbers, insignia, text, brand, watermark, border, bubble or UI. Full scenic background to image edges."
+    }
+  ]
+}

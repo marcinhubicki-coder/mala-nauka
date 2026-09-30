@@ -1,0 +1,88 @@
+/* v53 — score badge grows by +3% for every completed block of ten answers. */
+
+.mode-score-badge {
+  --score-previous-scale: 1;
+  --score-rest-scale: 1;
+  --score-bump-peak: 1.12;
+  --score-charge-peak: 1.10;
+  --score-settle-dip: 1;
+
+  top: -14px !important;
+  right: -12px !important;
+  width: 33px !important;
+  height: 33px !important;
+  font-size: 16px !important;
+  transition:
+    width 1.12s cubic-bezier(.16,.84,.22,1.02),
+    opacity .24s ease,
+    transform .52s cubic-bezier(.18,.88,.24,1.16) !important;
+}
+
+.mode-score-badge.is-visible {
+  transform: scale(var(--score-rest-scale));
+}
+
+.mode-score-badge.is-wide {
+  width: 50px !important;
+}
+
+.mode-score-badge.is-hundred {
+  width: 61px !important;
+  font-size: 15px !important;
+}
+
+/* Every normal hit bumps relative to the current decade scale. */
+.mode-score-badge.is-bump,
+.mode-score-badge.is-visible.is-wide.is-bump {
+  animation: score-badge-bump-v53 .50s cubic-bezier(.18,.88,.24,1.16) both !important;
+}
+
+/* 10, 20, 30... each gain another 3% resting scale and get a longer charge. */
+.mode-score-badge.is-growing {
+  animation: score-badge-charge-v53 1.08s cubic-bezier(.16,.84,.22,1.03) both !important;
+}
+
+.mode-score-value.is-counting {
+  animation: score-value-tick-v53 .42s cubic-bezier(.18,.78,.24,1) both !important;
+}
+
+@keyframes score-badge-bump-v53 {
+  0%   { transform: scale(var(--score-rest-scale)); }
+  54%  { transform: scale(var(--score-bump-peak)); }
+  80%  { transform: scale(var(--score-settle-dip)); }
+  100% { transform: scale(var(--score-rest-scale)); }
+}
+
+@keyframes score-badge-charge-v53 {
+  0%   { transform: scale(var(--score-previous-scale)); }
+  48%  { transform: scale(var(--score-charge-peak)); }
+  76%  { transform: scale(var(--score-settle-dip)); }
+  100% { transform: scale(var(--score-rest-scale)); }
+}
+
+@keyframes score-value-tick-v53 {
+  0%   { opacity: .52; transform: translateY(6px) scale(.96); }
+  62%  { opacity: 1; transform: translateY(-1px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-height: 760px) {
+  .mode-score-badge {
+    top: -13px !important;
+    right: -10px !important;
+    width: 31px !important;
+    height: 31px !important;
+    font-size: 15px !important;
+  }
+
+  .mode-score-badge.is-wide { width: 46px !important; }
+  .mode-score-badge.is-hundred { width: 56px !important; font-size: 14px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-score-badge.is-bump,
+  .mode-score-badge.is-growing,
+  .mode-score-value.is-counting {
+    animation: none !important;
+  }
+}

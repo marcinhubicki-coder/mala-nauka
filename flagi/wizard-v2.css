@@ -16,12 +16,12 @@
 }
 
 #app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
-  margin-top:24px;
+  margin-top:18px;
 }
 
 #app[data-mode="flags"] .flag-v2-section legend{
   width:100%;
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
 
 #app[data-mode="flags"] .flag-segmented{
@@ -43,7 +43,7 @@
   grid-template-columns:repeat(3,minmax(0,1fr));
 }
 
-#app[data-mode="flags"] .flag-scope-toggle{
+#app[data-mode="flags"] .flag-v2-scope-grid{
   grid-template-columns:repeat(2,minmax(0,1fr));
 }
 
@@ -85,7 +85,28 @@
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator{
-  box-shadow:0 9px 21px rgba(47,116,93,.15), inset 0 1px 0 rgba(255,255,255,.76);
+  animation:flag-segment-shadow var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes flag-segment-shadow{
+  0%{
+    box-shadow:0 4px 12px rgba(37,107,88,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
+  18%{
+    box-shadow:0 6px 16px rgba(42,111,90,.13), inset 0 1px 0 rgba(255,255,255,.66);
+  }
+  42%{
+    box-shadow:0 10px 23px rgba(47,116,93,.17), inset 0 1px 0 rgba(255,255,255,.78);
+  }
+  68%{
+    box-shadow:0 8px 19px rgba(44,112,91,.14), inset 0 1px 0 rgba(255,255,255,.70);
+  }
+  86%{
+    box-shadow:0 5px 14px rgba(39,109,88,.11), inset 0 1px 0 rgba(255,255,255,.62);
+  }
+  100%{
+    box-shadow:0 4px 12px rgba(37,107,88,.10), inset 0 1px 0 rgba(255,255,255,.58);
+  }
 }
 
 #app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-segment-indicator::after{
@@ -107,7 +128,6 @@
 }
 
 #app[data-mode="flags"] .flag-v2-choice,
-#app[data-mode="flags"] .flag-scope-toggle label,
 #app[data-mode="flags"] .flag-time-choice,
 #app[data-mode="flags"] .flag-continent-chip{
   position:relative;
@@ -118,7 +138,6 @@
 }
 
 #app[data-mode="flags"] .flag-v2-choice,
-#app[data-mode="flags"] .flag-scope-toggle label,
 #app[data-mode="flags"] .flag-time-choice{
   z-index:1;
   min-width:0;
@@ -126,7 +145,6 @@
 }
 
 #app[data-mode="flags"] .flag-v2-choice input,
-#app[data-mode="flags"] .flag-scope-toggle input,
 #app[data-mode="flags"] .flag-time-choice input,
 #app[data-mode="flags"] .flag-continent-chip input{
   position:absolute;
@@ -137,7 +155,6 @@
 }
 
 #app[data-mode="flags"] .flag-v2-choice span,
-#app[data-mode="flags"] .flag-scope-toggle span,
 #app[data-mode="flags"] .flag-time-choice span{
   display:grid;
   place-items:center;
@@ -152,12 +169,57 @@
   font-weight:800;
   text-align:center;
   transition:color .24s ease;
+  transform-origin:center;
+  will-change:transform,color,text-shadow,filter;
 }
 
 #app[data-mode="flags"] .flag-v2-choice input:checked + span,
-#app[data-mode="flags"] .flag-scope-toggle input:checked + span,
 #app[data-mode="flags"] .flag-time-choice input:checked + span{
   color:#2f745d;
+}
+
+
+/* Typography bump is synced with the trailing edge reaching overshoot (~44%). */
+#app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-v2-choice input:checked + span,
+#app[data-mode="flags"] .flag-segmented.is-segment-moving .flag-time-choice input:checked + span{
+  animation:flag-segment-type-bump var(--segment-total-ms,900ms) linear both;
+}
+
+@keyframes flag-segment-type-bump{
+  0%,43%{
+    transform:scale(1);
+    color:#2f745d;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
+  47%{
+    transform:scale(1.085);
+    color:#3c856d;
+    text-shadow:
+      0 0 3px rgba(255,255,255,.78),
+      0 0 8px rgba(220,255,241,.56);
+    filter:brightness(1.08);
+  }
+  56%{
+    transform:scale(1.045);
+    color:#347b64;
+    text-shadow:
+      0 0 2px rgba(255,255,255,.42),
+      0 0 5px rgba(220,255,241,.28);
+    filter:brightness(1.04);
+  }
+  74%{
+    transform:scale(1.012);
+    color:#307660;
+    text-shadow:0 0 2px rgba(255,255,255,.14);
+    filter:brightness(1.01);
+  }
+  89%,100%{
+    transform:scale(1);
+    color:#2f745d;
+    text-shadow:0 0 0 rgba(255,255,255,0);
+    filter:brightness(1);
+  }
 }
 
 #app[data-mode="flags"] .flag-continent-panel{
@@ -166,18 +228,19 @@
   box-sizing:border-box;
   overflow:hidden;
   opacity:0;
-  transform:translateY(-5px);
+  transform:translateY(-7px) scaleY(.94);
+  transform-origin:top center;
   margin-top:0;
   padding-top:0;
-  transition:max-height .42s cubic-bezier(.16,1,.28,1),opacity .28s ease,transform .42s cubic-bezier(.16,1,.28,1),margin-top .42s cubic-bezier(.16,1,.28,1),padding-top .42s cubic-bezier(.16,1,.28,1);
+  transition:max-height .44s cubic-bezier(.16,1,.28,1),opacity .26s ease,transform .44s cubic-bezier(.16,1,.28,1),padding-top .44s cubic-bezier(.16,1,.28,1);
 }
 
 #app[data-mode="flags"] .flag-continent-panel.is-open{
-  max-height:188px;
+  max-height:180px;
   opacity:1;
-  transform:translateY(0);
+  transform:translateY(0) scaleY(1);
   margin-top:0;
-  padding-top:12px;
+  padding-top:8px;
 }
 
 #app[data-mode="flags"] .flag-continent-grid{
@@ -194,15 +257,31 @@
 }
 
 #app[data-mode="flags"] .flag-continent-grid::before{
-  content:"";
-  position:absolute;
-  left:75%;
-  top:-12px;
-  width:44px;
-  height:13px;
-  transform:translateX(-50%);
-  background:#f2f5f9;
-  clip-path:polygon(39% 0,61% 0,100% 100%,0 100%);
+  content:none;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-grid{
+  animation:flag-continent-panel-reveal .46s cubic-bezier(.16,1,.28,1) both;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip{
+  animation:flag-continent-chip-reveal .34s cubic-bezier(.18,.78,.22,1) both;
+}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(2){animation-delay:.025s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(3){animation-delay:.05s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(4){animation-delay:.075s}
+#app[data-mode="flags"] .flag-continent-panel.is-open .flag-continent-chip:nth-child(5){animation-delay:.10s}
+
+@keyframes flag-continent-panel-reveal{
+  0%{opacity:.25;transform:translateY(-6px) scale(.992,.92);box-shadow:0 0 0 rgba(47,116,93,0)}
+  58%{opacity:1;transform:translateY(1px) scale(1.005,1.025);box-shadow:0 8px 24px rgba(47,116,93,.08)}
+  100%{opacity:1;transform:translateY(0) scale(1);box-shadow:0 0 0 rgba(47,116,93,0)}
+}
+
+@keyframes flag-continent-chip-reveal{
+  0%{opacity:0;transform:translateY(-5px) scale(.96)}
+  72%{opacity:1;transform:translateY(1px) scale(1.02)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
 }
 
 #app[data-mode="flags"] .flag-continent-chip{
@@ -230,6 +309,8 @@
   line-height:1.15;
   font-weight:760;
   text-align:center;
+  transform-origin:center;
+  will-change:transform,filter,box-shadow;
   transition:background .26s ease,border-color .26s ease,color .26s ease,box-shadow .26s ease,transform .26s cubic-bezier(.2,.8,.25,1);
 }
 
@@ -243,6 +324,30 @@
 
 #app[data-mode="flags"] .flag-continent-chip:active span{
   transform:scale(.985);
+}
+
+
+#app[data-mode="flags"] .flag-continent-chip.is-selecting span{
+  animation:flag-continent-chip-in .50s cubic-bezier(.18,.78,.22,1) both;
+}
+
+#app[data-mode="flags"] .flag-continent-chip.is-deselecting span{
+  animation:flag-continent-chip-out .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes flag-continent-chip-in{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.09);filter:brightness(1.08)}
+  66%{transform:scale(.982);filter:brightness(1.02)}
+  84%{transform:scale(1.018);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+@keyframes flag-continent-chip-out{
+  0%{transform:scale(1);filter:brightness(1)}
+  36%{transform:scale(.92);filter:brightness(.98)}
+  68%{transform:scale(1.025);filter:brightness(1.01)}
+  100%{transform:scale(1);filter:brightness(1)}
 }
 
 #app[data-mode="flags"] .start-button [data-start-copy]{
@@ -265,10 +370,11 @@
     padding-bottom:16px;
   }
   #app[data-mode="flags"] .flag-v2-section + .flag-v2-section{
-    margin-top:18px;
+    margin-top:15px;
   }
   #app[data-mode="flags"] .flag-continent-panel.is-open{
-    margin-top:8px;
+    margin-top:0;
+    padding-top:6px;
   }
   #app[data-mode="flags"] .flag-continent-grid{
     padding:12px;
@@ -288,4 +394,25 @@
     animation:none!important;
     transition:none!important;
   }
+}
+
+
+#app[data-mode="flags"] .flag-segmented{
+  touch-action:pan-y;
+}
+
+#app[data-mode="flags"] .flag-segmented.is-dragging{
+  cursor:grabbing;
+}
+
+#app[data-mode="flags"] .flag-v2-choice.is-tap-bump span,
+#app[data-mode="flags"] .flag-time-choice.is-tap-bump span{
+  animation:flag-active-tap-bump .42s cubic-bezier(.18,.78,.22,1) both;
+}
+
+@keyframes flag-active-tap-bump{
+  0%{transform:scale(1);filter:brightness(1)}
+  38%{transform:scale(1.075);filter:brightness(1.08)}
+  68%{transform:scale(.986);filter:brightness(1.02)}
+  100%{transform:scale(1);filter:brightness(1)}
 }

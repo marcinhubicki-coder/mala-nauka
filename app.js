@@ -1,3 +1,4 @@
+import { renderHomeScreen } from './home-screen.mjs?v=2-retina';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-wordbase455';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
@@ -124,23 +125,15 @@ function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hell
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
  spellingArt.reset();
- view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#e4f6ff':'#f5f8ff');
+ view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':'#f5f8ff');
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
 function home() {
  const latest=progress.history[0],today=progress.today.day===localDay()?progress.today.count:0;
- const nick=escape(activePlayer?.nickname||'odkrywco');
  const lastScore=latest?`${latest.correct} pkt`:'0 pkt';
  const lastLabel=latest?`Ostatnia: ${MODES[latest.mode].name}`:'Zagraj pierwszą rundę';
- root.innerHTML=`<header class="home-head home-head-v3"><span class="home-logo-mark" role="img" aria-label="Mała Nauka"></span>${btn(homeSettingsIcon,'settings','icon home-settings','aria-label="Ustawienia"')}</header>
- <section class="home-hero-v3">
-   <img class="home-hero-picture" src="assets/brand/home-adventure-3d.webp" alt="" aria-hidden="true" width="1536" height="1664" decoding="async" fetchpriority="high">
-   <div class="home-hero-copy-v3"><p class="home-greeting">Hej, ${nick}!</p><h1 tabindex="-1">sprawdź swoje<br><span>postępy.</span></h1><p class="home-subtitle">Świetnie Ci idzie, co dalej?</p></div>
-   ${btn(`<span class="home-stat-cell"><span class="home-stat-icon target">${homeTargetIcon}</span><span class="home-stat-copy"><b>${today}</b><small>Dziś rozwiązane</small></span></span><span class="home-stat-divider" aria-hidden="true"></span><span class="home-stat-cell"><span class="home-stat-icon star">${homeStarIcon}</span><span class="home-stat-copy"><b>${lastScore}</b><small>${escape(lastLabel)}</small></span></span><span class="home-stat-next">${homeChevronIcon}</span>`,'history','home-stats-v3','aria-label="Zobacz swoje wyniki"')}
- </section>
- <div class="section-label home-section-label">Wybierz swoją przygodę <span>5 trybów</span></div>
- <nav class="mode-list home-mode-list" aria-label="Wybierz tryb nauki">${modeIds.map(mode=>btn(`${modeIcon(mode)}<span class="mode-copy"><strong>${MODES[mode].name}</strong></span><span class="tile-sparkle" aria-hidden="true"></span><span class="tile-sparkle second" aria-hidden="true"></span>${mode==='reading'?'<span class="tile-sparkle third" aria-hidden="true"></span>':''}`,'choose-mode',`mode-tile ${MODES[mode].color}`,`data-mode="${mode}"`)).join('')}</nav>`;
+ root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});
 }
 function wizard() {
  const mode=MODES[selectedMode],config=configs[selectedMode];

@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v92-retina-3d-20260930';
+const CACHE='mala-nauka-v94-home-retina-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -326,11 +326,20 @@ const CORE=[
   "./assets/brand/home-adventure-3d.webp",
   "./app.css?v=4-home-v3",
   "./spelling-art.css?v=41-dyktando80",
-  "./shared/jelly-v4.css?v=1"
+  "./shared/jelly-v4.css?v=1",
+  "./home-screen.mjs",
+  "./home-screen.mjs?v=2-retina",
+  "./home-screen.css",
+  "./home-screen.css?v=2-retina",
+  "./app.js?v=49-home-retina",
+  "./app.css?v=5-home-retina",
+  "./assets/home/home-retina.webp",
+  "./assets/fonts/dosis-variable.woff",
+  "./app.js?v=50-retina-home"
 ];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll([...new Set(CORE)])).then(()=>self.skipWaiting()));
 });
 
 self.addEventListener('activate',event=>{

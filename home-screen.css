@@ -1,0 +1,170 @@
+@font-face {
+  font-family: "Home Rounded";
+  src: url("assets/fonts/dosis-variable.woff") format("woff");
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+body:has(#app[data-view="home"]) {
+  background: #ddf3ff;
+}
+
+#app[data-view="home"] {
+  --home-safe-top: env(safe-area-inset-top, 0px);
+  --home-safe-bottom: env(safe-area-inset-bottom, 0px);
+  display: grid;
+  place-items: center;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  padding: var(--home-safe-top) 0 var(--home-safe-bottom);
+  margin: 0;
+  gap: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  background: radial-gradient(ellipse at 24% 0%, #eaf8ff 0%, transparent 55%), #ddf3ff;
+}
+
+.home-canvas {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, 480px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
+  aspect-ratio: 853 / 1670;
+  flex: none;
+  min-width: 0;
+  min-height: 0;
+  isolation: isolate;
+  font-family: "Home Rounded", ui-rounded, sans-serif;
+  color: #0b0747;
+}
+
+.home-art-backdrop,
+.home-art-slice {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.home-art-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.home-canvas .home-art-button {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 12%;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  color: inherit;
+  touch-action: manipulation;
+  transition: filter .14s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-canvas .home-art-button:active {
+  transform: none;
+  filter: brightness(1.065);
+}
+
+.home-canvas .home-settings-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.keyboard .home-canvas .home-art-button:focus-visible {
+  outline: 3px solid #0b64d4;
+  outline-offset: 3px;
+}
+
+.home-greeting-live {
+  position: absolute;
+  z-index: 1;
+  left: 6.33%;
+  top: 14.61%;
+  width: 39.39%;
+  display: flex;
+  align-items: baseline;
+  font-size: 5.16cqw;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.09cqw;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.home-nickname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-today-live,
+.home-score-live,
+.home-last-live {
+  position: absolute;
+  display: block;
+  white-space: nowrap;
+  font-size: 5.98cqw;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.11cqw;
+  pointer-events: none;
+}
+
+.home-today-live {
+  left: 20.65%;
+  top: 26.19%;
+  max-width: 20%;
+}
+
+.home-score-live {
+  left: 58.22%;
+  top: 26.19%;
+  max-width: 25%;
+}
+
+.home-last-live {
+  left: 58.22%;
+  top: 54.28%;
+  width: 25.5%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #6773ad;
+  font-size: 2.83cqw;
+  font-weight: 600;
+  letter-spacing: -.035cqw;
+  line-height: 1.2;
+}
+
+.home-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-canvas .home-art-button {
+    transition: none;
+  }
+}

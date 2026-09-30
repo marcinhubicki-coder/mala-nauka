@@ -8,7 +8,25 @@
       "ci"
     ],
     "answer": "ci",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ci” przed samogłoską",
+      "explanation": "W słowie „ciasto” miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ciasto",
+          "url": "https://sjp.pwn.pl/szukaj/ciasto.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ciocia",
@@ -19,7 +37,25 @@
       "ci"
     ],
     "answer": "ci",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ci” przed samogłoską",
+      "explanation": "W słowie „ciocia” miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ciocia",
+          "url": "https://sjp.pwn.pl/szukaj/ciocia.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "cień",
@@ -30,7 +66,25 @@
       "ci"
     ],
     "answer": "ci",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ci” przed samogłoską",
+      "explanation": "W słowie „cień” miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: cień",
+          "url": "https://sjp.pwn.pl/szukaj/cie%C5%84.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ciepło",
@@ -41,7 +95,25 @@
       "ci"
     ],
     "answer": "ci",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ci” przed samogłoską",
+      "explanation": "W słowie „ciepło” miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ciepło",
+          "url": "https://sjp.pwn.pl/szukaj/ciep%C5%82o.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ciemno",
@@ -52,7 +124,25 @@
       "ci"
     ],
     "answer": "ci",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ci” przed samogłoską",
+      "explanation": "W słowie „ciemno” miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ciemno",
+          "url": "https://sjp.pwn.pl/szukaj/ciemno.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ćma",
@@ -63,7 +153,25 @@
       "ci"
     ],
     "answer": "ć",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ćma” miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ćma",
+          "url": "https://sjp.pwn.pl/szukaj/%C4%87ma.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ćwiczyć",
@@ -74,7 +182,25 @@
       "ci"
     ],
     "answer": "ć",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ćwiczyć” miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ćwiczyć",
+          "url": "https://sjp.pwn.pl/szukaj/%C4%87wiczy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ćwiczenie",
@@ -85,7 +211,25 @@
       "ci"
     ],
     "answer": "ć",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ćwiczenie” miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ćwiczenie",
+          "url": "https://sjp.pwn.pl/szukaj/%C4%87wiczenie.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ćwierć",
@@ -96,7 +240,25 @@
       "ci"
     ],
     "answer": "ć",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ćwierć” miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ćwierć",
+          "url": "https://sjp.pwn.pl/szukaj/%C4%87wier%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "spać",
@@ -107,7 +269,25 @@
       "ci"
     ],
     "answer": "ć",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „spać” miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: spać",
+          "url": "https://sjp.pwn.pl/szukaj/spa%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "siedem",
@@ -118,7 +298,25 @@
       "si"
     ],
     "answer": "si",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„si” przed samogłoską",
+      "explanation": "W słowie „siedem” miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: siedem",
+          "url": "https://sjp.pwn.pl/szukaj/siedem.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "siostra",
@@ -129,7 +327,25 @@
       "si"
     ],
     "answer": "si",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„si” przed samogłoską",
+      "explanation": "W słowie „siostra” miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: siostra",
+          "url": "https://sjp.pwn.pl/szukaj/siostra.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "siano",
@@ -140,7 +356,25 @@
       "si"
     ],
     "answer": "si",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„si” przed samogłoską",
+      "explanation": "W słowie „siano” miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: siano",
+          "url": "https://sjp.pwn.pl/szukaj/siano.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "sierpień",
@@ -151,7 +385,25 @@
       "si"
     ],
     "answer": "si",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„si” przed samogłoską",
+      "explanation": "W słowie „sierpień” miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: sierpień",
+          "url": "https://sjp.pwn.pl/szukaj/sierpie%C5%84.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "siedzieć",
@@ -162,7 +414,25 @@
       "si"
     ],
     "answer": "si",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„si” przed samogłoską",
+      "explanation": "W słowie „siedzieć” miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: siedzieć",
+          "url": "https://sjp.pwn.pl/szukaj/siedzie%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "świat",
@@ -173,7 +443,25 @@
       "si"
     ],
     "answer": "ś",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „świat” miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: świat",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%9Bwiat.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "środa",
@@ -184,7 +472,25 @@
       "si"
     ],
     "answer": "ś",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „środa” miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: środa",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%9Broda.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "śnieg",
@@ -195,7 +501,25 @@
       "si"
     ],
     "answer": "ś",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „śnieg” miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: śnieg",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%9Bnieg.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ślimak",
@@ -206,7 +530,25 @@
       "si"
     ],
     "answer": "ś",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ślimak” miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ślimak",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%9Blimak.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ślad",
@@ -217,7 +559,25 @@
       "si"
     ],
     "answer": "ś",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „ślad” miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ślad",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%9Blad.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "zima",
@@ -228,7 +588,25 @@
       "zi"
     ],
     "answer": "zi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„zi” przed samogłoską",
+      "explanation": "W słowie „zima” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: zima",
+          "url": "https://sjp.pwn.pl/szukaj/zima.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ziemia",
@@ -239,7 +617,25 @@
       "zi"
     ],
     "answer": "zi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„zi” przed samogłoską",
+      "explanation": "W słowie „ziemia” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ziemia",
+          "url": "https://sjp.pwn.pl/szukaj/ziemia.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "zielony",
@@ -250,7 +646,25 @@
       "zi"
     ],
     "answer": "zi",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„zi” przed samogłoską",
+      "explanation": "W słowie „zielony” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: zielony",
+          "url": "https://sjp.pwn.pl/szukaj/zielony.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "ziarno",
@@ -261,7 +675,25 @@
       "zi"
     ],
     "answer": "zi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„zi” przed samogłoską",
+      "explanation": "W słowie „ziarno” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ziarno",
+          "url": "https://sjp.pwn.pl/szukaj/ziarno.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "zioło",
@@ -272,7 +704,25 @@
       "zi"
     ],
     "answer": "zi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„zi” przed samogłoską",
+      "explanation": "W słowie „zioło” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: zioło",
+          "url": "https://sjp.pwn.pl/szukaj/zio%C5%82o.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "źrenica",
@@ -283,7 +733,25 @@
       "zi"
     ],
     "answer": "ź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „źrenica” miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: źrenica",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BArenica.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "źrebak",
@@ -294,7 +762,25 @@
       "zi"
     ],
     "answer": "ź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „źrebak” miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: źrebak",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BArebak.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "źle",
@@ -305,7 +791,25 @@
       "zi"
     ],
     "answer": "ź",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „źle” miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: źle",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BAle.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "woźny",
@@ -316,7 +820,25 @@
       "zi"
     ],
     "answer": "ź",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „woźny” miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: woźny",
+          "url": "https://sjp.pwn.pl/szukaj/wo%C5%BAny.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "groźny",
@@ -327,7 +849,25 @@
       "zi"
     ],
     "answer": "ź",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „groźny” miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: groźny",
+          "url": "https://sjp.pwn.pl/szukaj/gro%C5%BAny.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "niebo",
@@ -338,7 +878,25 @@
       "ni"
     ],
     "answer": "ni",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ni” przed samogłoską",
+      "explanation": "W słowie „niebo” miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: niebo",
+          "url": "https://sjp.pwn.pl/szukaj/niebo.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "niedziela",
@@ -349,7 +907,25 @@
       "ni"
     ],
     "answer": "ni",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ni” przed samogłoską",
+      "explanation": "W słowie „niedziela” miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: niedziela",
+          "url": "https://sjp.pwn.pl/szukaj/niedziela.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "niebieski",
@@ -360,7 +936,25 @@
       "ni"
     ],
     "answer": "ni",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ni” przed samogłoską",
+      "explanation": "W słowie „niebieski” miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: niebieski",
+          "url": "https://sjp.pwn.pl/szukaj/niebieski.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "anioł",
@@ -371,7 +965,25 @@
       "ni"
     ],
     "answer": "ni",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ni” przed samogłoską",
+      "explanation": "W słowie „anioł” miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: anioł",
+          "url": "https://sjp.pwn.pl/szukaj/anio%C5%82.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "koniec",
@@ -382,7 +994,25 @@
       "ni"
     ],
     "answer": "ni",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ni” przed samogłoską",
+      "explanation": "W słowie „koniec” miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: koniec",
+          "url": "https://sjp.pwn.pl/szukaj/koniec.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "bańka",
@@ -393,7 +1023,25 @@
       "ni"
     ],
     "answer": "ń",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „bańka” miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: bańka",
+          "url": "https://sjp.pwn.pl/szukaj/ba%C5%84ka.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "tańczyć",
@@ -404,7 +1052,25 @@
       "ni"
     ],
     "answer": "ń",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „tańczyć” miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: tańczyć",
+          "url": "https://sjp.pwn.pl/szukaj/ta%C5%84czy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "państwo",
@@ -415,7 +1081,25 @@
       "ni"
     ],
     "answer": "ń",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „państwo” miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: państwo",
+          "url": "https://sjp.pwn.pl/szukaj/pa%C5%84stwo.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "kończyć",
@@ -426,7 +1110,25 @@
       "ni"
     ],
     "answer": "ń",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „kończyć” miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kończyć",
+          "url": "https://sjp.pwn.pl/szukaj/ko%C5%84czy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "hańba",
@@ -437,7 +1139,25 @@
       "ni"
     ],
     "answer": "ń",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „hańba” miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: hańba",
+          "url": "https://sjp.pwn.pl/szukaj/ha%C5%84ba.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dziecko",
@@ -448,7 +1168,25 @@
       "dzi"
     ],
     "answer": "dzi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„dzi” przed samogłoską",
+      "explanation": "W słowie „dziecko” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dziecko",
+          "url": "https://sjp.pwn.pl/szukaj/dziecko.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dziura",
@@ -459,7 +1197,25 @@
       "dzi"
     ],
     "answer": "dzi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„dzi” przed samogłoską",
+      "explanation": "W słowie „dziura” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dziura",
+          "url": "https://sjp.pwn.pl/szukaj/dziura.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dzik",
@@ -470,7 +1226,25 @@
       "dzi"
     ],
     "answer": "dzi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„dzi” przed samogłoską",
+      "explanation": "W słowie „dzik” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dzik",
+          "url": "https://sjp.pwn.pl/szukaj/dzik.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dziadek",
@@ -481,7 +1255,25 @@
       "dzi"
     ],
     "answer": "dzi",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "„dzi” przed samogłoską",
+      "explanation": "W słowie „dziadek” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dziadek",
+          "url": "https://sjp.pwn.pl/szukaj/dziadek.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dziewczyna",
@@ -492,7 +1284,25 @@
       "dzi"
     ],
     "answer": "dzi",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dzi” przed samogłoską",
+      "explanation": "W słowie „dziewczyna” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dziewczyna",
+          "url": "https://sjp.pwn.pl/szukaj/dziewczyna.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dźwig",
@@ -503,7 +1313,25 @@
       "dzi"
     ],
     "answer": "dź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „dźwig” miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dźwig",
+          "url": "https://sjp.pwn.pl/szukaj/d%C5%BAwig.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dźwięk",
@@ -514,7 +1342,25 @@
       "dzi"
     ],
     "answer": "dź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „dźwięk” miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dźwięk",
+          "url": "https://sjp.pwn.pl/szukaj/d%C5%BAwi%C4%99k.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dźwięczny",
@@ -525,7 +1371,25 @@
       "dzi"
     ],
     "answer": "dź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „dźwięczny” miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dźwięczny",
+          "url": "https://sjp.pwn.pl/szukaj/d%C5%BAwi%C4%99czny.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "dźwignia",
@@ -536,7 +1400,25 @@
       "dzi"
     ],
     "answer": "dź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „dźwignia” miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: dźwignia",
+          "url": "https://sjp.pwn.pl/szukaj/d%C5%BAwignia.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   },
   {
     "word": "niedźwiedź",
@@ -547,6 +1429,24 @@
       "dzi"
     ],
     "answer": "dź",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "explanation": "W słowie „niedźwiedź” miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: niedźwiedź",
+          "url": "https://sjp.pwn.pl/szukaj/nied%C5%BAwied%C5%BA.html"
+        },
+        {
+          "label": "ZPE: zmiękczenia przez kreskę i „i”",
+          "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
+        }
+      ]
+    }
   }
 ]

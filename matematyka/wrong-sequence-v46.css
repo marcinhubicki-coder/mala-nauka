@@ -1,0 +1,72 @@
+/* v46 — sekwencyjne, stabilne przejście od błędnej odpowiedzi do explainera. */
+
+.quiz-stage.wrong-transition-sequence .question-label,
+.quiz-stage.wrong-transition-sequence .equation {
+  will-change: transform;
+}
+
+.quiz-stage.wrong-transition-sequence .wrong-answer-note {
+  opacity: 0;
+  transform: translateY(8px) scale(.985);
+  animation: wrong-sequence-note-in .36s .20s cubic-bezier(.2,.78,.22,1) both !important;
+}
+
+.quiz-stage.wrong-transition-sequence .explainer-reveal {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+  transition:
+    opacity .38s cubic-bezier(.2,.72,.24,1),
+    transform .46s cubic-bezier(.2,.76,.22,1) !important;
+}
+
+.quiz-stage.wrong-transition-sequence .explainer-reveal.is-open {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.quiz-stage.wrong-transition-sequence .explainer-actions-panel.is-visible {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+  pointer-events: none !important;
+}
+
+.quiz-stage.wrong-transition-sequence.sequence-actions-ready .explainer-actions-panel.is-visible {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+  transition:
+    opacity .34s ease,
+    transform .44s cubic-bezier(.18,.82,.22,1) !important;
+}
+
+@keyframes wrong-sequence-note-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(.985);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.006);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-stage.wrong-transition-sequence .wrong-answer-note {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .quiz-stage.wrong-transition-sequence .explainer-reveal,
+  .quiz-stage.wrong-transition-sequence.sequence-actions-ready .explainer-actions-panel.is-visible {
+    transition: none !important;
+  }
+}

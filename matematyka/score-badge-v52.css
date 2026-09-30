@@ -1,0 +1,94 @@
+/* v52 — larger score badge and more organic charging/bump motion. */
+
+/* About 15% larger than v37, keeping the same anchor on the mode card. */
+.mode-score-badge {
+  top: -14px !important;
+  right: -12px !important;
+  width: 33px !important;
+  height: 33px !important;
+  font-size: 16px !important;
+  transition:
+    width 1.08s cubic-bezier(.16,.84,.22,1.02),
+    opacity .24s ease,
+    transform .48s cubic-bezier(.18,.88,.24,1.16) !important;
+}
+
+.mode-score-badge.is-wide {
+  width: 50px !important;
+}
+
+.mode-score-badge.is-hundred {
+  width: 61px !important;
+  font-size: 15px !important;
+}
+
+/* 10+ settles slightly larger, so the pill feels like it has charged up. */
+.mode-score-badge.is-visible.is-wide {
+  transform: scale(1.03);
+}
+
+/* Normal correct-answer bump: ~30% stronger amplitude than the old 1.09 peak. */
+.mode-score-badge.is-bump {
+  animation: score-badge-bump-v52 .44s cubic-bezier(.18,.88,.24,1.16) both !important;
+}
+
+.mode-score-badge.is-visible.is-wide.is-bump {
+  animation: score-badge-bump-wide-v52 .46s cubic-bezier(.18,.88,.24,1.16) both !important;
+}
+
+/* Crossing 10: longer width expansion + 10% overshoot over the new 103% resting scale. */
+.mode-score-badge.is-growing {
+  animation: score-badge-charge-v52 .74s cubic-bezier(.16,.84,.22,1.03) both !important;
+}
+
+.mode-score-value.is-counting {
+  animation: score-value-tick-v52 .38s cubic-bezier(.18,.78,.24,1) both !important;
+}
+
+@keyframes score-badge-bump-v52 {
+  0%   { transform: scale(.95); }
+  54%  { transform: scale(1.12); }
+  80%  { transform: scale(.992); }
+  100% { transform: scale(1); }
+}
+
+@keyframes score-badge-bump-wide-v52 {
+  0%   { transform: scale(1.00); }
+  54%  { transform: scale(1.15); }
+  80%  { transform: scale(1.015); }
+  100% { transform: scale(1.03); }
+}
+
+@keyframes score-badge-charge-v52 {
+  0%   { transform: scale(1); }
+  48%  { transform: scale(1.13, 1.10); }
+  76%  { transform: scale(1.015, 1.01); }
+  100% { transform: scale(1.03); }
+}
+
+@keyframes score-value-tick-v52 {
+  0%   { opacity: .52; transform: translateY(6px) scale(.96); }
+  62%  { opacity: 1; transform: translateY(-1px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-height: 760px) {
+  .mode-score-badge {
+    top: -13px !important;
+    right: -10px !important;
+    width: 31px !important;
+    height: 31px !important;
+    font-size: 15px !important;
+  }
+
+  .mode-score-badge.is-wide { width: 46px !important; }
+  .mode-score-badge.is-hundred { width: 56px !important; font-size: 14px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-score-badge.is-bump,
+  .mode-score-badge.is-growing,
+  .mode-score-value.is-counting {
+    animation: none !important;
+  }
+}

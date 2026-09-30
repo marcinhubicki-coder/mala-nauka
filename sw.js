@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v108-results-layout-rule-20261001';
+const CACHE='mala-nauka-v109-results-scroll-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -14,9 +14,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261001-results-layout-rule-v13",
+  "./app.css?v=20261001-results-scroll-v14",
   "./app.js",
-  "./app.js?v=20261001-results-layout-rule-v13",
+  "./app.js?v=20261001-results-scroll-v14",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",
@@ -602,11 +602,11 @@ const CORE=[
   "./ortografia/result-preview-frame.html",
   "./ortografia/result-preview.html",
   "./ortografia/result-motion.mjs",
-  "./ortografia/result-motion.mjs?v=2",
+  "./ortografia/result-motion.mjs?v=3-slower-count-progress",
   "./ortografia/result-rules.mjs",
-  "./ortografia/result-rules.mjs?v=4-live-bubble-layout",
+  "./ortografia/result-rules.mjs?v=5-fixed-rule-scroll",
   "./ortografia/result-screen.mjs",
-  "./ortografia/result-screen.mjs?v=11-layout-rule-bubble",
+  "./ortografia/result-screen.mjs?v=12-scroll-peek",
   "./ortografia/wizard-v2.css",
   "./ortografia/wizard-v2.css?v=6-dyktando-jelly-v4",
   "./ortografia/wizard-v2.mjs",
@@ -644,7 +644,7 @@ const CORE=[
   "./spelling/art.mjs?v=20260930-release",
   "./spelling/bubble.mjs",
   "./spelling/bubble.mjs?v=39-transition-preset",
-  "./spelling/bubble.mjs?v=41-live-rules",
+  "./spelling/bubble.mjs?v=42-live-fixed-rule",
   "./spelling/hints.mjs",
   "./spelling/learning.mjs",
   "./spelling/learning.mjs?v=1",

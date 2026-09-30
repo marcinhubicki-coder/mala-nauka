@@ -1,5 +1,5 @@
-// Match mathematics/stability-v33: cubic count-up, 620 ms, 120 ms glyph handoff.
-const DURATION = 620, HANDOFF = 120;
+// Result count-up stays readable; the progress fill deliberately takes twice as long.
+const NUMBER_DURATION = 900, PROGRESS_DURATION = NUMBER_DURATION * 2, HANDOFF = 120;
 const presentations = new WeakMap();
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -48,14 +48,15 @@ export function revealResult(root, delay = 1000) {
     const elapsed = now - started;
     let unfinished = false;
     jobs.forEach(job => {
-      const t = Math.max(0, Math.min(1, (elapsed - job.delay) / DURATION));
+      const t = Math.max(0, Math.min(1, (elapsed - job.delay) / NUMBER_DURATION));
       const value = Math.round(job.value * (1 - (1-t) ** 3));
       if (job.last !== value) {job.overlay.textContent = String(value); job.last = value;}
       if (t < 1) unfinished = true;
       else job.host.classList.add('result-count-handoff');
     });
-    const t = Math.max(0, Math.min(1, (elapsed - delay - 120) / DURATION));
-    fill.style.width = target * (1 - (1-t) ** 3) + '%';
+    const progressT = Math.max(0, Math.min(1, (elapsed - delay - 120) / PROGRESS_DURATION));
+    fill.style.width = target * (1 - (1-progressT) ** 3) + '%';
+    if (progressT < 1) unfinished = true;
     if (unfinished) frame = requestAnimationFrame(tick);
     else handoff = setTimeout(cleanup, HANDOFF + 24);
   }

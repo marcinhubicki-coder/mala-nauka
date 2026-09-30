@@ -1,6 +1,6 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
-import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=4-live-bubble-layout';
-import { revealResult, settleResult } from './result-motion.mjs?v=2';
+import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=5-fixed-rule-scroll';
+import { revealResult, settleResult } from './result-motion.mjs?v=3-slower-count-progress';
 
 const resultContexts = new WeakMap();
 
@@ -18,7 +18,9 @@ function resultWord(attempt) {
 
 function resultRows(attempts, emptyCopy) {
   if (!attempts.length) return '<p class="result-detail-empty">' + escape(emptyCopy) + '</p>';
-  return '<div class="result-word-list" tabindex="0" aria-label="Słowa z tej rundy">' + attempts.map(attempt => {
+  const visibleRows = Math.min(3, attempts.length);
+  const overflow = attempts.length > 3;
+  return '<div class="result-word-viewport rows-' + visibleRows + (overflow ? ' has-overflow' : '') + '"><div class="result-word-list" tabindex="0" aria-label="Słowa z tej rundy">' + attempts.map(attempt => {
     const scene = sceneFor(attempt.masked || '', attempt.word || '');
     const image = scene?.asset ? sceneUrl(scene) : '';
     const retained = attempt.correct === true;
@@ -26,7 +28,7 @@ function resultRows(attempts, emptyCopy) {
       (image ? '<img class="result-word-thumb" src="' + escape(image) + '" alt="" width="40" height="40" decoding="async">' : '<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>') +
       '<div class="result-word-copy"><strong>' + resultWord(attempt) + '</strong><small>' + (retained ? 'Dziś poszło dobrze' : 'Poprawny zapis') + (attempt.category ? ' · ' + escape(attempt.category.replace('/', ' / ')) : '') + '</small></div>' +
       '<button type="button" class="result-word-state" data-action="show-result-rule" data-rule-index="' + attempt.ruleIndex + '" aria-label="Zasada pisowni słowa ' + escape(attempt.word) + '">Zasada' + eyeSvg + '</button></article>';
-  }).join('') + '</div>';
+  }).join('') + '</div></div>';
 }
 
 function stat(label, count, key, open) {

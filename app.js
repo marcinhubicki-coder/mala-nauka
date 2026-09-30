@@ -1,4 +1,4 @@
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=8-motion';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=9-star';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=2';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=3-cached-static';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';

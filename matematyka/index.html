@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f5f8ff">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f8ff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#182133">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Matematyka">
   <meta name="description" content="Matematyka — krótkie ćwiczenia z dodawania, odejmowania, mnożenia i dzielenia.">
   <title>Mała Nauka — Matematyka</title>
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="app.css?v=20260930-release">
   <link rel="stylesheet" href="board.css">
   <link rel="stylesheet" href="board-v3.css">
   <link rel="stylesheet" href="board-v4.css">
@@ -23,19 +24,29 @@
   <link rel="stylesheet" href="stability-v30.css">
   <link rel="stylesheet" href="stability-v31.css">
   <link rel="stylesheet" href="stability-v33.css">
-  <link rel="stylesheet" href="../viewport-lock.css">
+  <link rel="stylesheet" href="pwa-polish-v37.css">
+  <link rel="stylesheet" href="pwa-polish-v42.css">
+  <link rel="stylesheet" href="interaction-v45.css">
+  <link rel="stylesheet" href="score-badge-v53.css">
+  <link rel="stylesheet" href="wrong-sequence-v46.css">
+  <link rel="stylesheet" href="division-grid-v51.css">
+  <link rel="stylesheet" href="../viewport-lock.css?v=20260930-release">
   <script src="pointer-polish.js"></script>
   <script src="difference-feedback.js"></script>
   <script src="difference-order-v2.js"></script>
-  <script type="module" src="round-timer.js"></script>
+  <script type="module" src="round-timer.js?v=1-local-profiles"></script>
   <script src="division-polish.js"></script>
   <script src="explainer-polish.js"></script>
   <script src="layout-v26.js"></script>
   <script src="stability-v30.js"></script>
   <script src="stability-v31.js"></script>
   <script src="stability-v33.js"></script>
-  <script type="module" src="app.js"></script>
-</head>
+  <script defer src="score-badge-v38.js"></script>
+  <script defer src="interaction-v45.js"></script>
+  <script defer src="wrong-sequence-v46.js"></script>
+  <script defer src="division-grid-v51.js"></script>
+  <script type="module" src="app.js?v=20260930-release"></script>
+<script src="../pwa-viewport.js?v=1-release"></script><link rel="stylesheet" href="../pwa-viewport.css?v=1-release"><link rel="icon" href="../assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260930"></head>
 <body>
   <main id="app" class="app-shell" tabindex="-1" aria-live="polite"></main>
 </body>

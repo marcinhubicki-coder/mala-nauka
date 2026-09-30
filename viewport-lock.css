@@ -14,8 +14,8 @@ body {
 
 main#app,
 .app-shell {
-  height: 100dvh !important;
-  max-height: 100dvh;
+  height: calc(100 * var(--app-vh, 1dvh)) !important;
+  max-height: calc(100 * var(--app-vh, 1dvh));
   min-height: 0 !important;
   overflow-x: hidden;
   overflow-y: auto;
@@ -23,5 +23,5 @@ main#app,
   -webkit-overflow-scrolling: touch;
 }
 
-/* Jeśli zawartość mieści się w 100dvh, nie ma zakresu przewijania ani bounce całej strony.
+/* Jeśli zawartość mieści się w calc(100 * var(--app-vh, 1dvh)), nie ma zakresu przewijania ani bounce całej strony.
    Jeśli realnie jest wyższa, przewija się wyłącznie kontener aplikacji. */

@@ -1,39 +1,17 @@
-import { DURATIONS, Session } from '../game.mjs';
+import { Session } from '../game.mjs?v=20260930-release';
+import { cleanProgress, recordResult } from '../progress.mjs?v=3-local-profiles';
+import { playerService } from '../player-service.mjs?v=1-local-profiles';
 
-const STORAGE_KEY = 'malaNauka.math.duration';
-const SHARED_CONFIG_KEY = 'malaNauka.v1.configs';
 const CLOCK_SOURCE = () => ({ options: ['_'], answer: '_', exposureMs: 0 });
+const labels = { add: 'Dodawanie', subtract: 'Odejmowanie', multiply: 'Mnożenie', divide: 'Dzielenie' };
 
-let selectedDuration = readDuration();
 let clock = null;
+let currentMode = 'multiply';
+let currentDuration = 180;
 let correct = 0;
 let wrong = 0;
-let wasExplainer = false;
-let wasHidden = false;
+let cancelled = false;
 
-function readDuration() {
-  try {
-    const direct = Number(localStorage.getItem(STORAGE_KEY));
-    if (DURATIONS.includes(direct)) return direct;
-    const configs = JSON.parse(localStorage.getItem(SHARED_CONFIG_KEY) || '{}');
-    const shared = Number(configs?.math?.duration);
-    if (DURATIONS.includes(shared)) return shared;
-  } catch {}
-  return 180;
-}
-
-function saveDuration(duration) {
-  if (!DURATIONS.includes(duration)) return;
-  selectedDuration = duration;
-  try {
-    localStorage.setItem(STORAGE_KEY, String(duration));
-    const configs = JSON.parse(localStorage.getItem(SHARED_CONFIG_KEY) || '{}');
-    configs.math = { ...(configs.math || {}), duration };
-    localStorage.setItem(SHARED_CONFIG_KEY, JSON.stringify(configs));
-  } catch {}
-}
-
-const minutes = seconds => `${seconds / 60} min`;
 function formatRemaining(milliseconds) {
   const total = Math.max(0, Math.ceil(milliseconds / 1000));
   const min = Math.floor(total / 60);
@@ -41,140 +19,194 @@ function formatRemaining(milliseconds) {
   return `${min}:${String(sec).padStart(2, '0')}`;
 }
 
-function decorateSetup() {
-  const grid = document.querySelector('.category-grid');
-  if (!grid || document.querySelector('.quiz-screen')) return;
-
-  const brand = document.querySelector('.topbar .brand');
-  if (brand && !brand.querySelector('.math-home-link')) {
-    brand.innerHTML = `<a class="math-home-link" href="../" aria-label="Wróć do Małej Nauki"><img src="../assets/icon-192.png" alt="" width="24" height="24"><span>Mała Nauka</span></a>`;
-  }
-  document.querySelector('.hero > p:not(.eyebrow)')?.remove();
-
-  const multiply = grid.querySelector('[data-category="multiply"]');
-  multiply?.classList.add('is-selected-mode', 'math-mode-display-only');
-
-  if (!document.querySelector('.math-duration-setup')) {
-    const panel = document.createElement('section');
-    panel.className = 'math-duration-setup';
-    panel.innerHTML = `<div class="math-duration-heading">Czas rozgrywki</div><div class="math-duration-choices" role="group" aria-label="Czas rundy">${DURATIONS.map(duration => `<button type="button" class="math-duration-choice ${duration === selectedDuration ? 'is-selected' : ''}" data-math-duration="${duration}">${minutes(duration)}</button>`).join('')}</div>`;
-    grid.parentElement?.insertBefore(panel, grid);
+function syncTimerSnapshot() {
+  if (!clock) {
+    window.__mathTimerSnapshot = { active: false, text: '', percent: 0, paused: false };
+    return window.__mathTimerSnapshot;
   }
 
-  if (!document.querySelector('.math-start-panel')) {
-    const panel = document.createElement('div');
-    panel.className = 'math-start-panel';
-    panel.innerHTML = `<button type="button" class="math-start-button" data-math-start>Rozpocznij <span aria-hidden="true">→</span></button>`;
-    grid.insertAdjacentElement('afterend', panel);
-  }
+  const paused = clock.state === 'paused';
+  const percent = Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100));
+  window.__mathTimerSnapshot = {
+    active: true,
+    paused,
+    remaining: clock.remaining,
+    duration: clock.duration,
+    percent,
+    text: `${paused ? 'Ⅱ ' : ''}${formatRemaining(clock.remaining)}`,
+  };
+  return window.__mathTimerSnapshot;
 }
 
-function startClock() {
-  clock = new Session(CLOCK_SOURCE, selectedDuration);
+window.__mathTimerSnapshot = { active: false, text: '', percent: 0, paused: false };
+window.__getMathTimerSnapshot = () => ({ ...window.__mathTimerSnapshot });
+
+function startClock(mode, duration) {
+  currentMode = mode;
+  currentDuration = duration;
+  clock = new Session(CLOCK_SOURCE, duration);
   correct = 0;
   wrong = 0;
-  wasExplainer = false;
-  wasHidden = false;
+  cancelled = false;
+  syncTimerSnapshot();
 }
 
 function ensureTimerUi() {
-  const quiz = document.querySelector('.quiz-screen');
+  const quiz = document.querySelector('[data-math-quiz]');
   if (!quiz || !clock) return;
   const topbar = document.querySelector('.topbar');
   if (!topbar) return;
+
+  const snapshot = syncTimerSnapshot();
   topbar.classList.add('math-timed');
   const slot = topbar.lastElementChild;
-  if (slot && !slot.querySelector('.math-round-time')) slot.innerHTML = '<div class="math-round-time" aria-label="Pozostały czas rundy"><span></span></div>';
+  if (slot && !slot.querySelector('.math-round-time')) {
+    slot.innerHTML = `<div class="math-round-time ${snapshot.paused ? 'is-paused' : ''}" aria-label="Pozostały czas rundy"><span>${snapshot.text}</span></div>`;
+  }
   if (!document.querySelector('.math-round-progress')) {
     const progress = document.createElement('div');
     progress.className = 'math-round-progress';
-    progress.innerHTML = '<span></span>';
+    progress.innerHTML = `<span style="width:${snapshot.percent}%"></span>`;
     topbar.insertAdjacentElement('afterend', progress);
   }
 }
 
 function updateTimerUi() {
   if (!clock) return;
-  const paused = clock.state === 'paused';
+  const snapshot = syncTimerSnapshot();
   const time = document.querySelector('.math-round-time');
   const text = time?.querySelector('span');
   const bar = document.querySelector('.math-round-progress > span');
-  if (text) text.textContent = `${paused ? 'Ⅱ ' : ''}${formatRemaining(clock.remaining)}`;
-  time?.classList.toggle('is-paused', paused);
-  if (bar) bar.style.width = `${Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100))}%`;
+  if (text && text.textContent !== snapshot.text) text.textContent = snapshot.text;
+  time?.classList.toggle('is-paused', snapshot.paused);
+  if (bar) bar.style.width = `${snapshot.percent}%`;
 }
 
-function equationResult() {
-  const values = [...document.querySelectorAll('.question-block .equation-number')].map(node => Number(node.textContent));
-  return values.length >= 2 && values.every(Number.isFinite) ? values[0] * values[1] : null;
+function accuracy() {
+  return correct + wrong ? Math.round(correct * 100 / (correct + wrong)) : 0;
+}
+
+async function saveMathProgress() {
+  const snapshot = {
+    category: currentMode,
+    duration: currentDuration,
+    correct,
+    wrong,
+    date: new Date().toISOString(),
+  };
+  try {
+    await playerService.init();
+    const player = await playerService.getSessionPlayer();
+    if (!player) return;
+    const progress = cleanProgress(await playerService.getProgress(player.id));
+    const result = {
+      id: globalThis.crypto?.randomUUID?.() || `math-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      playerId: player.id,
+      mode: 'math',
+      category: snapshot.category,
+      difficulty: 1,
+      duration: snapshot.duration,
+      correct: snapshot.correct,
+      wrong: snapshot.wrong,
+      date: snapshot.date,
+      early: false,
+    };
+    recordResult(progress, result);
+    await playerService.saveProgress(player.id, progress);
+  } catch {
+    // The round should still finish even when local persistence is unavailable.
+  }
 }
 
 function endRound() {
-  if (!clock || document.querySelector('.math-time-over')) return;
+  if (!clock || cancelled || document.querySelector('.math-result-screen')) return;
+  if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
+
   clock.end();
-  updateTimerUi();
-  const overlay = document.createElement('div');
-  overlay.className = 'math-time-over';
-  overlay.innerHTML = `<section class="math-time-over-card" role="dialog" aria-modal="true"><span class="math-time-over-icon" aria-hidden="true">✦</span><h2>Koniec czasu</h2><p><strong>${correct}</strong> poprawnych · <strong>${wrong}</strong> błędnych</p><div class="math-time-over-actions"><button type="button" class="math-time-again">Jeszcze raz</button><button type="button" class="math-time-back">Wróć</button></div></section>`;
-  document.body.append(overlay);
+  syncTimerSnapshot();
+  const app = document.querySelector('#app');
+  if (!app) return;
+  const total = correct + wrong;
+  app.innerHTML = `
+    <section class="math-result-screen" aria-label="Podsumowanie rundy">
+      <div class="math-result-star" aria-hidden="true">✦</div>
+      <p class="math-result-eyebrow">Przygoda ukończona</p>
+      <h1>Dobra robota!</h1>
+      <p class="math-result-subtitle">Mały trening, kolejny krok do przodu.</p>
+      <div class="math-result-badge">${labels[currentMode]} · ${currentDuration / 60} min</div>
+
+      <div class="math-result-stats">
+        <div class="math-result-stat"><strong>${correct}</strong><span>Poprawne</span></div>
+        <div class="math-result-stat"><strong>${wrong}</strong><span>Do powtórki</span></div>
+        <div class="math-result-stat"><strong>${total}</strong><span>Razem</span></div>
+      </div>
+
+      <p class="math-result-accuracy"><strong>${accuracy()}%</strong> poprawnych odpowiedzi</p>
+
+      <div class="math-result-actions">
+        <button type="button" class="math-result-again" data-math-result-again>Jeszcze jedna runda →</button>
+        <button type="button" class="math-result-back" data-math-result-back>Wybierz inne działanie</button>
+      </div>
+    </section>
+  `;
+  void saveMathProgress();
+  clock = null;
+  syncTimerSnapshot();
 }
 
+window.addEventListener('math-round-start', event => {
+  startClock(event.detail?.mode || 'multiply', Number(event.detail?.duration) || 180);
+});
+
+window.addEventListener('math-round-cancel', () => {
+  cancelled = true;
+  clock = null;
+  syncTimerSnapshot();
+});
+
 document.addEventListener('click', event => {
-  const duration = event.target.closest?.('[data-math-duration]');
-  if (duration) {
-    const value = Number(duration.dataset.mathDuration);
-    saveDuration(value);
-    document.querySelectorAll('[data-math-duration]').forEach(button => button.classList.toggle('is-selected', Number(button.dataset.mathDuration) === value));
-    return;
-  }
-
-  if (event.target.closest?.('[data-math-start]')) {
-    const target = document.querySelector('[data-category="multiply"]');
-    if (!target) return;
-    startClock();
-    target.click();
-    return;
-  }
-
   const answer = event.target.closest?.('[data-answer]');
   if (answer && clock && clock.state !== 'ended') {
-    const expected = equationResult();
+    const quiz = answer.closest('[data-math-quiz]');
+    const expected = Number(quiz?.dataset.correctAnswer);
     const chosen = Number(answer.dataset.answer);
-    if (Number.isFinite(expected) && Number.isFinite(chosen)) chosen === expected ? correct++ : wrong++;
+    if (Number.isFinite(expected) && Number.isFinite(chosen)) {
+      if (chosen === expected) correct += 1;
+      else wrong += 1;
+    }
     return;
   }
 
-  if (event.target.closest?.('.math-time-again')) {
-    document.querySelector('.math-time-over')?.remove();
-    startClock();
-    const target = document.querySelector('[data-category="multiply"]');
-    if (target) target.click(); else location.reload();
+  if (event.target.closest?.('[data-math-result-again]')) {
+    window.dispatchEvent(new CustomEvent('math-restart', { detail: { mode: currentMode, duration: currentDuration } }));
     return;
   }
 
-  if (event.target.closest?.('.math-time-back')) location.reload();
+  if (event.target.closest?.('[data-math-result-back]')) {
+    window.dispatchEvent(new CustomEvent('math-back-to-setup'));
+  }
+}, true);
+
+document.addEventListener('visibilitychange', () => {
+  if (!clock) return;
+  if (document.hidden && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
+  if (!document.hidden && clock.state === 'paused' && !document.querySelector('.quiz-stage.has-explainer')) clock.resume();
+  syncTimerSnapshot();
 });
 
 setInterval(() => {
-  const quiz = document.querySelector('.quiz-screen');
-  if (!quiz || !clock) {
-    decorateSetup();
-    return;
-  }
+  if (!clock) return;
+  const quiz = document.querySelector('[data-math-quiz]');
+  if (!quiz) return;
 
   ensureTimerUi();
   const hasExplainer = Boolean(document.querySelector('.quiz-stage.has-explainer'));
-  const hidden = document.hidden;
-  const shouldPause = hasExplainer || hidden;
+  const shouldPause = hasExplainer || document.hidden;
 
   if (shouldPause && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
   if (!shouldPause && clock.state === 'paused') clock.resume();
 
-  wasExplainer = hasExplainer;
-  wasHidden = hidden;
   clock.tick();
   updateTimerUi();
   if (clock.state === 'ended' || clock.remaining <= 0) endRound();
 }, 50);
-
-decorateSetup();

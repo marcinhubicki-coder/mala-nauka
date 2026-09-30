@@ -13,24 +13,12 @@
 
   function desiredExtraCells(array, rows, columns, count) {
     const result = [];
-
-    // Najpierw zachowujemy naturalny rytm przyjęty przez mnożenie:
-    // po poprawnym prostokącie dokładamy kolejne pełne/niepełne rzędy
-    // o szerokości wyznaczonej przez drugą liczbę działania.
     for (let row = rows + 1; row <= TABLE_SIZE && result.length < count; row += 1) {
-      for (let col = 1; col <= columns && result.length < count; col += 1) {
-        result.push(cellAt(array, row, col));
-      }
+      for (let col = 1; col <= columns && result.length < count; col += 1) result.push(cellAt(array, row, col));
     }
-
-    // Dopiero po dojściu do 10. rzędu przechodzimy do wolnych kolumn
-    // i liczymy od góry do dołu, kolumna po kolumnie.
     for (let col = columns + 1; col <= TABLE_SIZE && result.length < count; col += 1) {
-      for (let row = 1; row <= TABLE_SIZE && result.length < count; row += 1) {
-        result.push(cellAt(array, row, col));
-      }
+      for (let row = 1; row <= TABLE_SIZE && result.length < count; row += 1) result.push(cellAt(array, row, col));
     }
-
     return result.filter(Boolean);
   }
 
@@ -56,18 +44,14 @@
 
   function fix(note) {
     if (!note || note.dataset.direction !== 'high' || note.dataset.diffDismissed === '1' || note.dataset.diffOrderFixed === '1') return;
-
     const stage = note.closest('.quiz-stage');
+    if (stage?.dataset.operation !== 'multiply') return;
     const questionBlock = note.closest('.question-block');
     const array = stage?.querySelector('.array');
-    if (!stage || !questionBlock || !array) return;
-
-    // Czekamy, aż bazowy mechanizm rzeczywiście pokaże czerwone pola.
-    if (!array.querySelector('.difference-extra, .difference-target')) return;
+    if (!stage || !questionBlock || !array || !array.querySelector('.difference-extra, .difference-target')) return;
 
     const factors = [...questionBlock.querySelectorAll('.equation-number')].map(numberFromText);
     if (factors.length < 2 || factors.some((value) => value == null)) return;
-
     const rows = factors[0];
     const columns = factors[1];
     const correct = rows * columns;
@@ -76,7 +60,6 @@
 
     const count = Math.min(chosen - correct, MAX_VALUE - correct);
     clearOutsideDifference(array);
-
     desiredExtraCells(array, rows, columns, count).forEach((cell, index) => {
       const value = correct + index + 1;
       addNumber(cell, value);
@@ -84,19 +67,17 @@
       if (value === chosen) cell.classList.add('difference-target');
       else cell.classList.add('difference-soft');
     });
-
     note.dataset.diffOrderFixed = '1';
   }
 
   function scan() {
-    document.querySelectorAll('.wrong-answer-note[data-direction="high"]').forEach(fix);
+    document.querySelectorAll('.quiz-stage[data-operation="multiply"] .wrong-answer-note[data-direction="high"]').forEach(fix);
   }
 
-  document.addEventListener('click', (event) => {
-    const expression = event.target.closest?.('.row-expression');
+  document.addEventListener('click', event => {
+    const expression = event.target.closest?.('.quiz-stage[data-operation="multiply"] .row-expression');
     if (!expression) return;
-    const stage = expression.closest('.quiz-stage');
-    const note = stage?.querySelector('.wrong-answer-note');
+    const note = expression.closest('.quiz-stage')?.querySelector('.wrong-answer-note');
     if (note) note.dataset.diffDismissed = '1';
   }, true);
 

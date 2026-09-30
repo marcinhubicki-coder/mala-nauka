@@ -621,7 +621,35 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "Łóżko zapisujemy przez ó. Pomaga w tym pokrewne słowo łoże: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "łóżko",
+          "to": "łoże",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "łoże",
+        "łóżeczko",
+        "łóżkowy"
+      ],
+      "forms": [
+        "łóżka",
+        "łóżku",
+        "łóżkiem"
+      ],
+      "sources": [
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "zbiórka",
@@ -775,7 +803,27 @@
     "difficulty": 2,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "pattern",
+      "title": "Ó w zakończeniu -ówka",
+      "explanation": "W zakończeniu -ówka zwykle piszemy ó: krzyżówka, złotówka, siatkówka. Słowo krzyżówka pasuje do tej reguły.",
+      "examples": [],
+      "relatedWords": [
+        "krzyżówkowy"
+      ],
+      "forms": [
+        "krzyżówki",
+        "krzyżówką",
+        "krzyżówce"
+      ],
+      "sources": [
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "Kraków",

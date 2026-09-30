@@ -1,0 +1,87 @@
+.quiz-stage[data-operation="divide"] .explainer-title::after {
+  content: none !important;
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished {
+  --division-cut-overhang: calc(var(--cell-size) / 3);
+  --division-cut-pad: 4px;
+  --division-cut-half-pad: 2px;
+}
+
+/* Bazowy rytm zostaje taki sam jak w mnożeniu. Dodatkowy odstęp powstaje
+   wyłącznie po aktywnych liniach cięcia; rzędy poniżej aktywnego obszaru
+   zachowują zwykły odstęp. */
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
+  row-gap: var(--cell-gap);
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array {
+  padding-bottom: var(--division-total-shift, 0px);
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array-cell,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels > *,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions > * {
+  position: relative;
+  top: var(--division-row-shift, 0px);
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem {
+  overflow: visible;
+}
+
+/* Cienka linia cięcia siedzi pośrodku większego odstępu. Wychodzi o 1/3
+   szerokości pola w lewo i w prawo. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  left: calc(-1 * var(--division-cut-overhang));
+  bottom: calc(-1px - var(--division-cut-half-pad));
+  width: calc(100% + var(--division-cut-overhang) + var(--division-cut-overhang));
+  height: 1px;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72);
+  pointer-events: none;
+}
+
+/* Przy wyniku 10 kreska może wyjść w lewo, ale nie poza planszę w prawo. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last[data-col="10"]::after {
+  width: calc(100% + var(--division-cut-overhang));
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-result-column {
+  background: rgba(94,115,232,.28);
+  border-color: rgba(119,135,238,.58);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10), 0 0 0 1px rgba(94,115,232,.08);
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-result-column.is-active {
+  background: rgba(94,115,232,.62);
+  border-color: rgba(139,151,246,.82);
+}
+
+.quiz-stage[data-operation="divide"] .axis-label.division-result-label {
+  color: var(--text);
+  opacity: 1;
+  font-weight: 900;
+  transform: scale(1.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+    background: rgba(154,167,255,.76);
+  }
+
+  .quiz-stage[data-operation="divide"] .array-cell.division-result-column {
+    background: rgba(104,121,234,.30);
+    border-color: rgba(142,156,255,.58);
+  }
+
+  .quiz-stage[data-operation="divide"] .array-cell.division-result-column.is-active {
+    background: rgba(113,132,247,.58);
+    border-color: rgba(160,173,255,.80);
+  }
+}

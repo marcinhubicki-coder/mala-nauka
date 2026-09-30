@@ -24,3 +24,4 @@ Repo powstało przez migrację projektu Mała Nauka ze starego repo `appka-polic
 
 - [Architektura repozytorium](ARCHITECTURE.md)
 - [System nauki i progresji](docs/LEARNING-SYSTEM.md)
+- [Ortografia — styl ilustracji i promptowanie assetów](docs/ORTHOGRAPHY-IMAGE-STYLE.md)

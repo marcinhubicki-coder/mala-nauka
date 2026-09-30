@@ -2,6 +2,8 @@ const DB_NAME='malaNauka.local.v1';
 const DB_VERSION=1;
 const SESSION_KEY='malaNauka.sessionPlayerId';
 const FALLBACK_KEY='malaNauka.localProfilesFallback.v1';
+const GUEST_PROGRESS_KEY='malaNauka.guestProgress.v1';
+const guestPlayer=()=>({id:'guest',nickname:'odkrywco',avatarId:'b'});
 
 const now=()=>new Date().toISOString();
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`player-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
@@ -155,14 +157,17 @@ class LocalPlayerService{
   let id='';
   try{id=sessionStorage.getItem(SESSION_KEY)||'';}catch{}
   if(!id)return null;
+  if(id==='guest')return guestPlayer();
   const player=await this.getPlayer(id);
   if(!player){this.lockSession();return null;}
   return player;
  }
+ beginGuestSession(){try{sessionStorage.setItem(SESSION_KEY,'guest');}catch{}return guestPlayer();}
  lockSession(){try{sessionStorage.removeItem(SESSION_KEY);}catch{}}
  async getProgress(playerId){
   await this.init();
   if(!playerId)return null;
+  if(playerId==='guest'){try{return JSON.parse(sessionStorage.getItem(GUEST_PROGRESS_KEY)||'null');}catch{return null;}}
   if(this.fallback)return readFallback().progress[playerId]??null;
   const tx=this.db.transaction('progress','readonly');
   const row=await requestResult(tx.objectStore('progress').get(playerId));
@@ -171,6 +176,7 @@ class LocalPlayerService{
  async saveProgress(playerId,value){
   await this.init();
   if(!playerId)throw new Error('Missing player id');
+  if(playerId==='guest'){sessionStorage.setItem(GUEST_PROGRESS_KEY,JSON.stringify(value));return;}
   const row={playerId,value,updatedAt:now()};
   if(this.fallback){
    const data=readFallback();data.progress[playerId]=value;
@@ -208,3 +214,4 @@ class LocalPlayerService{
 }
 
 export const playerService=new LocalPlayerService();
+

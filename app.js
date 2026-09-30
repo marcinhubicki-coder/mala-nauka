@@ -2,7 +2,7 @@ import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './ga
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
 import { createSpellingArt } from './spelling/art.mjs?v=40-final-assets';
-import { playerService } from './player-service.mjs?v=2-player-screen';
+import { playerService } from './player-service.mjs?v=3-retina-3d';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';
@@ -27,6 +27,7 @@ const englishFlag='<svg viewBox="0 0 60 40" aria-hidden="true"><defs><clipPath i
 const homeTargetIcon='<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="23" cy="25" r="17" fill="#ffedf5"/><circle cx="23" cy="25" r="12" fill="#ff5a9b"/><circle cx="23" cy="25" r="6.5" fill="#fff"/><path d="M25 22 36 11m0 0-1 7 7-1m-7 1 7-7" stroke="#7255e5" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const homeStarIcon='<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="m24 5.5 5.7 11.7 12.9 1.8-9.3 9.1 2.2 12.8L24 34.8l-11.5 6.1 2.2-12.8L5.4 19l12.9-1.8L24 5.5Z" fill="#ffc51e"/><path d="m24 8 4.8 10 11 1.5" stroke="#ffe783" stroke-width="2" stroke-linecap="round" opacity=".85"/></svg>';
 const homeChevronIcon='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const homeSettingsIcon='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m13 3-1 4-4 2-4-1-2 5 3 3v4l-3 2 3 5 4-1 3 2 1 3h6l1-4 4-2 4 1 2-5-3-3v-4l3-2-3-5-4 1-3-2-1-3h-6Z" fill="#81809e"/><circle cx="16" cy="17" r="7" fill="#5a5a77"/><circle cx="16" cy="17" r="4.5" fill="#f0effa"/><circle cx="16" cy="17" r="2.5" fill="#555674"/></svg>';
 
 const brandMark='<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><defs><linearGradient id="brand-grad" x1="12" y1="10" x2="53" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#54B9FF"/><stop offset=".48" stop-color="#7C77F3"/><stop offset="1" stop-color="#EE5E9A"/></linearGradient></defs><rect x="4" y="4" width="56" height="56" rx="18" fill="white"/><rect x="4.75" y="4.75" width="54.5" height="54.5" rx="17.25" stroke="#DDE9F7" stroke-width="1.5"/><path d="M14 39c6-2.6 11-1.5 18 3.4V22.8c-6.2-4-11.8-5.1-18-2.5V39Zm36 0c-6-2.6-11-1.5-18 3.4V22.8c6.2-4 11.8-5.1 18-2.5V39Z" fill="#20375B" opacity=".94"/><path d="M17.2 28.2 24 34l8-11 8 11 6.8-5.8" stroke="url(#brand-grad)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="17" r="3" fill="#EF438F"/><circle cx="47" cy="17" r="3" fill="#F5AB26"/></svg>';
 const homeHeroArt='<svg viewBox="0 0 300 190" fill="none" aria-hidden="true"><defs><linearGradient id="hero-shirt" x1="139" y1="95" x2="224" y2="159" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB44D"/><stop offset="1" stop-color="#F0785C"/></linearGradient><linearGradient id="hero-book" x1="127" y1="134" x2="226" y2="177" gradientUnits="userSpaceOnUse"><stop stop-color="#55C3ED"/><stop offset="1" stop-color="#4179D9"/></linearGradient><filter id="hero-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#466487" flood-opacity=".17"/></filter></defs><ellipse cx="190" cy="173" rx="91" ry="11" fill="#8BCB8D" opacity=".24"/><circle cx="258" cy="41" r="20" fill="#fff" opacity=".78"/><circle cx="258" cy="41" r="13.5" fill="#54B8ED"/><path d="M245 39c4-5 8-8 15-9l4 8-5 6 3 8c-7 2-13-1-17-6l4-3-4-4Z" fill="#A9E65C"/><path d="m108 37 4.5 8.5 9.5 1.4-7 6.7 1.7 9.4-8.7-4.5-8.7 4.5 1.7-9.4-7-6.7 9.5-1.4L108 37Z" fill="#FFD85C" opacity=".96"/><g filter="url(#hero-shadow)"><path d="M180 64c0-24 16-40 39-40 22 0 39 16 39 40 0 25-14 45-39 45-25 0-39-20-39-45Z" fill="#F5C88E"/><path d="M181 61c0-25 17-42 40-42 16 0 31 8 37 23-11 4-19 2-26-5-8 10-20 17-38 19-3 0-7 2-13 5Z" fill="#2F4E73"/><circle cx="195" cy="64" r="3.1" fill="#263F60"/><circle cx="238" cy="64" r="3.1" fill="#263F60"/><path d="M205 79c7 6 15 6 22 0" stroke="#263F60" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="188" cy="73" rx="7" ry="4" fill="#EE8E8D" opacity=".55"/><ellipse cx="245" cy="73" rx="7" ry="4" fill="#EE8E8D" opacity=".55"/><path d="M181 111c12-10 25-15 39-15 16 0 31 7 43 20l-12 46H166l-7-35c3-6 11-12 22-16Z" fill="url(#hero-shirt)"/><path d="M159 124c-14 2-27 12-33 26l16 8c6-10 12-16 23-20l-6-14Z" fill="#F5C88E"/><path d="M253 116c10 5 19 13 23 24l-15 8c-5-8-10-13-18-17l10-15Z" fill="#F5C88E"/><path d="M121 147c-7 0-12 5-12 11 0 5 4 9 9 10 8 1 14-4 17-10l-14-11Z" fill="#F5C88E"/><path d="M270 137c7-3 14 0 16 6 2 5-1 10-6 13-7 3-14 0-19-5l9-14Z" fill="#F5C88E"/><path d="M127 139 206 111l7 14-79 30-7-16Z" fill="#35AF9C"/><path d="m206 111 19-9-8 21-4 2-7-14Z" fill="#F8E5BE"/><path d="m225 102 7-3-4 8-3-5Z" fill="#273E5D"/></g><g filter="url(#hero-shadow)"><path d="M127 143c20-8 39-8 58 1v30c-18-9-38-9-58-1v-30Z" fill="#FDFEFF"/><path d="M185 144c20-9 39-9 58-1v30c-20-8-39-8-58 1v-30Z" fill="url(#hero-book)"/><path d="M185 144v30" stroke="#D8E7F8" stroke-width="2"/><path d="M139 152c12-4 23-4 34 0M139 160c12-4 23-4 34 0" stroke="#C6D8EB" stroke-width="2.4" stroke-linecap="round"/><path d="M198 152c10-4 21-4 31 0M198 160c10-4 21-4 31 0" stroke="#C7E8F7" stroke-width="2.4" stroke-linecap="round"/></g><path d="M79 98c0-8 6-14 14-14s14 6 14 14-6 14-14 14-14-6-14-14Z" fill="#fff" opacity=".82"/><path d="M93 89v18M84 98h18" stroke="#8A6BE7" stroke-width="4" stroke-linecap="round"/></svg>';
@@ -43,15 +44,8 @@ const fallbackAvatarId=player=>{
  return ['a','b','c','d'][sum%4];
 };
 function avatarMarkup(player,extra=''){
- const key=avatarThemes[player?.avatarId]?player.avatarId:fallbackAvatarId(player),t=avatarThemes[key];
- const hair=key==='a'
-  ?'<circle cx="35" cy="29" r="15" fill="'+t.hair+'"/><circle cx="53" cy="27" r="14" fill="'+t.hair+'"/><circle cx="45" cy="17" r="12" fill="'+t.hair+'"/><path d="M24 43c2-20 13-30 30-29 14 1 23 12 23 30-7-9-14-13-25-14-11-1-19 3-28 13Z" fill="'+t.hair+'"/><circle cx="25" cy="35" r="4" fill="#f05b9a"/>'
-  :key==='b'
-   ?'<path d="M20 44c2-22 14-32 32-30 16 2 24 12 24 31-8-8-17-13-27-13-11 0-19 4-29 12Z" fill="'+t.hair+'"/><path d="M18 26c14-15 40-17 57-2l-4 10c-18-6-34-6-51 2l-2-10Z" fill="#f5f8ff"/><path d="M48 18c12-1 22 3 29 10-13-2-24 0-33 5l4-15Z" fill="#1687e8"/>'
-   :key==='c'
-    ?'<circle cx="27" cy="31" r="12" fill="'+t.hair+'"/><circle cx="40" cy="21" r="14" fill="'+t.hair+'"/><circle cx="56" cy="21" r="14" fill="'+t.hair+'"/><circle cx="70" cy="31" r="12" fill="'+t.hair+'"/><path d="M22 44c4-18 14-27 28-27 15 0 25 9 28 28-8-8-17-12-28-12-11 0-20 4-28 11Z" fill="'+t.hair+'"/>'
-    :'<circle cx="29" cy="23" r="11" fill="'+t.hair+'"/><circle cx="68" cy="23" r="11" fill="'+t.hair+'"/><path d="M21 44c3-19 14-29 29-29 16 0 26 10 29 30-9-9-18-13-29-13-11 0-20 4-29 12Z" fill="'+t.hair+'"/>';
- return `<span class="player-avatar-art ${extra}" aria-hidden="true"><svg viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="47" fill="${t.bg}"/><circle cx="48" cy="48" r="44" stroke="#fff" stroke-width="4"/>${hair}<ellipse cx="48" cy="51" rx="27" ry="26" fill="#f5bd8e"/><circle cx="38" cy="49" r="4.5" fill="#2b2430"/><circle cx="59" cy="49" r="4.5" fill="#2b2430"/><circle cx="36.7" cy="47.6" r="1.3" fill="#fff"/><circle cx="57.7" cy="47.6" r="1.3" fill="#fff"/><path d="M39 62c6 7 13 7 19 0" stroke="#7e3540" stroke-width="3.6" stroke-linecap="round"/><ellipse cx="29" cy="57" rx="5" ry="3" fill="#ef8f91" opacity=".55"/><ellipse cx="67" cy="57" rx="5" ry="3" fill="#ef8f91" opacity=".55"/><path d="M18 94c3-20 14-31 30-31s28 11 31 31H18Z" fill="${t.hood}"/><path d="M42 68 48 76l6-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></span>`;
+ const key=avatarThemes[player?.avatarId]?player.avatarId:fallbackAvatarId(player);
+ return `<span class="player-avatar-art ${extra}" data-avatar="${key}" aria-hidden="true"></span>`;
 }
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
 async function refreshPlayers(){
@@ -76,18 +70,24 @@ async function activatePlayer(player){
  pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';
  navigate('home');
 }
+const playerCheckIcon='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m7 16 6 6L26 9" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const playerPlusIcon='<svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 5v18M5 14h18" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>';
+const playerProgressIcon='<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><defs><linearGradient id="player-bars" x1="17" y1="25" x2="53" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#46c2ff"/><stop offset="1" stop-color="#0588ff"/></linearGradient><linearGradient id="player-star" x1="40" y1="7" x2="57" y2="27" gradientUnits="userSpaceOnUse"><stop stop-color="#ffe35a"/><stop offset="1" stop-color="#ffb300"/></linearGradient></defs><path d="M14 32c16 0 23-7 31-19m-10 0 12-2-1 12" stroke="#0f9bff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="15" y="45" width="11" height="17" rx="4" fill="url(#player-bars)"/><rect x="31" y="36" width="11" height="26" rx="4" fill="url(#player-bars)"/><rect x="47" y="27" width="11" height="35" rx="4" fill="url(#player-bars)"/><path d="m52 6 4 8 9 1-6.5 6 1.5 9-8-4.2-8 4.2 1.5-9-6.5-6 9-1 4-8Z" fill="url(#player-star)" stroke="#fff3ad" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+function setScreenTheme(color){const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=color;}
 function playersPage(){
- spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;
+ spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0;
  const list=hasPlayers
-  ?`<div class="player-grid" role="list" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}" role="listitem">${avatarMarkup(player)}<strong>${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?'<span class="check">✓</span>':'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
-  :`<div class="player-empty-premium">${avatarMarkup({avatarId:'a'},'empty-avatar')}<span class="empty-plus" aria-hidden="true">+</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
+  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
+  :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
+ const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
-  ?`<div class="player-actions">${btn('<span class="add-icon">+</span> Dodaj gracza','add-player','add-player-soft')}${btn('Dalej <span class="continue-arrow">›</span>','continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
-  :`<div class="player-actions empty-actions">${btn('Dodaj użytkownika <span class="continue-arrow">›</span>','add-player','player-continue')}</div>`;
- root.innerHTML=`<section class="player-shell"><img class="player-brand-art" src="assets/brand/player-logo.svg" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1200" height="320"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p>${hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.'}</p></div>${list}${actions}</section>`;
+  ?`<div class="player-actions">${btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
+  :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
+ root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.'}</p></div>${list}${actions}</section>`;
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
+
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
  root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="20" minlength="2" autocomplete="off" autocapitalize="words" placeholder="np. Maja" value="${escape(pendingNickname)}" required><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${['a','b','c','d'].map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
@@ -124,7 +124,7 @@ function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hell
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
  spellingArt.reset();
- view=next;root.dataset.view=view;root.dataset.mode=selectedMode;
+ view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#e4f6ff':'#f5f8ff');
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
@@ -133,14 +133,14 @@ function home() {
  const nick=escape(activePlayer?.nickname||'odkrywco');
  const lastScore=latest?`${latest.correct} pkt`:'0 pkt';
  const lastLabel=latest?`Ostatnia: ${MODES[latest.mode].name}`:'Zagraj pierwszą rundę';
- root.innerHTML=`<header class="home-head home-head-v3"><img class="home-logo-mark" src="assets/brand/home-mark.webp" alt="Mała Nauka" width="128" height="127" decoding="sync">${btn('⚙','settings','icon home-settings','aria-label="Ustawienia"')}</header>
+ root.innerHTML=`<header class="home-head home-head-v3"><span class="home-logo-mark" role="img" aria-label="Mała Nauka"></span>${btn(homeSettingsIcon,'settings','icon home-settings','aria-label="Ustawienia"')}</header>
  <section class="home-hero-v3">
-   <div class="home-hero-sky"><div class="home-hero-copy-v3"><p class="home-greeting">Hej, ${nick}!</p><h1 tabindex="-1">sprawdź swoje<br><span>postępy.</span></h1><p class="home-subtitle">Świetnie Ci idzie, co dalej?</p></div></div>
-   <img class="home-hero-boy" src="assets/scenes/podroznik.jpg" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+   <img class="home-hero-picture" src="assets/brand/home-adventure-3d.webp" alt="" aria-hidden="true" width="1536" height="1664" decoding="async" fetchpriority="high">
+   <div class="home-hero-copy-v3"><p class="home-greeting">Hej, ${nick}!</p><h1 tabindex="-1">sprawdź swoje<br><span>postępy.</span></h1><p class="home-subtitle">Świetnie Ci idzie, co dalej?</p></div>
    ${btn(`<span class="home-stat-cell"><span class="home-stat-icon target">${homeTargetIcon}</span><span class="home-stat-copy"><b>${today}</b><small>Dziś rozwiązane</small></span></span><span class="home-stat-divider" aria-hidden="true"></span><span class="home-stat-cell"><span class="home-stat-icon star">${homeStarIcon}</span><span class="home-stat-copy"><b>${lastScore}</b><small>${escape(lastLabel)}</small></span></span><span class="home-stat-next">${homeChevronIcon}</span>`,'history','home-stats-v3','aria-label="Zobacz swoje wyniki"')}
  </section>
  <div class="section-label home-section-label">Wybierz swoją przygodę <span>5 trybów</span></div>
- <nav class="mode-list home-mode-list" aria-label="Wybierz tryb nauki">${modeIds.map(mode=>btn(`${modeIcon(mode)}<span class="mode-copy"><strong>${MODES[mode].name}</strong></span>`,'choose-mode',`mode-tile ${MODES[mode].color}`,`data-mode="${mode}"`)).join('')}</nav>`;
+ <nav class="mode-list home-mode-list" aria-label="Wybierz tryb nauki">${modeIds.map(mode=>btn(`${modeIcon(mode)}<span class="mode-copy"><strong>${MODES[mode].name}</strong></span><span class="tile-sparkle" aria-hidden="true"></span><span class="tile-sparkle second" aria-hidden="true"></span>${mode==='reading'?'<span class="tile-sparkle third" aria-hidden="true"></span>':''}`,'choose-mode',`mode-tile ${MODES[mode].color}`,`data-mode="${mode}"`)).join('')}</nav>`;
 }
 function wizard() {
  const mode=MODES[selectedMode],config=configs[selectedMode];
@@ -333,7 +333,17 @@ function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i 
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
  if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
  if(action==='add-player'){pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
- if(action==='choose-player'){selectedPlayerId=button.dataset.player;playersPage();return;}
+ if(action==='choose-player'){
+  selectedPlayerId=button.dataset.player;
+  root.querySelectorAll('.player-card').forEach(card=>{
+   const selected=card.dataset.player===selectedPlayerId;
+   card.classList.toggle('is-selected',selected);card.setAttribute('aria-pressed',String(selected));
+   card.querySelector('.player-select-mark').innerHTML=selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>';
+  });
+  const next=root.querySelector('[data-action="continue-player"]');if(next)next.disabled=false;
+  return;
+ }
+ if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
  if(action==='continue-player'){if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';playerPinPage();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';playerPinPage();}return;}
@@ -396,3 +406,4 @@ setInterval(()=>{if(view==='game'&&game){game.tick();syncGame();}},50);
 async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
+

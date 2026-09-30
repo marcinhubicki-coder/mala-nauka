@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v106-results-motion-20260930';
+const CACHE='mala-nauka-v107-results-particles-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -14,7 +14,7 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20260930-results-motion-v11",
+  "./app.css?v=20260930-results-particles-v12",
   "./app.js",
   "./app.js?v=20260930-results-motion-v11",
   "./assets/apple-touch-icon.png",
@@ -606,7 +606,7 @@ const CORE=[
   "./ortografia/result-rules.mjs",
   "./ortografia/result-rules.mjs?v=3-cached-static",
   "./ortografia/result-screen.mjs",
-  "./ortografia/result-screen.mjs?v=9-star",
+  "./ortografia/result-screen.mjs?v=10-particles",
   "./ortografia/wizard-v2.css",
   "./ortografia/wizard-v2.css?v=6-dyktando-jelly-v4",
   "./ortografia/wizard-v2.mjs",

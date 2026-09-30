@@ -17,7 +17,10 @@ const image=()=>`<image href="${ART}" x="0" y="0" width="${WIDTH}" height="${HEI
 const slice=rect=>`<svg class="home-art-slice" viewBox="${rect.join(' ')}" aria-hidden="true" focusable="false">${image()}</svg>`;
 
 export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds}){
- return `<section class="home-canvas" aria-label="Mała Nauka">
+ // Extend the exact first sky row into the system safe area. Keeping this
+ // separate from the canvas leaves the logo and hit targets below the notch.
+ return `<svg class="home-sky-bleed" viewBox="0 ${TOP} ${WIDTH} 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">${image()}</svg>
+ <section class="home-canvas" aria-label="Mała Nauka">
   <svg class="home-art-backdrop" viewBox="0 ${TOP} ${WIDTH} ${CONTENT_HEIGHT}" aria-hidden="true" focusable="false">
    ${image()}
   </svg>

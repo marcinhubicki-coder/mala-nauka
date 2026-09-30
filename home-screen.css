@@ -13,6 +13,10 @@ body:has(#app[data-view="home"]) {
 #app[data-view="home"] {
   --home-safe-top: env(safe-area-inset-top, 0px);
   --home-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --home-canvas-width: min(100vw, 480px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
+  --home-canvas-height: calc(var(--home-canvas-width) * 1670 / 853);
+  --home-center-gap: max(0px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom) - var(--home-canvas-height)) / 2));
+  position: relative;
   display: grid;
   place-items: center;
   grid-template: minmax(0, 1fr) / minmax(0, 1fr);
@@ -29,10 +33,24 @@ body:has(#app[data-view="home"]) {
   background: radial-gradient(ellipse at 24% 0%, #eaf8ff 0%, transparent 55%), #ddf3ff;
 }
 
+.home-sky-bleed {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--home-canvas-width);
+  height: calc(var(--home-safe-top) + var(--home-center-gap) + 2px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .home-canvas {
   position: relative;
+  z-index: 1;
   container-type: inline-size;
-  width: min(100%, 480px, calc((100dvh - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
+  width: var(--home-canvas-width);
   aspect-ratio: 853 / 1670;
   flex: none;
   min-width: 0;

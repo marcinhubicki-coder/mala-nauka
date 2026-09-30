@@ -1,3 +1,4 @@
+import { playerService } from '../player-service.mjs?v=1-local-profiles';
 const app = document.querySelector('#app');
 
 const DURATIONS = [60, 120, 180, 300];
@@ -195,7 +196,14 @@ function renderCategories() {
     button.addEventListener('click', () => {
       state.duration = Number(button.dataset.duration);
       saveSetup();
-      renderCategories();
+      async function bootMath(){
+  await playerService.init();
+  const player=await playerService.getSessionPlayer();
+  if(!player){location.replace('../');return;}
+  renderCategories();
+}
+
+bootMath();
     });
   });
 

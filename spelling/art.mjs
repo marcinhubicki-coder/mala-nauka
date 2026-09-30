@@ -1,4 +1,4 @@
-import { sceneFor, sceneUrl } from './scenes.mjs?v=26-generated-scenes';
+import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
@@ -55,10 +55,13 @@ export function createSpellingArt(app) {
     background.width = 711; background.height = 1536;
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
+    const statusBlock=game.untimed
+      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pozostało pytań"></span><small>pozostało</small><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Pozostałe pytania"></progress></div>`
+      : `<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
     app.innerHTML = `
       <header class="game-bar">
         <button type="button" class="icon" data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
-        <div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>
+        ${statusBlock}
         <button type="button" class="icon" data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
       </header>
       <h1 class="spelling-title">Jak jest poprawnie?</h1>

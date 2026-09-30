@@ -1,3 +1,4 @@
+import { validLearning } from './spelling/learning.mjs?v=1';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
 export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
@@ -13,17 +14,14 @@ export function shuffle(items, random = Math.random) {
   return result;
 }
 export function validateWords(words) {
-  const counts = [133, 130, 91, 10, 10, 10, 10, 10];
-  if (!Array.isArray(words) || words.length !== 404 || new Set(words.map(w => w.word)).size !== 404) throw Error('Niepełna baza słów.');
+  if (!Array.isArray(words) || words.length < 455 || new Set(words.map(w => w.word)).size !== words.length) throw Error('Niepełna baza słów.');
   for (const w of words) {
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
-      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
+      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty) || !validLearning(w.learning)) throw Error('Nieprawidłowy rekord słowa.');
   }
-  if (CATEGORIES.some((c, i) => words.filter(w => w.category === c).length !== counts[i]) ||
-    [241, 163].some((count, i) => words.filter(w => w.difficulty === i + 1).length !== count) ||
-    CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
+  if (CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
 }
 export function cleanSettings(value) {
@@ -47,7 +45,8 @@ export class Session {
     Object.assign(this, { source, pool: Array.isArray(source) ? source : [], duration, now, random,
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
       state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
-      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [] });
+      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [], attempts: [],
+      untimed: false, questionLimit: 0 });
     this.next();
   }
   tick() {
@@ -56,8 +55,10 @@ export class Session {
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
     if (previousState === 'playing') this.questionElapsed += elapsed;
-    this.remaining = Math.max(0, this.remaining - elapsed);
-    if (this.remaining === 0) { this.state = 'ended'; return; }
+    if (!this.untimed) {
+      this.remaining = Math.max(0, this.remaining - elapsed);
+      if (this.remaining === 0) { this.state = 'ended'; return; }
+    }
     if (this.state === 'exposing') {
       this.exposureRemaining = Math.max(0, this.exposureRemaining - elapsed);
       if (!this.exposureRemaining) this.state = 'playing';
@@ -68,6 +69,7 @@ export class Session {
   }
   next() {
     if (this.state === 'paused' || this.state === 'ended') return;
+    if (this.questionLimit && this.question >= this.questionLimit) { this.current = null; this.state = 'ended'; return; }
     if (typeof this.source === 'function') this.current = this.source(this);
     else {
       if (!this.queue.length) {
@@ -90,6 +92,7 @@ export class Session {
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
+    if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({
       correct,
@@ -109,6 +112,12 @@ export class Session {
     const question = this.question;
     this.tick();
     if (this.state !== 'ended' && this.question === question) this.next();
+  }
+  questionsRemaining() {
+    if (!this.questionLimit) return null;
+    const effectiveState = this.state === 'paused' ? this.resumeState : this.state;
+    const currentPending = ['playing','exposing'].includes(effectiveState) ? 1 : 0;
+    return Math.max(0, this.questionLimit - this.question + currentPending);
   }
   pause() {
     if (this.state === 'paused' || this.state === 'ended') return;

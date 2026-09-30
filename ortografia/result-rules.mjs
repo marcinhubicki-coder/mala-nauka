@@ -15,6 +15,7 @@ export function closeResultRule(root, restoreFocus = true) {
   const active = dialogs.get(root);
   if (!active) return;
   dialogs.delete(root);
+  active.resizeObserver?.disconnect();
   active.bubble?.destroy();
   if (active.dialog.open) active.dialog.close();
   active.dialog.remove();
@@ -38,7 +39,7 @@ export function openResultRule(root, attempt, trigger) {
   const [before, ...after] = String(attempt.masked || '').split('_');
   const word = after.length ? escape(before) + '<span class="result-answer-letter">' + escape(attempt.answer) + '</span>' + escape(after.join('_')) : escape(attempt.word);
   dialog.innerHTML = '<header class="rule-dialog-head"><span>' + eyeSvg + ' Mała podpowiedź</span><button type="button" class="rule-close" aria-label="Zamknij zasadę i wróć do wyników">×</button></header>' +
-    '<div class="rule-dialog-body"><div class="rule-visual" role="img" aria-label="Ilustracja do słowa ' + escape(attempt.word) + '"></div><p class="rule-image-status" role="status">Ładujemy obrazek…</p>' +
+    '<div class="rule-dialog-body"><div class="rule-visual" role="img" aria-label="Ilustracja do słowa ' + escape(attempt.word) + '"><div class="rule-bubble"></div><span class="rule-image-loader" role="status" aria-label="Ładowanie ilustracji"><span class="rule-loader-orbit" aria-hidden="true">' + Array.from({length: 6}, (_, index) => '<i style="--bubble-index:' + index + '"></i>').join('') + '</span></span></div><p class="rule-image-error" role="status" hidden>Przyjrzyj się poprawnemu zapisowi poniżej.</p>' +
     '<h2 id="result-rule-title">' + word + '</h2><span class="rule-type" data-rule-type="' + escape(learning.type) + '">' + escape(LEARNING_TYPES[learning.type]) + '</span>' +
     '<section class="rule-explanation"><h3>' + escape(learning.title) + '</h3><p>' + escape(learning.explanation) + '</p>' +
     (learning.examples.length ? '<div class="rule-exchanges">' + learning.examples.map(example => '<div><strong>' + escape(example.from) + '</strong><span aria-hidden="true">' + (learning.type === 'exchange' ? '↔' : '·') + '</span><strong>' + escape(example.to) + '</strong><small>' + escape(example.change) + '</small></div>').join('') + '</div>' : '') + '</section>' +
@@ -46,7 +47,7 @@ export function openResultRule(root, attempt, trigger) {
     (learning.forms.length ? '<section class="rule-family"><h3>Formy wyrazów z tej rodziny</h3><div class="rule-chips">' + chips(learning.forms, attempt.answer) + '</div></section>' : '') +
     (learning.sources.length ? '<details class="rule-sources"><summary>Dla ciekawych: słownik i zasady</summary>' + learning.sources.map(source => '<a href="' + escape(source.url) + '" target="_blank" rel="noopener noreferrer">' + escape(source.label) + ' ↗</a>').join('') + '</details>' : '') + '</div>';
   document.body.append(dialog);
-  const active = {dialog, trigger, bubble: null};
+  const active = {dialog, trigger, bubble: null, resizeObserver: null};
   dialogs.set(root, active);
   const close = () => closeResultRule(root);
   dialog.querySelector('.rule-close').addEventListener('click', close);
@@ -59,10 +60,22 @@ export function openResultRule(root, attempt, trigger) {
   });
   dialog.showModal();
   dialog.querySelector('.rule-close').focus({preventScroll: true});
-  active.bubble = createBubble(dialog.querySelector('.rule-visual'));
+  const body = dialog.querySelector('.rule-dialog-body');
+  const updateScrollCue = () => {
+    if (dialogs.get(root) !== active) return;
+    dialog.classList.toggle('has-scroll-more', body.scrollHeight - body.clientHeight - body.scrollTop > 2);
+  };
+  body.addEventListener('scroll', updateScrollCue, {passive: true});
+  dialog.querySelector('.rule-sources')?.addEventListener('toggle', updateScrollCue);
+  active.resizeObserver = new ResizeObserver(updateScrollCue);
+  active.resizeObserver.observe(body);
+  [...body.children].forEach(child => active.resizeObserver.observe(child));
+  updateScrollCue();
+  active.bubble = createBubble(dialog.querySelector('.rule-bubble'));
   active.bubble.transitionToScene(image, scene, true).then(loaded => {
-    const status = dialog.querySelector('.rule-image-status');
-    status.hidden = Boolean(loaded);
-    if (!loaded) status.textContent = 'Przyjrzyj się poprawnemu zapisowi poniżej.';
+    if (dialogs.get(root) !== active) return;
+    dialog.querySelector('.rule-image-loader').hidden = true;
+    dialog.querySelector('.rule-image-error').hidden = Boolean(loaded);
+    updateScrollCue();
   });
 }

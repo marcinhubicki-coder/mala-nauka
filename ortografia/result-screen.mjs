@@ -1,5 +1,5 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
-import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=1';
+import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=2-scroll-loader';
 
 const resultContexts = new WeakMap();
 
@@ -22,7 +22,7 @@ function resultRows(attempts, emptyCopy) {
     const image = scene?.asset ? sceneUrl(scene) : '';
     const retained = attempt.correct === true;
     return '<article class="result-word-row ' + (retained ? 'is-retained' : 'is-review') + '">' +
-      (image ? '<img class="result-word-thumb" src="' + escape(image) + '" alt="" width="44" height="44" decoding="async">' : '<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>') +
+      (image ? '<img class="result-word-thumb" src="' + escape(image) + '" alt="" width="40" height="40" decoding="async">' : '<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>') +
       '<div class="result-word-copy"><strong>' + resultWord(attempt) + '</strong><small>' + (retained ? 'Dziś poszło dobrze' : 'Poprawny zapis') + (attempt.category ? ' · ' + escape(attempt.category.replace('/', ' / ')) : '') + '</small></div>' +
       '<button type="button" class="result-word-state" data-action="show-result-rule" data-rule-index="' + attempt.ruleIndex + '" aria-label="Zasada pisowni słowa ' + escape(attempt.word) + '">Zasada' + eyeSvg + '</button></article>';
   }).join('') + '</div>';

@@ -1,0 +1,37 @@
+/* V3 owns scope geometry completely. The tray below cannot influence it. */
+#app[data-mode="flags"] .flag-scope-toggle{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  width:100%!important;
+  inline-size:100%!important;
+  height:56px!important;
+  min-height:56px!important;
+  max-height:56px!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  contain:layout paint!important;
+}
+#app[data-mode="flags"] .flag-scope-toggle > label{
+  width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;box-sizing:border-box!important;
+}
+#app[data-mode="flags"] .flag-scope-toggle > label > span{
+  width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0 8px!important;box-sizing:border-box!important;display:grid!important;place-items:center!important;
+}
+#app[data-mode="flags"] .flag-scope-toggle > .flag-segment-indicator{
+  left:4px;
+  right:auto!important;
+  width:calc((100% - 8px)/2);
+  max-width:calc((100% - 8px)/2);
+  top:4px!important;
+  bottom:4px!important;
+  box-sizing:border-box!important;
+}
+#app[data-mode="flags"] .flag-segmented.is-segment-moving-v3 .flag-segment-indicator{
+  box-shadow:0 9px 21px rgba(47,116,93,.15),inset 0 1px 0 rgba(255,255,255,.72);
+}
+#app[data-mode="flags"] .flag-segmented.is-segment-moving-v3 .flag-segment-indicator::after{
+  animation:flag-segment-center-glow var(--segment-total-ms,1200ms) linear both;
+}

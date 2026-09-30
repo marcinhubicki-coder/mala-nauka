@@ -1,0 +1,166 @@
+/* v29 — stabilizacja układu i animacji bez elementów wpływających na layout, gdy są niewidoczne. */
+
+@property --counter-value {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+
+/* Ukryte akcje nie rezerwują miejsca. Wchodzą do layoutu miękko dopiero,
+   gdy faktycznie stają się widoczne. */
+.explainer-actions-panel {
+  max-height: 0 !important;
+  min-height: 0 !important;
+  margin-top: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    max-height .34s cubic-bezier(.2,.75,.2,1),
+    margin-top .34s cubic-bezier(.2,.75,.2,1),
+    opacity .22s ease,
+    transform .30s cubic-bezier(.2,.75,.2,1) !important;
+}
+
+.explainer-actions-panel.is-visible {
+  max-height: 84px !important;
+  margin-top: 18px !important;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.explainer-reveal:not(.is-open) {
+  margin: 0 !important;
+  pointer-events: none;
+}
+
+/* Dzielenie: używamy separatora, który istnieje już w pierwszym renderze.
+   Nie czekamy na klasę dopinaną przez observer, więc kreska nie mruga. */
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator {
+  box-shadow: none !important;
+  border-bottom-color: rgba(94,115,232,.29) !important;
+  overflow: visible !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.in-problem.division-row-separator.is-active {
+  border-bottom-color: rgba(74,94,216,.76) !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+  content: "" !important;
+  position: absolute;
+  z-index: 8;
+  left: var(--division-cut-left, -8px) !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 3px) - .5px) !important;
+  width: calc(100% + var(--division-cut-extra, 16px)) !important;
+  height: 1px !important;
+  border-radius: 999px;
+  background: rgba(119,136,238,.72) !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-row-separator[data-col="10"]::after {
+  width: calc(100% + var(--division-cut-overhang, 8px)) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quiz-stage[data-operation="divide"] .array-cell.division-row-separator::after {
+    background: rgba(154,167,255,.76) !important;
+  }
+}
+
+/* Fala działa wyłącznie przez transition na kolorze/obrysie i przez opacity
+   numeru. Żadnych scale/translate, więc kwadraty nigdy nie zmieniają optycznej
+   geometrii i nic nie „mruga” po zdjęciu klasy pomocniczej. */
+.quiz-stage.wave-ready .array-cell,
+.quiz-stage.wave-ready .array-cell.is-active,
+.quiz-stage.wave-ready .array-cell.wave-enter {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+  transition:
+    background-color .30s cubic-bezier(.2,.72,.24,1),
+    border-color .30s cubic-bezier(.2,.72,.24,1),
+    box-shadow .30s cubic-bezier(.2,.72,.24,1),
+    opacity .24s ease !important;
+}
+
+.quiz-stage.wave-ready .cell-number,
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  animation: none !important;
+  transition:
+    opacity .26s ease,
+    transform .30s cubic-bezier(.2,.72,.24,1) !important;
+}
+
+.quiz-stage.wave-ready .cell-number {
+  opacity: 0;
+  transform: translateY(2px) scale(.94);
+}
+
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stary incoming flip jest wyłączony. Nowe liczby stoją od razu w końcowych
+   slotach, a zmienia się wyłącznie ich wartość. */
+.quiz-stage.correct-transition-in .answer,
+.quiz-stage.correct-transition-in .equation-left,
+.quiz-stage.correct-transition-in .equation-right,
+.quiz-stage.correct-transition-in .equation-sign {
+  animation: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Counter tween: pseudo-element jest absolutny, więc nie ma żadnego wpływu
+   na szerokość, wysokość ani położenie otaczającego contentu. */
+.counter-tween {
+  position: relative;
+  color: transparent !important;
+  counter-reset: smooth-number var(--counter-value);
+  transition: --counter-value .56s cubic-bezier(.18,.76,.22,1) !important;
+}
+
+.counter-tween::after {
+  content: counter(smooth-number);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: var(--counter-color);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  pointer-events: none;
+}
+
+.answer.counter-tween::after {
+  display: grid;
+  place-items: center;
+}
+
+.equation-left.counter-tween::after {
+  display: block;
+  text-align: right;
+}
+
+.equation-right.counter-tween::after {
+  display: block;
+  text-align: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explainer-actions-panel,
+  .quiz-stage.wave-ready .array-cell,
+  .quiz-stage.wave-ready .cell-number,
+  .counter-tween {
+    transition: none !important;
+  }
+}

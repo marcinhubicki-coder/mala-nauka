@@ -1,4 +1,4 @@
-import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=23-art-library';
+import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=20260930-release';
 import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs?v=3';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';

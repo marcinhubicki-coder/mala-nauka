@@ -1,8 +1,11 @@
-import { renderHomeScreen } from './home-screen.mjs?v=4-pwa-size';
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-wordbase455';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=6-release';
+import { closeResultRule } from './ortografia/result-rules.mjs?v=1';
+import { exampleResult } from './ortografia/result-example.mjs?v=1';
+import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20260930-release';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=30-dyktando-jelly-v4';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=3-dyktando-jelly-v4';
-import { createSpellingArt } from './spelling/art.mjs?v=40-final-assets';
+import { createSpellingArt } from './spelling/art.mjs?v=20260930-release';
 import { playerService } from './player-service.mjs?v=3-retina-3d';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
@@ -18,7 +21,7 @@ const legacyProgress=legacyProgressRaw===null?migrateProgress(read('maleDyktando
 let progress=cleanProgress(null);
 let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='';
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
-let offlineReady=false;
+let offlineReady=false,collectionReturn=null;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
@@ -124,6 +127,8 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ closeResultRule(root,false);
+ if(next!=='history')collectionReturn=null;
  spellingArt.reset();
  view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':'#f5f8ff');
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
@@ -150,7 +155,8 @@ function settingsPage() {
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
 function historyPage() {
- root.innerHTML=pageHead('Moje wyniki')+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
+ const head=collectionReturn?`<header class="page-head">${btn('×','return-results','icon','aria-label="Zamknij kolekcję i wróć do wyników"')}<h1 tabindex="-1">Moja kolekcja</h1></header>`:pageHead('Moje wyniki');
+ root.innerHTML=head+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
  (progress.history.length?progress.history.map(r=>`<article class="history-item"><div><strong>${MODES[r.mode].name}</strong><b>${r.correct} pkt</b></div><p>${accuracy(r.correct,r.wrong)}% poprawnych · ${r.correct+r.wrong} zadań · ${minutes(r.duration)}</p><small>${escape(resultScopeLabel(r))}<br>${escape(new Date(r.date).toLocaleString('pl-PL',{dateStyle:'short',timeStyle:'short'}))}${r.early?' · zakończona wcześniej':''}</small></article>`).join(''):'<section class="empty card"><span aria-hidden="true">✦</span><h2>Tu pojawią się Twoje przygody</h2><p>Wybierz tryb i zagraj pierwszą rundę.</p>'+btn('Wybierz przygodę','home','primary')+'</section>');
 }
 function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{/* Optional sound. */}}
@@ -312,14 +318,15 @@ function updateClock(){
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Wrócić do wyboru przygód?':'Mała przerwa',`<p>${exit?'Zapiszemy dotychczasowy wynik.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zapisz i wróć do startu':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
+function pause(exit=false){if(!game||view!=='game')return;spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
 function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
  spellingArt.reset();
- const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early};
+ const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
  const record=recordResult(progress,result);void persistProgress();lastResult=result;
- if(goHome){navigate('home');return;}view='results';root.dataset.view=view;
+ if(goHome&&result.mode!=='spelling'){navigate('home');return;}view='results';root.dataset.view=view;
+ if(result.mode==='spelling'){setScreenTheme('#dfddfc');renderSpellingResult(root,result,words);return;}
  root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
@@ -343,7 +350,11 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';playerPinPage();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='switch-player'){playerService.lockSession();activePlayer=null;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
- if(['home','settings','history'].includes(action))navigate(action);
+ if(['home','settings'].includes(action))navigate(action);
+ if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
+ if(action==='return-results'&&collectionReturn){const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
+ if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
  if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
  if(action==='phrase-word'&&view==='game'&&!modal.open&&game?.current?.kind==='reading-phrase'&&game.state==='playing'){
@@ -396,7 +407,7 @@ document.addEventListener('pointerdown',()=>document.body.classList.remove('keyb
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game')pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
 setInterval(()=>{if(view==='game'&&game){game.tick();syncGame();}},50);
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words);window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
 

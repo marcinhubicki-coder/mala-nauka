@@ -1,4 +1,4 @@
-import { DURATIONS, validResult } from './game.mjs?v=reading-phrase-1';
+import { DURATIONS, validResult } from './game.mjs?v=20260930-release';
 import { modeIds, cleanConfig } from './modes.mjs?v=reading-phrase-1';
 export const localDay = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 const count = n => Number.isSafeInteger(n) && n >= 0;

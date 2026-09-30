@@ -16,26 +16,11 @@ const position=([x,y,w,h])=>`left:${x/WIDTH*100}%;top:${(y-TOP)/CONTENT_HEIGHT*1
 const image=()=>`<image href="${ART}" x="0" y="0" width="${WIDTH}" height="${HEIGHT}" preserveAspectRatio="none"/>`;
 const slice=rect=>`<svg class="home-art-slice" viewBox="${rect.join(' ')}" aria-hidden="true" focusable="false">${image()}</svg>`;
 
-// iOS standalone can report 100dvh without the status bar even though the
-// translucent page starts behind it. Subtracting safe areas from that shorter
-// height shrinks the whole drawing. Use the physical CSS screen height only
-// for a full-width, portrait iOS PWA; Safari and windowed apps keep 100dvh.
-function syncHomeViewport(){
- const fullScreenPortrait=navigator.standalone===true
-  && window.innerWidth<window.innerHeight
-  && Math.abs(window.screen.width-window.innerWidth)<2;
- const style=document.documentElement.style;
- if(fullScreenPortrait)style.setProperty('--home-viewport-height',`${window.screen.height}px`);
- else style.removeProperty('--home-viewport-height');
-}
-window.addEventListener('resize',syncHomeViewport,{passive:true});
-window.addEventListener('pageshow',syncHomeViewport);
-
 export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds}){
- syncHomeViewport();
  // Extend the exact first sky row into the system safe area. Keeping this
  // separate from the canvas leaves the logo and hit targets below the notch.
  return `<svg class="home-sky-bleed" viewBox="0 ${TOP} ${WIDTH} 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">${image()}</svg>
+ <svg class="home-ground-bleed" viewBox="0 ${TOP+CONTENT_HEIGHT-1} ${WIDTH} 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">${image()}</svg>
  <section class="home-canvas" aria-label="Mała Nauka">
   <svg class="home-art-backdrop" viewBox="0 ${TOP} ${WIDTH} ${CONTENT_HEIGHT}" aria-hidden="true" focusable="false">
    ${image()}

@@ -1,3 +1,4 @@
+import { validLearning } from './spelling/learning.mjs?v=1';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
 export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
@@ -18,7 +19,7 @@ export function validateWords(words) {
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
-      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty)) throw Error('Nieprawidłowy rekord słowa.');
+      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty) || !validLearning(w.learning)) throw Error('Nieprawidłowy rekord słowa.');
   }
   if (CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
@@ -44,7 +45,7 @@ export class Session {
     Object.assign(this, { source, pool: Array.isArray(source) ? source : [], duration, now, random,
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
       state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
-      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [],
+      questionElapsed: 0, lastResponseMs: 0, recentAnswers: [], attempts: [],
       untimed: false, questionLimit: 0 });
     this.next();
   }
@@ -91,6 +92,7 @@ export class Session {
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
+    if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({
       correct,

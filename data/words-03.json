@@ -909,7 +909,25 @@
     "difficulty": 2,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "exception",
+      "title": "Wyjątek od zakończenia -ówka",
+      "explanation": "W słowach skuwka, wsuwka i zasuwka piszemy u. Zapamiętaj te wyjątki od zasady dotyczącej zakończenia -ówka.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "skuwki",
+        "skuwką",
+        "skuwce"
+      ],
+      "sources": [
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "zasuwka",

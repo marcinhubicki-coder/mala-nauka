@@ -1,0 +1,15 @@
+VectorAtlas world map source
+
+Map:
+https://github.com/melenaos/Menelabs.VectorAtlas
+Pinned commit:
+98bc8b95ee210012c32b02805d21a8de77a04507
+
+The map is generated from Natural Earth public-domain data and distributed by VectorAtlas under CC BY 4.0.
+
+Attribution:
+VectorAtlas by Menelabs — https://github.com/melenaos/Menelabs.VectorAtlas
+
+License:
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/

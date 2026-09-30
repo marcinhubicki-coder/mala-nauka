@@ -706,6 +706,6 @@ export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
   const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
-  url.searchParams.set('v', '26-generated-scenes');
+  url.searchParams.set('v', '27-final-assets');
   return url.href;
 }

@@ -531,7 +531,40 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Przypomnij sobie parę może – mogę. Ż wymienia się na g. Ta para pomaga zapamiętać ż w słowie możliwość.",
+      "examples": [
+        {
+          "from": "może",
+          "to": "mogę",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "możliwy",
+        "możliwie",
+        "niemożliwy",
+        "niemożliwość"
+      ],
+      "forms": [
+        "możliwości",
+        "możliwością",
+        "możliwościach"
+      ],
+      "sources": [
+        {
+          "label": "WSJP PAN: możliwość",
+          "url": "https://wsjp.pl/haslo/podglad/8585/mozliwosc"
+        },
+        {
+          "label": "ZPE: zasady pisowni ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "możliwy",

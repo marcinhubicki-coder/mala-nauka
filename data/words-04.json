@@ -426,7 +426,40 @@
       "ż"
     ],
     "answer": "rz",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Rodzina wyrazów z „rz”",
+      "explanation": "Marzenie, marzyć i marzyciel zapisujemy przez rz. Zapamiętaj wspólny zapis w tej rodzinie i skojarz go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [
+        "marzyć",
+        "marzyciel",
+        "marzycielka",
+        "marzycielski",
+        "marzeniowy"
+      ],
+      "forms": [
+        "marząc",
+        "marzenia",
+        "marzeniu",
+        "marzeniach"
+      ],
+      "sources": [
+        {
+          "label": "WSJP PAN: marzenie",
+          "url": "https://wsjp.pl/haslo/podglad/20483/marzenie"
+        },
+        {
+          "label": "WSJP PAN: marzyć",
+          "url": "https://wsjp.pl/haslo/podglad/3224/marzyc"
+        },
+        {
+          "label": "ZPE: pisownia rz niewymiennego",
+          "url": "https://zpe.gov.pl/watek/LPCgxyBw7p/401/a/rz-i-z-niewymienne/D8fMvPpvQ"
+        }
+      ]
+    }
   },
   {
     "word": "marzyć",

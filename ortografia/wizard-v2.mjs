@@ -28,6 +28,17 @@ const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
 const dragStates=new WeakMap();
 const jellyV4=createJellyV4({indicatorSelector:'.spelling-segment-indicator'});
+const observedWidths=new WeakMap();
+const geometryObserver=new ResizeObserver(entries=>{
+ if(root?.dataset.view!=='wizard'||root.dataset.mode!=='spelling'||!state)return;
+ for(const {target} of entries){
+  const width=target.getBoundingClientRect().width;
+  if(!width||observedWidths.get(target)===width)continue;
+  observedWidths.set(target,width);
+  if(['time','count'].includes(target.dataset.segmented))syncTimeMode(target,false);
+  else updateSegment(target,activeIndexFor(target),segmentCount(target),false);
+ }
+});
 
 function readState(fallback){
  const fallbackCategories=categoriesOr(fallback.category);
@@ -275,6 +286,7 @@ function install(){
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
  if(intro){const art=document.createElement('img');art.className='spelling-mission-art';art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=1200;art.height=404;intro.prepend(art);}
+ geometryObserver.disconnect();root.querySelectorAll('.spelling-segmented').forEach(container=>geometryObserver.observe(container));
  updateStartButton(false);syncPanel(false);syncHidden(true);requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 

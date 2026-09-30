@@ -1,0 +1,273 @@
+{
+  "version": 25,
+  "description": "Uploaded illustrations, 30 new scenes and 6 reused scenes; no generated additions.",
+  "images": [
+    {
+      "source": "image-gen-1(20260921-121455).png",
+      "asset": "dol.webp",
+      "words": [
+        "dół",
+        "dziura"
+      ]
+    },
+    {
+      "source": "image-gen-2(20260921-121458).png",
+      "asset": "bol.webp",
+      "words": [
+        "ból"
+      ]
+    },
+    {
+      "source": "image-gen-3(20260921-121502).png",
+      "asset": "pozno.webp",
+      "words": [
+        "późno",
+        "późny"
+      ]
+    },
+    {
+      "source": "image-gen-4(9).png",
+      "asset": "pozniej.webp",
+      "words": [
+        "później"
+      ]
+    },
+    {
+      "source": "image-gen-5(9).png",
+      "asset": "wrocic.webp",
+      "words": [
+        "wrócić",
+        "powrót"
+      ]
+    },
+    {
+      "source": "image-gen-6(8).png",
+      "asset": "proba.webp",
+      "words": [
+        "próba"
+      ]
+    },
+    {
+      "source": "image-gen-7(4).png",
+      "asset": "pusty.webp",
+      "words": [
+        "pusty"
+      ]
+    },
+    {
+      "source": "image-gen-8(4).png",
+      "asset": "rzad.webp",
+      "words": [
+        "rząd"
+      ]
+    },
+    {
+      "source": "image-gen-9(4).png",
+      "asset": "rowno.webp",
+      "words": [
+        "równo",
+        "równy"
+      ]
+    },
+    {
+      "source": "image-gen-10(3).png",
+      "asset": "rozny.webp",
+      "words": [
+        "różny",
+        "różnica"
+      ]
+    },
+    {
+      "source": "image-gen-1(20260922-125120).png",
+      "asset": "krzeslo.webp",
+      "words": [
+        "krzesło"
+      ]
+    },
+    {
+      "source": "image-gen-2(20260922-125124).png",
+      "asset": "wrzesien.webp",
+      "words": [
+        "wrzesień"
+      ]
+    },
+    {
+      "source": "image-gen-3(20260922-125128).png",
+      "asset": "rzesa.webp",
+      "words": [
+        "rzęsa"
+      ]
+    },
+    {
+      "source": "image-gen-4(10).png",
+      "asset": "rzut.webp",
+      "words": [
+        "rzut",
+        "rzucić"
+      ]
+    },
+    {
+      "source": "image-gen-5(10).png",
+      "asset": "grzejnik.webp",
+      "words": [
+        "grzejnik",
+        "grzać",
+        "ogrzać"
+      ]
+    },
+    {
+      "source": "image-gen-6(9).png",
+      "asset": "drzwi.webp",
+      "words": [
+        "drzwi"
+      ]
+    },
+    {
+      "source": "image-gen-7(5).png",
+      "asset": "drzemka.webp",
+      "words": [
+        "drzemka"
+      ]
+    },
+    {
+      "source": "image-gen-8(5).png",
+      "asset": "trzmiel.webp",
+      "words": [
+        "trzmiel"
+      ]
+    },
+    {
+      "source": "image-gen-9(5).png",
+      "asset": "choinka.webp",
+      "words": [
+        "choinka"
+      ]
+    },
+    {
+      "source": "image-gen-10(4).png",
+      "asset": "chomik.webp",
+      "words": [
+        "chomik"
+      ]
+    },
+    {
+      "source": "image-gen-1(20260922-132920).png",
+      "asset": "glod.webp",
+      "words": [
+        "głód"
+      ]
+    },
+    {
+      "source": "image-gen-2(20260922-132924).png",
+      "asset": "prog.webp",
+      "words": [
+        "próg"
+      ]
+    },
+    {
+      "source": "image-gen-3(20260922-132929).png",
+      "asset": "wzor.webp",
+      "words": [
+        "wzór"
+      ]
+    },
+    {
+      "source": "image-gen-4(20260922-132933).png",
+      "asset": "gumka.webp",
+      "words": [
+        "gumka"
+      ]
+    },
+    {
+      "source": "image-gen-5(20260922-132937).png",
+      "asset": "muzyka.webp",
+      "words": [
+        "muzyka",
+        "utwór"
+      ]
+    },
+    {
+      "source": "image-gen-6(10).png",
+      "asset": "sufit.webp",
+      "words": [
+        "sufit"
+      ]
+    },
+    {
+      "source": "image-gen-7(6).png",
+      "asset": "szuflada.webp",
+      "words": [
+        "szuflada"
+      ]
+    },
+    {
+      "source": "image-gen-8(6).png",
+      "asset": "tuba.webp",
+      "words": [
+        "tuba"
+      ]
+    },
+    {
+      "source": "image-gen-9(6).png",
+      "asset": "tunel.webp",
+      "words": [
+        "tunel"
+      ]
+    },
+    {
+      "source": "image-gen-10(5).png",
+      "asset": "upominek.webp",
+      "words": [
+        "upominek"
+      ]
+    },
+    {
+      "source": "Grandma’s Secret Soup Recipe.png",
+      "asset": "sol.webp",
+      "words": [
+        "sól"
+      ],
+      "reuse": true
+    },
+    {
+      "source": "Joyful Hoop Chase in the Garden.png",
+      "asset": "kolko.webp",
+      "words": [
+        "kółko"
+      ],
+      "reuse": true
+    },
+    {
+      "source": "Listening to the Ocean by the Shore.png",
+      "asset": "muszla.webp",
+      "words": [
+        "muszla"
+      ],
+      "reuse": true
+    },
+    {
+      "source": "Little Girl Feeding Farmyard Chicks.png",
+      "asset": "kura.webp",
+      "words": [
+        "kura"
+      ],
+      "reuse": true
+    },
+    {
+      "source": "Magical Attic Box Adventure.png",
+      "asset": "pudelko.webp",
+      "words": [
+        "pudełko"
+      ],
+      "reuse": true
+    },
+    {
+      "source": "Sunrise Alarm Clock Chaos.png",
+      "asset": "budzik.webp",
+      "words": [
+        "budzik"
+      ],
+      "reuse": true
+    }
+  ]
+}

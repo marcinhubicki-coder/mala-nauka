@@ -1,0 +1,226 @@
+/* v40 — PWA polish: bezpieczne przejście status bara, rzeczywista ikona trybu i trwały licznik trafień. */
+
+/*
+  iOS potrafi malować status bar kolorem theme-color zamiast właściwym tłem strony.
+  Pierwszy kolor gradientu jest więc identyczny z theme-color, a właściwe tło
+  zaczyna się dopiero niżej — bez widocznej granicy.
+*/
+html {
+  background-color: #f5f8ff !important;
+  background-image:
+    linear-gradient(180deg, #f5f8ff 0%, #f5f8ff 7%, #f4f7fb 24%, #f4f7fb 100%) !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+  background-attachment: fixed !important;
+}
+body {
+  background: transparent !important;
+}
+body::before {
+  content: none !important;
+  display: none !important;
+}
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  top: max(52px, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  height: 38vh;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 18% 34%, rgba(135,153,255,.20), transparent 62%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 100%);
+}
+.app-shell {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+/* Ikona trybu jest rzeczywistym elementem DOM. Dzięki temu licznik jest jej
+   częścią i obraca się razem z kartą zamiast wisieć niezależnie obok niej. */
+.quiz-stage:not(.has-explainer) .question-label {
+  --mode-card-width: 92px;
+  --mode-card-height: 87px;
+  --mode-card-gap: 38px;
+  position: relative;
+}
+
+/* Wyłączamy dawny pseudo-element — ikonę tworzy score-badge-v38.js. */
+.quiz-stage:not(.has-explainer) .question-label::before {
+  content: none !important;
+  display: none !important;
+}
+
+.mode-icon-card {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: calc(100% + var(--mode-card-gap));
+  width: var(--mode-card-width);
+  height: var(--mode-card-height);
+  display: grid;
+  place-items: center;
+  border-radius: 29px;
+  border: 1px solid rgba(94,115,232,.18);
+  background: linear-gradient(145deg, rgba(232,236,255,.96), rgba(213,220,255,.90));
+  color: #5e73e8;
+  box-shadow: 0 13px 30px rgba(65,75,140,.16), inset 0 1px 0 rgba(255,255,255,.72);
+  transform: translateX(-50%) rotate(-7deg);
+  transform-origin: 50% 55%;
+  pointer-events: none;
+}
+
+.mode-icon-symbol {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 720;
+}
+
+/* Licznik poprawnych odpowiedzi. Jest dzieckiem obróconej ikony, więc dzieli
+   z nią dokładnie tę samą rotację. */
+.mode-score-badge {
+  position: absolute;
+  z-index: 4;
+  top: -12px;
+  right: -10px;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(181,190,255,.34);
+  background: linear-gradient(145deg, #8091ff, #6074e5);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(31,41,96,.34), inset 0 1px 0 rgba(255,255,255,.25);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.025em;
+  opacity: 0;
+  transform: scale(.45);
+  transform-origin: 50% 50%;
+  transition:
+    width .24s cubic-bezier(.22,.85,.28,1),
+    opacity .18s ease,
+    transform .28s cubic-bezier(.18,.88,.24,1.18);
+  pointer-events: none;
+  overflow: hidden;
+}
+.mode-score-badge.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.mode-score-badge.is-wide {
+  width: 43px;
+}
+.mode-score-badge.is-hundred {
+  width: 53px;
+  font-size: 13px;
+}
+.mode-score-badge.is-restored {
+  transition: none !important;
+}
+.mode-score-badge.is-bump {
+  animation: score-badge-bump .34s cubic-bezier(.2,.9,.28,1.18);
+}
+.mode-score-value {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: center;
+}
+.mode-score-value.is-counting {
+  animation: score-value-tick .30s cubic-bezier(.2,.78,.24,1);
+}
+@keyframes score-badge-bump {
+  0% { transform: scale(.94); }
+  58% { transform: scale(1.09); }
+  100% { transform: scale(1); }
+}
+@keyframes score-value-tick {
+  0% { opacity: .58; transform: translateY(5px); }
+  64% { opacity: 1; transform: translateY(-1px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Każda poprawna odpowiedź używa tego samego feedbacku i miejsca. */
+.quiz-stage[data-normal-geometry-locked="1"] {
+  --normal-feedback-height: 36px !important;
+}
+.quiz-stage .feedback.good {
+  font-size: 20px !important;
+  line-height: 1.15 !important;
+  font-weight: 820 !important;
+  letter-spacing: -.02em !important;
+  transform: translateY(16px) !important;
+}
+
+@media (max-height: 760px) {
+  .quiz-stage:not(.has-explainer) .question-label {
+    --mode-card-width: 81px;
+    --mode-card-height: 76px;
+    --mode-card-gap: 31px;
+  }
+  .mode-icon-card {
+    border-radius: 25px;
+  }
+  .mode-icon-symbol {
+    font-size: 49px;
+  }
+  .mode-score-badge {
+    top: -11px;
+    right: -9px;
+    width: 27px;
+    height: 27px;
+    font-size: 13px;
+  }
+  .mode-score-badge.is-wide { width: 40px; }
+  .mode-score-badge.is-hundred { width: 49px; font-size: 12px; }
+  .quiz-stage .feedback.good {
+    transform: translateY(10px) !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #182133 !important;
+    background-image:
+      linear-gradient(180deg,
+        #182133 0%,
+        #182133 7%,
+        #172034 16%,
+        #141b2a 31%,
+        #111722 52%,
+        #10151f 100%) !important;
+  }
+  body::after {
+    background: radial-gradient(ellipse at 18% 34%, rgba(91,111,220,.22), transparent 62%);
+  }
+  .mode-icon-card {
+    border-color: rgba(123,143,255,.24);
+    background: linear-gradient(145deg, rgba(58,68,108,.96), rgba(38,46,77,.96));
+    color: #a8b5ff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.07);
+  }
+  .mode-score-badge {
+    border-color: rgba(183,192,255,.30);
+    background: linear-gradient(145deg, #7f90ff, #5f72df);
+    box-shadow: 0 8px 20px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-score-badge,
+  .mode-score-value {
+    transition: none !important;
+    animation: none !important;
+  }
+}

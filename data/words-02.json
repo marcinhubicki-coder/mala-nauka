@@ -8,7 +8,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na a",
+      "explanation": "W słowie „skrót” pomaga forma lub wyraz „skracać”: ó wymienia się na a.",
+      "examples": [
+        {
+          "from": "skrót",
+          "to": "skracać",
+          "change": "ó ↔ a"
+        }
+      ],
+      "relatedWords": [
+        "skracać",
+        "skrócić"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: skrót",
+          "url": "https://sjp.pwn.pl/szukaj/skr%C3%B3t.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "obrót",
@@ -22,7 +49,34 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na a",
+      "explanation": "W słowie „obrót” pomaga forma lub wyraz „obracać”: ó wymienia się na a.",
+      "examples": [
+        {
+          "from": "obrót",
+          "to": "obracać",
+          "change": "ó ↔ a"
+        }
+      ],
+      "relatedWords": [
+        "obracać",
+        "obrócić"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: obrót",
+          "url": "https://sjp.pwn.pl/szukaj/obr%C3%B3t.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "powrót",
@@ -33,7 +87,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na a",
+      "explanation": "W słowie „powrót” pomaga forma lub wyraz „wracać”: ó wymienia się na a.",
+      "examples": [
+        {
+          "from": "powrót",
+          "to": "wracać",
+          "change": "ó ↔ a"
+        }
+      ],
+      "relatedWords": [
+        "wracać",
+        "powrócić"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: powrót",
+          "url": "https://sjp.pwn.pl/szukaj/powr%C3%B3t.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "wybór",
@@ -44,7 +125,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na e",
+      "explanation": "W słowie „wybór” pomaga forma lub wyraz „wybierać”: ó wymienia się na e.",
+      "examples": [
+        {
+          "from": "wybór",
+          "to": "wybierać",
+          "change": "ó ↔ e"
+        }
+      ],
+      "relatedWords": [
+        "wybierać",
+        "wybrać"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: wybór",
+          "url": "https://sjp.pwn.pl/szukaj/wyb%C3%B3r.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "zbiór",
@@ -55,7 +163,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na e",
+      "explanation": "W słowie „zbiór” pomaga forma lub wyraz „zbierać”: ó wymienia się na e.",
+      "examples": [
+        {
+          "from": "zbiór",
+          "to": "zbierać",
+          "change": "ó ↔ e"
+        }
+      ],
+      "relatedWords": [
+        "zbierać",
+        "zbiórka"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: zbiór",
+          "url": "https://sjp.pwn.pl/szukaj/zbi%C3%B3r.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "utwór",
@@ -66,7 +201,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "W słowie „utwór” pomaga forma lub wyraz „tworzyć”: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "utwór",
+          "to": "tworzyć",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "tworzyć",
+        "twórca"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: utwór",
+          "url": "https://sjp.pwn.pl/szukaj/utw%C3%B3r.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "twórca",
@@ -77,7 +239,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "W słowie „twórca” pomaga forma lub wyraz „tworzyć”: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "twórca",
+          "to": "tworzyć",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "tworzyć",
+        "utwór"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: twórca",
+          "url": "https://sjp.pwn.pl/szukaj/tw%C3%B3rca.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "szczegół",
@@ -88,7 +277,25 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Słowo „szczegół” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: szczegół",
+          "url": "https://sjp.pwn.pl/szukaj/szczeg%C3%B3%C5%82.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ogół",
@@ -99,7 +306,25 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Słowo „ogół” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ogół",
+          "url": "https://sjp.pwn.pl/szukaj/og%C3%B3%C5%82.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "wspólny",
@@ -110,7 +335,25 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Słowo „wspólny” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: wspólny",
+          "url": "https://sjp.pwn.pl/szukaj/wsp%C3%B3lny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "główny",
@@ -121,7 +364,25 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Słowo „główny” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: główny",
+          "url": "https://sjp.pwn.pl/szukaj/g%C5%82%C3%B3wny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "głód",
@@ -135,7 +396,34 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "W słowie „głód” pomaga forma lub wyraz „głodny”: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "głód",
+          "to": "głodny",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "głodny",
+        "głodować"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: głód",
+          "url": "https://sjp.pwn.pl/szukaj/g%C5%82%C3%B3d.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "próg",
@@ -146,7 +434,33 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "W słowie „próg” pomaga forma lub wyraz „progi”: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "próg",
+          "to": "progi",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "progi"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: próg",
+          "url": "https://sjp.pwn.pl/szukaj/pr%C3%B3g.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "wzór",
@@ -157,7 +471,34 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "W słowie „wzór” pomaga forma lub wyraz „wzory”: ó wymienia się na o.",
+      "examples": [
+        {
+          "from": "wzór",
+          "to": "wzory",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "wzory",
+        "wzorować"
+      ],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: wzór",
+          "url": "https://sjp.pwn.pl/szukaj/wz%C3%B3r.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kłótnia",
@@ -168,7 +509,25 @@
       "ó"
     ],
     "answer": "ó",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Słowo „kłótnia” zapisujemy przez ó. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kłótnia",
+          "url": "https://sjp.pwn.pl/szukaj/k%C5%82%C3%B3tnia.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "buty",
@@ -182,7 +541,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „buty” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: buty",
+          "url": "https://sjp.pwn.pl/szukaj/buty.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "cukier",
@@ -196,7 +573,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „cukier” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: cukier",
+          "url": "https://sjp.pwn.pl/szukaj/cukier.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kura",
@@ -207,7 +602,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „kura” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kura",
+          "url": "https://sjp.pwn.pl/szukaj/kura.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kubek",
@@ -218,7 +631,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „kubek” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kubek",
+          "url": "https://sjp.pwn.pl/szukaj/kubek.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kula",
@@ -232,7 +663,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „kula” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kula",
+          "url": "https://sjp.pwn.pl/szukaj/kula.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ulica",
@@ -246,7 +695,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „ulica” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ulica",
+          "url": "https://sjp.pwn.pl/szukaj/ulica.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ubranie",
@@ -257,7 +724,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „ubranie” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ubranie",
+          "url": "https://sjp.pwn.pl/szukaj/ubranie.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "uczeń",
@@ -271,7 +756,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „uczeń” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: uczeń",
+          "url": "https://sjp.pwn.pl/szukaj/ucze%C5%84.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "uczennica",
@@ -282,7 +785,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „uczennica” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: uczennica",
+          "url": "https://sjp.pwn.pl/szukaj/uczennica.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "urząd",
@@ -293,7 +814,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „urząd” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: urząd",
+          "url": "https://sjp.pwn.pl/szukaj/urz%C4%85d.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "urlop",
@@ -304,7 +843,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „urlop” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: urlop",
+          "url": "https://sjp.pwn.pl/szukaj/urlop.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "urodziny",
@@ -318,7 +875,25 @@
     "difficulty": 2,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „urodziny” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: urodziny",
+          "url": "https://sjp.pwn.pl/szukaj/urodziny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "uśmiech",
@@ -329,7 +904,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „uśmiech” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: uśmiech",
+          "url": "https://sjp.pwn.pl/szukaj/u%C5%9Bmiech.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "umyć",
@@ -340,7 +933,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „umyć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: umyć",
+          "url": "https://sjp.pwn.pl/szukaj/umy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "umieć",
@@ -354,7 +965,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „umieć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: umieć",
+          "url": "https://sjp.pwn.pl/szukaj/umie%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "uszy",
@@ -365,7 +994,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „uszy” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: uszy",
+          "url": "https://sjp.pwn.pl/szukaj/uszy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ulewa",
@@ -376,7 +1023,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „ulewa” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ulewa",
+          "url": "https://sjp.pwn.pl/szukaj/ulewa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "układ",
@@ -387,7 +1052,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „układ” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: układ",
+          "url": "https://sjp.pwn.pl/szukaj/uk%C5%82ad.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ukryć",
@@ -398,7 +1081,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „ukryć” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ukryć",
+          "url": "https://sjp.pwn.pl/szukaj/ukry%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ugotować",
@@ -409,7 +1110,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "pattern",
+      "title": "U na początku wyrazu",
+      "explanation": "Słowo „ugotować” zaczynamy literą u. Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ugotować",
+          "url": "https://sjp.pwn.pl/szukaj/ugotowa%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "buda",
@@ -420,7 +1139,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „buda” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: buda",
+          "url": "https://sjp.pwn.pl/szukaj/buda.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "budzik",
@@ -431,7 +1168,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „budzik” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: budzik",
+          "url": "https://sjp.pwn.pl/szukaj/budzik.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "burak",
@@ -442,7 +1197,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „burak” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: burak",
+          "url": "https://sjp.pwn.pl/szukaj/burak.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "murawa",
@@ -453,7 +1226,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „murawa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: murawa",
+          "url": "https://sjp.pwn.pl/szukaj/murawa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "duży",
@@ -467,7 +1258,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „duży” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: duży",
+          "url": "https://sjp.pwn.pl/szukaj/du%C5%BCy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "drugi",
@@ -478,7 +1287,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „drugi” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: drugi",
+          "url": "https://sjp.pwn.pl/szukaj/drugi.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "gruby",
@@ -489,7 +1316,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „gruby” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: gruby",
+          "url": "https://sjp.pwn.pl/szukaj/gruby.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "grupa",
@@ -500,7 +1345,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „grupa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: grupa",
+          "url": "https://sjp.pwn.pl/szukaj/grupa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "gumka",
@@ -511,7 +1374,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „gumka” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: gumka",
+          "url": "https://sjp.pwn.pl/szukaj/gumka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "muszla",
@@ -522,7 +1403,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „muszla” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: muszla",
+          "url": "https://sjp.pwn.pl/szukaj/muszla.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "nuty",
@@ -533,7 +1432,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „nuty” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: nuty",
+          "url": "https://sjp.pwn.pl/szukaj/nuty.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kupić",
@@ -544,7 +1461,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „kupić” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kupić",
+          "url": "https://sjp.pwn.pl/szukaj/kupi%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "kurtka",
@@ -558,7 +1493,25 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „kurtka” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: kurtka",
+          "url": "https://sjp.pwn.pl/szukaj/kurtka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "ludzie",
@@ -569,7 +1522,25 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „ludzie” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: ludzie",
+          "url": "https://sjp.pwn.pl/szukaj/ludzie.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   },
   {
     "word": "lupa",
@@ -580,6 +1551,24 @@
       "ó"
     ],
     "answer": "u",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Słowo „lupa” zapisujemy przez u. Jeśli nie pomaga prosta reguła lub wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": [
+        {
+          "label": "SJP PWN: lupa",
+          "url": "https://sjp.pwn.pl/szukaj/lupa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni ó i u",
+          "url": "https://zpe.gov.pl/a/diabel-tkwi-w-szczegolach-czyli-o-o-i-u/DPlPKAhjA"
+        }
+      ]
+    }
   }
 ]

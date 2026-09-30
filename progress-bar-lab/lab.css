@@ -41,7 +41,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,.progress-track:
     linear-gradient(var(--fill-angle),
       hsl(var(--fill-hue) var(--fill-saturation) calc(var(--fill-lightness) - 5%)),
       hsl(calc(var(--fill-hue) + var(--fill-hue-shift)) var(--fill-saturation) calc(var(--fill-lightness) + 5%)) 58%,
-      hsl(calc(var(--fill-hue) + var(--fill-hue-shift) * .45) calc(var(--fill-saturation) - 5%) calc(var(--fill-lightness) + 11%)) 100%);
+      hsl(calc(var(--fill-hue) + var(--fill-hue-shift)) calc(var(--fill-saturation) - 5%) calc(var(--fill-lightness) + 11%)) 100%);
   filter:brightness(var(--fill-brightness));
   box-shadow:
     0 var(--shadow-y) var(--shadow-blur) rgba(164,49,105,var(--shadow-alpha)),

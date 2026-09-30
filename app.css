@@ -189,13 +189,13 @@ html:has(#app[data-view="results"][data-mode="spelling"]),body:has(#app[data-vie
 .progress-particles{position:absolute;z-index:4;right:0;top:50%;width:1px;height:1px;pointer-events:none;overflow:visible}
 .progress-particles i{
  position:absolute;left:0;top:0;width:calc(var(--particle-size) * var(--result-u));height:calc(var(--particle-size) * var(--result-u));
- margin:calc(var(--particle-size) * var(--result-u) / -2) 0 0;border-radius:50%;
+ margin:0;border-radius:50%;
  background:rgba(255,215,89,var(--particle-alpha,.592));box-shadow:0 0 calc(7 * var(--result-u)) rgba(255,195,40,.45);
- opacity:0;transform:translate(0,0) scale(.3)
+ opacity:0;transform:translate(-50%,-50%) scale(.3)
 }
 .progress-particles i:nth-child(3n+1){border-radius:0;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
 .result-v4.progress-complete .progress-particles i{animation:progress-particle-burst var(--particle-ms,950ms) cubic-bezier(.15,.7,.2,1) forwards}
-@keyframes progress-particle-burst{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}18%{opacity:1}100%{opacity:0;transform:translate(calc(var(--particle-x) * var(--result-u)),calc(var(--particle-y) * var(--result-u))) scale(1) rotate(24deg)}}22%{opacity:.62}100%{opacity:0;transform:translate(calc(-50% + var(--particle-x) * var(--result-u)),calc(-50% + var(--particle-y) * var(--result-u))) scale(.9) rotate(24deg)}}
+@keyframes progress-particle-burst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(0)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--particle-x) * var(--result-u)),calc(-50% + var(--particle-y) * var(--result-u))) scale(1) rotate(24deg)}}22%{opacity:.62}100%{opacity:0;transform:translate(calc(-50% + var(--particle-x) * var(--result-u)),calc(-50% + var(--particle-y) * var(--result-u))) scale(.9) rotate(24deg)}}
 .round-score strong .result-count{font:inherit}.result-count{position:relative;display:inline-block}
 .result-counting{position:relative;color:transparent!important}.result-count-handoff{color:var(--count-color)!important}
 .result-v4 .result-counting>.result-number-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:inherit;color:var(--count-color);line-height:inherit;white-space:nowrap}

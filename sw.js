@@ -1,9 +1,9 @@
-const CACHE='mala-nauka-v109-wizard-retina-20261001';
+const CACHE='mala-nauka-v110-wizard-retina-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   "./ortografia/wizard-preview.html",
-  "./ortografia/wizard-retina.css?v=2",
+  "./ortografia/wizard-retina.css?v=3",
   "./ortografia/wizard-preview-frame.html",
   "./assets/ortografia/wizard-sky-retina-v1.webp",
   "./assets/ortografia/wizard-mission-retina-v1.webp",

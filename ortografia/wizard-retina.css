@@ -74,9 +74,9 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-control { width:108px;flex-basis:108px;height:42px;border-color:#d2e2ff;border-radius:22px;background:linear-gradient(140deg,#fff,#eaf0ff); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-knob { border-color:#ff77b5;border-radius:20px;background:linear-gradient(#ff78b6,#ff2390);box-shadow:0 2px 3px #b7206e22; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-knob::before { content:"";position:absolute;left:1px;top:1px;width:26px;height:26px;border-radius:50%;background:linear-gradient(130deg,#fff,#ffe4f2);box-shadow:1px 2px 3px #b81d6c33; }
-#app[data-mode="spelling"][data-view="wizard"] .spelling-round-section legend { float:left;width:auto; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-round-section legend { float:left;width:auto;margin-bottom:calc(11 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-round-section > .jelly-v4-buffer:has(.spelling-limit-mode) { float:right;width:calc(150 * var(--wizard-u)); }
-#app[data-mode="spelling"][data-view="wizard"] .spelling-round-section > .jelly-v4-buffer:has([data-round-options]) { clear:both; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-round-section > .jelly-v4-buffer:has([data-round-options]) { clear:both;padding-top:0; }
 #app[data-mode="spelling"][data-view="wizard"] .jelly-v4-buffer:has(>[data-round-options][hidden]) { display:none; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode { grid-template-columns:1fr 1fr;height:calc(31 * var(--wizard-u));width:100%;margin:0;box-shadow:0 0 0 calc(2 * var(--wizard-u)) #e0f5ffcc;border-radius:calc(14 * var(--wizard-u))!important; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode .jelly-v4-indicator { border-radius:calc(11 * var(--wizard-u))!important; }

@@ -1,0 +1,95 @@
+/* Mockup canvas: the landscape bleeds beneath both iOS safe areas.
+   All sizing follows the shared viewport; jelly motion stays in jelly-v4. */
+html:has(#app[data-view="wizard"][data-mode="spelling"]),
+body:has(#app[data-view="wizard"][data-mode="spelling"]) {
+  background:#70d1f3 url('../assets/ortografia/wizard-sky-retina-v1.webp') center / cover no-repeat;
+}
+body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none; }
+#app[data-mode="spelling"][data-view="wizard"] {
+  --wizard-safe-top:var(--app-safe-top,env(safe-area-inset-top,0px));
+  --wizard-safe-bottom:var(--app-safe-bottom,env(safe-area-inset-bottom,0px));
+  --wizard-u:min(calc(100vw / 390),calc(480px / 390),calc((var(--app-viewport-height,100dvh) - var(--wizard-safe-top) - var(--wizard-safe-bottom)) / 755));
+  --accent:#ff168b;
+  --jelly-active-ink:#fff;
+  --jelly-idle-ink:#515c98;
+  --jelly-top:#ff72b3;
+  --jelly-bottom:#ff168b;
+  --jelly-border-color:#f34498;
+  --jelly-shadow:rgba(169,40,93,.22);
+  display:block;
+  width:100%;max-width:none;margin:0;padding:0!important;
+  overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
+  color:#09043f;font-family:ResultBody,ui-rounded,sans-serif;
+  background:transparent;
+}
+#app[data-mode="spelling"][data-view="wizard"]::-webkit-scrollbar { display:none; }
+.spelling-wizard-canvas {
+  width:calc(390 * var(--wizard-u));max-width:100%;margin:0 auto;
+  padding:max(calc(47 * var(--wizard-u)),var(--wizard-safe-top)) calc(14 * var(--wizard-u)) max(calc(26 * var(--wizard-u)),var(--wizard-safe-bottom));
+}
+#app[data-mode="spelling"][data-view="wizard"] .page-head { height:calc(43 * var(--wizard-u));gap:calc(13 * var(--wizard-u));margin:0 0 calc(21 * var(--wizard-u));padding-left:calc(6 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .page-head h1 { color:#09043f;font-family:ResultDisplay,ui-rounded,sans-serif;font-size:calc(25 * var(--wizard-u));font-weight:700;letter-spacing:calc(-.8 * var(--wizard-u));line-height:1.1; }
+#app[data-mode="spelling"][data-view="wizard"] .page-head .icon { width:calc(43 * var(--wizard-u));height:calc(43 * var(--wizard-u));min-width:38px;min-height:38px;border:1px solid #ffffffdf;border-radius:calc(16 * var(--wizard-u));background:linear-gradient(140deg,#fff,#f8fcff);color:#09043f;font-size:calc(30 * var(--wizard-u));box-shadow:0 calc(5 * var(--wizard-u)) calc(10 * var(--wizard-u)) #2672ae1a; }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-intro {
+  position:relative;isolation:isolate;height:calc(94 * var(--wizard-u));
+  padding:0;margin:0 0 calc(17 * var(--wizard-u));border-radius:calc(24 * var(--wizard-u));background:transparent;
+}
+.spelling-mission-art { position:absolute;z-index:-1;left:0;bottom:0;display:block;width:100%;height:auto;pointer-events:none;user-select:none; }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-intro > div { width:calc(154 * var(--wizard-u));margin-left:calc(92 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-intro h2 { font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(20 * var(--wizard-u));font-weight:800;color:#09043f;letter-spacing:calc(-.25 * var(--wizard-u));white-space:nowrap; }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-intro p { font-size:calc(12.8 * var(--wizard-u));color:#3c458b;margin-top:calc(5 * var(--wizard-u));white-space:nowrap; }
+#app[data-mode="spelling"][data-view="wizard"] .setup-form { margin:0; }
+#app[data-mode="spelling"][data-view="wizard"] .setup-card.spelling-wizard-v2 {
+  border:calc(2 * var(--wizard-u)) solid #ffffffed;border-radius:calc(27 * var(--wizard-u));
+  padding:calc(13 * var(--wizard-u)) calc(18 * var(--wizard-u)) calc(20 * var(--wizard-u));
+  background:linear-gradient(130deg,#fffffff5,#ffffffec 56%,#f9fdfff5);
+  box-shadow:inset 0 0 calc(13 * var(--wizard-u)) #cde9ff8c,0 calc(7 * var(--wizard-u)) calc(15 * var(--wizard-u)) #267ca518;
+}
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-section + .spelling-v2-section { margin-top:calc(18 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-section legend {
+  height:calc(31 * var(--wizard-u));gap:calc(8 * var(--wizard-u));margin-bottom:calc(8 * var(--wizard-u));
+  font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(19.8 * var(--wizard-u));font-weight:800;color:#09043f;line-height:1.1;letter-spacing:calc(-.25 * var(--wizard-u));
+}
+#app[data-mode="spelling"][data-view="wizard"] .step-dot { flex:none;width:calc(31 * var(--wizard-u));height:calc(31 * var(--wizard-u));border-radius:50%;font-family:ResultBody,sans-serif;font-size:calc(19 * var(--wizard-u));font-weight:950;color:#0061d4;background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);border:1px solid #d2f3ff;box-shadow:inset 0 0 calc(5 * var(--wizard-u)) #ffffffba; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-segmented {
+  height:calc(54 * var(--wizard-u));min-height:0;
+  border:calc(1 * var(--wizard-u)) solid #cbe5ff;
+  border-radius:calc(21 * var(--wizard-u))!important;
+  background:linear-gradient(155deg,#fff 0%,#edf4ff 80%,#e8f1ff);
+  box-shadow:0 0 0 calc(4 * var(--wizard-u)) #e0f5ffcc,inset 0 calc(1 * var(--wizard-u)) calc(3 * var(--wizard-u)) #fff,0 calc(4 * var(--wizard-u)) calc(7 * var(--wizard-u)) #3670bc12;
+}
+#app[data-mode="spelling"][data-view="wizard"] .jelly-v4-indicator {
+  border-radius:calc(18 * var(--wizard-u))!important;
+  background:linear-gradient(180deg,#ff8ec2 0%,#ff52a3 30%,#ff148a 79%,#f72390 100%)!important;
+  box-shadow:0 calc(3 * var(--wizard-u)) calc(5 * var(--wizard-u)) #8c164e38,inset 0 calc(2 * var(--wizard-u)) calc(2 * var(--wizard-u)) #ffedf7,inset 0 calc(-3 * var(--wizard-u)) calc(3 * var(--wizard-u)) #b6006338!important;
+}
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-choice span,
+#app[data-mode="spelling"][data-view="wizard"] .spelling-time-choice span { font-family:"Home Rounded",ResultBody,sans-serif;font-weight:800;font-size:calc(16.8 * var(--wizard-u));color:#515c98;line-height:1; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-level-grid .spelling-v2-choice span,
+#app[data-mode="spelling"][data-view="wizard"] .spelling-time-choice span { font-size:calc(15.2 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-toggle { margin-top:calc(12 * var(--wizard-u));gap:calc(10 * var(--wizard-u));min-height:calc(42 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy { color:#09043f;gap:calc(3 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy strong { font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(16.8 * var(--wizard-u));font-weight:800; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy small { font-size:calc(11.7 * var(--wizard-u));color:#6a73af; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-control { width:108px;flex-basis:108px;height:42px;border-color:#d2e2ff;border-radius:22px;background:linear-gradient(140deg,#fff,#eaf0ff); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-knob { border-color:#ff77b5;border-radius:20px;background:linear-gradient(#ff78b6,#ff2390);box-shadow:0 2px 3px #b7206e22; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-knob::before { content:"";position:absolute;left:1px;top:1px;width:26px;height:26px;border-radius:50%;background:linear-gradient(130deg,#fff,#ffe4f2);box-shadow:1px 2px 3px #b81d6c33; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode { grid-template-columns:1fr 1fr;height:calc(27 * var(--wizard-u));width:calc(170 * var(--wizard-u));margin:0 0 calc(9 * var(--wizard-u)) auto;box-shadow:0 0 0 calc(2 * var(--wizard-u)) #e0f5ffcc;border-radius:calc(14 * var(--wizard-u))!important; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode .jelly-v4-indicator { border-radius:calc(11 * var(--wizard-u))!important; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode .spelling-v2-choice span { font-size:calc(11.5 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] [data-round-options][hidden] { display:none!important; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-time-copy { color:#fff;font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(17 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-note { margin:calc(15 * var(--wizard-u)) 0 calc(13 * var(--wizard-u));font-size:calc(12 * var(--wizard-u));line-height:1.4;white-space:nowrap;color:#3c4c8b; }
+#app[data-mode="spelling"][data-view="wizard"] .start-button {
+  position:relative;isolation:isolate;height:calc(71 * var(--wizard-u));min-height:0;padding:0 calc(25 * var(--wizard-u));border:calc(2 * var(--wizard-u)) solid #ffa6cf;border-radius:calc(34 * var(--wizard-u));
+  font-family:"Home Rounded",ResultBody,sans-serif;font-weight:800;font-size:calc(30 * var(--wizard-u));line-height:1;color:#fff;
+  background:linear-gradient(165deg,#ff6dae,#ff218f 57%,#ff3095);
+  box-shadow:0 calc(4 * var(--wizard-u)) 0 #be287d,0 calc(7 * var(--wizard-u)) 0 #ffd0e8,inset 0 calc(2 * var(--wizard-u)) calc(3 * var(--wizard-u)) #ffd3e6,inset 0 calc(-5 * var(--wizard-u)) calc(5 * var(--wizard-u)) #d0157d55;
+}
+#app[data-mode="spelling"][data-view="wizard"] .start-button::before { content:"";position:absolute;left:calc(9 * var(--wizard-u));top:calc(5 * var(--wizard-u));width:calc(20 * var(--wizard-u));height:calc(10 * var(--wizard-u));border-radius:50%;transform:rotate(-30deg);background:linear-gradient(#fff,#ffffffa6);pointer-events:none; }
+#app[data-mode="spelling"][data-view="wizard"] .start-button::after { content:"";position:absolute;right:calc(14 * var(--wizard-u));top:calc(4 * var(--wizard-u));width:calc(15 * var(--wizard-u));height:calc(7 * var(--wizard-u));border-radius:50%;transform:rotate(32deg);background:#ffffff74;pointer-events:none; }
+#app[data-mode="spelling"][data-view="wizard"] .start-button:disabled { opacity:.6; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-category-grid { background:#edf6ff;border-color:#d2eaff; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-category-chip input:checked + span { color:#fff;background:linear-gradient(#ff78b6,#ff2390);border-color:#ff6dad; }
+#app[data-mode="spelling"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus,
+#app[data-mode="spelling"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus-visible { outline:none!important; }

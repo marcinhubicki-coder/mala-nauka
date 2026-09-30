@@ -3,6 +3,7 @@ import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs?v=3';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';
 import { filterSpellingPreview } from './spelling/preview.mjs?v=23-art-library';
+import { cleanRoundSettings } from './spelling/round.mjs?v=1';
 
 export const MODES = {
  spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Podstawowe','Trudne']},
@@ -69,7 +70,7 @@ export function cleanConfig(mode, value) {
   const raw=String(value?.category??'all'),parts=raw==='all'?[]:raw.split(','),selected=CATEGORIES.filter(id=>parts.includes(id));
   const category=!selected.length||selected.length===CATEGORIES.length?'all':selected.join(',');
   const rawDifficulty=Number(value?.difficulty),difficulty=rawDifficulty===3?2:[0,1,2].includes(rawDifficulty)?rawDifficulty:0;
-  return {category,difficulty,duration,dyktando:value?.dyktando===true};
+  return {category,difficulty,duration,dyktando:value?.dyktando===true,...cleanRoundSettings(value)};
  }
  if(mode==='flags'){
   const parsed=parseFlagCategory(value?.category);

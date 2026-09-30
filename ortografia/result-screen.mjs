@@ -1,5 +1,6 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=1';
+import { spellingRoundLabel } from '../spelling/round.mjs?v=1';
 
 const resultContexts = new WeakMap();
 
@@ -48,7 +49,7 @@ export function renderSpellingResult(root, result, words = [], ui = null) {
   const eyebrow = result.early ? 'Runda zakończona wcześniej' : 'Przygoda ukończona';
   const heading = total ? 'Dobra robota!' : 'Na dziś wystarczy!';
   const intro = total ? (result.early ? 'To, co już zrobione, też się liczy. Zobacz, co dziś było pewne i do czego warto wrócić.' : 'Mały trening, kolejny krok do przodu.') : 'Nie zdążyliśmy jeszcze przećwiczyć słowa. Wróć, kiedy będziesz mieć ochotę.';
-  const modeLabel = 'Ortografia · ' + (result.dyktando ? 'Dyktando' : result.duration / 60 + ' min');
+  const modeLabel = 'Ortografia · ' + spellingRoundLabel(result);
   const reviewPanel = review.length
     ? '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review"><div class="result-detail-head"><div><strong>Tu były małe potknięcia</strong><p>Zapamiętaj poprawną formę.</p></div><span aria-hidden="true">' + returnArrow + '</span></div>' + resultRows(review, '') + '</section>'
     : '<section id="result-detail-review" class="result-detail is-retained is-congrats" data-result-panel="review"><div class="result-detail-head"><div><strong>' + (total ? 'Dziś bez potknięć!' : 'Jeszcze wszystko przed nami') + '</strong><p>' + (total ? 'Świetnie — nie ma nic do powtórki.' : 'Wróć, kiedy będziesz mieć ochotę.') + '</p></div><span aria-hidden="true">' + check + '</span></div><div class="result-congrats"><span aria-hidden="true">' + check + '</span><p>' + (total ? 'Wrócimy do tych słów później, żeby sprawdzić, co zostało w pamięci.' : 'Każda próba to krok do przodu.') + '</p></div></section>';

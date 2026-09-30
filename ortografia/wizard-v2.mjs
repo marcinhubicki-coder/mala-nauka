@@ -1,4 +1,5 @@
 import { createJellyV4 } from '../shared/jelly-v4.mjs?v=2';
+import { WORD_LIMITS, cleanRoundSettings } from '../spelling/round.mjs?v=1';
 
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.spellingWizardV2';
@@ -36,11 +37,11 @@ function readState(fallback){
    const categories=categoriesOr(saved.categories??saved.category,fallbackCategories);
    const previousCategories=categoriesOr(saved.previousCategories,categories.length<ALL_CATEGORY_IDS.length?categories:fallbackCategories);
    const scope=saved.scope==='categories'&&categories.length<ALL_CATEGORY_IDS.length?'categories':'all';
-   return {scope,categories,previousCategories,difficulty:spellingDifficulty(saved.difficulty,spellingDifficulty(fallback.difficulty,0)),duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration,dyktando:saved.dyktando===true};
+   return {scope,categories,previousCategories,difficulty:spellingDifficulty(saved.difficulty,spellingDifficulty(fallback.difficulty,0)),duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration,dyktando:saved.dyktando===true,...cleanRoundSettings(saved)};
   }
  }catch{}
  const categories=fallback.category==='all'?fallbackCategories:categoriesOr(fallback.category,fallbackCategories);
- return {scope:fallback.category==='all'?'all':'categories',categories,previousCategories:[...categories],difficulty:spellingDifficulty(fallback.difficulty,0),duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180,dyktando:false};
+ return {scope:fallback.category==='all'?'all':'categories',categories,previousCategories:[...categories],difficulty:spellingDifficulty(fallback.difficulty,0),duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180,dyktando:false,...cleanRoundSettings(fallback)};
 }
 
 function saveState(){
@@ -74,6 +75,22 @@ function durationChoices(){
  return indicator()+DURATIONS.map(seconds=>
   '<label class="spelling-time-choice"><input type="radio" name="duration" value="'+seconds+'" '+(state.duration===seconds?'checked':'')+'><span>'+(seconds/60)+' min</span></label>'
  ).join('');
+}
+function countChoices(){
+ return indicator()+WORD_LIMITS.map(count=>'<label class="spelling-time-choice"><input type="radio" name="wordLimit" value="'+count+'" '+(state.wordLimit===count?'checked':'')+'><span>'+count+' słów</span></label>').join('');
+}
+function limitChoices(){
+ return '<div class="spelling-limit-mode spelling-segmented" data-segmented="limit" role="radiogroup" aria-label="Koniec rundy">'+indicator()+
+  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="time" '+(state.limitMode==='time'?'checked':'')+'><span>Czas</span></label>'+
+  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="count" '+(state.limitMode==='count'?'checked':'')+'><span>Liczba słów</span></label></div>';
+}
+function syncRoundChoice(){
+ root.querySelectorAll('[data-round-options]').forEach(container=>{
+  const active=container.dataset.roundOptions===state.limitMode;
+  container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
+ });
+ const note=root.querySelector('.wizard-note');
+ if(note)note.textContent=state.dyktando?'80 słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
 
 function segmentGeometry(container,index){
@@ -147,15 +164,17 @@ function activeIndexFor(container){
  if(type==='scope')return state.scope==='categories'?1:0;
  if(type==='level')return Math.max(0,LEVELS.findIndex(([v])=>v===state.difficulty));
  if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
+ if(type==='count')return Math.max(0,WORD_LIMITS.indexOf(state.wordLimit));
+ if(type==='limit')return state.limitMode==='count'?1:0;
  return 0;
 }
 function syncTimeMode(container,animate=false){
  if(!container||!container.offsetWidth||!container.offsetHeight)return;
- const index=Math.max(0,DURATIONS.indexOf(state.duration));
+ const index=activeIndexFor(container);
  const indicatorNode=jellyV4.ensurePrepared(container,index);if(!indicatorNode)return;
  const wasDyktando=container.classList.contains('is-dyktando');
  container.classList.toggle('is-dyktando',state.dyktando);
- container.querySelectorAll('input[name="duration"]').forEach(input=>{input.disabled=state.dyktando;});
+ container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
 
  if(!state.dyktando && !wasDyktando){
   jellyV4.update(container,index,{animate});return;
@@ -190,7 +209,7 @@ function syncTimeMode(container,animate=false){
 function syncSegments(animate=false){
  root.querySelectorAll('.spelling-segmented').forEach(container=>{
   if(!container.offsetWidth||!container.offsetHeight)return;
-  if(container.dataset.segmented==='time'){syncTimeMode(container,animate);return;}
+  if(['time','count'].includes(container.dataset.segmented)){syncTimeMode(container,animate);return;}
   updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
  });
 }
@@ -206,7 +225,7 @@ function setupDrag(container){
  if(!container||container.dataset.jellyV4DragReady==='true')return;
  jellyV4.setupDrag(container,{
   getActiveIndex:()=>activeIndexFor(container),
-  canDrag:()=>!(container.dataset.segmented==='time'&&state?.dyktando),
+  canDrag:()=>!(['time','count'].includes(container.dataset.segmented)&&state?.dyktando),
   commitIndex:index=>{
    const list=[...container.querySelectorAll(':scope > label')];
    const input=list[index]?.querySelector('input');
@@ -219,7 +238,7 @@ function installDrag(){root.querySelectorAll('.spelling-segmented').forEach(setu
 
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');if(!button)return;
- const next=state.dyktando?'super, dasz radę!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
+ const next=state.dyktando?'Super, dasz radę!':state.limitMode==='count'?'Zaczynamy misję!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
  if(!copy){button.innerHTML='<span data-start-copy></span><span aria-hidden="true">→</span>';copy=button.querySelector('[data-start-copy]');}
  if(copy.textContent!==next){copy.textContent=next;if(animate){button.classList.remove('spelling-start-pop');void button.offsetWidth;button.classList.add('spelling-start-pop');}}
 }
@@ -228,7 +247,7 @@ function syncPanel(animate=false){
  if(panel){panel.classList.toggle('is-open',open);panel.setAttribute('aria-hidden',open?'false':'true');}
  root.querySelectorAll('input[name="spellingScope"]').forEach(input=>{input.checked=input.value===state.scope;});
  root.querySelectorAll('input[name="spellingCategory"]').forEach(input=>{input.checked=state.categories.includes(input.value);});
- syncSegments(animate);
+ syncRoundChoice();syncSegments(animate);
 }
 function syncHidden(dispatch=true){
  const category=root.querySelector('input[name="category"]'),dyktando=root.querySelector('input[name="dyktando"]');if(!category)return;
@@ -249,7 +268,13 @@ function install(){
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
    '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div></fieldset>'+
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div>'+dictationChoice()+'</fieldset>'+
-  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">3</span>Jak długo dasz radę?</legend><div class="spelling-time-segmented spelling-segmented" data-segmented="time">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">ćwiczymy dyktando!</span></div></fieldset>';
+  '<fieldset class="spelling-v2-section spelling-round-section"><legend><span class="step-dot">3</span>Ustal swoją misję</legend>'+limitChoices()+
+   '<div class="spelling-time-segmented spelling-segmented" data-segmented="time" data-round-options="time" role="radiogroup" aria-label="Czas rundy">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div>'+
+   '<div class="spelling-time-segmented spelling-segmented" data-segmented="count" data-round-options="count" role="radiogroup" aria-label="Liczba słów w rundzie">'+countChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div></fieldset>';
+ const canvas=document.createElement('div');canvas.className='spelling-wizard-canvas';
+ while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
+ const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
+ if(intro){const art=document.createElement('img');art.className='spelling-mission-art';art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=1200;art.height=404;intro.prepend(art);}
  updateStartButton(false);syncPanel(false);syncHidden(true);requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 
@@ -280,9 +305,11 @@ root?.addEventListener('change',event=>{
  if(target?.name==='spellingDyktando'){
   state.dyktando=target.checked;const label=target.closest('.spelling-dyktando-toggle');
   if(label){const cls=target.checked?'is-selecting':'is-deselecting';label.classList.remove('is-selecting','is-deselecting');void label.offsetWidth;label.classList.add(cls);window.setTimeout(()=>label.classList.remove(cls),720);}
-  saveState();syncSegments(true);syncHidden(true);updateStartButton(true);return;
+  saveState();syncRoundChoice();syncSegments(true);syncHidden(true);updateStartButton(true);return;
  }
  if(target?.name==='duration'){state.duration=Number(target.value)||180;saveState();syncSegments(true);updateStartButton(true);}
+ if(target?.name==='limitMode'){state.limitMode=target.value==='count'?'count':'time';saveState();syncRoundChoice();syncSegments(true);installDrag();updateStartButton(true);}
+ if(target?.name==='wordLimit'){state.wordLimit=Number(target.value);saveState();syncSegments(true);updateStartButton(true);}
 });
 window.addEventListener('resize',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)requestAnimationFrame(()=>syncSegments(false));},{passive:true});
 window.addEventListener('orientationchange',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)window.setTimeout(()=>syncSegments(false),120);},{passive:true});

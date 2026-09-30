@@ -1,5 +1,4 @@
-// The counters stay compact; the score bar uses the tuned Progress Bar Lab preset.
-const NUMBER_DURATION = 900;
+// Counters and the score bar share one 3 s timeline so they finish together.
 const PROGRESS_DURATION = 3000;
 const PROGRESS_EASE_POWER = 3.2 / 1.75;
 const PROGRESS_STRETCH = .5;
@@ -23,14 +22,9 @@ export function revealResult(root, delay = 1000) {
   const section = root.querySelector('.result-v4');
   if (!section) return;
   const jobs = [...section.querySelectorAll('[data-count]')].map(host => {
-    const overlay = document.createElement('span');
-    overlay.className = 'result-number-overlay';
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.textContent = '0';
-    host.style.setProperty('--count-color', getComputedStyle(host).color);
-    host.classList.add('result-counting');
-    host.append(overlay);
-    return {host, overlay, value: Number(host.dataset.count), delay: delay + (host.closest('.learning-stats-two') ? 260 : 120), last: 0};
+    const value = Number(host.dataset.count) || 0;
+    host.textContent = '0';
+    return {host, value, last: 0};
   });
   const fill = section.querySelector('.round-progress-fill');
   if (!fill) return;
@@ -50,7 +44,7 @@ export function revealResult(root, delay = 1000) {
     done = true;
     cancelAnimationFrame(frame); clearTimeout(timer); clearTimeout(handoff);
     finishAnimations.forEach(animation => { try { animation.cancel(); } catch {} });
-    jobs.forEach(({host, overlay}) => {overlay.remove(); host.classList.remove('result-counting', 'result-count-handoff'); host.style.removeProperty('--count-color');});
+    jobs.forEach(({host, value}) => {host.textContent = String(value);});
     fill.style.width = target + '%';
     fill.style.transform = '';
     section.classList.remove('result-entering', 'progress-complete');
@@ -93,16 +87,15 @@ export function revealResult(root, delay = 1000) {
     const elapsed = now - started;
     let unfinished = false;
 
-    jobs.forEach(job => {
-      const t = clamp((elapsed - job.delay) / NUMBER_DURATION, 0, 1);
-      const value = Math.round(job.value * (1 - (1 - t) ** 3));
-      if (job.last !== value) {job.overlay.textContent = String(value); job.last = value;}
-      if (t < 1) unfinished = true;
-      else job.host.classList.add('result-count-handoff');
-    });
-
     const progressT = clamp((elapsed - delay - 120) / PROGRESS_DURATION, 0, 1);
     const eased = 1 - Math.pow(1 - progressT, PROGRESS_EASE_POWER);
+
+    // Every number on the result screen — including the left "7 / 7" pair —
+    // counts on the same timeline as the progress fill and lands exactly with it.
+    jobs.forEach(job => {
+      const value = progressT >= 1 ? job.value : Math.round(job.value * eased);
+      if (job.last !== value) {job.host.textContent = String(value); job.last = value;}
+    });
     const kick = target > 0 ? PROGRESS_START_KICK * Math.exp(-progressT * 9) * Math.sin(progressT * Math.PI * 3.2) * 1.2 : 0;
     const wobble = target > 0 ? PROGRESS_WOBBLE * Math.sin(progressT * Math.PI * 4.3) * Math.pow(1 - progressT, 1.7) : 0;
     const visual = progressT >= 1 ? target : clamp(target * eased + kick + wobble, 0, target);

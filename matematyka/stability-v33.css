@@ -1,0 +1,146 @@
+/* v35 — jedna animacja zmiany zadania. Liczby animują się wyłącznie wewnątrz
+   zamrożonych slotów; legacy equation-build / incoming settle nie mogą się
+   nakładać na interpolację v33. */
+
+/* app.js nadal nadaje klasę equation-build przy renderze nowego pytania,
+   a board-v3.css uruchamiał wtedy osobny scale/translate przez 440 ms.
+   To była druga animacja na tym samym równaniu. Wyłączamy ją dla zwykłego
+   ekranu pytania — przejście wartości obsługuje wyłącznie v33.js. */
+.quiz-stage:not(.has-explainer) .equation-build .equation-left,
+.quiz-stage:not(.has-explainer) .equation-build .equation-right {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation {
+  height: 1em !important;
+  min-height: 1em !important;
+  max-height: 1em !important;
+  align-items: center !important;
+  overflow: visible;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"] .equation-sign {
+  position: relative;
+  height: 1em !important;
+  min-height: 1em !important;
+  max-height: 1em !important;
+  line-height: 1 !important;
+  box-sizing: border-box;
+  transform: none !important;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-number {
+  display: flex;
+  align-items: center;
+  letter-spacing: -.01em !important;
+  font-variant-numeric: tabular-nums;
+  contain: paint !important;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-left {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-right {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .equation-sign {
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .answer-grid {
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  contain: layout paint;
+}
+
+.quiz-stage[data-normal-geometry-locked="1"] .answer {
+  position: relative;
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: grid;
+  place-items: center;
+  line-height: 1 !important;
+  overflow: hidden;
+  transform: none !important;
+  contain: layout paint !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.math-value-host {
+  position: relative !important;
+}
+
+.math-value-host.math-value-animating {
+  color: transparent !important;
+}
+
+/* W fazie handoff finalny tekst hosta wraca pod identyczną nakładką.
+   Nakładka znika opacity, więc nie ma klatki przełączenia. */
+.math-value-host.math-value-animating.math-value-handoff {
+  color: var(--math-overlay-color) !important;
+}
+
+.math-number-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  color: var(--math-overlay-color);
+  font: inherit;
+  font-weight: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: inherit;
+  line-height: 1;
+  opacity: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  will-change: opacity;
+}
+
+.math-number-overlay.math-number-overlay-handoff {
+  opacity: 0;
+  transition: opacity 120ms cubic-bezier(.2,.72,.24,1);
+}
+
+.answer .math-number-overlay {
+  justify-content: center;
+  text-align: center;
+}
+
+.equation-left .math-number-overlay {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.equation-right .math-number-overlay {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* Bez legacy correct-transition-in. Pozostawiamy jedynie zielony feedback
+   poprawnego kafla z correct-transition.css. */
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .answer,
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-number,
+.quiz-stage[data-normal-geometry-locked="1"].correct-transition-in .equation-sign {
+  animation: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .math-number-overlay { display: none !important; }
+  .math-value-host.math-value-animating,
+  .math-value-host.math-value-animating.math-value-handoff { color: inherit !important; }
+}

@@ -1,0 +1,201 @@
+/* v27 — wspólny, stabilny układ explainera mnożenia i dzielenia. */
+.explainer {
+  --table-side-pad: 8px;
+  --row-label-width: 12px;
+  --expression-width: 54px;
+  --axis-font-size: clamp(7.2px, 1.9vw, 9px);
+  padding-left: var(--table-side-pad) !important;
+  padding-right: var(--table-side-pad) !important;
+}
+
+.explain-grid {
+  width: 100%;
+  grid-template-columns: var(--row-label-width) minmax(0, 1fr) var(--expression-width) !important;
+  grid-template-rows: 13px auto !important;
+  column-gap: 4px !important;
+  row-gap: 3px !important;
+  justify-content: stretch !important;
+}
+
+.axis-label {
+  font-size: var(--axis-font-size) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+  transform-origin: center !important;
+}
+
+.axis-label.is-active,
+.axis-label.division-result-label {
+  transform: none !important;
+}
+
+.column-labels {
+  align-items: end !important;
+  transform: translateY(1px);
+}
+
+.column-labels .axis-label {
+  height: 12px !important;
+  align-self: end;
+}
+
+.col-label[data-col-label="10"] {
+  font-size: var(--axis-font-size) !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+}
+
+.row-labels,
+.row-expressions {
+  min-width: 0;
+  width: 100%;
+}
+
+.row-label[data-row-label="10"] {
+  font-size: var(--axis-font-size) !important;
+  letter-spacing: -.10em !important;
+  transform: scaleX(.86) !important;
+  transform-origin: center !important;
+}
+
+.row-label[data-row-label="10"].is-active {
+  transform: scaleX(.86) !important;
+}
+
+.row-expression,
+.row-expression-spacer {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+.row-expression {
+  justify-self: stretch !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: left !important;
+  letter-spacing: -.025em !important;
+  overflow: hidden;
+  transform: none !important;
+}
+
+.row-expression:hover,
+.row-expression:focus-visible,
+.row-expression.is-active,
+.row-expression[aria-pressed="true"] {
+  transform: none !important;
+}
+
+.row-expression .expression-text {
+  display: inline-block;
+  max-width: none;
+  white-space: nowrap;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.row-expression.expression-100 {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+.row-expression.expression-100 .expression-text {
+  letter-spacing: -.055em;
+}
+
+/* Wszystkie trzy pionowe warstwy dostają dokładnie te same tory. Dzięki temu
+   w mnożeniu odstępy rzędów są identyczne, a w dzieleniu separator ma jeden,
+   wspólny tor kontrolowany wyłącznie przez layout-v26.js. */
+.array,
+.row-labels,
+.row-expressions {
+  align-content: start !important;
+}
+
+.array-cell,
+.row-labels > *,
+.row-expressions > * {
+  align-self: start !important;
+}
+
+.quiz-stage[data-operation="multiply"] .row-labels > *,
+.quiz-stage[data-operation="multiply"] .row-expressions > *,
+.quiz-stage[data-operation="divide"] .row-labels > *,
+.quiz-stage[data-operation="divide"] .row-expressions > * {
+  height: var(--stable-cell-size, auto) !important;
+  min-height: var(--stable-cell-size, 0px) !important;
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions {
+  row-gap: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.quiz-stage[data-operation="divide"] .explainer.division-polished .array-cell,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-labels > *,
+.quiz-stage[data-operation="divide"] .explainer.division-polished .row-expressions > * {
+  top: 0 !important;
+  align-self: start !important;
+}
+
+/* 7 px toru separatora = 3 px wolnego miejsca + 1 px kreski + 3 px wolnego
+   miejsca. Kreska siedzi dokładnie pośrodku, więc optyczny padding góra/dół
+   jest identyczny niezależnie od wysokości planszy. */
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-segment::after {
+  left: var(--division-cut-left, -8px) !important;
+  bottom: calc(-1 * var(--division-cut-half-pad, 3.5px) - .5px) !important;
+  width: calc(100% + var(--division-cut-extra, 16px)) !important;
+  height: 1px !important;
+}
+
+.quiz-stage[data-operation="divide"] .array-cell.division-cut-last[data-col="10"]::after {
+  width: calc(100% + var(--division-cut-overhang, 8px)) !important;
+}
+
+/* Po przejściu do trybu ręcznego nie uruchamiamy ponownie starego popa
+   .is-active — ten konflikt z falą powodował drugie szarpnięcie po animacji. */
+.quiz-stage.wave-ready .array-cell.is-active {
+  animation: none !important;
+}
+
+.array-cell.wave-enter {
+  animation: wave-row-in .30s cubic-bezier(.18,.78,.24,1) both !important;
+}
+
+@keyframes wave-row-in {
+  0% { transform: translateY(2px) scale(.985); filter: brightness(1.08); }
+  70% { transform: translateY(0) scale(1.012); filter: brightness(1.025); }
+  100% { transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+/* Numery w aktywnych polach przechodzą płynnie zamiast znikać i ponownie
+   odpalać animację po zdjęciu klasy wave-enter. */
+.quiz-stage.wave-ready .cell-number {
+  animation: none !important;
+  opacity: 0;
+  transform: translateY(2px) scale(.92);
+  transition: opacity .20s ease, transform .24s cubic-bezier(.2,.75,.25,1);
+}
+
+.quiz-stage.wave-ready .array-cell.show-number .cell-number {
+  animation: none !important;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (max-width: 430px) {
+  .explainer { --table-side-pad: 8px; }
+}
+
+@media (max-width: 360px) {
+  .explainer { --table-side-pad: 6px; }
+  .row-expression { font-size: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .array-cell.wave-enter { animation: none !important; }
+  .quiz-stage.wave-ready .cell-number { transition: none !important; }
+}

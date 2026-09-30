@@ -1,13 +1,18 @@
-const CACHE='mala-nauka-spelling-v93-result-retina-20260930';
+const CACHE='mala-nauka-spelling-v94-result-rules-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  './app.css?v=48-result-retina',
-  './app.js?v=48-result-retina',
-  './ortografia/result-screen.mjs?v=4-retina',
+  './app.css?v=49-result-rules',
+  './app.js?v=49-result-rules',
+  './ortografia/result-screen.mjs?v=5-rules',
   './ortografia/result-screen.mjs',
+  './ortografia/result-rules.mjs?v=1',
+  './ortografia/result-rules.mjs',
+  './ortografia/result-example.mjs?v=1',
+  './spelling/learning.mjs?v=1',
+  './game.mjs?v=31-word-learning',
   './assets/fonts/nunito-variable.woff',
-  './assets/ortografia/result-hero-retina-v4.webp',
+  './assets/ortografia/result-hero-retina-v5.webp',
   './assets/ortografia/result-meadow-retina-v4.webp',
   './',
   './index.html',

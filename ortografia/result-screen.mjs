@@ -1,4 +1,7 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
+import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=1';
+
+const resultContexts = new WeakMap();
 
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const asset = name => new URL('../assets/ortografia/' + name, import.meta.url).href;
@@ -19,9 +22,9 @@ function resultRows(attempts, emptyCopy) {
     const image = scene?.asset ? sceneUrl(scene) : '';
     const retained = attempt.correct === true;
     return '<article class="result-word-row ' + (retained ? 'is-retained' : 'is-review') + '">' +
-      (image ? '<img class="result-word-thumb" src="' + escape(image) + '" alt="" width="60" height="44" decoding="async">' : '<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>') +
+      (image ? '<img class="result-word-thumb" src="' + escape(image) + '" alt="" width="44" height="44" decoding="async">' : '<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>') +
       '<div class="result-word-copy"><strong>' + resultWord(attempt) + '</strong><small>' + (retained ? 'Dziś poszło dobrze' : 'Poprawny zapis') + (attempt.category ? ' · ' + escape(attempt.category.replace('/', ' / ')) : '') + '</small></div>' +
-      '<span class="result-word-state">' + (retained ? 'Utrwalone' : 'Wrócimy') + '</span></article>';
+      '<button type="button" class="result-word-state" data-action="show-result-rule" data-rule-index="' + attempt.ruleIndex + '" aria-label="Zasada pisowni słowa ' + escape(attempt.word) + '">Zasada' + eyeSvg + '</button></article>';
   }).join('') + '</div>';
 }
 
@@ -32,11 +35,14 @@ function stat(label, count, key, open) {
 function ambient() {
   const sparks = [[11, 14, 4.2, -1.1], [84, 8, 5.6, -2.8], [74, 24, 6.4, -4.1], [20, 5, 4.8, -3.3], [92, 84, 7.1, -1.9], [7, 88, 5.1, -4.7]];
   const orbs = [[4, 18, 43, 7.2, -1.2], [88, 11, 35, 9.1, -3.4], [89, 90, 46, 11, -4.8]];
-  return '<div class="result-ambient" aria-hidden="true">' + sparks.map(([left, top, duration, delay]) => '<i class="result-spark" style="left:' + left + '%;top:' + top + '%;--spark-duration:' + duration + 's;--spark-delay:' + delay + 's"></i>').join('') + orbs.map(([left, top, size, duration, delay]) => '<i class="result-orb" style="left:' + left + '%;top:' + top + '%;--orb-size:' + size + ';--orb-duration:' + duration + 's;--orb-delay:' + delay + 's"></i>').join('') + '</div>';
+  return '<div class="result-ambient" aria-hidden="true">' + sparks.map(([left, top, duration, delay]) => '<i class="result-spark" style="left:' + left + '%;top:' + top + '%;--spark-duration:' + duration + 's;--spark-delay:' + delay + 's"></i>').join('') + orbs.map(([left, top, size, duration, delay]) => '<i class="result-orb" style="--orb-left:' + left + '%;--orb-top:' + top + '%;--orb-size:' + size + ';--orb-duration:' + duration + 's;--orb-delay:' + delay + 's"></i>').join('') + '</div>';
 }
 
-export function renderSpellingResult(root, result) {
-  const attempts = Array.isArray(result.attempts) ? result.attempts.filter(attempt => attempt?.kind === 'spelling') : [];
+export function renderSpellingResult(root, result, words = [], ui = null) {
+  closeResultRule(root, false);
+  const learning = new Map(words.filter(word => word.learning).map(word => [word.word, word.learning]));
+  const attempts = Array.isArray(result.attempts) ? result.attempts.filter(attempt => attempt?.kind === 'spelling').map((attempt, ruleIndex) => ({...attempt, ruleIndex, learning: attempt.learning || learning.get(attempt.word)})) : [];
+  resultContexts.set(root, attempts);
   const retained = attempts.filter(attempt => attempt.correct), review = attempts.filter(attempt => !attempt.correct), total = attempts.length;
   const scorePct = total ? Math.round(retained.length / total * 100) : 0;
   const eyebrow = result.early ? 'Runda zakończona wcześniej' : 'Przygoda ukończona';
@@ -48,9 +54,9 @@ export function renderSpellingResult(root, result) {
     : '<section id="result-detail-review" class="result-detail is-retained is-congrats" data-result-panel="review"><div class="result-detail-head"><div><strong>' + (total ? 'Dziś bez potknięć!' : 'Jeszcze wszystko przed nami') + '</strong><p>' + (total ? 'Świetnie — nie ma nic do powtórki.' : 'Wróć, kiedy będziesz mieć ochotę.') + '</p></div><span aria-hidden="true">' + check + '</span></div><div class="result-congrats"><span aria-hidden="true">' + check + '</span><p>' + (total ? 'Wrócimy do tych słów później, żeby sprawdzić, co zostało w pamięci.' : 'Każda próba to krok do przodu.') + '</p></div></section>';
   root.dataset.view = 'results'; root.dataset.mode = 'spelling';
   root.innerHTML = '<section class="result learning-result result-v4' + (total ? '' : ' result-empty') + '">' +
-    '<div class="result-scenery" aria-hidden="true"><picture><source srcset="' + escape(asset('result-hero-retina-v4.webp')) + '" type="image/webp"><img class="result-hero" src="' + escape(asset('result-bunny-retina-v4.png')) + '" alt="" width="1586" height="992" fetchpriority="high" decoding="sync"></picture><img class="result-meadow" src="' + escape(asset('result-meadow-retina-v4.webp')) + '" alt="" width="1706" height="922"></div>' + ambient() +
+    '<div class="result-scenery" aria-hidden="true"><picture><source srcset="' + escape(asset('result-hero-retina-v5.webp')) + '" type="image/webp"><img class="result-hero" src="' + escape(asset('result-bunny-retina-v4.png')) + '" alt="" width="1586" height="992" fetchpriority="high" decoding="sync"></picture><img class="result-meadow" src="' + escape(asset('result-meadow-retina-v4.webp')) + '" alt="" width="1706" height="922"></div>' + ambient() +
     '<button type="button" class="result-close" data-action="home" aria-label="Zamknij podsumowanie i wróć do wyboru gry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>' +
-    '<div class="result-sheet"><div class="result-heading"><span class="eyebrow">' + eyebrow + '</span><div class="result-title-wrap"><span class="result-rays result-rays-left" aria-hidden="true"><i></i><i></i></span><h1 tabindex="-1">' + heading + '</h1><span class="result-rays result-rays-right" aria-hidden="true"><i></i><i></i></span></div><p>' + intro + '</p></div>' +
+    '<div class="result-sheet"><div class="result-heading"><span class="eyebrow">' + eyebrow + '</span><div class="result-title-wrap"><svg class="result-rays result-rays-left" viewBox="0 0 26 28" aria-hidden="true"><path d="m5 4 5 9M4 20l8 3"/></svg><h1 tabindex="-1">' + heading + '</h1><svg class="result-rays result-rays-right" viewBox="0 0 26 28" aria-hidden="true"><path d="m21 4-5 9m6 7-8 3"/></svg></div><p>' + intro + '</p></div>' +
     '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong>' + retained.length + ' / ' + total + '</strong><span>poprawnie</span></div><span class="round-mode-pill">' + modeLabel + '</span><em>' + scorePct + '%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + scorePct + '" aria-label="' + scorePct + ' procent poprawnych"><span style="width:' + scorePct + '%"></span></div></div>' +
     '<div class="learning-stats-two">' + stat('Utrwalone', retained.length, 'retained', false) + stat('Do powtórki', review.length, 'review', true) + '</div>' +
     '<div class="result-details"><section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" hidden><div class="result-detail-head"><div><strong>To dziś było pewne</strong><p>Te słowa poszły poprawnie.</p></div><span aria-hidden="true">' + check + '</span></div>' + resultRows(retained, 'Jeszcze nic tutaj nie ma.') + '</section>' + reviewPanel + '</div>' +
@@ -59,6 +65,22 @@ export function renderSpellingResult(root, result) {
   const hero = root.querySelector('.result-hero');
   hero.addEventListener('error', () => { hero.closest('picture').querySelector('source')?.remove(); hero.src = asset('result-bunny-retina-v4.png'); }, { once: true });
   root.querySelector('h1')?.focus({ preventScroll: true });
+  if (ui?.panel) {
+    const selected = root.querySelector('[data-result="' + (ui.panel === 'retained' ? 'retained' : 'review') + '"]');
+    toggleResultDetail(root, selected);
+    root.querySelectorAll('[data-result-panel]').forEach(panel => { const list = panel.querySelector('.result-word-list'); if (list) list.scrollTop = Math.max(0, Number(ui.scroll?.[panel.dataset.resultPanel]) || 0); });
+  }
+}
+
+export function getResultViewState(root) {
+  return {panel: root.querySelector('[data-result-panel]:not([hidden])')?.dataset.resultPanel || 'review',
+    scroll: Object.fromEntries([...root.querySelectorAll('[data-result-panel]')].map(panel => [panel.dataset.resultPanel, panel.querySelector('.result-word-list')?.scrollTop || 0]))};
+}
+
+export function showResultRule(root, button) {
+  const index = Number(button?.dataset.ruleIndex);
+  if (!Number.isInteger(index) || index < 0) return;
+  openResultRule(root, resultContexts.get(root)?.[index], button);
 }
 
 export function toggleResultDetail(root, button) {

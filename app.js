@@ -1,8 +1,10 @@
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=30-learning-feedback';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=31-word-learning';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=29-dyktando80';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=2-dyktando80';
 import { createSpellingArt } from './spelling/art.mjs?v=42-final-assets';
-import { renderSpellingResult, toggleResultDetail } from './ortografia/result-screen.mjs?v=4-retina';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=5-rules';
+import { closeResultRule } from './ortografia/result-rules.mjs?v=1';
+import { exampleResult } from './ortografia/result-example.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';
@@ -17,6 +19,7 @@ progress=progress===null?migrateProgress(read('maleDyktando.history.v1',[]),read
 save('progress',progress);
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0;
 let offlineReady=false;
+let collectionReturn=null;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
@@ -26,6 +29,8 @@ const englishFlag='<svg viewBox="0 0 60 40" aria-hidden="true"><defs><clipPath i
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ closeResultRule(root,false);
+ if(next!=='history')collectionReturn=null;
  spellingArt.reset();
  view=next;root.dataset.view=view;root.dataset.mode=selectedMode;
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
@@ -53,7 +58,8 @@ function settingsPage() {
  <section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Ustawienia i wyniki zostają na tym urządzeniu.</p>`;
 }
 function historyPage() {
- root.innerHTML=pageHead('Moje wyniki')+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
+ const head=collectionReturn?`<header class="page-head">${btn('×','return-results','icon','aria-label="Zamknij kolekcję i wróć do wyników"')}<h1 tabindex="-1">Moja kolekcja</h1></header>`:pageHead('Moje wyniki');
+ root.innerHTML=head+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
  (progress.history.length?progress.history.map(r=>`<article class="history-item"><div><strong>${MODES[r.mode].name}</strong><b>${r.correct} pkt</b></div><p>${accuracy(r.correct,r.wrong)}% poprawnych · ${r.correct+r.wrong} zadań · ${minutes(r.duration)}</p><small>${escape(categoryLabel(r.mode,r.category))} · ${escape(levelLabel(r.mode,r.difficulty))}<br>${escape(new Date(r.date).toLocaleString('pl-PL',{dateStyle:'short',timeStyle:'short'}))}${r.early?' · zakończona wcześniej':''}</small></article>`).join(''):'<section class="empty card"><span aria-hidden="true">✦</span><h2>Tu pojawią się Twoje przygody</h2><p>Wybierz tryb i zagraj pierwszą rundę.</p>'+btn('Wybierz przygodę','home','primary')+'</section>');
 }
 function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{/* Optional sound. */}}
@@ -90,12 +96,15 @@ function finish(early=false){
  spellingArt.reset();
  const result={...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...(game.attempts||[])]:undefined};
  const record=recordResult(progress,result);save('progress',progress);lastResult=result;view='results';root.dataset.view=view;
- if(result.mode==='spelling'){renderSpellingResult(root,result);return;}
+ if(result.mode==='spelling'){renderSpellingResult(root,result,words);return;}
  root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
- if(['home','settings','history'].includes(action))navigate(action);
+ if(['home','settings'].includes(action))navigate(action);
+ if(action==='history'){collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
+ if(action==='return-results'&&collectionReturn){const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;root.dataset.view=view;root.dataset.mode=selectedMode;renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
@@ -121,7 +130,6 @@ document.addEventListener('pointerdown',()=>document.body.classList.remove('keyb
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game')pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
 setInterval(()=>{if(view==='game'&&game){game.tick();syncGame();}},50);
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());navigate('home');}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words);window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});}else navigate('home');}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
-

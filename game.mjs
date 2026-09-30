@@ -1,3 +1,4 @@
+import { validLearning } from './spelling/learning.mjs?v=1';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
 export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
@@ -20,7 +21,7 @@ export function validateWords(words) {
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
-      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty) || !tagsValid) throw Error('Nieprawidłowy rekord słowa.');
+      w.masked.replace('_', w.answer) !== w.word || ![1, 2].includes(w.difficulty) || !tagsValid || !validLearning(w.learning)) throw Error('Nieprawidłowy rekord słowa.');
   }
   if (CATEGORIES.some(category => [1,2].some(level => !words.some(w => w.category === category && w.difficulty === level)))) throw Error('Niepełne kategorie lub pule trudności.');
   return words;
@@ -98,6 +99,7 @@ export class Session {
       correct,
       category: typeof this.current.category === 'string' ? this.current.category : '',
       difficulty: Number(this.current.difficulty) || 0,
+      ...(this.current.learning ? {learning: JSON.parse(JSON.stringify(this.current.learning))} : {}),
     });
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';

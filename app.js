@@ -1,6 +1,6 @@
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=10-particles';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=11-layout-rule-bubble';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=2';
-import { closeResultRule } from './ortografia/result-rules.mjs?v=3-cached-static';
+import { closeResultRule } from './ortografia/result-rules.mjs?v=4-live-bubble-layout';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20260930-release';

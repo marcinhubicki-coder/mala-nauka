@@ -1,4 +1,4 @@
-import { createBubble } from '../spelling/bubble.mjs?v=40-static-rules';
+import { createBubble } from '../spelling/bubble.mjs?v=41-live-rules';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { LEARNING_TYPES, validLearning } from '../spelling/learning.mjs?v=1';
 
@@ -74,8 +74,8 @@ export function openResultRule(root, attempt, trigger) {
   active.resizeObserver.observe(body);
   [...body.children].forEach(child => active.resizeObserver.observe(child));
   updateScrollCue();
-  // The rule artwork needs a short entrance, not the game's perpetual simulation.
-  active.bubble = createBubble(dialog.querySelector('.rule-bubble'), {motion: false, heavy: {particles: 0}, transition: {duration: .35, sparks: 0}});
+  // The rule artwork uses the same live bubble motion as the spelling game.
+  active.bubble = createBubble(dialog.querySelector('.rule-bubble'));
   const loader = dialog.querySelector('.rule-image-loader');
   active.loaderTimeout = setTimeout(() => {
     if (dialogs.get(root) === active) { loader.hidden = false; updateScrollCue(); }

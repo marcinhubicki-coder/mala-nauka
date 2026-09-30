@@ -1,5 +1,5 @@
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
-import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=3-cached-static';
+import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=4-live-bubble-layout';
 import { revealResult, settleResult } from './result-motion.mjs?v=2';
 
 const resultContexts = new WeakMap();

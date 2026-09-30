@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "MN Soft";
+  src: url("assets/fonts/fredoka-polish-v1.woff") format("woff");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+:root {
+  --screen-safe-top: env(safe-area-inset-top, 0px);
+  --screen-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --screen-safe-left: env(safe-area-inset-left, 0px);
+  --screen-safe-right: env(safe-area-inset-right, 0px);
+}
+
+body:has(#app[data-view="players"]),
+body:has(#app[data-view="player-create"]),
+body:has(#app[data-view="player-pin"]) {
+  background: #fcfdff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .player-card, .player-continue { animation: none !important; transition: none !important; }
+}

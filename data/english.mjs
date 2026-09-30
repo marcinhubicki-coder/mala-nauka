@@ -1,46 +1,51 @@
-// Hand-authored starter words and plausible spelling mistakes; no remote data.
-const rows = [
-  ['numbers','jeden','one','won','oun','onne'],
-  ['numbers','dwa','two','twu','tow','too'],
-  ['numbers','trzy','three','tree','thre','thrie'],
-  ['numbers','osiem','eight','eigth','eit','aight'],
-  ['numbers','dwanaście','twelve','twelwe','twelv','twelive'],
-  ['numbers','czterdzieści','forty','fourty','fortie','forthy'],
-  ['objects','książka','book','buk','boock','bok'],
-  ['objects','ołówek','pencil','pensil','pencill','pencel'],
-  ['objects','krzesło','chair','cheir','chare','chaer'],
-  ['objects','rower','bicycle','bisycle','bycicle','bicicle'],
-  ['objects','telefon','phone','fone','phonne','phoane'],
-  ['objects','zegar','clock','clok','cloc','klock'],
-  ['verbs','czytać','read','reed','red','reade'],
-  ['verbs','pisać','write','writ','wryte','rite'],
-  ['verbs','pływać','swim','swimm','svim','sweem'],
-  ['verbs','biegać','run','runn','ran','ron'],
-  ['verbs','jeść','eat','eet','ete','eatt'],
-  ['verbs','spać','sleep','slep','sliip','sleap'],
-  ['jobs','nauczyciel','teacher','techer','teatcher','teecher'],
-  ['jobs','lekarz','doctor','doktor','docter','doctour'],
-  ['jobs','strażak','firefighter','firefigter','firefiter','firefighther'],
-  ['jobs','rolnik','farmer','famer','farmar','farme'],
-  ['jobs','kierowca','driver','draiver','drivar','drivver'],
-  ['jobs','pielęgniarka','nurse','ners','nurs','nurce'],
-  ['home','kuchnia','kitchen','kichen','kitchin','kitshen'],
-  ['home','okno','window','windov','windo','windouw'],
-  ['home','drzwi','door','dor','doore','doar'],
-  ['home','sypialnia','bedroom','bedrom','bedrum','beedroom'],
-  ['home','lustro','mirror','miror','mirrer','mirorr'],
-  ['home','dom','house','hause','hous','houze'],
-  ['nature','drzewo','tree','tre','trie','treee'],
-  ['nature','kwiat','flower','flawer','flouer','flowar'],
-  ['nature','ogród','garden','gardan','gardden','gardin'],
-  ['nature','góra','mountain','mountin','mauntain','moutain'],
-  ['nature','rzeka','river','rivar','rivver','rever'],
-  ['nature','trawa','grass','gras','grase','gress'],
-  ['animals','ptak','bird','berd','beard','birde'],
-  ['animals','królik','rabbit','rabit','rabitt','rabbitt'],
-  ['animals','słoń','elephant','elefant','elephent','elaphant'],
-  ['animals','żyrafa','giraffe','girafe','jiraffe','giraff'],
-  ['animals','kot','cat','kat','catt','cet'],
-  ['animals','pies','dog','dogg','dok','daug'],
+import numbers from './english/numbers.mjs';
+import colors from './english/colors.mjs';
+import family from './english/family.mjs';
+import people from './english/people.mjs';
+import body from './english/body.mjs';
+import home from './english/home.mjs';
+import objects from './english/objects.mjs';
+import school from './english/school.mjs';
+import food from './english/food.mjs';
+import animals from './english/animals.mjs';
+import nature from './english/nature.mjs';
+import places from './english/places.mjs';
+import transport from './english/transport.mjs';
+import clothes from './english/clothes.mjs';
+import jobs from './english/jobs.mjs';
+import verbs from './english/verbs.mjs';
+import adjectives from './english/adjectives.mjs';
+import time from './english/time.mjs';
+
+// The vocabulary is split by category so future edits stay simple.
+// Every catalog row uses exactly this format:
+// english word|Polish meaning|category|difficulty 1-3|wrong 1;wrong 2;wrong 3
+const catalogs = [
+  numbers, colors, family, people, body, home, objects, school, food,
+  animals, nature, places, transport, clothes, jobs, verbs, adjectives, time,
 ];
-export const ENGLISH = rows.map(([category, meaning, word, ...mistakes]) => ({category, meaning, word, mistakes}));
+
+const lines = catalogs
+  .flatMap(catalog => catalog.trim().split('\n'))
+  .map(line => line.trim())
+  .filter(Boolean);
+
+export const ENGLISH = lines.map((line, index) => {
+  const [word, meaning, category, difficultyRaw, mistakesRaw] = line.split('|');
+  const difficulty = Number(difficultyRaw);
+  const mistakes = String(mistakesRaw || '')
+    .split(';')
+    .map(value => value.trim())
+    .filter(Boolean);
+
+  if (!word || !meaning || !category || ![1, 2, 3].includes(difficulty) || mistakes.length !== 3) {
+    throw new Error(`Invalid English vocabulary row ${index + 1}: ${line}`);
+  }
+
+  return { word, meaning, category, difficulty, mistakes };
+});
+
+const uniqueWords = new Set(ENGLISH.map(entry => entry.word));
+if (ENGLISH.length !== 500 || uniqueWords.size !== ENGLISH.length) {
+  throw new Error(`English vocabulary catalog must contain 500 unique words; got ${ENGLISH.length}/${uniqueWords.size}.`);
+}

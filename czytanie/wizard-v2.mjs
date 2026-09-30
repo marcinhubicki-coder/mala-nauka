@@ -1,3 +1,4 @@
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=1';
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.readingWizardV2';
 const LEVELS=[[1,'Słowa'],[2,'Frazy'],[3,'Zdania']];
@@ -9,6 +10,7 @@ let suppressClickUntil=0;
 const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
 const dragStates=new WeakMap();
+const jellyV4=createJellyV4({indicatorSelector:'.reading-segment-indicator'});
 
 function esc(value){
  return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -106,43 +108,7 @@ function stopSegmentAnimation(container,node){
 }
 function updateSegment(container,index,count,animate=true){
  if(!container)return;
- const node=container.querySelector('.reading-segment-indicator');
- if(!node)return;
- const previousIndex=Number(container.dataset.activeIndex);
- const nextIndex=Math.max(0,Math.min(count-1,index));
- const target=segmentGeometry(container,nextIndex);
- if(!target)return;
- const changed=Number.isFinite(previousIndex)&&Math.abs(previousIndex-nextIndex)>.001;
- const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
- const current=stopSegmentAnimation(container,node);
- container.dataset.activeIndex=String(nextIndex);
- container.dataset.direction=changed&&nextIndex<previousIndex?'backward':'forward';
- const timer=segmentTimers.get(container);
- if(timer)window.clearTimeout(timer);
- if(!animate||!changed||reduced||typeof node.animate!=='function'){
-  node.style.left=target.left+'px';
-  node.style.right=target.right+'px';
-  container.classList.remove('is-segment-moving');
-  return;
- }
- const timing=motionTiming(current,target);
- container.style.setProperty('--segment-total-ms',timing.total+'ms');
- container.classList.remove('is-segment-moving');
- void container.offsetWidth;
- container.classList.add('is-segment-moving');
- const animation=node.animate(jellyFrames(current,target,nextIndex>previousIndex,timing.overshoot),{duration:timing.total,easing:'linear',fill:'both'});
- segmentAnimations.set(container,animation);
- node.style.left=target.left+'px';
- node.style.right=target.right+'px';
- const finish=()=>{
-  if(segmentAnimations.get(container)===animation){
-   segmentAnimations.delete(container);
-   try{animation.cancel()}catch{}
-   container.classList.remove('is-segment-moving');
-  }
- };
- animation.addEventListener('finish',finish,{once:true});
- segmentTimers.set(container,window.setTimeout(finish,timing.total+120));
+ jellyV4.update(container,index,{animate});
 }
 function segmentCount(container){return container?.querySelectorAll(':scope > label').length||0}
 function activeIndexFor(container){
@@ -158,13 +124,7 @@ function syncSegments(animate=false){
   updateSegment(container,activeIndexFor(container),segmentCount(container),animate);
  });
 }
-function bumpLabel(label){
- if(!label)return;
- label.classList.remove('is-tap-bump');
- void label.offsetWidth;
- label.classList.add('is-tap-bump');
- window.setTimeout(()=>label.classList.remove('is-tap-bump'),430);
-}
+function bumpLabel(){}
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');
  if(!button)return;
@@ -225,69 +185,16 @@ function applySegmentSelection(input){
  input.dispatchEvent(new Event('change',{bubbles:true}));
 }
 function setupDrag(container){
- if(!container||container.dataset.dragReady==='true')return;
- container.dataset.dragReady='true';
- container.addEventListener('pointerdown',event=>{
-  if(event.button!==undefined&&event.button!==0)return;
-  const node=container.querySelector('.reading-segment-indicator');
-  if(!node)return;
-  const rect=container.getBoundingClientRect();
-  const currentIndex=activeIndexFor(container);
-  dragStates.set(container,{pointerId:event.pointerId,startX:event.clientX,x:event.clientX,moved:false,rect,currentIndex});
-  stopSegmentAnimation(container,node);
-  container.classList.add('is-dragging');
-  try{container.setPointerCapture(event.pointerId)}catch{}
+ if(!container||container.dataset.jellyV4DragReady==='true')return;
+ jellyV4.setupDrag(container,{
+  getActiveIndex:()=>activeIndexFor(container),
+  commitIndex:index=>{
+   const list=[...container.querySelectorAll(':scope > label')];
+   const input=list[index]?.querySelector('input');
+   if(input)applySegmentSelection(input);
+  },
+  suppressClick:ms=>{suppressClickUntil=performance.now()+ms;}
  });
- container.addEventListener('pointermove',event=>{
-  const drag=dragStates.get(container);
-  if(!drag||drag.pointerId!==event.pointerId)return;
-  drag.x=event.clientX;
-  if(Math.abs(drag.x-drag.startX)>4)drag.moved=true;
-  if(!drag.moved)return;
-  event.preventDefault();
-  const count=segmentCount(container),rect=drag.rect;
-  const local=clamp(event.clientX-rect.left,4,rect.width-4);
-  const progress=clamp((local-4)/Math.max(1,rect.width-8),0,1)*(count-1);
-  const low=Math.floor(progress),high=Math.ceil(progress),mix=progress-low;
-  const a=segmentGeometry(container,low),b=segmentGeometry(container,high);
-  const node=container.querySelector('.reading-segment-indicator');
-  if(!a||!b||!node)return;
-  node.style.left=lerp(a.left,b.left,mix)+'px';
-  node.style.right=lerp(a.right,b.right,mix)+'px';
-  container.dataset.activeIndex=String(progress);
- });
- const finishDrag=(event,cancelled=false)=>{
-  const drag=dragStates.get(container);
-  if(!drag||drag.pointerId!==event.pointerId)return;
-  dragStates.delete(container);
-  container.classList.remove('is-dragging');
-  try{container.releasePointerCapture(event.pointerId)}catch{}
-  if(cancelled){
-   updateSegment(container,activeIndexFor(container),segmentCount(container),true);
-   return;
-  }
-  if(!drag.moved)return;
-  suppressClickUntil=performance.now()+350;
-  const labels=[...container.querySelectorAll(':scope > label')];
-  const x=event.clientX;
-  let index=drag.currentIndex;
-  if(x>drag.startX){
-   for(let i=drag.currentIndex+1;i<labels.length;i++){
-    const r=labels[i].getBoundingClientRect();
-    if(x>=(r.left+r.right)/2)index=i;
-   }
-  }else if(x<drag.startX){
-   for(let i=drag.currentIndex-1;i>=0;i--){
-    const r=labels[i].getBoundingClientRect();
-    if(x<=(r.left+r.right)/2)index=i;
-   }
-  }
-  const input=labels[index]?.querySelector('input');
-  if(input)applySegmentSelection(input);
-  else updateSegment(container,activeIndexFor(container),labels.length,true);
- };
- container.addEventListener('pointerup',event=>finishDrag(event,false));
- container.addEventListener('pointercancel',event=>finishDrag(event,true));
 }
 function installDrag(){root.querySelectorAll('.reading-segmented').forEach(setupDrag)}
 

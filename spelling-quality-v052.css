@@ -4,14 +4,14 @@
   --v052-purple:#6d36cf;
   box-sizing:border-box!important;
   width:100%!important;
-  min-height:100svh!important;
-  height:100svh!important;
-  max-height:100svh!important;
+  min-height:calc(100 * var(--app-vh, 1dvh))!important;
+  height:calc(100 * var(--app-vh, 1dvh))!important;
+  max-height:calc(100 * var(--app-vh, 1dvh))!important;
   overflow:hidden!important;
   isolation:isolate!important;
   display:grid!important;
-  grid-template-rows:52px 8px 78px minmax(272px,35svh) 64px 92px 52px minmax(0,1fr)!important;
-  gap:clamp(4px,.62svh,7px)!important;
+  grid-template-rows:52px 8px 78px minmax(272px,calc(35 * var(--app-vh, 1dvh))) 64px 92px 52px minmax(0,1fr)!important;
+  gap:clamp(4px,calc(.62 * var(--app-vh, 1dvh)),7px)!important;
   padding:max(10px,env(safe-area-inset-top)) 18px max(10px,env(safe-area-inset-bottom))!important;
   background:#efeefe url('assets/ortografia/spelling-bg-v052.svg') center bottom/cover no-repeat!important;
   color:var(--v052-navy)!important;
@@ -131,13 +131,13 @@
 #app[data-view="game"][data-mode="spelling"].spelling-art-ready .feedback-message{display:none!important}
 
 @media (max-height:760px) and (max-width:600px){
-  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{grid-template-rows:48px 6px 70px minmax(255px,34svh) 58px 82px 46px minmax(0,1fr)!important;gap:3px!important;padding-top:max(7px,env(safe-area-inset-top))!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{grid-template-rows:48px 6px 70px minmax(255px,calc(34 * var(--app-vh, 1dvh))) 58px 82px 46px minmax(0,1fr)!important;gap:3px!important;padding-top:max(7px,env(safe-area-inset-top))!important}
   .spelling-title{height:70px!important;width:min(88vw,340px)!important}
   .spelling-visual{width:min(89vw,338px)!important}
   #app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{font-size:44px!important}
 }
 @media (max-height:700px) and (max-width:600px){
-  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{grid-template-rows:44px 5px 64px minmax(228px,32svh) 54px 76px 42px minmax(0,1fr)!important}
+  #app[data-view="game"][data-mode="spelling"].spelling-art-ready{grid-template-rows:44px 5px 64px minmax(228px,calc(32 * var(--app-vh, 1dvh))) 54px 76px 42px minmax(0,1fr)!important}
   .spelling-title{height:64px!important;width:min(84vw,320px)!important}
   .spelling-visual{width:min(82vw,310px)!important}
   #app[data-view="game"][data-mode="spelling"].spelling-art-ready .word{font-size:41px!important}

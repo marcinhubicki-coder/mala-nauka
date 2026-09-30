@@ -19,3 +19,8 @@ Jedna aplikacja PWA z pięcioma niezależnie rozwijanymi modułami:
 - `/shared/` — wspólne komponenty i utilities
 
 Repo powstało przez migrację projektu Mała Nauka ze starego repo `appka-policyjna-baza`. Stare repo pozostaje nietknięte jako backup podczas migracji.
+
+## Dokumentacja produktu
+
+- [Architektura repozytorium](ARCHITECTURE.md)
+- [System nauki i progresji](docs/LEARNING-SYSTEM.md)

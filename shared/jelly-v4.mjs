@@ -209,7 +209,7 @@ export function createJellyV4({indicatorSelector}={}){
   const strength=clamp(.10*params.motion.magnet*proximity*proximity,0,.42);
   return clamp(progress+delta*strength,0,count-1);
  }
- function setupDrag(container,{getActiveIndex,commitIndex,suppressClick}={}){
+ function setupDrag(container,{getActiveIndex,commitIndex,suppressClick,canDrag}={}){
   if(!container||container.dataset.jellyV4DragReady==='true')return;
   container.dataset.jellyV4DragReady='true';
   const active=Number(getActiveIndex?.()??0);
@@ -218,6 +218,7 @@ export function createJellyV4({indicatorSelector}={}){
 
   buffer.addEventListener('pointerdown',event=>{
    if(event.button!==undefined&&event.button!==0)return;
+   if(canDrag && !canDrag())return;
    const node=indicator(container);if(!node)return;
    const list=labels(container),activeIndex=Number(getActiveIndex?.()??container.dataset.activeIndex??0);
    const activeGeom=geometry(container,activeIndex);if(!activeGeom)return;

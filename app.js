@@ -1,5 +1,5 @@
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=13-tuned-progress';
-import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=4-tuned-progress';
+import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=5-synced-counters';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=5-fixed-rule-scroll';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';

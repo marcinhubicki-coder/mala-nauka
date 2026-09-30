@@ -6,7 +6,7 @@ Wzór: zatwierdzony „Pastel Bunny Learning App Screen(1).png”. Ekran obejmuj
 - Baza: iPhone 13 Pro, 390 × 844 CSS; skalowanie według dostępnej szerokości i wysokości.
 - Królik i dolna łąka mają natywnie 1586 × 992 oraz 1706 × 922 px, wystarczająco dla @3x także przy szerokości 430–440 CSS.
 - WebP 96 do wyświetlania; bezstratny PNG królika jako zapasowy format. Żadnych filtrów rozmycia ani dodatkowego panelu pod całą treścią.
-- Lokalne fonty DynaPuff 700 i Nunito variable, z polskimi znakami.
+- Zaokrąglony Nunito w wagach 600–950 na ekranie wyniku, z polskimi znakami; DynaPuff pozostaje fontem rozgrywki.
 - Liczba poprawnych odpowiedzi, procent, pastylka trybu i pasek postępu nad dwoma kaflami.
 - Zielone „Utrwalone”, różowe „Do powtórki”. Kliknięcie kafla pokazuje odpowiednią listę. Kafel „Opanowane” pozostaje ukryty.
 - Poprawny zapis jest wyróżniony zielenią również na liście powtórek. Nagłówek: „Tu były małe potknięcia”, opis: „Zapamiętaj poprawną formę.”

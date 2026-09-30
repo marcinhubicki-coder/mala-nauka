@@ -1,0 +1,63 @@
+/* One geometry source for all three segmented controls. */
+#app[data-mode="flags"][data-view="wizard"]{
+  --flag-segment-height:56px;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid,
+#app[data-mode="flags"] .flag-v2-scope-grid,
+#app[data-mode="flags"] .flag-time-segmented{
+  width:100%!important;
+  height:var(--flag-segment-height)!important;
+  min-height:var(--flag-segment-height)!important;
+  max-height:var(--flag-segment-height)!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  margin:0!important;
+}
+
+#app[data-mode="flags"] .flag-v2-scope-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  overflow:hidden!important;
+  align-items:stretch!important;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid > label,
+#app[data-mode="flags"] .flag-v2-scope-grid > label,
+#app[data-mode="flags"] .flag-time-segmented > label{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid > label > span,
+#app[data-mode="flags"] .flag-v2-scope-grid > label > span,
+#app[data-mode="flags"] .flag-time-segmented > label > span{
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  box-sizing:border-box!important;
+}
+
+#app[data-mode="flags"] .flag-v2-game-grid > .flag-segment-indicator,
+#app[data-mode="flags"] .flag-v2-scope-grid > .flag-segment-indicator,
+#app[data-mode="flags"] .flag-time-segmented > .flag-segment-indicator{
+  top:4px!important;
+  bottom:4px!important;
+  height:auto!important;
+  max-height:none!important;
+  box-sizing:border-box!important;
+}
+
+#app[data-mode="flags"] .flag-continent-panel.is-open{
+  padding-top:4px!important;
+}
+
+#app[data-mode="flags"] .flag-continent-grid::before{
+  top:-5px!important;
+  height:7px!important;
+}

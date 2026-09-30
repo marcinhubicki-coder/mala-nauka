@@ -17,7 +17,7 @@
     const app = document.querySelector('#app');
     if (!app) return;
 
-    function restartClass(node, className, timeout = 560) {
+    function restartClass(node, className, timeout = 840) {
       if (!node) return;
       node.classList.remove(className);
       void node.offsetWidth;
@@ -30,9 +30,6 @@
       let created = false;
       let reattached = false;
 
-      /* renderGame() wymienia wnętrze #app, ale zachowujemy dokładnie ten sam
-         element ikony w pamięci. Przy zwykłej zmianie pytania przepinamy go w
-         mikro-zadaniu, zanim Safari narysuje klatkę bez badge'a. */
       if (!card && persistentCard) {
         card = persistentCard;
         reattached = true;
@@ -71,6 +68,24 @@
       return { badge, value, created, reattached };
     }
 
+    function setScaleVars(badge, previous, current) {
+      const previousDecade = Math.floor(Math.max(0, previous) / 10);
+      const currentDecade = Math.floor(Math.max(0, current) / 10);
+      const previousScale = 1 + (previousDecade * 0.03);
+      const restScale = 1 + (currentDecade * 0.03);
+      const bumpPeak = restScale + 0.12;
+      const chargePeak = restScale + 0.10;
+      const settleDip = Math.max(1, restScale - 0.015);
+
+      badge.style.setProperty('--score-previous-scale', previousScale.toFixed(3));
+      badge.style.setProperty('--score-rest-scale', restScale.toFixed(3));
+      badge.style.setProperty('--score-bump-peak', bumpPeak.toFixed(3));
+      badge.style.setProperty('--score-charge-peak', chargePeak.toFixed(3));
+      badge.style.setProperty('--score-settle-dip', settleDip.toFixed(3));
+
+      return { previousDecade, currentDecade };
+    }
+
     function syncBadge({ animateChange = false } = {}) {
       const label = app.querySelector('.quiz-stage:not(.has-explainer) .question-label');
       const stage = label?.closest('.quiz-stage');
@@ -85,7 +100,8 @@
 
       const previous = lastRenderedCount;
       const changed = correctCount !== previous;
-      const crossedTen = previous < 10 && correctCount >= 10;
+      const { previousDecade, currentDecade } = setScaleVars(badge, previous, correctCount);
+      const crossedDecade = currentDecade > previousDecade && currentDecade > 0;
       const nextValue = String(correctCount);
       if (value.textContent !== nextValue) value.textContent = nextValue;
 
@@ -104,7 +120,7 @@
         badge.classList.remove('is-bump', 'is-growing');
         void badge.offsetWidth;
 
-        if (crossedTen) {
+        if (crossedDecade) {
           badge.classList.add('is-growing');
         } else {
           badge.classList.add('is-bump');
@@ -114,7 +130,7 @@
         window.setTimeout(() => {
           badge.classList.remove('is-bump', 'is-growing');
           value.classList.remove('is-counting');
-        }, 560);
+        }, crossedDecade ? 1160 : 620);
       }
 
       lastRenderedCount = correctCount;

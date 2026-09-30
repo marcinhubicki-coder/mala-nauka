@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v111-tuned-progress-20261001';
+const CACHE='mala-nauka-v112-synced-counters-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -14,9 +14,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261001-tuned-progress-v16",
+  "./app.css?v=20261001-synced-counters-v17",
   "./app.js",
-  "./app.js?v=20261001-tuned-progress-v16",
+  "./app.js?v=20261001-synced-counters-v17",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",
@@ -602,7 +602,7 @@ const CORE=[
   "./ortografia/result-preview-frame.html",
   "./ortografia/result-preview.html",
   "./ortografia/result-motion.mjs",
-  "./ortografia/result-motion.mjs?v=4-tuned-progress",
+  "./ortografia/result-motion.mjs?v=5-synced-counters",
   "./ortografia/result-rules.mjs",
   "./ortografia/result-rules.mjs?v=5-fixed-rule-scroll",
   "./ortografia/result-screen.mjs",

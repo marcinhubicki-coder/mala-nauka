@@ -1,7 +1,14 @@
-const CACHE='mala-nauka-spelling-v91-result-pixel-20260930';
+const CACHE='mala-nauka-spelling-v92-result-retina-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
+  './app.css?v=47-result-retina',
+  './app.js?v=47-result-retina',
+  './ortografia/result-screen.mjs?v=4-retina',
+  './ortografia/result-screen.mjs',
+  './assets/fonts/nunito-variable.woff',
+  './assets/ortografia/result-hero-retina-v4.webp',
+  './assets/ortografia/result-meadow-retina-v4.webp',
   './',
   './index.html',
   './app.css',
@@ -359,3 +366,4 @@ self.addEventListener('fetch',event=>{
     return cached||update;
   }));
 });
+

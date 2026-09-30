@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v101-retina-release-20260930';
+const CACHE='mala-nauka-v102-results-cloud-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -14,7 +14,7 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20260930-release",
+  "./app.css?v=20260930-results-cloud-v7",
   "./app.js",
   "./app.js?v=20260930-release",
   "./assets/apple-touch-icon.png",
@@ -617,7 +617,7 @@ const CORE=[
   "./progress.mjs?v=3-dyktando-jelly-v4",
   "./progress.mjs?v=3-local-profiles",
   "./pwa-viewport.css",
-  "./pwa-viewport.css?v=1-release",
+  "./pwa-viewport.css?v=2-results",
   "./pwa-viewport.js",
   "./pwa-viewport.js?v=1-release",
   "./shared/jelly-v4.css",

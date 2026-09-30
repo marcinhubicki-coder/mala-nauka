@@ -8,10 +8,10 @@ import { exampleResult } from '../ortografia/result-example.mjs';
 const words = (await Promise.all(Array.from({length: 8}, (_, index) =>
   readFile(new URL('../data/words-0' + (index + 1) + '.json', import.meta.url), 'utf8').then(JSON.parse)))).flat();
 
-test('existing words remain valid and the five examples cover every learning category', () => {
+test('every word has valid learning data and the bank covers every learning category', () => {
   assert.equal(validateWords(words), words);
   const examples = words.filter(word => word.learning);
-  assert.equal(examples.length, 5);
+  assert.equal(examples.length, words.length);
   assert.deepEqual(new Set(examples.map(word => word.learning.type)), new Set(['memory', 'exchange', 'exception', 'pattern']));
   assert.equal(validateWords(words.map(({learning, ...word}) => word)).length, words.length);
   assert.equal(validLearning({...examples[0].learning, type: 'unknown'}), false);

@@ -7,7 +7,8 @@
 
 html, body {
   width: 100%;
-  height: var(--app-viewport-height);
+  /* Screen-specific percentage heights must not clip the full-height PWA. */
+  height: var(--app-viewport-height) !important;
   min-height: 0;
   max-height: var(--app-viewport-height);
   overflow: hidden;

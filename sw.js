@@ -1,11 +1,11 @@
-const CACHE='mala-nauka-spelling-v90-round-stats-20260930';
+const CACHE='mala-nauka-spelling-v91-result-pixel-20260930';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   './',
   './index.html',
   './app.css',
-  './app.css?v=45-round-stats',
+  './app.css?v=46-result-pixel',
   './viewport-lock.css',
   './app.js',
   './module-router.js',
@@ -89,7 +89,7 @@ const CORE=[
   './czytanie/index.html',
   './czytanie/wizard-v2.css?v=5',
   './czytanie/wizard-v2.mjs?v=2',
-  './app.js?v=45-round-stats',
+  './app.js?v=46-result-pixel',
   './game.mjs?v=reading-phrase-1',
   './modes.mjs?v=reading-phrase-1',
   './progress.mjs?v=reading-phrase-1',
@@ -204,7 +204,7 @@ const CORE=[
   './ortografia/wizard-v2.mjs',
   './ortografia/wizard-v2.css',
   './matematyka/correct-transition.js',
-  './app.js?v=45-round-stats',
+  './app.js?v=46-result-pixel',
   './game.mjs?v=23-art-library',
   './modes.mjs?v=23-art-library',
   './spelling-art.css?v=23-art-library',
@@ -214,7 +214,7 @@ const CORE=[
   './spelling/preview.mjs?v=23-art-library',
   './spelling/scenes.mjs?v=27-final-assets',
   './assets/fonts/dynapuff-polish-700.woff',
-  './assets/ortografia/lake-background.webp',
+  './assets/ortografia/lake-background.webp','./assets/ortografia/result-hero.webp',
   './assets/scenes/sokol.webp',
   './assets/scenes/huragan.webp',
   './assets/scenes/drzewo.webp',
@@ -240,7 +240,7 @@ const CORE=[
   './flagi/europe-map.js?v=6',
   './flagi/map-microstates.js?v=1',
   './flagi/feedback-transition.js?v=10',
-  './app.js?v=45-round-stats',
+  './app.js?v=46-result-pixel',
   './spelling-art.css?v=35-main-bubble',
   './spelling/art.mjs?v=42-final-assets',
   './spelling/bubble.mjs?v=39-transition-preset',

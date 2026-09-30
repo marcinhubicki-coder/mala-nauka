@@ -90,48 +90,63 @@ function spellingResultRows(attempts,emptyCopy){
  return '<div class="result-word-list">'+attempts.map(attempt=>{
   const image=spellingResultScene(attempt),retained=attempt.correct===true;
   return '<article class="result-word-row '+(retained?'is-retained':'is-review')+'">'+
-   (image?'<img class="result-word-thumb" src="'+escape(image)+'" alt="" width="58" height="58">':'<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>')+
+   (image?'<img class="result-word-thumb" src="'+escape(image)+'" alt="" width="48" height="48">':'<span class="result-word-thumb result-word-fallback" aria-hidden="true">✦</span>')+
    '<div class="result-word-copy"><strong>'+spellingResultWord(attempt)+'</strong><small>'+(retained?'Dziś poszło dobrze':'Poprawny zapis')+(attempt.category?' · '+escape(attempt.category.replace('/',' / ')):'')+'</small></div>'+
    '<span class="result-word-state">'+(retained?'Utrwalone':'Wrócimy')+'</span></article>';
  }).join('')+'</div>';
 }
 function resultStat(label,count,key,open){
- return '<button type="button" class="stat result-stat '+(open?'is-active':'')+'" data-action="toggle-result" data-result="'+key+'" aria-expanded="'+(open?'true':'false')+'" aria-controls="result-detail-'+key+'" '+(count?'':'disabled')+'><b>'+count+'</b><span>'+label+'</span><small aria-hidden="true">'+(count?'⌄':'')+'</small></button>';
+ const icon=key==='retained'?'✓':'↻';
+ return '<button type="button" class="result-stat '+(open?'is-active':'')+'" data-action="toggle-result" data-result="'+key+'" aria-expanded="'+(open?'true':'false')+'" aria-controls="result-detail-'+key+'"><span class="result-stat-icon" aria-hidden="true">'+icon+'</span><span class="result-stat-copy"><b>'+count+'</b><span>'+label+'</span></span><small aria-hidden="true">⌄</small></button>';
+}
+function resultAmbient(){
+ const sparks=[
+  ['12%','20%','4.2s','-1.1s'],['88%','18%','5.6s','-2.8s'],['74%','7%','6.4s','-4.1s'],['20%','6%','4.8s','-3.3s'],
+  ['93%','46%','7.1s','-1.9s'],['7%','49%','5.1s','-4.7s'],['84%','75%','6.2s','-2.2s'],['16%','82%','4.6s','-3.6s']
+ ];
+ const orbs=[
+  ['5%','24%','38px','7.2s','-1.2s'],['84%','12%','31px','9.1s','-3.4s'],['90%','52%','46px','11s','-4.8s'],['3%','70%','34px','12.9s','-6.1s']
+ ];
+ return '<div class="result-ambient" aria-hidden="true">'+
+  sparks.map(([left,top,duration,delay])=>'<i class="result-spark" style="left:'+left+';top:'+top+';--spark-duration:'+duration+';--spark-delay:'+delay+'"></i>').join('')+
+  orbs.map(([left,top,size,duration,delay])=>'<i class="result-orb" style="left:'+left+';top:'+top+';--orb-size:'+size+';--orb-duration:'+duration+';--orb-delay:'+delay+'"></i>').join('')+
+  '</div>';
+}
+function resultRays(){
+ return '<span class="result-rays result-rays-left" aria-hidden="true"><i></i><i></i></span><span class="result-rays result-rays-right" aria-hidden="true"><i></i><i></i></span>';
 }
 function renderSpellingResult(result){
  const attempts=spellingResultAttempts(result),retained=attempts.filter(attempt=>attempt.correct),review=attempts.filter(attempt=>!attempt.correct),total=attempts.length;
- const open=review.length?'review':retained.length?'retained':'';
- const hero=new URL('./assets/scenes/bunny.webp',import.meta.url).href;
+ const open=review.length?'review':'review';
+ const hero=new URL('./assets/ortografia/result-hero.webp',import.meta.url).href;
  const scorePct=total?accuracy(retained.length,review.length):0;
  const eyebrow=result.early?'Runda zakończona wcześniej':'Przygoda ukończona';
  const heading=total?'Dobra robota!':'Na dziś wystarczy!';
  const intro=total?(result.early?'To, co już zrobione, też się liczy. Zobacz, co dziś było pewne i do czego warto wrócić.':'Mały trening, kolejny krok do przodu.'):'Nie zdążyliśmy jeszcze przećwiczyć słowa. Wróć, kiedy będziesz mieć ochotę.';
- const mindset=review.length?'To nie lista błędów. To mapa tego, co warto jeszcze utrwalić.':'Dziś było pewnie. Wrócimy do tych słów później, żeby sprawdzić, czy zostały w pamięci.';
- root.innerHTML='<section class="result learning-result">'+
-  '<div class="result-hero-art"><img src="'+escape(hero)+'" alt="" width="96" height="96"></div>'+
-  '<span class="eyebrow">'+eyebrow+'</span><h1 tabindex="-1">'+heading+'</h1><p>'+intro+'</p>'+
-  '<span class="badge">'+escape(MODES[result.mode].name)+' · '+(result.dyktando?'Dyktando':minutes(result.duration))+'</span>'+
-  '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><strong>'+retained.length+' / '+total+'</strong><span>poprawnie</span><em>'+scorePct+'%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+scorePct+'" aria-label="'+scorePct+' procent poprawnych"><span style="width:'+scorePct+'%"></span></div></div>'+
-  '<div class="stats learning-stats learning-stats-two">'+
-   resultStat('Utrwalone',retained.length,'retained',open==='retained')+
-   resultStat('Do powtórki',review.length,'review',open==='review')+
-  '</div>'+
-  '<div class="result-details">'+
-   '<section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" '+(open==='retained'?'':'hidden')+'><div class="result-detail-head"><strong>To dziś było pewne</strong><span>✓</span></div><p>Te słowa poszły poprawnie. Później wrócimy do nich, żeby sprawdzić pamięć.</p>'+spellingResultRows(retained,'Jeszcze nic tutaj nie ma.')+'</section>'+
-   '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review" '+(open==='review'?'':'hidden')+'><div class="result-detail-head"><strong>Do powtórki</strong><span>↻</span></div><p>Tu był błąd, zapamiętaj poprawną formę.</p>'+spellingResultRows(review,'Dziś nic nie wymaga dodatkowej powtórki.')+'</section>'+
-  '</div>'+
-  '<p class="result-mindset">'+mindset+'</p>'+
-  '<div class="stack">'+btn('Jeszcze jedna runda →','again','primary')+btn('Wybierz inną przygodę','home')+'</div></section>';
+ const modeLabel=escape(MODES[result.mode].name)+' · '+(result.dyktando?'Dyktando':minutes(result.duration));
+ const reviewPanel=review.length
+  ? '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review"><div class="result-detail-head"><div><strong>Tu były małe potknięcia</strong><p>Zapamiętaj poprawną formę.</p></div><span aria-hidden="true">↻</span></div>'+spellingResultRows(review,'Dziś nic nie wymaga dodatkowej powtórki.')+'</section>'
+  : '<section id="result-detail-review" class="result-detail is-review is-congrats" data-result-panel="review"><div class="result-detail-head"><div><strong>Dziś bez potknięć!</strong><p>Świetnie — nie ma nic do powtórki.</p></div><span aria-hidden="true">✦</span></div><div class="result-congrats"><span aria-hidden="true">✓</span><p>Wrócimy do tych słów później, żeby sprawdzić, co zostało w pamięci.</p></div></section>';
+ root.innerHTML='<section class="result learning-result result-v3">'+
+  '<div class="result-scenery" aria-hidden="true"><img src="'+escape(hero)+'" alt="" width="555" height="247">'+resultAmbient()+'</div>'+
+  '<button type="button" class="result-close" data-action="home" aria-label="Zamknij podsumowanie i wróć do wyboru gry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>'+
+  '<div class="result-sheet">'+
+   '<div class="result-heading"><span class="eyebrow">'+eyebrow+'</span><div class="result-title-wrap">'+resultRays()+'<h1 tabindex="-1">'+heading+'</h1></div><p>'+intro+'</p></div>'+
+   '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong>'+retained.length+' / '+total+'</strong><span>poprawnie</span></div><span class="round-mode-pill">'+modeLabel+'</span><em>'+scorePct+'%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+scorePct+'" aria-label="'+scorePct+' procent poprawnych"><span style="width:'+scorePct+'%"></span></div></div>'+
+   '<div class="learning-stats-two">'+resultStat('Utrwalone',retained.length,'retained',false)+resultStat('Do powtórki',review.length,'review',true)+'</div>'+
+   '<div class="result-details">'+
+    '<section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" hidden><div class="result-detail-head"><div><strong>To dziś było pewne</strong><p>Te słowa poszły poprawnie.</p></div><span aria-hidden="true">✓</span></div>'+spellingResultRows(retained,'Jeszcze nic tutaj nie ma.')+'</section>'+
+    reviewPanel+
+   '</div>'+
+   '<div class="result-actions"><button type="button" class="primary result-again" data-action="again"><i class="cta-star star-1" aria-hidden="true"></i><i class="cta-star star-2" aria-hidden="true"></i><i class="cta-star star-3" aria-hidden="true"></i><span>Jeszcze jedna runda</span><b aria-hidden="true">→</b></button><button type="button" class="result-collection" data-action="history">Moja kolekcja</button></div>'+
+  '</div></section>';
  root.querySelector('h1')?.focus({preventScroll:true});
 }
 function toggleResultDetail(button){
  const key=button?.dataset.result,panel=key?root.querySelector('[data-result-panel="'+key+'"]'):null;
  if(!panel)return;
- const closing=button.getAttribute('aria-expanded')==='true';
- root.querySelectorAll('[data-action="toggle-result"]').forEach(item=>{item.classList.remove('is-active');item.setAttribute('aria-expanded','false');});
- root.querySelectorAll('[data-result-panel]').forEach(item=>{item.hidden=true;});
- if(closing)return;
- button.classList.add('is-active');button.setAttribute('aria-expanded','true');panel.hidden=false;
+ root.querySelectorAll('[data-action="toggle-result"]').forEach(item=>{item.classList.toggle('is-active',item===button);item.setAttribute('aria-expanded',item===button?'true':'false');});
+ root.querySelectorAll('[data-result-panel]').forEach(item=>{item.hidden=item!==panel;});
 }
 
 function renderGame() {

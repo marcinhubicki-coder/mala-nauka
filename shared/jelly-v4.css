@@ -39,8 +39,12 @@
  100%{opacity:0;transform:scaleX(.84) scaleY(.94)}
 }
 .jelly-v4-container .jelly-v4-label span{transition:none!important;animation:none!important;will-change:color,opacity,filter,transform,text-shadow}
-.jelly-v4-container .jelly-v4-label input:checked + span{color:var(--jelly-idle-ink)!important}
-.jelly-v4-container .jelly-v4-label span.jelly-v4-text-active{color:var(--jelly-active-ink)!important}
-.jelly-v4-container .jelly-v4-label input:checked + span.jelly-v4-text-active{color:var(--jelly-active-ink)!important}
+/* WAAPI owns the 440 ms delayed ink handoff. Important colors override it. */
+.jelly-v4-container .jelly-v4-label input:checked + span,
+#app[data-mode][data-view] .jelly-v4-container .jelly-v4-label input:checked + span{color:var(--jelly-idle-ink)}
+.jelly-v4-container .jelly-v4-label span.jelly-v4-text-active,
+#app[data-mode][data-view] .jelly-v4-container .jelly-v4-label span.jelly-v4-text-active{color:var(--jelly-active-ink)}
+.jelly-v4-container .jelly-v4-label input:checked + span.jelly-v4-text-active,
+#app[data-mode][data-view] .jelly-v4-container .jelly-v4-label input:checked + span.jelly-v4-text-active{color:var(--jelly-active-ink)}
 @media(pointer:fine){.jelly-v4-buffer{cursor:grab}.jelly-v4-label{cursor:pointer}}
 @media(prefers-reduced-motion:reduce){.jelly-v4-moving .jelly-v4-indicator::after{animation:none!important}}

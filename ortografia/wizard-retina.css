@@ -2,7 +2,7 @@
    All sizing follows the shared viewport; jelly motion stays in jelly-v4. */
 html:has(#app[data-view="wizard"][data-mode="spelling"]),
 body:has(#app[data-view="wizard"][data-mode="spelling"]) {
-  background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center / cover no-repeat;
+  background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center bottom / cover no-repeat;
 }
 body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none; }
 #app[data-mode="spelling"][data-view="wizard"] {

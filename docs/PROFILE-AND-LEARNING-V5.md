@@ -34,3 +34,5 @@ assets/ortografia/wizard-meadow-animals-v2.webp replaces the settings sky backgr
 
 ### Verification
 The existing service/round/drag/mastery/offline suites also verify the accepted 8-character boundary and rejection of 9. Browser QA: the maximum-width nickname in PIN measures 206.03 × 30.80 px inside a 218 px allowance; avatar 80 × 80 px; extra portrait viewport 320 × 320 with xMidYMid slice. PIN click and drag switch correctly; all four count CTA captions change while the note stays identical. A wrong-answer tap and partial drag stay on the question; full drag advances. Settings animals and repeat CTA are visually checked at 390 × 844. Praise must explicitly use flex-direction:row: generic feedback defaults to column, which otherwise stacks the rays and clips the footer. Its last grid row is 35 px with safe-bottom space.
+
+The settings background is anchored center bottom, so Safari's shorter viewport crops sky rather than the animals' feet. The iPhone 390 × 844 and Pro Max 430 × 932 layouts retain the same proportions.

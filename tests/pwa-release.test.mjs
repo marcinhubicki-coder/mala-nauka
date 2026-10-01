@@ -11,7 +11,7 @@ test('every offline precache request resolves to an existing file or entry direc
   for (const request of core) {
     await access(new URL('../' + request.slice(2).split('?')[0], import.meta.url));
   }
-  assert.ok(core.some(request => request.includes('wizard-retina.css?v=7-settings-meadow')));
+  assert.ok(core.some(request => request.includes('wizard-retina.css?v=8-bottom-meadow')));
   assert.ok(core.some(request => request.includes('result-motion.mjs?v=8-staggered-finish')));
 });
 

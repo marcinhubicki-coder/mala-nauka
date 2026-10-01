@@ -8,8 +8,11 @@ const PROGRESS_START_KICK = 2;
 const PROGRESS_FLASH = .35;
 const PROGRESS_FINISH_MS = 950;
 const REEL_SETTLE_START = .76;
-const HUNDRED_PAUSE = 120;
-const HUNDRED_KICK = 180;
+const HUNDRED_PAUSE = 90;
+const HUNDRED_ROLL = 250;
+const HUNDRED_STAGGER = 24;
+const HUNDRED_REVEAL_AT = 210;
+const HUNDRED_KICK = 220;
 const HANDOFF = 120;
 const presentations = new WeakMap();
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,6 +43,42 @@ function spinDigit(span, digit, duration = 90) {
   });
 }
 
+function rollDigitTo(span, digit, duration = 220, animations = []) {
+  if (!span) return;
+  const text = String(digit);
+  const oldText = span.textContent || '';
+  if (oldText === text) return;
+
+  span.getAnimations?.().forEach(animation => animation.cancel());
+  span.classList.add('is-final-rolling');
+  span.textContent = '';
+
+  const oldLayer = document.createElement('span');
+  oldLayer.className = 'result-reel-roll-layer';
+  oldLayer.textContent = oldText;
+  const newLayer = document.createElement('span');
+  newLayer.className = 'result-reel-roll-layer';
+  newLayer.textContent = text;
+  span.append(oldLayer, newLayer);
+
+  const oldAnimation = oldLayer.animate([
+    { transform: 'translateY(0)', opacity: 1, filter: 'blur(0)' },
+    { transform: 'translateY(-72%)', opacity: .12, filter: 'blur(.7px)' }
+  ], { duration, easing: 'cubic-bezier(.2,.72,.2,1)', fill: 'forwards' });
+
+  const newAnimation = newLayer.animate([
+    { transform: 'translateY(72%)', opacity: .12, filter: 'blur(.7px)' },
+    { transform: 'translateY(0)', opacity: 1, filter: 'blur(0)' }
+  ], { duration, easing: 'cubic-bezier(.2,.72,.2,1)', fill: 'forwards' });
+
+  animations.push(oldAnimation, newAnimation);
+  newAnimation.finished.then(() => {
+    if (!span.isConnected) return;
+    span.textContent = text;
+    span.classList.remove('is-final-rolling');
+  }).catch(() => {});
+}
+
 function setupReel(host, index) {
   const value = Math.max(0, Math.round(Number(host.dataset.count) || 0));
   const mode = host.dataset.reel || 'compact2';
@@ -51,17 +90,14 @@ function setupReel(host, index) {
   host.classList.add('result-reel');
   host.setAttribute('aria-label', String(value));
 
-  if (mode === 'percent') {
-    host.innerHTML = '<span class="result-reel-digit result-reel-hundreds" aria-hidden="true">1</span><span class="result-reel-digit" aria-hidden="true">0</span><span class="result-reel-digit" aria-hidden="true">0</span>';
-  } else {
-    host.innerHTML = '<span class="result-reel-digit" aria-hidden="true">0</span><span class="result-reel-digit" aria-hidden="true">0</span>';
-  }
+  // Every reel starts as exactly two visible digit positions.
+  // The third digit is created only for the special 99 → 100 finish.
+  host.innerHTML = '<span class="result-reel-digit" aria-hidden="true">0</span><span class="result-reel-digit" aria-hidden="true">0</span>';
 
-  const allDigits = [...host.querySelectorAll('.result-reel-digit')];
-  const digits = allDigits.slice(-2);
+  const digits = [...host.querySelectorAll('.result-reel-digit')];
   return {
     host, value, mode, hundred, target, digits,
-    hundredDigit: mode === 'percent' ? allDigits[0] : null,
+    hundredDigit: null,
     current: [0, 0],
     nextShuffle: [0, 18 + rng() * 20],
     plans: null,
@@ -82,7 +118,10 @@ function beginSettle(job) {
 
 function hideLeadingZero(job) {
   if (job.value >= 10 || job.hundred) return;
-  job.digits[0]?.classList.add('is-leading-zero-hidden');
+  const leading = job.digits[0], remaining = job.digits[1];
+  if (!leading || leading.classList.contains('is-leading-zero-hidden')) return;
+  leading.classList.add('is-leading-zero-hidden');
+  remaining?.classList.add('is-compacting-neighbor');
 }
 
 function updateReel(job, t, elapsed) {
@@ -118,21 +157,32 @@ function updateReel(job, t, elapsed) {
   }
 }
 
-function finishHundred(job, timers, onKick) {
+function finishHundred(job, timers, animations, onKick) {
   if (!job?.hundred || job.finalized) return;
   job.finalized = true;
+
+  // Hold 99 for a tiny beat, then gently roll both reels to 00.
+  timers.push(setTimeout(() => {
+    rollDigitTo(job.digits[0], 0, HUNDRED_ROLL, animations);
+  }, HUNDRED_PAUSE));
+
+  timers.push(setTimeout(() => {
+    rollDigitTo(job.digits[1], 0, HUNDRED_ROLL, animations);
+  }, HUNDRED_PAUSE + HUNDRED_STAGGER));
+
+  // Only now does a third digit exist. It grows into the layout from the left,
+  // so 99 becomes 00 and then resolves naturally into 100.
   timers.push(setTimeout(() => {
     job.host.classList.add('is-hundred-kick');
-    job.hundredDigit?.classList.add('is-visible');
-    spinDigit(job.digits[0], 0, HUNDRED_KICK);
-    spinDigit(job.digits[1], 0, HUNDRED_KICK);
-    job.hundredDigit?.animate?.([
-      { opacity: 0, transform: 'translateX(.32em) scale(.7)' },
-      { opacity: 1, transform: 'translateX(0) scale(1.08)', offset: .72 },
-      { opacity: 1, transform: 'translateX(0) scale(1)' }
-    ], { duration: HUNDRED_KICK, easing: 'cubic-bezier(.2,.78,.2,1)', fill: 'both' });
+    const hundredDigit = document.createElement('span');
+    hundredDigit.className = 'result-reel-digit result-reel-hundreds';
+    hundredDigit.setAttribute('aria-hidden', 'true');
+    hundredDigit.textContent = '1';
+    job.host.prepend(hundredDigit);
+    job.hundredDigit = hundredDigit;
+    requestAnimationFrame(() => hundredDigit.classList.add('is-visible'));
     onKick();
-  }, HUNDRED_PAUSE));
+  }, HUNDRED_PAUSE + HUNDRED_REVEAL_AT));
 }
 
 export function settleResult(root) {
@@ -163,7 +213,7 @@ export function revealResult(root, delay = 1000) {
   const timers = [];
   const finishAnimations = [];
 
-  function cleanup() {
+  function cleanup(preserveVisual = false) {
     if (done) return;
     done = true;
     cancelAnimationFrame(frame);
@@ -172,6 +222,7 @@ export function revealResult(root, delay = 1000) {
     timers.forEach(clearTimeout);
     finishAnimations.forEach(animation => { try { animation.cancel(); } catch {} });
     jobs.forEach(job => {
+      if (preserveVisual) return;
       job.host.getAnimations?.().forEach(animation => animation.cancel());
       job.host.querySelectorAll('.result-reel-digit').forEach(digit => digit.getAnimations?.().forEach(animation => animation.cancel()));
       job.host.classList.remove('result-reel', 'is-hundred-kick');
@@ -241,11 +292,11 @@ export function revealResult(root, delay = 1000) {
 
     if (hundredJob && !hundredStarted) {
       hundredStarted = true;
-      finishHundred(hundredJob, timers, finishProgress);
-      handoff = setTimeout(cleanup, HUNDRED_PAUSE + HUNDRED_KICK + PROGRESS_FINISH_MS + 140);
+      finishHundred(hundredJob, timers, finishAnimations, finishProgress);
+      handoff = setTimeout(() => cleanup(true), HUNDRED_PAUSE + HUNDRED_REVEAL_AT + HUNDRED_KICK + PROGRESS_FINISH_MS + 160);
     } else if (!hundredJob) {
       finishProgress();
-      handoff = setTimeout(cleanup, target > 0 ? PROGRESS_FINISH_MS + 100 : HANDOFF + 24);
+      handoff = setTimeout(() => cleanup(true), target > 0 ? PROGRESS_FINISH_MS + 100 : HANDOFF + 24);
     }
   }
 

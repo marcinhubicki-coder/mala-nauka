@@ -54,12 +54,12 @@ export function createSpellingArt(app, { onContinue } = {}) {
     themeMeta?.setAttribute('content', '#65b6ff');
     background = document.createElement('img');
     background.className = 'spelling-screen-bg'; background.alt = '';
-    background.src = new URL('../assets/ortografia/game-meadow-animals-v2.webp', import.meta.url).href;
+    background.src = new URL('../assets/ortografia/game-meadow-animals-v3.webp', import.meta.url).href;
     background.width = 711; background.height = 1536;
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
     const statusBlock=game.untimed
-      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pytanie w rundzie"></span><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Pozostałe pytania"></progress></div>`
+      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pytanie w rundzie"></span><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Postęp rundy"></progress></div>`
       : `<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
     app.innerHTML = `
       <header class="game-bar">

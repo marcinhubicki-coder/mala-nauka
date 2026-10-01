@@ -342,7 +342,7 @@ root?.addEventListener('change',event=>{
   if(!state.dyktando)jellyV4.update(incoming,from,{animate:false});
   syncSegments(true);updateStartButton(true);
  }
- if(target?.name==='wordLimit'){state.wordLimit=Number(target.value);saveState();syncSegments(true);updateStartButton(true);}
+ if(target?.name==='wordLimit'){state.wordLimit=Number(target.value);saveState();syncRoundChoice();syncSegments(true);updateStartButton(true);}
 });
 window.addEventListener('resize',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)requestAnimationFrame(()=>syncSegments(false));},{passive:true});
 window.addEventListener('orientationchange',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)window.setTimeout(()=>syncSegments(false),120);},{passive:true});

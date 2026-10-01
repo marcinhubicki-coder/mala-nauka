@@ -71,3 +71,9 @@ html:has(#app[data-view="history"]),body:has(#app[data-view="history"]){backgrou
 .learning-rule-body{padding:0 18px 18px}.learning-rule-body>p{margin:0 0 13px;font:500 15px/1.5 ResultBody,sans-serif;color:#77788e}.learning-rule-body h2{font:800 15px ResultBody,sans-serif;margin:15px 0 10px;color:#5c5481}
 .learning-rule-examples{display:flex;flex-wrap:wrap;gap:7px}.learning-rule-examples>span{padding:8px 10px;background:#f4effe;border:1px solid #e5ddf2;border-radius:14px;font-size:14px;color:#665189}.learning-rule-examples small{display:block;text-align:center;font-size:11px;color:#9384a9;margin-top:3px}
 .rule-word-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.rule-word-grid figure{margin:0;min-width:0;padding:4px 4px 8px;border:1px solid #f1e8d9;border-radius:18px;background:#fffaf1;text-align:center}.rule-word-grid img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:14px;display:block}.rule-word-grid figcaption{font:800 14px/1.2 ResultBody,sans-serif;margin-top:5px;overflow-wrap:anywhere;color:#16164d}.rule-word-grid mark{color:#267e53;background:#e1f1e7;border-radius:6px}
+
+.progress-hero{background-position:center calc(100% + 20 * var(--progress-u))}
+.progress-mode{flex-basis:0}.progress-mode.is-active{flex-basis:0;flex-grow:2.35}
+.progress-achievements{padding-top:calc(5 * var(--progress-u));padding-bottom:calc(5 * var(--progress-u))}
+.progress-achievements h2{font-size:calc(16 * var(--progress-u));line-height:1.05}.progress-achievements p{font-size:calc(10.2 * var(--progress-u));line-height:1.1}
+.progress-trophies .progress-trophy{width:calc(54 * var(--progress-u));height:calc(54 * var(--progress-u))}.progress-trophies .achievement small{display:none}.progress-pagination{margin-top:calc(3 * var(--progress-u))}

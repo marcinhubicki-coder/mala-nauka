@@ -15,7 +15,7 @@
 ## Artwork
 Built-in image generation, inspected and optimized to WebP without changing original four avatars.
 - assets/brand/player-avatars-extra-v1.webp: ONE transparent 4x2 sprite atlas, eight friendly smiling 3D children with pastel circular badges. Blonde bob/lilac; black-haired boy/aqua; dark-skinned girl with puffy buns/peach; brown-haired boy with blue glasses/mint; dark-haired girl with bangs/sky; dark-skinned curly-haired boy/yellow; auburn braided girl/green; freckled blonde boy/violet. Existing avatar atlas was the style reference. No text or overlapping badges. SVG sprite viewports account for the generated atlas's margins.
-- assets/ortografia/game-meadow-animals-v2.webp: edit of game-meadow-v1.webp. Preserve upper quiet sky, castle, meadow, stream and daisies; add a small white rabbit looking toward viewer, a walking side-profile hedgehog and a grazing fawn within the lower meadow. Match sunlight and children's storybook style. No UI or text.
+- assets/ortografia/game-meadow-animals-v3.webp: edit of game-meadow-v1.webp. Preserve upper quiet sky, castle, meadow, stream and daisies; add a small white rabbit looking toward viewer, a walking side-profile hedgehog and a grazing fawn within the lower meadow; final edit shrinks and moves the animals into the bottom strip so controls cover less of them. Match sunlight and children's storybook style. No UI or text.
 
 ## Validation
 node --test tests/*.test.mjs. New coverage checks Polish minimum length, persisted avatar/PIN choices, protected/unprotected switching, session-scoped PIN updates, and bounded source-based rules/examples. Browser verification is recorded with final preview; physical iOS keyboard remains a hardware check.

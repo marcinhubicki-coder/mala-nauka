@@ -1,6 +1,6 @@
 import { exampleProgress } from './progress-example.mjs?v=1';
-import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=3-rules';
-import { setDictationWords } from './ortografia/wizard-v2.mjs?v=13-count-copy';
+import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=4-spacing';
+import { setDictationWords } from './ortografia/wizard-v2.mjs?v=14-count-copy';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=18-slide-again';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
@@ -10,7 +10,7 @@ import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261001-adventure';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
-import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v5';
+import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v5-r2';
 import { playerService, AVATARS } from './player-service.mjs?v=4-optional-pin';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
@@ -114,7 +114,7 @@ function playerPinPage(){
  const tempPlayer=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:player;
  const name=tempPlayer?.nickname||'Gracz';
  const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
- root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'add-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(tempPlayer||activePlayer,'player-avatar-large')}<h2>${escape(setting?activePlayer.nickname:name)}</h2></div>${creating?`<div class="pin-mode" role="group" aria-label="Ochrona profilu">${btn('Ustaw PIN','pin-mode','',`data-enabled="true" aria-pressed="${pendingPinEnabled}"`)}${btn('Bez PIN-u','pin-mode','',`data-enabled="false" aria-pressed="${!pendingPinEnabled}"`)}</div>`:''}${!creating||pendingPinEnabled?`<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili na tym urządzeniu.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`:`<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}${btn('Dalej','submit-pin','primary player-form-next')}`}</section>`;
+ root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(tempPlayer||activePlayer,'player-avatar-large')}<h2>${escape(setting?activePlayer.nickname:name)}</h2></div>${creating?`<div class="pin-mode" role="group" aria-label="Ochrona profilu">${btn('Ustaw PIN','pin-mode','',`data-enabled="true" aria-pressed="${pendingPinEnabled}"`)}${btn('Bez PIN-u','pin-mode','',`data-enabled="false" aria-pressed="${!pendingPinEnabled}"`)}</div>`:''}${!creating||pendingPinEnabled?`<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili na tym urządzeniu.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`:`<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}${btn('Dalej','submit-pin','primary player-form-next')}`}</section>`;
 
 }
 async function submitPlayerPin(){
@@ -139,6 +139,7 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ editingPin=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
@@ -362,6 +363,7 @@ function finish(early=false,goHome=false){
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
  if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
+ if(action==='edit-player'){editingPin=false;pinInput='';pinError='';playerCreatePage();return;}
  if(action==='add-player'){editingPin=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
  if(action==='choose-player'){
   selectedPlayerId=button.dataset.player;
@@ -374,7 +376,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   return;
  }
  if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
- if(action==='continue-player'){if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
+ if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
  if(action==='pin-mode'){pendingPinEnabled=button.dataset.enabled==='true';pinInput='';pinError='';playerPinPage();return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';playerPinPage();}return;}

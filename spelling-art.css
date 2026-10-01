@@ -10,7 +10,7 @@
 }
 /* Root canvas paints overscroll/browser chrome; the fixed photo fills safe areas.
    Only controls are inset. The background outlives each question. */
-html.spelling-playing{background:#65b6ff url('assets/ortografia/game-meadow-animals-v2.webp') center bottom/cover no-repeat}
+html.spelling-playing{background:#65b6ff url('assets/ortografia/game-meadow-animals-v3.webp') center bottom/cover no-repeat}
 html.spelling-playing body{position:relative;isolation:isolate;background:transparent}
 body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100vh;height:calc(100 * var(--app-vh, 1dvh));object-fit:cover;object-position:center bottom;pointer-events:none;user-select:none;transform:translateZ(0)}
 #app[data-view="game"][data-mode="spelling"] .game-bar{grid-row:1;display:flex;align-items:center;justify-content:space-between;min-height:0;margin:0;gap:18px}

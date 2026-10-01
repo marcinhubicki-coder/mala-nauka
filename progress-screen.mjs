@@ -14,7 +14,7 @@ const repeat='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M24 13a9 9 0 
 const sprig='<svg class="progress-sprig" viewBox="0 0 48 64" aria-hidden="true"><path d="M20 66Q24 34 37 8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M34 26Q28 12 41 3Q45 19 34 26ZM30 38Q27 22 16 19Q13 36 30 38ZM28 44Q29 26 44 27Q44 43 28 44ZM25 54Q23 37 10 36Q9 52 25 54ZM23 60Q28 44 39 45Q40 59 23 60Z" fill="currentColor"/></svg>';
 function glyph(mode){return '<svg class="progress-mode-glyph" viewBox="'+ICONS[mode].join(' ')+'" aria-hidden="true"><image href="assets/home/home-retina.webp" width="853" height="1844"/></svg>';}
 function spelled(word){const [before,...after]=word.masked.split('_');return esc(before)+'<mark>'+esc(word.answer)+'</mark>'+esc(after.join('_'));}
-function trophy(index){return '<svg class="progress-trophy" viewBox="'+(index*512)+' 0 512 512" aria-hidden="true"><image href="assets/progress/trophies-v1.webp" width="1536" height="512" preserveAspectRatio="none"/></svg>';}
+function trophy(index){return '<svg class="progress-trophy" viewBox="'+(index*512+32)+' 32 448 448" aria-hidden="true"><image href="assets/progress/trophies-v1.webp" width="1536" height="512" preserveAspectRatio="none"/></svg>';}
 export function destroyProgressScreen(root){controllers.get(root)?.();controllers.delete(root);}
 
 export function renderProgressScreen(root,{progress,words,backAction='home',initialMode='spelling',onPractice}) {

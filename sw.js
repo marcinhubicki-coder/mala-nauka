@@ -1,11 +1,11 @@
-const CACHE='mala-nauka-v117-adventure-20261001';
+const CACHE='mala-nauka-v118-adventure-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   "./adventure-preview.html",
   "./progress-preview-frame.html",
   "./progress-screen.mjs?v=2",
-  "./progress-screen.css?v=2",
+  "./progress-screen.css?v=3",
   "./progress-example.mjs?v=1",
   "./shared/mastery.mjs?v=2",
   "./shared/scroll-edges.mjs?v=1",
@@ -37,9 +37,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261001-adventure-r2",
+  "./app.css?v=20261001-adventure-r3",
   "./app.js",
-  "./app.js?v=20261001-adventure-r2",
+  "./app.js?v=20261001-adventure-r3",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",
@@ -565,9 +565,9 @@ const CORE=[
   "./manifest.webmanifest",
   "./matematyka/",
   "./matematyka/app.css",
-  "./matematyka/app.css?v=20261001-adventure-r2",
+  "./matematyka/app.css?v=20261001-adventure-r3",
   "./matematyka/app.js",
-  "./matematyka/app.js?v=20261001-adventure-r2",
+  "./matematyka/app.js?v=20261001-adventure-r3",
   "./matematyka/board-v3.css",
   "./matematyka/board-v4.css",
   "./matematyka/board.css",

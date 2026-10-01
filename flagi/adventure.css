@@ -7,6 +7,7 @@
  width:100%;max-width:480px;margin:auto;color:var(--flag-ink);background:transparent;
  font-family:Flag Body,ui-rounded,sans-serif;isolation:isolate;
 }
+body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"])) {isolation:isolate}
 body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"]))::before{
  z-index:-1;background:linear-gradient(transparent calc(100% - 100vw - 30px),#72c8f6 calc(100% - 100vw),transparent calc(100% - 100vw + 80px)),url('../assets/flags/adventure/landscape-retina-v1.webp') center bottom / 100% auto no-repeat,url('../assets/flags/adventure/sky-v1.svg') center top / cover no-repeat,#88d7f6;
 }

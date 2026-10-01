@@ -3,7 +3,9 @@ export const FLAG_STRIPS=16;
 // Every strip samples the same unmodified SVG. Only the cloth geometry moves.
 // Nepal retains its transparent double-pennant shape; Switzerland stays square.
 export function flagOnPole(record,{label='Flaga do rozpoznania'}={}){
-  const source=record.flagSvg,ratio=record.id==='ch'||record.id==='va'?'1':'4 / 3';
+  // URLs inside inherited CSS variables resolve against the consuming stylesheet.
+  // Resolve against the document's base first so nested module entrypoints work.
+  const source=new URL(record.flagSvg,document.baseURI).href,ratio=record.id==='ch'||record.id==='va'?'1':'4 / 3';
   const cloth=record.id==='np'
     ? `<img class="flag-cloth-shape" src="${esc(source)}" alt="" width="240" height="180">`
     : Array.from({length:FLAG_STRIPS},(_,index)=>{

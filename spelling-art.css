@@ -99,24 +99,26 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
 /* The drag colors belong to its clipped rail; motion only runs while dragging. */
 .spelling-next.spelling-continue-rail{overflow:hidden}
-.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;inset:3px;border-radius:inherit;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);transform:scaleX(var(--drag-progress,0));transform-origin:left center;box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;transition:transform .35s cubic-bezier(.16,.78,.22,1)}
-.spelling-continue-rail.is-dragging::before,.spelling-continue-rail.is-complete::before{transition:none}
+.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(38px + (100% - 44px) * var(--drag-progress,0));border-radius:999px;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;opacity:var(--drag-fill-visible,0);transition:width .35s cubic-bezier(.16,.78,.22,1),opacity .2s}
+.spelling-continue-rail.is-dragging::before,.spelling-continue-rail.is-complete::before{--drag-fill-visible:1;transition:none}
 .spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 0 13px #fff7ad,0 4px 10px #ba8acb55}
 .spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark .6s ease-out infinite}
 .spelling-continue-rail.is-complete .continue-copy{opacity:0}.spelling-continue-rail.is-complete::after{content:'Świetnie! ✓';position:absolute;inset:0;display:grid;place-items:center;color:#612785;font-size:18px;font-weight:850}
 @keyframes drag-spark{from{opacity:1;transform:translateX(0) scale(.5)}to{opacity:0;transform:translateX(-35px) scale(1.2)}}
 /* A small white glow keeps the praise readable over meadow flowers. */
-#app.spelling-correct-feedback[data-mode="spelling"] .feedback{position:relative;isolation:isolate;justify-self:center;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;font-family:Spelling,sans-serif;font-size:clamp(24px,7.4vw,30px);line-height:1.1;color:#277956;white-space:nowrap}
+#app.spelling-correct-feedback[data-mode="spelling"] .feedback{position:relative;isolation:isolate;justify-self:center;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;font-family:Spelling,sans-serif;font-size:clamp(24px,7.4vw,30px);line-height:1.1;color:#277956;white-space:nowrap;overflow:visible;transform-origin:center;animation:feedback-punch 1.25s cubic-bezier(.2,.7,.2,1) both}
 #app.spelling-correct-feedback .feedback::before{content:"";position:absolute;z-index:-1;inset:-9px -12px;border-radius:50%;background:radial-gradient(ellipse,#fffffff5 0%,#ffffffdd 40%,#ffffff65 70%,transparent 100%);filter:blur(5px);pointer-events:none}
 .feedback-copy{-webkit-text-stroke:1.5px #fff;paint-order:stroke fill;text-shadow:0 1px 4px #fff}
-.feedback-rays{flex:none;width:25px;height:35px;overflow:visible;filter:drop-shadow(0 1px 0 #fff9);animation:feedback-rays-in .55s ease-out both}
+.feedback-rays{flex:none;width:25px;height:35px;overflow:visible;filter:drop-shadow(0 1px 0 #fff9)}
 .feedback-rays:last-child{transform:scaleX(-1)}
 @keyframes feedback-rays-in{from{opacity:0;translate:0 3px}to{opacity:1;translate:0 0}}
+@keyframes feedback-punch{0%{opacity:0;transform:translateY(3px) scale(.72)}20%{opacity:1;transform:translateY(0) scale(1.16)}35%{transform:scale(.97)}48%,68%{opacity:1;transform:scale(1.03)}100%{opacity:0;transform:translateY(-4px) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){.spelling-continue-rail.is-dragging .continue-handle::after,.feedback-rays{animation:none}}
+@media(prefers-reduced-motion:reduce){#app.spelling-correct-feedback[data-mode="spelling"] .feedback{animation:none}}
 /* Iridescent glass, a true round handle, and a fill confined to the rail. */
 .spelling-next.spelling-continue-rail{height:46px;padding-right:14px;border:1px solid #c4a2f1;background:linear-gradient(110deg,#fff6ffed,#fcfaffe8);box-shadow:inset 0 1px 2px #fff,inset 0 -2px 5px #dbc3f52b,0 0 0 1.5px #ffffffd4,0 3px 9px #7041ad20;overflow:hidden}
 .spelling-continue-rail .continue-handle{left:3px;top:3px;width:38px;height:38px;aspect-ratio:1;background:radial-gradient(ellipse 21% 15% at 29% 18%,#fff 15%,#ffffffb5 45%,transparent 90%),radial-gradient(ellipse at 24% 70%,#7fe6ffe8,transparent 62%),radial-gradient(ellipse at 76% 58%,#ffa3dbd9,transparent 65%),conic-gradient(from 135deg,#e9d9ff,#adf1ff,#ffd2f2,#d8bdff,#e9d9ff);box-shadow:inset 0 0 0 2px #ffffffb0,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 2px 6px #8b65bc4d}
-.spelling-continue-rail::before{inset:3px;background:linear-gradient(90deg,#78e6fd 0%,#c297fc 40%,#faa6df 78%,#fff0bf 100%);box-shadow:inset 0 1px 2px #fff9}
+.spelling-continue-rail::before{background:linear-gradient(90deg,#78e6fd 0%,#c297fc 40%,#faa6df 78%,#fff0bf 100%);box-shadow:inset 0 1px 2px #fff9}
 .spelling-continue-rail .continue-chevrons{left:48px;font-size:25px;letter-spacing:0;opacity:.55}
 .spelling-continue-rail .continue-copy{font-family:ResultBody,sans-serif;font-size:clamp(11px,3.25vw,14px);font-weight:850;letter-spacing:-.25px}
 .spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 9px #fff4b5,0 2px 6px #8b65bc4d}

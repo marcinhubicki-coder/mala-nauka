@@ -1,3 +1,4 @@
+import { BACKUP_FORMAT, BACKUP_VERSION, validateBackup } from './profile-backup.mjs?v=1';
 const DB_NAME='malaNauka.local.v1';
 const DB_VERSION=1;
 const SESSION_KEY='malaNauka.sessionPlayerId';
@@ -77,7 +78,7 @@ function txDone(tx){
  });
 }
 
-class LocalPlayerService{
+export class LocalPlayerService{
  constructor(){this.db=null;this.fallback=false;this.ready=null;}
  async init(){
   if(this.ready)return this.ready;
@@ -140,7 +141,8 @@ class LocalPlayerService{
   if(!player)return false;
   if(player.pinEnabled===false)return true;
   if(!validPin(pin))return false;
-  return player.pinHash===await sha256(`${player.pinSalt}:${pin}`);
+  const text=`${player.pinSalt}:${pin}`;
+  return player.pinHash===(player.pinHash?.startsWith('fallback-')?fallbackHash(text):await sha256(text));
  }
  async unlockPlayer(id,pin){
   if(!(await this.verifyPin(id,pin)))return null;
@@ -209,6 +211,40 @@ class LocalPlayerService{
   await this.saveProgress(playerId,value);
   await this.setMeta('legacyProgressMigrated',true);
   return true;
+ }
+ async exportBackup(preferences={}){
+  await this.init();
+  let players,progress;
+  if(this.fallback){const data=readFallback();players=data.players;progress=data.progress;}
+  else{
+   const tx=this.db.transaction(['players','progress'],'readonly');
+   const [profiles,rows]=await Promise.all([requestResult(tx.objectStore('players').getAll()),requestResult(tx.objectStore('progress').getAll())]);
+   players=profiles;progress=Object.fromEntries(rows.map(row=>[row.playerId,row.value]));
+  }
+  return validateBackup({format:BACKUP_FORMAT,version:BACKUP_VERSION,createdAt:now(),preferences,guestProgress:await this.getProgress('guest'),
+   players:players.map(player=>({profile:{...player,avatarId:cleanAvatar(player.avatarId)||fallbackAvatar(player),pinEnabled:player.pinEnabled!==false&&Boolean(player.pinHash)},progress:progress[player.id]??null}))});
+ }
+ async importBackup(value){
+  const backup=validateBackup(value); // Validate every profile before opening a write transaction.
+  await this.init();
+  if(this.fallback){
+   const data=readFallback(),byId=new Map(data.players.map(player=>[player.id,player]));
+   for(const row of backup.players){byId.set(row.profile.id,row.profile);if(row.progress===null)delete data.progress[row.profile.id];else data.progress[row.profile.id]=row.progress;}
+   data.players=[...byId.values()];data.meta.legacyProgressMigrated=true;
+   if(!writeFallback(data))throw new Error('Nie udało się zapisać kopii. Dotychczasowe dane zostały zachowane.');
+  }else{
+   // One atomic transaction: a failed profile/progress write rolls the whole import back.
+   const tx=this.db.transaction(['players','progress','meta'],'readwrite'),done=txDone(tx);
+   for(const row of backup.players){
+    tx.objectStore('players').put(row.profile);
+    if(row.progress===null)tx.objectStore('progress').delete(row.profile.id);
+    else tx.objectStore('progress').put({playerId:row.profile.id,value:row.progress,updatedAt:now()});
+   }
+   tx.objectStore('meta').put({key:'legacyProgressMigrated',value:true});await done;
+  }
+  if(backup.guestProgress){try{sessionStorage.setItem(GUEST_PROGRESS_KEY,JSON.stringify(backup.guestProgress));}catch{}}
+  this.lockSession(); // Restoring a PIN-protected profile must never sign it in.
+  return backup;
  }
  async getMeta(key){
   await this.init();

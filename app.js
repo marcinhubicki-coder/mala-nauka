@@ -1,5 +1,5 @@
 import { exampleProgress } from './progress-example.mjs?v=1';
-import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=4-spacing';
+import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=5-rules-jelly';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
@@ -11,8 +11,9 @@ import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './ga
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
 import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
-import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=5-nick-limit';
+import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
+import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
@@ -32,7 +33,7 @@ let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio
 let gameTicker = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
 function startGameTicker(){stopGameTicker();gameTicker=setInterval(()=>{if(view!=='game'||!game){stopGameTicker();return;}game.tick();syncGame();},50);}
-let offlineReady=false,collectionReturn=null;
+let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
@@ -73,12 +74,12 @@ async function refreshPlayers(){
  }
  return players;
 }
-async function persistProgress(){
+async function persistProgress({strict=false}={}){
  if(!activePlayer?.id)return;
  const playerId=activePlayer.id;
  const snapshot=globalThis.structuredClone?structuredClone(progress):JSON.parse(JSON.stringify(progress));
  try{await playerService.saveProgress(playerId,snapshot);}
- catch{const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;}
+ catch(error){const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;if(strict)throw error;}
 }
 async function activatePlayer(player){
  if(!player)return;
@@ -191,7 +192,47 @@ function wizard() {
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
  root.innerHTML=pageHead('Ustawienia')+`<section class="card"><label class="setting" for="sound"><span><strong>Dźwięki</strong><small>Krótki dźwięk po odpowiedzi</small></span><input id="sound" type="checkbox" role="switch" ${settings.sound?'checked':''}></label><label class="setting" for="difficulty"><span><strong>Pokazuj poziom</strong><small>Mała etykieta przy pytaniu</small></span><input id="difficulty" type="checkbox" role="switch" ${settings.difficulty?'checked':''}></label></section>
- <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section>${activePlayer?.id!=='guest'?`<section class="card pin-settings"><div><strong>PIN profilu</strong><p>${activePlayer?.hasPin?'Przełączanie tego profilu wymaga kodu.':'Przełączanie tego profilu nie wymaga kodu.'}</p></div>${btn(activePlayer?.hasPin?'Wyłącz PIN':'Ustaw PIN',activePlayer?.hasPin?'disable-pin':'enable-pin','secondary')}</section>`:''}<section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
+ <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section>${activePlayer?.id!=='guest'?`<section class="card pin-settings"><div><strong>PIN profilu</strong><p>${activePlayer?.hasPin?'Przełączanie tego profilu wymaga kodu.':'Przełączanie tego profilu nie wymaga kodu.'}</p></div>${btn(activePlayer?.hasPin?'Wyłącz PIN':'Ustaw PIN',activePlayer?.hasPin?'disable-pin':'enable-pin','secondary')}</section>`:''}<section class="card backup-card"><h2>Kopia danych</h2><p>Przenieś profile, postępy i ustawienia do innej wersji gry lub na drugie urządzenie.</p><div class="backup-actions">${btn('Eksportuj dane','export-backup','secondary')}${btn('Importuj dane','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><small>Plik JSON zachowuje również PIN-y profili.</small></section><section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
+}
+function backupPreferences(){return {settings,configs,spellingWizard:read(prefix+'spellingWizardV2')};}
+function backupStatus(message){const status=root.querySelector('#backup-status');if(status)status.textContent=message;}
+async function exportBackup(){
+ if(backupBusy)return;backupBusy=true;
+ try{
+  await persistProgress({strict:true});
+  const backup=await playerService.exportBackup(backupPreferences());
+  const url=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download=`mala-nauka-kopia-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
+  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+  backupStatus('Kopia gotowa. Zachowaj plik w aplikacji Pliki.');
+ }catch(error){backupStatus(error?.message||'Nie udało się przygotować kopii danych.');}
+ finally{backupBusy=false;}
+}
+async function previewBackup(file){
+ if(!file||backupBusy)return;backupBusy=true;pendingBackup=null;
+ try{
+  if(file.size>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
+  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing);
+  pendingBackup=backup;
+  showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} Przywrócimy też ustawienia gry.</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
+ }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
+ finally{backupBusy=false;}
+}
+async function importBackup(){
+ if(!pendingBackup||backupBusy)return;backupBusy=true;
+ const keys=[prefix+'settings',prefix+'configs',prefix+'spellingWizardV2'];
+ const previous=keys.map(key=>localStorage.getItem(key));
+ try{
+  const backup=pendingBackup,preferences=backup.preferences;
+  try{
+   localStorage.setItem(keys[0],JSON.stringify(preferences.settings));localStorage.setItem(keys[1],JSON.stringify(preferences.configs));
+   if(preferences.spellingWizard)localStorage.setItem(keys[2],JSON.stringify(preferences.spellingWizard));else localStorage.removeItem(keys[2]);
+   await playerService.importBackup(backup);
+  }catch(error){for(let i=0;i<keys.length;i++){try{if(previous[i]===null)localStorage.removeItem(keys[i]);else localStorage.setItem(keys[i],previous[i]);}catch{}}throw error;}
+  settings=preferences.settings;configs=preferences.configs;pendingBackup=null;activePlayer=null;progress=cleanProgress(null);collectionReturn=null;
+  modal.close();await refreshPlayers();playersPage();
+ }catch(error){modal.close();backupStatus(error?.message||'Nie udało się zapisać kopii danych.');}
+ finally{backupBusy=false;}
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
 function historyPage() {
@@ -387,6 +428,10 @@ function finish(early=false,goHome=false){
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
+ if(action==='export-backup'){await exportBackup();return;}
+ if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
+ if(action==='confirm-import'){await importBackup();return;}
+ if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
  if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
  if(action==='edit-player'){editingPin=false;pinInput='';pinError='';playerCreatePage();return;}
  if(action==='add-player'){editingPin=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
@@ -479,6 +524,7 @@ window.addEventListener('resize',()=>{
  if(view==='player-pin'&&container&&!container.classList.contains('jelly-v4-moving'))pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
 });
 root.addEventListener('change',e=>{
+ if(view==='settings'&&e.target.id==='backup-file'){void previewBackup(e.target.files?.[0]);e.target.value='';return;}
  if(view==='player-pin'&&e.target.name==='profilePinMode'){setPinMode(e.target.value==='pin'?0:1);return;}
  if(view==='wizard'){
   const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);

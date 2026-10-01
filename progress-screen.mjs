@@ -3,6 +3,7 @@ import { learningSummary } from './shared/mastery.mjs?v=2';
 import { sceneFor, sceneUrl } from './spelling/scenes.mjs?v=27-final-assets';
 import { openResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { CATEGORIES } from './game.mjs?v=20261001-adventure';
+import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
 
 const controllers=new WeakMap();
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -20,7 +21,8 @@ export function destroyProgressScreen(root){controllers.get(root)?.();controller
 export function renderProgressScreen(root,{progress,words,backAction='home',initialMode='spelling',onPractice}) {
   destroyProgressScreen(root);
   let mode=initialMode in NAMES?initialMode:'spelling',screen='dashboard',filter='all',achievementPage=0,rulesView='rules',ruleCategory=CATEGORIES[0];
-  const abort=new AbortController();
+  const abort=new AbortController(),rulesJelly=createJellyV4({indicatorSelector:'.rules-view-indicator'});
+  let suppressRulesClickUntil=0;
   const knowledge=learningSummary(progress.learning);
   const byWord=new Map(knowledge.items.map(item=>[item.word,item]));
   const earnedWords=knowledge.items.filter(item=>item.masteryEarned).length;
@@ -54,6 +56,29 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
       '<section class="progress-achievements"><header><div><h2>Twoje osiągnięcia</h2><p>Zobacz, co już udało Ci się osiągnąć!</p></div><button type="button" data-progress="achievements">Zobacz więcej ›</button></header><div class="progress-trophies"><button type="button" class="trophy-prev" data-progress="previous" aria-label="Poprzednie osiągnięcia">‹</button>'+achievements.slice(achievementPage,achievementPage+3).map(a=>'<article class="achievement '+(a.earned?'is-earned':'is-pending')+'">'+trophy(a.index)+'<div><span>'+a.title+'</span><strong>'+a.detail+'</strong><small>'+(a.earned?'Zdobyte!':a.progress)+'</small></div></article>').join('')+'<button type="button" class="trophy-next" data-progress="next" aria-label="Kolejne osiągnięcia">›</button></div><div class="progress-pagination" aria-label="Strona osiągnięć">'+[0,1,2].map(i=>'<i class="'+(achievementPage===i?'is-current':'')+'"></i>').join('')+'</div></section>'+
       '<button type="button" class="progress-rules-link" data-progress="rules"><span class="progress-rule-art" aria-hidden="true"></span><span><strong>Wyjaśnienia i zasady</strong><small>Zobacz proste wyjaśnienia<br>zasad ortografii i przykłady.</small></span><i aria-hidden="true">›</i></button></div></section>';
   }
+  function rulesContentMarkup(){
+    const selected=words.filter(word=>word.category===ruleCategory);
+    const groups=ruleGroups(words,ruleCategory);
+    let content='<nav class="rules-categories" aria-label="Wybierz kategorię zasad">'+CATEGORIES.map(category=>'<button type="button" data-progress="rules-category" data-category="'+category+'" aria-pressed="'+(ruleCategory===category)+'">'+esc(category.replace('/',' / '))+'</button>').join('')+'</nav>';
+    if(rulesView==='rules')content+='<div class="learning-rule-list">'+groups.map((group,index)=>'<details class="learning-rule" '+(index===0?'open':'')+'><summary><span>'+esc(group.title)+'</span><i aria-hidden="true">⌄</i></summary><div class="learning-rule-body"><p>'+esc(group.explanation)+'</p>'+(group.examples.length?'<div class="learning-rule-examples">'+group.examples.map(e=>'<span><b>'+esc(e.from)+'</b> → <b>'+esc(e.to)+'</b><small>'+esc(e.change)+'</small></span>').join('')+'</div>':'')+'<h2>Popatrz na poprawny zapis</h2><div class="rule-word-grid">'+group.words.map(word=>{const scene=sceneFor(word.masked,word.word);return '<figure><img src="'+esc(sceneUrl(scene))+'" alt="" width="120" height="120" loading="lazy" decoding="async"><figcaption>'+spelled(word)+'</figcaption></figure>';}).join('')+'</div></div></details>').join('')+'</div>';
+    else content+='<p class="progress-subtitle">Wybierz słowo i poznaj jego zasadę.</p><div class="collection-word-grid">'+selected.map(word=>{const scene=sceneFor(word.masked,word.word);return '<button type="button" class="collection-word" data-progress="rule" data-word="'+esc(word.word)+'"><img src="'+esc(sceneUrl(scene))+'" alt="" width="120" height="120" loading="lazy" decoding="async"><strong>'+spelled(word)+'</strong></button>';}).join('')+'</div>';
+    return content;
+  }
+  function rulesViewMarkup(){
+    return '<div class="rules-views" role="radiogroup" aria-label="Widok wyjaśnień"><span class="rules-view-indicator" aria-hidden="true"></span>'+[['rules','Zasady'],['words','Słowa']].map(([key,label])=>'<label><input type="radio" name="progressRulesView" value="'+key+'" '+(rulesView===key?'checked':'')+'><span>'+label+'</span></label>').join('')+'</div>';
+  }
+  function setRulesView(index){
+    const container=root.querySelector('.rules-views');if(!container||screen!=='rules')return;
+    const next=index===0?'rules':'words',changed=next!==rulesView;rulesView=next;
+    container.querySelectorAll('input').forEach(input=>{input.checked=input.value===rulesView;});
+    rulesJelly.update(container,index,{animate:true});
+    if(changed){const body=root.querySelector('[data-rules-content]');body.innerHTML=rulesContentMarkup();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)body.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});}
+  }
+  function mountRulesView(){
+    const container=root.querySelector('.rules-views');if(!container)return;
+    rulesJelly.update(container,rulesView==='rules'?0:1,{animate:false});
+    rulesJelly.setupDrag(container,{getActiveIndex:()=>rulesView==='rules'?0:1,commitIndex:setRulesView,suppressClick:ms=>{suppressRulesClickUntil=performance.now()+ms;}});
+  }
   function renderSubpage(){
     const title={collection:mode==='spelling'?'Moja kolekcja słów':'Moje przygody',categories:'Kategorie do poćwiczenia',rules:'Wyjaśnienia i zasady',achievements:'Twoje osiągnięcia'}[screen];
     let content='';
@@ -61,11 +86,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
       const sessions=progress.history.filter(result=>result.mode===mode);
       content='<p class="progress-subtitle">Twoje ukończone przygody z '+INSTRUMENTAL[mode]+'.</p>'+(sessions.length?'<div class="progress-session-list">'+sessions.map(r=>'<article><h2>'+new Date(r.date).toLocaleDateString('pl-PL')+'</h2><p>'+r.correct+' poprawnie · '+r.wrong+' do powtórki</p><small>'+r.duration/60+' min</small></article>').join('')+'</div>':'<div class="progress-empty"><h2>Jeszcze wszystko przed nami!</h2><p>Zagraj, aby zobaczyć tutaj swoje przygody.</p></div>');
     }else if(screen==='rules'){
-      const selected=words.filter(word=>word.category===ruleCategory);
-      const groups=ruleGroups(words,ruleCategory);
-      content='<nav class="collection-filters rules-views" aria-label="Widok wyjaśnień">'+[['rules','Zasady'],['words','Słowa']].map(([key,label])=>'<button type="button" data-progress="rules-view" data-rules-view="'+key+'" aria-pressed="'+(rulesView===key)+'">'+label+'</button>').join('')+'</nav><nav class="rules-categories" aria-label="Wybierz kategorię zasad">'+CATEGORIES.map(category=>'<button type="button" data-progress="rules-category" data-category="'+category+'" aria-pressed="'+(ruleCategory===category)+'">'+esc(category.replace('/',' / '))+'</button>').join('')+'</nav>';
-      if(rulesView==='rules')content+='<div class="learning-rule-list">'+groups.map((group,index)=>'<details class="learning-rule" '+(index===0?'open':'')+'><summary><span>'+esc(group.title)+'</span><i aria-hidden="true">⌄</i></summary><div class="learning-rule-body"><p>'+esc(group.explanation)+'</p>'+(group.examples.length?'<div class="learning-rule-examples">'+group.examples.map(e=>'<span><b>'+esc(e.from)+'</b> → <b>'+esc(e.to)+'</b><small>'+esc(e.change)+'</small></span>').join('')+'</div>':'')+'<h2>Popatrz na poprawny zapis</h2><div class="rule-word-grid">'+group.words.map(word=>{const scene=sceneFor(word.masked,word.word);return '<figure><img src="'+esc(sceneUrl(scene))+'" alt="" width="120" height="120" loading="lazy" decoding="async"><figcaption>'+spelled(word)+'</figcaption></figure>';}).join('')+'</div></div></details>').join('')+'</div>';
-      else content+='<p class="progress-subtitle">Wybierz słowo i poznaj jego zasadę.</p><div class="collection-word-grid">'+selected.map(word=>{const scene=sceneFor(word.masked,word.word);return '<button type="button" class="collection-word" data-progress="rule" data-word="'+esc(word.word)+'"><img src="'+esc(sceneUrl(scene))+'" alt="" width="120" height="120" loading="lazy" decoding="async"><strong>'+spelled(word)+'</strong></button>';}).join('')+'</div>';
+      content=rulesViewMarkup()+'<div data-rules-content>'+rulesContentMarkup()+'</div>';
     }else if(screen==='collection'){
       const selected=words.filter(word=>screen==='rules'||(byWord.has(word.word)&&(filter==='all'||(filter==='learning'?['learning','consolidating'].includes(byWord.get(word.word).state):byWord.get(word.word).state===filter))));
       content=(screen==='collection'?'<nav class="collection-filters" aria-label="Pokaż słowa">'+[['all','Odkryte'],['mastered','Umiem'],['learning','Ćwiczę'],['review','Powtórzę']].map(([key,label])=>'<button type="button" data-progress="filter" data-filter="'+key+'" aria-pressed="'+(filter===key)+'">'+label+'</button>').join('')+'</nav>':'<p class="progress-subtitle">Wybierz słowo i poznaj jego zasadę.</p>')+
@@ -74,6 +95,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
       content='<p class="progress-subtitle">Małe kroki, coraz pewniejsza pisownia.</p><div class="progress-category-list">'+categoryGroups.map(g=>'<button type="button" data-progress="practice" data-category="'+g.category+'"><b class="category-pair"><span>'+g.category.split('/').map(esc).join('</span><i aria-hidden="true">/</i><span>')+'</span></b><span>'+g.mastered+' / '+g.total+' opanowane<small>'+(g.review?g.review+' słów do powtórki':'Poznaj lub utrwal tę zasadę')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>';
     }else content='<p class="progress-subtitle">Osiągnięcia zdobywasz, kiedy wiedza zostaje z Tobą na dłużej.</p><div class="progress-achievement-list">'+achievements.map(a=>'<article>'+trophy(a.index)+'<div><h2>'+a.title+' '+a.detail+'</h2><p>'+(a.earned?'To już Twoje osiągnięcie!':a.progress+' słów opanowanych')+'</p></div></article>').join('')+'</div>';
     root.innerHTML='<section class="progress-canvas progress-subpage">'+header(title,true)+content+'</section>';
+    if(screen==='rules'&&mode==='spelling')mountRulesView();
   }
   root.addEventListener('click',event=>{
     const button=event.target.closest('[data-progress]');if(!button)return;
@@ -82,7 +104,6 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
       const word=words.find(word=>word.word===button.dataset.word);if(word)openResultRule(root,word,button);return;
     }
     if(action==='practice'){onPractice(mode,button.dataset.category);return;}
-    if(action==='rules-view'){rulesView=button.dataset.rulesView;render();return;}
     if(action==='rules-category'){ruleCategory=button.dataset.category;render();return;}
     if(action==='mode'){mode=button.dataset.mode;screen='dashboard';achievementPage=0;}
     else if(action==='filter')filter=button.dataset.filter;
@@ -91,5 +112,15 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     else {screen=action;filter=button.dataset.filter||'all';}
     render();if(!['next','previous','filter'].includes(action)){root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});}
   },{signal:abort.signal});
+  root.addEventListener('click',event=>{
+    if(screen!=='rules')return;
+    const container=root.querySelector('.rules-views'),buffer=container?.parentElement;
+    if(!container||!buffer?.contains(event.target))return;
+    const label=event.target.closest('.rules-views > label')||[...container.querySelectorAll('label')].find(node=>{const r=node.getBoundingClientRect();return event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom;});
+    if(!label)return;event.preventDefault();if(performance.now()<suppressRulesClickUntil)return;
+    setRulesView(label.querySelector('input').value==='rules'?0:1);
+  },{signal:abort.signal});
+  root.addEventListener('change',event=>{if(event.target.name==='progressRulesView')setRulesView(event.target.value==='rules'?0:1);},{signal:abort.signal});
+  window.addEventListener('resize',()=>{const container=root.querySelector('.rules-views');if(container&&!container.classList.contains('jelly-v4-moving'))rulesJelly.update(container,rulesView==='rules'?0:1,{animate:false});},{signal:abort.signal});
   controllers.set(root,()=>abort.abort());render();
 }

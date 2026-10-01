@@ -7,16 +7,16 @@ const guestPlayer=()=>({id:'guest',nickname:'odkrywco',avatarId:'b'});
 
 const now=()=>new Date().toISOString();
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`player-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
-const cleanNickname=value=>String(value||'').trim().replace(/\s+/g,' ').slice(0,20);
+const cleanNickname=value=>String(value||'').normalize('NFC').trim().replace(/\s+/g,' ').slice(0,20);
 const validPin=pin=>/^\d{4}$/.test(String(pin||''));
-const AVATARS=['a','b','c','d'];
+export const AVATARS=Object.freeze(['a','b','c','d','e','f','g','h','i','j','k','l']);
 const fallbackAvatar=player=>{
  const source=String(player?.id||player?.nickname||'player');
  let total=0;for(let i=0;i<source.length;i++)total=(total+source.charCodeAt(i))%AVATARS.length;
  return AVATARS[total];
 };
 const cleanAvatar=value=>AVATARS.includes(String(value||''))?String(value):null;
-const publicPlayer=player=>player?{id:player.id,nickname:player.nickname,avatarId:cleanAvatar(player.avatarId)||fallbackAvatar(player),createdAt:player.createdAt,updatedAt:player.updatedAt}:null;
+const publicPlayer=player=>player?{id:player.id,nickname:player.nickname,avatarId:cleanAvatar(player.avatarId)||fallbackAvatar(player),hasPin:player.pinEnabled!==false&&Boolean(player.pinHash),createdAt:player.createdAt,updatedAt:player.updatedAt}:null;
 
 function fallbackHash(text){
  let hash=2166136261;
@@ -115,15 +115,15 @@ class LocalPlayerService{
   const tx=this.db.transaction('players','readonly');
   return await requestResult(tx.objectStore('players').get(id))||null;
  }
- async createPlayer({nickname,pin,avatarId}){
+ async createPlayer({nickname,pin,avatarId,pinEnabled=true}){
   await this.init();
   const safeName=cleanNickname(nickname);
-  if(safeName.length<2)throw new Error('Nick powinien mieć co najmniej 2 znaki.');
-  if(!validPin(pin))throw new Error('PIN musi mieć 4 cyfry.');
+  if([...safeName].length<3)throw new Error('Wpisz nick — co najmniej 3 znaki.');
+  if(pinEnabled&&!validPin(pin))throw new Error('PIN musi mieć 4 cyfry.');
   const salt=randomSalt();
   const stamp=now();
   const id=makeId();
-  const player={id,nickname:safeName,avatarId:cleanAvatar(avatarId)||fallbackAvatar({id,nickname:safeName}),pinSalt:salt,pinHash:await sha256(`${salt}:${pin}`),createdAt:stamp,updatedAt:stamp};
+  const player={id,nickname:safeName,avatarId:cleanAvatar(avatarId)||fallbackAvatar({id,nickname:safeName}),pinEnabled:pinEnabled!==false,pinSalt:pinEnabled?salt:null,pinHash:pinEnabled?await sha256(`${salt}:${pin}`):null,createdAt:stamp,updatedAt:stamp};
   if(this.fallback){
    const data=readFallback();data.players.push(player);
    if(!writeFallback(data))throw new Error('Nie udało się zapisać profilu.');
@@ -134,9 +134,10 @@ class LocalPlayerService{
   return publicPlayer(player);
  }
  async verifyPin(id,pin){
-  if(!validPin(pin))return false;
   const player=await this.getPrivatePlayer(id);
   if(!player)return false;
+  if(player.pinEnabled===false)return true;
+  if(!validPin(pin))return false;
   return player.pinHash===await sha256(`${player.pinSalt}:${pin}`);
  }
  async unlockPlayer(id,pin){
@@ -145,6 +146,17 @@ class LocalPlayerService{
   try{sessionStorage.setItem(SESSION_KEY,id);}catch{}
   await this.setMeta('lastPlayerId',id);
   return player;
+ }
+ async setPinProtection(id,{enabled,pin}){
+  const session=await this.getSessionPlayer();
+  if(!session||session.id!==id||id==='guest')throw new Error('Najpierw wejdź do swojego profilu.');
+  const player=await this.getPrivatePlayer(id);
+  if(enabled&&!validPin(pin))throw new Error('PIN musi mieć 4 cyfry.');
+  const salt=enabled?randomSalt():null;
+  Object.assign(player,{pinEnabled:enabled===true,pinSalt:salt,pinHash:enabled?await sha256(`${salt}:${pin}`):null,updatedAt:now()});
+  if(this.fallback){const data=readFallback();data.players=data.players.map(p=>p.id===id?player:p);if(!writeFallback(data))throw new Error('Nie udało się zapisać ustawienia PIN-u.');}
+  else{const tx=this.db.transaction('players','readwrite');tx.objectStore('players').put(player);await txDone(tx);}
+  return publicPlayer(player);
  }
  async useCreatedPlayer(id){
   const player=await this.getPlayer(id);

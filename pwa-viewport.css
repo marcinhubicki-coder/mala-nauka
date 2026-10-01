@@ -46,3 +46,5 @@ html:has(#app[data-view="results"][data-mode="spelling"]) {
 .retry-action:focus-visible:not(:hover) { box-shadow: 0 8px 22px rgba(72,88,190,.24); }
 .next-action:focus-visible:not(:hover) { background: var(--surface); color: var(--muted); }
 .row-expression:focus-visible:not(:hover):not(.is-active):not([aria-pressed="true"]) { background: transparent !important; color: var(--muted); transform: none !important; }
+body{top:var(--app-viewport-offset,0px);bottom:auto}
+.keyboard-open #app[data-view="player-create"]{padding-top:max(8px,var(--app-safe-top));max-width:none}

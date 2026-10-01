@@ -124,3 +124,28 @@
 .player-settings-card small{margin-top:3px;color:var(--muted);font-size:10px}
 .player-settings-card>.secondary{width:auto;flex:0 0 auto;padding:10px 12px;font-size:11px}
 
+/* One complete Polish typeface for the whole profile flow. */
+.player-form-card h2,.pin-card h2{font-weight:600}
+.player-name-input{font-family:"MN Soft",ui-rounded,sans-serif;font-weight:500;font-size:18px}
+.nickname-help{font-size:12px;color:#7080a4;padding:0 4px}
+.nickname-error{margin:0;color:#a63858;font-family:ResultBody,sans-serif;font-size:13px;line-height:1.3}
+.avatar-picker{gap:8px}
+.avatar-choice .player-avatar-art{max-width:none;max-height:none;aspect-ratio:1}
+.player-avatar-art:is([data-avatar="e"],[data-avatar="f"],[data-avatar="g"],[data-avatar="h"],[data-avatar="i"],[data-avatar="j"],[data-avatar="k"],[data-avatar="l"]){background-image:url('assets/brand/player-avatars-extra-v1.webp');background-size:400% 200%}
+.player-avatar-art[data-avatar="e"]{background-position:0 0}.player-avatar-art[data-avatar="f"]{background-position:33.3333% 0}.player-avatar-art[data-avatar="g"]{background-position:66.6667% 0}.player-avatar-art[data-avatar="h"]{background-position:100% 0}
+.player-avatar-art[data-avatar="i"]{background-position:0 100%}.player-avatar-art[data-avatar="j"]{background-position:33.3333% 100%}.player-avatar-art[data-avatar="k"]{background-position:66.6667% 100%}.player-avatar-art[data-avatar="l"]{background-position:100% 100%}
+.pin-profile{display:flex;gap:20px;align-items:center;margin-bottom:17px;text-align:left}
+.pin-profile h2{margin:0;font-size:30px;line-height:1.1;min-width:0;overflow-wrap:anywhere}
+.pin-instruction{font-size:23px;font-weight:500;margin:16px 0 8px;color:var(--player-navy);white-space:nowrap}.pin-instruction strong{font-weight:700}
+.pin-card>p{font-family:ResultBody,sans-serif;font-size:14px;line-height:1.45}
+.pin-mode{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#edf6fc;border:1px solid #deebf5;border-radius:22px}
+.pin-mode button{border:0;border-radius:18px;min-height:39px;color:#617096;background:transparent;font:500 16px "MN Soft",sans-serif}
+.pin-mode [aria-pressed="true"]{background:linear-gradient(#24b0ff,#087bfa);color:white;box-shadow:inset 0 1px 2px #ffffff8a,0 3px 6px #1f8ad328}
+.pin-settings{display:flex;gap:14px;align-items:center;justify-content:space-between}.pin-settings p{font-size:13px;color:var(--muted);margin:4px 0 0}.pin-settings button{flex:none;width:auto;font-size:13px}
+.keyboard-open #app[data-view="player-create"]{padding-bottom:16px;scroll-padding-top:80px}
+.keyboard-open #app[data-view="player-create"] .page-head{position:sticky;top:0;z-index:3;background:#fcfdfff5;padding:8px 0;margin-top:0}
+.keyboard-open .create-avatar-preview{height:64px}.keyboard-open .create-avatar-preview .player-avatar-art{width:62px;height:62px}
+.keyboard-open .player-form-card{padding-top:10px}.keyboard-open .player-form-card h2{font-size:22px}
+.player-title h1,#app[data-view="player-create"] .page-head h1,#app[data-view="player-pin"] .page-head h1,.player-form-card h2,.pin-profile h2{font-family:ResultDisplay,"MN Soft",sans-serif;font-weight:700}
+.player-form-card h2{font-size:23px}.player-title h1{font-size:clamp(35px,11.3vw,48px)}
+.player-avatar-extra{background:none!important;overflow:hidden}.player-avatar-extra svg{display:block;width:100%;height:100%;overflow:hidden}

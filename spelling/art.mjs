@@ -1,4 +1,4 @@
-import { createContinueDrag } from './continue-drag.mjs?v=1';
+import { createContinueDrag } from './continue-drag.mjs?v=2';
 import { burstFireworks } from './fireworks.mjs?v=1';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
@@ -29,7 +29,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     resizeObserver?.disconnect();
     session?.setPresentationHold(false);
     session = nodes = undefined; shownQuestion = 0; shownState = '';
-    app.classList.remove('spelling-art-ready', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
+    app.classList.remove('spelling-art-ready', 'spelling-correct-feedback', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
     delete app.dataset.artScene;
     background?.remove(); background = null;
     document.documentElement.classList.remove('spelling-playing');
@@ -54,12 +54,12 @@ export function createSpellingArt(app, { onContinue } = {}) {
     themeMeta?.setAttribute('content', '#65b6ff');
     background = document.createElement('img');
     background.className = 'spelling-screen-bg'; background.alt = '';
-    background.src = new URL('../assets/ortografia/game-meadow-v1.webp', import.meta.url).href;
+    background.src = new URL('../assets/ortografia/game-meadow-animals-v2.webp', import.meta.url).href;
     background.width = 711; background.height = 1536;
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
     const statusBlock=game.untimed
-      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pozostało pytań"></span><small>pozostało</small><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Pozostałe pytania"></progress></div>`
+      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pytanie w rundzie"></span><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Pozostałe pytania"></progress></div>`
       : `<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
     app.innerHTML = `
       <header class="game-bar">
@@ -126,7 +126,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (!first) await animateInk('out');
     if (token !== generation || session !== game) return;
 
-    app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback');
+    app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback','spelling-correct-feedback');
     nodes.word.replaceChildren(createWord(q.masked));
     nodes.word.setAttribute('aria-label', `Uzupełnij: ${q.masked.replace('_', ' — luka — ')}`);
     nodes.answers.forEach((button, index) => {
@@ -161,7 +161,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
         button.classList.toggle('wrong', !correct && game.options[index] === game.selected);
       });
       nodes.hint.hidden = !correct; nodes.hint.disabled = true; nodes.next.hidden = correct;
-      nodes.feedback.textContent = correct ? 'Pięknie!' : `Zapamiętaj: ${game.current.word}.`;
+      nodes.feedback.textContent=correct?'Pięknie!':'';
+      app.classList.toggle('spelling-correct-feedback',correct);
       if(correct){stopFireworks?.();stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));}
       else{continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }

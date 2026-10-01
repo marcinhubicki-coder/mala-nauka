@@ -10,7 +10,7 @@
 }
 /* Root canvas paints overscroll/browser chrome; the fixed photo fills safe areas.
    Only controls are inset. The background outlives each question. */
-html.spelling-playing{background:#65b6ff url('assets/ortografia/game-meadow-v1.webp') center bottom/cover no-repeat}
+html.spelling-playing{background:#65b6ff url('assets/ortografia/game-meadow-animals-v2.webp') center bottom/cover no-repeat}
 html.spelling-playing body{position:relative;isolation:isolate;background:transparent}
 body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100vh;height:calc(100 * var(--app-vh, 1dvh));object-fit:cover;object-position:center bottom;pointer-events:none;user-select:none;transform:translateZ(0)}
 #app[data-view="game"][data-mode="spelling"] .game-bar{grid-row:1;display:flex;align-items:center;justify-content:space-between;min-height:0;margin:0;gap:18px}
@@ -98,3 +98,16 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] .dictation-count{gap:4px}
 #app[data-view="game"][data-mode="spelling"] .dictation-count .timer{font-size:25px;line-height:.95}
 #app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
+/* The drag colors belong to its clipped rail; motion only runs while dragging. */
+.spelling-next.spelling-continue-rail{overflow:hidden}
+.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;inset:3px;border-radius:inherit;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);transform:scaleX(var(--drag-progress,0));transform-origin:left center;box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;transition:transform .35s cubic-bezier(.16,.78,.22,1)}
+.spelling-continue-rail.is-dragging::before,.spelling-continue-rail.is-complete::before{transition:none}
+.spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 0 13px #fff7ad,0 4px 10px #ba8acb55}
+.spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark .6s ease-out infinite}
+.spelling-continue-rail.is-complete .continue-copy{opacity:0}.spelling-continue-rail.is-complete::after{content:'Świetnie! ✓';position:absolute;inset:0;display:grid;place-items:center;color:#612785;font-size:18px;font-weight:850}
+@keyframes drag-spark{from{opacity:1;transform:translateX(0) scale(.5)}to{opacity:0;transform:translateX(-35px) scale(1.2)}}
+#app.spelling-correct-feedback[data-mode="spelling"] .feedback{font-family:Spelling,sans-serif;font-size:clamp(22px,7.4vw,30px);line-height:1.05;color:#277956;position:relative;justify-self:center;text-shadow:0 1px 3px white;white-space:nowrap}
+#app.spelling-correct-feedback .feedback::before,#app.spelling-correct-feedback .feedback::after{content:"";position:absolute;top:2px;width:23px;height:22px;background:linear-gradient(40deg,transparent 43%,#ffd235 44% 62%,transparent 63%) 0 0/12px 15px no-repeat,linear-gradient(12deg,transparent 42%,#ffd235 43% 61%,transparent 62%) 0 11px/15px 8px no-repeat;animation:feedback-rays .65s ease-out both}
+#app.spelling-correct-feedback .feedback::before{right:calc(100% + 10px)}#app.spelling-correct-feedback .feedback::after{left:calc(100% + 10px);scale:-1 1}
+@keyframes feedback-rays{from{opacity:0;translate:0 5px;scale:.6}to{opacity:1;translate:0 0;scale:1}}
+@media(prefers-reduced-motion:reduce){.spelling-continue-rail.is-dragging .continue-handle::after{animation:none}#app.spelling-correct-feedback .feedback::before,#app.spelling-correct-feedback .feedback::after{animation:none}}

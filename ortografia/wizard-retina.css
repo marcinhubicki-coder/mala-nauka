@@ -110,3 +110,6 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .spelling-round-section > .jelly-v4-buffer:has(.spelling-limit-mode) { width:calc(122 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dictation-grid { display:flex;flex-wrap:wrap;gap:calc(8 * var(--wizard-u));padding:calc(8 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dictation-chip { width:auto; }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-note{position:relative;isolation:isolate;align-self:center;padding:calc(5 * var(--wizard-u)) calc(10 * var(--wizard-u));max-width:100%;margin-left:auto;margin-right:auto;line-height:1.25}
+#app[data-mode="spelling"][data-view="wizard"] .wizard-note::before{content:"";position:absolute;z-index:-1;inset:-2px -6px;border-radius:999px;background:radial-gradient(ellipse,#fffffff0 20%,#ffffffbb 60%,#ffffff00 100%);filter:blur(5px);pointer-events:none}
+#app[data-mode="spelling"][data-view="wizard"] .start-button{justify-content:center;text-align:center}

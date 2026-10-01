@@ -9,10 +9,12 @@ export function completedDrag(fraction, distance) {
   return fraction >= .96 && distance >= 24;
 }
 
-export function createContinueDrag(rail, { canContinue, onComplete }) {
+export function createContinueDrag(rail, { canContinue, onComplete, completionDelay=240 }) {
   const handle = rail.querySelector('.continue-handle');
   const params = JELLY_V4_DEFAULTS;
   let gesture = null, animation = null, completed = false, current = 0;
+  let completionTimer;
+  const complete=()=>{completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');completionTimer=setTimeout(()=>{if(rail.isConnected&&canContinue())onComplete();},completionDelay);};
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const draw = (x, squish = 0) => {
     current = x;
@@ -21,7 +23,8 @@ export function createContinueDrag(rail, { canContinue, onComplete }) {
   const reset = (animate = true) => {
     gesture = null;
     animation?.cancel();animation = null;
-    rail.classList.remove('is-dragging');
+    rail.classList.remove('is-dragging','is-complete');
+    rail.style.setProperty('--drag-progress',0);
     rail.setAttribute('aria-valuenow','0');
     const from = handle.style.transform;
     draw(0);
@@ -53,7 +56,7 @@ export function createContinueDrag(rail, { canContinue, onComplete }) {
     if(!gesture||gesture.id!==event.pointerId)return;
     move(event);
     const commit=gesture&&canContinue()&&completedDrag(gesture.fraction,gesture.distance);
-    if(commit){completed=true;gesture=null;rail.classList.remove('is-dragging');onComplete();}
+    if(commit)complete();
     else reset();
   };
   const cancel = () => {if(gesture)reset();};
@@ -63,8 +66,8 @@ export function createContinueDrag(rail, { canContinue, onComplete }) {
     event.preventDefault();
     const travel=rail.clientWidth-handle.offsetWidth-8;
     const x=event.key==='Home'?0:Math.max(0,Math.min(travel,current+(event.key==='ArrowRight'?1:-1)*travel/10));
-    draw(x);rail.setAttribute('aria-valuenow',String(Math.round(x/travel*100)));
-    if(x>=travel-1){completed=true;onComplete();}
+    draw(x);rail.style.setProperty('--drag-progress',travel?x/travel:0);rail.setAttribute('aria-valuenow',String(Math.round(x/travel*100)));
+    if(x>=travel-1)complete();
   };
   rail.addEventListener('pointerdown',down);
   rail.addEventListener('pointermove',move);
@@ -72,8 +75,8 @@ export function createContinueDrag(rail, { canContinue, onComplete }) {
   rail.addEventListener('pointercancel',cancel);
   rail.addEventListener('lostpointercapture',cancel);
   rail.addEventListener('keydown',key);
-  return {reset:()=>{completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
-    animation?.cancel();
+  return {reset:()=>{clearTimeout(completionTimer);completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
+    clearTimeout(completionTimer);animation?.cancel();
     rail.removeEventListener('pointerdown',down);rail.removeEventListener('pointermove',move);
     rail.removeEventListener('pointerup',up);rail.removeEventListener('pointercancel',cancel);
     rail.removeEventListener('lostpointercapture',cancel);rail.removeEventListener('keydown',key);

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "MN Soft";
-  src: url("assets/fonts/fredoka-polish-v1.woff") format("woff");
+  src: url("assets/fonts/nunito-variable.woff") format("woff");
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 200 1000;
   font-display: swap;
 }
 

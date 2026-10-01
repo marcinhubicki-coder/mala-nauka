@@ -106,7 +106,7 @@ function syncRoundChoice(){
   container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
  });
  const note=root.querySelector('.wizard-note');
- if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
+ if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?({10:'Mała misja. Każde słowo to krok do przodu.',20:'Ćwicz w swoim tempie. Dasz radę!',40:'Spokojnie, słowo po słowie. Rośniesz w siłę!',80:'Duża przygoda. Możesz robić przerwy.'}[state.wordLimit]):'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
 
 function segmentGeometry(container,index){
@@ -255,7 +255,7 @@ function installDrag(){root.querySelectorAll('.spelling-segmented').forEach(setu
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');if(!button)return;
  const next=state.dyktando?'Super, dasz radę!':state.limitMode==='count'?'Zaczynamy misję!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
- if(!copy){button.innerHTML='<span data-start-copy></span><span aria-hidden="true">→</span>';copy=button.querySelector('[data-start-copy]');}
+ if(!copy){button.innerHTML='<span data-start-copy></span>';copy=button.querySelector('[data-start-copy]');}
  if(copy.textContent!==next){copy.textContent=next;if(animate){button.classList.remove('spelling-start-pop');void button.offsetWidth;button.classList.add('spelling-start-pop');}}
 }
 function syncPanel(animate=false){

@@ -16,9 +16,9 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
   let completionTimer;
   const complete=()=>{completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');completionTimer=setTimeout(()=>{if(rail.isConnected&&canContinue())onComplete();},completionDelay);};
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const draw = (x, squish = 0) => {
+  const draw = x => {
     current = x;
-    handle.style.transform = `translateX(${x}px) scale(${1+squish*.07},${1-squish*.15}) rotate(${squish*params.shape.tilt}deg)`;
+    handle.style.transform = `translateX(${x}px)`;
   };
   const reset = (animate = true) => {
     gesture = null;
@@ -31,15 +31,15 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     if (animate && current !== null && !preference.matches) {
       animation = handle.animate([
         {transform:from},
-        {transform:'translateX(-3px) scale(.96,1.03)',offset:.72},
-        {transform:'translateX(0) scale(1,1)'}
+        {transform:'translateX(-3px)',offset:.72},
+        {transform:'translateX(0)'}
       ],{duration:Math.round(450*params.motion.duration),easing:'cubic-bezier(.16,.78,.22,1)'});
     }
   };
   const down = event => {
     if(completed||!canContinue()||event.button!==0||!event.isPrimary||!event.target.closest('.continue-handle'))return;
     event.preventDefault();animation?.cancel();animation=null;draw(0);
-    const travel=rail.clientWidth-handle.offsetWidth-8;
+    const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;
     gesture={id:event.pointerId,start:event.clientX,travel,fraction:0,distance:0};
     handle.setPointerCapture(event.pointerId);rail.classList.add('is-dragging');rail.focus({preventScroll:true});
   };
@@ -48,7 +48,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     if(!canContinue()){reset();return;}
     gesture.distance=event.clientX-gesture.start;
     gesture.fraction=dragFraction(gesture.start,event.clientX,gesture.travel);
-    draw(gesture.fraction*gesture.travel,Math.sin(gesture.fraction*Math.PI)*params.motion.stretch);
+    draw(gesture.fraction*gesture.travel);
     rail.style.setProperty('--drag-progress',gesture.fraction);
     rail.setAttribute('aria-valuenow',String(Math.round(gesture.fraction*100)));
   };
@@ -64,7 +64,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     // Keyboard arrows operate the slider; Enter/Space never act as a button.
     if(!['ArrowRight','ArrowLeft','Home'].includes(event.key)||!canContinue()||completed)return;
     event.preventDefault();
-    const travel=rail.clientWidth-handle.offsetWidth-8;
+    const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;
     const x=event.key==='Home'?0:Math.max(0,Math.min(travel,current+(event.key==='ArrowRight'?1:-1)*travel/10));
     draw(x);rail.style.setProperty('--drag-progress',travel?x/travel:0);rail.setAttribute('aria-valuenow',String(Math.round(x/travel*100)));
     if(x>=travel-1)complete();

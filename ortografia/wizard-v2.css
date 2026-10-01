@@ -359,9 +359,9 @@
 }
 
 @keyframes spelling-start-copy-pop{
-  0%{opacity:.45;transform:translateY(5px) scale(.97)}
-  68%{opacity:1;transform:translateY(-1px) scale(1.025)}
-  100%{opacity:1;transform:translateY(0) scale(1)}
+  0%{opacity:.45;transform:translateY(5px)}
+  68%{opacity:1;transform:translateY(-1px)}
+  100%{opacity:1;transform:translateY(0)}
 }
 
 @media (max-height:760px){

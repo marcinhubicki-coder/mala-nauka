@@ -8,6 +8,7 @@ const CATEGORIES=[['u/ó','u / ó'],['rz/ż','rz / ż'],['ch/h','ch / h'],['ć/c
 const LEVELS=[[0,'Wszystkie'],[1,'Podstawowe'],[2,'Trudne']];
 const DURATIONS=[60,120,180,300];
 const START_COPY={60:'Szybka akcja!',120:'Zaczynamy!',180:'Dłuższa misja!',300:'Jesteś pewien?'};
+const COUNT_START_COPY={10:'Krótka misja!',20:'Zaczynamy misję!',40:'Dłuższa misja!',80:'Wielka wyprawa!'};
 const ALL_CATEGORY_IDS=CATEGORIES.map(([id])=>id);
 
 function categoryList(value){
@@ -106,7 +107,7 @@ function syncRoundChoice(){
   container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
  });
  const note=root.querySelector('.wizard-note');
- if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?({10:'Mała misja. Każde słowo to krok do przodu.',20:'Ćwicz w swoim tempie. Dasz radę!',40:'Spokojnie, słowo po słowie. Rośniesz w siłę!',80:'Duża przygoda. Możesz robić przerwy.'}[state.wordLimit]):'Po pomyłce czas czeka, aż poznasz odpowiedź.';
+ if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
 
 function segmentGeometry(container,index){
@@ -254,7 +255,7 @@ function installDrag(){root.querySelectorAll('.spelling-segmented').forEach(setu
 
 function updateStartButton(animate=false){
  const button=root.querySelector('.start-button');if(!button)return;
- const next=state.dyktando?'Super, dasz radę!':state.limitMode==='count'?'Zaczynamy misję!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
+ const next=state.dyktando?'Super, dasz radę!':state.limitMode==='count'?COUNT_START_COPY[state.wordLimit]||'Zaczynamy misję!':START_COPY[state.duration]||'Zaczynamy!';let copy=button.querySelector('[data-start-copy]');
  if(!copy){button.innerHTML='<span data-start-copy></span>';copy=button.querySelector('[data-start-copy]');}
  if(copy.textContent!==next){copy.textContent=next;if(animate){button.classList.remove('spelling-start-pop');void button.offsetWidth;button.classList.add('spelling-start-pop');}}
 }

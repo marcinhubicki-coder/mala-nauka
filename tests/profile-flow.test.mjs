@@ -1,12 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { playerService,AVATARS } from '../player-service.mjs';
+import { playerService,AVATARS,NICKNAME_MAX_LENGTH } from '../player-service.mjs';
 import { ruleGroups } from '../shared/rule-groups.mjs';
 import { readFile } from 'node:fs/promises';
 const storage=()=>{const map=new Map();return {getItem:key=>map.get(key)??null,setItem:(key,value)=>map.set(key,value),removeItem:key=>map.delete(key)};};
 test('nick has three Polish characters; all 12 avatars persist; optional PIN really bypasses switching',async()=>{
  globalThis.localStorage=storage();globalThis.sessionStorage=storage();
  assert.equal(AVATARS.length,12);
+ assert.equal(NICKNAME_MAX_LENGTH,8);
+ await assert.rejects(playerService.createPlayer({nickname:'mmmmmmmmm',pinEnabled:false}),/maksymalnie 8 znaków/);
+ const maximum=await playerService.createPlayer({nickname:'mmmmmmmm',pinEnabled:false});
+ assert.equal(maximum.nickname,'mmmmmmmm');
  await assert.rejects(playerService.createPlayer({nickname:'Ąś',pin:'1234'}),/co najmniej 3 znaki/);
  const protectedPlayer=await playerService.createPlayer({nickname:'Łucja',pin:'1234',avatarId:'a'});
  assert.equal(protectedPlayer.hasPin,true);

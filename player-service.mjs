@@ -7,7 +7,8 @@ const guestPlayer=()=>({id:'guest',nickname:'odkrywco',avatarId:'b'});
 
 const now=()=>new Date().toISOString();
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`player-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
-const cleanNickname=value=>String(value||'').normalize('NFC').trim().replace(/\s+/g,' ').slice(0,20);
+export const NICKNAME_MAX_LENGTH=8;
+const cleanNickname=value=>String(value||'').normalize('NFC').trim().replace(/\s+/g,' ');
 const validPin=pin=>/^\d{4}$/.test(String(pin||''));
 export const AVATARS=Object.freeze(['a','b','c','d','e','f','g','h','i','j','k','l']);
 const fallbackAvatar=player=>{
@@ -119,6 +120,7 @@ class LocalPlayerService{
   await this.init();
   const safeName=cleanNickname(nickname);
   if([...safeName].length<3)throw new Error('Wpisz nick — co najmniej 3 znaki.');
+  if([...safeName].length>NICKNAME_MAX_LENGTH)throw new Error(`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`);
   if(pinEnabled&&!validPin(pin))throw new Error('PIN musi mieć 4 cyfry.');
   const salt=randomSalt();
   const stamp=now();
@@ -226,4 +228,3 @@ class LocalPlayerService{
 }
 
 export const playerService=new LocalPlayerService();
-

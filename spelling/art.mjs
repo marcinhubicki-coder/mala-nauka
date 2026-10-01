@@ -1,4 +1,4 @@
-import { createContinueDrag } from './continue-drag.mjs?v=2';
+import { createContinueDrag } from './continue-drag.mjs?v=3';
 import { burstFireworks } from './fireworks.mjs?v=1';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
@@ -54,7 +54,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     themeMeta?.setAttribute('content', '#65b6ff');
     background = document.createElement('img');
     background.className = 'spelling-screen-bg'; background.alt = '';
-    background.src = new URL('../assets/ortografia/game-meadow-animals-v3.webp', import.meta.url).href;
+    background.src = new URL('../assets/ortografia/game-meadow-v1.webp', import.meta.url).href;
     background.width = 711; background.height = 1536;
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
@@ -161,7 +161,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
         button.classList.toggle('wrong', !correct && game.options[index] === game.selected);
       });
       nodes.hint.hidden = !correct; nodes.hint.disabled = true; nodes.next.hidden = correct;
-      nodes.feedback.textContent=correct?'Pięknie!':'';
+      const rays='<svg class="feedback-rays" viewBox="0 0 30 42" fill="none" aria-hidden="true"><path d="m24 11-10-6M19 21H7m17 10-10 6" stroke="#ffd43b" stroke-width="5.5" stroke-linecap="round"/><path d="m24 10-9-5M18 20H7m16 10-9 6" stroke="#ffe879" stroke-width="1.2" stroke-linecap="round"/></svg>';
+      nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
       if(correct){stopFireworks?.();stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));}
       else{continueDrag?.reset();nodes.next.focus({ preventScroll: true });}

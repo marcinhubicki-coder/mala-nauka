@@ -1,7 +1,7 @@
 import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=4-spacing';
-import { setDictationWords } from './ortografia/wizard-v2.mjs?v=14-count-copy';
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=18-slide-again';
+import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
@@ -10,10 +10,13 @@ import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261001-adventure';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
-import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v5-r2';
-import { playerService, AVATARS } from './player-service.mjs?v=4-optional-pin';
+import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
+import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=5-nick-limit';
+import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
+const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
+let pinSuppressClickUntil=0;
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
@@ -58,7 +61,7 @@ const fallbackAvatarId=player=>{
 function avatarMarkup(player,extra=''){
  const key=AVATARS.includes(player?.avatarId)?player.avatarId:fallbackAvatarId(player);
  const index=AVATARS.indexOf(key)-4;
- if(index>=0)return `<span class="player-avatar-art player-avatar-extra ${extra}" data-avatar="${key}" aria-hidden="true"><svg viewBox="${index%4*320} ${index<4?290:638} 320 344" preserveAspectRatio="none"><image href="assets/brand/player-avatars-extra-v1.webp" width="1280" height="1280"/></svg></span>`;
+ if(index>=0)return `<span class="player-avatar-art player-avatar-extra ${extra}" data-avatar="${key}" aria-hidden="true"><svg viewBox="${index%4*320} ${index<4?302:650} 320 320" preserveAspectRatio="xMidYMid slice"><image href="assets/brand/player-avatars-extra-v1.webp" width="1280" height="1280"/></svg></span>`;
  return `<span class="player-avatar-art ${extra}" data-avatar="${key}" aria-hidden="true"></span>`;
 }
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
@@ -92,7 +95,7 @@ function playersPage(){
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0;
  const list=hasPlayers
-  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
+  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
   :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
@@ -104,18 +107,40 @@ function playersPage(){
 
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
- root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="20" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do 20 znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
+ root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
  root.scrollTop=0;
+}
+function pinFieldsMarkup(){
+ const creating=Boolean(pendingNickname),setting=editingPin;
+ const error=pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:'';
+ if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${error}${btn('Dalej','submit-pin','primary player-form-next')}`;
+ const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
+ return `<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${error}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`;
+}
+function renderPinFields(animate=false){
+ const fields=root.querySelector('.pin-fields');if(!fields)return;
+ fields.innerHTML=pinFieldsMarkup();
+ if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
+}
+function setPinMode(index){
+ const container=root.querySelector('.pin-mode');if(!container||view!=='player-pin')return;
+ const enabled=index===0,changed=pendingPinEnabled!==enabled;
+ pendingPinEnabled=enabled;
+ container.querySelectorAll('input').forEach(input=>{input.checked=(input.value==='pin')===enabled;});
+ pinJelly.update(container,index,{animate:true});
+ if(changed){pinInput='';pinError='';renderPinFields(true);}
 }
 function playerPinPage(){
  spellingArt.reset();view='player-pin';root.dataset.view=view;delete root.dataset.mode;
  const creating=Boolean(pendingNickname),setting=editingPin;
- const player=players.find(item=>item.id===pendingPlayerId);
- const tempPlayer=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:player;
- const name=tempPlayer?.nickname||'Gracz';
- const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
- root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(tempPlayer||activePlayer,'player-avatar-large')}<h2>${escape(setting?activePlayer.nickname:name)}</h2></div>${creating?`<div class="pin-mode" role="group" aria-label="Ochrona profilu">${btn('Ustaw PIN','pin-mode','',`data-enabled="true" aria-pressed="${pendingPinEnabled}"`)}${btn('Bez PIN-u','pin-mode','',`data-enabled="false" aria-pressed="${!pendingPinEnabled}"`)}</div>`:''}${!creating||pendingPinEnabled?`<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili na tym urządzeniu.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`:`<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}${btn('Dalej','submit-pin','primary player-form-next')}`}</section>`;
-
+ const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting?activePlayer:players.find(item=>item.id===pendingPlayerId);
+ const name=player?.nickname||'Gracz';
+ root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section>`;
+ const container=root.querySelector('.pin-mode');
+ if(container){
+  pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
+  pinJelly.setupDrag(container,{getActiveIndex:()=>pendingPinEnabled?0:1,commitIndex:setPinMode,suppressClick:ms=>{pinSuppressClickUntil=performance.now()+ms;}});
+ }
 }
 async function submitPlayerPin(){
  if((!pendingNickname||pendingPinEnabled)&&pinInput.length!==4)return;
@@ -378,9 +403,8 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
  if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
- if(action==='pin-mode'){pendingPinEnabled=button.dataset.enabled==='true';pinInput='';pinError='';playerPinPage();return;}
- if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';playerPinPage();}return;}
- if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';playerPinPage();return;}
+ if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
+ if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();settingsPage();return;}
@@ -429,8 +453,33 @@ root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastRe
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
 root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const error=root.querySelector('#nickname-error');if(error)error.hidden=true;e.target.removeAttribute('aria-invalid');}});
-root.addEventListener('submit',e=>{if(e.target.id==='player-create-form'){e.preventDefault();const data=new FormData(e.target);const nickname=String(data.get('nickname')||'').trim();if([...nickname.normalize('NFC')].length<3){const input=e.target.querySelector('#player-nickname'),error=e.target.querySelector('#nickname-error');error.textContent='Wpisz nick — co najmniej 3 znaki.';error.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;}document.activeElement?.blur();pendingNickname=nickname.slice(0,20);pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;}if(e.target.id==='setup-form'){e.preventDefault();start();}});
+root.addEventListener('submit',e=>{
+ if(e.target.id==='player-create-form'){
+  e.preventDefault();const data=new FormData(e.target);
+  const nickname=String(data.get('nickname')||'').normalize('NFC').trim().replace(/\s+/g,' '),length=[...nickname].length;
+  if(length<3||length>NICKNAME_MAX_LENGTH){
+   const input=e.target.querySelector('#player-nickname'),error=e.target.querySelector('#nickname-error');
+   error.textContent=length<3?'Wpisz nick — co najmniej 3 znaki.':`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`;
+   error.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;
+  }
+  document.activeElement?.blur();pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
+ }
+ if(e.target.id==='setup-form'){e.preventDefault();start();}
+});
+root.addEventListener('click',event=>{
+ if(view!=='player-pin')return;
+ const buffer=event.target.closest('.jelly-v4-buffer');
+ const label=event.target.closest('.pin-mode > label')||[...(buffer?.querySelectorAll('.pin-mode > label')||[])].find(node=>{const r=node.getBoundingClientRect();return event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom;});
+ if(!label)return;event.preventDefault();
+ if(performance.now()<pinSuppressClickUntil)return;
+ const input=label.querySelector('input');setPinMode(input.value==='pin'?0:1);
+});
+window.addEventListener('resize',()=>{
+ const container=root.querySelector('.pin-mode');
+ if(view==='player-pin'&&container&&!container.classList.contains('jelly-v4-moving'))pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
+});
 root.addEventListener('change',e=>{
+ if(view==='player-pin'&&e.target.name==='profilePinMode'){setPinMode(e.target.value==='pin'?0:1);return;}
  if(view==='wizard'){
   const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
   // Some approved spelling categories have no records at a given difficulty.

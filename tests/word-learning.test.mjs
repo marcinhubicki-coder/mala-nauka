@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { Session, validateWords } from '../game.mjs?v=20260930-release';
+import { Session, validateWords } from '../game.mjs?v=20261001-adventure';
 import { validLearning } from '../spelling/learning.mjs';
 import { exampleResult } from '../ortografia/result-example.mjs';
 

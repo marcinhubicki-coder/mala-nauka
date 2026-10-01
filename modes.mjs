@@ -1,4 +1,5 @@
-import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=20260930-release';
+import { cleanDictationTag, dictationSource } from './spelling/dictation.mjs?v=1';
+import { CATEGORIES, DURATIONS, shuffle } from './game.mjs?v=20261001-adventure';
 import { ENGLISH } from './data/english.mjs';
 import { READING } from './data/reading.mjs?v=3';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';
@@ -70,7 +71,7 @@ export function cleanConfig(mode, value) {
   const raw=String(value?.category??'all'),parts=raw==='all'?[]:raw.split(','),selected=CATEGORIES.filter(id=>parts.includes(id));
   const category=!selected.length||selected.length===CATEGORIES.length?'all':selected.join(',');
   const rawDifficulty=Number(value?.difficulty),difficulty=rawDifficulty===3?2:[0,1,2].includes(rawDifficulty)?rawDifficulty:0;
-  return {category,difficulty,duration,dyktando:value?.dyktando===true,...cleanRoundSettings(value)};
+  return {category,difficulty,duration,dyktando:value?.dyktando===true,dictationTag:cleanDictationTag(value?.dictationTag),...cleanRoundSettings(value)};
  }
  if(mode==='flags'){
   const parsed=parseFlagCategory(value?.category);
@@ -384,7 +385,7 @@ export function createSource(mode, config, words, random = Math.random) {
   const selected=config.category==='all'?null:String(config.category).split(',');
   const preview=filterSpellingPreview(words);
   const pool=config.dyktando
-   ? preview.filter(w=>(w.tags||[]).includes('dyktando'))
+   ? dictationSource(preview,config.dictationTag)
    : preview.filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty));
   return pool.map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
  }

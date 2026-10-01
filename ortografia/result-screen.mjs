@@ -1,9 +1,12 @@
+import { watchScrollEdges } from '../shared/scroll-edges.mjs?v=1';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
-import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=5-fixed-rule-scroll';
-import { revealResult, settleResult } from './result-motion.mjs?v=7-smooth-reel-finish';
+import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=6-scroll-edges';
+import { revealResult, settleResult } from './result-motion.mjs?v=8-staggered-finish';
 import { spellingRoundLabel } from '../spelling/round.mjs?v=1';
 
 const resultContexts = new WeakMap();
+const scrollCleanups = new WeakMap();
+export function stopResultScroll(root){scrollCleanups.get(root)?.forEach(stop=>stop());scrollCleanups.delete(root);}
 
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const asset = name => new URL('../assets/ortografia/' + name, import.meta.url).href;
@@ -57,13 +60,14 @@ function progressParticles(percent) {
 
 export function renderSpellingResult(root, result, words = [], ui = null, motion = null) {
   settleResult(root);
+  stopResultScroll(root);
   closeResultRule(root, false);
   const learning = new Map(words.filter(word => word.learning).map(word => [word.word, word.learning]));
   const attempts = Array.isArray(result.attempts) ? result.attempts.filter(attempt => attempt?.kind === 'spelling').map((attempt, ruleIndex) => ({...attempt, ruleIndex, learning: attempt.learning || learning.get(attempt.word)})) : [];
   resultContexts.set(root, attempts);
   const retained = attempts.filter(attempt => attempt.correct), review = attempts.filter(attempt => !attempt.correct), total = attempts.length;
   const scorePct = total ? Math.round(retained.length / total * 100) : 0;
-  const heading = total ? 'Dobra robota!' : 'Na dziś wystarczy!';
+  const heading = total ? (scorePct >= 87 ? 'Dobra robota<span class="result-exclamation">!</span>' : 'Dobra robota!') : 'Na dziś wystarczy!';
   const intro = total ? 'Brawo za Twój wysiłek!' : 'Każda próba ma znaczenie.';
 
   const modeLabel = 'Ortografia · ' + spellingRoundLabel(result);
@@ -71,11 +75,11 @@ export function renderSpellingResult(root, result, words = [], ui = null, motion
     ? '<section id="result-detail-review" class="result-detail is-review" data-result-panel="review"><div class="result-detail-head"><div><strong>Tu były małe potknięcia</strong><p>Zapamiętaj poprawną formę.</p></div><span aria-hidden="true">' + returnArrow + '</span></div>' + resultRows(review, '') + '</section>'
     : '<section id="result-detail-review" class="result-detail is-retained is-congrats" data-result-panel="review"><div class="result-detail-head"><div><strong>' + (total ? 'Dziś bez potknięć!' : 'Jeszcze wszystko przed nami') + '</strong><p>' + (total ? 'Świetnie — nie ma nic do powtórki.' : 'Wróć, kiedy będziesz mieć ochotę.') + '</p></div><span aria-hidden="true">' + check + '</span></div><div class="result-congrats"><span aria-hidden="true">' + check + '</span><p>' + (total ? 'Wrócimy do tych słów później, żeby sprawdzić, co zostało w pamięci.' : 'Każda próba to krok do przodu.') + '</p></div></section>';
   root.dataset.view = 'results'; root.dataset.mode = 'spelling';
-  root.innerHTML = '<section class="result learning-result result-v4' + (total ? '' : ' result-empty') + '">' +
+  root.innerHTML = '<section class="result learning-result result-v4' + (total ? (scorePct >= 87 ? ' result-high-score' : '') : ' result-empty') + '">' +
     ambient() +
     '<button type="button" class="result-close" data-action="home" aria-label="Zamknij podsumowanie i wróć do wyboru gry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>' +
-    '<div class="result-sheet"><div class="result-heading"><div class="result-title-wrap"><svg class="result-rays result-rays-left" viewBox="0 0 26 28" aria-hidden="true"><path d="m5 4 5 9M4 20l8 3"/></svg><h1 tabindex="-1">' + heading + '</h1><svg class="result-rays result-rays-right" viewBox="0 0 26 28" aria-hidden="true"><path d="m21 4-5 9m6 7-8 3"/></svg></div><p>' + intro + '</p></div>' +
-    '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong><span class="result-count" data-count="' + retained.length + '" data-reel="compact2">' + retained.length + '</span> / <span class="result-count" data-count="' + total + '" data-reel="compact2">' + total + '</span></strong><span>poprawnie</span></div><span class="round-mode-pill">' + modeLabel + '</span><em><span class="result-count" data-count="' + scorePct + '" data-reel="percent">' + scorePct + '</span>%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + scorePct + '" aria-label="' + scorePct + ' procent poprawnych"><span class="round-progress-fill" data-percent="' + scorePct + '" style="width:' + scorePct + '%"><span class="round-progress-cap" aria-hidden="true"></span>' + progressParticles(scorePct) + '</span></div></div>' +
+    '<div class="result-sheet"><div class="result-heading"><div class="result-title-wrap">'+(scorePct>=87?'<img class="result-title-star" src="'+asset('happy-star-v1.jpeg')+'" alt="" width="143" height="150">':'<svg class="result-rays result-rays-left" viewBox="0 0 26 28" aria-hidden="true"><path d="m5 4 5 9M4 20l8 3"/></svg>')+'<h1 tabindex="-1">' + heading + '</h1><svg class="result-rays result-rays-right" viewBox="0 0 26 28" aria-hidden="true"><path d="m21 4-5 9m6 7-8 3"/></svg></div><p>' + intro + '</p></div>' +
+    '<div class="round-summary" aria-label="Podsumowanie rundy"><div class="round-summary-line"><div class="round-score"><strong><span class="result-count" data-count="' + retained.length + '" data-reel="compact2">' + retained.length + '</span> / <span class="result-count" data-count="' + total + '" data-reel="compact2">' + total + '</span></strong><span>poprawnie</span></div><span class="round-mode-pill">' + modeLabel + '</span><em><span class="result-count" data-count="' + scorePct + '" data-reel="percent">' + scorePct + '</span>%</em></div><div class="round-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + scorePct + '" aria-label="' + scorePct + ' procent poprawnych"><span class="round-progress-fill" data-percent="' + scorePct + '" style="width:' + scorePct + '%"><span class="round-progress-cap" aria-hidden="true"></span>' + progressParticles(scorePct) + '</span></div></div>' +
     '<div class="learning-stats-two">' + stat('Utrwalone', retained.length, 'retained', false) + stat('Do powtórki', review.length, 'review', true) + '</div>' +
     '<div class="result-details"><section id="result-detail-retained" class="result-detail is-retained" data-result-panel="retained" hidden><div class="result-detail-head"><div><strong>To dziś było pewne</strong><p>Te słowa poszły poprawnie.</p></div><span aria-hidden="true">' + check + '</span></div>' + resultRows(retained, 'Jeszcze nic tutaj nie ma.') + '</section>' + reviewPanel + '</div>' +
     '<div class="result-actions"><button type="button" class="primary result-again" data-action="again"><i class="cta-star star-1" aria-hidden="true"></i><i class="cta-star star-2" aria-hidden="true"></i><i class="cta-star star-3" aria-hidden="true"></i><i class="cta-star star-4" aria-hidden="true"></i><i class="cta-star star-5" aria-hidden="true"></i><span>Jeszcze jedna runda</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button><button type="button" class="result-collection" data-action="history">Moja kolekcja</button></div>' +
@@ -86,6 +90,7 @@ export function renderSpellingResult(root, result, words = [], ui = null, motion
     toggleResultDetail(root, selected);
     root.querySelectorAll('[data-result-panel]').forEach(panel => { const list = panel.querySelector('.result-word-list'); if (list) list.scrollTop = Math.max(0, Number(ui.scroll?.[panel.dataset.resultPanel]) || 0); });
   }
+  scrollCleanups.set(root,[...root.querySelectorAll('.result-word-viewport')].map(shell=>watchScrollEdges(shell,shell.querySelector('.result-word-list'))));
   if (motion?.animate) revealResult(root, motion.delay ?? 1000);
 }
 

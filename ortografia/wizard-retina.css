@@ -34,7 +34,7 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
   position:relative;isolation:isolate;height:calc(94 * var(--wizard-u));
   padding:0;margin:0 0 calc(17 * var(--wizard-u));border-radius:calc(24 * var(--wizard-u));background:transparent;
 }
-.spelling-mission-art { position:absolute;z-index:-1;left:0;bottom:0;display:block;width:100%;height:auto;pointer-events:none;user-select:none; }
+.spelling-mission-art { position:absolute;z-index:-1;left:0;bottom:calc(-8.5 * var(--wizard-u));display:block;width:100%;height:auto;pointer-events:none;user-select:none;clip-path:inset(-100% 0 calc(8.5 * var(--wizard-u)) round 0 0 calc(24 * var(--wizard-u)) calc(24 * var(--wizard-u))); }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro > div { width:calc(154 * var(--wizard-u));margin-left:calc(92 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro h2 { font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(20 * var(--wizard-u));font-weight:800;color:#09043f;letter-spacing:calc(-.25 * var(--wizard-u));white-space:nowrap; }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro p { font-size:calc(12.8 * var(--wizard-u));color:#3c458b;margin-top:calc(5 * var(--wizard-u));white-space:nowrap; }
@@ -94,7 +94,7 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
   position:relative;isolation:isolate;height:calc(71 * var(--wizard-u));min-height:0;padding:0 calc(25 * var(--wizard-u));border:calc(2 * var(--wizard-u)) solid #ffa6cf;border-radius:calc(34 * var(--wizard-u));
   font-family:"Home Rounded",ResultBody,sans-serif;font-weight:800;font-size:calc(30 * var(--wizard-u));line-height:1;color:#fff;
   background:linear-gradient(165deg,#ff6dae,#ff218f 57%,#ff3095);
-  box-shadow:0 calc(4 * var(--wizard-u)) 0 #be287d,0 calc(7 * var(--wizard-u)) 0 #ffd0e8,inset 0 calc(2 * var(--wizard-u)) calc(3 * var(--wizard-u)) #ffd3e6,inset 0 calc(-5 * var(--wizard-u)) calc(5 * var(--wizard-u)) #d0157d55;
+  box-shadow:0 calc(4 * var(--wizard-u)) 0 #be287d,0 calc(9 * var(--wizard-u)) calc(7 * var(--wizard-u)) #ffd0e8,inset 0 calc(2 * var(--wizard-u)) calc(3 * var(--wizard-u)) #ffd3e6,inset 0 calc(-5 * var(--wizard-u)) calc(5 * var(--wizard-u)) #d0157d55;
 }
 #app[data-mode="spelling"][data-view="wizard"] .start-button::before { content:"";position:absolute;left:calc(9 * var(--wizard-u));top:calc(5 * var(--wizard-u));width:calc(20 * var(--wizard-u));height:calc(10 * var(--wizard-u));border-radius:50%;transform:rotate(-30deg);background:linear-gradient(#fff,#ffffffa6);pointer-events:none; }
 #app[data-mode="spelling"][data-view="wizard"] .start-button::after { content:"";position:absolute;right:calc(14 * var(--wizard-u));top:calc(4 * var(--wizard-u));width:calc(15 * var(--wizard-u));height:calc(7 * var(--wizard-u));border-radius:50%;transform:rotate(32deg);background:#ffffff74;pointer-events:none; }
@@ -103,3 +103,10 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .spelling-category-chip input:checked + span { color:#fff;background:linear-gradient(#ff78b6,#ff2390);border-color:#ff6dad; }
 #app[data-mode="spelling"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus,
 #app[data-mode="spelling"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus-visible { outline:none!important; }
+
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-scope-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-v2-scope-grid .spelling-v2-choice span { font-size:calc(16 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode { width:calc(122 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-round-section > .jelly-v4-buffer:has(.spelling-limit-mode) { width:calc(122 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dictation-grid { display:flex;flex-wrap:wrap;gap:calc(8 * var(--wizard-u));padding:calc(8 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dictation-chip { width:auto; }

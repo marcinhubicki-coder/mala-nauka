@@ -1,16 +1,19 @@
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=16-unified';
-import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=7-smooth-reel-finish';
-import { closeResultRule } from './ortografia/result-rules.mjs?v=5-fixed-rule-scroll';
+import { exampleProgress } from './progress-example.mjs?v=1';
+import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=1';
+import { setDictationWords } from './ortografia/wizard-v2.mjs?v=12-scope-packs';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=17-adventure';
+import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
+import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20260930-release';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=31-count-rounds';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=4-count-rounds';
-import { createSpellingArt } from './spelling/art.mjs?v=20260930-release';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261001-adventure';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
+import { createSpellingArt } from './spelling/art.mjs?v=20261001-adventure';
 import { playerService } from './player-service.mjs?v=3-retina-3d';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
-const spellingArt=createSpellingArt(root);
+const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
@@ -132,7 +135,7 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
- stopGameTicker();settleResult(root);
+ stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
  spellingArt.reset();
@@ -147,6 +150,7 @@ function home() {
  root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});
 }
 function wizard() {
+ if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
  root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color}">${modeIcon(selectedMode)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
@@ -161,9 +165,9 @@ function settingsPage() {
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
 function historyPage() {
- const head=collectionReturn?`<header class="page-head">${btn('×','return-results','icon','aria-label="Zamknij kolekcję i wróć do wyników"')}<h1 tabindex="-1">Moja kolekcja</h1></header>`:pageHead('Moje wyniki');
- root.innerHTML=head+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
- (progress.history.length?progress.history.map(r=>`<article class="history-item"><div><strong>${MODES[r.mode].name}</strong><b>${r.correct} pkt</b></div><p>${accuracy(r.correct,r.wrong)}% poprawnych · ${r.correct+r.wrong} zadań · ${r.mode==='spelling'?spellingRoundLabel(r):minutes(r.duration)}</p><small>${escape(resultScopeLabel(r))}<br>${escape(new Date(r.date).toLocaleString('pl-PL',{dateStyle:'short',timeStyle:'short'}))}${r.early?' · zakończona wcześniej':''}</small></article>`).join(''):'<section class="empty card"><span aria-hidden="true">✦</span><h2>Tu pojawią się Twoje przygody</h2><p>Wybierz tryb i zagraj pierwszą rundę.</p>'+btn('Wybierz przygodę','home','primary')+'</section>');
+ setScreenTheme('#b4eaff');
+ renderProgressScreen(root,{progress,words,backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
+  onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});
 }
 function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{/* Optional sound. */}}
 function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||audio.state!=='running')return;const tone=audio.createOscillator(),gain=audio.createGain(),t=audio.currentTime;tone.type='sine';tone.frequency.setValueAtTime(correct?660:220,t);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.045,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.14);tone.connect(gain);gain.connect(audio.destination);tone.start(t);tone.stop(t+.15);tone.onended=()=>{tone.disconnect();gain.disconnect();};}catch{/* Keep playing without audio. */}}
@@ -363,7 +367,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='switch-player'){playerService.lockSession();activePlayer=null;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
  if(['home','settings'].includes(action))navigate(action);
  if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
- if(action==='return-results'&&collectionReturn){const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='return-results'&&collectionReturn){destroyProgressScreen(root);closeResultRule(root,false);const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
  if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
@@ -396,7 +400,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   memoryInput.pop();renderMemoryInput();return;
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
- if(action==='next'&&view==='game'&&!modal.open){game.skipFeedback();syncGame();}
+ if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
  if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
@@ -406,10 +410,10 @@ modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume()
 root.addEventListener('submit',e=>{if(e.target.id==='player-create-form'){e.preventDefault();const data=new FormData(e.target);const nickname=String(data.get('nickname')||'').trim();if(nickname.length<2){e.target.querySelector('#player-nickname')?.focus();return;}pendingNickname=nickname.slice(0,20);pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;}if(e.target.id==='setup-form'){e.preventDefault();start();}});
 root.addEventListener('change',e=>{
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
   // Some approved spelling categories have no records at a given difficulty.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
-  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wyłącz „Tylko dyktando”.':'';root.querySelector('.start-button').disabled=empty;
+  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wybierz inny zestaw dyktanda.':'';root.querySelector('.start-button').disabled=empty;
  }
  if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
 });
@@ -417,6 +421,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game')pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();

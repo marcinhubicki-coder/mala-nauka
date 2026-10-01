@@ -1,13 +1,15 @@
+import { createContinueDrag } from './continue-drag.mjs?v=1';
+import { burstFireworks } from './fireworks.mjs?v=1';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
-export function createSpellingArt(app) {
+export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver, background;
+  let animations = [], resizeObserver, background, continueDrag, stopFireworks;
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
   function closeHint() {
@@ -20,6 +22,7 @@ export function createSpellingArt(app) {
   }
   function reset() {
     generation++;
+    continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;
     if (hint) { hint.close(); hint.remove(); hint = null; }
     animations.forEach(animation => animation.cancel()); animations = [];
     bubble?.destroy(); bubble = null;
@@ -34,7 +37,7 @@ export function createSpellingArt(app) {
   }
   function openHint() {
     if (!session || session.state !== 'playing' || session.presentationHeld) return;
-    session.pause(); bubble.setPaused(true);
+    session.hintUsed=true;session.pause(); bubble.setPaused(true);
     app.classList.add('spelling-hint-open');
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
@@ -48,10 +51,10 @@ export function createSpellingArt(app) {
   function mount(game) {
     reset(); session = game; app.classList.add('spelling-art-ready');
     document.documentElement.classList.add('spelling-playing');
-    themeMeta?.setAttribute('content', '#dfddf8');
+    themeMeta?.setAttribute('content', '#65b6ff');
     background = document.createElement('img');
     background.className = 'spelling-screen-bg'; background.alt = '';
-    background.src = new URL('../assets/ortografia/lake-background.webp', import.meta.url).href;
+    background.src = new URL('../assets/ortografia/game-meadow-v1.webp', import.meta.url).href;
     background.width = 711; background.height = 1536;
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
@@ -71,13 +74,14 @@ export function createSpellingArt(app) {
         <button type="button" class="answer" data-action="answer" data-index="0"><span class="answer-ink"></span></button>
         <button type="button" class="answer" data-action="answer" data-index="1"><span class="answer-ink"></span></button>
       </div>
-      <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><button type="button" class="spelling-next" data-action="next" hidden>Dalej <span aria-hidden="true">→</span></button></div>
+      <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
       <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
     nodes = {
       word: app.querySelector('.question-content'), answers: [...app.querySelectorAll('.answer')],
       hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
     };
     nodes.hint.addEventListener('click', openHint);
+    continueDrag=createContinueDrag(nodes.next,{canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     bubble = createBubble(app.querySelector('.spelling-visual'));
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
     document.fonts.ready.then(() => { if (session === game) fitWord(); });
@@ -107,6 +111,7 @@ export function createSpellingArt(app) {
 
   async function present(game, first) {
     const token = ++generation;
+    stopFireworks?.();stopFireworks=null;continueDrag?.reset();
     game.setPresentationHold(true); app.classList.add('ink-changing');
     nodes.answers.forEach(button => { button.disabled = true; });
     nodes.hint.disabled = true; nodes.next.hidden = true;
@@ -157,11 +162,13 @@ export function createSpellingArt(app) {
       });
       nodes.hint.hidden = !correct; nodes.hint.disabled = true; nodes.next.hidden = correct;
       nodes.feedback.textContent = correct ? 'Pięknie!' : `Zapamiętaj: ${game.current.word}.`;
-      if (!correct) nodes.next.focus({ preventScroll: true });
+      if(correct){stopFireworks?.();stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));}
+      else{continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
+    if(paused)continueDrag?.reset();
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });

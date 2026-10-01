@@ -1,4 +1,4 @@
-// Reel counters and the score bar share one 3 s timeline.
+// The session counters settle 100 ms before the percentage and score bar.
 const PROGRESS_DURATION = 3000;
 const PROGRESS_EASE_POWER = 3.2 / 1.75;
 const PROGRESS_STRETCH = .5;
@@ -83,8 +83,9 @@ function setupReel(host, index) {
   const value = Math.max(0, Math.round(Number(host.dataset.count) || 0));
   const mode = host.dataset.reel || 'compact2';
   const hundred = mode === 'percent' && value === 100;
-  const reelTarget = hundred ? 99 : clamp(value, 0, 99);
-  const target = String(reelTarget).padStart(2, '0').slice(-2).split('').map(Number);
+  const reelTarget = hundred ? 99 : value;
+  const places=hundred||value<100?2:String(value).length;
+  const target = String(reelTarget).padStart(places, '0').split('').map(Number);
   const seed = ((value + 17) * 2654435761) ^ ((index + 1) * 1597334677) ^ Math.floor(performance.now());
   const rng = makeRng(seed);
   host.classList.add('result-reel');
@@ -92,14 +93,14 @@ function setupReel(host, index) {
 
   // Every reel starts as exactly two visible digit positions.
   // The third digit is created only for the special 99 → 100 finish.
-  host.innerHTML = '<span class="result-reel-digit" aria-hidden="true">0</span><span class="result-reel-digit" aria-hidden="true">0</span>';
+  host.innerHTML = '<span class="result-reel-digit" aria-hidden="true">0</span>'.repeat(places);
 
   const digits = [...host.querySelectorAll('.result-reel-digit')];
   return {
     host, value, mode, hundred, target, digits,
     hundredDigit: null,
-    current: [0, 0],
-    nextShuffle: [0, 18 + rng() * 20],
+    current: Array(places).fill(0),
+    nextShuffle: Array.from({length:places},(_,i)=>i*(18+rng()*20)),
     plans: null,
     finalized: false,
     rng
@@ -272,7 +273,10 @@ export function revealResult(root, delay = 1000) {
     const progressT = clamp((elapsed - delay - 120) / PROGRESS_DURATION, 0, 1);
     const eased = 1 - Math.pow(1 - progressT, PROGRESS_EASE_POWER);
 
-    jobs.forEach(job => updateReel(job, progressT, elapsed));
+    jobs.forEach(job => {
+      const t=job.mode==='percent'?progressT:clamp((elapsed-delay-120)/(PROGRESS_DURATION-100),0,1);
+      updateReel(job,t,elapsed);
+    });
 
     const kick = target > 0 ? PROGRESS_START_KICK * Math.exp(-progressT * 9) * Math.sin(progressT * Math.PI * 3.2) * 1.2 : 0;
     const wobble = target > 0 ? PROGRESS_WOBBLE * Math.sin(progressT * Math.PI * 4.3) * Math.pow(1 - progressT, 1.7) : 0;

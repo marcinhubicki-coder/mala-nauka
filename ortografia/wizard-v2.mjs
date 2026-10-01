@@ -1,4 +1,5 @@
 import { createJellyV4 } from '../shared/jelly-v4.mjs?v=2';
+import { dictationPacks, cleanDictationTag } from '../spelling/dictation.mjs?v=1';
 import { WORD_LIMITS, cleanRoundSettings } from '../spelling/round.mjs?v=1';
 
 const root=document.querySelector('#app');
@@ -23,6 +24,8 @@ function spellingDifficulty(value,fallback=0){
 }
 
 let state=null;
+let packs=[{tag:'dyktando',label:'Dyktando',count:80}];
+export function setDictationWords(words){ packs=dictationPacks(words); }
 let suppressClickUntil=0;
 const segmentAnimations=new WeakMap();
 const segmentTimers=new WeakMap();
@@ -35,6 +38,7 @@ const geometryObserver=new ResizeObserver(entries=>{
   const width=target.getBoundingClientRect().width;
   if(!width||observedWidths.get(target)===width)continue;
   observedWidths.set(target,width);
+  if(target.classList.contains('jelly-v4-moving'))continue;
   if(['time','count'].includes(target.dataset.segmented))syncTimeMode(target,false);
   else updateSegment(target,activeIndexFor(target),segmentCount(target),false);
  }
@@ -47,12 +51,12 @@ function readState(fallback){
   if(saved&&typeof saved==='object'){
    const categories=categoriesOr(saved.categories??saved.category,fallbackCategories);
    const previousCategories=categoriesOr(saved.previousCategories,categories.length<ALL_CATEGORY_IDS.length?categories:fallbackCategories);
-   const scope=saved.scope==='categories'&&categories.length<ALL_CATEGORY_IDS.length?'categories':'all';
-   return {scope,categories,previousCategories,difficulty:spellingDifficulty(saved.difficulty,spellingDifficulty(fallback.difficulty,0)),duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration,dyktando:saved.dyktando===true,...cleanRoundSettings(saved)};
+   const scope=saved.scope==='dictation'||saved.dyktando===true?'dictation':saved.scope==='categories'&&categories.length<ALL_CATEGORY_IDS.length?'categories':'all';
+   return {scope,categories,previousCategories,difficulty:spellingDifficulty(saved.difficulty,spellingDifficulty(fallback.difficulty,0)),duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallback.duration,dyktando:scope==='dictation',dictationTag:cleanDictationTag(saved.dictationTag),...cleanRoundSettings(saved)};
   }
  }catch{}
  const categories=fallback.category==='all'?fallbackCategories:categoriesOr(fallback.category,fallbackCategories);
- return {scope:fallback.category==='all'?'all':'categories',categories,previousCategories:[...categories],difficulty:spellingDifficulty(fallback.difficulty,0),duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180,dyktando:false,...cleanRoundSettings(fallback)};
+ return {scope:fallback.category==='all'?'all':'categories',categories,previousCategories:[...categories],difficulty:spellingDifficulty(fallback.difficulty,0),duration:DURATIONS.includes(Number(fallback.duration))?Number(fallback.duration):180,dyktando:false,dictationTag:'dyktando',...cleanRoundSettings(fallback)};
 }
 
 function saveState(){
@@ -66,8 +70,9 @@ function indicator(){return '<span class="spelling-segment-indicator" aria-hidde
 
 function scopeChoices(){
  return '<div class="spelling-v2-scope-grid spelling-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres słów">'+indicator()+
-  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="all" '+(state.scope==='all'?'checked':'')+'><span>Wszystkie słowa</span></label>'+
-  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="categories" '+(state.scope==='categories'?'checked':'')+'><span>Kategorie</span></label></div>';
+  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="all" '+(state.scope==='all'?'checked':'')+'><span>Wszystko</span></label>'+
+  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="categories" '+(state.scope==='categories'?'checked':'')+'><span>Kategorie</span></label>'+
+  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="dictation" '+(state.scope==='dictation'?'checked':'')+'><span>Dyktando</span></label></div>';
 }
 function categoryChoices(){
  return CATEGORIES.map(([id,label])=>
@@ -79,8 +84,8 @@ function levelChoices(){
   '<label class="spelling-v2-choice"><input type="radio" name="difficulty" value="'+value+'" '+(state.difficulty===value?'checked':'')+'><span>'+esc(label)+'</span></label>'
  ).join('');
 }
-function dictationChoice(){
- return '<label class="spelling-dyktando-toggle"><span class="spelling-dyktando-copy"><strong>Tylko dyktando</strong><small>80 słów · bez powtórek</small></span><input type="checkbox" name="spellingDyktando" '+(state.dyktando?'checked':'')+'><span class="spelling-dyktando-control" aria-hidden="true"><span class="spelling-dyktando-knob"></span></span></label>';
+function dictationChoices(){
+ return packs.map(pack=>'<label class="spelling-category-chip spelling-dictation-chip"><input type="radio" name="dictationTag" value="'+esc(pack.tag)+'" '+(state.dictationTag===pack.tag?'checked':'')+'><span>'+esc(pack.label)+' · '+pack.count+' słów</span></label>').join('');
 }
 function durationChoices(){
  return indicator()+DURATIONS.map(seconds=>
@@ -93,7 +98,7 @@ function countChoices(){
 function limitChoices(){
  return '<div class="spelling-limit-mode spelling-segmented" data-segmented="limit" role="radiogroup" aria-label="Koniec rundy">'+indicator()+
   '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="time" '+(state.limitMode==='time'?'checked':'')+'><span>Czas</span></label>'+
-  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="count" '+(state.limitMode==='count'?'checked':'')+'><span>Liczba słów</span></label></div>';
+  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="count" '+(state.limitMode==='count'?'checked':'')+'><span>Słowa</span></label></div>';
 }
 function syncRoundChoice(){
  root.querySelectorAll('[data-round-options]').forEach(container=>{
@@ -101,7 +106,7 @@ function syncRoundChoice(){
   container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
  });
  const note=root.querySelector('.wizard-note');
- if(note)note.textContent=state.dyktando?'80 słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
+ if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
 
 function segmentGeometry(container,index){
@@ -172,7 +177,7 @@ function updateSegment(container,index,count,animate=true){
 function segmentCount(container){return container?.querySelectorAll(':scope > label').length||0;}
 function activeIndexFor(container){
  const type=container?.dataset.segmented;
- if(type==='scope')return state.scope==='categories'?1:0;
+ if(type==='scope')return state.scope==='dictation'?2:state.scope==='categories'?1:0;
  if(type==='level')return Math.max(0,LEVELS.findIndex(([v])=>v===state.difficulty));
  if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
  if(type==='count')return Math.max(0,WORD_LIMITS.indexOf(state.wordLimit));
@@ -182,7 +187,7 @@ function activeIndexFor(container){
 function syncTimeMode(container,animate=false){
  if(!container||!container.offsetWidth||!container.offsetHeight)return;
  const index=activeIndexFor(container);
- const indicatorNode=jellyV4.ensurePrepared(container,index);if(!indicatorNode)return;
+ const indicatorNode=jellyV4.ensurePrepared(container,Number(container.dataset.activeIndex??index));if(!indicatorNode)return;
  const wasDyktando=container.classList.contains('is-dyktando');
  container.classList.toggle('is-dyktando',state.dyktando);
  container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
@@ -255,6 +260,9 @@ function updateStartButton(animate=false){
 }
 function syncPanel(animate=false){
  const panel=root.querySelector('[data-category-panel]'),open=state.scope==='categories';
+ const dictation=root.querySelector('[data-dictation-panel]'),dictationOpen=state.scope==='dictation';
+ if(dictation){dictation.classList.toggle('is-open',dictationOpen);dictation.setAttribute('aria-hidden',String(!dictationOpen));dictation.inert=!dictationOpen;}
+ if(panel)panel.inert=!open;
  if(panel){panel.classList.toggle('is-open',open);panel.setAttribute('aria-hidden',open?'false':'true');}
  root.querySelectorAll('input[name="spellingScope"]').forEach(input=>{input.checked=input.value===state.scope;});
  root.querySelectorAll('input[name="spellingCategory"]').forEach(input=>{input.checked=state.categories.includes(input.value);});
@@ -262,23 +270,26 @@ function syncPanel(animate=false){
 }
 function syncHidden(dispatch=true){
  const category=root.querySelector('input[name="category"]'),dyktando=root.querySelector('input[name="dyktando"]');if(!category)return;
- const next=state.scope==='all'?'all':state.categories.join(','),nextDyktando=state.dyktando?'1':'0';
+ const next=state.scope==='categories'?state.categories.join(','):'all',nextDyktando=state.dyktando?'1':'0';
  const changed=category.value!==next||(dyktando&&dyktando.value!==nextDyktando);
- category.value=next;if(dyktando)dyktando.value=nextDyktando;saveState();
- if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
+ category.value=next;if(dyktando)dyktando.value=nextDyktando;
+ const tag=root.querySelector('input[name="selectedDictationTag"]');if(tag)tag.value=state.dictationTag;saveState();
+ if(dispatch&&(changed||dispatch==='force'))category.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
 function install(){
  if(!root||root.dataset.mode!=='spelling'||root.dataset.view!=='wizard')return;
  const card=root.querySelector('.setup-card');if(!card||card.dataset.spellingWizardV2==='true')return;
  const fallback={category:card.querySelector('[name="category"]')?.value||'all',difficulty:Number(card.querySelector('[name="difficulty"]:checked')?.value)||0,duration:Number(card.querySelector('[name="duration"]:checked')?.value)||180};
- state=readState(fallback);card.dataset.spellingWizardV2='true';card.classList.add('spelling-wizard-v2');
+ state=readState(fallback);if(!packs.some(pack=>pack.tag===state.dictationTag))state.dictationTag=packs[0]?.tag||'dyktando';card.dataset.spellingWizardV2='true';card.classList.add('spelling-wizard-v2');
  card.innerHTML=
-  '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='all'?'all':state.categories.join(','))+'">'+
+  '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='categories'?state.categories.join(','):'all')+'">'+
+  '<input type="hidden" name="selectedDictationTag" value="'+esc(state.dictationTag)+'">'+
   '<input type="hidden" name="dyktando" value="'+(state.dyktando?'1':'0')+'">'+
   '<fieldset class="spelling-v2-section"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
-   '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div></fieldset>'+
-  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div>'+dictationChoice()+'</fieldset>'+
+   '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div>'+
+   '<div class="spelling-category-panel" data-dictation-panel aria-hidden="true"><div class="spelling-category-grid spelling-dictation-grid">'+dictationChoices()+'</div></div></fieldset>'+
+  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
   '<fieldset class="spelling-v2-section spelling-round-section"><legend><span class="step-dot">3</span>Ustal misję</legend>'+limitChoices()+
    '<div class="spelling-time-segmented spelling-segmented" data-segmented="time" data-round-options="time" role="radiogroup" aria-label="Czas rundy">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div>'+
    '<div class="spelling-time-segmented spelling-segmented" data-segmented="count" data-round-options="count" role="radiogroup" aria-label="Liczba słów w rundzie">'+countChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div></fieldset>';
@@ -287,7 +298,7 @@ function install(){
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
  if(intro){const art=document.createElement('img');art.className='spelling-mission-art';art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=1200;art.height=404;intro.prepend(art);}
  geometryObserver.disconnect();root.querySelectorAll('.spelling-segmented').forEach(container=>geometryObserver.observe(container));
- updateStartButton(false);syncPanel(false);syncHidden(true);requestAnimationFrame(()=>{syncSegments(false);installDrag();});
+ updateStartButton(false);syncPanel(false);syncHidden('force');requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 
 root?.addEventListener('click',event=>{
@@ -304,9 +315,9 @@ root?.addEventListener('change',event=>{
  if(root.dataset.mode!=='spelling'||root.dataset.view!=='wizard'||!state)return;
  const target=event.target;
  if(target?.name==='spellingScope'){
-  const nextScope=target.value==='categories'?'categories':'all';
+  const nextScope=['categories','dictation'].includes(target.value)?target.value:'all';
   if(nextScope==='categories'&&state.categories.length===ALL_CATEGORY_IDS.length){state.categories=categoriesOr(state.previousCategories,['u/ó']);}
-  state.scope=nextScope;saveState();syncPanel(true);syncHidden(true);return;
+  state.scope=nextScope;state.dyktando=nextScope==='dictation';saveState();syncPanel(true);syncHidden(true);updateStartButton(true);return;
  }
  if(target?.name==='spellingCategory'){
   const chip=target.closest('.spelling-category-chip'),before=[...state.categories];
@@ -318,12 +329,19 @@ root?.addEventListener('change',event=>{
   state.categories=next;state.previousCategories=[...next];state.scope='categories';saveState();syncHidden(true);return;
  }
  if(target?.name==='difficulty'){state.difficulty=spellingDifficulty(target.value,0);saveState();syncSegments(true);return;}
- if(target?.name==='spellingDyktando'){
-  state.dyktando=target.checked;
+ if(target?.name==='dictationTag'){
+  state.dictationTag=cleanDictationTag(target.value);state.dyktando=true;
   saveState();syncRoundChoice();syncSegments(true);syncHidden(true);updateStartButton(true);return;
  }
  if(target?.name==='duration'){state.duration=Number(target.value)||180;saveState();syncSegments(true);updateStartButton(true);}
- if(target?.name==='limitMode'){state.limitMode=target.value==='count'?'count':'time';saveState();syncRoundChoice();syncSegments(true);installDrag();updateStartButton(true);}
+ if(target?.name==='limitMode'){
+  const outgoing=root.querySelector('[data-round-options="'+state.limitMode+'"]');
+  const from=Number(outgoing?.dataset.activeIndex??activeIndexFor(outgoing));
+  state.limitMode=target.value==='count'?'count':'time';saveState();syncRoundChoice();installDrag();
+  const incoming=root.querySelector('[data-round-options="'+state.limitMode+'"]');
+  if(!state.dyktando)jellyV4.update(incoming,from,{animate:false});
+  syncSegments(true);updateStartButton(true);
+ }
  if(target?.name==='wordLimit'){state.wordLimit=Number(target.value);saveState();syncSegments(true);updateStartButton(true);}
 });
 window.addEventListener('resize',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)requestAnimationFrame(()=>syncSegments(false));},{passive:true});

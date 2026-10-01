@@ -1,4 +1,4 @@
-import { Session } from '../game.mjs?v=20260930-release';
+import { Session } from '../game.mjs?v=20261001-adventure';
 import { cleanProgress, recordResult } from '../progress.mjs?v=3-local-profiles';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
 

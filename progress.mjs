@@ -1,5 +1,6 @@
-import { DURATIONS, validResult } from './game.mjs?v=20260930-release';
-import { modeIds, cleanConfig } from './modes.mjs?v=31-count-rounds';
+import { cleanLearning, addLearningSession } from './shared/mastery.mjs?v=1';
+import { DURATIONS, validResult } from './game.mjs?v=20261001-adventure';
+import { modeIds, cleanConfig } from './modes.mjs?v=32-dictation-packs';
 export const localDay = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 const count = n => Number.isSafeInteger(n) && n >= 0;
 export function cleanProgress(value) {
@@ -9,7 +10,8 @@ export function cleanProgress(value) {
   const key=`${mode}:${duration}`,n=value?.best?.[key];if(count(n))best[key]=n;
  }
  const today=value?.today;
- return {history,best,today:today&&/^\d{4}-\d{2}-\d{2}$/.test(today.day)&&count(today.count)?{day:today.day,count:today.count}:{day:localDay(),count:0}};
+ const learning=value?.learning?cleanLearning(value.learning):[...history].reverse().reduce((ledger,result)=>addLearningSession(ledger,result),null);
+ return {history,best,learning:cleanLearning(learning),today:today&&/^\d{4}-\d{2}-\d{2}$/.test(today.day)&&count(today.count)?{day:today.day,count:today.count}:{day:localDay(),count:0}};
 }
 export function migrateProgress(history,best) {
  const migrated=cleanProgress({history:Array.isArray(history)?history.filter(validResult).map(r=>({...r,mode:'spelling',difficulty:0})):[]});
@@ -23,6 +25,7 @@ export function migrateProgress(history,best) {
 export function recordResult(progress,result) {
  const key=`${result.mode}:${result.duration}`,timed=!result.dyktando&&result.limitMode!=='count',record=timed&&result.correct>(progress.best[key]??0);
  if(timed)progress.best[key]=Math.max(progress.best[key]??0,result.correct);
+ progress.learning=addLearningSession(progress.learning,result);
  progress.history=[result,...progress.history].slice(0,50);
  const day=localDay(new Date(result.date));
  progress.today={day,count:(progress.today.day===day?progress.today.count:0)+result.correct+result.wrong};

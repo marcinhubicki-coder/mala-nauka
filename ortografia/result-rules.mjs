@@ -1,3 +1,4 @@
+import { watchScrollEdges } from '../shared/scroll-edges.mjs?v=1';
 import { createBubble } from '../spelling/bubble.mjs?v=42-live-fixed-rule';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { LEARNING_TYPES, validLearning } from '../spelling/learning.mjs?v=1';
@@ -17,7 +18,7 @@ export function closeResultRule(root, restoreFocus = true) {
   dialogs.delete(root);
   clearTimeout(active.loaderTimeout);
   root.classList.remove('result-rule-open');
-  active.resizeObserver?.disconnect();
+  active.stopScroll?.();
   active.bubble?.destroy();
   if (active.dialog.open) active.dialog.close();
   active.dialog.remove();
@@ -64,17 +65,9 @@ export function openResultRule(root, attempt, trigger) {
   dialog.showModal();
   dialog.querySelector('.rule-close').focus({preventScroll: true});
   const scroll = dialog.querySelector('.rule-dialog-scroll');
-  const updateScrollCue = () => {
-    if (dialogs.get(root) !== active) return;
-    dialog.classList.toggle('has-scroll-top', scroll.scrollTop > 2);
-    dialog.classList.toggle('has-scroll-more', scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop > 2);
-  };
-  scroll.addEventListener('scroll', updateScrollCue, {passive: true});
-  dialog.querySelector('.rule-sources')?.addEventListener('toggle', updateScrollCue);
-  active.resizeObserver = new ResizeObserver(updateScrollCue);
-  active.resizeObserver.observe(scroll);
-  [...scroll.children].forEach(child => active.resizeObserver.observe(child));
-  updateScrollCue();
+  active.stopScroll=watchScrollEdges(dialog,scroll,{initialBottom:true});
+  const updateScrollCue=()=>scroll.dispatchEvent(new Event('scroll'));
+  dialog.querySelector('.rule-sources')?.addEventListener('toggle',updateScrollCue);
   // The rule artwork uses the same live bubble motion as the spelling game.
   active.bubble = createBubble(dialog.querySelector('.rule-bubble'));
   const loader = dialog.querySelector('.rule-image-loader');

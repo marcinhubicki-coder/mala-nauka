@@ -83,6 +83,7 @@ export class Session {
     this.exposureRemaining = this.current.exposureMs || 0;
     this.state = this.exposureRemaining ? 'exposing' : 'playing';
     this.selected = null;
+    this.hintUsed = false;
     this.questionElapsed = 0;
     this.lastTime = this.now();
   }
@@ -92,7 +93,7 @@ export class Session {
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
-    if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
+    if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({
       correct,

@@ -12,7 +12,7 @@ test('every offline precache request resolves to an existing file or entry direc
     await access(new URL('../' + request.slice(2).split('?')[0], import.meta.url));
   }
   assert.ok(core.some(request => request.includes('wizard-retina.css?v=4-simple-switch')));
-  assert.ok(core.some(request => request.includes('result-motion.mjs?v=6-reel-counters')));
+  assert.ok(core.some(request => request.includes('result-motion.mjs?v=7-smooth-reel-finish')));
 });
 
 test('all 455 spelling words have learning data and an available illustration', async () => {

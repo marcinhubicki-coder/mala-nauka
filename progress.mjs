@@ -1,5 +1,5 @@
 import { DURATIONS, validResult } from './game.mjs?v=20260930-release';
-import { modeIds, cleanConfig } from './modes.mjs?v=reading-phrase-1';
+import { modeIds, cleanConfig } from './modes.mjs?v=31-count-rounds';
 export const localDay = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 const count = n => Number.isSafeInteger(n) && n >= 0;
 export function cleanProgress(value) {
@@ -21,7 +21,7 @@ export function migrateProgress(history,best) {
  return migrated;
 }
 export function recordResult(progress,result) {
- const key=`${result.mode}:${result.duration}`,timed=!result.dyktando,record=timed&&result.correct>(progress.best[key]??0);
+ const key=`${result.mode}:${result.duration}`,timed=!result.dyktando&&result.limitMode!=='count',record=timed&&result.correct>(progress.best[key]??0);
  if(timed)progress.best[key]=Math.max(progress.best[key]??0,result.correct);
  progress.history=[result,...progress.history].slice(0,50);
  const day=localDay(new Date(result.date));

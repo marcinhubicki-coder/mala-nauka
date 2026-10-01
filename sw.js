@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v113-unified-20261001';
+const CACHE='mala-nauka-v114-unified-20261001';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -20,9 +20,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261001-unified-r1",
+  "./app.css?v=20261001-unified-r2",
   "./app.js",
-  "./app.js?v=20261001-unified-r1",
+  "./app.js?v=20261001-unified-r2",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",
@@ -548,9 +548,9 @@ const CORE=[
   "./manifest.webmanifest",
   "./matematyka/",
   "./matematyka/app.css",
-  "./matematyka/app.css?v=20261001-unified-r1",
+  "./matematyka/app.css?v=20261001-unified-r2",
   "./matematyka/app.js",
-  "./matematyka/app.js?v=20261001-unified-r1",
+  "./matematyka/app.js?v=20261001-unified-r2",
   "./matematyka/board-v3.css",
   "./matematyka/board-v4.css",
   "./matematyka/board.css",
@@ -607,11 +607,11 @@ const CORE=[
   "./ortografia/result-preview-frame.html",
   "./ortografia/result-preview.html",
   "./ortografia/result-motion.mjs",
-  "./ortografia/result-motion.mjs?v=5-synced-counters",
+  "./ortografia/result-motion.mjs?v=6-reel-counters",
   "./ortografia/result-rules.mjs",
   "./ortografia/result-rules.mjs?v=5-fixed-rule-scroll",
   "./ortografia/result-screen.mjs",
-  "./ortografia/result-screen.mjs?v=14-unified",
+  "./ortografia/result-screen.mjs?v=15-unified",
   "./ortografia/wizard-v2.css",
   "./ortografia/wizard-v2.css?v=6-dyktando-jelly-v4",
   "./ortografia/wizard-v2.mjs",

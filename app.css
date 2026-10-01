@@ -198,6 +198,12 @@ html:has(#app[data-view="results"][data-mode="spelling"]),body:has(#app[data-vie
 @keyframes progress-particle-burst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(0)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--particle-x) * var(--result-u)),calc(-50% + var(--particle-y) * var(--result-u))) scale(1) rotate(24deg)}}
 .round-score strong .result-count,.round-summary-line em .result-count{font:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit}
 .result-count{display:inline}
+.result-reel{display:inline-flex!important;align-items:baseline;justify-content:flex-end;font:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;font-variant-numeric:tabular-nums;white-space:nowrap}
+.result-reel-digit{display:inline-flex;align-items:baseline;justify-content:center;width:.57em;min-width:.57em;font:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:0;color:inherit;transform-origin:50% 65%;backface-visibility:hidden;will-change:transform,filter,opacity,width}
+.result-reel-digit.is-leading-zero-hidden{width:0;min-width:0;opacity:0;overflow:hidden;transform:scaleX(.55);transition:width 140ms ease,min-width 140ms ease,opacity 100ms ease,transform 140ms ease}
+.result-reel-hundreds{width:0;min-width:0;opacity:0;overflow:hidden;transform:translateX(.32em) scale(.7)}
+.result-reel-hundreds.is-visible{width:.57em;min-width:.57em;opacity:1;overflow:visible;transform:translateX(0) scale(1);transition:width 120ms ease,min-width 120ms ease,opacity 90ms ease}
+.result-reel.is-hundred-kick{overflow:visible}
 .result-entering .result-heading,.result-entering .round-summary,.result-entering .learning-stats-two,.result-entering .result-details,.result-entering .result-actions{animation:result-section-reveal 360ms ease-out both;animation-delay:var(--reveal-delay)}
 .result-entering .round-summary{animation-delay:calc(var(--reveal-delay) + 120ms)}.result-entering .learning-stats-two{animation-delay:calc(var(--reveal-delay) + 260ms)}.result-entering .result-details{animation-delay:calc(var(--reveal-delay) + 380ms)}.result-entering .result-actions{animation-delay:calc(var(--reveal-delay) + 500ms)}
 @keyframes result-section-reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}

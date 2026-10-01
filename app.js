@@ -1,5 +1,5 @@
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=14-unified';
-import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=5-synced-counters';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=15-unified';
+import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=6-reel-counters';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=5-fixed-rule-scroll';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';

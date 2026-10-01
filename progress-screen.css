@@ -82,7 +82,7 @@ html:has(#app[data-view="history"]),body:has(#app[data-view="history"]){backgrou
 .rules-view-indicator{position:absolute;z-index:0;left:5px;top:5px;bottom:5px;border:1px solid var(--jelly-border-color);border-radius:18px;background:linear-gradient(var(--jelly-top),var(--jelly-bottom));pointer-events:none}
 
 /* Reference v8: give the illustrations and trophies room on a Retina phone. */
-.progress-hero{height:calc(258 * var(--progress-u) + max(calc(24 * var(--progress-u)),var(--app-safe-top)));background-position:center bottom}
+.progress-hero{height:calc(252 * var(--progress-u) + max(calc(24 * var(--progress-u)),var(--app-safe-top)));background-position:center bottom}
 .progress-header h1{font-size:calc(27 * var(--progress-u));font-weight:950}
 .progress-back{width:calc(39 * var(--progress-u));height:calc(39 * var(--progress-u));border-radius:50%}
 .progress-modes{height:calc(51 * var(--progress-u));margin-top:calc(13 * var(--progress-u));gap:calc(5 * var(--progress-u))}
@@ -110,7 +110,7 @@ html:has(#app[data-view="history"]),body:has(#app[data-view="history"]){backgrou
 .trophy-prev,.trophy-next{top:calc(38 * var(--progress-u));width:calc(31 * var(--progress-u));height:calc(31 * var(--progress-u))}
 .progress-pagination{margin-top:calc(7 * var(--progress-u));gap:calc(5 * var(--progress-u))}
 .progress-rules-link{height:calc(92 * var(--progress-u));border-radius:calc(23 * var(--progress-u));padding:calc(8 * var(--progress-u)) calc(46 * var(--progress-u)) calc(8 * var(--progress-u)) calc(150 * var(--progress-u));gap:0}
-.progress-rule-art{width:41%;background:url('assets/progress/rules-books-v2.webp') center / contain no-repeat;mask-image:none;-webkit-mask-image:none;border-radius:0;left:calc(2 * var(--progress-u));top:calc(-2 * var(--progress-u));bottom:0}
+.progress-rule-art{width:41%;background:url('assets/progress/rules-books-v2.webp') center / auto 132% no-repeat;mask-image:none;-webkit-mask-image:none;border-radius:0;left:calc(2 * var(--progress-u));top:calc(-2 * var(--progress-u));bottom:0}
 .progress-rules-link strong{font-size:calc(16.5 * var(--progress-u));line-height:1.15;white-space:normal}
 .progress-rules-link small{font-size:calc(11 * var(--progress-u));line-height:1.25}
 .progress-rules-link i{top:calc(28 * var(--progress-u));right:calc(7 * var(--progress-u));width:calc(36 * var(--progress-u));height:calc(36 * var(--progress-u))}

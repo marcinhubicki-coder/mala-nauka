@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 360">
  <defs>
-  <radialGradient id="paper"><stop stop-color="#fffdf0"/><stop offset="1" stop-color="#f9e8be"/></radialGradient>
+  <radialGradient id="paper"><stop stop-color="#fffdf0"/><stop offset="1" stop-color="#fcf2db"/></radialGradient>
   <pattern id="grain" width="17" height="13" patternUnits="userSpaceOnUse"><path d="m1 3 3 1m8 4 3-1M6 11h1" stroke="#b28c52" stroke-width=".45" opacity=".12"/></pattern>
  </defs>
  <rect width="500" height="360" rx="30" fill="url(#paper)"/>

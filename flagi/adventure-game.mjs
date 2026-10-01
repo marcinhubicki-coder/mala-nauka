@@ -1,6 +1,6 @@
 import { FLAGS } from '../data/flags.mjs';
 import { flagOnPole } from './flag-on-pole.mjs?v=2';
-import { fitLabel } from './text-fit.mjs?v=1';
+import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -9,21 +9,28 @@ const countryName=record=>language()==='en'?record.countryEn:record.country;
 const canvas=document.createElement('canvas'),ink=canvas.getContext('2d');
 let queued=false;
 
-function fit(node,{max=23,min=11,lines=2}={}){
+function fit(node,{max=23,min=11,lines=2,height=Infinity}={}){
   if(!node?.isConnected)return;
   const text=node.dataset.fitText||node.textContent;
   node.dataset.fitText=text;
   const style=getComputedStyle(node),family=style.fontFamily,weight=style.fontWeight;
   const available=Math.max(1,node.clientWidth);
-  const result=fitLabel(text,(value,size)=>{ink.font=`${weight} ${size}px ${family}`;return ink.measureText(value).width;},available,{max,min,lines});
+  const lineHeight=parseFloat(style.lineHeight)/parseFloat(style.fontSize)||1.13;
+  const result=fitLabel(text,(value,size)=>{ink.font=`${weight} ${size}px ${family}`;return ink.measureText(value).width;},available,{max,min,lines,height,lineHeight});
   node.style.fontSize=result.size+'px';
   node.style.setProperty('--fit-scale',String(result.scale||1));
   node.innerHTML=result.lines.map(line=>`<span>${esc(line)}</span>`).join(' ');
 }
 function fitAll(){
-  root.querySelectorAll('.flag-answer-label').forEach(node=>fit(node,{max:Math.min(25,root.clientWidth*.061),min:11}));
-  root.querySelectorAll('.flag-adventure-name').forEach(node=>fit(node,{max:root.clientWidth*.095,min:14}));
-  root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10}));
+  root.querySelectorAll('.flag-answer-label').forEach(node=>{
+    const button=node.closest('.answer'),style=getComputedStyle(button);
+    fit(node,{max:Math.min(25,root.clientWidth*.061),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
+  });
+  root.querySelectorAll('.flag-adventure-name').forEach(node=>{
+    const mapReview=node.closest('.flag-map-review');
+    fit(node,{max:root.clientWidth*.095,min:11,lines:mapReview?2:1,height:mapReview?48:30});
+  });
+  root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10,lines:1}));
   root.querySelectorAll('.flag-adventure-country,.flag-adventure-capital-question').forEach(node=>fit(node,{max:36,min:17}));
 }
 function flagAnswer(button,id){
@@ -61,7 +68,7 @@ function enhance(){
       content.insertAdjacentHTML('beforeend',`<img class="flag-review-thumbnail" src="${esc(record.flagSvg)}" alt="" width="108" height="81"><div class="flag-adventure-map"><div data-adventure-map></div></div>`);
       const mapHost=content.querySelector('[data-adventure-map]');
       const map=window.MalaNaukaContinentMap;
-      map?.mount(mapHost,{countryId:record.id,continent:record.continent,countryName:countryName(record),showCopy:false,interactive:false});
+      map?.mount(mapHost,{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});
       // Only content fades; the question/answer rows keep exactly the same size.
       requestAnimationFrame(()=>{if(card.isConnected)card.classList.add('is-map-visible');});
     }
@@ -89,6 +96,7 @@ document.addEventListener('mala-nauka:flag-language-change',()=>{
       const node=card.querySelector(selector);if(node){node.dataset.fitText=countryName(record);node.textContent=countryName(record);}
     }
     card.querySelector('.flag-on-pole')?.setAttribute('aria-label',card.matches('.correct,.wrong')?'Flaga: '+countryName(record):'Flaga do rozpoznania');
+    card.querySelector('.continent-map-host')?.setAttribute('aria-label',language()==='en'?`Location of ${countryName(record)}`:`Położenie kraju ${countryName(record)}`);
   }
   root.querySelectorAll('.flag-text-answer').forEach(button=>{
     const text=window.MalaNaukaFlagLanguage.nameFromAny(button.getAttribute('aria-label'));

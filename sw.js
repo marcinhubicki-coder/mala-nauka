@@ -1,10 +1,10 @@
-const CACHE='mala-nauka-v127-flags-adventure-20261002';
+const CACHE='mala-nauka-v128-flags-adventure-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/adventure.css?v=2",
-  "./flagi/adventure-game.mjs?v=2",
-  "./flagi/text-fit.mjs?v=1",
+  "./flagi/adventure.css?v=3",
+  "./flagi/adventure-game.mjs?v=3",
+  "./flagi/text-fit.mjs?v=2",
   "./flagi/flag-on-pole.mjs?v=2",
   "./flagi/preview-frame.html",
   "./flagi/preview-fixture.mjs?v=1",
@@ -217,7 +217,7 @@ const CORE=[
   "./adventure-preview.html",
   "./progress-preview-frame.html",
   "./progress-screen.mjs?v=5-rules-jelly",
-  "./progress-screen.css?v=8-retina-adventure",
+  "./progress-screen.css?v=9-retina-adventure",
   "./progress-example.mjs?v=1",
   "./shared/mastery.mjs?v=2",
   "./shared/scroll-edges.mjs?v=1",

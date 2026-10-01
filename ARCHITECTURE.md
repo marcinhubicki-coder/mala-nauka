@@ -23,3 +23,7 @@ Każdy moduł może mieć własny branch, np. `work/matematyka-v0.1` lub `work/o
 ## Migracja
 
 Stare repo `appka-policyjna-baza` pozostaje backupem do czasu pełnego przepięcia Vercela. Nie usuwamy z niego kodu Małej Nauki przed potwierdzeniem działania nowego repo.
+
+## System nauki i progresji
+
+Decyzje produktowe dotyczące mastery, kolekcji, informacji zwrotnej, osiągnięć i dashboardu rodzica są opisane w [`docs/LEARNING-SYSTEM.md`](docs/LEARNING-SYSTEM.md). Ten dokument jest źródłem odniesienia przy implementowaniu nowych modułów i zmian w progresji.

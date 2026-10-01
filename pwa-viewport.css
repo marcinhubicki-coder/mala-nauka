@@ -30,7 +30,7 @@ main#app, .app-shell {
 /* Keep decorations behind the home indicator; only controls need an inset. */
 #app[data-view="results"][data-mode="spelling"] {
   --result-art-lift: calc(1.9 * var(--app-vh));
-  background: #dfddfc url("assets/ortografia/result-background-v6.webp") center calc(-1 * var(--result-art-lift)) / auto calc(var(--app-viewport-height) + var(--result-art-lift)) no-repeat;
+  background: #dfddfc url("assets/ortografia/result-background-v6.webp") center calc(-1 * var(--result-art-lift)) / 100% calc(var(--app-viewport-height) + var(--result-art-lift)) no-repeat;
 }
 /* The root canvas also paints beneath the translucent iOS status bar. */
 html:has(#app[data-view="results"][data-mode="spelling"]) {

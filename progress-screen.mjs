@@ -1,4 +1,4 @@
-import { learningSummary } from './shared/mastery.mjs?v=1';
+import { learningSummary } from './shared/mastery.mjs?v=2';
 import { sceneFor, sceneUrl } from './spelling/scenes.mjs?v=27-final-assets';
 import { openResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { CATEGORIES } from './game.mjs?v=20261001-adventure';
@@ -22,17 +22,21 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   const abort=new AbortController();
   const knowledge=learningSummary(progress.learning);
   const byWord=new Map(knowledge.items.map(item=>[item.word,item]));
+  const earnedWords=knowledge.items.filter(item=>item.masteryEarned).length;
   const stateLabel={learning:'Ćwiczę',consolidating:'Utrwalam',mastered:'Umiem',review:'Powtórzę'};
   const categoryGroups=CATEGORIES.map(category=>{
     const all=words.filter(word=>word.category===category);
     const mastered=all.filter(word=>byWord.get(word.word)?.state==='mastered').length;
+    const earned=all.filter(word=>byWord.get(word.word)?.masteryEarned).length;
     const review=all.filter(word=>byWord.get(word.word)?.state==='review').length;
-    return {category,total:all.length,mastered,review};
+    return {category,total:all.length,mastered,earned,review};
   });
+  const categoryAchievement=category=>{const group=categoryGroups.find(group=>group.category===category);return {title:'Opanowane',detail:group.category.replace('/',' / '),earned:group.earned===group.total,progress:group.earned+' / '+group.total,index:category==='rz/ż'?0:1};};
   const achievements=[
-    ...categoryGroups.slice(0,3).map(group=>({title:'Opanowane',detail:group.category.replace('/',' / '),earned:group.mastered===group.total,progress:group.mastered+' / '+group.total,index:group.category==='rz/ż'?0:1})),
-    {title:'Pierwsze 10 słów',detail:'w Twojej kolekcji',earned:knowledge.mastered>=10,progress:Math.min(10,knowledge.mastered)+' / 10',index:1},
-    {title:'Komplet słów',detail:'już wkrótce',earned:knowledge.mastered===words.length,progress:knowledge.mastered+' / '+words.length,index:2}
+    categoryAchievement('rz/ż'),categoryAchievement('u/ó'),
+    {title:'Komplet słów',detail:'już wkrótce',earned:earnedWords===words.length,progress:earnedWords+' / '+words.length,index:2},
+    categoryAchievement('ch/h'),
+    {title:'Pierwsze 10 słów',detail:'w Twojej kolekcji',earned:earnedWords>=10,progress:Math.min(10,earnedWords)+' / 10',index:1}
   ];
 
   function tabs(){return '<nav class="progress-modes" aria-label="Postępy według przygody">'+Object.keys(NAMES).map(id=>'<button type="button" data-progress="mode" data-mode="'+id+'" class="progress-mode '+(mode===id?'is-active':'')+'" aria-pressed="'+(mode===id)+'" aria-label="'+NAMES[id]+'">'+glyph(id)+(mode===id?'<span>'+NAMES[id]+'</span>':'')+'</button>').join('')+'</nav>';}

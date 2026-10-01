@@ -1,4 +1,4 @@
-import { cleanLearning, addLearningSession } from './shared/mastery.mjs?v=1';
+import { cleanLearning, addLearningSession } from './shared/mastery.mjs?v=2';
 import { DURATIONS, validResult } from './game.mjs?v=20261001-adventure';
 import { modeIds, cleanConfig } from './modes.mjs?v=32-dictation-packs';
 export const localDay = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;

@@ -40,6 +40,11 @@ test('mastery requires unassisted recall across days; one round cannot earn it',
   learning=addLearningSession(learning,round('d','2026-09-10T12:00:00Z',[attempt(false)]));
   assert.equal(learning.items['word:burza'].state,'review');
   assert.equal(learning.items['word:burza'].masteryEarned,true);
+  learning=addLearningSession(learning,round('help-after-mistake','2026-09-11T12:00:00Z',[attempt(true,true)]));
+  assert.equal(learning.items['word:burza'].state,'review');
+  assert.equal(learning.items['word:burza'].masteryEarned,true);
+  learning=addLearningSession(learning,round('recall-after-mistake','2026-09-12T12:00:00Z',[attempt()]));
+  assert.equal(learning.items['word:burza'].state,'mastered');
 });
 
 test('migration derives learning from legacy attempts and durable knowledge survives the 50-round history window',()=>{

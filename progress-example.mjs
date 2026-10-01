@@ -1,6 +1,6 @@
 // Isolated review fixture. Used only by the explicitly labelled preview frame;
 // it never writes player progress or changes the production dashboard.
-import { addLearningSession } from './shared/mastery.mjs?v=1';
+import { addLearningSession } from './shared/mastery.mjs?v=2';
 export function exampleProgress(words) {
   let learning=null;
   const history=[];

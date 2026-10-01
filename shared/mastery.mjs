@@ -33,13 +33,14 @@ export function addLearningSession(value, result, rules=MASTERY_RULES) {
       masteryEarned:previous?.masteryEarned===true,state:previous?.state||'learning'};
     if(attempt.correct) {
       item.lastCorrectAt=at;
-      if(!attempt.hintUsed&&!attempt.explanationUsed) {
+      const recalledWithoutHelp=!attempt.hintUsed&&!attempt.explanationUsed;
+      if(recalledWithoutHelp) {
         const day=localDay(at);
         if(!item.correctDays.includes(day))item.correctDays.push(day);
         item.firstRecallAt ||= at;
         item.masteryEarned ||= item.correctDays.length>=rules.recallDays&&dayNumber(at)-dayNumber(item.firstRecallAt)>=rules.spanDays;
       }
-      item.state=item.masteryEarned?'mastered':item.correctDays.length>=rules.consolidateDays?'consolidating':'learning';
+      if(recalledWithoutHelp||item.state!=='review')item.state=item.masteryEarned?'mastered':item.correctDays.length>=rules.consolidateDays?'consolidating':'learning';
     } else item.state='review';
     item.correctDays=item.correctDays.slice(-32);
     const wait=item.state==='mastered'?7:item.state==='consolidating'?3:1;

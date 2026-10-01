@@ -8,7 +8,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żaba” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żaby",
+        "żabę",
+        "żabą"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żaba",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCaba.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żółtko",
@@ -19,7 +41,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żółtko” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żółtka",
+        "żółtku",
+        "żółtkiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żółtko",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BC%C3%B3%C5%82tko.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "łyżka",
@@ -30,7 +74,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „łyżka” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "łyżki",
+        "łyżkę",
+        "łyżką"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: łyżka",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%82y%C5%BCka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "książka",
@@ -41,7 +107,38 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "W słowie „książka” pomaga wyraz „księga”: ż wymienia się na g.",
+      "examples": [
+        {
+          "from": "książka",
+          "to": "księga",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "księga",
+        "książeczka"
+      ],
+      "forms": [
+        "książki",
+        "książkę",
+        "książką"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: książka",
+          "url": "https://sjp.pwn.pl/szukaj/ksi%C4%85%C5%BCka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "ważny",
@@ -52,7 +149,38 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "W słowie „ważny” pomaga wyraz „waga”: ż wymienia się na g.",
+      "examples": [
+        {
+          "from": "ważny",
+          "to": "waga",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "waga",
+        "ważność"
+      ],
+      "forms": [
+        "ważna",
+        "ważne",
+        "ważnego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: ważny",
+          "url": "https://sjp.pwn.pl/szukaj/wa%C5%BCny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "jeż",
@@ -63,7 +191,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „jeż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "jeża",
+        "jeże",
+        "jeżem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: jeż",
+          "url": "https://sjp.pwn.pl/szukaj/je%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "jeżyna",
@@ -74,7 +224,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „jeżyna” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "jeżyny",
+        "jeżynę",
+        "jeżyną"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: jeżyna",
+          "url": "https://sjp.pwn.pl/szukaj/je%C5%BCyna.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żart",
@@ -85,7 +257,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żart” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żartu",
+        "żarty",
+        "żartem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żart",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCart.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żarówka",
@@ -99,7 +293,29 @@
     "difficulty": 2,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żarówka” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żarówki",
+        "żarówkę",
+        "żarówką"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żarówka",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCar%C3%B3wka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żelazo",
@@ -110,7 +326,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żelazo” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żelaza",
+        "żelazu",
+        "żelazem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żelazo",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCelazo.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żona",
@@ -121,7 +359,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żona” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żony",
+        "żonę",
+        "żoną"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żona",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCona.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żuk",
@@ -132,7 +392,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żuk” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żuka",
+        "żuki",
+        "żukiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żuk",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCuk.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żubr",
@@ -143,7 +425,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żubr” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żubra",
+        "żubry",
+        "żubrem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żubr",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCubr.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żurek",
@@ -154,7 +458,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żurek” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żurku",
+        "żurki",
+        "żurkiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żurek",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCurek.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żyrafa",
@@ -165,7 +491,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żyrafa” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żyrafy",
+        "żyrafę",
+        "żyrafą"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żyrafa",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCyrafa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "życie",
@@ -176,7 +524,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „życie” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "życia",
+        "życiu",
+        "życiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: życie",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCycie.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żyto",
@@ -187,7 +557,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żyto” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żyta",
+        "żytu",
+        "żytem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żyto",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCyto.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "życzenie",
@@ -198,7 +590,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „życzenie” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "życzenia",
+        "życzeniu",
+        "życzeniem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: życzenie",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCyczenie.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "życzliwy",
@@ -209,7 +623,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „życzliwy” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "życzliwa",
+        "życzliwe",
+        "życzliwego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: życzliwy",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCyczliwy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żegnać",
@@ -220,7 +656,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żegnać” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żegnam",
+        "żegnasz",
+        "żegnają"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żegnać",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCegna%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żagiel",
@@ -231,7 +689,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żagiel” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żagla",
+        "żagle",
+        "żaglem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żagiel",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCagiel.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żołądek",
@@ -242,7 +722,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żołądek” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żołądka",
+        "żołądku",
+        "żołądkiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żołądek",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCo%C5%82%C4%85dek.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żołnierz",
@@ -253,7 +755,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żołnierz” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żołnierza",
+        "żołnierze",
+        "żołnierzem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żołnierz",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCo%C5%82nierz.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żmija",
@@ -264,7 +788,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żmija” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żmii",
+        "żmiję",
+        "żmiją"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żmija",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCmija.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żniwa",
@@ -275,7 +821,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żniwa” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żniw",
+        "żniwami",
+        "żniwach"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żniwa",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCniwa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żuraw",
@@ -286,7 +854,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żuraw” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żurawia",
+        "żurawie",
+        "żurawiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żuraw",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCuraw.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żwir",
@@ -297,7 +887,28 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żwir” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żwiru",
+        "żwirem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żwir",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCwir.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "żartować",
@@ -308,7 +919,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „żartować” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "żartuję",
+        "żartujesz",
+        "żartujemy"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: żartować",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%BCartowa%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "odważny",
@@ -319,7 +952,38 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "W słowie „odważny” pomaga wyraz „odwaga”: ż wymienia się na g.",
+      "examples": [
+        {
+          "from": "odważny",
+          "to": "odwaga",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "odwaga",
+        "odważnie"
+      ],
+      "forms": [
+        "odważna",
+        "odważne",
+        "odważnego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: odważny",
+          "url": "https://sjp.pwn.pl/szukaj/odwa%C5%BCny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "uważny",
@@ -330,7 +994,38 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "W słowie „uważny” pomaga wyraz „uwaga”: ż wymienia się na g.",
+      "examples": [
+        {
+          "from": "uważny",
+          "to": "uwaga",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "uwaga",
+        "uważnie"
+      ],
+      "forms": [
+        "uważna",
+        "uważne",
+        "uważnego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: uważny",
+          "url": "https://sjp.pwn.pl/szukaj/uwa%C5%BCny.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "podróż",
@@ -344,7 +1039,29 @@
     "difficulty": 1,
     "tags": [
       "dyktando"
-    ]
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „podróż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "podróży",
+        "podróżą",
+        "podróże"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: podróż",
+          "url": "https://sjp.pwn.pl/szukaj/podr%C3%B3%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "podróżnik",
@@ -355,7 +1072,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „podróżnik” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "podróżnika",
+        "podróżnicy",
+        "podróżnikiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: podróżnik",
+          "url": "https://sjp.pwn.pl/szukaj/podr%C3%B3%C5%BCnik.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "garaż",
@@ -366,7 +1105,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „garaż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "garażu",
+        "garaże",
+        "garażem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: garaż",
+          "url": "https://sjp.pwn.pl/szukaj/gara%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "bagaż",
@@ -377,7 +1138,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „bagaż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "bagażu",
+        "bagaże",
+        "bagażem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: bagaż",
+          "url": "https://sjp.pwn.pl/szukaj/baga%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "plaża",
@@ -388,7 +1171,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „plaża” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "plaży",
+        "plażę",
+        "plażą"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: plaża",
+          "url": "https://sjp.pwn.pl/szukaj/pla%C5%BCa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "straż",
@@ -399,7 +1204,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „straż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "straży",
+        "strażą",
+        "straże"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: straż",
+          "url": "https://sjp.pwn.pl/szukaj/stra%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "strażak",
@@ -410,7 +1237,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „strażak” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "strażaka",
+        "strażacy",
+        "strażakiem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: strażak",
+          "url": "https://sjp.pwn.pl/szukaj/stra%C5%BCak.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "kałuża",
@@ -421,7 +1270,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „kałuża” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "kałuży",
+        "kałużę",
+        "kałużą"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: kałuża",
+          "url": "https://sjp.pwn.pl/szukaj/ka%C5%82u%C5%BCa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "wieża",
@@ -432,7 +1303,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „wieża” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "wieży",
+        "wieżę",
+        "wieżą"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: wieża",
+          "url": "https://sjp.pwn.pl/szukaj/wie%C5%BCa.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "wąż",
@@ -443,7 +1336,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „wąż” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "węża",
+        "węże",
+        "wężem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: wąż",
+          "url": "https://sjp.pwn.pl/szukaj/w%C4%85%C5%BC.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "nożyczki",
@@ -454,7 +1369,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „nożyczki” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "nożyczek",
+        "nożyczkami",
+        "nożyczkach"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: nożyczki",
+          "url": "https://sjp.pwn.pl/szukaj/no%C5%BCyczki.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "łyżwy",
@@ -465,7 +1402,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „łyżwy” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "łyżew",
+        "łyżwami",
+        "łyżwach"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: łyżwy",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%82y%C5%BCwy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "łyżeczka",
@@ -476,7 +1435,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „łyżeczka” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "łyżeczki",
+        "łyżeczkę",
+        "łyżeczką"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: łyżeczka",
+          "url": "https://sjp.pwn.pl/szukaj/%C5%82y%C5%BCeczka.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "pożar",
@@ -487,7 +1468,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „pożar” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "pożaru",
+        "pożary",
+        "pożarem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: pożar",
+          "url": "https://sjp.pwn.pl/szukaj/po%C5%BCar.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "pożegnać",
@@ -498,7 +1501,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „pożegnać” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "pożegnam",
+        "pożegnasz",
+        "pożegnali"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: pożegnać",
+          "url": "https://sjp.pwn.pl/szukaj/po%C5%BCegna%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "pożyczyć",
@@ -509,7 +1534,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „pożyczyć” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "pożyczę",
+        "pożyczysz",
+        "pożyczymy"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: pożyczyć",
+          "url": "https://sjp.pwn.pl/szukaj/po%C5%BCyczy%C4%87.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "pożywienie",
@@ -520,7 +1567,29 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „pożywienie” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "pożywienia",
+        "pożywieniu",
+        "pożywieniem"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: pożywienie",
+          "url": "https://sjp.pwn.pl/szukaj/po%C5%BCywienie.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "możliwość",
@@ -575,7 +1644,39 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 2
+    "difficulty": 2,
+    "learning": {
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "W rodzinie tego wyrazu pomaga para „może – mogę”. Ż wymienia się na g, dlatego zapamiętujemy zapis przez ż.",
+      "examples": [
+        {
+          "from": "może",
+          "to": "mogę",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "może",
+        "mogę",
+        "możliwość"
+      ],
+      "forms": [
+        "możliwa",
+        "możliwe",
+        "możliwego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: możliwy",
+          "url": "https://sjp.pwn.pl/szukaj/mo%C5%BCliwy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   },
   {
     "word": "każdy",
@@ -586,6 +1687,28 @@
       "ż"
     ],
     "answer": "ż",
-    "difficulty": 1
+    "difficulty": 1,
+    "learning": {
+      "type": "memory",
+      "title": "Zapamiętaj „ż”",
+      "explanation": "Słowo „każdy” zapisujemy przez ż. W tym wyrazie najlepiej zapamiętać poprawny zapis i połączyć go z obrazkiem oraz rodziną wyrazu.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [
+        "każda",
+        "każde",
+        "każdego"
+      ],
+      "sources": [
+        {
+          "label": "SJP PWN: każdy",
+          "url": "https://sjp.pwn.pl/szukaj/ka%C5%BCdy.html"
+        },
+        {
+          "label": "ZPE: zasady pisowni rz i ż",
+          "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
+        }
+      ]
+    }
   }
 ]

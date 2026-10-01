@@ -93,10 +93,9 @@ function ensureToggle(root) {
   if (root.dataset.mode !== 'flags') return;
 
   if (root.dataset.view === 'wizard') {
-    const intro = root.querySelector('.wizard-intro');
-    if (intro && !intro.querySelector('[data-flag-language]')) {
-      intro.classList.add('has-flag-language');
-      intro.insertAdjacentHTML('beforeend', '<div class="flag-language-slot"><button type="button" class="flag-language-toggle" data-flag-language aria-label="Zmień język nazw krajów"></button></div>');
+    const form = root.querySelector('#setup-form');
+    if (form && !form.querySelector('[data-flag-language]')) {
+      form.insertAdjacentHTML('beforeend', '<div class="flag-language-options" role="group" aria-label="Język nazw krajów"><button type="button" data-flag-language="pl"><img src="assets/flags/svg/pl.svg" alt="" width="28" height="28"><span>PL</span></button><button type="button" data-flag-language="en"><img src="assets/flags/svg/gb.svg" alt="" width="28" height="28"><span>EN</span></button></div>');
     }
   }
 
@@ -115,6 +114,11 @@ function ensureToggle(root) {
   }
 
   root.querySelectorAll('[data-flag-language]').forEach(button => {
+    if (button.closest('.flag-language-options')) {
+      button.setAttribute('aria-pressed',String(button.dataset.flagLanguage===language));
+      button.setAttribute('aria-label',button.dataset.flagLanguage==='pl'?'Nazwy krajów po polsku':'Country names in English');
+      return;
+    }
     const code = language.toUpperCase();
     if (button.textContent !== code) button.textContent = code;
     button.setAttribute('aria-label', language === 'pl'
@@ -209,7 +213,8 @@ document.addEventListener('click', event => {
   const button = event.target.closest?.('[data-flag-language]');
   if (!button) return;
   event.preventDefault();
-  toggleLanguage();
+  if(button.dataset.flagLanguage)setLanguage(button.dataset.flagLanguage);
+  else toggleLanguage();
 });
 
 const observer = new MutationObserver(() => queueMicrotask(() => refresh()));

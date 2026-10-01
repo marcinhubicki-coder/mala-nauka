@@ -22,7 +22,7 @@ export const FLAG_REFERENCE = Object.freeze({
 });
 
 export const FLAG_COUNTRY_COUNT = 195;
-export const FLAG_SVG_BASE = 'https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/';
+export const FLAG_SVG_BASE = 'assets/flags/svg/';
 
 const withContinent = (continent, rows) => rows.map(row => ({
   ...row,

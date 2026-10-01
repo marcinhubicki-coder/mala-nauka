@@ -273,7 +273,7 @@ function distractorRegion(flag,region,config){
  return region.length>=4?region:FLAGS;
 }
 
-function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
+export function flagQuestion(flag,optionRegion,config,random,difficulty,extra={}){
  const common={
   countryId:flag.id,continent:flag.continent,capital:flag.capital,image:flag.flagSvg,
   distanceKm:flag.distanceKm,distanceRank:flag.distanceRank,

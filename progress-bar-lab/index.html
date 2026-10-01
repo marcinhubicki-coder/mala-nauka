@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f4fb">
+  <title>Mała Nauka · Progress Bar Lab</title>
+  <link rel="stylesheet" href="./lab.css?v=1">
+</head>
+<body>
+<main class="lab" id="progress-lab">
+  <header class="lab-head">
+    <div>
+      <small>ADMIN TOOL</small>
+      <h1>Progress bar lab</h1>
+    </div>
+    <button type="button" class="reset-button" id="reset" aria-label="Resetuj ustawienia">Reset</button>
+  </header>
+
+  <section class="preview-card" aria-label="Podgląd paska postępu">
+    <div class="preview-meta">
+      <span>LIVE</span>
+      <output id="preview-percent">33%</output>
+    </div>
+
+    <div class="bar-stage" id="bar-stage">
+      <div class="progress-track" id="progress-track" role="slider" aria-label="Postęp" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" tabindex="0">
+        <div class="progress-fill" id="progress-fill">
+          <span class="fill-gloss" aria-hidden="true"></span>
+          <span class="fill-shimmer" aria-hidden="true"></span>
+          <span class="fill-cap" aria-hidden="true"></span>
+        </div>
+        <div class="spark-layer" id="spark-layer" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="scrub-row">
+      <label for="progress-range">Postęp</label>
+      <input id="progress-range" type="range" min="0" max="100" step="1" value="33">
+      <output for="progress-range" id="progress-output">33%</output>
+    </div>
+
+    <div class="preview-actions">
+      <button type="button" id="play" class="primary-action">▶ 0 → 100</button>
+      <button type="button" id="pause" class="secondary-action">Pauza</button>
+      <label class="loop-control"><input id="loop" type="checkbox"><span>Zapętl</span></label>
+    </div>
+  </section>
+
+  <section class="tuner-panel" aria-label="Strojenie paska postępu">
+    <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Kategorie parametrów"></div>
+
+    <div class="parameter-head">
+      <div>
+        <small id="category-kicker">KSZTAŁT</small>
+        <strong id="parameter-name">Grubość</strong>
+      </div>
+      <output id="parameter-value">24px</output>
+    </div>
+
+    <div class="parameter-tabs" id="parameter-tabs" role="tablist" aria-label="Parametry"></div>
+
+    <div class="slider-card">
+      <input id="parameter-range" type="range">
+    </div>
+
+    <div class="parameter-summary" id="parameter-summary"></div>
+  </section>
+
+  <section class="preset-panel" aria-label="Aktualny preset">
+    <div class="preset-head">
+      <div><small>PRESET</small><strong>Aktualne wartości</strong></div>
+      <button type="button" id="select-preset">Zaznacz</button>
+    </div>
+    <textarea id="preset-output" readonly spellcheck="false"></textarea>
+  </section>
+</main>
+<script type="module" src="./lab.mjs?v=1"></script>
+</body>
+</html>

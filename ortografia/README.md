@@ -1,5 +1,14 @@
 Moduł ortografii Małej Nauki. W czasie migracji zachowujemy aktualny działający wariant v0.3 i dopiero później porządkujemy zależności wspólne.
 
+## Dokumentacja danych słów
+
+Kanoniczna instrukcja dodawania nowych słów, zasad, odmian, źródeł, ilustracji, mapowania scen, cache offline i zgodności ze statystykami:
+
+- [WORD-DATA-PIPELINE.md](./WORD-DATA-PIPELINE.md) — **źródło prawdy dla nowych paczek słów**.
+
+Przy poleceniu typu „dodaj X nowych słów i wygeneruj grafiki” należy wykonać cały pipeline opisany w tym dokumencie, a nie tylko dopisać rekordy do JSON.
+
+
 ## Review ilustracji WebP — 14.09.2026
 
 Pierwsza partia zastępuje trzy proste SVG ilustracjami w kierunku zaakceptowanych makiet. Podmiana dotyczy plików w `assets/scenes/`, przypisań w `spelling/scenes.mjs` i listy/wersji cache w `sw.js`. Cache obejmuje również wersjonowane adresy skryptów i stylów używane przez ortografię, aby pierwszy start offline wczytywał tę samą warstwę wizualną. Nawigacja offline z parametrami review używa zapisanego dokumentu modułu.

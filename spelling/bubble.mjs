@@ -493,7 +493,7 @@ export function createBubble(host, options={}) {
   }
   function loop(now) {
     frame = 0;
-    if (destroyed || paused || document.hidden || reduced.matches) { last = 0; return; }
+    if (destroyed || options.motion === false || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now-last >= 1000/24) {
       elapsed += last ? Math.min((now-last)/1000,.1) * tuning.speed : 0;
       last = now; draw(elapsed);
@@ -502,8 +502,8 @@ export function createBubble(host, options={}) {
   }
   function syncMotion() {
     cancelAnimationFrame(frame); frame=0; last=0;
-    host.classList.toggle('soap-still', paused || document.hidden || reduced.matches);
-    if (!destroyed && !paused && !document.hidden && !reduced.matches) frame=requestAnimationFrame(loop);
+    host.classList.toggle('soap-still', options.motion === false || paused || document.hidden || reduced.matches);
+    if (!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches) frame=requestAnimationFrame(loop);
   }
   draw(elapsed); syncMotion();
   document.addEventListener('visibilitychange',syncMotion);

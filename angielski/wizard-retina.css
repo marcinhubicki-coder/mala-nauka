@@ -3,7 +3,7 @@
 
 html:has(#app[data-view="wizard"][data-mode="english"]),
 body:has(#app[data-view="wizard"][data-mode="english"]) {
-  background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center bottom / cover no-repeat;
+  background:#70d1f3 url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / cover no-repeat;
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::before {

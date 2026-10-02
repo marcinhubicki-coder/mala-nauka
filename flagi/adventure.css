@@ -192,3 +192,14 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .feedback>p{position:relative;border-radius:3px 5px 4px 6px;background:#fff4dbe8;box-shadow:inset 0 0 5px #c4a16c33,0 3px 5px #78542a25;margin-top:4px;padding:8px 10px}
 #app[data-mode="flags"] .feedback>p::before{left:-22px}#app[data-mode="flags"] .feedback>p::after{right:-22px;transform:translateY(-50%) scaleX(-1)}
 #app[data-mode="flags"]:has(.question-card.correct) .feedback [data-action="next"]{position:relative;width:100%;height:46px;min-height:46px;margin:auto 0 0;padding:8px 20px;border:3px solid #fff9e9;border-radius:30px;background:linear-gradient(120deg,#eefbe7,#bce6ca);box-shadow:inset 0 2px 4px #fff9,0 4px 8px #71875830;color:#116843;font:900 18px Flag Body;opacity:1;visibility:visible;pointer-events:auto;transform:none}
+
+/* Loop 2: match reference spacing and quiet the lettering over the landscape. */
+#app[data-mode="flags"] .game-bar{padding-inline:12px}
+#app[data-mode="flags"][data-view="game"] progress{width:calc(100% - 24px);margin-inline:12px}
+#app[data-mode="flags"] .game-meta>span{margin-left:12px}
+#app[data-mode="flags"] .game-meta strong{padding-inline:12px}
+#app[data-mode="flags"] .prompt{isolation:isolate}
+#app[data-mode="flags"] .prompt{background:radial-gradient(ellipse,#fff9e7d9 20%,#fff9e790 65%,transparent 85%);box-shadow:0 0 14px 5px #fff8e787;border-radius:50%}
+#app[data-mode="flags"] .answers .answer{border-width:5px}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::before{background:none;border:1px solid #bfa26a73;border-radius:50%;width:38px;height:38px;left:5px;bottom:6px;opacity:.7}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::after{content:"✧";position:absolute;bottom:-1px;left:2px;width:48px;height:52px;line-height:52px;font-size:53px;font-family:serif;color:#b48c4770;z-index:-1}

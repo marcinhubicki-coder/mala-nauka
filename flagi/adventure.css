@@ -49,7 +49,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .flag-language-options button[aria-pressed="true"]{background:linear-gradient(#34d886,#00a15c);color:#fff;box-shadow:inset 0 1px 3px #b9ffd0}
 #app[data-mode="flags"] .flag-language-options img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid #fff}
 /* The seven grid rows remain identical through correct/wrong feedback. */
-#app[data-mode="flags"][data-view="game"],#app[data-mode="flags"][data-view="game"]:has(.question-card.wrong){
+#app[data-mode="flags"][data-view="game"]{
  display:grid;grid-template-rows:52px 10px 36px minmax(170px,1fr) 28px 152px 86px;gap:10px;
  padding-bottom:max(80px,calc(var(--app-safe-bottom) + 42px))!important;overflow:hidden;overflow-anchor:none;
 }
@@ -78,13 +78,13 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 .flag-pole::before{content:"";position:absolute;left:-4px;top:-12px;width:15px;height:15px;border:1px solid #bd8c37;border-radius:50%;background:radial-gradient(at 30% 22%,#fff2be 3%,#f6d078 24%,#d59836 53%,#9e6219 84%);box-shadow:1px 2px 3px #98652855}
 .flag-pole::after{content:"";position:absolute;left:-1px;top:2px;width:8px;height:3px;border-radius:2px;background:linear-gradient(#ffe3a1,#986027);box-shadow:0 1px 1px #73511d77}
 .flag-pole i,.flag-pole b{position:absolute;left:-1px;width:8px;height:2px;background:linear-gradient(#efd59b,#9b6325);border-radius:1px;box-shadow:0 1px 1px #77512b55}
-.flag-pole i{top:4%}.flag-pole b{top:66%}
+.flag-pole i{top:4%}.flag-pole b{top:62%}
 .flag-cloth{position:absolute;left:calc(20% + 3px);top:12%;width:71%;aspect-ratio:calc(var(--flag-ratio) / 1.15);filter:drop-shadow(2px 4px 3px #6358483b);transform:rotate(-4deg);transform-origin:0 0;z-index:1}
 .flag-cloth-canvas,.flag-cloth-fallback{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:left top}
 .flag-cloth-canvas{opacity:0}.flag-cloth.is-painted .flag-cloth-canvas{opacity:1}.flag-cloth.is-painted .flag-cloth-fallback{visibility:hidden}
 .flag-clouds{position:absolute;z-index:3;left:-8%;right:-8%;bottom:-2%;height:24%;background:url('../assets/flags/adventure/cloud-vignette-v2.webp') center bottom / 100% auto no-repeat;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 22%);mask-image:linear-gradient(transparent,#000 22%)}
 #app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-pole{left:52%;top:13%;height:73%}
-#app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-cloth{left:calc(52% + 3px);top:13%}
+#app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-cloth{left:calc(52% + 3px);top:14%}
 #app[data-mode="flags"] .flag-scene-compass{position:absolute;left:3%;bottom:10%;width:72px;height:72px;color:#bd9149;z-index:4;opacity:.83;pointer-events:none}
 #app[data-mode="flags"] .flag-scene-compass svg{display:block;width:100%;height:100%}
 #app[data-mode="flags"] .flag-adventure-details{position:absolute;top:3px;left:8px;right:8px;z-index:4;text-align:left;pointer-events:none}
@@ -122,7 +122,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .answers .answer.wrong{background-color:#ffd6e0;background-image:linear-gradient(135deg,#ffedf2d9,#ffd0ded9),url('../assets/flags/adventure/paper-v1.svg');border-color:#f35a85;color:#8d2947;box-shadow:inset 0 2px 5px #fff9,0 6px 9px #a44c5d28}
 #app[data-mode="flags"] .answers .flag-option-image{height:48px;width:min(90%,100px);max-height:48px;object-fit:contain;filter:drop-shadow(0 2px 3px #715b3430)}
 @keyframes flag-answer-glow{0%{box-shadow:0 0 0 0 #75de9c99}50%{box-shadow:0 0 0 5px #75de9c44}100%{box-shadow:0 0 0 9px #75de9c00}}
-#app[data-mode="flags"] .feedback,#app[data-mode="flags"]:has(.question-card.wrong) .feedback{height:86px;min-height:86px;max-height:86px;gap:7px;justify-content:flex-start;align-items:center;margin:0;padding:0;align-self:stretch}
+#app[data-mode="flags"] .feedback{height:86px;min-height:86px;max-height:86px;gap:7px;justify-content:flex-start;align-items:center;margin:0;padding:0;align-self:stretch}
 #app[data-mode="flags"] .feedback>p{display:block;margin:4px auto 0;background:#fff6dde8;border-radius:10px;padding:8px 12px;color:#576356;font:750 12px Flag Body;box-shadow:0 3px 5px #8569471f}
 #app[data-mode="flags"] .feedback-message strong{font:850 13px/1.2 Flag Body;color:#254f48;text-shadow:0 1px 6px #fff}
 #app[data-mode="flags"] .feedback-message small{font:700 12px/1.2 Flag Body;color:#526b69;margin-top:2px;text-shadow:0 1px 5px #fff}
@@ -141,13 +141,12 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
  #app[data-mode="flags"] .flag-v2-section legend{margin-bottom:9px;font-size:16px}
  #app[data-mode="flags"] .flag-segmented{height:49px;min-height:49px}
  #app[data-mode="flags"] .start-button{height:54px;min-height:54px;font-size:22px}
- #app[data-mode="flags"][data-view="game"],#app[data-mode="flags"][data-view="game"]:has(.question-card.wrong){grid-template-rows:46px 8px 34px minmax(140px,1fr) 25px 136px 80px;gap:8px;padding-bottom:max(42px,calc(var(--app-safe-bottom) + 18px))!important}
+ #app[data-mode="flags"][data-view="game"]{grid-template-rows:46px 8px 34px minmax(140px,1fr) 25px 136px 80px;gap:8px;padding-bottom:max(42px,calc(var(--app-safe-bottom) + 18px))!important}
  #app[data-mode="flags"] .answers,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{height:136px;min-height:136px;max-height:136px;grid-template-rows:repeat(2,62px)}
  #app[data-mode="flags"] .answers .answer,#app[data-mode="flags"] .answers .answer.flag-option-answer,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer{height:62px;min-height:62px;max-height:62px}
- #app[data-mode="flags"] .feedback,#app[data-mode="flags"]:has(.question-card.wrong) .feedback{height:80px;min-height:80px;max-height:80px}
+ #app[data-mode="flags"] .feedback{height:80px;min-height:80px;max-height:80px}
 }
-@media(prefers-reduced-motion:reduce){.flag-cloth-strip{animation:none!important}#app[data-mode="flags"] .flag-adventure-map,#app[data-mode="flags"] .answers .answer{animation:none!important;transition:none!important}}
-#app[data-mode="flags"].paused .flag-cloth-strip{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){#app[data-mode="flags"] .flag-adventure-map,#app[data-mode="flags"] .answers .answer{animation:none!important;transition:none!important}}
 
 /* Cloth reference composition: fixed slots keep the flag, title and capital still. */
 #app[data-mode="flags"][data-view="game"] .timer,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name{font-family:Flag Body,ui-rounded,sans-serif;font-weight:850}

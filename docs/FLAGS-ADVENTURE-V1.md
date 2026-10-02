@@ -26,15 +26,15 @@ wybór. Regresję obejmuje `tests/jelly-ink.test.mjs`.
 
 ## Flaga na maszcie
 
-`flag-on-pole.mjs`: jedno wejściowe `record.flagSvg`, 16 pasów próbkujących to
-samo SVG. CSS dodaje sinusoidalne przesunięcie pionowe, delikatne scaleY/rotateY
-oraz wspólne światło soft-light. Parametry są wspólne dla wszystkich państw;
-nie eksportować osobnego renderu rasterowego dla każdego kraju.
+`flag-on-pole.mjs` przyjmuje `record.flagSvg`. `flag-cloth.mjs` nakłada wzór
+na wspólną ciągłą siatkę UV i nadaje materiałowi światło, splot oraz obszycie.
+Render jest statyczny, minimum DPR 3, ponawiany tylko po zmianie SVG lub wymiarów.
+Nie tworzymy osobnych zdjęć dla krajów. Parametry wszystkich flag są w `CLOTH`.
 
 - Szwajcaria i Watykan: proporcje 1:1 i źródło flag-icons 1x1.
-- Nepal: pojedynczy obraz z zachowaniem przezroczystości i kształtu proporców.
+- Nepal: ta sama siatka zachowuje alpha SVG i kształt proporców.
 - Pozostałe: przypięte źródło flag-icons 4x3.
-- Wyciszenie animacji: prefers-reduced-motion oraz pauza rozgrywki.
+- Flaga jest statyczna; brak pętli animacji oraz pracy renderera podczas bezczynności.
 - Flaga na pytaniu wyrasta z neutralnych chmur. Nie dodawać do niej zabytków,
   zamków, architektury ani krajobrazów sugerujących konkretne państwo.
 
@@ -125,3 +125,16 @@ Zrzuty pokazują ramkę 390 × 844 w kontekście podglądu:
 - [Ustawienia Flag](flags-adventure/screenshots/iphone-13-pro-flag-settings.jpg)
 - [Mapa po pomyłce](flags-adventure/screenshots/iphone-13-pro-flag-map.jpg)
 - [Postępy i osiągnięcia](flags-adventure/screenshots/iphone-13-pro-progress.jpg)
+
+
+## Iteracje materiału — 2026-10-02
+
+1. Zastąpienie 16 pasów ciągłą siatką: koniec poszarpanych krawędzi, wspólna geometria, światło i splot. Zrzut ujawnił zbyt płaski brzeg.
+2. Większe opadanie wolnego brzegu, ukośne fałdy, mniejsza flaga po prawej, maszt z gałką i obrączkami, kompas N/S/E/W. Zrzut potwierdził proporcje i wskazał zbyt metaliczne cienie białej tkaniny.
+3. Delikatniejsza biel, drobne ukośne zmarszczki oraz wspólna tekstura materiału. Podgląd pozwala podmieniać wszystkie 195 SVG jednym wyborem kraju.
+
+`scene=material` działa wyłącznie na jawnej stronie z `__MALA_NAUKA_FLAGS_PREVIEW__`. Ujawnia nazwę i stolicę do porównania ze wzorem; prawdziwa gra nadal ukrywa odpowiedź przed wyborem dziecka.
+
+Nowy wspólny asset `assets/flags/adventure/cloud-vignette-v2.webp` (1448 × 1086, alpha) powstał wbudowanym Imagegen: neutralny świetlisty błękit, miękkie odległe góry i niewielkie iglaste sylwetki, kremowe szczegółowe chmury w dolnej ćwiartce, puste górne niebo na osobną flagę, krawędzie oraz lewa strona zanikające w przezroczystość; styl ilustracji referencyjnej. Bez flagi, masztu, zabytków, ramki, napisów i UI. Cały plik przekonwertowany do WebP quality 94.
+
+Nowy `assets/flags/adventure/cloth-light-v1.webp` jest jednym wspólnym materiałem UV (1448 × 1086). Wbudowany Imagegen: prostokąt białej matowej tkaniny flagowej w widoku ortograficznym, drobny splot i delikatne ukośne zmarszczki rozchodzące się od lewej, miękkie neutralne światło dzienne, płytkie jasnoszare cienie. Cały kadr pokryty tkaniną, bez kolorowych pasów, projektu flagi, masztu, tła, UI i napisów. Renderer używa wyłącznie luminancji tej tekstury i alpha źródłowego SVG. Żadne barwy ani symbole kraju nie pochodzą z Imagegen.

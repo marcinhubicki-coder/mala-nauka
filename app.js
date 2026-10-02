@@ -1,5 +1,5 @@
 import { exampleProgress } from './progress-example.mjs?v=1';
-import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=5-rules-jelly';
+import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=6-reference-layout';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';

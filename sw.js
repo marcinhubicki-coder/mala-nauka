@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v131-flags-adventure-20261002';
+const CACHE='mala-nauka-v132-progress-reference-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -9,6 +9,7 @@ const CORE=[
   "./flagi/preview-frame.html",
   "./flagi/preview-fixture.mjs?v=1",
   "./assets/progress/rules-books-v2.webp",
+  "./assets/progress/rules-details-v1.svg",
   "./assets/flags/adventure/sky-v1.svg",
   "./assets/flags/adventure/sky-retina-v1.webp",
   "./assets/flags/adventure/paper-v1.svg",
@@ -217,8 +218,8 @@ const CORE=[
   "./shared/rule-groups.mjs?v=1",
   "./adventure-preview.html",
   "./progress-preview-frame.html",
-  "./progress-screen.mjs?v=5-rules-jelly",
-  "./progress-screen.css?v=9-retina-adventure",
+  "./progress-screen.mjs?v=6-reference-layout",
+  "./progress-screen.css?v=10-reference-layout",
   "./progress-example.mjs?v=1",
   "./shared/mastery.mjs?v=2",
   "./shared/scroll-edges.mjs?v=1",
@@ -249,9 +250,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261002-flags-adventure-v2",
+  "./app.css?v=20261002-progress-polish-v10",
   "./app.js",
-  "./app.js?v=20261002-flags-adventure-v2",
+  "./app.js?v=20261002-progress-polish-v10",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",

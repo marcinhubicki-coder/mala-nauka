@@ -138,3 +138,12 @@ Zrzuty pokazują ramkę 390 × 844 w kontekście podglądu:
 Nowy wspólny asset `assets/flags/adventure/cloud-vignette-v2.webp` (1448 × 1086, alpha) powstał wbudowanym Imagegen: neutralny świetlisty błękit, miękkie odległe góry i niewielkie iglaste sylwetki, kremowe szczegółowe chmury w dolnej ćwiartce, puste górne niebo na osobną flagę, krawędzie oraz lewa strona zanikające w przezroczystość; styl ilustracji referencyjnej. Bez flagi, masztu, zabytków, ramki, napisów i UI. Cały plik przekonwertowany do WebP quality 94.
 
 Nowy `assets/flags/adventure/cloth-light-v1.webp` jest jednym wspólnym materiałem UV (1448 × 1086). Wbudowany Imagegen: prostokąt białej matowej tkaniny flagowej w widoku ortograficznym, drobny splot i delikatne ukośne zmarszczki rozchodzące się od lewej, miękkie neutralne światło dzienne, płytkie jasnoszare cienie. Cały kadr pokryty tkaniną, bez kolorowych pasów, projektu flagi, masztu, tła, UI i napisów. Renderer używa wyłącznie luminancji tej tekstury i alpha źródłowego SVG. Żadne barwy ani symbole kraju nie pochodzą z Imagegen.
+
+
+### Końcowa weryfikacja materiału
+- Trzy iteracje miały osobny zrzut i porównanie ze wzorem. Zapis: `docs/flags-adventure/cloth-loops/`, porównanie: wzór po lewej, render po prawej.
+- 195 unikalnych rekordów wskazuje istniejące poprawne SVG z viewBox. W przeglądarce sprawdzono Polskę, Szwajcarię, Nepal, Wielką Brytanię oraz Republikę Środkowoafrykańską w PL i EN. Nepal zachowuje przezroczystość; symbole i pasy deformują się wraz z tkaniną.
+- 390 × 844: client/scroll height 844, karta 342 × 275 na x24/y183; odpowiedzi 171 × 76 na y506/592. Te prostokąty są identyczne przed odpowiedzią, po pomyłce i po poprawnej odpowiedzi. Przed wyborem nie ma nazwy ani stolicy w widocznym pytaniu.
+- Nazwa kraju ma stały slot 62 px; długa nazwa PL/EN mieści się w dwóch wierszach. Opisy odpowiedzi mieszczą się wewnątrz kafli z rezerwą na glify.
+- Canvas dla polskiej flagi ma 447 × 384 przy około 149 × 128 CSS px; render nie pracuje w bezczynności. Tekstura i chmury są wspólne, lokalne i w pre-cache.
+- 24 testy Node przechodzą, w tym granice ciągłej siatki, brak odwróconych trójkątów, przypięty brzeg, stan gry i komplet offline. Brak błędów aplikacji w logach przeglądarki. Fizyczny iOS nie był emulowany; weryfikacja dotyczy ramki 390 × 844 i DPR 3 materiału.

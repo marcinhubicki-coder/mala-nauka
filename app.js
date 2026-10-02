@@ -136,7 +136,7 @@ function navigate(next) {
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
  spellingArt.reset();
- view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&selectedMode==='spelling'?'#70d1f3':'#f5f8ff');
+ view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&(selectedMode==='spelling'||selectedMode==='english')?'#70d1f3':'#f5f8ff');
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }

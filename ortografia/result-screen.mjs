@@ -92,7 +92,7 @@ export function renderSpellingResult(root, result, words = [], ui = null, motion
     root.querySelectorAll('[data-result-panel]').forEach(panel => { const list = panel.querySelector('.result-word-list'); if (list) list.scrollTop = Math.max(0, Number(ui.scroll?.[panel.dataset.resultPanel]) || 0); });
   }
   const rail=root.querySelector('.result-continue-rail');
-  const drag=createContinueDrag(rail,{canContinue:()=>root.dataset.view==='results'&&!root.inert,completionDelay:350,onComplete:()=>root.dispatchEvent(new CustomEvent('spelling-repeat-request',{bubbles:true}))});
+  const drag=createContinueDrag(rail,{canContinue:()=>root.dataset.view==='results'&&!root.inert,completionDelay:560,onComplete:()=>root.dispatchEvent(new CustomEvent('spelling-repeat-request',{bubbles:true}))});
   scrollCleanups.set(root,[()=>drag.destroy(),...[...root.querySelectorAll('.result-word-viewport')].map(shell=>watchScrollEdges(shell,shell.querySelector('.result-word-list')))]);
   if (motion?.animate) revealResult(root, motion.delay ?? 1000);
 }

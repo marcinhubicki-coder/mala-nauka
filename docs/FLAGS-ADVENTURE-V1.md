@@ -89,3 +89,39 @@ Przykładowe postępy nigdy nie trafiają do konta dziecka.
 Podczas zmiany sprawdzić: trzy warianty gry, obydwa języki, przyciski poprawny/
 błędny, niezmienne prostokąty odpowiedzi, wszystkie sześć map, Nepal, kwadratowe
 flagi, długie nazwy PL/EN, fonty z polskimi znakami, pauzę i komplet offline.
+
+## Weryfikacja 2026-10-02
+
+22 testy Node przechodzą, w tym regresja przechwyconego dotknięcia Jelly oraz
+kontrola wszystkich ścieżek pre-cache. Wszystkie 195 plików flag zawierają SVG.
+Przeglądarka Chromium korzystała z ramki telefonu i safe area 47 / 34 px.
+
+| Viewport CSS | Postępy | Rozgrywka | Wysokość odpowiedzi |
+|---|---|---|---|
+| 390 × 844 | Całość mieści się bez przewijania | Całość mieści się | 70 px |
+| 393 × 852 | Całość mieści się bez przewijania | Całość mieści się | 70 px |
+| 402 × 874 | Całość mieści się bez przewijania | Całość mieści się | 70 px |
+| 430 × 932 | Całość mieści się bez przewijania | Całość mieści się | 70 px |
+| 390 × 700 | Wewnętrzne przewijanie | Całość mieści się | 62 px |
+
+Przed odpowiedzią i po pomyłce cztery kafle na 390 × 844 pozostają 171 × 70 px,
+na pozycjach y = 516 / 598. Nazwa mapy i stolica pozostają na y = 206 / 262,
+także po zmianie „Republika Środkowoafrykańska” na „Central African Republic”.
+Oba warianty mieszczą się w stałych slotach, z maksymalnie dwoma wierszami.
+Sprawdzono też Zjednoczone Emiraty Arabskie, Arabię Saudyjską i długą stolicę Sri Lanki.
+
+Mapy podświetlają właściwy kraj: PL, JP, EG, US, BR, AU, po jednym na każdym
+kontynencie. SVG mieści się w obszarze mapy bez obciętej dolnej części.
+Nepal zachowuje przezroczysty kształt, a Szwajcaria ma rzeczywiste 155 × 155 px.
+Każdy jawny podgląd pytań ma cztery opcje.
+
+Rzeczywisty konfigurator zatwierdza rodzaj rozgrywki, kontynenty, czas i język.
+Uruchomiono minutową rundę Stolic z nazwami EN: pauza / wznowienie działa,
+po błędzie zegar pozostaje na 0:26, a Dalej uruchamia pytanie 2. Wymiary kafli
+pozostają identyczne. Logi aplikacji nie zawierają błędów.
+
+Zrzuty pokazują ramkę 390 × 844 w kontekście podglądu:
+
+- [Ustawienia Flag](flags-adventure/screenshots/iphone-13-pro-flag-settings.jpg)
+- [Mapa po pomyłce](flags-adventure/screenshots/iphone-13-pro-flag-map.jpg)
+- [Postępy i osiągnięcia](flags-adventure/screenshots/iphone-13-pro-progress.jpg)

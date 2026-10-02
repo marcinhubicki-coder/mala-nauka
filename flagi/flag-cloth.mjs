@@ -168,6 +168,7 @@ export async function renderFlagCloth(canvas){
   const width=Math.ceil(canvas.clientWidth*pixelRatio()),height=Math.ceil(canvas.clientHeight*pixelRatio());
   const key=`${url}:${width}:${height}`;
   if(renders.get(canvas)===key)return;
+  moving.delete(canvas);
   renders.set(canvas,key);
   const paint=surface=>{
     if(!canvas.isConnected||renders.get(canvas)!==key)return;

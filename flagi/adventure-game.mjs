@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=8';
+import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=9';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -39,8 +39,7 @@ function fitAll(){
     fit(node,{max:Math.min(23,root.clientWidth*.0525),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
   });
   root.querySelectorAll('.flag-adventure-name').forEach(node=>{
-    const mapReview=node.closest('.flag-map-review');
-    fit(node,{max:root.clientWidth*(node.closest('.flag-reference-scene,.correct')?.108:.095),min:11,lines:2,height:node.clientHeight||62});
+    fit(node,{max:root.clientWidth*(node.closest('.flag-reveal-scene')?.108:.095),min:11,lines:2,height:node.clientHeight||62});
   });
   root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10,lines:1}));
   root.querySelectorAll('.flag-adventure-country,.flag-adventure-capital-question').forEach(node=>fit(node,{max:36,min:17}));
@@ -104,7 +103,8 @@ function enhance(){
       };
       // Mount already-preloaded vector geography under the closed mask.
       const mounted=window.MalaNaukaContinentMap?.mount(content.querySelector('[data-adventure-map]'),{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});
-      Promise.resolve(mounted).finally(()=>requestAnimationFrame(()=>requestAnimationFrame(reveal)));
+      const show=()=>requestAnimationFrame(()=>requestAnimationFrame(reveal));
+      Promise.resolve(mounted).then(show,show);
     }
 
   }

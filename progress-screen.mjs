@@ -3,7 +3,7 @@ import { learningSummary } from './shared/mastery.mjs?v=2';
 import { sceneFor, sceneUrl } from './spelling/scenes.mjs?v=27-final-assets';
 import { openResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { CATEGORIES } from './game.mjs?v=20261001-adventure';
-import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
+import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 
 const controllers=new WeakMap();
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

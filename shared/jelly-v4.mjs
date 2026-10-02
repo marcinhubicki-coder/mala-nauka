@@ -271,7 +271,10 @@ export function createJellyV4({indicatorSelector}={}){
     suppressClick?.(380);update(container,d.activeIndex,{animate:true});return;
    }
    if(!d.dragging){
-    // Do not move on pointer-down/up alone. Native click handles direct jumps.
+    // Pointer capture retargets the native click to the buffer. Commit the
+    // original tapped label once; suppress the follow-up click if it reaches it.
+    suppressClick?.(380);
+    commitIndex?.(d.tapIndex);
     return;
    }
    suppressClick?.(520);

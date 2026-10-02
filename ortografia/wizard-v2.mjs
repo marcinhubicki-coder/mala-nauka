@@ -1,4 +1,4 @@
-import { createJellyV4 } from '../shared/jelly-v4.mjs?v=2';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
 import { dictationPacks, cleanDictationTag } from '../spelling/dictation.mjs?v=1';
 import { WORD_LIMITS, cleanRoundSettings } from '../spelling/round.mjs?v=1';
 

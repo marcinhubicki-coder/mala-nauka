@@ -1,4 +1,4 @@
-import { createJellyV4 } from '../shared/jelly-v4.mjs?v=1';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.readingWizardV2';
 const LEVELS=[[1,'Słowa'],[2,'Frazy'],[3,'Zdania']];

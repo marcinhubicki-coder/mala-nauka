@@ -1,4 +1,4 @@
-import { JELLY_V4_DEFAULTS } from '../shared/jelly-v4.mjs?v=2';
+import { JELLY_V4_DEFAULTS } from '../shared/jelly-v4.mjs?v=3';
 
 // Completion depends on movement from the handle. A tap anywhere on the rail
 // cannot advance, and an interrupted or partial gesture always springs home.

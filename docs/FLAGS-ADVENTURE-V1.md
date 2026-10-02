@@ -19,6 +19,11 @@ W ustawieniach pozostaje Jelly V4, trzy rodzaje rozgrywki, wybór świata lub
 kontynentów i dotychczasowe czasy. PL/EN znajduje się pod przyciskiem startu,
 poza ilustracją chłopca. W czasie gry okrągły przełącznik jest w środkowej kolumnie.
 
+Jelly V4 zatwierdza dotkniętą etykietę przy `pointerup`, ponieważ przechwycenie
+wskaźnika przenosi natywny `click` na bufor. Dotknięcie wybiera opcję raz,
+przeciąganie zachowuje swój algorytm, a anulowanie gestu pozostawia poprzedni
+wybór. Regresję obejmuje `tests/jelly-ink.test.mjs`.
+
 ## Flaga na maszcie
 
 `flag-on-pole.mjs`: jedno wejściowe `record.flagSvg`, 16 pasów próbkujących to

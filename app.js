@@ -12,7 +12,7 @@ import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } 
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
 import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
 import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
-import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
+import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});

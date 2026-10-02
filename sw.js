@@ -1,8 +1,8 @@
-const CACHE='mala-nauka-v130-flags-adventure-20261002';
+const CACHE='mala-nauka-v131-flags-adventure-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/adventure.css?v=4",
+  "./flagi/adventure.css?v=5",
   "./flagi/adventure-game.mjs?v=5",
   "./flagi/text-fit.mjs?v=2",
   "./flagi/flag-on-pole.mjs?v=2",
@@ -249,9 +249,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261002-flags-adventure-v1",
+  "./app.css?v=20261002-flags-adventure-v2",
   "./app.js",
-  "./app.js?v=20261002-flags-adventure-v1",
+  "./app.js?v=20261002-flags-adventure-v2",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",
@@ -777,9 +777,9 @@ const CORE=[
   "./manifest.webmanifest",
   "./matematyka/",
   "./matematyka/app.css",
-  "./matematyka/app.css?v=20261002-flags-adventure-v1",
+  "./matematyka/app.css?v=20261002-flags-adventure-v2",
   "./matematyka/app.js",
-  "./matematyka/app.js?v=20261002-flags-adventure-v1",
+  "./matematyka/app.js?v=20261002-flags-adventure-v2",
   "./matematyka/board-v3.css",
   "./matematyka/board-v4.css",
   "./matematyka/board.css",
@@ -859,8 +859,8 @@ const CORE=[
   "./shared/jelly-v4.css",
   "./shared/jelly-v4.css?v=3-delayed-ink",
   "./shared/jelly-v4.mjs",
-  "./shared/jelly-v4.mjs?v=1",
-  "./shared/jelly-v4.mjs?v=2",
+  "./shared/jelly-v4.mjs?v=3",
+  "./shared/jelly-v4.mjs?v=3",
   "./spelling-art.css",
   "./spelling-art.css?v=20261001-feedback-v7",
   "./spelling-art.js",

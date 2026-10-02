@@ -14,7 +14,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 }
 body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"]))::after{
  content:"";position:fixed;inset:0 0 auto;height:calc(100vw + 65px);z-index:-1;pointer-events:none;
- background:linear-gradient(transparent calc(100vw - 80px),#72c8f6 calc(100vw + 65px)),url('../assets/flags/adventure/sky-retina-v1.webp') center top / 100% auto no-repeat;
+ background:linear-gradient(transparent calc(100vw - 80px),#72c8f6 calc(100vw - 1px)),url('../assets/flags/adventure/sky-retina-v1.webp') center top / 100% auto no-repeat;
 }
 #app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"]){padding:max(22px,calc(var(--app-safe-top) + 8px)) calc(18 * var(--flag-u)) max(38px,var(--app-safe-bottom))!important}
 #app[data-mode="flags"] .page-head h1,#app[data-mode="flags"] .wizard-intro h2,#app[data-mode="flags"] legend,#app[data-mode="flags"] .timer,#app[data-mode="flags"] .start-button,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name,#app[data-mode="flags"] .flag-adventure-country,#app[data-mode="flags"] .flag-adventure-capital-question{font-family:Flag Display,ui-rounded,sans-serif;font-weight:700;letter-spacing:-.5px}
@@ -40,7 +40,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .flag-continent-panel.is-open{margin-top:14px}
 #app[data-mode="flags"] .flag-continent-chip>span{font:800 12px Flag Body;line-height:1.2;border-radius:17px;background:#edf6fc}
 #app[data-mode="flags"] .flag-continent-chip:has(input:checked)>span{background:linear-gradient(#edfff0,#b8e8c8);color:#096345;border-color:#92cdaa}
-#app[data-mode="flags"] .wizard-note{font-size:13px;line-height:1.3;color:#445575;text-align:center;margin:0 5px;min-height:33px;display:grid;place-items:center;text-shadow:0 1px 4px #fff}
+#app[data-mode="flags"] .wizard-note{font-size:12px;line-height:1.25;color:#445575;text-align:center;margin:0 5px;min-height:33px;padding:6px 8px;border-radius:12px;background:#fff8e7ed;display:grid;place-items:center;box-shadow:0 2px 5px #53695720}
 #app[data-mode="flags"] .start-button{position:relative;isolation:isolate;width:100%;height:60px;min-height:60px;padding:10px 24px;border:3px solid #fff;border-radius:40px;background:linear-gradient(145deg,#3add88,#00b562 60%,#00934c);box-shadow:inset 0 3px 4px #bfffd8,inset 0 -5px 6px #006c493f,0 6px 12px #12826833;font-size:24px;text-align:left;color:#fff}
 #app[data-mode="flags"] .start-button::before{content:"";position:absolute;left:14px;right:15px;top:6px;height:12px;border-radius:40px;background:linear-gradient(90deg,#fff9,#fff1 75%);z-index:-1}
 #app[data-mode="flags"] .start-button>span:last-child{font:800 29px Flag Body;margin-left:auto}
@@ -123,6 +123,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .feedback>p{display:block;margin:4px auto 0;background:#fff6dde8;border-radius:10px;padding:8px 12px;color:#576356;font:750 12px Flag Body;box-shadow:0 3px 5px #8569471f}
 #app[data-mode="flags"] .feedback-message strong{font:850 13px/1.2 Flag Body;color:#254f48;text-shadow:0 1px 6px #fff}
 #app[data-mode="flags"] .feedback-message small{font:700 12px/1.2 Flag Body;color:#526b69;margin-top:2px;text-shadow:0 1px 5px #fff}
+#app[data-mode="flags"] .feedback-message{width:100%;padding:0 8px;border-radius:10px;background:#fff8e7ed;box-shadow:0 2px 5px #53695720}
 #app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"]{position:relative;width:100%;height:46px;min-height:46px;margin:auto 0 0;padding:8px 20px;border:3px solid #fff9e9;border-radius:30px;background:linear-gradient(120deg,#eefbe7,#bce6ca);box-shadow:inset 0 2px 4px #fff9,0 4px 8px #71875830;color:#116843;font:900 18px Flag Body;opacity:1;visibility:visible;pointer-events:auto;transform:none}
 #app[data-mode="flags"][data-view="results"]{overflow-y:auto}
 #app[data-mode="flags"] .result{padding:20px 15px;gap:8px}

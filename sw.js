@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v140-flags-ready-20261002';
+const CACHE='mala-nauka-v141-flags-ready-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -6,7 +6,7 @@ const CORE=[
   "./assets/flags/adventure/answer-paper-v2.svg",
   "./assets/flags/adventure/answer-compass-v1.svg",
   "./app.js?v=20261002-flags-ready-v2",
-  "./flagi/adventure.css?v=11",
+  "./flagi/adventure.css?v=12",
   "./flagi/adventure-game.mjs?v=11",
   "./flagi/text-fit.mjs?v=2",
   "./flagi/flag-on-pole.mjs?v=6",

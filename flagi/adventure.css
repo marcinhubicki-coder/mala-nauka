@@ -209,3 +209,7 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after,#app[data-mode="flags"] .feedback>p::before,#app[data-mode="flags"] .feedback>p::after{filter:drop-shadow(0 0 3px #fff8e7)}
 #app[data-mode="flags"] .answers .answer:nth-child(2)::before{border:0;border-radius:0;left:4px;bottom:1px;width:45px;height:45px;opacity:.5;background:url('../assets/flags/adventure/answer-compass-v1.svg') center/contain no-repeat}
 #app[data-mode="flags"] .answers .answer:nth-child(2)::after{content:none}
+
+/* Loop 4: encouragement ribbon matches the reference width and remains legible. */
+#app[data-mode="flags"] .feedback>p{font-size:11px;font-weight:600;line-height:1.35}
+#app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after,#app[data-mode="flags"] .feedback>p::before,#app[data-mode="flags"] .feedback>p::after{background-color:#fff6e7a3;border-radius:50%;box-shadow:0 0 7px 3px #fff8dd85}

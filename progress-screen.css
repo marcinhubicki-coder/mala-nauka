@@ -34,6 +34,17 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
   padding:calc(var(--progress-safe-top) - 5 * var(--progress-u)) calc(17 * var(--progress-u)) 0;
   background:#b4eaff url('assets/progress/hero-v2.webp') center calc(100% + 13 * var(--progress-u)) / 100% auto no-repeat;
 }
+.progress-hero::before {
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0 0 auto;
+  height:calc(47 * var(--progress-u));
+  background:url('assets/progress/hero-v2.webp') center top / 100% auto no-repeat;
+  -webkit-mask-image:linear-gradient(#000 0%,#000 26%,transparent 86%);
+  mask-image:linear-gradient(#000 0%,#000 26%,transparent 86%);
+  pointer-events:none;
+}
 .progress-hero::after {
   content:"";
   position:absolute;
@@ -173,17 +184,18 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
 .progress-hero-copy h2 {
   margin:0;
   color:#100944;
-  font-size:calc(24 * var(--progress-u));
+  font-size:calc(25 * var(--progress-u));
   font-weight:850;
   line-height:1;
   letter-spacing:calc(-.55 * var(--progress-u));
 }
-.progress-hero-copy h2 span {
+.progress-hero-line { display:block;transform:translateX(calc(18 * var(--progress-u))); }
+.progress-hero-copy h2 .progress-hero-emphasis {
   color:#ed087f;
   font-size:calc(27.5 * var(--progress-u));
 }
 .progress-hero-copy p {
-  margin:calc(2 * var(--progress-u)) 0 0;
+  margin:calc(-3 * var(--progress-u)) 0 0;
   font-family:"Home Rounded",ResultBody,sans-serif;
   font-size:calc(13 * var(--progress-u));
   font-weight:550;
@@ -275,10 +287,10 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
   text-align:left;
   color:#100944;
   /* Top anchoring retains the empty sky instead of cropping it off. */
-  background:#b7eaff url('assets/progress/collection-v1.webp') center center / 100% auto no-repeat;
+  background:#b7eaff url('assets/progress/collection-v1.webp') center calc(50% - 6 * var(--progress-u)) / 100% auto no-repeat;
   box-shadow:0 5px 11px #5ca8c624;
 }
-.progress-illustrated.categories { background-size:100% 100%;background-image:url('assets/progress/categories-v1.webp');background-color:#fff6df; }
+.progress-illustrated.categories { background-size:100% 104%;background-position:center bottom;background-image:url('assets/progress/categories-v1.webp');background-color:#fff6df; }
 .progress-illustrated::before {
   content:"";
   position:absolute;
@@ -373,14 +385,15 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
   border-radius:calc(12 * var(--progress-u));
   background:#fff9f0;
   box-shadow:0 3px 6px #6c67851c;
-  font-size:calc(11.2 * var(--progress-u));
+  font-size:calc(12 * var(--progress-u));
   color:#8c3f13;
-  line-height:1.1;
+  line-height:1.08;
 }
 .achievement>div span,.achievement>div strong { display:block; }
+.achievement.is-long-label>div { font-size:calc(11.2 * var(--progress-u)); }
 .achievement strong { font-weight:750; }
 .achievement small { display:none; }
-.achievement:last-of-type>div { background:#f6f5ff;color:#69628d; }
+.achievement.is-locked-style>div { background:#f6f5ff;color:#69628d; }
 .trophy-prev,.trophy-next {
   position:absolute;
   z-index:1;
@@ -410,7 +423,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
   width:100%;
   height:calc(95 * var(--progress-u));
   gap:0;
-  padding:calc(8 * var(--progress-u)) calc(47 * var(--progress-u)) calc(8 * var(--progress-u)) calc(156 * var(--progress-u));
+  padding:calc(8 * var(--progress-u)) calc(47 * var(--progress-u)) calc(8 * var(--progress-u)) calc(159 * var(--progress-u));
   border:calc(1.5 * var(--progress-u)) solid #fff;
   border-radius:calc(23 * var(--progress-u));
   background:linear-gradient(125deg,#ddd8ff,#eae5ff);
@@ -435,7 +448,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
   bottom:0;
   width:calc(156 * var(--progress-u));
   /* A flatter storybook stack retains the whole bulb and all three books. */
-  background:url('assets/progress/rules-books-v2.webp') center bottom / 100% 100% no-repeat;
+  background:url('assets/progress/rules-books-v3.webp') center bottom / 100% 100% no-repeat;
   pointer-events:none;
 }
 .progress-rule-copy { position:relative;z-index:2;min-width:0; }

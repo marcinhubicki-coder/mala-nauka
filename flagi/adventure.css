@@ -12,6 +12,10 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
  content:"";position:fixed;inset:0;pointer-events:none;
  z-index:-1;background:linear-gradient(transparent calc(100% - 100vw - 30px),#72c8f6 calc(100% - 100vw),transparent calc(100% - 100vw + 80px)),url('../assets/flags/adventure/landscape-retina-v1.webp') center bottom / 100% auto no-repeat,url('../assets/flags/adventure/sky-v1.svg') center top / cover no-repeat,#88d7f6;
 }
+body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"]))::after{
+ content:"";position:fixed;inset:0 0 auto;height:calc(100vw + 65px);z-index:-1;pointer-events:none;
+ background:linear-gradient(transparent calc(100vw - 80px),#72c8f6 calc(100vw + 65px)),url('../assets/flags/adventure/sky-retina-v1.webp') center top / 100% auto no-repeat;
+}
 #app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"]){padding:max(22px,calc(var(--app-safe-top) + 8px)) calc(18 * var(--flag-u)) max(38px,var(--app-safe-bottom))!important}
 #app[data-mode="flags"] .page-head h1,#app[data-mode="flags"] .wizard-intro h2,#app[data-mode="flags"] legend,#app[data-mode="flags"] .timer,#app[data-mode="flags"] .start-button,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name,#app[data-mode="flags"] .flag-adventure-country,#app[data-mode="flags"] .flag-adventure-capital-question{font-family:Flag Display,ui-rounded,sans-serif;font-weight:700;letter-spacing:-.5px}
 #app[data-mode="flags"][data-view="wizard"]{display:grid;grid-template-rows:48px 110px minmax(0,1fr);gap:16px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}

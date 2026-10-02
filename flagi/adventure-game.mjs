@@ -103,7 +103,7 @@ document.addEventListener('mala-nauka:flag-language-change',()=>{
     button.setAttribute('aria-label',text);
     button.innerHTML=`<span class="flag-answer-label" data-fit-text="${esc(text)}">${esc(text)}</span>`;
   });
-  requestAnimationFrame(fitAll);
+  fitAll();
 });
 new ResizeObserver(()=>requestAnimationFrame(fitAll)).observe(root);
 document.fonts.ready.then(fitAll);

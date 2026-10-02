@@ -50,10 +50,14 @@ najlepszy podział na maksymalnie dwa wiersze. Awaryjnie stosuje scaleX zamiast
 ucinania tekstu. Wymiary kontenera pozostają stałe. Ponowne obliczenie następuje
 po wczytaniu fontów, zmianie języka i zmianie wymiarów okna.
 
+Dopasowanie uwzględnia szerokość i wysokość. Tytuł mapy ma stałe 48 px,
+stolica jeden wiersz, a nazwy odpowiedzi nie mogą przekroczyć wysokości kafla.
+Przełączenie PL/EN dopasowuje tekst synchronicznie przed odmalowaniem ekranu.
+
 Docelowy viewport iPhone 13 Pro: 390 × 844 CSS px, DPR 3, czyli 1170 × 2532.
 Uwzględniamy górne i dolne safe area. Flagi, mapy, chmury, papier i niebo są SVG.
 Dolny krajobraz ma 1254 × 1254 px; wyświetlany przy szerokości 390 daje ponad
-3 px źródłowe na CSS px. Górę pełnego ekranu wypełnia skalowalne niebo SVG,
+3 px źródłowe na CSS px. Górę pełnego ekranu wypełnia osobna scena 1254 × 1254 px i skalowalne niebo SVG,
 a CSS wygasza połączenie obu warstw. Nie rozciągać małej grafiki portretowej
 na cały ekran Retina. Ilustracja misji ma 2172 × 724 px.
 
@@ -65,6 +69,7 @@ do WebP quality 94, bez ręcznego rysowania ani retuszu rasterowego.
 | Asset | Prompt / kierunek | Wymiary |
 |---|---|---|
 | `assets/flags/adventure/mission-v1.webp` | Transparent horizontal 3D storybook hero. Smiling curly-haired boy explorer with hat and map at far right, glossy globe/stars left, empty centre for HTML. No text, PL/EN button, badge or UI. | 2172 × 724 |
+| `assets/flags/adventure/sky-retina-v1.webp` | Square premium storybook mountain valley, detailed cumulus clouds, quiet turquoise sky, leaves framing top corners, small coral balloon upper right. Calm central area, no UI, country cues, buildings or text. | 1254 × 1254 |
 | `assets/flags/adventure/landscape-retina-v1.webp` | Square sunny 3D storybook explorer landscape. Quiet blue sky above softly blurred mountains, forest and distant lake. Explorer table at bottom with illustrated map without text, journal left, compass right. No countries, buildings, monuments, characters or UI. | 1254 × 1254 |
 | `assets/progress/rules-books-v2.webp` | Transparent glossy magenta/pink/blue stack of books, glowing golden lightbulb, stars and purple/green leaves. No labels, alphabet tiles, frame or UI. | 1254 × 1254 |
 

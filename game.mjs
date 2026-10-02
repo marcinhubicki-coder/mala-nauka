@@ -107,7 +107,8 @@ export class Session {
     if (this.recentAnswers.length > 12) this.recentAnswers.shift();
     this[correct ? 'correct' : 'wrong']++;
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
-    this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||Number(this.feedbackMs)||700) : 0;
+    const feedbackMs=Number(this.current?.feedbackMs)||Number(this.feedbackMs)||700;
+    this.feedbackRemaining = correct ? (this.mode==='flags'?Math.max(4000,feedbackMs):feedbackMs) : 0;
     return true;
   }
   // Reserve exactly the question that next() will consume; do not advance

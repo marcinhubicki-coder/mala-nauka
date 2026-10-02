@@ -203,3 +203,9 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .answers .answer{border-width:5px}
 #app[data-mode="flags"] .answers .answer:nth-child(2)::before{background:none;border:1px solid #bfa26a73;border-radius:50%;width:38px;height:38px;left:5px;bottom:6px;opacity:.7}
 #app[data-mode="flags"] .answers .answer:nth-child(2)::after{content:"✧";position:absolute;bottom:-1px;left:2px;width:48px;height:52px;line-height:52px;font-size:53px;font-family:serif;color:#b48c4770;z-index:-1}
+
+/* Loop 3: reference type scale and high-contrast, purely decorative marks. */
+#app[data-mode="flags"] .prompt{font-size:16.3px}
+#app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after,#app[data-mode="flags"] .feedback>p::before,#app[data-mode="flags"] .feedback>p::after{filter:drop-shadow(0 0 3px #fff8e7)}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::before{border:0;border-radius:0;left:4px;bottom:1px;width:45px;height:45px;opacity:.5;background:url('../assets/flags/adventure/answer-compass-v1.svg') center/contain no-repeat}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::after{content:none}

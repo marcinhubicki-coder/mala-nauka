@@ -33,3 +33,8 @@ test('flag confirmation survives pause and keeps the existing timing of other ga
  const other=new Session(()=>question('pl'),180,()=>time,()=>.4);other.mode='math';other.answer('pl');
  time+=700;other.tick();assert.equal(other.question,2);assert.equal(other.remaining,179300);
 });
+
+test('capital questions also leave the full four seconds to absorb the result',()=>{
+ const session=new Session(()=>({...question('pl'),kind:'flag-capital',feedbackMs:2000}),180,()=>0,()=>.4);
+ session.mode='flags';session.answer('pl');assert.equal(session.feedbackRemaining,4000);
+});

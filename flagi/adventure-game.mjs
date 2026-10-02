@@ -35,7 +35,7 @@ function fitAll(){
   if(host&&nextCountryId)void prepareFlag(records.get(nextCountryId),host).catch(()=>{});
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
     const button=node.closest('.answer'),style=getComputedStyle(button);
-    fit(node,{max:Math.min(23,root.clientWidth*.055),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
+    fit(node,{max:Math.min(23,root.clientWidth*.0525),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
   });
   root.querySelectorAll('.flag-adventure-name').forEach(node=>{
     const mapReview=node.closest('.flag-map-review');

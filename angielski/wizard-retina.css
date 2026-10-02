@@ -6,9 +6,6 @@ body:has(#app[data-view="wizard"][data-mode="english"]) {
   background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center bottom / cover no-repeat;
 }
 
-/* Keep the clean spelling background as the base. The generated London plate is
-   only exposed where it is artifact-free: along the extreme scenery edges and
-   below the CTA. This removes the inpaint seams/rectangles from the visible sky. */
 body:has(#app[data-view="wizard"][data-mode="english"])::before,
 body:has(#app[data-view="wizard"][data-mode="english"])::after {
   content:"";
@@ -16,49 +13,29 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   inset:0;
   pointer-events:none;
   z-index:0;
-  background:url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% auto no-repeat;
+  background:url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% 100% no-repeat;
 }
 
+/* Hard hand-off is hidden directly under the setup card. No mask blur = no cyan band. */
 body:has(#app[data-view="wizard"][data-mode="english"])::before {
-  /* Keep the London plate strictly below the CTA. The previous wide fade
-     reached behind the button/note and Safari rendered it as a cyan halo. */
-  -webkit-mask-image:linear-gradient(to top,
-    #000 0%,
-    #000 17.4%,
-    rgba(0,0,0,.96) 18.0%,
-    rgba(0,0,0,.36) 18.55%,
-    transparent 19.15%);
-  mask-image:linear-gradient(to top,
-    #000 0%,
-    #000 17.4%,
-    rgba(0,0,0,.96) 18.0%,
-    rgba(0,0,0,.36) 18.55%,
-    transparent 19.15%);
+  clip-path:inset(68% 0 0 0);
 }
 
+/* Preserve London landmarks at the extreme edges without feathering them into the base. */
 body:has(#app[data-view="wizard"][data-mode="english"])::after {
-  /* Edge scenery must not sit under the translucent setup card. */
   -webkit-mask-image:linear-gradient(to right,
     #000 0%,
-    #000 2.35%,
-    rgba(0,0,0,.82) 2.85%,
-    rgba(0,0,0,.28) 3.35%,
-    transparent 3.9%,
-    transparent 96.1%,
-    rgba(0,0,0,.28) 96.65%,
-    rgba(0,0,0,.82) 97.15%,
-    #000 97.65%,
+    #000 3.45%,
+    transparent 3.45%,
+    transparent 96.55%,
+    #000 96.55%,
     #000 100%);
   mask-image:linear-gradient(to right,
     #000 0%,
-    #000 2.35%,
-    rgba(0,0,0,.82) 2.85%,
-    rgba(0,0,0,.28) 3.35%,
-    transparent 3.9%,
-    transparent 96.1%,
-    rgba(0,0,0,.28) 96.65%,
-    rgba(0,0,0,.82) 97.15%,
-    #000 97.65%,
+    #000 3.45%,
+    transparent 3.45%,
+    transparent 96.55%,
+    #000 96.55%,
     #000 100%);
 }
 
@@ -234,7 +211,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   background:linear-gradient(130deg,rgba(255,255,255,.96),rgba(255,255,255,.91) 56%,rgba(249,253,255,.96));
   box-shadow:
     inset 0 0 calc(13 * var(--english-u)) rgba(205,233,255,.55),
-    0 calc(7 * var(--english-u)) calc(15 * var(--english-u)) rgba(38,124,165,.10);
+    0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(34,48,72,.075);
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-v2-section + .english-v2-section {
@@ -358,14 +335,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 }
 
 #app[data-mode="english"][data-view="wizard"] .wizard-note::before {
-  content:"";
-  position:absolute;
-  z-index:-1;
-  inset:calc(-2 * var(--english-u)) calc(-7 * var(--english-u));
-  border-radius:999px;
-  background:radial-gradient(ellipse,rgba(255,255,255,.96) 20%,rgba(255,255,255,.73) 60%,rgba(255,255,255,0) 100%);
-  filter:blur(calc(5 * var(--english-u)));
-  pointer-events:none;
+  content:none;
 }
 
 #app[data-mode="english"][data-view="wizard"] .start-button {

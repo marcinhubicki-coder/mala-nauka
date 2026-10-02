@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags } from './flag-on-pole.mjs?v=3';
+import { flagOnPole, paintFlags } from './flag-on-pole.mjs?v=4';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -26,7 +26,7 @@ function fitAll(){
     const host=cloth.closest('.flag-on-pole'),[width,height=1]=getComputedStyle(cloth).aspectRatio.split('/').map(Number);
     // Constrain both axes through width; max-height alone distorts square flags.
     const reference=host.closest('.flag-reference-scene,.correct');
-    cloth.style.width=Math.min(host.clientWidth*(reference?.51:.71),host.clientHeight*.67*width/height)+'px';
+    cloth.style.width=Math.min(host.clientWidth*(reference?.49:.71),host.clientHeight*.67*width/height)+'px';
   });
   paintFlags(root);
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
@@ -35,7 +35,7 @@ function fitAll(){
   });
   root.querySelectorAll('.flag-adventure-name').forEach(node=>{
     const mapReview=node.closest('.flag-map-review');
-    fit(node,{max:root.clientWidth*.095,min:11,lines:2,height:node.clientHeight||62});
+    fit(node,{max:root.clientWidth*(node.closest('.flag-reference-scene,.correct')?.108:.095),min:11,lines:2,height:node.clientHeight||62});
   });
   root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10,lines:1}));
   root.querySelectorAll('.flag-adventure-country,.flag-adventure-capital-question').forEach(node=>fit(node,{max:36,min:17}));
@@ -62,7 +62,7 @@ function enhance(){
   card.dataset.adventureReady='true';
   const variant=card.dataset.flagVariant||'flags',feedback=card.matches('.correct,.wrong'),wrong=card.classList.contains('wrong');
   const reference=window.__MALA_NAUKA_FLAGS_PREVIEW__&&new URLSearchParams(location.search).get('scene')==='material';
-  if(reference)card.classList.add('flag-reference-scene');
+  if(reference){card.classList.add('flag-reference-scene');root.querySelector('.time-block small').textContent='Czas zatrzymany';}
   root.dataset.flagGameVariant=variant;
   const content=card.querySelector('.question-content');
   if(variant==='countries'&&!feedback){
@@ -96,7 +96,7 @@ function enhance(){
   requestAnimationFrame(fitAll);
 }
 function pin(){return '<svg viewBox="0 0 24 28" aria-hidden="true"><path fill="currentColor" d="M12 1C5.9 1 2 5.4 2 10.2c0 6.2 10 16.6 10 16.6s10-10.4 10-16.6C22 5.4 18.1 1 12 1Z"/><circle cx="12" cy="10" r="3.6" fill="#fff8df"/></svg>';}
-function compass(){return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m50 5 7 38 38 7-38 7-7 38-7-38-38-7 38-7Z" fill="currentColor" opacity=".65"/><path d="m50 5 0 45 7-7ZM95 50H50l7 7ZM50 95V50l-7 7ZM5 50h45l-7-7Z" fill="#fff9dc"/><circle cx="50" cy="50" r="4" fill="currentColor"/></svg>';}
+function compass(){return '<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor"><circle cx="50" cy="50" r="31" stroke-width="1"/><circle cx="50" cy="50" r="26" stroke-width=".5"/><path d="M50 12v76M12 50h76" stroke-width=".7"/></g><g fill="currentColor"><path d="m50 14 6 30 30 6-30 6-6 30-6-30-30-6 30-6Z"/><path d="m27 27 19 16 27-16-16 19 16 27-19-16-27 16 16-19Z" opacity=".6"/></g><g fill="#fff2d0"><path d="m50 14 0 36 6-6ZM86 50H50l6 6ZM50 86V50l-6 6ZM14 50h36l-6-6Z"/><circle cx="50" cy="50" r="2"/></g><g fill="currentColor" font-family="sans-serif" font-size="11" text-anchor="middle"><text x="50" y="10">N</text><text x="50" y="99">S</text><text x="5" y="54">W</text><text x="95" y="54">E</text></g></svg>';}
 function schedule(){if(queued)return;queued=true;queueMicrotask(()=>{queued=false;enhance();});}
 new MutationObserver(schedule).observe(root,{childList:true});
 document.addEventListener('mala-nauka:flag-language-change',()=>{

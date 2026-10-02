@@ -1,4 +1,4 @@
-import { renderFlagCloth } from './flag-cloth.mjs?v=1';
+import { renderFlagCloth } from './flag-cloth.mjs?v=2';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // SVG is the only country-specific input. Source alpha preserves Nepal's shape.
 export function flagOnPole(record,{label='Flaga do rozpoznania'}={}){

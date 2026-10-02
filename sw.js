@@ -1,12 +1,12 @@
-const CACHE='mala-nauka-v135-flags-cloth-20261002';
+const CACHE='mala-nauka-v136-flags-cloth-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/adventure.css?v=6",
-  "./flagi/adventure-game.mjs?v=6",
+  "./flagi/adventure.css?v=7",
+  "./flagi/adventure-game.mjs?v=7",
   "./flagi/text-fit.mjs?v=2",
-  "./flagi/flag-on-pole.mjs?v=3",
-  "./flagi/flag-cloth.mjs?v=1",
+  "./flagi/flag-on-pole.mjs?v=4",
+  "./flagi/flag-cloth.mjs?v=2",
   "./assets/flags/adventure/cloud-vignette-v2.webp",
   "./flagi/preview-frame.html",
   "./flagi/preview-fixture.mjs?v=1",

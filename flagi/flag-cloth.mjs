@@ -1,21 +1,21 @@
 const TAU=Math.PI*2;
-export const CLOTH={columns:64,rows:20,dpr:3,drape:.145,fold:.034,contrast:.18,grain:.018};
+export const CLOTH={columns:64,rows:20,dpr:3,drape:.28,fold:.052,contrast:.27,grain:.022};
 const images=new Map(),renders=new WeakMap();
 
 // The printed design and lighting share one continuous surface. UV stays
 // anchored along the hoist; no country-specific folds or replacement artwork.
 export function clothPoint(u,v,settings=CLOTH){
-  const wave=Math.sin(TAU*(1.65*u-.12*v));
+  const wave=Math.sin(TAU*(1.6*u-.25*v));
   return {
     x:.012+.976*u+.012*u*Math.sin(Math.PI*v)*wave,
-    y:.03+.78*v+settings.drape*u*(1-.42*v)+settings.fold*u*Math.sin(TAU*(1.4*u-.14*v))*(.35+.65*Math.sin(Math.PI*v))
+    y:(.025+.90*v+settings.drape*u*(1-.5*v)+settings.fold*u*Math.sin(TAU*(1.6*u-.25*v))*(.35+.65*Math.sin(Math.PI*v)))/1.15
   };
 }
 export function clothLight(u,v,settings=CLOTH){
-  const broad=Math.sin(TAU*(1.65*u-.12*v)+.7);
+  const broad=Math.sin(TAU*(1.6*u-.25*v)+.7);
   const crease=Math.sin(TAU*(3.2*u-.48*v)+.3)*(.25+.75*u);
   const gathering=Math.sin(TAU*(5*u+.65*v))*Math.exp(-u*5);
-  return .9+settings.contrast*(.7*broad+.23*crease+.17*gathering);
+  return .92+settings.contrast*(.7*broad+.23*crease+.17*gathering);
 }
 function sourceImage(url){
   if(!images.has(url)){
@@ -33,7 +33,7 @@ function material(image,width,height){
     const i=(y*width+x)*4;if(!data[i+3])continue;
     const u=x/(width-1),v=y/(height-1);seed=(Math.imul(seed,1664525)+1013904223)>>>0;
     const grain=(seed/4294967296-.5)*CLOTH.grain;
-    const thread=(x%3===0?.008:0)+(y%3===0?-.007:0);
+    const thread=(x%3===0?.004:0)+(y%3===0?-.003:0);
     const edge=Math.min(u,1-u,v,1-v),hem=edge<.009?-.035:edge<.015?.018:0;
     const light=clothLight(u,v)+grain+thread+hem;
     for(let channel=0;channel<3;channel++){

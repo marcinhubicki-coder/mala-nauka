@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=9';
+import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=10';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));

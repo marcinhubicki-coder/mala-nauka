@@ -67,7 +67,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .game-meta strong>span{display:none}
 #app[data-mode="flags"] .flag-language-toggle.in-game{width:36px;height:36px;min-height:36px;border:2px solid #fff!important;border-radius:50%;background:#fffbea!important;font:900 15px Flag Body;color:#126649!important;box-shadow:0 3px 6px #38677320!important}
 #app[data-mode="flags"] .question-card,#app[data-mode="flags"] .question-card:is(.correct,.wrong){
- position:relative;isolation:isolate;min-height:0!important;height:100%!important;max-height:none!important;padding:13px;border:6px solid #fff7e5;border-radius:27px;background:#fff1d0 url('../assets/flags/adventure/paper-v1.svg') center / 100% 100%;box-shadow:inset 0 1px 6px #c9a15c40,0 10px 16px #77593538!important;overflow:hidden;transition:box-shadow .25s;
+ position:relative;isolation:isolate;min-height:0!important;height:100%!important;max-height:none!important;padding:13px;border:6px solid #fff7e5;border-radius:27px;background:#fff1d0 url('../assets/flags/adventure/paper-v2-pwa.svg') center / 100% 100%;box-shadow:inset 0 1px 6px #c9a15c40,0 10px 16px #77593538!important;overflow:hidden;transition:box-shadow .25s;
 }
 #app[data-mode="flags"] .question-card .badges{position:absolute;left:13px;top:9px;right:13px;justify-content:space-between;z-index:2;gap:4px;pointer-events:none}
 #app[data-mode="flags"] .question-card .badge{font:800 9px Flag Body;padding:3px 7px;line-height:1;background:#ffffff80;color:#7d805d;border:0;border-radius:12px}
@@ -114,12 +114,12 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .flag-capital-pin{width:43px;height:53px;color:#e17b36;filter:drop-shadow(0 3px 3px #96642a26)}
 #app[data-mode="flags"] .prompt{align-self:center;font:700 16px/1.2 Flag Display;color:#111341;margin:0;text-align:center;text-shadow:0 1px 6px #fff,0 2px 14px #fff}
 #app[data-mode="flags"] .answers,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{height:152px;min-height:152px;max-height:152px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,70px);gap:12px;align-content:start;margin:0}
-#app[data-mode="flags"] .answers .answer,#app[data-mode="flags"] .answers .answer.flag-option-answer,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer{position:relative;isolation:isolate;height:70px;min-height:70px;max-height:70px;padding:8px 10px;border:4px solid #fff8e8;border-radius:22px;background:#fff1d0 url('../assets/flags/adventure/paper-v1.svg') center / cover;box-shadow:inset 0 1px 4px #c49d5740,0 6px 9px #72593f32;color:#111341;opacity:1;overflow:hidden;transition:background-color .2s,border-color .2s,box-shadow .2s;animation:none;transform:none}
+#app[data-mode="flags"] .answers .answer,#app[data-mode="flags"] .answers .answer.flag-option-answer,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer{position:relative;isolation:isolate;height:70px;min-height:70px;max-height:70px;padding:8px 10px;border:4px solid #fff8e8;border-radius:22px;background:#fff1d0 url('../assets/flags/adventure/paper-v2-pwa.svg') center / cover;box-shadow:inset 0 1px 4px #c49d5740,0 6px 9px #72593f32;color:#111341;opacity:1;overflow:hidden;transition:background-color .2s,border-color .2s,box-shadow .2s;animation:none;transform:none}
 #app[data-mode="flags"] .answers .answer:active{box-shadow:inset 0 2px 7px #9c7c4959,0 3px 6px #72593f22}
 #app[data-mode="flags"] .flag-answer-label{display:block;width:100%;max-width:100%;text-align:center;line-height:1.13;font-size:23px;text-shadow:0 1px 1px #fff9;overflow:visible}
 #app[data-mode="flags"] .flag-answer-label>span{display:block;white-space:nowrap;transform:scaleX(var(--fit-scale,1));transform-origin:center}
-#app[data-mode="flags"] .answers .answer.correct{background-color:#bcefc4;background-image:linear-gradient(135deg,#efffeedd,#a9edb7db),url('../assets/flags/adventure/paper-v1.svg');border-color:#159b55;color:#105433;box-shadow:inset 0 2px 5px #fff9,0 6px 9px #16835030;animation:flag-answer-glow .55s ease-out}
-#app[data-mode="flags"] .answers .answer.wrong{background-color:#ffd6e0;background-image:linear-gradient(135deg,#ffedf2d9,#ffd0ded9),url('../assets/flags/adventure/paper-v1.svg');border-color:#f35a85;color:#8d2947;box-shadow:inset 0 2px 5px #fff9,0 6px 9px #a44c5d28}
+#app[data-mode="flags"] .answers .answer.correct{background-color:#bcefc4;background-image:linear-gradient(135deg,#efffeedd,#a9edb7db),url('../assets/flags/adventure/paper-v2-pwa.svg');border-color:#159b55;color:#105433;box-shadow:inset 0 2px 5px #fff9,0 6px 9px #16835030;animation:flag-answer-glow .55s ease-out}
+#app[data-mode="flags"] .answers .answer.wrong{background-color:#ffd6e0;background-image:linear-gradient(135deg,#ffedf2d9,#ffd0ded9),url('../assets/flags/adventure/paper-v2-pwa.svg');border-color:#f35a85;color:#8d2947;box-shadow:inset 0 2px 5px #fff9,0 6px 9px #a44c5d28}
 #app[data-mode="flags"] .answers .flag-option-image{height:48px;width:min(90%,100px);max-height:48px;object-fit:contain;filter:drop-shadow(0 2px 3px #715b3430)}
 @keyframes flag-answer-glow{0%{box-shadow:0 0 0 0 #75de9c99}50%{box-shadow:0 0 0 5px #75de9c44}100%{box-shadow:0 0 0 9px #75de9c00}}
 #app[data-mode="flags"] .feedback{height:86px;min-height:86px;max-height:86px;gap:7px;justify-content:flex-start;align-items:center;margin:0;padding:0;align-self:stretch}
@@ -185,7 +185,7 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after,#app[data-mode="flags"] .feedback>p::before,#app[data-mode="flags"] .feedback>p::after{content:"";position:absolute;top:50%;width:14px;height:25px;transform:translateY(-50%);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 28'%3E%3Cpath d='m5 2 5 4M2 14h7m-4 12 5-4' fill='none' stroke='%23188758' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
 #app[data-mode="flags"] .prompt::before{left:-25px}#app[data-mode="flags"] .prompt::after{right:-25px;transform:translateY(-50%) scaleX(-1)}
 #app[data-mode="flags"] .answers .answer{background-image:url('../assets/flags/adventure/answer-paper-v2.svg');background-size:100% 100%;border-color:#fff8e7;box-shadow:inset 0 0 4px #d8b16a42,0 7px 8px #71573546}
-#app[data-mode="flags"] .answers .answer:nth-child(2)::before{content:"";position:absolute;left:6px;bottom:6px;width:39px;height:39px;background:url('../assets/flags/adventure/paper-v1.svg') left center/135px 97px;opacity:.5;z-index:-1}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::before{content:"";position:absolute;left:6px;bottom:6px;width:39px;height:39px;background:url('../assets/flags/adventure/paper-v2-pwa.svg') left center/135px 97px;opacity:.5;z-index:-1}
 #app[data-mode="flags"] .answers .answer:nth-child(3){background-position:left bottom}
 #app[data-mode="flags"] .answers .answer:nth-child(4)::after{content:"";position:absolute;right:4px;bottom:9px;width:29px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cpath d='M0 5q5-5 10 0t10 0t10 0t10 0M0 15q5-5 10 0t10 0t10 0t10 0M0 25q5-5 10 0t10 0t10 0t10 0' stroke='%238fbdc0' stroke-width='1.6' opacity='.6' fill='none'/%3E%3C/svg%3E") center/contain no-repeat;z-index:-1}
 #app[data-mode="flags"] .flag-answer-label{font-weight:800}
@@ -217,14 +217,14 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 /* SVG scene lifecycle: one rig, one masked geography layer, fixed outer rows. */
 #app[data-mode="flags"] .flag-on-pole{background:none;opacity:1}
 .flag-scene-sky{position:absolute;inset:0;background:url('../assets/flags/adventure/cloud-vignette-v2.webp') center/100% 100% no-repeat;-webkit-mask-image:radial-gradient(ellipse at 62% 48%,#000 42%,#000d 65%,transparent 92%);mask-image:radial-gradient(ellipse at 62% 48%,#000 42%,#000d 65%,transparent 92%);transition:opacity 1.05s ease}
-.flag-rig{position:absolute;inset:0;z-index:3;transform-origin:20% 12%;transform:translate(0,0) scale(1);transition:transform 1.05s cubic-bezier(.22,.7,.18,1)}
+.flag-rig{position:absolute;inset:0;z-index:3}
 #app[data-mode="flags"] .question-card:is(.correct,.wrong,.flag-reference-scene) .flag-pole{left:20%;top:12%;height:78%}
 #app[data-mode="flags"] .question-card:is(.correct,.wrong,.flag-reference-scene) .flag-cloth{left:calc(20% + 3px);top:12%}
 #app[data-mode="flags"] .flag-reveal-scene .badges{display:none}
 #app[data-mode="flags"] .flag-reveal-mask{position:absolute;inset:-8px;z-index:1;clip-path:circle(0% at 55% 48%);transition:clip-path 1.1s cubic-bezier(.2,.65,.2,1);pointer-events:none}
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-reveal-mask{clip-path:circle(90% at 55% 48%)}
-#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-rig{transform:translate(32%,3%) scale(.81)}
-#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-scene-sky{opacity:.85}
+#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-camera{transform:translate(32%,3%) scale(.81)}
+#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-scene-sky{opacity:1}
 #app[data-mode="flags"] .flag-reveal-scene .flag-adventure-details{top:19px;left:8px;right:auto;width:49%;z-index:4;opacity:0;transform:translateY(9px);transition:opacity .5s .36s,transform .65s .36s}
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-adventure-details{opacity:1;transform:none}
 #app[data-mode="flags"] .flag-reveal-scene .flag-adventure-name{height:62px;display:flex;flex-direction:column;justify-content:center;text-align:left}
@@ -234,18 +234,30 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .flag-reveal-scene .flag-adventure-map .country{fill:#a6c78b;stroke:#fffcdf;stroke-width:1;opacity:.93}
 #app[data-mode="flags"] .flag-reveal-scene .flag-adventure-map .country.is-highlighted{fill:#068744;stroke:#fff8db;opacity:1;filter:drop-shadow(0 1px 1px #346b2933)}
 #app[data-mode="flags"] .flag-reveal-scene .flag-scene-compass{left:1%;bottom:3%;width:48px;height:48px;opacity:.48;z-index:2}
-#app[data-mode="flags"] .flag-reference-scene .flag-rig,#app[data-mode="flags"] .flag-reference-scene .flag-reveal-mask,#app[data-mode="flags"] .flag-reference-scene .flag-adventure-details{transition:none}
+#app[data-mode="flags"] .flag-reference-scene .flag-camera,#app[data-mode="flags"] .flag-reference-scene .flag-reveal-mask,#app[data-mode="flags"] .flag-reference-scene .flag-adventure-details{transition:none}
 #app[data-mode="flags"] .prompt{max-width:100%;background:none;box-shadow:none;border-radius:0;text-shadow:0 1px 3px #fff9,0 0 8px #fff8;font-weight:800}
 #app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after{content:none}
 #app[data-mode="flags"] .answers .answer{border-width:5px;border-color:#fff8e6;border-radius:21px;background-color:#fff3db;background-size:100% 100%;box-shadow:inset 0 1px 3px #d4ad7040,0 5px 8px #60462033}
-#app[data-mode="flags"] .answers .answer:nth-child(1){background-image:url('../assets/flags/adventure/answer-paper-v3-1.svg')}
-#app[data-mode="flags"] .answers .answer:nth-child(2){background-image:url('../assets/flags/adventure/answer-paper-v3-2.svg')}
-#app[data-mode="flags"] .answers .answer:nth-child(3){background-image:url('../assets/flags/adventure/answer-paper-v3-3.svg')}
-#app[data-mode="flags"] .answers .answer:nth-child(4){background-image:url('../assets/flags/adventure/answer-paper-v3-4.svg')}
+#app[data-mode="flags"] .answers .answer:nth-child(1){background-image:url('../assets/flags/adventure/answer-paper-v4-1.svg')}
+#app[data-mode="flags"] .answers .answer:nth-child(2){background-image:url('../assets/flags/adventure/answer-paper-v4-2.svg')}
+#app[data-mode="flags"] .answers .answer:nth-child(3){background-image:url('../assets/flags/adventure/answer-paper-v4-3.svg')}
+#app[data-mode="flags"] .answers .answer:nth-child(4){background-image:url('../assets/flags/adventure/answer-paper-v4-4.svg')}
 #app[data-mode="flags"] .answers .answer::before,#app[data-mode="flags"] .answers .answer::after{content:none!important}
-#app[data-mode="flags"] .answers .answer.correct{background-image:linear-gradient(130deg,#edffebeb,#b5e9becf),url('../assets/flags/adventure/answer-paper-v3-1.svg');border-color:#23975a}
-#app[data-mode="flags"] .answers .answer.wrong{background-image:linear-gradient(130deg,#fff0f4e6,#f9cbd8cf),url('../assets/flags/adventure/answer-paper-v3-1.svg');border-color:#e66b8b}
-@media(prefers-reduced-motion:reduce){#app[data-mode="flags"] .flag-rig,#app[data-mode="flags"] .flag-scene-sky,#app[data-mode="flags"] .flag-reveal-mask,#app[data-mode="flags"] .flag-adventure-details{transition:none!important;animation:none!important}}
+#app[data-mode="flags"] .answers .answer.correct{background-image:linear-gradient(130deg,#edffebeb,#b5e9becf),url('../assets/flags/adventure/answer-paper-v4-1.svg');border-color:#23975a}
+#app[data-mode="flags"] .answers .answer.wrong{background-image:linear-gradient(130deg,#fff0f4e6,#f9cbd8cf),url('../assets/flags/adventure/answer-paper-v4-1.svg');border-color:#e66b8b}
+@media(prefers-reduced-motion:reduce){#app[data-mode="flags"] .flag-camera,#app[data-mode="flags"] .flag-scene-sky,#app[data-mode="flags"] .flag-reveal-mask,#app[data-mode="flags"] .flag-adventure-details{transition:none!important;animation:none!important}}
 
 /* Reveal loop 2: parchment fades into the retained mountain vignette. */
-#app[data-mode="flags"] .flag-reveal-mask::before{content:"";position:absolute;inset:0;background:url('../assets/flags/adventure/reveal-paper-v1.svg') center/100% 100%;-webkit-mask-image:linear-gradient(90deg,#000 35%,#000c 53%,transparent 83%);mask-image:linear-gradient(90deg,#000 35%,#000c 53%,transparent 83%)}
+#app[data-mode="flags"] .flag-reveal-mask::before{content:"";position:absolute;inset:0;background:url('../assets/flags/adventure/reveal-paper-v2-pwa.svg') center/100% 100%;-webkit-mask-image:linear-gradient(90deg,#000 35%,#000c 53%,transparent 83%);mask-image:linear-gradient(90deg,#000 35%,#000c 53%,transparent 83%)}
+
+/* PWA repair: landscape, cloth, pole and clouds share one camera transform. */
+.flag-camera{position:absolute;inset:0;z-index:3;transform-origin:20% 12%;transform:translate(0,0) scale(1);transition:transform 1.05s cubic-bezier(.22,.7,.18,1)}
+#app[data-mode="flags"] .question-card{background-color:#fff2d8;background-image:url('../assets/flags/adventure/paper-v2-pwa.svg'),radial-gradient(ellipse at 40% 20%,#fff9e7,#fbeac5);background-size:100% 100%}
+#app[data-mode="flags"] .answers .answer{background-color:#fff4df}
+#app[data-mode="flags"] .answers .answer:nth-child(1){background-image:url('../assets/flags/adventure/answer-paper-v4-1.svg'),radial-gradient(ellipse at 40% 25%,#fff9eb,#fceecf)}
+#app[data-mode="flags"] .answers .answer:nth-child(2){background-image:url('../assets/flags/adventure/answer-paper-v4-2.svg'),radial-gradient(ellipse at 40% 25%,#fff9eb,#fceecf)}
+#app[data-mode="flags"] .answers .answer:nth-child(3){background-image:url('../assets/flags/adventure/answer-paper-v4-3.svg'),radial-gradient(ellipse at 40% 25%,#fff9eb,#fceecf)}
+#app[data-mode="flags"] .answers .answer:nth-child(4){background-image:url('../assets/flags/adventure/answer-paper-v4-4.svg'),radial-gradient(ellipse at 40% 25%,#fff9eb,#fceecf)}
+#app[data-mode="flags"] .answers .answer.correct{background-color:#c5efcd;background-image:url('../assets/flags/adventure/answer-paper-v4-1.svg'),linear-gradient(130deg,#edffeb,#b5e9be)}
+#app[data-mode="flags"] .answers .answer.wrong{background-color:#f9d7e1;background-image:url('../assets/flags/adventure/answer-paper-v4-1.svg'),linear-gradient(130deg,#fff0f4,#f9cbd8)}
+#app[data-mode="flags"] .flag-reveal-mask::before{background-color:#fff2d8}

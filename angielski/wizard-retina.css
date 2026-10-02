@@ -41,7 +41,13 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 #app[data-mode="english"][data-view="wizard"]::-webkit-scrollbar { display:none; }
 
 #app[data-mode="english"][data-view="wizard"] > .page-head,
-#app[data-mode="english"][data-view="wizard"] > .wizard-intro,
+#app[data-mode="english"][data-view="wizard"] > .wizard-intro {
+  width:calc(352 * var(--english-u));
+  max-width:calc(100% - 38px);
+  margin-left:auto;
+  margin-right:auto;
+}
+
 #app[data-mode="english"][data-view="wizard"] > .setup-form {
   width:calc(362 * var(--english-u));
   max-width:calc(100% - 28px);
@@ -50,11 +56,11 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head {
-  height:calc(43 * var(--english-u));
-  gap:calc(13 * var(--english-u));
-  margin-top:max(calc(47 * var(--english-u)),var(--english-safe-top));
-  margin-bottom:calc(21 * var(--english-u));
-  padding-left:calc(6 * var(--english-u));
+  height:calc(36 * var(--english-u));
+  gap:calc(10 * var(--english-u));
+  margin-top:max(calc(44 * var(--english-u)),var(--english-safe-top));
+  margin-bottom:calc(32 * var(--english-u));
+  padding-left:calc(20 * var(--english-u));
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head h1 {
@@ -67,15 +73,15 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head .icon {
-  width:calc(43 * var(--english-u));
-  height:calc(43 * var(--english-u));
-  min-width:38px;
-  min-height:38px;
+  width:calc(36 * var(--english-u));
+  height:calc(36 * var(--english-u));
+  min-width:34px;
+  min-height:34px;
   border:1px solid rgba(255,255,255,.9);
-  border-radius:calc(16 * var(--english-u));
+  border-radius:calc(14 * var(--english-u));
   background:linear-gradient(140deg,#fff,#f8fcff);
   color:#09043f;
-  font-size:calc(30 * var(--english-u));
+  font-size:calc(26 * var(--english-u));
   box-shadow:0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(38,114,174,.10);
 }
 
@@ -84,7 +90,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
   isolation:isolate;
   height:calc(94 * var(--english-u));
   margin-top:0;
-  margin-bottom:calc(17 * var(--english-u));
+  margin-bottom:calc(22 * var(--english-u));
   padding:0;
   overflow:visible;
   border:0;
@@ -178,6 +184,9 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 }
 
 #app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2 {
+  width:auto;
+  margin-left:calc(4 * var(--english-u));
+  margin-right:calc(4 * var(--english-u));
   border:calc(2 * var(--english-u)) solid rgba(255,255,255,.93);
   border-radius:calc(27 * var(--english-u));
   padding:calc(13 * var(--english-u)) calc(18 * var(--english-u)) calc(20 * var(--english-u));
@@ -190,7 +199,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-v2-section + .english-v2-section {
-  margin-top:calc(18 * var(--english-u));
+  margin-top:calc(15 * var(--english-u));
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-v2-section legend {
@@ -300,7 +309,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
   isolation:isolate;
   align-self:center;
   max-width:100%;
-  margin:calc(15 * var(--english-u)) auto calc(14 * var(--english-u));
+  margin:calc(15 * var(--english-u)) auto calc(10 * var(--english-u));
   padding:calc(5 * var(--english-u)) calc(10 * var(--english-u));
   color:#3c4c8b;
   font-size:calc(12 * var(--english-u));

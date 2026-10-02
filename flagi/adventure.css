@@ -223,7 +223,7 @@ body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
 #app[data-mode="flags"] .flag-reveal-scene .badges{display:none}
 #app[data-mode="flags"] .flag-reveal-mask{position:absolute;inset:-8px;z-index:1;opacity:0;transform:scale(.96);transform-origin:55% 48%;transition:opacity .44s ease,transform .52s cubic-bezier(.2,.8,.2,1);pointer-events:none;-webkit-mask-image:radial-gradient(ellipse at 55% 48%,#000 70%,transparent 100%);mask-image:radial-gradient(ellipse at 55% 48%,#000 70%,transparent 100%)}
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-reveal-mask{opacity:1;transform:scale(1)}
-#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-camera{transform:translate(32%,3%) scale(.81)}
+#app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-camera{transform:translate(30%,1%) scale(.81)}
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-scene-sky{opacity:1}
 #app[data-mode="flags"] .flag-reveal-scene .flag-adventure-details{top:13px;left:8px;right:auto;width:49%;z-index:4;opacity:0;transform:translateY(4px);transition:opacity .3s .18s,transform .34s .18s}
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-adventure-details{opacity:1;transform:none}

@@ -1,13 +1,13 @@
 /* Progress dashboard: 390 × 844 CSS px, iPhone 13 Pro.
    All artwork, slots and arrow centers use the same phone-width unit. */
 html:has(#app[data-view="history"]),
-body:has(#app[data-view="history"]) { background:#dff4ff; }
+body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/hero-v2.webp') center top / min(100vw,480px) auto no-repeat; }
 #app[data-view="history"] {
   --progress-u:min(calc(100vw / 390),calc(480px / 390));
   --progress-safe-top:max(calc(24 * var(--progress-u)),var(--app-safe-top));
-  --progress-hero-height:calc(286 * var(--progress-u) + var(--progress-safe-top));
+  --progress-hero-height:calc(286.5 * var(--progress-u) + var(--progress-safe-top));
   --progress-tile-height:calc(142 * var(--progress-u));
-  --progress-trophy-size:calc(76 * var(--progress-u));
+  --progress-trophy-size:calc(82 * var(--progress-u));
   display:block;
   max-width:none;
   padding:0!important;
@@ -31,8 +31,8 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   position:relative;
   isolation:isolate;
   height:var(--progress-hero-height);
-  padding:var(--progress-safe-top) calc(18 * var(--progress-u)) 0;
-  background:#b4eaff url('assets/progress/hero-v1.webp') center calc(100% + 20 * var(--progress-u)) / 100% auto no-repeat;
+  padding:calc(var(--progress-safe-top) - 5 * var(--progress-u)) calc(17 * var(--progress-u)) 0;
+  background:#b4eaff url('assets/progress/hero-v2.webp') center calc(100% + 13 * var(--progress-u)) / 100% auto no-repeat;
 }
 .progress-hero::after {
   content:"";
@@ -51,15 +51,15 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   z-index:2;
   display:flex;
   align-items:center;
-  gap:calc(10 * var(--progress-u));
+  gap:calc(8.5 * var(--progress-u));
   height:calc(38 * var(--progress-u));
   margin:0;
 }
 .progress-header h1 {
   margin:0;
   color:#100944;
-  font-family:ResultBody,"MN Soft",sans-serif;
-  font-size:calc(25 * var(--progress-u));
+  font-family:"Home Rounded",ResultBody,sans-serif;
+  font-size:calc(26 * var(--progress-u));
   font-weight:800;
   line-height:1.1;
   letter-spacing:calc(-.6 * var(--progress-u));
@@ -69,8 +69,8 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   display:grid;
   place-items:center;
   flex:none;
-  width:calc(39 * var(--progress-u));
-  height:calc(39 * var(--progress-u));
+  width:calc(38 * var(--progress-u));
+  height:calc(38 * var(--progress-u));
   min-width:36px;
   min-height:36px;
   padding:0;
@@ -134,8 +134,8 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .progress-mode.is-active::after { right:12%; }
 .progress-mode-glyph {
   display:block;
-  width:calc(34 * var(--progress-u));
-  height:calc(34 * var(--progress-u));
+  width:calc(39 * var(--progress-u));
+  height:calc(39 * var(--progress-u));
   border-radius:calc(7 * var(--progress-u));
   overflow:hidden;
 }
@@ -156,7 +156,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   isolation:isolate;
   z-index:1;
   right:calc(10 * var(--progress-u));
-  top:calc(130 * var(--progress-u) + var(--progress-safe-top));
+  top:calc(122 * var(--progress-u) + var(--progress-safe-top));
   width:calc(178 * var(--progress-u));
   text-align:center;
   transform:rotate(-5deg);
@@ -173,18 +173,19 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .progress-hero-copy h2 {
   margin:0;
   color:#100944;
-  font-size:calc(23 * var(--progress-u));
+  font-size:calc(24 * var(--progress-u));
   font-weight:850;
-  line-height:1.08;
+  line-height:1;
   letter-spacing:calc(-.55 * var(--progress-u));
 }
 .progress-hero-copy h2 span {
   color:#ed087f;
-  font-size:calc(25 * var(--progress-u));
+  font-size:calc(27.5 * var(--progress-u));
 }
 .progress-hero-copy p {
-  margin:calc(8 * var(--progress-u)) 0 0;
-  font-size:calc(12.5 * var(--progress-u));
+  margin:calc(2 * var(--progress-u)) 0 0;
+  font-family:"Home Rounded",ResultBody,sans-serif;
+  font-size:calc(13 * var(--progress-u));
   font-weight:550;
   line-height:1.2;
   color:#100944;
@@ -193,14 +194,14 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .progress-content {
   position:relative;
   z-index:1;
-  padding:0 calc(14 * var(--progress-u));
+  padding:0 calc(13 * var(--progress-u));
   margin-top:calc(-6 * var(--progress-u));
 }
 .progress-stats {
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:calc(6 * var(--progress-u));
-  height:calc(64 * var(--progress-u));
+  grid-template-columns:1.08fr 1fr 1.08fr;
+  gap:calc(4.5 * var(--progress-u));
+  height:calc(65 * var(--progress-u));
   margin-bottom:calc(10 * var(--progress-u));
 }
 .progress-stat {
@@ -257,9 +258,9 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .review .progress-sprig { color:#fa91c7; }
 .progress-links {
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:calc(7 * var(--progress-u));
-  margin-bottom:calc(10 * var(--progress-u));
+  grid-template-columns:1.02fr 1fr;
+  gap:calc(4.5 * var(--progress-u));
+  margin-bottom:calc(8.5 * var(--progress-u));
 }
 .progress-illustrated {
   position:relative;
@@ -274,10 +275,10 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   text-align:left;
   color:#100944;
   /* Top anchoring retains the empty sky instead of cropping it off. */
-  background:#b7eaff url('assets/progress/collection-v1.webp') center top / 100% auto no-repeat;
+  background:#b7eaff url('assets/progress/collection-v1.webp') center center / 100% auto no-repeat;
   box-shadow:0 5px 11px #5ca8c624;
 }
-.progress-illustrated.categories { background-image:url('assets/progress/categories-v1.webp');background-color:#fff6df; }
+.progress-illustrated.categories { background-size:100% 100%;background-image:url('assets/progress/categories-v1.webp');background-color:#fff6df; }
 .progress-illustrated::before {
   content:"";
   position:absolute;
@@ -333,12 +334,12 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   border-radius:calc(18 * var(--progress-u));
   background:linear-gradient(140deg,#fffffffa,#f5faffeb);
   box-shadow:0 4px 11px #7abde61f;
-  margin-bottom:calc(10 * var(--progress-u));
+  margin-bottom:calc(9 * var(--progress-u));
 }
 .progress-achievements header { position:relative;display:flex;gap:calc(5 * var(--progress-u));align-items:flex-start;justify-content:space-between;min-height:calc(32 * var(--progress-u)); }
 .progress-achievements header>div { min-width:0; }
 .progress-achievements h2 { margin:0;font-size:calc(18 * var(--progress-u));font-weight:800;line-height:1.05;letter-spacing:calc(-.5 * var(--progress-u)); }
-.progress-achievements p { margin:calc(2 * var(--progress-u)) 0 0;font-size:calc(11.5 * var(--progress-u));font-weight:500;line-height:1.15;color:#69658d;white-space:nowrap; }
+.progress-achievements p { margin:calc(2 * var(--progress-u)) 0 0;font-size:calc(12 * var(--progress-u));font-weight:500;line-height:1.15;color:#77749f;white-space:nowrap; }
 .progress-achievements header button {
   display:flex;
   align-items:center;
@@ -351,7 +352,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
   border-radius:20px;
   background:#ebf6ff;
   color:#3420cb;
-  font-size:calc(10.5 * var(--progress-u));
+  font-size:calc(12 * var(--progress-u));
   font-weight:650;
   line-height:1;
   white-space:nowrap;
@@ -360,6 +361,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .progress-trophies { position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(4 * var(--progress-u));padding:0 calc(20 * var(--progress-u)); }
 .achievement { text-align:center;min-width:0; }
 .progress-trophy { display:block;width:var(--progress-trophy-size);height:var(--progress-trophy-size);max-width:100%;margin:0 auto;overflow:hidden; }
+.progress-trophies .progress-trophy { margin-top:calc(-6 * var(--progress-u)); }
 .achievement>div {
   position:relative;
   display:flex;
@@ -382,7 +384,7 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .trophy-prev,.trophy-next {
   position:absolute;
   z-index:1;
-  top:calc((var(--progress-trophy-size) - 31 * var(--progress-u)) / 2);
+  top:calc(36 * var(--progress-u));
   display:grid;
   place-items:center;
   width:calc(31 * var(--progress-u));
@@ -428,10 +430,10 @@ body:has(#app[data-view="history"]) { background:#dff4ff; }
 .progress-rule-art {
   position:absolute;
   z-index:1;
-  left:calc(1 * var(--progress-u));
+  left:calc(-7 * var(--progress-u));
   top:calc(-8 * var(--progress-u));
   bottom:0;
-  width:calc(151 * var(--progress-u));
+  width:calc(156 * var(--progress-u));
   /* A flatter storybook stack retains the whole bulb and all three books. */
   background:url('assets/progress/rules-books-v2.webp') center bottom / 100% 100% no-repeat;
   pointer-events:none;

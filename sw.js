@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v132-progress-reference-20261002';
+const CACHE='mala-nauka-v133-progress-reference-loop-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -218,8 +218,8 @@ const CORE=[
   "./shared/rule-groups.mjs?v=1",
   "./adventure-preview.html",
   "./progress-preview-frame.html",
-  "./progress-screen.mjs?v=6-reference-layout",
-  "./progress-screen.css?v=10-reference-layout",
+  "./progress-screen.mjs?v=7-reference-icons",
+  "./progress-screen.css?v=11-reference-loop",
   "./progress-example.mjs?v=1",
   "./shared/mastery.mjs?v=2",
   "./shared/scroll-edges.mjs?v=1",
@@ -227,6 +227,8 @@ const CORE=[
   "./spelling/continue-drag.mjs?v=3",
   "./spelling/fireworks.mjs?v=1",
   "./assets/progress/hero-v1.webp",
+  "./assets/progress/hero-v2.webp",
+  "./assets/progress/mode-icons-v2.webp",
   "./assets/progress/collection-v1.webp",
   "./assets/progress/categories-v1.webp",
   "./assets/progress/trophies-v1.webp",
@@ -250,9 +252,9 @@ const CORE=[
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",
-  "./app.css?v=20261002-progress-polish-v10",
+  "./app.css?v=20261002-progress-loop-v11",
   "./app.js",
-  "./app.js?v=20261002-progress-polish-v10",
+  "./app.js?v=20261002-progress-loop-v11",
   "./assets/apple-touch-icon.png",
   "./assets/apple-touch-icon.png?v=20260930",
   "./assets/brand/home-adventure-3d.webp",

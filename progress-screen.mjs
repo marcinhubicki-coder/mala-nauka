@@ -9,14 +9,14 @@ const controllers=new WeakMap();
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const INSTRUMENTAL={spelling:'ortografią',math:'matematyką',english:'angielskim',flags:'flagami',reading:'czytaniem'};
 const NAMES={spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'};
-const ICONS={spelling:[78,1272,151,146],math:[349,1273,145,145],english:[599,1277,143,145],flags:[61,1528,166,166],reading:[472,1528,171,171]};
+const ICONS={spelling:[0,0,512,512],math:[512,0,512,512],english:[1024,0,512,512],flags:[0,512,512,512],reading:[512,512,512,512]};
 const check='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="m8 16 5.5 6L25 10"/></svg>';
 const repeat='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M24 13a9 9 0 0 0-15-4M7 19a9 9 0 0 0 15 4M24 6v7h-7M7 26v-7h7"/></svg>';
 const gear='<svg class="progress-gear" viewBox="0 0 32 32" aria-hidden="true"><g fill="currentColor"><rect x="13" y="2" width="6" height="28" rx="1.5"/><rect x="2" y="13" width="28" height="6" rx="1.5"/><rect x="13" y="2" width="6" height="28" rx="1.5" transform="rotate(45 16 16)"/><rect x="13" y="2" width="6" height="28" rx="1.5" transform="rotate(-45 16 16)"/><path fill-rule="evenodd" d="M16 5a11 11 0 1 1 0 22 11 11 0 0 1 0-22Zm0 6a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/></g><circle cx="16" cy="16" r="5" fill="#fff1bc"/></svg>';
 const chevron='<svg class="progress-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>';
 const backArrow='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>';
 const sprig='<svg class="progress-sprig" viewBox="0 0 48 64" aria-hidden="true"><path d="M20 66Q24 34 37 8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M34 26Q28 12 41 3Q45 19 34 26ZM30 38Q27 22 16 19Q13 36 30 38ZM28 44Q29 26 44 27Q44 43 28 44ZM25 54Q23 37 10 36Q9 52 25 54ZM23 60Q28 44 39 45Q40 59 23 60Z" fill="currentColor"/></svg>';
-function glyph(mode){return '<svg class="progress-mode-glyph" viewBox="'+ICONS[mode].join(' ')+'" aria-hidden="true"><image href="assets/home/home-retina.webp" width="853" height="1844"/></svg>';}
+function glyph(mode){return '<svg class="progress-mode-glyph" viewBox="'+ICONS[mode].join(' ')+'" aria-hidden="true"><image href="assets/progress/mode-icons-v2.webp" width="1536" height="1024"/></svg>';}
 function spelled(word){const [before,...after]=word.masked.split('_');return esc(before)+'<mark>'+esc(word.answer)+'</mark>'+esc(after.join('_'));}
 function trophy(index){return '<svg class="progress-trophy" viewBox="'+(index*512+32)+' 32 448 448" aria-hidden="true"><image href="assets/progress/trophies-v1.webp" width="1536" height="512" preserveAspectRatio="none"/></svg>';}
 export function destroyProgressScreen(root){controllers.get(root)?.();controllers.delete(root);}

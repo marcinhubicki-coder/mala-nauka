@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=10';
+import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=11';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -15,6 +15,9 @@ function fit(node,{max=23,min=11,lines=2,height=Infinity}={}){
   node.dataset.fitText=text;
   const style=getComputedStyle(node),family=style.fontFamily,weight=style.fontWeight;
   const available=Math.max(1,node.clientWidth);
+  const key=JSON.stringify([text,available,family,weight,max,min,lines,height]);
+  if(node.dataset.fitKey===key)return;
+  node.dataset.fitKey=key;
   const lineHeight=parseFloat(style.lineHeight)/parseFloat(style.fontSize)||1.13;
   const result=fitLabel(text,(value,size)=>{ink.font=`${weight} ${size}px ${family}`;return ink.measureText(value).width;},available,{max,min,lines,height,lineHeight});
   node.style.fontSize=result.size+'px';
@@ -39,7 +42,7 @@ function fitAll(){
     fit(node,{max:Math.min(23,root.clientWidth*.0525),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
   });
   root.querySelectorAll('.flag-adventure-name').forEach(node=>{
-    fit(node,{max:root.clientWidth*(node.closest('.flag-reveal-scene')?.108:.095),min:11,lines:2,height:node.clientHeight||62});
+    fit(node,{max:root.clientWidth*(node.closest('.flag-reveal-scene')?.118:.095),min:11,lines:2,height:node.clientHeight||62});
   });
   root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10,lines:1}));
   root.querySelectorAll('.flag-adventure-country,.flag-adventure-capital-question').forEach(node=>fit(node,{max:36,min:17}));
@@ -99,7 +102,7 @@ function enhance(){
         if(!card.isConnected)return;
         card.classList.add('is-revealed');card.dataset.flagScenePhase='revealing';
         if(reference||matchMedia('(prefers-reduced-motion: reduce)').matches)ready();
-        else setTimeout(ready,1150);
+        else setTimeout(ready,560);
       };
       // Mount already-preloaded vector geography under the closed mask.
       const mounted=window.MalaNaukaContinentMap?.mount(content.querySelector('[data-adventure-map]'),{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});

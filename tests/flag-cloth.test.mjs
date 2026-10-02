@@ -1,6 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clothPoint, clothLight, sizedSvg, renderFlagCloth } from '../flagi/flag-cloth.mjs';
+import { CLOTH, clothPoint, clothLight, clothSize, sizedSvg, renderFlagCloth } from '../flagi/flag-cloth.mjs';
+
+test('prewarming and a DOM-rounded canvas share the same Retina key',()=>{
+ for(const dpr of [3,4])for(const width of [183.49,183.51,184.15,158.99]){
+  assert.deepEqual(clothSize(width,width/1.16,dpr),clothSize(Math.round(width),Math.round(width/1.16),dpr));
+ }
+});
+
+test('the cheaper mesh differs from the continuous cloth by less than a Retina pixel',()=>{
+ let maximum=0;
+ for(let row=0;row<CLOTH.rows;row++)for(let col=0;col<CLOTH.columns;col++){
+  const a=clothPoint(col/CLOTH.columns,row/CLOTH.rows),b=clothPoint((col+1)/CLOTH.columns,row/CLOTH.rows);
+  const c=clothPoint(col/CLOTH.columns,(row+1)/CLOTH.rows),d=clothPoint((col+1)/CLOTH.columns,(row+1)/CLOTH.rows);
+  const middle=clothPoint((col+.5)/CLOTH.columns,(row+.5)/CLOTH.rows);
+  maximum=Math.max(maximum,Math.hypot(middle.x-(a.x+b.x+c.x+d.x)/4,middle.y-(a.y+b.y+c.y+d.y)/4)*552);
+ }
+ assert.ok(maximum<1,`Retina deviation: ${maximum}`);
+ assert.equal(CLOTH.columns*CLOTH.rows*2,1536);
+});
 
 test('cloth remains inside its Retina canvas and its mesh never folds over',()=>{
   const epsilon=.0001;

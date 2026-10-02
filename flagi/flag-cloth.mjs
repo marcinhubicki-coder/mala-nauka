@@ -1,6 +1,7 @@
 const TAU=Math.PI*2;
-export const CLOTH={columns:64,rows:20,dpr:3,drape:.28,fold:.052,contrast:.18,grain:.012};
+export const CLOTH={columns:48,rows:16,dpr:3,drape:.28,fold:.052,contrast:.18,grain:.012};
 const images=new Map(),renders=new WeakMap(),surfaces=new Map(),pending=new Map();
+const lighting=new Map(),surfaceStats=new WeakMap();
 const MAX_SURFACES=3;
 const MATERIAL_URL=new URL('../assets/flags/adventure/cloth-light-v1.webp',import.meta.url).href;
 
@@ -52,30 +53,63 @@ export function hasVisiblePixels(pixels){
   for(let i=3;i<pixels.length;i+=4)if(pixels[i])return true;
   return false;
 }
-function material(image,weave,width,height){
+// Yield between small batches, including during next-question prewarming. Never
+// monopolise the main thread while the compositor moves the complete photograph.
+function yieldWork(){
+  return new Promise(resolve=>{
+    if(typeof MessageChannel==='undefined'){setTimeout(resolve,0);return;}
+    const channel=new MessageChannel();
+    channel.port1.onmessage=()=>{channel.port1.close();channel.port2.close();resolve();};
+    channel.port2.postMessage(null);
+  });
+}
+export function clothSize(cssWidth,cssHeight,dpr){
+  return {width:Math.max(1,Math.round(cssWidth)*dpr),height:Math.max(1,Math.round(cssHeight)*dpr)};
+}
+async function lightField(weave,width,height){
+  const key=`${width}:${height}`;
+  if(lighting.has(key))return lighting.get(key);
+  const work=(async()=>{
+    const values=new Float32Array(width*height);let fabric=null,seed=8191,start=performance.now();
+    if(weave){
+      const layer=document.createElement('canvas');layer.width=width;layer.height=height;
+      const ctx=layer.getContext('2d',{willReadFrequently:true});ctx.drawImage(weave,0,0,width,height);
+      fabric=ctx.getImageData(0,0,width,height).data;layer.width=layer.height=0;
+    }
+    for(let y=0;y<height;y++){
+      const v=y/(height-1);
+      for(let x=0;x<width;x++){
+        const u=x/(width-1),i=y*width+x;seed=(Math.imul(seed,1664525)+1013904223)>>>0;
+        const grain=(seed/4294967296-.5)*CLOTH.grain;
+        const thread=(x%3===0?.004:0)+(y%3===0?-.003:0);
+        const edge=Math.min(u,1-u,v,1-v),hem=edge<.009?-.035:edge<.015?.018:0;
+        const f=i*4,fabricLight=fabric?Math.max(.65,Math.min(1.06,(fabric[f]*.2126+fabric[f+1]*.7152+fabric[f+2]*.0722)/245)):1;
+        values[i]=(clothLight(u,v)+grain+thread+hem)*fabricLight;
+      }
+      if(y%8===7&&performance.now()-start>4){await yieldWork();start=performance.now();}
+    }
+    return values;
+  })();
+  lighting.set(key,work);work.catch(()=>lighting.delete(key));
+  while(lighting.size>2)lighting.delete(lighting.keys().next().value);
+  return work;
+}
+async function material(image,lights,width,height){
   const surface=document.createElement('canvas');surface.width=width;surface.height=height;
   const ctx=surface.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0,width,height);
-  const pixels=ctx.getImageData(0,0,width,height),data=pixels.data;let seed=8191,visible=0;
-  let fabric=null;
-  if(weave){
-    const layer=document.createElement('canvas');layer.width=width;layer.height=height;
-    const layerCtx=layer.getContext('2d',{willReadFrequently:true});layerCtx.drawImage(weave,0,0,width,height);
-    fabric=layerCtx.getImageData(0,0,width,height).data;layer.width=layer.height=0;
-  }
-  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+  const pixels=ctx.getImageData(0,0,width,height),data=pixels.data;let visible=0,start=performance.now();
+  for(let y=0;y<height;y++){
+   for(let x=0;x<width;x++){
     const i=(y*width+x)*4;if(!data[i+3])continue;visible++;
-    const u=x/(width-1),v=y/(height-1);seed=(Math.imul(seed,1664525)+1013904223)>>>0;
-    const grain=(seed/4294967296-.5)*CLOTH.grain;
-    const thread=(x%3===0?.004:0)+(y%3===0?-.003:0);
-    const edge=Math.min(u,1-u,v,1-v),hem=edge<.009?-.035:edge<.015?.018:0;
-    const fabricLight=fabric?Math.max(.65,Math.min(1.06,(fabric[i]*.2126+fabric[i+1]*.7152+fabric[i+2]*.0722)/245)):1;
-    const light=(clothLight(u,v)+grain+thread+hem)*fabricLight;
+    const light=lights[y*width+x];
     const diffuse=Math.min(data[i],data[i+1],data[i+2])>220?1+(light-1)*.58:light;
     for(let channel=0;channel<3;channel++){
       const color=data[i+channel];
       // Undyed cloth scatters more light than saturated printed pigment.
       data[i+channel]=diffuse<=1?color*diffuse:color+(255-color)*(diffuse-1)*.55;
     }
+   }
+   if(y%16===15&&performance.now()-start>4){await yieldWork();start=performance.now();}
   }
   if(!visible){surface.width=surface.height=0;throw Error('Dekoder zwrócił pustą flagę');}
   ctx.putImageData(pixels,0,0);return surface;
@@ -94,11 +128,15 @@ function triangle(ctx,image,source,target){
   ctx.closePath();ctx.clip();ctx.transform(a,b,c,d,d0.x-a*s0.x-c*s0.y,d0.y-b*s0.x-d*s0.y);ctx.drawImage(image,0,0);ctx.restore();
 }
 async function buildSurface(url,width,height){
+  const started=performance.now();
   const [image,weave]=await Promise.all([sourceImage(url),sourceImage(MATERIAL_URL).catch(()=>null)]);
-  const texture=material(image,weave,width,height);
-  const surface=drawSurface(texture,width,height);texture.width=texture.height=0;return surface;
+  const reusedLight=lighting.has(`${width}:${height}`);
+  const lights=await lightField(weave,width,height);
+  const texture=await material(image,lights,width,height);
+  const surface=await drawSurface(texture,width,height);texture.width=texture.height=0;
+  surfaceStats.set(surface,{buildMs:performance.now()-started,reusedLight});return surface;
 }
-function drawSurface(texture,width,height,mesh=CLOTH){
+async function drawSurface(texture,width,height,mesh=CLOTH){
   const surface=document.createElement('canvas');surface.width=width;surface.height=height;
   const ctx=surface.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
 
@@ -107,10 +145,14 @@ function drawSurface(texture,width,height,mesh=CLOTH){
       const u=column/columns,v=row/rows,p=clothPoint(u,v);
       points.push({source:{x:u*width,y:v*height},target:{x:p.x*width,y:p.y*height}});
     }
-    for(let row=0;row<rows;row++)for(let column=0;column<columns;column++){
+    let start=performance.now();
+    for(let row=0;row<rows;row++){
+     for(let column=0;column<columns;column++){
       const a=points[row*(columns+1)+column],b=points[row*(columns+1)+column+1],c=points[(row+1)*(columns+1)+column],d=points[(row+1)*(columns+1)+column+1];
       triangle(ctx,texture,[a.source,b.source,c.source],[a.target,b.target,c.target]);
       triangle(ctx,texture,[b.source,d.source,c.source],[b.target,d.target,c.target]);
+     }
+     if(performance.now()-start>4){await yieldWork();start=performance.now();}
     }
   return surface;
 }
@@ -130,13 +172,13 @@ function preparedSurface(url,width,height){
 }
 const pixelRatio=()=>Math.max(CLOTH.dpr,Math.min(4,window.devicePixelRatio||1));
 export function prewarmFlagCloth(url,cssWidth,cssHeight){
-  const width=Math.round(cssWidth)*pixelRatio(),height=Math.round(cssHeight)*pixelRatio();
+  const {width,height}=clothSize(cssWidth,cssHeight,pixelRatio());
   return preparedSurface(url,width,height);
 }
 export async function renderFlagCloth(canvas){
   const url=canvas.dataset.clothSource;
   if(!canvas.clientWidth||!canvas.clientHeight||!url)return;
-  const width=Math.ceil(canvas.clientWidth*pixelRatio()),height=Math.ceil(canvas.clientHeight*pixelRatio());
+  const {width,height}=clothSize(canvas.clientWidth,canvas.clientHeight,pixelRatio());
   const key=`${url}:${width}:${height}`;
   if(renders.get(canvas)===key)return;
   renders.set(canvas,key);
@@ -144,7 +186,11 @@ export async function renderFlagCloth(canvas){
     if(!canvas.isConnected||renders.get(canvas)!==key)return;
     canvas.width=width;canvas.height=height;
     const context=canvas.getContext('2d');context.drawImage(surface,0,0);
-    if(!hasVisiblePixels(context.getImageData(0,0,width,height).data))throw Error('Pusta kopia flagi na ekranie');
+    // The source was validated once in material(). A full Retina GPU readback on
+    // every cached copy was redundant and forced a synchronous pipeline flush.
+    const stats=surfaceStats.get(surface);
+    canvas.dataset.clothBuildMs=stats?.buildMs.toFixed(1)||'0';
+    canvas.dataset.clothLightCache=stats?.reusedLight?'hit':'miss';
     canvas.closest('.flag-cloth').classList.add('is-painted');canvas.dataset.clothReady='true';
     canvas.dataset.clothMotion='still';
   };

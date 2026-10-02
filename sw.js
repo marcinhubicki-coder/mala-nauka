@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v120-english-london-20261002';
+const CACHE='mala-nauka-v121-english-clean-bg-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -18,7 +18,7 @@ const CORE=[
   "./angielski/wizard-v2.css",
   "./angielski/wizard-v2.css?v=5",
   "./angielski/wizard-retina.css",
-  "./angielski/wizard-retina.css?v=5-london-bg",
+  "./angielski/wizard-retina.css?v=6-clean-london-mask",
   "./angielski/wizard-v2.mjs",
   "./angielski/wizard-v2.mjs?v=9-real-art",
   "./angielski/word-exposure.js",

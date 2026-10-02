@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v115-unified-20261001';
+const CACHE='mala-nauka-v116-english-retina-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -15,6 +15,8 @@ const CORE=[
   "./angielski/index.html",
   "./angielski/wizard-v2.css",
   "./angielski/wizard-v2.css?v=5",
+  "./angielski/wizard-retina.css",
+  "./angielski/wizard-retina.css?v=1-london-mockup",
   "./angielski/wizard-v2.mjs",
   "./angielski/wizard-v2.mjs?v=8",
   "./angielski/word-exposure.js",
@@ -625,9 +627,9 @@ const CORE=[
   "./progress.mjs?v=4-count-rounds",
   "./progress.mjs?v=3-local-profiles",
   "./pwa-viewport.css",
-  "./pwa-viewport.css?v=4-unified",
+  "./pwa-viewport.css?v=6-keyboard",
   "./pwa-viewport.js",
-  "./pwa-viewport.js?v=1-release",
+  "./pwa-viewport.js?v=2-keyboard",
   "./shared/jelly-v4.css",
   "./shared/jelly-v4.css?v=3-delayed-ink",
   "./shared/jelly-v4.mjs",

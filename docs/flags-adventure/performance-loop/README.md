@@ -23,3 +23,11 @@ Implementation: `c941ebc10436f3c840982b3624de6bc319af43ca`.
 The initial Chrome baseline reused the existing cloth after an answer (`clothCache=hit`, 552 × 477 pixels). Its main opportunities were the next-country lighting/mesh computation, synchronous canvas readback, and the 1050/1100 ms scene/mask transitions — not a blanket failure of the existing cache.
 
 Physical iOS Safari performance and literal pixel-perfect equivalence must not be inferred from desktop Chrome checks. No backend PNG pipeline is introduced: address the existing computation and scheduling first.
+
+## Deployed visual loop
+
+The first optimisation preview showed a slightly cropped free edge of the flag. A second UI iteration (`d0cf786`) reframed the complete camera from `(32%, 3%)` to `(30%, 1%)`, keeping the same scale and all internal pole/cloth coordinates. Final snapshot: `final.jpg`.
+
+Chrome checks at 390 × 844: root client/scroll height 844/844; four unchanged answer rectangles at `(18,506,171,76)`, `(201,506,171,76)`, `(18,592,171,76)`, `(201,592,171,76)`; answer cloth cache hit; transition 520 ms; long country name width 149/149 (no overflow); Nepal retains its transparent silhouette. No app-level errors observed in the final page log (browser-extension errors excluded).
+
+Cold build measurements include network/decode and cooperative yields (Poland 485.8 ms, Central African Republic 319.3 ms); they are not native-device CPU/FPS measurements or evidence of a quantified whole-app speedup. A square-flag browser check was interrupted by a deployment-auth redirect, so it is not claimed as passing.

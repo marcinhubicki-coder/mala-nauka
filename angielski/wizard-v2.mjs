@@ -421,6 +421,26 @@ function install(){
   '<fieldset class="english-v2-section english-v2-time"><legend><span class="step-dot">3</span>Jak długo dasz radę?</legend><div class="english-time-segmented english-segmented" data-segmented="time">'+durationChoices()+'</div></fieldset>';
  const note=root.querySelector('.wizard-note');
  if(note)note.textContent='Wybierz słówka, które chcesz dziś poćwiczyć.';
+
+ // Match the spelling wizard's Retina structure exactly: one fixed 390pt canvas
+ // plus a real mission artwork element, so the character/stars can protrude
+ // outside the yellow card without being flattened by background painting.
+ const canvas=document.createElement('div');
+ canvas.className='english-wizard-canvas';
+ while(root.firstChild)canvas.append(root.firstChild);
+ root.append(canvas);
+
+ const intro=root.querySelector('.wizard-intro');
+ if(intro&&!intro.querySelector('.english-mission-art')){
+  const art=document.createElement('img');
+  art.className='english-mission-art';
+  art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;
+  art.alt='';
+  art.width=1200;
+  art.height=404;
+  intro.prepend(art);
+ }
+
  updateStartButton(false);
  syncEditorUI(false,{resetAction:true});
  syncHidden(true);

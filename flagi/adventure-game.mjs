@@ -22,6 +22,11 @@ function fit(node,{max=23,min=11,lines=2,height=Infinity}={}){
   node.innerHTML=result.lines.map(line=>`<span>${esc(line)}</span>`).join(' ');
 }
 function fitAll(){
+  root.querySelectorAll('.flag-cloth').forEach(cloth=>{
+    const host=cloth.closest('.flag-on-pole'),[width,height=1]=getComputedStyle(cloth).aspectRatio.split('/').map(Number);
+    // Constrain both axes through width; max-height alone distorts square flags.
+    cloth.style.width=Math.min(host.clientWidth*.7,host.clientHeight*.65*width/height)+'px';
+  });
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
     const button=node.closest('.answer'),style=getComputedStyle(button);
     fit(node,{max:Math.min(25,root.clientWidth*.061),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});

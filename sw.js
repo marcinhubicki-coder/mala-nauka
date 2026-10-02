@@ -1,9 +1,9 @@
-const CACHE='mala-nauka-v129-flags-adventure-20261002';
+const CACHE='mala-nauka-v130-flags-adventure-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
   "./flagi/adventure.css?v=4",
-  "./flagi/adventure-game.mjs?v=4",
+  "./flagi/adventure-game.mjs?v=5",
   "./flagi/text-fit.mjs?v=2",
   "./flagi/flag-on-pole.mjs?v=2",
   "./flagi/preview-frame.html",

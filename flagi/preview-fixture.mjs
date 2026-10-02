@@ -6,7 +6,7 @@ export function flagsPreviewSession(params){
  const record=FLAGS.find(record=>record.id===params.get('country'))||FLAGS.find(record=>record.id==='pl');
  const type=['flags','countries','capitals'].includes(params.get('variant'))?params.get('variant'):'flags';
  const config=cleanConfig('flags',{category:`flagcfg:${type}:world:`,duration:180});
- const options=[record,...['is','ch','rs'].map(id=>FLAGS.find(country=>country.id===id)).filter(country=>country.id!==record.id)];
+ const options=[record,...['is','ch','rs','jp'].map(id=>FLAGS.find(country=>country.id===id)).filter(country=>country.id!==record.id).slice(0,3)];
  // Static reference scenes use the Session clock injection. Real setup rounds
  // still use the ordinary running clock and the same Session state machine.
  const session=new Session(()=>flagQuestion(record,options,config,()=>.4,record.difficulty),180,()=>0,()=>.4);

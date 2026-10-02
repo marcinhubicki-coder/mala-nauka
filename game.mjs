@@ -55,7 +55,7 @@ export class Session {
     const time = this.now(), elapsed = Math.max(0, time - this.lastTime);
     this.lastTime = time;
     if (previousState === 'playing') this.questionElapsed += elapsed;
-    if (!this.untimed) {
+    if (!this.untimed && !(this.mode === 'flags' && previousState === 'feedback-correct')) {
       this.remaining = Math.max(0, this.remaining - elapsed);
       if (this.remaining === 0) { this.state = 'ended'; return; }
     }
@@ -70,7 +70,10 @@ export class Session {
   next() {
     if (this.state === 'paused' || this.state === 'ended') return;
     if (this.questionLimit && this.question >= this.questionLimit) { this.current = null; this.state = 'ended'; return; }
-    if (typeof this.source === 'function') this.current = this.source(this);
+    if (typeof this.source === 'function') {
+      this.current = this.preparedQuestion || this.source(this);
+      this.preparedQuestion = null;
+    }
     else {
       if (!this.queue.length) {
         this.queue = shuffle(this.pool, this.random);
@@ -106,6 +109,13 @@ export class Session {
     this.state = correct ? 'feedback-correct' : 'feedback-wrong';
     this.feedbackRemaining = correct ? (Number(this.current?.feedbackMs)||Number(this.feedbackMs)||700) : 0;
     return true;
+  }
+  // Reserve exactly the question that next() will consume; do not advance
+  // the round or its clock while artwork is being prepared.
+  prepareNext() {
+    if (this.mode !== 'flags' || !this.state.startsWith('feedback') ||
+        typeof this.source !== 'function' || (this.questionLimit && this.question >= this.questionLimit)) return null;
+    return this.preparedQuestion ||= this.source(this);
   }
   skipFeedback() {
     if (this.presentationHeld) return;

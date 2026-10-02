@@ -1,16 +1,19 @@
-const CACHE='mala-nauka-v137-flags-cloth-20261002';
+const CACHE='mala-nauka-v138-flags-ready-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/adventure.css?v=8",
-  "./flagi/adventure-game.mjs?v=8",
+  "./assets/flags/adventure/game-scene-v2.webp",
+  "./assets/flags/adventure/answer-paper-v2.svg",
+  "./app.js?v=20261002-flags-ready-v1",
+  "./flagi/adventure.css?v=9",
+  "./flagi/adventure-game.mjs?v=9",
   "./flagi/text-fit.mjs?v=2",
-  "./flagi/flag-on-pole.mjs?v=5",
-  "./flagi/flag-cloth.mjs?v=3",
+  "./flagi/flag-on-pole.mjs?v=6",
+  "./flagi/flag-cloth.mjs?v=4",
   "./assets/flags/adventure/cloud-vignette-v2.webp",
   "./assets/flags/adventure/cloth-light-v1.webp",
   "./flagi/preview-frame.html",
-  "./flagi/preview-fixture.mjs?v=1",
+  "./flagi/preview-fixture.mjs?v=2",
   "./assets/progress/rules-books-v3.webp",
   "./assets/progress/rules-details-v1.svg",
   "./assets/flags/adventure/sky-v1.svg",
@@ -774,7 +777,7 @@ const CORE=[
   "./flagi/wizard-v2.css",
   "./flagi/wizard-v2.css?v=16",
   "./game.mjs",
-  "./game.mjs?v=20261001-adventure",
+  "./game.mjs?v=20261002-flags-ready",
   "./home-screen.css",
   "./home-screen.css?v=20260930-release",
   "./home-screen.mjs",

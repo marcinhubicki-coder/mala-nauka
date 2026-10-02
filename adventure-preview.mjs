@@ -23,7 +23,7 @@ function change(){
   const path=paths[screen.value]||'ortografia/result-preview-frame.html?case='+screen.value+'&animate=1';
   const url=new URL(path,location.href);
   if(material)url.searchParams.set('country',country.value);
-  else if(screen.value.startsWith('flag-')&&records.has(params.get('country')))url.searchParams.set('country',params.get('country'));
+  else if(['flag-question','flag-map'].includes(screen.value))url.searchParams.set('country',country.value);
   open.href=url.href;url.searchParams.set('safe','1');
   if(screen.value==='progress')url.searchParams.set('chrome','1');
   phone.src=url.href;resize();

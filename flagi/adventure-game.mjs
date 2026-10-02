@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags } from './flag-on-pole.mjs?v=5';
+import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=6';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -7,7 +7,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 const language=()=>window.MalaNaukaFlagLanguage?.language||'pl';
 const countryName=record=>language()==='en'?record.countryEn:record.country;
 const canvas=document.createElement('canvas'),ink=canvas.getContext('2d');
-let queued=false;
+let queued=false,nextCountryId=null;
 
 function fit(node,{max=23,min=11,lines=2,height=Infinity}={}){
   if(!node?.isConnected)return;
@@ -29,6 +29,10 @@ function fitAll(){
     cloth.style.width=Math.min(host.clientWidth*(reference?.49:.71),host.clientHeight*.67*width/height)+'px';
   });
   paintFlags(root);
+  const host=root.querySelector('.flag-on-pole');
+  const record=records.get(root.querySelector('.question-card')?.dataset.countryId);
+  if(host)void prepareFlag(record,host).catch(()=>{});
+  if(host&&nextCountryId)void prepareFlag(records.get(nextCountryId),host).catch(()=>{});
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
     const button=node.closest('.answer'),style=getComputedStyle(button);
     fit(node,{max:Math.min(25,root.clientWidth*.061),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
@@ -64,6 +68,11 @@ function enhance(){
   const reference=window.__MALA_NAUKA_FLAGS_PREVIEW__&&new URLSearchParams(location.search).get('scene')==='material';
   if(reference){card.classList.add('flag-reference-scene');root.querySelector('.time-block small').textContent='Czas zatrzymany';}
   root.dataset.flagGameVariant=variant;
+  const iconPaths={exit:'M6 6l12 12M18 6 6 18',pause:'M8 5v14M16 5v14'};
+  for(const [action,path] of Object.entries(iconPaths)){
+    const button=root.querySelector(`[data-action="${action}"]`);
+    if(button)button.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>`;
+  }
   const content=card.querySelector('.question-content');
   if(variant==='countries'&&!feedback){
     content.innerHTML=`<div class="flag-country-emblem" aria-hidden="true">${compass()}</div><div class="flag-adventure-country" data-fit-text="${esc(countryName(record))}">${esc(countryName(record))}</div><p class="flag-country-hint">Wybierz właściwą flagę poniżej.</p>`;
@@ -93,11 +102,12 @@ function enhance(){
   });
   root.querySelector('.answers')?.classList.add(variant==='countries'?'flag-image-answers':'flag-text-answers');
   const prompt=root.querySelector('.prompt');if(prompt){prompt.classList.add('flag-adventure-prompt');}
-  requestAnimationFrame(fitAll);
+  fitAll();
 }
 function pin(){return '<svg viewBox="0 0 24 28" aria-hidden="true"><path fill="currentColor" d="M12 1C5.9 1 2 5.4 2 10.2c0 6.2 10 16.6 10 16.6s10-10.4 10-16.6C22 5.4 18.1 1 12 1Z"/><circle cx="12" cy="10" r="3.6" fill="#fff8df"/></svg>';}
 function compass(){return '<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor"><circle cx="50" cy="50" r="31" stroke-width="1"/><circle cx="50" cy="50" r="26" stroke-width=".5"/><path d="M50 12v76M12 50h76" stroke-width=".7"/></g><g fill="currentColor"><path d="m50 14 6 30 30 6-30 6-6 30-6-30-30-6 30-6Z"/><path d="m27 27 19 16 27-16-16 19 16 27-19-16-27 16 16-19Z" opacity=".6"/></g><g fill="#fff2d0"><path d="m50 14 0 36 6-6ZM86 50H50l6 6ZM50 86V50l-6 6ZM14 50h36l-6-6Z"/><circle cx="50" cy="50" r="2"/></g><g fill="currentColor" font-family="sans-serif" font-size="11" text-anchor="middle"><text x="50" y="10">N</text><text x="50" y="99">S</text><text x="5" y="54">W</text><text x="95" y="54">E</text></g></svg>';}
 function schedule(){if(queued)return;queued=true;queueMicrotask(()=>{queued=false;enhance();});}
+document.addEventListener('mala-nauka:flag-prepare',event=>{nextCountryId=event.detail.nextCountryId||null;});
 new MutationObserver(schedule).observe(root,{childList:true});
 document.addEventListener('mala-nauka:flag-language-change',()=>{
   const card=root.querySelector('.question-card'),record=records.get(card?.dataset.countryId);

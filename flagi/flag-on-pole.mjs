@@ -1,4 +1,4 @@
-import { renderFlagCloth } from './flag-cloth.mjs?v=3';
+import { renderFlagCloth, prewarmFlagCloth } from './flag-cloth.mjs?v=4';
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // SVG is the only country-specific input. Source alpha preserves Nepal's shape.
 export function flagOnPole(record,{label='Flaga do rozpoznania'}={}){
@@ -8,4 +8,14 @@ export function flagOnPole(record,{label='Flaga do rozpoznania'}={}){
 }
 export function paintFlags(root){
   for(const canvas of root.querySelectorAll('.flag-cloth-canvas'))renderFlagCloth(canvas);
+}
+
+export function prepareFlag(record,host){
+  if(!record||!host)return Promise.resolve();
+  const ratio=(record.id==='ch'||record.id==='va'?1:4/3)/1.15;
+  const source=new URL(record.flagSvg,document.baseURI).href;
+  return Promise.all([.49,.71].map(share=>{
+    const width=Math.min(host.clientWidth*share,host.clientHeight*.67*ratio);
+    return prewarmFlagCloth(source,width,width/ratio);
+  }));
 }

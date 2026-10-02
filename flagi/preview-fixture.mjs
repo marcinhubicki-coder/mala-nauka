@@ -1,6 +1,6 @@
 // Explicitly labelled visual fixtures only; this module is never loaded in a player session.
 import { FLAGS } from '../data/flags.mjs';
-import { Session } from '../game.mjs';
+import { Session } from '../game.mjs?v=20261002-flags-ready';
 import { cleanConfig, flagQuestion } from '../modes.mjs';
 export function flagsPreviewSession(params){
  const record=FLAGS.find(record=>record.id===params.get('country'))||FLAGS.find(record=>record.id==='pl');
@@ -10,7 +10,7 @@ export function flagsPreviewSession(params){
  // Static reference scenes use the Session clock injection. Real setup rounds
  // still use the ordinary running clock and the same Session state machine.
  const session=new Session(()=>flagQuestion(record,options,config,()=>.4,record.difficulty),180,()=>0,()=>.4);
- session.mode='flags';session.config=config;session.feedbackMs=700;session.remaining=145000;session.correct=1;session.question=2;
+ session.mode='flags';session.config=config;session.feedbackMs=4000;session.remaining=145000;session.correct=1;session.question=2;
  if(params.get('state')==='wrong')session.answer(session.options.find(option=>option!==session.current.answer));
  return session;
 }

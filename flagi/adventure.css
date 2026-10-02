@@ -171,3 +171,24 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
  #app[data-mode="flags"] .answers,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{height:136px;min-height:136px;max-height:136px;grid-template-rows:repeat(2,62px);gap:12px}
  #app[data-mode="flags"] .answers .answer,#app[data-mode="flags"] .answers .answer.flag-option-answer,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer{height:62px;min-height:62px;max-height:62px}
 }
+
+/* Outer adventure scene: one continuous portrait avoids sky/forest seams. */
+body:has(#app[data-mode="flags"][data-view="game"])::before{background:#afceab url('../assets/flags/adventure/game-scene-v2.webp') center center / cover no-repeat}
+body:has(#app[data-mode="flags"][data-view="game"])::after{display:none}
+#app[data-mode="flags"] .game-bar .icon{padding:10px;background:#fffef7;border:1px solid #ffffffcc;box-shadow:0 4px 8px #5b67582e;color:#10133f}
+#app[data-mode="flags"] .game-bar .icon svg{display:block;width:100%;height:100%}
+#app[data-mode="flags"] .game-meta>span{position:relative;border-radius:2px 4px 3px 1px;background:linear-gradient(95deg,#ffe6ad,#fff6d8 15%,#fff2cb 70%,#efd39c);box-shadow:inset 0 0 0 1px #ba935333,0 3px 5px #71552d35;font-weight:650;transform:rotate(-6deg);padding:7px 11px}
+#app[data-mode="flags"] .game-meta>span::before,#app[data-mode="flags"] .game-meta>span::after{content:"";position:absolute;top:-9px;width:2px;height:12px;background:#9c693c;border-radius:1px;box-shadow:1px 0 0 #e6bd76}
+#app[data-mode="flags"] .game-meta>span::before{left:7px;transform:rotate(14deg)}
+#app[data-mode="flags"] .game-meta>span::after{right:8px;transform:rotate(-14deg)}
+#app[data-mode="flags"] .prompt{position:relative;justify-self:center;font-size:17.5px;max-width:calc(100% - 48px);line-height:1.1;text-shadow:0 1px 4px #fff,0 0 10px #fff,0 0 20px #fff}
+#app[data-mode="flags"] .prompt::before,#app[data-mode="flags"] .prompt::after,#app[data-mode="flags"] .feedback>p::before,#app[data-mode="flags"] .feedback>p::after{content:"";position:absolute;top:50%;width:14px;height:25px;transform:translateY(-50%);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 28'%3E%3Cpath d='m5 2 5 4M2 14h7m-4 12 5-4' fill='none' stroke='%23188758' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
+#app[data-mode="flags"] .prompt::before{left:-25px}#app[data-mode="flags"] .prompt::after{right:-25px;transform:translateY(-50%) scaleX(-1)}
+#app[data-mode="flags"] .answers .answer{background-image:url('../assets/flags/adventure/answer-paper-v2.svg');background-size:100% 100%;border-color:#fff8e7;box-shadow:inset 0 0 4px #d8b16a42,0 7px 8px #71573546}
+#app[data-mode="flags"] .answers .answer:nth-child(2)::before{content:"";position:absolute;left:6px;bottom:6px;width:39px;height:39px;background:url('../assets/flags/adventure/paper-v1.svg') left center/135px 97px;opacity:.5;z-index:-1}
+#app[data-mode="flags"] .answers .answer:nth-child(3){background-position:left bottom}
+#app[data-mode="flags"] .answers .answer:nth-child(4)::after{content:"";position:absolute;right:4px;bottom:9px;width:29px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cpath d='M0 5q5-5 10 0t10 0t10 0t10 0M0 15q5-5 10 0t10 0t10 0t10 0M0 25q5-5 10 0t10 0t10 0t10 0' stroke='%238fbdc0' stroke-width='1.6' opacity='.6' fill='none'/%3E%3C/svg%3E") center/contain no-repeat;z-index:-1}
+#app[data-mode="flags"] .flag-answer-label{font-weight:800}
+#app[data-mode="flags"] .feedback>p{position:relative;border-radius:3px 5px 4px 6px;background:#fff4dbe8;box-shadow:inset 0 0 5px #c4a16c33,0 3px 5px #78542a25;margin-top:4px;padding:8px 10px}
+#app[data-mode="flags"] .feedback>p::before{left:-22px}#app[data-mode="flags"] .feedback>p::after{right:-22px;transform:translateY(-50%) scaleX(-1)}
+#app[data-mode="flags"]:has(.question-card.correct) .feedback [data-action="next"]{position:relative;width:100%;height:46px;min-height:46px;margin:auto 0 0;padding:8px 20px;border:3px solid #fff9e9;border-radius:30px;background:linear-gradient(120deg,#eefbe7,#bce6ca);box-shadow:inset 0 2px 4px #fff9,0 4px 8px #71875830;color:#116843;font:900 18px Flag Body;opacity:1;visibility:visible;pointer-events:auto;transform:none}

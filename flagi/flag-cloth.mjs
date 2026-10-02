@@ -1,6 +1,7 @@
 const TAU=Math.PI*2;
 export const CLOTH={columns:64,rows:20,dpr:3,drape:.28,fold:.052,contrast:.18,grain:.012};
-const images=new Map(),renders=new WeakMap();
+const images=new Map(),renders=new WeakMap(),surfaces=new Map(),pending=new Map();
+const MAX_SURFACES=8;
 const MATERIAL_URL=new URL('../assets/flags/adventure/cloth-light-v1.webp',import.meta.url).href;
 
 // The printed design and lighting share one continuous surface. UV stays
@@ -69,16 +70,12 @@ function triangle(ctx,image,source,target){
   target.forEach((p,i)=>{const vx=p.x-centre.x,vy=p.y-centre.y,l=Math.hypot(vx,vy);const px=p.x+vx/l*.38,py=p.y+vy/l*.38;i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
   ctx.closePath();ctx.clip();ctx.transform(a,b,c,d,d0.x-a*s0.x-c*s0.y,d0.y-b*s0.x-d*s0.y);ctx.drawImage(image,0,0);ctx.restore();
 }
-export async function renderFlagCloth(canvas){
-  const box=canvas.getBoundingClientRect(),url=canvas.dataset.clothSource;
-  if(!box.width||!box.height||!url)return;
-  const dpr=Math.max(CLOTH.dpr,Math.min(4,window.devicePixelRatio||1));
-  const width=Math.ceil(canvas.clientWidth*dpr),height=Math.ceil(canvas.clientHeight*dpr);
-  const key=`${url}:${width}:${height}`;if(renders.get(canvas)===key)return;renders.set(canvas,key);
-  try{
-    const [image,weave]=await Promise.all([sourceImage(url),sourceImage(MATERIAL_URL).catch(()=>null)]);if(!canvas.isConnected||renders.get(canvas)!==key)return;
-    const texture=material(image,weave,width,height);canvas.width=width;canvas.height=height;
-    const ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+async function buildSurface(url,width,height){
+  const [image,weave]=await Promise.all([sourceImage(url),sourceImage(MATERIAL_URL).catch(()=>null)]);
+  const texture=material(image,weave,width,height);
+  const surface=document.createElement('canvas');surface.width=width;surface.height=height;
+  const ctx=surface.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+
     const {columns,rows}=CLOTH,points=[];
     for(let row=0;row<=rows;row++)for(let column=0;column<=columns;column++){
       const u=column/columns,v=row/rows,p=clothPoint(u,v);
@@ -89,7 +86,43 @@ export async function renderFlagCloth(canvas){
       triangle(ctx,texture,[a.source,b.source,c.source],[a.target,b.target,c.target]);
       triangle(ctx,texture,[b.source,d.source,c.source],[b.target,d.target,c.target]);
     }
+  return surface;
+}
+function remember(key,surface){
+  surfaces.delete(key);surfaces.set(key,surface);
+  while(surfaces.size>MAX_SURFACES)surfaces.delete(surfaces.keys().next().value);
+  return surface;
+}
+function preparedSurface(url,width,height){
+  const key=`${url}:${width}:${height}`;
+  if(surfaces.has(key))return Promise.resolve(remember(key,surfaces.get(key)));
+  if(!pending.has(key)){
+    const work=buildSurface(url,width,height).then(surface=>remember(key,surface)).finally(()=>pending.delete(key));
+    pending.set(key,work);
+  }
+  return pending.get(key);
+}
+const pixelRatio=()=>Math.max(CLOTH.dpr,Math.min(4,window.devicePixelRatio||1));
+export function prewarmFlagCloth(url,cssWidth,cssHeight){
+  return preparedSurface(url,Math.ceil(Math.round(cssWidth)*pixelRatio()),Math.ceil(Math.round(cssHeight)*pixelRatio()));
+}
+export async function renderFlagCloth(canvas){
+  const url=canvas.dataset.clothSource;
+  if(!canvas.clientWidth||!canvas.clientHeight||!url)return;
+  const width=Math.ceil(canvas.clientWidth*pixelRatio()),height=Math.ceil(canvas.clientHeight*pixelRatio());
+  const key=`${url}:${width}:${height}`;
+  if(renders.get(canvas)===key)return;
+  renders.set(canvas,key);
+  const paint=surface=>{
+    if(!canvas.isConnected||renders.get(canvas)!==key)return;
+    canvas.width=width;canvas.height=height;
+    canvas.getContext('2d').drawImage(surface,0,0);
     canvas.closest('.flag-cloth').classList.add('is-painted');canvas.dataset.clothReady='true';
+  };
+  try{
+    // Cached cloth is copied synchronously, before the browser paints this frame.
+    if(surfaces.has(key)){canvas.dataset.clothCache='hit';paint(remember(key,surfaces.get(key)));}
+    else{canvas.dataset.clothCache='miss';paint(await preparedSurface(url,width,height));}
   }catch{
     renders.delete(canvas);canvas.dataset.clothReady='fallback';
   }

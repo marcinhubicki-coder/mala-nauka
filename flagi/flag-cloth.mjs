@@ -2,15 +2,20 @@ const TAU=Math.PI*2;
 export const CLOTH={columns:64,rows:20,dpr:3,drape:.28,fold:.052,contrast:.18,grain:.012};
 const images=new Map(),renders=new WeakMap(),surfaces=new Map(),pending=new Map();
 const MAX_SURFACES=8;
+export const BREEZE={frames:10,period:4600,fps:24,columns:48,rows:16,amplitude:.009};
+const waves=new Map(),wavePending=new Map(),moving=new Map();
+let animationFrame=0,lastPaint=0;
+const reduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MATERIAL_URL=new URL('../assets/flags/adventure/cloth-light-v1.webp',import.meta.url).href;
 
 // The printed design and lighting share one continuous surface. UV stays
 // anchored along the hoist; no country-specific folds or replacement artwork.
-export function clothPoint(u,v,settings=CLOTH){
+export function clothPoint(u,v,settings=CLOTH,phase=0){
   const wave=Math.sin(TAU*(1.6*u-.25*v));
+  const drift=BREEZE.amplitude*u*u*(Math.sin(TAU*(1.45*u-.35*v)+phase)-Math.sin(TAU*(1.45*u-.35*v)));
   return {
-    x:.012+.976*u+.012*u*Math.sin(Math.PI*v)*wave,
-    y:(.025+.94*v+settings.drape*u*(1-.5*v)+settings.fold*u*Math.sin(TAU*(1.6*u-.25*v))*(.35+.65*Math.sin(Math.PI*v)))/1.15
+    x:.012+.976*u+.012*u*Math.sin(Math.PI*v)*wave+drift*.55,
+    y:(.025+.94*v+settings.drape*u*(1-.5*v)+settings.fold*u*Math.sin(TAU*(1.6*u-.25*v))*(.35+.65*Math.sin(Math.PI*v)))/1.15+drift
   };
 }
 export function clothLight(u,v,settings=CLOTH){
@@ -73,12 +78,15 @@ function triangle(ctx,image,source,target){
 async function buildSurface(url,width,height){
   const [image,weave]=await Promise.all([sourceImage(url),sourceImage(MATERIAL_URL).catch(()=>null)]);
   const texture=material(image,weave,width,height);
+  return drawSurface(texture,width,height);
+}
+function drawSurface(texture,width,height,phase=0,mesh=CLOTH){
   const surface=document.createElement('canvas');surface.width=width;surface.height=height;
   const ctx=surface.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
 
-    const {columns,rows}=CLOTH,points=[];
+    const {columns,rows}=mesh,points=[];
     for(let row=0;row<=rows;row++)for(let column=0;column<=columns;column++){
-      const u=column/columns,v=row/rows,p=clothPoint(u,v);
+      const u=column/columns,v=row/rows,p=clothPoint(u,v,CLOTH,phase);
       points.push({source:{x:u*width,y:v*height},target:{x:p.x*width,y:p.y*height}});
     }
     for(let row=0;row<rows;row++)for(let column=0;column<columns;column++){
@@ -102,9 +110,57 @@ function preparedSurface(url,width,height){
   }
   return pending.get(key);
 }
+// Precompute tiny UV deformations once; playback only copies finished bitmaps.
+function prepareBreeze(url,width,height){
+  const key=`${url}:${width}:${height}`;
+  if(waves.has(key)){const frames=waves.get(key);waves.delete(key);waves.set(key,frames);return Promise.resolve(frames);}
+  if(!wavePending.has(key)){
+    const work=(async()=>{
+      const [image,weave]=await Promise.all([sourceImage(url),sourceImage(MATERIAL_URL).catch(()=>null)]);
+      const texture=material(image,weave,width,height),frames=[];
+      for(let i=0;i<BREEZE.frames;i++){
+        // Yield between surfaces so generating the next country never blocks input.
+        await new Promise(resolve=>setTimeout(resolve,0));
+        frames.push(drawSurface(texture,width,height,TAU*i/BREEZE.frames,BREEZE));
+      }
+      waves.set(key,frames);
+      while(waves.size>2)waves.delete(waves.keys().next().value);
+      return frames;
+    })().finally(()=>wavePending.delete(key));
+    wavePending.set(key,work);
+  }
+  return wavePending.get(key);
+}
+function animate(time){
+  animationFrame=0;
+  const paint=time-lastPaint>=1000/BREEZE.fps;
+  if(paint)lastPaint=time;
+  for(const [canvas,frames] of moving){
+    if(!canvas.isConnected){moving.delete(canvas);continue;}
+    if(reduced()){canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);canvas.getContext('2d').drawImage(frames[0],0,0);canvas.dataset.clothMotion='still';moving.delete(canvas);continue;}
+    if(document.hidden||canvas.closest('#app.paused')){canvas.dataset.clothMotion='paused';continue;}
+    if(!paint)continue;
+    const position=(time%BREEZE.period)/BREEZE.period*frames.length,index=Math.floor(position),mix=position-index;
+    const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(frames[index],0,0);ctx.globalAlpha=mix;ctx.drawImage(frames[(index+1)%frames.length],0,0);ctx.globalAlpha=1;
+    canvas.dataset.clothMotion='running';canvas.dataset.clothFrame=String(index);
+  }
+  if(moving.size)animationFrame=requestAnimationFrame(animate);
+}
+function startBreeze(canvas,url,width,height,key){
+  if(reduced())return;
+  prepareBreeze(url,width,height).then(frames=>{
+    if(!canvas.isConnected||renders.get(canvas)!==key)return;
+    moving.set(canvas,frames);if(!animationFrame)animationFrame=requestAnimationFrame(animate);
+  }).catch(()=>{canvas.dataset.clothMotion='still';});
+}
 const pixelRatio=()=>Math.max(CLOTH.dpr,Math.min(4,window.devicePixelRatio||1));
 export function prewarmFlagCloth(url,cssWidth,cssHeight){
-  return preparedSurface(url,Math.ceil(Math.round(cssWidth)*pixelRatio()),Math.ceil(Math.round(cssHeight)*pixelRatio()));
+  const width=Math.ceil(Math.round(cssWidth)*pixelRatio()),height=Math.ceil(Math.round(cssHeight)*pixelRatio());
+  return preparedSurface(url,width,height).then(surface=>{
+    if(!reduced())void prepareBreeze(url,width,height).catch(()=>{});
+    return surface;
+  });
 }
 export async function renderFlagCloth(canvas){
   const url=canvas.dataset.clothSource;
@@ -118,6 +174,7 @@ export async function renderFlagCloth(canvas){
     canvas.width=width;canvas.height=height;
     canvas.getContext('2d').drawImage(surface,0,0);
     canvas.closest('.flag-cloth').classList.add('is-painted');canvas.dataset.clothReady='true';
+    startBreeze(canvas,url,width,height,key);
   };
   try{
     // Cached cloth is copied synchronously, before the browser paints this frame.

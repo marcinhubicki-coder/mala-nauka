@@ -18,3 +18,17 @@ test('the hoist is straight and the free top edge drapes down from it',()=>{
   for(let row=0;row<=20;row++)assert.equal(clothPoint(0,row/20).x,anchor.x);
   assert.ok(clothPoint(1,0).y-anchor.y>.15,'cloth should visibly drape');
 });
+
+
+test('all breeze phases keep the mast pinned and country emblems uninverted',()=>{
+ const epsilon=.0001;
+ for(let phase=0;phase<Math.PI*2;phase+=Math.PI/8){
+  for(let row=0;row<=40;row++)for(let column=0;column<=40;column++){
+   const u=column/40,v=row/40,p=clothPoint(u,v,undefined,phase),pu=clothPoint(u+epsilon,v,undefined,phase),pv=clothPoint(u,v+epsilon,undefined,phase);
+   assert.ok(p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1,'moving cloth stays inside its canvas');
+   assert.ok((pu.x-p.x)*(pv.y-p.y)-(pv.x-p.x)*(pu.y-p.y)>0,'moving surface never crosses itself');
+   if(!column)assert.deepEqual(p,clothPoint(u,v),'hoist remains fixed');
+  }
+ }
+ assert.deepEqual(clothPoint(.7,.5,undefined,0),clothPoint(.7,.5,undefined,Math.PI*2),'breeze loop closes without a jump');
+});

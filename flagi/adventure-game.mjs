@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=6';
+import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=8';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -25,12 +25,13 @@ function fitAll(){
   root.querySelectorAll('.flag-cloth').forEach(cloth=>{
     const host=cloth.closest('.flag-on-pole'),[width,height=1]=getComputedStyle(cloth).aspectRatio.split('/').map(Number);
     // Constrain both axes through width; max-height alone distorts square flags.
-    const reference=host.closest('.flag-reference-scene,.correct');
-    cloth.style.width=Math.min(host.clientWidth*(reference?.49:.71),host.clientHeight*.67*width/height)+'px';
+    cloth.style.width=Math.min(host.clientWidth*.71,host.clientHeight*.67*width/height)+'px';
   });
   paintFlags(root);
   const host=root.querySelector('.flag-on-pole');
   const record=records.get(root.querySelector('.question-card')?.dataset.countryId);
+  if(record)void window.MalaNaukaContinentMap?.preload?.(record.continent).catch(()=>{});
+  if(nextCountryId)void window.MalaNaukaContinentMap?.preload?.(records.get(nextCountryId)?.continent).catch(()=>{});
   if(host)void prepareFlag(record,host).catch(()=>{});
   if(host&&nextCountryId)void prepareFlag(records.get(nextCountryId),host).catch(()=>{});
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
@@ -81,16 +82,31 @@ function enhance(){
   }else{
     content.innerHTML=flagOnPole(record,{label:feedback?'Flaga: '+countryName(record):'Flaga do rozpoznania'})+
       (feedback||reference?`<div class="flag-adventure-details"><div class="flag-adventure-name">${esc(countryName(record))}</div><div class="flag-adventure-capital">${pin()}<span data-fit-text="${esc(record.capital)}">${esc(record.capital)}</span></div></div>`:'');
-    if(!wrong)content.querySelector('.flag-on-pole')?.insertAdjacentHTML('afterbegin','<span class="flag-scene-compass" aria-hidden="true">'+compass()+'</span>');
-    if(wrong){
-      card.classList.add('flag-map-review');
-      content.insertAdjacentHTML('beforeend',`<img class="flag-review-thumbnail" src="${esc(record.flagSvg)}" alt="" width="108" height="81"><div class="flag-adventure-map"><div data-adventure-map></div></div>`);
-      const mapHost=content.querySelector('[data-adventure-map]');
-      const map=window.MalaNaukaContinentMap;
-      map?.mount(mapHost,{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});
-      // Only content fades; the question/answer rows keep exactly the same size.
-      requestAnimationFrame(()=>{if(card.isConnected)card.classList.add('is-map-visible');});
+    if(feedback||reference){
+      card.classList.add('flag-reveal-scene');
+      content.insertAdjacentHTML('beforeend',`<div class="flag-reveal-mask" aria-hidden="true"><div class="flag-adventure-map"><div data-adventure-map></div></div><span class="flag-scene-compass">${compass()}</span></div>`);
+      const nextButton=root.querySelector('[data-action="next"]');
+      const held=feedback&&!reference;
+      const hold=value=>document.dispatchEvent(new CustomEvent('mala-nauka:flag-presentation',{detail:{held:value,countryId:record.id}}));
+      if(held){hold(true);if(nextButton)nextButton.disabled=true;}
+      card.dataset.flagScenePhase='preparing';
+      const ready=()=>{
+        if(!card.isConnected)return;
+        card.dataset.flagScenePhase='revealed';
+        if(nextButton)nextButton.disabled=false;
+        if(held)hold(false);
+      };
+      const reveal=()=>{
+        if(!card.isConnected)return;
+        card.classList.add('is-revealed');card.dataset.flagScenePhase='revealing';
+        if(reference||matchMedia('(prefers-reduced-motion: reduce)').matches)ready();
+        else setTimeout(ready,1150);
+      };
+      // Mount already-preloaded vector geography under the closed mask.
+      const mounted=window.MalaNaukaContinentMap?.mount(content.querySelector('[data-adventure-map]'),{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});
+      Promise.resolve(mounted).finally(()=>requestAnimationFrame(()=>requestAnimationFrame(reveal)));
     }
+
   }
   root.querySelectorAll('.answers .answer').forEach(button=>{
     if(variant==='countries')flagAnswer(button,(button.textContent||'').trim().toLowerCase());

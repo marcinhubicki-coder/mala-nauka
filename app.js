@@ -333,6 +333,11 @@ function renderPhraseInput() {
   button.classList.toggle('is-used',used);
  });
 }
+document.addEventListener('mala-nauka:flag-presentation',event=>{
+ if(view!=='game'||game?.mode!=='flags'||game.current?.countryId!==event.detail.countryId)return;
+ const state=game.state==='paused'?game.resumeState:game.state;
+ if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
+});
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}

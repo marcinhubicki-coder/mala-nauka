@@ -1,7 +1,15 @@
-const CACHE='mala-nauka-v115-unified-20261001';
+const CACHE='mala-nauka-v116-reading-retina-20261002';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
+  "./czytanie/wizard-retina.css?v=1",
+  "./czytanie/wizard-v2.mjs?v=4-retina",
+  "./czytanie/wizard-preview.html",
+  "./czytanie/wizard-preview-frame.html",
+  "./assets/czytanie/wizard-park-retina-v1.webp",
+  "./assets/czytanie/wizard-mission-retina-v1.webp",
+  "./shared/jelly-v4.mjs?v=3",
+  "./ui-retina.css?v=2-polish",
   "./ortografia/wizard-preview.html",
   "./ortografia/wizard-retina.css?v=4-simple-switch",
   "./ortografia/wizard-preview-frame.html",

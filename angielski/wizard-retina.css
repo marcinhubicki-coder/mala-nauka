@@ -20,38 +20,45 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::before {
+  /* Keep the London plate strictly below the CTA. The previous wide fade
+     reached behind the button/note and Safari rendered it as a cyan halo. */
   -webkit-mask-image:linear-gradient(to top,
     #000 0%,
-    #000 16%,
-    rgba(0,0,0,.94) 17.5%,
-    rgba(0,0,0,.48) 19.5%,
-    transparent 22%);
+    #000 17.4%,
+    rgba(0,0,0,.96) 18.0%,
+    rgba(0,0,0,.36) 18.55%,
+    transparent 19.15%);
   mask-image:linear-gradient(to top,
     #000 0%,
-    #000 16%,
-    rgba(0,0,0,.94) 17.5%,
-    rgba(0,0,0,.48) 19.5%,
-    transparent 22%);
+    #000 17.4%,
+    rgba(0,0,0,.96) 18.0%,
+    rgba(0,0,0,.36) 18.55%,
+    transparent 19.15%);
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::after {
+  /* Edge scenery must not sit under the translucent setup card. */
   -webkit-mask-image:linear-gradient(to right,
     #000 0%,
-    #000 3.2%,
-    rgba(0,0,0,.62) 5.1%,
-    transparent 8%,
-    transparent 92%,
-    rgba(0,0,0,.62) 94.9%,
-    #000 96.8%,
+    #000 2.35%,
+    rgba(0,0,0,.82) 2.85%,
+    rgba(0,0,0,.28) 3.35%,
+    transparent 3.9%,
+    transparent 96.1%,
+    rgba(0,0,0,.28) 96.65%,
+    rgba(0,0,0,.82) 97.15%,
+    #000 97.65%,
     #000 100%);
   mask-image:linear-gradient(to right,
     #000 0%,
-    #000 3.2%,
-    rgba(0,0,0,.62) 5.1%,
-    transparent 8%,
-    transparent 92%,
-    rgba(0,0,0,.62) 94.9%,
-    #000 96.8%,
+    #000 2.35%,
+    rgba(0,0,0,.82) 2.85%,
+    rgba(0,0,0,.28) 3.35%,
+    transparent 3.9%,
+    transparent 96.1%,
+    rgba(0,0,0,.28) 96.65%,
+    rgba(0,0,0,.82) 97.15%,
+    #000 97.65%,
     #000 100%);
 }
 
@@ -228,8 +235,6 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   box-shadow:
     inset 0 0 calc(13 * var(--english-u)) rgba(205,233,255,.55),
     0 calc(7 * var(--english-u)) calc(15 * var(--english-u)) rgba(38,124,165,.10);
-  -webkit-backdrop-filter:blur(4px) saturate(1.04);
-  backdrop-filter:blur(4px) saturate(1.04);
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-v2-section + .english-v2-section {

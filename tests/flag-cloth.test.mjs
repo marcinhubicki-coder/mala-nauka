@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clothPoint, clothLight, sizedSvg, hasVisiblePixels } from '../flagi/flag-cloth.mjs';
+import { clothPoint, clothLight, sizedSvg, renderFlagCloth } from '../flagi/flag-cloth.mjs';
 
 test('cloth remains inside its Retina canvas and its mesh never folds over',()=>{
   const epsilon=.0001;
@@ -31,8 +31,21 @@ test('canvas SVG sources have explicit intrinsic dimensions for every country',a
  assert.throws(()=>sizedSvg('<html>Offline</html>'));
 });
 
-test('a decoded but fully transparent canvas must keep the source image fallback',()=>{
- assert.equal(hasVisiblePixels(new Uint8ClampedArray(16)),false);
- assert.equal(hasVisiblePixels(new Uint8ClampedArray([255,0,0,0])),false);
- assert.equal(hasVisiblePixels(new Uint8ClampedArray([0,0,0,255])),true);
+test('a blank browser decoder never hides the visible source fallback',async()=>{
+ const previous={window:globalThis.window,document:globalThis.document,Image:globalThis.Image,fetch:globalThis.fetch,warn:console.warn};
+ const classes=new Set(['is-painted']),messages=[];
+ const blankCanvas=()=>{
+  const canvas={width:0,height:0,getContext:()=>({drawImage(){},putImageData(){},getImageData:()=>({data:new Uint8ClampedArray(canvas.width*canvas.height*4)})})};
+  return canvas;
+ };
+ try{
+  globalThis.window={devicePixelRatio:1};globalThis.document={createElement:blankCanvas};
+  globalThis.Image=class{set src(value){queueMicrotask(()=>this.onload());}decode(){return Promise.resolve();}};
+  globalThis.fetch=async()=>({ok:true,text:async()=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480"></svg>'});
+  console.warn=(...args)=>messages.push(args);
+  const canvas={...blankCanvas(),clientWidth:20,clientHeight:20,isConnected:true,dataset:{clothSource:'https://example.test/blank.svg'},closest:()=>({classList:{add:name=>classes.add(name),remove:name=>classes.delete(name)}})};
+  await renderFlagCloth(canvas);
+  assert.equal(canvas.dataset.clothReady,'fallback');assert.equal(classes.has('is-painted'),false);
+  assert.equal(canvas.width,0);assert.equal(canvas.height,0);assert.equal(messages.length,1);
+ }finally{for(const key of ['window','document','Image','fetch']){if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}console.warn=previous.warn;}
 });

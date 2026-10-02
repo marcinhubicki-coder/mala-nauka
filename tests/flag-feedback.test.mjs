@@ -38,3 +38,19 @@ test('capital questions also leave the full four seconds to absorb the result',(
  const session=new Session(()=>({...question('pl'),kind:'flag-capital',feedbackMs:2000}),180,()=>0,()=>.4);
  session.mode='flags';session.answer('pl');assert.equal(session.feedbackRemaining,4000);
 });
+
+test('the reveal finishes before the four-second reading window starts',()=>{
+ let time=0;
+ const session=new Session(()=>question('pl'),180,()=>time,()=>.4);
+ session.mode='flags';session.answer('pl');session.setPresentationHold(true);
+ time=1150;session.tick();session.skipFeedback();
+ assert.equal(session.state,'feedback-correct');assert.equal(session.question,1);
+ assert.equal(session.feedbackRemaining,4000);assert.equal(session.remaining,180000);
+ session.pause();time=2150;session.setPresentationHold(false);session.tick();
+ assert.equal(session.state,'paused');assert.equal(session.feedbackRemaining,4000);
+ session.resume();time=6149;session.tick();
+ assert.equal(session.state,'feedback-correct');assert.equal(session.feedbackRemaining,1);
+ time=6150;session.tick();
+ assert.equal(session.state,'playing');assert.equal(session.question,2);
+ assert.equal(session.remaining,180000);
+});

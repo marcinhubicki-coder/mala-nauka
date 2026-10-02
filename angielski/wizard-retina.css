@@ -40,22 +40,17 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 
 #app[data-mode="english"][data-view="wizard"]::-webkit-scrollbar { display:none; }
 
-#app[data-mode="english"][data-view="wizard"] > .page-head,
-#app[data-mode="english"][data-view="wizard"] > .wizard-intro,
-
-
-#app[data-mode="english"][data-view="wizard"] > .setup-form {
-  width:calc(362 * var(--english-u));
-  max-width:calc(100% - 28px);
-  margin-left:auto;
-  margin-right:auto;
+.english-wizard-canvas {
+  width:calc(390 * var(--english-u));
+  max-width:100%;
+  margin:0 auto;
+  padding:max(calc(47 * var(--english-u)),var(--english-safe-top)) calc(14 * var(--english-u)) max(calc(26 * var(--english-u)),var(--english-safe-bottom));
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head {
   height:calc(43 * var(--english-u));
   gap:calc(13 * var(--english-u));
-  margin-top:max(calc(47 * var(--english-u)),var(--english-safe-top));
-  margin-bottom:calc(21 * var(--english-u));
+  margin:0 0 calc(21 * var(--english-u));
   padding-left:calc(6 * var(--english-u));
 }
 
@@ -95,16 +90,16 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
   box-shadow:none;
 }
 
-#app[data-mode="english"][data-view="wizard"] .wizard-intro::before {
-  content:"";
+.english-mission-art {
   position:absolute;
-  z-index:0;
+  z-index:-1;
   left:0;
-  right:0;
   bottom:calc(-8.5 * var(--english-u));
-  height:calc(121 * var(--english-u));
+  display:block;
+  width:100%;
+  height:auto;
   pointer-events:none;
-  background:url('../assets/ortografia/wizard-mission-retina-v1.webp') center bottom / 100% auto no-repeat;
+  user-select:none;
   clip-path:inset(-100% 0 calc(8.5 * var(--english-u)) round 0 0 calc(24 * var(--english-u)) calc(24 * var(--english-u)));
 }
 
@@ -129,7 +124,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
   z-index:3;
   width:calc(160 * var(--english-u));
   margin-left:calc(99 * var(--english-u));
-  padding-top:calc(21 * var(--english-u));
+  padding-top:calc(18 * var(--english-u));
 }
 
 #app[data-mode="english"][data-view="wizard"] .wizard-intro h2 {
@@ -175,8 +170,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
 }
 
 #app[data-mode="english"][data-view="wizard"] .setup-form {
-  margin-top:0;
-  margin-bottom:max(calc(26 * var(--english-u)),var(--english-safe-bottom));
+  margin:0;
 }
 
 #app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2 {

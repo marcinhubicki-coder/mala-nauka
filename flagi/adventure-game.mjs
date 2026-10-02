@@ -1,5 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
-import { flagOnPole } from './flag-on-pole.mjs?v=2';
+import { flagOnPole, paintFlags } from './flag-on-pole.mjs?v=3';
 import { fitLabel } from './text-fit.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
@@ -25,15 +25,17 @@ function fitAll(){
   root.querySelectorAll('.flag-cloth').forEach(cloth=>{
     const host=cloth.closest('.flag-on-pole'),[width,height=1]=getComputedStyle(cloth).aspectRatio.split('/').map(Number);
     // Constrain both axes through width; max-height alone distorts square flags.
-    cloth.style.width=Math.min(host.clientWidth*.7,host.clientHeight*.65*width/height)+'px';
+    const reference=host.closest('.flag-reference-scene,.correct');
+    cloth.style.width=Math.min(host.clientWidth*(reference?.51:.71),host.clientHeight*.67*width/height)+'px';
   });
+  paintFlags(root);
   root.querySelectorAll('.flag-answer-label').forEach(node=>{
     const button=node.closest('.answer'),style=getComputedStyle(button);
     fit(node,{max:Math.min(25,root.clientWidth*.061),min:11,height:button.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)});
   });
   root.querySelectorAll('.flag-adventure-name').forEach(node=>{
     const mapReview=node.closest('.flag-map-review');
-    fit(node,{max:root.clientWidth*.095,min:11,lines:mapReview?2:1,height:mapReview?48:30});
+    fit(node,{max:root.clientWidth*.095,min:11,lines:2,height:node.clientHeight||62});
   });
   root.querySelectorAll('.flag-adventure-capital>span').forEach(node=>fit(node,{max:17,min:10,lines:1}));
   root.querySelectorAll('.flag-adventure-country,.flag-adventure-capital-question').forEach(node=>fit(node,{max:36,min:17}));
@@ -59,6 +61,8 @@ function enhance(){
   const record=records.get(card.dataset.countryId);if(!record)return;
   card.dataset.adventureReady='true';
   const variant=card.dataset.flagVariant||'flags',feedback=card.matches('.correct,.wrong'),wrong=card.classList.contains('wrong');
+  const reference=window.__MALA_NAUKA_FLAGS_PREVIEW__&&new URLSearchParams(location.search).get('scene')==='material';
+  if(reference)card.classList.add('flag-reference-scene');
   root.dataset.flagGameVariant=variant;
   const content=card.querySelector('.question-content');
   if(variant==='countries'&&!feedback){
@@ -67,7 +71,8 @@ function enhance(){
     content.innerHTML=`<div class="flag-capital-pin" aria-hidden="true">${pin()}</div><small class="flag-capital-label">Czyja to stolica?</small><div class="flag-adventure-capital-question" data-fit-text="${esc(record.capital)}">${esc(record.capital)}</div>`;
   }else{
     content.innerHTML=flagOnPole(record,{label:feedback?'Flaga: '+countryName(record):'Flaga do rozpoznania'})+
-      (feedback?`<div class="flag-adventure-details"><div class="flag-adventure-name">${esc(countryName(record))}</div><div class="flag-adventure-capital">${pin()}<span data-fit-text="${esc(record.capital)}">${esc(record.capital)}</span></div></div>`:'');
+      (feedback||reference?`<div class="flag-adventure-details"><div class="flag-adventure-name">${esc(countryName(record))}</div><div class="flag-adventure-capital">${pin()}<span data-fit-text="${esc(record.capital)}">${esc(record.capital)}</span></div></div>`:'');
+    if(!wrong)content.querySelector('.flag-on-pole')?.insertAdjacentHTML('afterbegin','<span class="flag-scene-compass" aria-hidden="true">'+compass()+'</span>');
     if(wrong){
       card.classList.add('flag-map-review');
       content.insertAdjacentHTML('beforeend',`<img class="flag-review-thumbnail" src="${esc(record.flagSvg)}" alt="" width="108" height="81"><div class="flag-adventure-map"><div data-adventure-map></div></div>`);

@@ -322,13 +322,150 @@ body:has(#app[data-view="results"][data-mode="spelling"]){background:transparent
 @keyframes drag-done{from{opacity:.3;translate:0 2px}to{opacity:1;translate:0 0}}
 @media(prefers-reduced-motion:reduce){.result-continue-rail::before{transition:none}.result-continue-rail.is-complete .continue-done{animation:none}}
 
-/* Mockup's pink glass CTA, with a circular pearl for the drag gesture. */
-.result-again{border:1px solid #fff7fc;background:radial-gradient(ellipse 75% 42% at 50% -5%,#fff6,transparent 80%),linear-gradient(180deg,#ff83c5 0%,#ff2b9b 30%,#f51b8b 67%,#ff73be 100%);box-shadow:inset 0 1px 3px #fff8,inset 0 -2px 5px #ffd7eea1,0 0 0 2px #ffbde6b5,0 0 calc(9 * var(--result-u)) #ff65c36e,0 4px 8px #c7438d29}
-.result-again::after{inset:calc(3 * var(--result-u));border:1px solid #fff5fcbf;background:linear-gradient(180deg,#ffffff21,transparent 45%)}
-.result-continue-rail .continue-handle{left:4px;top:calc(50% - 19 * var(--result-u));width:calc(38 * var(--result-u));height:calc(38 * var(--result-u));aspect-ratio:1;background:radial-gradient(ellipse 22% 15% at 28% 19%,#fff 15%,#ffffffb0 60%,transparent 90%),radial-gradient(ellipse at 27% 74%,#a1eaffd4,transparent 67%),radial-gradient(ellipse at 80% 60%,#ffc3e8e3,transparent 70%),linear-gradient(135deg,#f7e7ff,#ff9dd4);border:1px solid #fff;box-shadow:inset 0 0 0 2px #ffffffa6,inset 0 0 5px #fff,0 0 0 1px #ffe0f4,0 2px 5px #cc44854d}
-.result-continue-rail .continue-handle svg{width:calc(18 * var(--result-u));height:calc(18 * var(--result-u));stroke-width:2.5;filter:drop-shadow(0 1px 1px #b959a166)}
-.result-continue-rail::before{background:linear-gradient(90deg,#f91c97,#ff56b2,#ff94d1);box-shadow:inset 0 1px 3px #fff6}
-.result-continue-rail .continue-copy{display:flex;align-items:center;justify-content:center;gap:calc(9 * var(--result-u));font-size:calc(17 * var(--result-u));font-weight:850;letter-spacing:-.2px}
+/* Result CTA: the pearl remains the drag affordance; the completed state becomes the mockup's clean pink glass button. */
+.result-again{
+ border:1px solid #fff7fc;
+ background:
+  radial-gradient(ellipse 76% 44% at 50% -6%,#fff7,transparent 80%),
+  radial-gradient(ellipse 22% 80% at 2% 50%,#ffd9ee44,transparent 86%),
+  linear-gradient(180deg,#f792c4 0%,#ed4b9d 34%,#e23f91 68%,#f47fba 100%);
+ box-shadow:
+  inset 0 1px 3px #fff9,
+  inset 0 -2px 5px #ffd7ee9c,
+  0 0 0 2px #ffbde6a8,
+  0 0 calc(9 * var(--result-u)) #ff65c35f,
+  0 4px 8px #c7438d29;
+ transition:background .2s ease,box-shadow .2s ease,filter .2s ease
+}
+.result-again::after{
+ inset:calc(3 * var(--result-u));
+ border:1px solid #fff7fccc;
+ background:linear-gradient(180deg,#ffffff26,transparent 47%);
+ box-shadow:inset 0 1px 0 #ffffff63
+}
+.result-continue-rail .continue-handle{
+ z-index:3;
+ left:4px;
+ top:calc(50% - 19 * var(--result-u));
+ width:calc(38 * var(--result-u));
+ height:calc(38 * var(--result-u));
+ aspect-ratio:1;
+ background:
+  radial-gradient(ellipse 22% 15% at 28% 19%,#fff 15%,#ffffffb0 60%,transparent 90%),
+  radial-gradient(ellipse at 27% 74%,#a1eaffd4,transparent 67%),
+  radial-gradient(ellipse at 80% 60%,#ffc3e8e3,transparent 70%),
+  linear-gradient(135deg,#f7e7ff,#ff9dd4);
+ border:1px solid #fff;
+ box-shadow:
+  inset 0 0 0 2px #ffffffa6,
+  inset 0 0 5px #fff,
+  0 0 0 1px #ffe0f4,
+  0 2px 5px #cc44854d;
+ transition:opacity .16s ease,filter .18s ease,scale .18s cubic-bezier(.2,.75,.2,1),box-shadow .16s ease
+}
+.result-continue-rail .continue-handle svg{
+ width:calc(18 * var(--result-u));
+ height:calc(18 * var(--result-u));
+ stroke-width:2.5;
+ filter:drop-shadow(0 1px 1px #b959a166)
+}
+/* The luminous trail follows the pearl and stays round even at the start of the gesture. */
+.result-continue-rail::before{
+ left:calc(3 * var(--result-u));
+ right:auto;
+ top:calc(3 * var(--result-u));
+ bottom:calc(3 * var(--result-u));
+ width:calc((40 * var(--result-u)) + (100% - (46 * var(--result-u))) * var(--drag-progress,0));
+ height:auto;
+ inset-inline-end:auto;
+ border-radius:999px;
+ transform:none;
+ background:
+  radial-gradient(ellipse 70% 62% at 48% 0,#ffffff4f,transparent 72%),
+  linear-gradient(90deg,#f62998 0%,#f45aae 48%,#f593c8 100%);
+ box-shadow:inset 0 1px 3px #fff7,0 0 calc(5 * var(--result-u)) #ff79bd4d;
+ opacity:.72;
+ transition:width .28s cubic-bezier(.16,.78,.22,1),opacity .18s ease
+}
+.result-continue-rail.is-dragging::before{transition:none;opacity:.9}
+.result-continue-rail.is-dragging .continue-handle{
+ cursor:grabbing;
+ scale:1.045;
+ box-shadow:
+  inset 0 0 0 2px #fff,
+  inset 0 0 6px #fff,
+  0 0 0 1px #ffd8f2,
+  0 0 calc(8 * var(--result-u)) #fff0b8a6,
+  0 3px 7px #b946874f
+}
+.result-continue-rail .continue-copy{
+ position:relative;
+ z-index:2;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:calc(9 * var(--result-u));
+ font-size:calc(17 * var(--result-u));
+ font-weight:850;
+ letter-spacing:-.2px;
+ text-shadow:0 1px 2px #a72d6a45;
+ transition:opacity .14s ease,scale .18s ease,filter .18s ease
+}
 .result-continue-rail .continue-copy svg{width:calc(20 * var(--result-u));height:calc(20 * var(--result-u))}
-.result-continue-rail.is-complete .continue-copy{display:none}
-.result-continue-rail.is-complete{box-shadow:inset 0 0 5px #fff9,0 0 0 2px #ffe5f6,0 0 calc(12 * var(--result-u)) #ff80c3a6}
+.result-continue-rail .continue-done{display:none!important}
+/* On release at 100%, the pearl melts away and the rail settles into the mockup button. */
+.result-continue-rail.is-complete{
+ background:
+  radial-gradient(ellipse 76% 46% at 50% -6%,#fff8,transparent 80%),
+  linear-gradient(180deg,#f894c5 0%,#ed559f 36%,#df438f 70%,#f482b9 100%);
+ box-shadow:
+  inset 0 1px 4px #fffaf0,
+  inset 0 -2px 6px #ffd8ec9e,
+  0 0 0 2px #ffd3ebc7,
+  0 0 calc(11 * var(--result-u)) #ff79bd75,
+  0 4px 9px #bd4b8424
+}
+.result-continue-rail.is-complete::before{width:calc(100% - (6 * var(--result-u)));opacity:.24;transition:opacity .22s ease}
+.result-continue-rail.is-complete .continue-handle{
+ opacity:0;
+ filter:blur(calc(1.8 * var(--result-u))) brightness(1.15);
+ scale:.72;
+ pointer-events:none
+}
+.result-continue-rail.is-complete .continue-copy{
+ display:flex;
+ opacity:1;
+ scale:1;
+ filter:none;
+ animation:result-cta-settle .32s cubic-bezier(.18,.82,.22,1) both
+}
+.result-continue-rail.is-complete .cta-star{filter:drop-shadow(0 0 4px #fff0b8);animation-duration:3.1s}
+@keyframes result-cta-settle{
+ 0%{opacity:.78;scale:.975;filter:blur(.35px)}
+ 58%{opacity:1;scale:1.012;filter:blur(0)}
+ 100%{opacity:1;scale:1}
+}
+/* Secondary action: translucent lilac glass from the mockup, without changing its footprint. */
+.result-collection{
+ width:84%;
+ justify-self:center;
+ border:1px solid #fffdfce6;
+ color:var(--result-ink);
+ background:
+  radial-gradient(ellipse 74% 85% at 50% -8%,#ffffffb8,transparent 68%),
+  linear-gradient(135deg,#fffafca3 0%,#eadcffad 50%,#f7eaff9e 100%);
+ box-shadow:
+  inset 0 1px 3px #fff,
+  inset 0 -1px 3px #c9badd4f,
+  0 0 0 1px #e5d5ffad,
+  0 3px 8px #705a9e1f;
+ backdrop-filter:blur(calc(9 * var(--result-u))) saturate(1.12);
+ -webkit-backdrop-filter:blur(calc(9 * var(--result-u))) saturate(1.12);
+ text-shadow:0 1px 1px #fff;
+ transition:transform .14s ease,box-shadow .14s ease
+}
+.result-collection:active{transform:scale(.985);box-shadow:inset 0 1px 3px #fff,0 0 0 1px #e4d4ff9c,0 2px 5px #705a9e24}
+@media(prefers-reduced-motion:reduce){
+ .result-again,.result-continue-rail .continue-handle,.result-continue-rail .continue-copy,.result-collection{transition:none}
+ .result-continue-rail.is-complete .continue-copy{animation:none}
+}

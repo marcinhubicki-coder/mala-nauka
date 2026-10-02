@@ -3,11 +3,56 @@
 
 html:has(#app[data-view="wizard"][data-mode="english"]),
 body:has(#app[data-view="wizard"][data-mode="english"]) {
-  background:#70d1f3 url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / cover no-repeat;
+  background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center bottom / cover no-repeat;
+}
+
+/* Keep the clean spelling background as the base. The generated London plate is
+   only exposed where it is artifact-free: along the extreme scenery edges and
+   below the CTA. This removes the inpaint seams/rectangles from the visible sky. */
+body:has(#app[data-view="wizard"][data-mode="english"])::before,
+body:has(#app[data-view="wizard"][data-mode="english"])::after {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% auto no-repeat;
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::before {
-  content:none!important;
+  -webkit-mask-image:linear-gradient(to top,
+    #000 0%,
+    #000 16%,
+    rgba(0,0,0,.94) 17.5%,
+    rgba(0,0,0,.48) 19.5%,
+    transparent 22%);
+  mask-image:linear-gradient(to top,
+    #000 0%,
+    #000 16%,
+    rgba(0,0,0,.94) 17.5%,
+    rgba(0,0,0,.48) 19.5%,
+    transparent 22%);
+}
+
+body:has(#app[data-view="wizard"][data-mode="english"])::after {
+  -webkit-mask-image:linear-gradient(to right,
+    #000 0%,
+    #000 3.2%,
+    rgba(0,0,0,.62) 5.1%,
+    transparent 8%,
+    transparent 92%,
+    rgba(0,0,0,.62) 94.9%,
+    #000 96.8%,
+    #000 100%);
+  mask-image:linear-gradient(to right,
+    #000 0%,
+    #000 3.2%,
+    rgba(0,0,0,.62) 5.1%,
+    transparent 8%,
+    transparent 92%,
+    rgba(0,0,0,.62) 94.9%,
+    #000 96.8%,
+    #000 100%);
 }
 
 #app[data-mode="english"][data-view="wizard"] {
@@ -25,6 +70,8 @@ body:has(#app[data-view="wizard"][data-mode="english"])::before {
   --jelly-bottom:#ffc219;
   --jelly-border-color:#f1b30a;
   --jelly-shadow:rgba(150,88,0,.22);
+  position:relative;
+  z-index:1;
   display:block;
   width:100%;
   max-width:none;

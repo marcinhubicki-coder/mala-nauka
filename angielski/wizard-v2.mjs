@@ -429,12 +429,17 @@ function install(){
  canvas.className='english-wizard-canvas';
  while(root.firstChild)canvas.append(root.firstChild);
  root.append(canvas);
+ const foreground=document.createElement('div');
+ foreground.className='english-scene-foreground';
+ foreground.setAttribute('aria-hidden','true');
+ foreground.innerHTML='<span class="english-scene-lamp"></span><span class="english-scene-tower"></span>';
+ root.append(foreground);
 
  const intro=root.querySelector('.wizard-intro');
  if(intro&&!intro.querySelector('.english-mission-art')){
   const art=document.createElement('img');
   art.className='english-mission-art';
-  art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;
+  art.src=new URL('../assets/angielski/wizard-mission-retina-v2.webp',import.meta.url).href;
   art.alt='';
   art.width=1200;
   art.height=404;

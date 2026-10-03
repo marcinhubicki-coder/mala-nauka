@@ -3,7 +3,7 @@
 
 html:has(#app[data-view="wizard"][data-mode="english"]),
 body:has(#app[data-view="wizard"][data-mode="english"]) {
-  background:#43b8e8 url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% 100% no-repeat;
+  background:#43b8e8 url('../assets/angielski/wizard-london-retina-v2.webp') center / 100% 100% no-repeat;
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::before,
@@ -11,27 +11,18 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   content:none!important;
 }
 
-/* Hard hand-off is hidden directly under the setup card. No mask blur = no cyan band. */
-body:has(#app[data-view="wizard"][data-mode="english"])::before {
-  clip-path:inset(68% 0 0 0);
+/* Both contours reuse the background pixels and viewport coordinates. This
+   creates depth without a second scene, alpha bitmap, blur or animation. */
+.english-scene-foreground { position:fixed;inset:0;z-index:2;pointer-events:none; }
+.english-scene-foreground > span {
+  position:absolute;inset:0;
+  background:url('../assets/angielski/wizard-london-retina-v2.webp') center / 100% 100% no-repeat;
 }
-
-/* Preserve London landmarks at the extreme edges without feathering them into the base. */
-body:has(#app[data-view="wizard"][data-mode="english"])::after {
-  -webkit-mask-image:linear-gradient(to right,
-    #000 0%,
-    #000 3.45%,
-    transparent 3.45%,
-    transparent 96.55%,
-    #000 96.55%,
-    #000 100%);
-  mask-image:linear-gradient(to right,
-    #000 0%,
-    #000 3.45%,
-    transparent 3.45%,
-    transparent 96.55%,
-    #000 96.55%,
-    #000 100%);
+.english-scene-lamp {
+  clip-path:polygon(0% 48.7%,2.4% 48.7%,2.65% 48.3%,2.8% 48.8%,3.2% 49.0%,3.5% 49.4%,3.1% 49.65%,4.4% 50.3%,4.5% 50.65%,6.5% 51.15%,7.15% 50.7%,7.5% 51.2%,7.6% 51.75%,8.25% 51.9%,7.75% 52.45%,7.3% 52.4%,6.1% 55.65%,5.2% 56.0%,5.3% 56.4%,4.5% 56.6%,4.35% 57.25%,4.8% 57.8%,4.7% 58.2%,3.65% 58.8%,3.7% 59.3%,3.5% 59.8%,3.5% 67.6%,0% 67.6%);
+}
+.english-scene-tower {
+  clip-path:polygon(96.1% 57.8%,96.4% 57.8%,96.5% 59.1%,97.0% 60.3%,97.45% 61.0%,98.25% 61.6%,98.0% 61.9%,98.15% 62.6%,99.2% 63.5%,99.9% 63.9%,100% 63.9%,100% 67.6%,91.95% 67.6%,91.95% 65.4%,92.7% 64.95%,92.25% 64.6%,92.55% 64.1%,94.0% 63.45%,94.25% 62.5%,94.15% 62.1%,94.6% 61.5%,94.95% 61.1%,95.5% 60.0%,95.9% 58.7%);
 }
 
 #app[data-mode="english"][data-view="wizard"] {
@@ -67,17 +58,19 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"]::-webkit-scrollbar { display:none; }
 
 .english-wizard-canvas {
+  position:relative;
+  z-index:1;
   width:calc(390 * var(--english-u));
   max-width:100%;
   margin:0 auto;
-  padding:max(calc(47 * var(--english-u)),var(--english-safe-top)) calc(14 * var(--english-u)) max(calc(26 * var(--english-u)),var(--english-safe-bottom));
+  padding:max(calc(47 * var(--english-u)),var(--english-safe-top)) calc(20 * var(--english-u)) max(calc(26 * var(--english-u)),var(--english-safe-bottom));
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head {
   height:calc(43 * var(--english-u));
   gap:calc(13 * var(--english-u));
-  margin:0 0 calc(21 * var(--english-u));
-  padding-left:calc(6 * var(--english-u));
+  margin:0 0 calc(23 * var(--english-u));
+  padding-left:0;
 }
 
 #app[data-mode="english"][data-view="wizard"] .page-head h1 {
@@ -105,9 +98,9 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"] .wizard-intro {
   position:relative;
   isolation:isolate;
-  height:calc(94 * var(--english-u));
+  height:calc(90 * var(--english-u));
   margin-top:0;
-  margin-bottom:calc(17 * var(--english-u));
+  margin-bottom:calc(24 * var(--english-u));
   padding:0;
   overflow:visible;
   border:0;
@@ -122,19 +115,20 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 
 .english-mission-art {
   position:absolute;
-  z-index:-1;
-  left:0;
-  bottom:calc(-8.5 * var(--english-u));
+  z-index:1;
+  left:calc(-7 * var(--english-u));
+  bottom:calc(-1 * var(--english-u));
   display:block;
-  width:100%;
-  height:auto;
+  width:calc(364 * var(--english-u));
+  height:calc(119 * var(--english-u));
+  object-fit:fill;
   pointer-events:none;
   user-select:none;
-  clip-path:inset(-100% 0 calc(8.5 * var(--english-u)) round 0 0 calc(24 * var(--english-u)) calc(24 * var(--english-u)));
+  clip-path:inset(-100% 0 calc(1 * var(--english-u)) round 0 0 calc(24 * var(--english-u)) calc(24 * var(--english-u)));
 }
 
 #app[data-mode="english"][data-view="wizard"] .wizard-intro::after {
-  content:"";
+  content:none;
   position:absolute;
   z-index:4;
   right:calc(8 * var(--english-u));
@@ -153,15 +147,15 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   position:relative;
   z-index:3;
   width:calc(160 * var(--english-u));
-  margin-left:calc(99 * var(--english-u));
-  padding-top:calc(18 * var(--english-u));
+  margin-left:calc(91 * var(--english-u));
+  padding-top:calc(23 * var(--english-u));
 }
 
 #app[data-mode="english"][data-view="wizard"] .wizard-intro h2 {
   margin:0;
   color:#09043f;
-  font-family:"Home Rounded",ResultBody,ui-rounded,sans-serif;
-  font-size:calc(20 * var(--english-u));
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(18.4 * var(--english-u));
   font-weight:850;
   letter-spacing:calc(-.25 * var(--english-u));
   line-height:1.05;
@@ -177,6 +171,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 }
 
 #app[data-mode="english"][data-view="wizard"] .mode-icon.hello {
+  visibility:hidden;
   position:absolute;
   z-index:5;
   left:calc(20 * var(--english-u));
@@ -220,12 +215,12 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"] .english-v2-section legend {
   display:flex;
   align-items:center;
-  height:calc(31 * var(--english-u));
+  height:calc(28 * var(--english-u));
   gap:calc(8 * var(--english-u));
-  margin-bottom:calc(8 * var(--english-u));
+  margin-bottom:calc(9 * var(--english-u));
   color:#09043f;
-  font-family:"Home Rounded",ResultBody,ui-rounded,sans-serif;
-  font-size:calc(19.6 * var(--english-u));
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(18 * var(--english-u));
   font-weight:850;
   line-height:1.1;
   letter-spacing:calc(-.25 * var(--english-u));
@@ -235,8 +230,8 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   flex:none;
   display:grid;
   place-items:center;
-  width:calc(31 * var(--english-u));
-  height:calc(31 * var(--english-u));
+  width:calc(28 * var(--english-u));
+  height:calc(28 * var(--english-u));
   border:1px solid #d2f3ff;
   border-radius:50%;
   color:#0061d4;
@@ -248,7 +243,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-segmented {
-  height:calc(54 * var(--english-u));
+  height:calc(55 * var(--english-u));
   min-height:0;
   border:calc(1 * var(--english-u)) solid #cbe5ff;
   border-radius:calc(21 * var(--english-u))!important;
@@ -275,8 +270,8 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"] .english-time-choice span {
   padding:calc(10 * var(--english-u)) calc(8 * var(--english-u));
   color:#515c98;
-  font-family:"Home Rounded",ResultBody,ui-rounded,sans-serif;
-  font-size:calc(16.4 * var(--english-u));
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(16 * var(--english-u));
   font-weight:820;
   line-height:1;
 }
@@ -344,7 +339,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   align-items:center;
   justify-content:space-between;
   width:100%;
-  height:calc(66 * var(--english-u));
+  height:calc(56 * var(--english-u));
   min-height:0;
   padding:0 calc(24 * var(--english-u));
   border:calc(2 * var(--english-u)) solid #ffd95a;
@@ -356,8 +351,8 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
     0 calc(9 * var(--english-u)) calc(8 * var(--english-u)) rgba(255,207,79,.48),
     inset 0 calc(2 * var(--english-u)) calc(3 * var(--english-u)) rgba(255,255,202,.95),
     inset 0 calc(-5 * var(--english-u)) calc(5 * var(--english-u)) rgba(210,111,0,.18);
-  font-family:"Home Rounded",ResultBody,ui-rounded,sans-serif;
-  font-size:calc(24 * var(--english-u));
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(22 * var(--english-u));
   font-weight:850;
   line-height:1;
   text-align:left;

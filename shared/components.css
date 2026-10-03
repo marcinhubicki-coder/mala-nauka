@@ -1,0 +1,51 @@
+/* The common contract. A mode supplies color and artwork; components own geometry. */
+:root{--ds-font-body:"MN Body",sans-serif;--ds-font-ui:"MN UI",sans-serif;--ds-font-display:"MN Display",sans-serif;--ds-font-flag:"MN Flag",sans-serif}
+html{font-family:var(--ds-font-body)}
+#app{--ds-u:min(calc(100vw / 390),calc(480px / 390));color:var(--ds-color-ink,#09043f);--accent:var(--ds-theme-accent,#ff168b)}
+#app[data-view="wizard"][data-mode]{
+ --ds-u:min(calc(100vw / var(--ds-layout-canvas-width)),calc(480px / var(--ds-layout-canvas-width)),calc((var(--app-viewport-height,100dvh) - var(--app-safe-top,0px) - var(--app-safe-bottom,0px)) / 755));
+ --wizard-u:var(--ds-u);--english-u:var(--ds-u);--reading-u:var(--ds-u);
+ --jelly-active-ink:var(--ds-theme-active-ink);--jelly-idle-ink:var(--ds-theme-idle-ink);
+ --jelly-top:var(--ds-theme-light);--jelly-bottom:var(--ds-theme-accent);--jelly-border-color:var(--ds-theme-border);
+ --wizard-jelly-fill:linear-gradient(180deg,var(--ds-theme-light),var(--ds-theme-middle) 30%,var(--ds-theme-accent) 79%,var(--ds-theme-bottom));
+ --wizard-cta-fill:linear-gradient(165deg,var(--ds-theme-light),var(--ds-theme-accent) 57%,var(--ds-theme-bottom));
+ --wizard-cta-border:var(--ds-theme-border);--wizard-cta-lip:var(--ds-theme-lip);--wizard-cta-shadow:var(--ds-theme-border);--wizard-cta-shine:var(--ds-theme-shine);--wizard-cta-depth:var(--ds-theme-depth);
+}
+#app[data-view="wizard"][data-mode][data-ds] :is(.spelling-wizard-canvas,.english-wizard-canvas,.reading-wizard-canvas,.flag-wizard-canvas){width:calc(var(--ds-layout-canvas-width) * var(--ds-u));max-width:100%;padding-left:calc(var(--ds-layout-side-padding) * var(--ds-u));padding-right:calc(var(--ds-layout-side-padding) * var(--ds-u));padding-top:max(calc(var(--ds-layout-safe-top) * var(--ds-u)),var(--app-safe-top,0px));padding-bottom:max(calc(var(--ds-layout-safe-bottom) * var(--ds-u)),var(--app-safe-bottom,0px));margin:0 auto}
+#app[data-view="wizard"][data-mode][data-ds] .page-head{height:calc(var(--ds-layout-header-height) * var(--ds-u));gap:calc(var(--ds-layout-header-gap) * var(--ds-u));margin-bottom:calc(var(--ds-layout-header-bottom) * var(--ds-u));padding-left:calc(6 * var(--ds-u))}
+#app[data-view="wizard"][data-mode][data-ds] .page-head h1{font-family:var(--ds-font-display);font-size:calc(25 * var(--ds-u));font-weight:700;line-height:1.1}
+#app[data-view="wizard"][data-mode][data-ds] .wizard-intro{height:calc(var(--ds-layout-mission-height) * var(--ds-u));margin-bottom:calc(var(--ds-layout-mission-bottom) * var(--ds-u))}
+#app[data-view="wizard"][data-mode][data-ds] .setup-card{border-width:calc(var(--ds-card-border-width) * var(--ds-u));border-radius:calc(var(--ds-card-radius) * var(--ds-u));padding:calc(var(--ds-card-padding-top) * var(--ds-u)) calc(var(--ds-card-padding-x) * var(--ds-u)) calc(var(--ds-card-padding-bottom) * var(--ds-u))}
+#app[data-view="wizard"][data-mode][data-ds] :is(.spelling-v2-section,.english-v2-section,.reading-v2-section,.flag-v2-section)+:is(.spelling-v2-section,.english-v2-section,.reading-v2-section,.flag-v2-section){margin-top:calc(var(--ds-layout-section-gap) * var(--ds-u))}
+#app[data-view="wizard"][data-mode][data-ds] :is(fieldset legend,.field-title){font-family:var(--ds-font-ui);font-size:calc(19.8 * var(--ds-u));font-weight:800;min-height:calc(31 * var(--ds-u));gap:calc(8 * var(--ds-u));margin-bottom:calc(8 * var(--ds-u));line-height:1.1;color:var(--ds-color-ink)}
+#app[data-view="wizard"][data-mode][data-ds] .step-dot{width:calc(31 * var(--ds-u));height:calc(31 * var(--ds-u));border-radius:50%;font-family:var(--ds-font-body);font-size:calc(19 * var(--ds-u));display:grid;place-items:center;background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);color:#0061d4}
+#app[data-view="wizard"][data-mode][data-ds] .ds-jelly,.ds-component-stage .ds-jelly{height:calc(var(--ds-jelly-height) * var(--ds-u,1px));min-height:0;border:calc(1 * var(--ds-u,1px)) solid #cbe5ff;border-radius:calc(var(--ds-jelly-radius) * var(--ds-u,1px))!important;background:linear-gradient(155deg,#fff,#f7fafc 80%,#f3f9fc);box-shadow:0 0 0 calc(.5 * var(--ds-u,1px)) #e0f5ff66,inset 0 calc(1 * var(--ds-u,1px)) calc(3 * var(--ds-u,1px)) #fff,0 calc(var(--ds-jelly-track-shadow-y) * var(--ds-u,1px)) calc(var(--ds-jelly-track-shadow-blur) * var(--ds-u,1px)) rgb(54 112 188 / var(--ds-jelly-track-shadow-opacity))}
+#app[data-view="wizard"][data-mode][data-ds] .ds-jelly .jelly-v4-indicator,.ds-component-stage .jelly-v4-indicator{top:calc(var(--ds-jelly-inset) * var(--ds-u,1px))!important;bottom:calc(var(--ds-jelly-inset) * var(--ds-u,1px))!important;border-radius:calc((var(--ds-jelly-radius) - 3) * var(--ds-u,1px))!important;background:var(--wizard-jelly-fill)!important;box-shadow:0 calc(3 * var(--ds-u,1px)) calc(5 * var(--ds-u,1px)) var(--ds-theme-depth),inset 0 calc(2 * var(--ds-u,1px)) calc(2 * var(--ds-u,1px)) var(--ds-theme-shine),inset 0 calc(-3 * var(--ds-u,1px)) calc(3 * var(--ds-u,1px)) var(--ds-theme-depth)!important}
+#app[data-view="wizard"][data-mode][data-ds] .ds-jelly label>span,.ds-component-stage .ds-jelly label>span{font-family:var(--ds-font-ui);font-size:calc(var(--ds-jelly-label-size) * var(--ds-u,1px));font-weight:var(--ds-jelly-label-weight);line-height:1;color:var(--jelly-idle-ink);padding:0 calc(4 * var(--ds-u,1px))}
+#app[data-view="wizard"][data-mode][data-ds] :is(.spelling-limit-mode,.flag-language-options){width:calc(var(--ds-toggle-width) * var(--ds-u));height:calc(var(--ds-toggle-height) * var(--ds-u));border-radius:calc(var(--ds-toggle-radius) * var(--ds-u))!important}
+#app[data-view="wizard"][data-mode][data-ds] :is(.spelling-limit-mode,.flag-language-options) label>span{font-size:calc(var(--ds-toggle-label-size) * var(--ds-u))}
+#app[data-view="wizard"][data-mode][data-ds] :is(.spelling-limit-mode,.flag-language-options) .jelly-v4-indicator{border-radius:calc((var(--ds-toggle-radius) - 3) * var(--ds-u))!important}
+#app[data-view="wizard"][data-mode][data-ds] .start-button,.ds-component-stage .start-button{width:100%;margin-left:0;height:calc(var(--ds-button-height) * var(--ds-u,1px));min-height:0;padding:0 calc(var(--ds-button-padding-x) * var(--ds-u,1px));border:calc(var(--ds-button-border-width) * var(--ds-u,1px)) solid var(--ds-theme-border);border-radius:calc(var(--ds-button-radius) * var(--ds-u,1px));font:800 calc(var(--ds-button-font-size) * var(--ds-u,1px))/1 var(--ds-font-ui);color:#fff;background:var(--wizard-cta-fill);justify-content:center;box-shadow:0 calc(var(--ds-button-shadow-y) * var(--ds-u,1px)) 0 var(--ds-theme-lip),0 calc(9 * var(--ds-u,1px)) calc(var(--ds-button-shadow-blur) * var(--ds-u,1px)) var(--ds-theme-border),inset 0 calc(2 * var(--ds-u,1px)) calc(3 * var(--ds-u,1px)) var(--ds-theme-shine),inset 0 calc(-5 * var(--ds-u,1px)) calc(5 * var(--ds-u,1px)) var(--ds-theme-depth)}
+#app[data-view="game"][data-mode][data-ds] .answers{gap:calc(var(--ds-answer-gap) * var(--ds-u));width:calc(var(--ds-answer-width-percent) * 1%);justify-self:center}
+#app[data-view="game"][data-mode][data-ds] .answer{min-height:calc(var(--ds-answer-height) * var(--ds-u));border-radius:calc(var(--ds-answer-radius) * var(--ds-u));padding-left:calc(var(--ds-answer-padding-x) * var(--ds-u));padding-right:calc(var(--ds-answer-padding-x) * var(--ds-u));font-size:calc(var(--ds-answer-font-size) * var(--ds-u));color:var(--ds-color-ink)}
+#app[data-view="game"][data-mode="english"][data-ds] .answer,#app[data-view="game"][data-mode="reading"][data-ds] .answer{font-size:calc(min(23,var(--ds-answer-font-size)) * var(--ds-u))}
+#app[data-view="game"][data-mode][data-ds] .answer.correct{color:var(--ds-color-correct)}
+#app[data-view="game"][data-mode][data-ds] .answer.wrong{color:var(--ds-color-wrong)}
+#app[data-view="game"][data-mode][data-ds] :is(.question-card,.spelling-question-card){border-radius:calc(var(--ds-flashcard-radius) * var(--ds-u))}
+#app[data-view="game"][data-mode="english"][data-ds] .question-card,#app[data-view="game"][data-mode="reading"][data-ds] .question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
+#app[data-view="game"][data-mode][data-ds] .spelling-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
+#app[data-view="game"][data-mode][data-ds] .continue-handle{width:calc(var(--ds-slider-handle-size) * var(--ds-u));height:calc(var(--ds-slider-handle-size) * var(--ds-u))}
+dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-height:calc(var(--ds-popup-max-height-percent) * 1dvh)}
+#modal{padding:calc(var(--ds-popup-padding) * 1px)}
+#app[data-ds] progress{height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
+#app[data-ds] .player-grid{gap:calc(var(--ds-profile-gap) * var(--ds-u))}
+#app[data-ds] .player-card{border-radius:calc(var(--ds-profile-radius) * var(--ds-u));padding:calc(var(--ds-profile-padding) * var(--ds-u))}
+#app[data-ds] .player-avatar-large{width:calc(var(--ds-profile-avatar-size) * var(--ds-u));height:calc(var(--ds-profile-avatar-size) * var(--ds-u))}
+#app[data-ds] .progress-trophy{width:calc(var(--ds-trophy-size) * var(--ds-u));height:calc(var(--ds-trophy-size) * var(--ds-u));object-fit:contain}
+#app[data-ds] .progress-trophies{gap:calc(var(--ds-trophy-gap) * var(--ds-u))}
+.ds-component-stage{--ds-u:1px;--jelly-active-ink:var(--ds-theme-active-ink);--jelly-idle-ink:var(--ds-theme-idle-ink);--jelly-border-color:var(--ds-theme-border);--wizard-jelly-fill:linear-gradient(var(--ds-theme-light),var(--ds-theme-accent));--wizard-cta-fill:linear-gradient(165deg,var(--ds-theme-light),var(--ds-theme-accent));font-family:var(--ds-font-ui)}
+.ds-component-stage .ds-jelly{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;position:relative}
+.ds-component-stage .ds-jelly label{display:grid;place-items:center;position:relative;z-index:1;cursor:pointer}
+.ds-component-stage .ds-jelly input{position:absolute;opacity:0;width:1px;height:1px}
+.ds-component-stage .jelly-v4-indicator{position:absolute}
+@media(prefers-reduced-motion:reduce){#app[data-ds] *{scroll-behavior:auto}}

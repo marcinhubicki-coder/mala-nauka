@@ -6,7 +6,8 @@ export function dragFraction(start, current, travel) {
   return travel > 0 ? Math.max(0, Math.min(1, (current - start) / travel)) : 0;
 }
 export function completedDrag(fraction, distance) {
-  return fraction >= .96 && distance >= 24;
+  const threshold=(globalThis.__MALA_NAUKA_DESIGN__?.tokens?.slider?.threshold??96)/100;
+  return fraction >= threshold && distance >= 24;
 }
 
 export function createContinueDrag(rail, { canContinue, onComplete, completionDelay=240 }) {

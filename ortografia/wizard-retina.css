@@ -19,7 +19,7 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
   display:block;
   width:100%;max-width:none;margin:0;padding:0!important;
   overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
-  color:#09043f;font-family:ResultBody,ui-rounded,sans-serif;
+  color:#09043f;font-family:var(--ds-font-body),ui-rounded,sans-serif;
   background:transparent;
 }
 #app[data-mode="spelling"][data-view="wizard"]::-webkit-scrollbar { display:none; }
@@ -28,7 +28,7 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
   padding:max(calc(47 * var(--wizard-u)),var(--wizard-safe-top)) calc(14 * var(--wizard-u)) max(calc(26 * var(--wizard-u)),var(--wizard-safe-bottom));
 }
 #app[data-mode="spelling"][data-view="wizard"] .page-head { height:calc(43 * var(--wizard-u));gap:calc(13 * var(--wizard-u));margin:0 0 calc(21 * var(--wizard-u));padding-left:calc(6 * var(--wizard-u)); }
-#app[data-mode="spelling"][data-view="wizard"] .page-head h1 { color:#09043f;font-family:ResultDisplay,ui-rounded,sans-serif;font-size:calc(25 * var(--wizard-u));font-weight:700;letter-spacing:calc(-.8 * var(--wizard-u));line-height:1.1; }
+#app[data-mode="spelling"][data-view="wizard"] .page-head h1 { color:#09043f;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-size:calc(25 * var(--wizard-u));font-weight:700;letter-spacing:calc(-.8 * var(--wizard-u));line-height:1.1; }
 #app[data-mode="spelling"][data-view="wizard"] .page-head .icon { width:calc(43 * var(--wizard-u));height:calc(43 * var(--wizard-u));min-width:38px;min-height:38px;border:1px solid #ffffffdf;border-radius:calc(16 * var(--wizard-u));background:linear-gradient(140deg,#fff,#f8fcff);color:#09043f;font-size:calc(30 * var(--wizard-u));box-shadow:0 calc(5 * var(--wizard-u)) calc(10 * var(--wizard-u)) #2672ae1a; }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro {
   position:relative;isolation:isolate;height:calc(94 * var(--wizard-u));
@@ -36,7 +36,7 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 }
 .spelling-mission-art { position:absolute;z-index:-1;left:0;bottom:calc(-8.5 * var(--wizard-u));display:block;width:100%;height:auto;pointer-events:none;user-select:none;clip-path:inset(-100% 0 calc(8.5 * var(--wizard-u)) round 0 0 calc(24 * var(--wizard-u)) calc(24 * var(--wizard-u))); }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro > div { width:calc(154 * var(--wizard-u));margin-left:calc(92 * var(--wizard-u)); }
-#app[data-mode="spelling"][data-view="wizard"] .wizard-intro h2 { font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(20 * var(--wizard-u));font-weight:800;color:#09043f;letter-spacing:calc(-.25 * var(--wizard-u));white-space:nowrap; }
+#app[data-mode="spelling"][data-view="wizard"] .wizard-intro h2 { font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-size:calc(20 * var(--wizard-u));font-weight:800;color:#09043f;letter-spacing:calc(-.25 * var(--wizard-u));white-space:nowrap; }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-intro p { font-size:calc(12.8 * var(--wizard-u));color:#3c458b;margin-top:calc(5 * var(--wizard-u));white-space:nowrap; }
 #app[data-mode="spelling"][data-view="wizard"] .setup-form { margin:0; }
 #app[data-mode="spelling"][data-view="wizard"] .setup-card.spelling-wizard-v2 {
@@ -48,9 +48,9 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .spelling-v2-section + .spelling-v2-section { margin-top:calc(18 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-v2-section legend {
   height:calc(31 * var(--wizard-u));gap:calc(8 * var(--wizard-u));margin-bottom:calc(8 * var(--wizard-u));
-  font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(19.8 * var(--wizard-u));font-weight:800;color:#09043f;line-height:1.1;letter-spacing:calc(-.25 * var(--wizard-u));
+  font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-size:calc(19.8 * var(--wizard-u));font-weight:800;color:#09043f;line-height:1.1;letter-spacing:calc(-.25 * var(--wizard-u));
 }
-#app[data-mode="spelling"][data-view="wizard"] .step-dot { flex:none;width:calc(31 * var(--wizard-u));height:calc(31 * var(--wizard-u));border-radius:50%;font-family:ResultBody,sans-serif;font-size:calc(19 * var(--wizard-u));font-weight:950;color:#0061d4;background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);border:1px solid #d2f3ff;box-shadow:inset 0 0 calc(5 * var(--wizard-u)) #ffffffba; }
+#app[data-mode="spelling"][data-view="wizard"] .step-dot { flex:none;width:calc(31 * var(--wizard-u));height:calc(31 * var(--wizard-u));border-radius:50%;font-family:var(--ds-font-body),sans-serif;font-size:calc(19 * var(--wizard-u));font-weight:950;color:#0061d4;background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);border:1px solid #d2f3ff;box-shadow:inset 0 0 calc(5 * var(--wizard-u)) #ffffffba; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-segmented {
   height:calc(54 * var(--wizard-u));min-height:0;
   border:calc(1 * var(--wizard-u)) solid #cbe5ff;
@@ -64,12 +64,12 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
   box-shadow:0 calc(3 * var(--wizard-u)) calc(5 * var(--wizard-u)) #8c164e38,inset 0 calc(2 * var(--wizard-u)) calc(2 * var(--wizard-u)) #ffedf7,inset 0 calc(-3 * var(--wizard-u)) calc(3 * var(--wizard-u)) #b6006338!important;
 }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-v2-choice span,
-#app[data-mode="spelling"][data-view="wizard"] .spelling-time-choice span { font-family:"Home Rounded",ResultBody,sans-serif;font-weight:800;font-size:calc(16.8 * var(--wizard-u));color:#515c98;line-height:1; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-time-choice span { font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-weight:800;font-size:calc(16.8 * var(--wizard-u));color:#515c98;line-height:1; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-v2-level-grid .spelling-v2-choice span,
 #app[data-mode="spelling"][data-view="wizard"] .spelling-time-choice span { font-size:calc(15.2 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-toggle { margin-top:calc(12 * var(--wizard-u));gap:calc(10 * var(--wizard-u));min-height:calc(42 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy { color:#09043f;gap:calc(3 * var(--wizard-u)); }
-#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy strong { font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(16.8 * var(--wizard-u));font-weight:800; }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy strong { font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-size:calc(16.8 * var(--wizard-u));font-weight:800; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-copy small { font-size:calc(11.7 * var(--wizard-u));color:#6a73af; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-control { width:64px;flex-basis:64px;height:36px;border-color:#d2e2ff;border-radius:18px;background:#e4edfb;transition:background-color .24s ease,border-color .24s ease; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-knob { top:3px;left:3px;width:28px;height:28px;border:1px solid #fff;border-radius:50%;background:linear-gradient(130deg,#fff,#fff3fa);box-shadow:0 2px 4px #56407226;transform:translateX(0);animation:none;transition:transform .24s cubic-bezier(.2,.75,.25,1);will-change:auto; }
@@ -88,11 +88,11 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode .jelly-v4-indicator { border-radius:calc(11 * var(--wizard-u))!important; }
 #app[data-mode="spelling"][data-view="wizard"] .spelling-limit-mode .spelling-v2-choice span { font-size:calc(11.5 * var(--wizard-u));padding:0; }
 #app[data-mode="spelling"][data-view="wizard"] [data-round-options][hidden] { display:none!important; }
-#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-time-copy { color:#fff;font-family:"Home Rounded",ResultBody,sans-serif;font-size:calc(17 * var(--wizard-u)); }
+#app[data-mode="spelling"][data-view="wizard"] .spelling-dyktando-time-copy { color:#fff;font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-size:calc(17 * var(--wizard-u)); }
 #app[data-mode="spelling"][data-view="wizard"] .wizard-note { margin:calc(15 * var(--wizard-u)) 0 calc(13 * var(--wizard-u));font-size:calc(12 * var(--wizard-u));line-height:1.4;white-space:nowrap;color:#3c4c8b; }
 #app[data-mode="spelling"][data-view="wizard"] .start-button {
   position:relative;isolation:isolate;height:calc(71 * var(--wizard-u));min-height:0;padding:0 calc(25 * var(--wizard-u));border:calc(2 * var(--wizard-u)) solid #ffa6cf;border-radius:calc(34 * var(--wizard-u));
-  font-family:"Home Rounded",ResultBody,sans-serif;font-weight:800;font-size:calc(30 * var(--wizard-u));line-height:1;color:#fff;
+  font-family:var(--ds-font-ui),var(--ds-font-body),sans-serif;font-weight:800;font-size:calc(30 * var(--wizard-u));line-height:1;color:#fff;
   background:linear-gradient(165deg,#ff6dae,#ff218f 57%,#ff3095);
   box-shadow:0 calc(4 * var(--wizard-u)) 0 #be287d,0 calc(9 * var(--wizard-u)) calc(7 * var(--wizard-u)) #ffd0e8,inset 0 calc(2 * var(--wizard-u)) calc(3 * var(--wizard-u)) #ffd3e6,inset 0 calc(-5 * var(--wizard-u)) calc(5 * var(--wizard-u)) #d0157d55;
 }

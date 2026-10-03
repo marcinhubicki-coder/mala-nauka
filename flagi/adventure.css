@@ -1,11 +1,9 @@
-@font-face{font-family:Flag Display;src:url('../assets/fonts/fredoka-polish-v1.woff') format('woff');font-weight:300 700;font-display:swap}
-@font-face{font-family:Flag Body;src:url('../assets/fonts/nunito-variable.woff') format('woff');font-weight:200 1000;font-display:swap}
 /* Shared dimensions keep every question, feedback and language in the same rows. */
 #app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"]){
  --flag-u:min(calc(100vw / 390),calc(480px / 390));--flag-ink:#111341;
  --jelly-top:#ecfff0;--jelly-bottom:#a4e6bc;--jelly-border-color:#7cc895;--jelly-shadow:#187e4230;--jelly-active-ink:#096345;--jelly-idle-ink:#666c8e;
  width:100%;max-width:480px;margin:auto;color:var(--flag-ink);background:transparent;
- font-family:Flag Body,ui-rounded,sans-serif;isolation:isolate;
+ font-family:var(--ds-font-body),ui-rounded,sans-serif;isolation:isolate;
 }
 body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"])) {position:relative;isolation:isolate}
 body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[data-view="results"]))::before{
@@ -17,7 +15,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
  background:linear-gradient(transparent calc(100vw - 80px),#72c8f6 calc(100vw - 1px)),url('../assets/flags/adventure/sky-retina-v1.webp') center top / 100% auto no-repeat;
 }
 #app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"]){padding:max(22px,calc(var(--app-safe-top) + 8px)) calc(18 * var(--flag-u)) max(38px,var(--app-safe-bottom))!important}
-#app[data-mode="flags"] .page-head h1,#app[data-mode="flags"] .wizard-intro h2,#app[data-mode="flags"] legend,#app[data-mode="flags"] .timer,#app[data-mode="flags"] .start-button,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name,#app[data-mode="flags"] .flag-adventure-country,#app[data-mode="flags"] .flag-adventure-capital-question{font-family:Flag Display,ui-rounded,sans-serif;font-weight:700;letter-spacing:-.5px}
+#app[data-mode="flags"] .page-head h1,#app[data-mode="flags"] .wizard-intro h2,#app[data-mode="flags"] legend,#app[data-mode="flags"] .timer,#app[data-mode="flags"] .start-button,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name,#app[data-mode="flags"] .flag-adventure-country,#app[data-mode="flags"] .flag-adventure-capital-question{font-family:var(--ds-font-flag),ui-rounded,sans-serif;font-weight:700;letter-spacing:-.5px}
 #app[data-mode="flags"][data-view="wizard"]{display:grid;grid-template-rows:48px 110px minmax(0,1fr);gap:16px;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
 #app[data-mode="flags"][data-view="wizard"]::-webkit-scrollbar{display:none}
 #app[data-mode="flags"] .page-head{margin:0;gap:12px;align-items:center}
@@ -130,7 +128,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"]:has(.question-card.wrong) .feedback [data-action="next"]{position:relative;width:100%;height:46px;min-height:46px;margin:auto 0 0;padding:8px 20px;border:3px solid #fff9e9;border-radius:30px;background:linear-gradient(120deg,#eefbe7,#bce6ca);box-shadow:inset 0 2px 4px #fff9,0 4px 8px #71875830;color:#116843;font:900 18px Flag Body;opacity:1;visibility:visible;pointer-events:auto;transform:none}
 #app[data-mode="flags"][data-view="results"]{overflow-y:auto}
 #app[data-mode="flags"] .result{padding:20px 15px;gap:8px}
-#app[data-mode="flags"] .result h1{font-family:Flag Display;color:#14283d;text-shadow:0 1px 8px #fff}
+#app[data-mode="flags"] .result h1{font-family:var(--ds-font-flag);color:#14283d;text-shadow:0 1px 8px #fff}
 #app[data-mode="flags"] .result>.stats{margin:12px 0}
 #app[data-mode="flags"] .stat{background:#fff9e6eb;border:2px solid #fff;border-radius:24px}
 @media(max-height:780px){
@@ -149,7 +147,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 @media(prefers-reduced-motion:reduce){#app[data-mode="flags"] .flag-adventure-map,#app[data-mode="flags"] .answers .answer{animation:none!important;transition:none!important}}
 
 /* Cloth reference composition: fixed slots keep the flag, title and capital still. */
-#app[data-mode="flags"][data-view="game"] .timer,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name{font-family:Flag Body,ui-rounded,sans-serif;font-weight:850}
+#app[data-mode="flags"][data-view="game"] .timer,#app[data-mode="flags"] .flag-answer-label,#app[data-mode="flags"] .flag-adventure-name{font-family:var(--ds-font-body),ui-rounded,sans-serif;font-weight:850}
 #app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-adventure-details{top:19px;left:8px;right:auto;width:49%;z-index:4}
 #app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-adventure-name{height:62px;display:flex;flex-direction:column;justify-content:center;text-align:left}
 #app[data-mode="flags"] .question-card:is(.correct,.flag-reference-scene) .flag-adventure-capital{display:flex;margin-top:3px;font-weight:600;background:#fff0d3db;border-radius:4px;padding:4px 6px;min-height:29px}
@@ -162,7 +160,7 @@ body:has(#app[data-mode="flags"]:is([data-view="wizard"],[data-view="game"],[dat
 #app[data-mode="flags"] .time-block small{font-size:13px;font-weight:550}
 #app[data-mode="flags"][data-view="game"] progress{width:calc(100% - 34px);margin-inline:17px;height:8px}
 #app[data-mode="flags"] .question-card{width:calc(100% - 12px);justify-self:center}
-#app[data-mode="flags"] .prompt{font-family:Flag Body,ui-rounded,sans-serif;font-size:18px;font-weight:850}
+#app[data-mode="flags"] .prompt{font-family:var(--ds-font-body),ui-rounded,sans-serif;font-size:18px;font-weight:850}
 #app[data-mode="flags"] .answers,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers{height:162px;min-height:162px;max-height:162px;grid-template-rows:repeat(2,76px);gap:10px 12px}
 #app[data-mode="flags"] .answers .answer,#app[data-mode="flags"] .answers .answer.flag-option-answer,#app[data-mode="flags"][data-flag-game-variant="countries"] .answers .answer{height:76px;min-height:76px;max-height:76px}
 #app[data-mode="flags"] .feedback>p{font-size:13px;font-weight:550;padding:8px 12px}

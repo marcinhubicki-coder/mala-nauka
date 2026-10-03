@@ -1,4 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
 
 const STORAGE_KEY = 'malaNauka.v1.flagsLanguage';
 const STYLE_ID = 'flags-language-toggle-styles';
@@ -6,6 +7,8 @@ const byId = new Map(FLAGS.map(flag => [flag.id, flag]));
 const byPl = new Map(FLAGS.map(flag => [flag.country.toLocaleLowerCase('pl-PL'), flag]));
 const byEn = new Map(FLAGS.map(flag => [flag.countryEn.toLocaleLowerCase('en-US'), flag]));
 let language = readLanguage();
+const languageJelly = createJellyV4({ indicatorSelector: '.flag-language-indicator' });
+let suppressLanguageClickUntil = 0;
 
 function readLanguage() {
   try {
@@ -93,9 +96,21 @@ function ensureToggle(root) {
   if (root.dataset.mode !== 'flags') return;
 
   if (root.dataset.view === 'wizard') {
-    const form = root.querySelector('#setup-form');
-    if (form && !form.querySelector('[data-flag-language]')) {
-      form.insertAdjacentHTML('beforeend', '<div class="flag-language-options" role="group" aria-label="Język nazw krajów"><button type="button" data-flag-language="pl"><img src="assets/flags/svg/pl.svg" alt="" width="28" height="28"><span>PL</span></button><button type="button" data-flag-language="en"><img src="assets/flags/svg/gb.svg" alt="" width="28" height="28"><span>EN</span></button></div>');
+    const section = root.querySelector('.flag-v2-game');
+    if (section && !section.querySelector('.flag-language-options')) {
+      section.querySelector('legend').insertAdjacentHTML('afterend', '<div class="flag-language-options" role="radiogroup" aria-label="Język nazw krajów"><i class="flag-language-indicator" aria-hidden="true"></i><label data-flag-language="pl"><input type="radio" name="flagLanguage" value="pl" aria-label="Nazwy krajów po polsku"><span>PL</span></label><label data-flag-language="en"><input type="radio" name="flagLanguage" value="en" aria-label="Country names in English"><span>EN</span></label></div>');
+      const toggle = section.querySelector('.flag-language-options');
+      languageJelly.setupDrag(toggle, {
+        getActiveIndex: () => language === 'en' ? 1 : 0,
+        commitIndex: index => setLanguage(index === 1 ? 'en' : 'pl'),
+        suppressClick: ms => { suppressLanguageClickUntil = performance.now() + ms; }
+      });
+    }
+    const toggle = section?.querySelector('.flag-language-options');
+    if (toggle) {
+      const index = language === 'en' ? 1 : 0;
+      toggle.querySelectorAll('input').forEach(input => { input.checked = input.value === language; });
+      if (toggle.dataset.activeIndex !== String(index)) languageJelly.update(toggle, index, { animate: toggle.dataset.activeIndex !== undefined });
     }
   }
 
@@ -115,8 +130,6 @@ function ensureToggle(root) {
 
   root.querySelectorAll('[data-flag-language]').forEach(button => {
     if (button.closest('.flag-language-options')) {
-      button.setAttribute('aria-pressed',String(button.dataset.flagLanguage===language));
-      button.setAttribute('aria-label',button.dataset.flagLanguage==='pl'?'Nazwy krajów po polsku':'Country names in English');
       return;
     }
     const code = language.toUpperCase();
@@ -213,8 +226,16 @@ document.addEventListener('click', event => {
   const button = event.target.closest?.('[data-flag-language]');
   if (!button) return;
   event.preventDefault();
+  if (button.closest('.flag-language-options') && performance.now() < suppressLanguageClickUntil) return;
   if(button.dataset.flagLanguage)setLanguage(button.dataset.flagLanguage);
   else toggleLanguage();
+});
+document.addEventListener('change', event => {
+  if (event.target?.name === 'flagLanguage') setLanguage(event.target.value);
+});
+window.addEventListener('resize', () => {
+  const toggle = document.querySelector('#app[data-view="wizard"] .flag-language-options');
+  if (toggle) languageJelly.update(toggle, language === 'en' ? 1 : 0, { animate: false });
 });
 
 const observer = new MutationObserver(() => queueMicrotask(() => refresh()));

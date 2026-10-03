@@ -307,7 +307,7 @@ function install(){
   <input type="hidden" name="difficulty" value="1">
 
   <fieldset class="flag-v2-section flag-v2-game">
-   <legend><span class="step-dot">1</span>Rodzaj rozgrywki</legend>
+   <legend><span class="step-dot">1</span>Co ćwiczymy?</legend>
    <div class="flag-v2-game-grid flag-segmented" data-segmented="game">${gameTypeChoices()}</div>
   </fieldset>
 

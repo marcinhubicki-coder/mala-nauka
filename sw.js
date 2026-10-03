@@ -1,8 +1,10 @@
-const CACHE='mala-nauka-v151-flags-setup-20261003';
+const CACHE='mala-nauka-v152-shared-wizard-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/setup-retina.css?v=5",
+  "./shared/wizard-controls.css?v=1",
+  "./shared/wizard-controls.css",
+  "./flagi/setup-retina.css?v=6-shared",
   "./flagi/setup-retina.css",
   "./assets/flags/adventure/setup-scene-v1.webp",
   "./assets/flags/adventure/paper-v3-detail.svg",
@@ -764,7 +766,7 @@ const CORE=[
   "./debug-tools.js?v=7",
   "./flagi/",
   "./flagi/adaptive-difficulty.mjs",
-  "./flagi/adaptive-difficulty.mjs?v=16",
+  "./flagi/adaptive-difficulty.mjs?v=17-language",
   "./flagi/europe-map.js",
   "./flagi/europe-map.js?v=7",
   "./flagi/feedback-transition.js",
@@ -774,7 +776,7 @@ const CORE=[
   "./flagi/game-variants.mjs",
   "./flagi/game-variants.mjs?v=16",
   "./flagi/index.html",
-  "./flagi/language-toggle.mjs?v=2-outside-hero",
+  "./flagi/language-toggle.mjs?v=3-inline-jelly",
   "./flagi/map-layout.css",
   "./flagi/map-layout.css?v=20260930-release",
   "./flagi/map-microstates.js",

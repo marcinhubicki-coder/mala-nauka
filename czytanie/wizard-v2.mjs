@@ -134,6 +134,8 @@ function updateStartButton(animate=false){
   copy=button.querySelector('[data-start-copy]');
  }
  const next=START_COPY[state.duration]||'Zaczynamy!';
+ const arrow=button.lastElementChild;
+ if(arrow&&!arrow.querySelector('svg'))arrow.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7"/></svg>';
  if(copy.textContent!==next){
   copy.textContent=next;
   if(animate){
@@ -155,6 +157,7 @@ function syncTrainingUI(animate=false){
  if(levelWrap){
   levelWrap.classList.toggle('is-hidden',state.training==='memory');
   levelWrap.setAttribute('aria-hidden',state.training==='memory'?'true':'false');
+  levelWrap.inert=state.training==='memory';
  }
  const timeStep=form.querySelector('[data-time-step]');
  if(timeStep)timeStep.textContent=state.training==='memory'?'2':'3';
@@ -222,6 +225,12 @@ function install(){
   '<p class="wizard-note reading-hint"></p>'+
   '<p id="setup-error" role="status" hidden></p>'+
   '<button class="primary start-button" type="submit"><span data-start-copy>Zaczynamy!</span><span aria-hidden="true">→</span></button>';
+ const canvas=document.createElement('div');canvas.className='reading-wizard-canvas';
+ while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
+ const back=root.querySelector('.page-head .icon');if(back)back.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>';
+ const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
+ if(intro){const art=document.createElement('img');art.className='reading-mission-art';art.src=new URL('../assets/czytanie/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=2048;art.height=733;intro.prepend(art);}
+ const theme=document.querySelector('meta[name="theme-color"]');if(theme)theme.content='#65c8f4';
  updateStartButton(false);
  syncTrainingUI(false);
  requestAnimationFrame(()=>{syncSegments(false);installDrag()});
@@ -229,7 +238,8 @@ function install(){
 
 root?.addEventListener('click',event=>{
  if(root.dataset.mode!=='reading'||root.dataset.view!=='wizard')return;
- const label=event.target.closest('.reading-segmented > label');
+ const buffer=event.target.closest('.jelly-v4-buffer');
+ const label=event.target.closest('.reading-segmented > label')||[...(buffer?.querySelectorAll('.reading-segmented > label')||[])].find(node=>{const r=node.getBoundingClientRect();return event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom;});
  if(!label)return;
  event.preventDefault();
  if(performance.now()<suppressClickUntil){

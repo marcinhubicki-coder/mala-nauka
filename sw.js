@@ -1,7 +1,15 @@
-const CACHE='mala-nauka-v130-english-boy-lamp-20261003';
+const CACHE='mala-nauka-v131-english-reading-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
+  "./czytanie/wizard-retina.css?v=3",
+  "./czytanie/wizard-v2.mjs?v=5-retina",
+  "./czytanie/wizard-preview.html",
+  "./czytanie/wizard-preview-frame.html",
+  "./assets/czytanie/wizard-park-retina-v1.webp",
+  "./assets/czytanie/wizard-mission-retina-v1.webp",
+  "./shared/jelly-v4.mjs?v=3",
+  "./ui-retina.css?v=2-polish",
   "./assets/angielski/wizard-boy-retina-v3.webp",
   "./assets/angielski/wizard-lamp-mask-v3.svg",
   "./shared/jelly-v4.mjs?v=4-tap-target",

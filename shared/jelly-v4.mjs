@@ -209,7 +209,7 @@ export function createJellyV4({indicatorSelector}={}){
   const strength=clamp(.10*params.motion.magnet*proximity*proximity,0,.42);
   return clamp(progress+delta*strength,0,count-1);
  }
- function setupDrag(container,{getActiveIndex,commitIndex,suppressClick,canDrag}={}){
+ function setupDrag(container,{getActiveIndex,commitIndex,suppressClick,canDrag,captureOnDrag=false}={}){
   if(!container||container.dataset.jellyV4DragReady==='true')return;
   container.dataset.jellyV4DragReady='true';
   const active=Number(getActiveIndex?.()??0);
@@ -230,7 +230,9 @@ export function createJellyV4({indicatorSelector}={}){
     startTime:now,lastTime:now,activeIndex,tapIndex,progress:activeIndex,direction:0,dragging:false
    });
    buffer.classList.add('is-grabbed');
-   try{buffer.setPointerCapture(event.pointerId);}catch{}
+   // Capturing a tap on the buffer retargets its native click away from the
+   // label. English opts into capture after the drag threshold instead.
+   if(!captureOnDrag){try{buffer.setPointerCapture(event.pointerId);}catch{}}
   });
 
   buffer.addEventListener('pointermove',event=>{
@@ -239,6 +241,7 @@ export function createJellyV4({indicatorSelector}={}){
    if(!d.dragging){
     if(Math.abs(dx)>5||(elapsed>115&&Math.abs(dx)>2)){
      d.dragging=true;
+     if(captureOnDrag){try{buffer.setPointerCapture(event.pointerId);}catch{}}
      suppressClick?.(520);
     }else{
      d.lastX=event.clientX;d.lastY=event.clientY;d.lastTime=performance.now();return;

@@ -1,4 +1,4 @@
-import { createJellyV4 } from '../shared/jelly-v4.mjs?v=1';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=4-tap-target';
 
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.englishWizardV2';
@@ -383,6 +383,7 @@ function applySegmentSelection(input){
 function setupDrag(container){
  if(!container||container.dataset.jellyV4DragReady==='true')return;
  jellyV4.setupDrag(container,{
+  captureOnDrag:true,
   getActiveIndex:()=>activeIndexFor(container),
   commitIndex:index=>{
    const list=[...container.querySelectorAll(':scope > label')];

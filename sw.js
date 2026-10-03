@@ -1,7 +1,8 @@
-const CACHE='mala-nauka-v127-english-depth-refined-20261003';
+const CACHE='mala-nauka-v128-english-tap-target-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
+  "./shared/jelly-v4.mjs?v=4-tap-target",
   "./assets/angielski/wizard-london-retina-v2.webp",
   "./assets/angielski/wizard-mission-retina-v2.webp",
   "./ortografia/wizard-preview.html",
@@ -22,7 +23,7 @@ const CORE=[
   "./angielski/wizard-retina.css",
   "./angielski/wizard-retina.css?v=12-depth-refined",
   "./angielski/wizard-v2.mjs",
-  "./angielski/wizard-v2.mjs?v=10-depth",
+  "./angielski/wizard-v2.mjs?v=11-tap-target",
   "./angielski/word-exposure.js",
   "./angielski/word-exposure.js?v=1",
   "./app.css",

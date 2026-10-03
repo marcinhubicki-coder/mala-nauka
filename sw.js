@@ -1,8 +1,8 @@
-const CACHE='mala-nauka-v150-flags-setup-20261003';
+const CACHE='mala-nauka-v151-flags-setup-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./flagi/setup-retina.css?v=4",
+  "./flagi/setup-retina.css?v=5",
   "./flagi/setup-retina.css",
   "./assets/flags/adventure/setup-scene-v1.webp",
   "./assets/flags/adventure/paper-v3-detail.svg",

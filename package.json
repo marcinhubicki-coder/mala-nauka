@@ -1,0 +1,9 @@
+{
+  "name": "mala-nauka-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build-design.mjs",
+    "design:check": "node tools/build-design.mjs --consumer"
+  }
+}

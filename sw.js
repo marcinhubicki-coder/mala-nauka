@@ -1,10 +1,10 @@
-const CACHE='mala-nauka-v152-shared-wizard-20261003';
+const CACHE='mala-nauka-v153-shared-wizard-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
-  "./shared/wizard-controls.css?v=1",
+  "./shared/wizard-controls.css?v=2",
   "./shared/wizard-controls.css",
-  "./flagi/setup-retina.css?v=6-shared",
+  "./flagi/setup-retina.css?v=7-shared",
   "./flagi/setup-retina.css",
   "./assets/flags/adventure/setup-scene-v1.webp",
   "./assets/flags/adventure/paper-v3-detail.svg",

@@ -94,3 +94,11 @@ body:has(#app[data-mode="flags"][data-view="wizard"])::after{display:none}
  #app[data-mode="flags"][data-view="wizard"] .flag-segmented{--flag-segment-height:49px}
 }
 @media(prefers-reduced-motion:reduce){#app[data-mode="flags"][data-view="wizard"] .start-button{animation:none;transition:none}}
+/* Grid items must be allowed to shrink below the hero artwork's intrinsic width. */
+#app[data-mode="flags"][data-view="wizard"]{grid-template-columns:minmax(0,1fr)}
+#app[data-mode="flags"][data-view="wizard"]>.wizard-intro,
+#app[data-mode="flags"][data-view="wizard"]>.setup-form{min-width:0;width:100%}
+#app[data-mode="flags"][data-view="wizard"] .setup-card,
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-section{min-width:0}
+#app[data-mode="flags"][data-view="wizard"] .page-head .icon{display:grid;place-items:center;line-height:1}
+#app[data-mode="flags"][data-view="wizard"] .page-head .icon svg{width:26px;height:26px}

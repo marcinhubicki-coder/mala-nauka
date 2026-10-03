@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "revision": 1,
-  "name": "Mała Nauka",
+  "name": "Ma\u0142a Nauka",
   "branch": "design/system-v1",
   "typography": {
     "body": "nunito",
@@ -58,12 +58,14 @@
       "borderWidth": 2
     },
     "answer": {
-      "height": 69,
+      "height": 95,
       "radius": 24,
       "gap": 12,
       "paddingX": 10,
       "fontSize": 34,
-      "widthPercent": 100
+      "widthPercent": 100,
+      "compactHeight": 69,
+      "compactFontSize": 23
     },
     "flashcard": {
       "radius": 27,

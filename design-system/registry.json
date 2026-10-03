@@ -16,84 +16,234 @@
       "name": "Płótno i odstępy",
       "tokenGroup": "layout",
       "selector": "[class$=\"wizard-canvas\"],.page-head",
-      "description": "Wspólna geometria ustawień; pionowy iPhone 13 Pro."
+      "description": "Wspólna geometria ustawień; pionowy iPhone 13 Pro.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
     },
     {
       "id": "card",
       "name": "Kafel ustawień",
       "tokenGroup": "card",
       "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
-      "description": "Jedna geometria i powierzchnia dla czterech trybów."
+      "description": "Jedna geometria i powierzchnia dla czterech trybów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
     },
     {
       "id": "jelly",
       "name": "Przełącznik jelly",
       "tokenGroup": "jelly",
       "selector": ".jelly-v4-container,.rules-views",
-      "description": "Przeciąganie lub wybór; kolor tekstu przełącza się z opóźnieniem."
+      "description": "Przeciąganie lub wybór; kolor tekstu przełącza się z opóźnieniem.",
+      "states": [
+        "idle",
+        "selected",
+        "dragging",
+        "disabled"
+      ],
+      "conditions": [
+        "Kliknięcie, drag i klawiatura wybierają dokładnie jedną opcję.",
+        "Natywny click obsługuje tap; drag tłumi późniejszy click."
+      ],
+      "variants": [
+        "pełny: ustawienia",
+        "mały: czas/słowa i PL/EN"
+      ]
     },
     {
       "id": "toggle",
       "name": "Mały toggle",
       "tokenGroup": "toggle",
       "selector": ".spelling-limit-mode,.flag-language-options,.pin-mode",
-      "description": "Dwie opcje; ta sama szerokość PL/EN i czasu/liczby słów."
+      "description": "Dwie opcje; ta sama szerokość PL/EN i czasu/liczby słów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
     },
     {
       "id": "button",
       "name": "Przycisk główny",
       "tokenGroup": "button",
       "selector": ".start-button,.player-continue,.math-start-button,.math-result-again,.result .primary,.spelling-result .result-collection",
-      "description": "Przed wyborem, wciśnięty, wyłączony i ukończony."
+      "description": "Przed wyborem, wciśnięty, wyłączony i ukończony.",
+      "states": [
+        "idle",
+        "pressed",
+        "disabled"
+      ],
+      "conditions": [
+        "CTA ustawień wymaga poprawnej konfiguracji.",
+        "Tworzenie gracza wymaga prawidłowej nazwy; PIN czterech cyfr, jeśli jest włączony."
+      ],
+      "variants": [
+        "jelly CTA",
+        "kontynuacja profilu",
+        "wyniki"
+      ]
     },
     {
       "id": "answer",
       "name": "Odpowiedź",
       "tokenGroup": "answer",
       "selector": ".answer,.answer-button",
-      "description": "Stan początkowy, poprawny, błędny i wyłączony."
+      "description": "Stan początkowy, poprawny, błędny i wyłączony.",
+      "states": [
+        "initial",
+        "correct",
+        "wrong",
+        "disabled"
+      ],
+      "conditions": [
+        "Wybór dostępny dopiero po prezentacji pytania.",
+        "Po odpowiedzi przyciski są zablokowane; poprawne oznaczenie nie jest stanem hover."
+      ],
+      "variants": [
+        "pełny: litery ortografii",
+        "kompaktowy: słowa, kraje i liczby"
+      ]
     },
     {
       "id": "flashcard",
       "name": "Fiszka",
       "tokenGroup": "flashcard",
       "selector": ".question-card,.spelling-question-card,.question-block",
-      "description": "Wersja płaska: angielski/czytanie; wzbogacona: ortografia/flagi."
+      "description": "Wersja płaska: angielski/czytanie; wzbogacona: ortografia/flagi.",
+      "states": [
+        "prompt",
+        "reveal",
+        "feedback"
+      ],
+      "conditions": [
+        "Pytanie i odpowiedź mają wspólną tożsamość.",
+        "Płaska fiszka pozostaje czytelna dla dłuższej treści; wzbogacona dodaje ilustrację."
+      ],
+      "variants": [
+        "płaska: angielski i czytanie",
+        "wzbogacona: ortografia i flagi"
+      ]
     },
     {
       "id": "slider",
       "name": "Przeciągnij dalej",
       "tokenGroup": "slider",
       "selector": ".spelling-continue-rail,.result-continue-rail",
-      "description": "Po błędzie zatrzymany czas; dalszy krok po osiągnięciu progu."
+      "description": "Po błędzie zatrzymany czas; dalszy krok po osiągnięciu progu.",
+      "states": [
+        "idle",
+        "dragging",
+        "spring-back",
+        "complete"
+      ],
+      "conditions": [
+        "Start gestu z uchwytu; klik toru nie kończy kroku.",
+        "Próg ukończenia i minimalny ruch 24 px; klawiatura Enter/Space/strzałka.",
+        "W grze widoczny po błędzie; na wynikach uruchamia następną rundę."
+      ],
+      "variants": [
+        "następne pytanie",
+        "następna runda"
+      ]
     },
     {
       "id": "popup",
       "name": "Popup / zasada",
       "tokenGroup": "popup",
       "selector": "dialog,.result-rule-dialog",
-      "description": "Zamykany popup; przewijanie dolnej części reguły."
+      "description": "Zamykany popup; przewijanie dolnej części reguły.",
+      "states": [
+        "closed",
+        "open",
+        "scrolling"
+      ],
+      "conditions": [
+        "Podpowiedź jest dostępna przed odpowiedzią.",
+        "Pauza zatrzymuje czas; wznowienie przywraca wcześniejszy stan.",
+        "Zasada dotyczy wybranego hasła i własnej ilustracji."
+      ],
+      "variants": [
+        "podpowiedź",
+        "pauza",
+        "zasada",
+        "ustawienia pomocnicze"
+      ]
     },
     {
       "id": "progress",
       "name": "Postęp i licznik",
       "tokenGroup": "progress",
       "selector": "progress,.round-progress,.math-round-progress",
-      "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie."
+      "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie.",
+      "states": [
+        "running",
+        "paused",
+        "finished"
+      ],
+      "conditions": [
+        "Błąd zatrzymuje czas.",
+        "Flagi wstrzymują zegar na czas prezentacji kraju i stolicy."
+      ],
+      "variants": [
+        "zegar rundy",
+        "podsumowanie"
+      ]
     },
     {
       "id": "profile",
       "name": "Profil i avatar",
       "tokenGroup": "profile",
       "selector": ".player-card,.player-avatar-large",
-      "description": "Wybór profilu, tworzenie, PIN i lokalne postępy."
+      "description": "Wybór profilu, tworzenie, PIN i lokalne postępy.",
+      "states": [
+        "empty",
+        "selected",
+        "locked",
+        "unlocked"
+      ],
+      "conditions": [
+        "PIN określa warunek wejścia do profilu.",
+        "Studio używa wyłącznie fikcyjnych profili i nie zapisuje wyników."
+      ],
+      "variants": [
+        "wybór",
+        "tworzenie",
+        "PIN"
+      ]
     },
     {
       "id": "trophy",
       "name": "Puchar",
       "tokenGroup": "trophy",
       "selector": ".progress-trophy",
-      "description": "Kolekcja i lista osiągnięć. Grafikę skalujemy proporcjonalnie."
+      "description": "Kolekcja i lista osiągnięć. Grafikę skalujemy proporcjonalnie.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
     }
   ],
   "views": [

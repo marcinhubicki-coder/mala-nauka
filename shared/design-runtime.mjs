@@ -1,4 +1,4 @@
-import {configCSS} from '../design-system/model.mjs';
+import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 const base = new URL('../', import.meta.url);
 let config;
@@ -27,10 +27,16 @@ export async function initDesign() {
   const app = document.getElementById('app');
   const annotate = () => {
     if (!app) return;
-    app.dataset.ds = '1';
-    for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) node.classList.add('ds-jelly');
+    if(app.dataset.ds!=='1')app.dataset.ds='1';
+    if(!new URLSearchParams(location.search).has('studio')){
+      const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
+      const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
+      const id=viewIdFor({view:app.dataset.view,mode:app.dataset.mode||'spelling',state,hasPlayers:Boolean(app.querySelector('.player-card')),historyState:app.dataset.historyState|| (app.querySelector('.progress-achievement-list')?'achievements':app.querySelector('.progress-category-list')?'categories':app.querySelector('.rules-views')?'rules':app.querySelector('.collection-word-grid')?'collection':'dashboard'),popup});
+      if(document.documentElement.dataset.dsView!==id)document.documentElement.dataset.dsView=id;
+    }
+    for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
   };
-  if (app) new MutationObserver(annotate).observe(app, {childList:true,subtree:true});
+  if (app) new MutationObserver(annotate).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
   annotate();
   return settings;
 }

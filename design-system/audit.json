@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-03T15:54:58.179Z",
+  "date": "2026-10-03T16:19:58.714Z",
   "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
   "cleanup": {
     "removedAssets": 28,
@@ -1266,12 +1266,12 @@
       "display"
     ]
   },
-  "cssBytes": 431912,
-  "jsBytes": 679386,
+  "cssBytes": 432441,
+  "jsBytes": 680818,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 65433
+      "bytes": 65110
     },
     {
       "path": "app.css",
@@ -1291,7 +1291,7 @@
     },
     {
       "path": "sw.js",
-      "bytes": 26841
+      "bytes": 27252
     },
     {
       "path": "ortografia/wizard-v2.mjs",
@@ -1303,7 +1303,7 @@
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 22672
+      "bytes": 22779
     },
     {
       "path": "angielski/wizard-v2.mjs",

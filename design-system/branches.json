@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "canonical": "design/system-v1",
+  "consumers": [
+    "design/english-v0.1",
+    "czytanie-v1",
+    "design/profile-and-learning-v5",
+    "design/spelling-v0.3-preview",
+    "design/flags-v0.1",
+    "matematyka-v1"
+  ],
+  "production": {
+    "branch": "main",
+    "state": "review-required"
+  },
+  "historical": "release/*, trigger-temp*, wcześniejsze tunery i próby: migawki Git, nie baza nowych prac"
+}

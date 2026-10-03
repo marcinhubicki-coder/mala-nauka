@@ -72,3 +72,13 @@ export function effectiveTokens(group){
  const view=globalThis.document?.documentElement?.dataset.dsView;
  return {...config?.tokens?.[group],...config?.overrides?.[view]?.[group]};
 }
+
+export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,historyState='dashboard',popup=''}){
+ if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup))return `spelling-${popup}`;
+ if(view==='wizard')return `${mode}-settings`;
+ if(view==='game')return `${mode}-${state==='feedback-correct'?'correct':state==='feedback-wrong'?'wrong':'initial'}`;
+ if(view==='results')return `${mode}-results`;
+ if(view==='players')return hasPlayers?'players':'players-empty';
+ if(view==='history')return ({dashboard:'progress',achievements:'trophies'})[historyState]||historyState;
+ return ['home','settings','player-create','player-pin'].includes(view)?view:'';
+}

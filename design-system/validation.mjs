@@ -4,7 +4,7 @@ export const FIELDS={
  card:['radius','paddingX','paddingTop','paddingBottom','borderWidth'],
  jelly:['height','radius','inset','labelSize','labelWeight','trackShadowY','trackShadowBlur','trackShadowOpacity','duration','inkDelay','inkDuration'],
  toggle:['width','height','radius','labelSize'],button:['height','radius','fontSize','paddingX','shadowY','shadowBlur','borderWidth'],
- answer:['height','radius','gap','paddingX','fontSize','widthPercent'],flashcard:['radius','padding','gap'],slider:['height','radius','handleSize','threshold'],
+ answer:['height','compactHeight','radius','gap','paddingX','fontSize','compactFontSize','widthPercent'],flashcard:['radius','padding','gap'],slider:['height','radius','handleSize','threshold'],
  popup:['radius','padding','maxHeightPercent'],progress:['height','radius','duration'],profile:['radius','gap','padding','avatarSize'],trophy:['size','gap'],
  space:['xs','sm','md','lg','xl','xxl'],color:['ink','muted','surface','correct','wrong']
 };

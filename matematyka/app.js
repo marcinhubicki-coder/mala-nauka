@@ -285,7 +285,7 @@ function hasVisualExplainer() {
 }
 
 function renderGame({ feedback = '', feedbackType = '' } = {}) {
-  app.dataset.mode='math';app.dataset.view='game';
+  app.dataset.mode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
   const q = state.question;
   if (!q) return;
   const showExplainer = hasVisualExplainer();

@@ -146,9 +146,10 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (document.body.classList.contains('keyboard')) nodes.answers[0].focus({ preventScroll: true });
   }
   function render(game) {
+    app.dataset.state=game.state;
     if (session !== game || !nodes?.word.isConnected) mount(game);
     if (shownQuestion !== game.question) {
-      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; present(game, first);
+      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; return present(game, first);
     } else if (shownState !== game.state && game.state.startsWith('feedback')) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');

@@ -343,8 +343,9 @@ document.addEventListener('mala-nauka:flag-presentation',event=>{
  if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
 });
 function renderGame() {
+ if(game)root.dataset.state=game.state;
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
- if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
+ if(game.mode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}
  const feedback=game.state.startsWith('feedback'),correct=game.state==='feedback-correct',exposing=game.state==='exposing',q=game.current;
  if(q.kind==='memory'&&renderedQuestion!==game.question)memoryInput=[];
  if(q.kind==='reading-phrase'&&renderedQuestion!==game.question)phraseInput=[];
@@ -583,8 +584,8 @@ async function renderStudioScenario(){
  }
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
- if(state==='correct'||state==='wrong')game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));
- view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;renderGame();
+ view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
  if(state==='pause')pause();

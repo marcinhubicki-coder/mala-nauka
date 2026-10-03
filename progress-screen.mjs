@@ -48,7 +48,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   function tabs(){return '<nav class="progress-modes" aria-label="Postępy według przygody">'+Object.keys(NAMES).map(id=>'<button type="button" data-progress="mode" data-mode="'+id+'" class="progress-mode '+(mode===id?'is-active':'')+'" aria-pressed="'+(mode===id)+'" aria-label="'+NAMES[id]+'">'+glyph(id)+(mode===id?'<span>'+NAMES[id]+'</span>':'')+'</button>').join('')+'</nav>';}
   function header(title,sub=false){return '<header class="progress-header"><button type="button" class="progress-back" '+(sub?'data-progress="dashboard"':'data-action="'+backAction+'"')+' aria-label="Wróć">'+backArrow+'</button><h1 tabindex="-1">'+title+'</h1></header>';}
   function render(){
-    root.dataset.view='history';root.dataset.mode=mode;
+    root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=screen;
     if(screen!=='dashboard'){renderSubpage();return;}
     const spelling=mode==='spelling';
     const sums=spelling?knowledge:{mastered:0,learning:0,review:0};

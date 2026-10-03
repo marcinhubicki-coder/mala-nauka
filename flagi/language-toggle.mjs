@@ -225,6 +225,9 @@ if (!document.getElementById(STYLE_ID)) {
 document.addEventListener('click', event => {
   const button = event.target.closest?.('[data-flag-language]');
   if (!button) return;
+  // Keyboard arrows activate the native radio before its change event. Do not
+  // cancel that click: cancellation restores the previous checked radio.
+  if (event.target.matches?.('input[name="flagLanguage"]')) return;
   event.preventDefault();
   if (button.closest('.flag-language-options') && performance.now() < suppressLanguageClickUntil) return;
   if(button.dataset.flagLanguage)setLanguage(button.dataset.flagLanguage);

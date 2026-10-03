@@ -30,6 +30,7 @@ test('language is an icon-free keyboard-accessible Jelly toggle in the first sec
   assert.match(language, /type="radio" name="flagLanguage" value="en"/);
   assert.doesNotMatch(language, /<img/);
   assert.match(language, /event\.target\?\.name === 'flagLanguage'/);
+  assert.ok(language.indexOf("if (event.target.matches?.('input[name=\"flagLanguage\"]')) return;") < language.indexOf('event.preventDefault()'));
   assert.match(language, /localStorage\.setItem\(STORAGE_KEY, language\)/);
   assert.match(await read('flagi/adaptive-difficulty.mjs'), /Co ćwiczymy\?/);
 });

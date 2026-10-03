@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v153-shared-wizard-20261003';
+const CACHE='mala-nauka-v154-shared-wizard-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -776,7 +776,7 @@ const CORE=[
   "./flagi/game-variants.mjs",
   "./flagi/game-variants.mjs?v=16",
   "./flagi/index.html",
-  "./flagi/language-toggle.mjs?v=3-inline-jelly",
+  "./flagi/language-toggle.mjs?v=4-keyboard",
   "./flagi/map-layout.css",
   "./flagi/map-layout.css?v=20260930-release",
   "./flagi/map-microstates.js",

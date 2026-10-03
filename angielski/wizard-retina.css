@@ -125,7 +125,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   object-fit:fill;
   pointer-events:none;
   user-select:none;
-  clip-path:inset(-100% 34.5% calc(1 * var(--english-u)) round 0 0 0 calc(24 * var(--english-u)));
+  clip-path:inset(-100% 37.5% calc(1 * var(--english-u)) 0 round 0 0 0 calc(24 * var(--english-u)));
 }
 
 .english-mission-boy {

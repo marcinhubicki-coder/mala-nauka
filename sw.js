@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v124-english-hard-bg-20261002';
+const CACHE='mala-nauka-v125-english-single-scene-20261003';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -18,7 +18,7 @@ const CORE=[
   "./angielski/wizard-v2.css",
   "./angielski/wizard-v2.css?v=5",
   "./angielski/wizard-retina.css",
-  "./angielski/wizard-retina.css?v=9-hard-bg-mission-fill",
+  "./angielski/wizard-retina.css?v=10-single-scene",
   "./angielski/wizard-v2.mjs",
   "./angielski/wizard-v2.mjs?v=9-real-art",
   "./angielski/word-exposure.js",

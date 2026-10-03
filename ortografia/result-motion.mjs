@@ -1,5 +1,6 @@
+import {effectiveTokens} from '../design-system/model.mjs';
 // The session counters settle 100 ms before the percentage and score bar.
-const PROGRESS_DURATION = 3000;
+const progressDuration = () => Math.max(1,effectiveTokens('progress').duration ?? 3000);
 const PROGRESS_EASE_POWER = 3.2 / 1.75;
 const PROGRESS_STRETCH = .5;
 const PROGRESS_BOUNCE = 2.1;
@@ -270,11 +271,11 @@ export function revealResult(root, delay = 1000) {
   function tick(now) {
     if (!section.isConnected || reduced()) return cleanup();
     const elapsed = now - started;
-    const progressT = clamp((elapsed - delay - 120) / PROGRESS_DURATION, 0, 1);
+    const progressT = clamp((elapsed - delay - 120) / progressDuration(), 0, 1);
     const eased = 1 - Math.pow(1 - progressT, PROGRESS_EASE_POWER);
 
     jobs.forEach(job => {
-      const t=job.mode==='percent'?progressT:clamp((elapsed-delay-120)/(PROGRESS_DURATION-100),0,1);
+      const t=job.mode==='percent'?progressT:clamp((elapsed-delay-120)/(Math.max(1,progressDuration()-100)),0,1);
       updateReel(job,t,elapsed);
     });
 

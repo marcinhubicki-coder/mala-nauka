@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "MN Soft";
-  src: url("assets/fonts/nunito-variable.woff") format("woff");
-  font-style: normal;
-  font-weight: 200 1000;
-  font-display: swap;
-}
-
 :root {
   --screen-safe-top: env(safe-area-inset-top, 0px);
   --screen-safe-bottom: env(safe-area-inset-bottom, 0px);

@@ -1,0 +1,1374 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-03T16:19:58.714Z",
+  "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
+  "cleanup": {
+    "removedAssets": 28,
+    "savedAssetBytes": 7473392,
+    "removedCodeFiles": 16,
+    "savedCodeBytes": 74986,
+    "removedPaths": [
+      "spelling-mockup-v05.css",
+      "spelling-review-v041.css",
+      "spelling-quality-v051.css",
+      "spelling-mobile.css",
+      "spelling-asset-swap-v053.css",
+      "spelling-quality-v052.css",
+      "matematyka/stability-v32.css",
+      "matematyka/score-badge-v52.css",
+      "matematyka/interaction-v44.css",
+      "matematyka/stability-v32.js",
+      "matematyka/stability-v29.js",
+      "matematyka/stability-v29.css",
+      "matematyka/interaction-v44.js",
+      "matematyka/division-pixel-v49.css",
+      "flagi/segment-motion-v3.mjs",
+      "flagi/segment-motion-v3.css"
+    ]
+  },
+  "wordCount": 455,
+  "wordSources": {
+    "król": "data/words-01.json",
+    "góra": "data/words-01.json",
+    "córka": "data/words-01.json",
+    "wózek": "data/words-01.json",
+    "pióro": "data/words-01.json",
+    "ósemka": "data/words-01.json",
+    "róża": "data/words-01.json",
+    "skóra": "data/words-01.json",
+    "żółw": "data/words-01.json",
+    "żółty": "data/words-01.json",
+    "stół": "data/words-01.json",
+    "wróbel": "data/words-01.json",
+    "jaskółka": "data/words-01.json",
+    "królik": "data/words-01.json",
+    "ogród": "data/words-01.json",
+    "samochód": "data/words-01.json",
+    "miód": "data/words-01.json",
+    "dół": "data/words-01.json",
+    "ból": "data/words-01.json",
+    "sól": "data/words-01.json",
+    "kółko": "data/words-01.json",
+    "półka": "data/words-01.json",
+    "północ": "data/words-01.json",
+    "półwysep": "data/words-01.json",
+    "późno": "data/words-01.json",
+    "później": "data/words-01.json",
+    "późny": "data/words-01.json",
+    "źródło": "data/words-01.json",
+    "próba": "data/words-01.json",
+    "próżny": "data/words-01.json",
+    "równo": "data/words-01.json",
+    "równy": "data/words-01.json",
+    "różny": "data/words-01.json",
+    "różnica": "data/words-01.json",
+    "różowy": "data/words-01.json",
+    "sposób": "data/words-01.json",
+    "który": "data/words-01.json",
+    "mój": "data/words-01.json",
+    "twój": "data/words-01.json",
+    "swój": "data/words-01.json",
+    "mówić": "data/words-01.json",
+    "wrócić": "data/words-01.json",
+    "pomóc": "data/words-01.json",
+    "mózg": "data/words-01.json",
+    "wójt": "data/words-01.json",
+    "włókno": "data/words-01.json",
+    "góral": "data/words-01.json",
+    "górski": "data/words-01.json",
+    "krótki": "data/words-01.json",
+    "krótko": "data/words-01.json",
+    "ogórek": "data/words-01.json",
+    "wiewiórka": "data/words-01.json",
+    "sokół": "data/words-01.json",
+    "łóżko": "data/words-01.json",
+    "zbiórka": "data/words-01.json",
+    "wóz": "data/words-01.json",
+    "nóżka": "data/words-01.json",
+    "siódemka": "data/words-01.json",
+    "pszczółka": "data/words-01.json",
+    "ołówek": "data/words-01.json",
+    "trójkąt": "data/words-01.json",
+    "siatkówka": "data/words-01.json",
+    "złotówka": "data/words-01.json",
+    "rodziców": "data/words-01.json",
+    "krzyżówka": "data/words-01.json",
+    "Kraków": "data/words-01.json",
+    "zwierzaków": "data/words-01.json",
+    "pomysłów": "data/words-01.json",
+    "wróżba": "data/words-01.json",
+    "równanie": "data/words-01.json",
+    "spóźniony": "data/words-01.json",
+    "wzgórze": "data/words-01.json",
+    "ósmy": "data/words-01.json",
+    "ówczesny": "data/words-01.json",
+    "skrót": "data/words-02.json",
+    "obrót": "data/words-02.json",
+    "powrót": "data/words-02.json",
+    "wybór": "data/words-02.json",
+    "zbiór": "data/words-02.json",
+    "utwór": "data/words-02.json",
+    "twórca": "data/words-02.json",
+    "szczegół": "data/words-02.json",
+    "ogół": "data/words-02.json",
+    "wspólny": "data/words-02.json",
+    "główny": "data/words-02.json",
+    "głód": "data/words-02.json",
+    "próg": "data/words-02.json",
+    "wzór": "data/words-02.json",
+    "kłótnia": "data/words-02.json",
+    "buty": "data/words-02.json",
+    "cukier": "data/words-02.json",
+    "kura": "data/words-02.json",
+    "kubek": "data/words-02.json",
+    "kula": "data/words-02.json",
+    "ulica": "data/words-02.json",
+    "ubranie": "data/words-02.json",
+    "uczeń": "data/words-02.json",
+    "uczennica": "data/words-02.json",
+    "urząd": "data/words-02.json",
+    "urlop": "data/words-02.json",
+    "urodziny": "data/words-02.json",
+    "uśmiech": "data/words-02.json",
+    "umyć": "data/words-02.json",
+    "umieć": "data/words-02.json",
+    "uszy": "data/words-02.json",
+    "ulewa": "data/words-02.json",
+    "układ": "data/words-02.json",
+    "ukryć": "data/words-02.json",
+    "ugotować": "data/words-02.json",
+    "buda": "data/words-02.json",
+    "budzik": "data/words-02.json",
+    "burak": "data/words-02.json",
+    "murawa": "data/words-02.json",
+    "duży": "data/words-02.json",
+    "drugi": "data/words-02.json",
+    "gruby": "data/words-02.json",
+    "grupa": "data/words-02.json",
+    "gumka": "data/words-02.json",
+    "muszla": "data/words-02.json",
+    "nuty": "data/words-02.json",
+    "kupić": "data/words-02.json",
+    "kurtka": "data/words-02.json",
+    "ludzie": "data/words-02.json",
+    "lupa": "data/words-02.json",
+    "muzyka": "data/words-03.json",
+    "pusty": "data/words-03.json",
+    "nudny": "data/words-03.json",
+    "numer": "data/words-03.json",
+    "pudełko": "data/words-03.json",
+    "rudy": "data/words-03.json",
+    "pudło": "data/words-03.json",
+    "punkt": "data/words-03.json",
+    "rura": "data/words-03.json",
+    "ruszyć": "data/words-03.json",
+    "sufit": "data/words-03.json",
+    "sukienka": "data/words-03.json",
+    "szuflada": "data/words-03.json",
+    "trudny": "data/words-03.json",
+    "tutaj": "data/words-03.json",
+    "tulipan": "data/words-03.json",
+    "turysta": "data/words-03.json",
+    "wnuk": "data/words-03.json",
+    "wnuczka": "data/words-03.json",
+    "zupa": "data/words-03.json",
+    "tuba": "data/words-03.json",
+    "tunel": "data/words-03.json",
+    "kapturek": "data/words-03.json",
+    "upominek": "data/words-03.json",
+    "autobus": "data/words-03.json",
+    "usterka": "data/words-03.json",
+    "wulkan": "data/words-03.json",
+    "puchaty": "data/words-03.json",
+    "kucharz": "data/words-03.json",
+    "kuchenka": "data/words-03.json",
+    "drzewo": "data/words-03.json",
+    "rzeka": "data/words-03.json",
+    "warzywo": "data/words-03.json",
+    "korzeń": "data/words-03.json",
+    "burza": "data/words-03.json",
+    "rzodkiewka": "data/words-03.json",
+    "grzyb": "data/words-03.json",
+    "brzoza": "data/words-03.json",
+    "krzesło": "data/words-03.json",
+    "wrzesień": "data/words-03.json",
+    "rzadki": "data/words-03.json",
+    "rząd": "data/words-03.json",
+    "rzecz": "data/words-03.json",
+    "rzemiosło": "data/words-03.json",
+    "rzut": "data/words-03.json",
+    "rzepa": "data/words-03.json",
+    "rzęsa": "data/words-03.json",
+    "rzucić": "data/words-03.json",
+    "krzak": "data/words-03.json",
+    "brzeg": "data/words-03.json",
+    "lektura": "data/words-03.json",
+    "ratunek": "data/words-03.json",
+    "rysunek": "data/words-03.json",
+    "klawiatura": "data/words-03.json",
+    "temperatura": "data/words-03.json",
+    "obrus": "data/words-03.json",
+    "racuch": "data/words-03.json",
+    "kapelusz": "data/words-03.json",
+    "tłum": "data/words-03.json",
+    "zakupy": "data/words-03.json",
+    "południe": "data/words-03.json",
+    "już": "data/words-03.json",
+    "szukać": "data/words-03.json",
+    "uparty": "data/words-03.json",
+    "upiór": "data/words-03.json",
+    "uroczy": "data/words-03.json",
+    "udo": "data/words-03.json",
+    "umysł": "data/words-03.json",
+    "rysujemy": "data/words-03.json",
+    "wędrujemy": "data/words-03.json",
+    "żartujesz": "data/words-03.json",
+    "leniuchujesz": "data/words-03.json",
+    "pilnujesz": "data/words-03.json",
+    "kupujecie": "data/words-03.json",
+    "skuwka": "data/words-03.json",
+    "zasuwka": "data/words-03.json",
+    "wsuwka": "data/words-03.json",
+    "wsuwać": "data/words-03.json",
+    "zasuwać": "data/words-03.json",
+    "zakuwać": "data/words-03.json",
+    "brzydki": "data/words-04.json",
+    "grzebień": "data/words-04.json",
+    "grzech": "data/words-04.json",
+    "grzejnik": "data/words-04.json",
+    "drzwi": "data/words-04.json",
+    "drzemka": "data/words-04.json",
+    "trzeci": "data/words-04.json",
+    "trzmiel": "data/words-04.json",
+    "trzcina": "data/words-04.json",
+    "wrzos": "data/words-04.json",
+    "przód": "data/words-04.json",
+    "przed": "data/words-04.json",
+    "przez": "data/words-04.json",
+    "przygoda": "data/words-04.json",
+    "przyjaciel": "data/words-04.json",
+    "przyroda": "data/words-04.json",
+    "przykład": "data/words-04.json",
+    "sprzątać": "data/words-04.json",
+    "wrzątek": "data/words-04.json",
+    "krzyż": "data/words-04.json",
+    "lekarz": "data/words-04.json",
+    "malarz": "data/words-04.json",
+    "piekarz": "data/words-04.json",
+    "piłkarz": "data/words-04.json",
+    "kolejarz": "data/words-04.json",
+    "murarz": "data/words-04.json",
+    "pisarz": "data/words-04.json",
+    "rycerz": "data/words-04.json",
+    "talerz": "data/words-04.json",
+    "kalendarz": "data/words-04.json",
+    "cmentarz": "data/words-04.json",
+    "korytarz": "data/words-04.json",
+    "komentarz": "data/words-04.json",
+    "zwierzę": "data/words-04.json",
+    "zwierzak": "data/words-04.json",
+    "jarzębina": "data/words-04.json",
+    "porządek": "data/words-04.json",
+    "porzeczka": "data/words-04.json",
+    "marzenie": "data/words-04.json",
+    "marzyć": "data/words-04.json",
+    "orzech": "data/words-04.json",
+    "brzuch": "data/words-04.json",
+    "grzmot": "data/words-04.json",
+    "grzać": "data/words-04.json",
+    "ogrzać": "data/words-04.json",
+    "zmarznąć": "data/words-04.json",
+    "przedszkole": "data/words-04.json",
+    "przerwa": "data/words-04.json",
+    "przepraszam": "data/words-04.json",
+    "przepis": "data/words-04.json",
+    "żaba": "data/words-05.json",
+    "żółtko": "data/words-05.json",
+    "łyżka": "data/words-05.json",
+    "książka": "data/words-05.json",
+    "ważny": "data/words-05.json",
+    "jeż": "data/words-05.json",
+    "jeżyna": "data/words-05.json",
+    "żart": "data/words-05.json",
+    "żarówka": "data/words-05.json",
+    "żelazo": "data/words-05.json",
+    "żona": "data/words-05.json",
+    "żuk": "data/words-05.json",
+    "żubr": "data/words-05.json",
+    "żurek": "data/words-05.json",
+    "żyrafa": "data/words-05.json",
+    "życie": "data/words-05.json",
+    "żyto": "data/words-05.json",
+    "życzenie": "data/words-05.json",
+    "życzliwy": "data/words-05.json",
+    "żegnać": "data/words-05.json",
+    "żagiel": "data/words-05.json",
+    "żołądek": "data/words-05.json",
+    "żołnierz": "data/words-05.json",
+    "żmija": "data/words-05.json",
+    "żniwa": "data/words-05.json",
+    "żuraw": "data/words-05.json",
+    "żwir": "data/words-05.json",
+    "żartować": "data/words-05.json",
+    "odważny": "data/words-05.json",
+    "uważny": "data/words-05.json",
+    "podróż": "data/words-05.json",
+    "podróżnik": "data/words-05.json",
+    "garaż": "data/words-05.json",
+    "bagaż": "data/words-05.json",
+    "plaża": "data/words-05.json",
+    "straż": "data/words-05.json",
+    "strażak": "data/words-05.json",
+    "kałuża": "data/words-05.json",
+    "wieża": "data/words-05.json",
+    "wąż": "data/words-05.json",
+    "nożyczki": "data/words-05.json",
+    "łyżwy": "data/words-05.json",
+    "łyżeczka": "data/words-05.json",
+    "pożar": "data/words-05.json",
+    "pożegnać": "data/words-05.json",
+    "pożyczyć": "data/words-05.json",
+    "pożywienie": "data/words-05.json",
+    "możliwość": "data/words-05.json",
+    "możliwy": "data/words-05.json",
+    "każdy": "data/words-05.json",
+    "wyżej": "data/words-06.json",
+    "niżej": "data/words-06.json",
+    "bliżej": "data/words-06.json",
+    "świeży": "data/words-06.json",
+    "drużyna": "data/words-06.json",
+    "koleżanka": "data/words-06.json",
+    "mężczyzna": "data/words-06.json",
+    "ciężki": "data/words-06.json",
+    "ciężar": "data/words-06.json",
+    "ciężarówka": "data/words-06.json",
+    "chleb": "data/words-06.json",
+    "chmura": "data/words-06.json",
+    "choinka": "data/words-06.json",
+    "schody": "data/words-06.json",
+    "ucho": "data/words-06.json",
+    "dach": "data/words-06.json",
+    "mucha": "data/words-06.json",
+    "kuchnia": "data/words-06.json",
+    "chłopiec": "data/words-06.json",
+    "zachód": "data/words-06.json",
+    "wschód": "data/words-06.json",
+    "chata": "data/words-06.json",
+    "chustka": "data/words-06.json",
+    "chudy": "data/words-06.json",
+    "chrupki": "data/words-06.json",
+    "chrząszcz": "data/words-06.json",
+    "chrzan": "data/words-06.json",
+    "chwila": "data/words-06.json",
+    "chwalić": "data/words-06.json",
+    "chować": "data/words-06.json",
+    "chodzić": "data/words-06.json",
+    "choroba": "data/words-06.json",
+    "chory": "data/words-06.json",
+    "chomik": "data/words-06.json",
+    "chłód": "data/words-06.json",
+    "chłodny": "data/words-06.json",
+    "chłopak": "data/words-06.json",
+    "chmiel": "data/words-06.json",
+    "chrapać": "data/words-06.json",
+    "chcieć": "data/words-06.json",
+    "chociaż": "data/words-06.json",
+    "chirurg": "data/words-06.json",
+    "chemia": "data/words-06.json",
+    "chór": "data/words-06.json",
+    "cichy": "data/words-06.json",
+    "cicho": "data/words-06.json",
+    "suchy": "data/words-06.json",
+    "suchar": "data/words-06.json",
+    "puchar": "data/words-06.json",
+    "duch": "data/words-06.json",
+    "huragan": "data/words-06.json",
+    "ruch": "data/words-07.json",
+    "puch": "data/words-07.json",
+    "mech": "data/words-07.json",
+    "pech": "data/words-07.json",
+    "śmiech": "data/words-07.json",
+    "pośpiech": "data/words-07.json",
+    "strach": "data/words-07.json",
+    "zapach": "data/words-07.json",
+    "łańcuch": "data/words-07.json",
+    "fartuch": "data/words-07.json",
+    "maluch": "data/words-07.json",
+    "okruch": "data/words-07.json",
+    "wybuch": "data/words-07.json",
+    "wydech": "data/words-07.json",
+    "oddech": "data/words-07.json",
+    "hotel": "data/words-07.json",
+    "hamak": "data/words-07.json",
+    "herbata": "data/words-07.json",
+    "bohater": "data/words-07.json",
+    "hulajnoga": "data/words-07.json",
+    "huśtawka": "data/words-07.json",
+    "hokej": "data/words-07.json",
+    "humor": "data/words-07.json",
+    "hala": "data/words-07.json",
+    "hałas": "data/words-07.json",
+    "hak": "data/words-07.json",
+    "harcerz": "data/words-07.json",
+    "hasło": "data/words-07.json",
+    "hamulec": "data/words-07.json",
+    "historia": "data/words-07.json",
+    "higiena": "data/words-07.json",
+    "hipopotam": "data/words-07.json",
+    "hiena": "data/words-07.json",
+    "horyzont": "data/words-07.json",
+    "hektar": "data/words-07.json",
+    "helikopter": "data/words-07.json",
+    "herb": "data/words-07.json",
+    "huta": "data/words-07.json",
+    "hodować": "data/words-07.json",
+    "hodowla": "data/words-07.json",
+    "honor": "data/words-07.json",
+    "hymn": "data/words-07.json",
+    "hokeista": "data/words-07.json",
+    "harmonia": "data/words-07.json",
+    "harfa": "data/words-07.json",
+    "hamburger": "data/words-07.json",
+    "hobby": "data/words-07.json",
+    "wahadło": "data/words-07.json",
+    "druh": "data/words-07.json",
+    "druhna": "data/words-07.json",
+    "ciasto": "data/words-08.json",
+    "ciocia": "data/words-08.json",
+    "cień": "data/words-08.json",
+    "ciepło": "data/words-08.json",
+    "ciemno": "data/words-08.json",
+    "ćma": "data/words-08.json",
+    "ćwiczyć": "data/words-08.json",
+    "ćwiczenie": "data/words-08.json",
+    "ćwierć": "data/words-08.json",
+    "spać": "data/words-08.json",
+    "siedem": "data/words-08.json",
+    "siostra": "data/words-08.json",
+    "siano": "data/words-08.json",
+    "sierpień": "data/words-08.json",
+    "siedzieć": "data/words-08.json",
+    "świat": "data/words-08.json",
+    "środa": "data/words-08.json",
+    "śnieg": "data/words-08.json",
+    "ślimak": "data/words-08.json",
+    "ślad": "data/words-08.json",
+    "zima": "data/words-08.json",
+    "ziemia": "data/words-08.json",
+    "zielony": "data/words-08.json",
+    "ziarno": "data/words-08.json",
+    "zioło": "data/words-08.json",
+    "źrenica": "data/words-08.json",
+    "źrebak": "data/words-08.json",
+    "źle": "data/words-08.json",
+    "woźny": "data/words-08.json",
+    "groźny": "data/words-08.json",
+    "niebo": "data/words-08.json",
+    "niedziela": "data/words-08.json",
+    "niebieski": "data/words-08.json",
+    "anioł": "data/words-08.json",
+    "koniec": "data/words-08.json",
+    "bańka": "data/words-08.json",
+    "tańczyć": "data/words-08.json",
+    "państwo": "data/words-08.json",
+    "kończyć": "data/words-08.json",
+    "hańba": "data/words-08.json",
+    "dziecko": "data/words-08.json",
+    "dziura": "data/words-08.json",
+    "dzik": "data/words-08.json",
+    "dziadek": "data/words-08.json",
+    "dziewczyna": "data/words-08.json",
+    "dźwig": "data/words-08.json",
+    "dźwięk": "data/words-08.json",
+    "dźwięczny": "data/words-08.json",
+    "dźwignia": "data/words-08.json",
+    "niedźwiedź": "data/words-08.json"
+  },
+  "fontUsage": [
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .page-head h1",
+      "role": "ui"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .english-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .english-v2-choice span,\n#app[data-mode=\"english\"][data-view=\"wizard\"] .english-time-choice span",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": "#app[data-view=\"results\"][data-mode=\"spelling\"]",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-heading .eyebrow",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-title-wrap h1",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".round-score strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".round-summary-line em",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-stat-copy b",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-detail-head strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-word-copy strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-word-state",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-again,.result-collection",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-rule-dialog",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-continue-rail .continue-handle",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-choice span",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button>span:last-child",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .page-head h1",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-choice span",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:is([data-view=\"wizard\"],[data-view=\"game\"],[data-view=\"results\"])",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .page-head h1,#app[data-mode=\"flags\"] .wizard-intro h2,#app[data-mode=\"flags\"] legend,#app[data-mode=\"flags\"] .timer,#app[data-mode=\"flags\"] .start-button,#app[data-mode=\"flags\"] .flag-answer-label,#app[data-mode=\"flags\"] .flag-adventure-name,#app[data-mode=\"flags\"] .flag-adventure-country,#app[data-mode=\"flags\"] .flag-adventure-capital-question",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-segmented label>span",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-continent-chip>span",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .start-button>span:last-child",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-language-options button",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .time-block small",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .game-meta",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .game-meta strong",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-language-toggle.in-game",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .question-card .badge",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-adventure-capital",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-country-hint,#app[data-mode=\"flags\"] .flag-capital-label",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .prompt",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback>p",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback-message strong",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback-message small",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:has(.question-card.wrong) .feedback [data-action=\"next\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .result h1",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"game\"] .timer,#app[data-mode=\"flags\"] .flag-answer-label,#app[data-mode=\"flags\"] .flag-adventure-name",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .prompt",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:has(.question-card.correct) .feedback [data-action=\"next\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .flag-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-canvas",
+      "role": "ui"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-v2-choice span,\n#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-time-choice span",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-dyktando-copy strong",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-dyktando-time-copy",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": "#app[data-view=\"players\"], #app[data-view=\"player-create\"], #app[data-view=\"player-pin\"]",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-title h1",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-card strong",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".add-player-soft",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-continue",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-later",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": "#app[data-view=\"player-create\"] .page-head h1,#app[data-view=\"player-pin\"] .page-head h1",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-form-card h2,.pin-card h2",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-form-next",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-name-input",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".nickname-error",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".pin-fields>p",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".pin-mode label span",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-title h1,#app[data-view=\"player-create\"] .page-head h1,#app[data-view=\"player-pin\"] .page-head h1,.player-form-card h2,.pin-profile h2",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-card strong",
+      "role": "body"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".lab-head h1",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".preview-meta output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".scrub-row output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-head strong",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-head output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-tab",
+      "role": "display"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": "#app[data-view=\"history\"]",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-header h1",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-hero-copy p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-subtitle",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".collection-word small",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-empty p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-category-list span",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-achievement-list p,.progress-session-list p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-category-list .category-pair span",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rules-categories button",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule summary",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule-body>p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule-body h2",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rule-word-grid figcaption",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rules-views label>span",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": ":root",
+      "role": "flag"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "html",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] :is(fieldset legend,.field-title)",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .ds-jelly label>span,.ds-component-stage .ds-jelly label>span",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .start-button,.ds-component-stage .start-button",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": ".ds-component-stage",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-ds] :is(.player-continue,.math-start-button,.math-result-again,.result:not(.spelling-result) .primary)",
+      "role": "ui"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) :is(.flag-segmented,.spelling-segmented,.flag-language-options) label>span",
+      "role": "body"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) .wizard-note",
+      "role": "body"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) .start-button",
+      "role": "body"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".spelling-title",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app[data-view=\"game\"][data-mode=\"spelling\"] .word",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app[data-view=\"game\"][data-mode=\"spelling\"] .answers .answer",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".continue-copy",
+      "role": "ui"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app.spelling-correct-feedback[data-mode=\"spelling\"] .feedback",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".spelling-continue-rail .continue-copy",
+      "role": "body"
+    }
+  ],
+  "fontViews": {
+    "players": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "players-empty": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "player-create": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "player-pin": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "home": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "settings": [
+      "body",
+      "display"
+    ],
+    "spelling-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "spelling-initial": [
+      "body",
+      "display"
+    ],
+    "spelling-correct": [
+      "body",
+      "display"
+    ],
+    "spelling-wrong": [
+      "body",
+      "display"
+    ],
+    "spelling-results": [
+      "body",
+      "display"
+    ],
+    "english-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "english-initial": [
+      "body"
+    ],
+    "english-correct": [
+      "body"
+    ],
+    "english-wrong": [
+      "body"
+    ],
+    "english-results": [
+      "body"
+    ],
+    "flags-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "flags-initial": [
+      "body",
+      "flag"
+    ],
+    "flags-correct": [
+      "body",
+      "flag"
+    ],
+    "flags-wrong": [
+      "body",
+      "flag"
+    ],
+    "flags-results": [
+      "body",
+      "flag"
+    ],
+    "reading-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "reading-initial": [
+      "body"
+    ],
+    "reading-correct": [
+      "body"
+    ],
+    "reading-wrong": [
+      "body"
+    ],
+    "reading-results": [
+      "body"
+    ],
+    "math-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "math-initial": [
+      "body"
+    ],
+    "math-correct": [
+      "body"
+    ],
+    "math-wrong": [
+      "body"
+    ],
+    "math-results": [
+      "body"
+    ],
+    "spelling-rule": [
+      "body",
+      "display"
+    ],
+    "spelling-hint": [
+      "body",
+      "display"
+    ],
+    "spelling-pause": [
+      "body",
+      "display"
+    ],
+    "progress": [
+      "body",
+      "display"
+    ],
+    "collection": [
+      "body",
+      "display"
+    ],
+    "trophies": [
+      "body",
+      "display"
+    ],
+    "categories": [
+      "body",
+      "display"
+    ],
+    "rules": [
+      "body",
+      "display"
+    ],
+    "sessions": [
+      "body",
+      "display"
+    ]
+  },
+  "cssBytes": 432441,
+  "jsBytes": 680818,
+  "largeFiles": [
+    {
+      "path": "app.js",
+      "bytes": 65110
+    },
+    {
+      "path": "app.css",
+      "bytes": 64367
+    },
+    {
+      "path": "spelling/scenes.mjs",
+      "bytes": 45224
+    },
+    {
+      "path": "flagi/adventure.css",
+      "bytes": 39019
+    },
+    {
+      "path": "spelling/bubble.mjs",
+      "bytes": 36334
+    },
+    {
+      "path": "sw.js",
+      "bytes": 27252
+    },
+    {
+      "path": "ortografia/wizard-v2.mjs",
+      "bytes": 24869
+    },
+    {
+      "path": "progress-screen.css",
+      "bytes": 24233
+    },
+    {
+      "path": "matematyka/app.js",
+      "bytes": 22779
+    },
+    {
+      "path": "angielski/wizard-v2.mjs",
+      "bytes": 21691
+    },
+    {
+      "path": "ortografia/wizard-v2.css",
+      "bytes": 20196
+    },
+    {
+      "path": "flagi/feedback-transition.js",
+      "bytes": 20063
+    },
+    {
+      "path": "spelling-art.css",
+      "bytes": 19979
+    },
+    {
+      "path": "modes.mjs",
+      "bytes": 19733
+    }
+  ],
+  "fonts": [
+    {
+      "name": "MN Body",
+      "file": "nunito-variable.woff",
+      "aliases": [
+        "ResultBody",
+        "MN Soft",
+        "Flag Body"
+      ],
+      "roles": [
+        "body"
+      ]
+    },
+    {
+      "name": "MN UI",
+      "file": "dosis-variable.woff",
+      "aliases": [
+        "Home Rounded"
+      ],
+      "roles": [
+        "ui"
+      ]
+    },
+    {
+      "name": "MN Display",
+      "file": "dynapuff-polish-700.woff",
+      "aliases": [
+        "ResultDisplay",
+        "Spelling"
+      ],
+      "roles": [
+        "display"
+      ]
+    },
+    {
+      "name": "MN Flag",
+      "file": "fredoka-polish-v1.woff",
+      "aliases": [
+        "Flag Display"
+      ],
+      "roles": [
+        "flag"
+      ]
+    }
+  ]
+}

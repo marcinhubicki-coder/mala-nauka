@@ -1,4 +1,7 @@
+import {designReady} from '../shared/design-runtime.mjs';
+import {renderMathStudioResult} from './round-timer.js';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
+await designReady;
 const app = document.querySelector('#app');
 
 const DURATIONS = [60, 120, 180, 300];
@@ -152,6 +155,7 @@ function resetAttemptState() {
 }
 
 function renderCategories() {
+  app.dataset.mode='math';app.dataset.view='wizard';
   state.screen = 'categories';
   state.question = null;
   resetAttemptState();
@@ -281,6 +285,7 @@ function hasVisualExplainer() {
 }
 
 function renderGame({ feedback = '', feedbackType = '' } = {}) {
+  app.dataset.mode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
   const q = state.question;
   if (!q) return;
   const showExplainer = hasVisualExplainer();
@@ -591,3 +596,13 @@ window.addEventListener('math-restart', event => {
 window.addEventListener('math-back-to-setup', renderCategories);
 
 renderCategories();
+if(new URLSearchParams(location.search).has('studio')){
+ const query=new URLSearchParams(location.search);
+ if(query.get('screen')!=='wizard'){
+  state.screen='add';state.selectedMode='add';state.question=makeQuestion('add');
+  if(query.get('state')==='correct')state.locked=true;
+  if(query.get('state')==='wrong'){state.hadMistake=true;const wrong=state.question.answers.find(answer=>answer!==state.question.correct);state.wrongAnswers.add(wrong);state.lastWrongAnswer=wrong;}
+  renderGame({feedback:query.get('state')==='correct'?'Świetnie!':query.get('state')==='wrong'?'Spróbuj jeszcze raz.':'',feedbackType:query.get('state')==='correct'?'good':query.get('state')==='wrong'?'bad':''});
+  if(query.get('screen')==='results')renderMathStudioResult({correct:8,wrong:2,duration:180,mode:'add'});
+ }
+}

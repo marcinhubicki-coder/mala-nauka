@@ -87,6 +87,7 @@ function accuracy() {
 }
 
 async function saveMathProgress() {
+  if (new URLSearchParams(location.search).has('studio')) return;
   const snapshot = {
     category: currentMode,
     duration: currentDuration,
@@ -124,8 +125,17 @@ function endRound() {
 
   clock.end();
   syncTimerSnapshot();
+  renderRoundSummary();
+  void saveMathProgress();
+  clock = null;
+  syncTimerSnapshot();
+}
+
+function renderRoundSummary() {
   const app = document.querySelector('#app');
   if (!app) return;
+  app.dataset.mode = 'math';
+  app.dataset.view = 'results';
   const total = correct + wrong;
   app.innerHTML = `
     <section class="math-result-screen" aria-label="Podsumowanie rundy">
@@ -149,9 +159,13 @@ function endRound() {
       </div>
     </section>
   `;
-  void saveMathProgress();
-  clock = null;
-  syncTimerSnapshot();
+}
+
+export function renderMathStudioResult(fixture) {
+  if (!new URLSearchParams(location.search).has('studio')) return;
+  currentMode = fixture.mode; currentDuration = fixture.duration;
+  correct = fixture.correct; wrong = fixture.wrong;
+  clock = null; syncTimerSnapshot(); renderRoundSummary();
 }
 
 window.addEventListener('math-round-start', event => {

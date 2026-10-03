@@ -1,0 +1,1074 @@
+{
+  "schemaVersion": 1,
+  "device": {
+    "name": "iPhone 13 Pro",
+    "width": 390,
+    "height": 844,
+    "dpr": 3,
+    "retinaWidth": 1170,
+    "retinaHeight": 2532,
+    "safeTop": 47,
+    "safeBottom": 34
+  },
+  "components": [
+    {
+      "id": "layout",
+      "name": "Płótno i odstępy",
+      "tokenGroup": "layout",
+      "selector": "[class$=\"wizard-canvas\"],.page-head",
+      "description": "Wspólna geometria ustawień; pionowy iPhone 13 Pro.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "card",
+      "name": "Kafel ustawień",
+      "tokenGroup": "card",
+      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
+      "description": "Jedna geometria i powierzchnia dla czterech trybów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "jelly",
+      "name": "Przełącznik jelly",
+      "tokenGroup": "jelly",
+      "selector": ".jelly-v4-container,.rules-views",
+      "description": "Przeciąganie lub wybór; kolor tekstu przełącza się z opóźnieniem.",
+      "states": [
+        "idle",
+        "selected",
+        "dragging",
+        "disabled"
+      ],
+      "conditions": [
+        "Kliknięcie, drag i klawiatura wybierają dokładnie jedną opcję.",
+        "Natywny click obsługuje tap; drag tłumi późniejszy click."
+      ],
+      "variants": [
+        "pełny: ustawienia",
+        "mały: czas/słowa i PL/EN"
+      ]
+    },
+    {
+      "id": "toggle",
+      "name": "Mały toggle",
+      "tokenGroup": "toggle",
+      "selector": ".spelling-limit-mode,.flag-language-options,.pin-mode",
+      "description": "Dwie opcje; ta sama szerokość PL/EN i czasu/liczby słów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "button",
+      "name": "Przycisk główny",
+      "tokenGroup": "button",
+      "selector": ".start-button,.player-continue,.math-start-button,.math-result-again,.result .primary,.spelling-result .result-collection",
+      "description": "Przed wyborem, wciśnięty, wyłączony i ukończony.",
+      "states": [
+        "idle",
+        "pressed",
+        "disabled"
+      ],
+      "conditions": [
+        "CTA ustawień wymaga poprawnej konfiguracji.",
+        "Tworzenie gracza wymaga prawidłowej nazwy; PIN czterech cyfr, jeśli jest włączony."
+      ],
+      "variants": [
+        "jelly CTA",
+        "kontynuacja profilu",
+        "wyniki"
+      ]
+    },
+    {
+      "id": "answer",
+      "name": "Odpowiedź",
+      "tokenGroup": "answer",
+      "selector": ".answer,.answer-button",
+      "description": "Stan początkowy, poprawny, błędny i wyłączony.",
+      "states": [
+        "initial",
+        "correct",
+        "wrong",
+        "disabled"
+      ],
+      "conditions": [
+        "Wybór dostępny dopiero po prezentacji pytania.",
+        "Po odpowiedzi przyciski są zablokowane; poprawne oznaczenie nie jest stanem hover."
+      ],
+      "variants": [
+        "pełny: litery ortografii",
+        "kompaktowy: słowa, kraje i liczby"
+      ]
+    },
+    {
+      "id": "flashcard",
+      "name": "Fiszka",
+      "tokenGroup": "flashcard",
+      "selector": ".question-card,.spelling-question-card,.question-block",
+      "description": "Wersja płaska: angielski/czytanie; wzbogacona: ortografia/flagi.",
+      "states": [
+        "prompt",
+        "reveal",
+        "feedback"
+      ],
+      "conditions": [
+        "Pytanie i odpowiedź mają wspólną tożsamość.",
+        "Płaska fiszka pozostaje czytelna dla dłuższej treści; wzbogacona dodaje ilustrację."
+      ],
+      "variants": [
+        "płaska: angielski i czytanie",
+        "wzbogacona: ortografia i flagi"
+      ]
+    },
+    {
+      "id": "slider",
+      "name": "Przeciągnij dalej",
+      "tokenGroup": "slider",
+      "selector": ".spelling-continue-rail,.result-continue-rail",
+      "description": "Po błędzie zatrzymany czas; dalszy krok po osiągnięciu progu.",
+      "states": [
+        "idle",
+        "dragging",
+        "spring-back",
+        "complete"
+      ],
+      "conditions": [
+        "Start gestu z uchwytu; klik toru nie kończy kroku.",
+        "Próg ukończenia i minimalny ruch 24 px; klawiatura Enter/Space/strzałka.",
+        "W grze widoczny po błędzie; na wynikach uruchamia następną rundę."
+      ],
+      "variants": [
+        "następne pytanie",
+        "następna runda"
+      ]
+    },
+    {
+      "id": "popup",
+      "name": "Popup / zasada",
+      "tokenGroup": "popup",
+      "selector": "dialog,.result-rule-dialog",
+      "description": "Zamykany popup; przewijanie dolnej części reguły.",
+      "states": [
+        "closed",
+        "open",
+        "scrolling"
+      ],
+      "conditions": [
+        "Podpowiedź jest dostępna przed odpowiedzią.",
+        "Pauza zatrzymuje czas; wznowienie przywraca wcześniejszy stan.",
+        "Zasada dotyczy wybranego hasła i własnej ilustracji."
+      ],
+      "variants": [
+        "podpowiedź",
+        "pauza",
+        "zasada",
+        "ustawienia pomocnicze"
+      ]
+    },
+    {
+      "id": "progress",
+      "name": "Postęp i licznik",
+      "tokenGroup": "progress",
+      "selector": "progress,.round-progress,.math-round-progress",
+      "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie.",
+      "states": [
+        "running",
+        "paused",
+        "finished"
+      ],
+      "conditions": [
+        "Błąd zatrzymuje czas.",
+        "Flagi wstrzymują zegar na czas prezentacji kraju i stolicy."
+      ],
+      "variants": [
+        "zegar rundy",
+        "podsumowanie"
+      ]
+    },
+    {
+      "id": "profile",
+      "name": "Profil i avatar",
+      "tokenGroup": "profile",
+      "selector": ".player-card,.player-avatar-large",
+      "description": "Wybór profilu, tworzenie, PIN i lokalne postępy.",
+      "states": [
+        "empty",
+        "selected",
+        "locked",
+        "unlocked"
+      ],
+      "conditions": [
+        "PIN określa warunek wejścia do profilu.",
+        "Studio używa wyłącznie fikcyjnych profili i nie zapisuje wyników."
+      ],
+      "variants": [
+        "wybór",
+        "tworzenie",
+        "PIN"
+      ]
+    },
+    {
+      "id": "trophy",
+      "name": "Puchar",
+      "tokenGroup": "trophy",
+      "selector": ".progress-trophy",
+      "description": "Kolekcja i lista osiągnięć. Grafikę skalujemy proporcjonalnie.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "players",
+      "name": "Wybór gracza",
+      "mode": "spelling",
+      "screen": "players",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "players-empty",
+      "name": "Pierwszy gracz",
+      "mode": "spelling",
+      "screen": "players",
+      "state": "empty",
+      "route": "/",
+      "components": [
+        "profile",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "player-create",
+      "name": "Nowy gracz",
+      "mode": "spelling",
+      "screen": "player-create",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "player-pin",
+      "name": "PIN gracza",
+      "mode": "spelling",
+      "screen": "player-pin",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "toggle",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "home",
+      "name": "Ekran startowy",
+      "mode": "spelling",
+      "screen": "home",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "button",
+        "profile"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "settings",
+      "name": "Ustawienia aplikacji",
+      "mode": "spelling",
+      "screen": "settings",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "card",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-settings",
+      "name": "Ortografia · ustawienia",
+      "mode": "spelling",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/ortografia/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "toggle",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-initial",
+      "name": "Ortografia · przed odpowiedzią",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "initial",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "slider",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-correct",
+      "name": "Ortografia · poprawna odpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "correct",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "slider",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-wrong",
+      "name": "Ortografia · błędna odpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "slider",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-results",
+      "name": "Ortografia · koniec rundy",
+      "mode": "spelling",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/ortografia/",
+      "components": [
+        "card",
+        "button",
+        "progress",
+        "popup",
+        "slider"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "english-settings",
+      "name": "Angielski · ustawienia",
+      "mode": "english",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/angielski/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "english-initial",
+      "name": "Angielski · przed odpowiedzią",
+      "mode": "english",
+      "screen": "game",
+      "state": "initial",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "english-correct",
+      "name": "Angielski · poprawna odpowiedź",
+      "mode": "english",
+      "screen": "game",
+      "state": "correct",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "english-wrong",
+      "name": "Angielski · błędna odpowiedź",
+      "mode": "english",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "english-results",
+      "name": "Angielski · koniec rundy",
+      "mode": "english",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/angielski/",
+      "components": [
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "flags-settings",
+      "name": "Flagi · ustawienia",
+      "mode": "flags",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/flagi/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "toggle",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "flags-initial",
+      "name": "Flagi · przed odpowiedzią",
+      "mode": "flags",
+      "screen": "game",
+      "state": "initial",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
+    },
+    {
+      "id": "flags-correct",
+      "name": "Flagi · poprawna odpowiedź",
+      "mode": "flags",
+      "screen": "game",
+      "state": "correct",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
+    },
+    {
+      "id": "flags-wrong",
+      "name": "Flagi · błędna odpowiedź",
+      "mode": "flags",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
+    },
+    {
+      "id": "flags-results",
+      "name": "Flagi · koniec rundy",
+      "mode": "flags",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/flagi/",
+      "components": [
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
+    },
+    {
+      "id": "reading-settings",
+      "name": "Czytanie · ustawienia",
+      "mode": "reading",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/czytanie/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "reading-initial",
+      "name": "Czytanie · przed odpowiedzią",
+      "mode": "reading",
+      "screen": "game",
+      "state": "initial",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "reading-correct",
+      "name": "Czytanie · poprawna odpowiedź",
+      "mode": "reading",
+      "screen": "game",
+      "state": "correct",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "reading-wrong",
+      "name": "Czytanie · błędna odpowiedź",
+      "mode": "reading",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "progress",
+        "button",
+        "popup"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "reading-results",
+      "name": "Czytanie · koniec rundy",
+      "mode": "reading",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/czytanie/",
+      "components": [
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "math-settings",
+      "name": "Matematyka · ustawienia",
+      "mode": "math",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/matematyka/",
+      "components": [
+        "layout",
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
+    },
+    {
+      "id": "math-initial",
+      "name": "Matematyka · przed odpowiedzią",
+      "mode": "math",
+      "screen": "game",
+      "state": "initial",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "progress"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "math-correct",
+      "name": "Matematyka · poprawna odpowiedź",
+      "mode": "math",
+      "screen": "game",
+      "state": "correct",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "progress"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "math-wrong",
+      "name": "Matematyka · błędna odpowiedź",
+      "mode": "math",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "progress"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "math-results",
+      "name": "Matematyka · koniec rundy",
+      "mode": "math",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/matematyka/",
+      "components": [
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
+    },
+    {
+      "id": "spelling-rule",
+      "name": "Ortografia · zasada",
+      "mode": "spelling",
+      "screen": "results",
+      "state": "rule",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "card",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-hint",
+      "name": "Ortografia · podpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "hint",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "flashcard"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "spelling-pause",
+      "name": "Ortografia · pauza",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "pause",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "button"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "progress",
+      "name": "Moje wyniki",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "dashboard",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "collection",
+      "name": "Moja kolekcja słów",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "collection",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "jelly"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "trophies",
+      "name": "Moje puchary",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "achievements",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "categories",
+      "name": "Kategorie do poćwiczenia",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "categories",
+      "route": "/",
+      "components": [
+        "card"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "rules",
+      "name": "Wyjaśnienia i zasady",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "rules",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "jelly"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    },
+    {
+      "id": "sessions",
+      "name": "Historia rund",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "sessions",
+      "route": "/",
+      "components": [
+        "card"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "from": "players",
+      "action": "Wybierz profil",
+      "condition": "Profil z PIN-em / bez PIN-u",
+      "to": [
+        "player-pin",
+        "home"
+      ]
+    },
+    {
+      "from": "home",
+      "action": "Wybierz przygodę",
+      "condition": "Jeden z pięciu trybów",
+      "to": [
+        "spelling-settings",
+        "english-settings",
+        "flags-settings",
+        "reading-settings",
+        "math-settings"
+      ]
+    },
+    {
+      "from": "*-settings",
+      "action": "Zaczynamy!",
+      "condition": "Poprawne ustawienia; przynajmniej jedno zadanie",
+      "to": [
+        "*-initial"
+      ]
+    },
+    {
+      "from": "*-initial",
+      "action": "Wybierz odpowiedź",
+      "condition": "Odpowiedź zgodna / niezgodna z pytaniem",
+      "to": [
+        "*-correct",
+        "*-wrong"
+      ]
+    },
+    {
+      "from": "*-correct",
+      "action": "Dalej",
+      "condition": "Automatycznie; flagi po prezentacji",
+      "to": [
+        "*-initial"
+      ]
+    },
+    {
+      "from": "*-wrong",
+      "action": "Poznaj odpowiedź i przejdź dalej",
+      "condition": "Czas wstrzymany; ortografia: slider / klawiatura",
+      "to": [
+        "*-initial"
+      ]
+    },
+    {
+      "from": "*-initial",
+      "action": "Koniec rundy",
+      "condition": "Koniec czasu / liczby słów / wyjście",
+      "to": [
+        "*-results"
+      ]
+    },
+    {
+      "from": "*-results",
+      "action": "Sprawdź / powtórz",
+      "condition": "Zapis w aktywnym profilu",
+      "to": [
+        "spelling-rule",
+        "progress",
+        "*-settings"
+      ]
+    },
+    {
+      "from": "progress",
+      "action": "Kolekcja / zasady / puchary",
+      "condition": "Osiągnięcia wynikają z postępów gracza",
+      "to": [
+        "collection",
+        "rules",
+        "trophies",
+        "categories",
+        "sessions"
+      ]
+    }
+  ]
+}

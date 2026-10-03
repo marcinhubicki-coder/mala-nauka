@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "name": "Ma\u0142a Nauka",
+  "branch": "design/system-v1",
+  "typography": {
+    "body": "nunito",
+    "ui": "dosis",
+    "display": "dynapuff",
+    "flag": "fredoka"
+  },
+  "tokens": {
+    "layout": {
+      "canvasWidth": 390,
+      "sidePadding": 14,
+      "safeTop": 47,
+      "safeBottom": 34,
+      "sectionGap": 18,
+      "headerHeight": 43,
+      "headerGap": 13,
+      "headerBottom": 21,
+      "missionHeight": 94,
+      "missionBottom": 17
+    },
+    "card": {
+      "radius": 27,
+      "paddingX": 18,
+      "paddingTop": 13,
+      "paddingBottom": 20,
+      "borderWidth": 2
+    },
+    "jelly": {
+      "height": 54,
+      "radius": 21,
+      "inset": 4,
+      "labelSize": 16.8,
+      "labelWeight": 800,
+      "trackShadowY": 3,
+      "trackShadowBlur": 7,
+      "trackShadowOpacity": 0.035,
+      "duration": 900,
+      "inkDelay": 440,
+      "inkDuration": 430
+    },
+    "toggle": {
+      "width": 122,
+      "height": 31,
+      "radius": 14,
+      "labelSize": 11.5
+    },
+    "button": {
+      "height": 71,
+      "radius": 34,
+      "fontSize": 30,
+      "paddingX": 25,
+      "shadowY": 4,
+      "shadowBlur": 7,
+      "borderWidth": 2
+    },
+    "answer": {
+      "height": 95,
+      "radius": 24,
+      "gap": 12,
+      "paddingX": 10,
+      "fontSize": 34,
+      "widthPercent": 100,
+      "compactHeight": 69,
+      "compactFontSize": 23
+    },
+    "flashcard": {
+      "radius": 27,
+      "padding": 20,
+      "gap": 14
+    },
+    "slider": {
+      "height": 54,
+      "radius": 27,
+      "handleSize": 48,
+      "threshold": 96
+    },
+    "popup": {
+      "radius": 30,
+      "padding": 22,
+      "maxHeightPercent": 88
+    },
+    "progress": {
+      "height": 18,
+      "radius": 9,
+      "duration": 3000
+    },
+    "profile": {
+      "radius": 26,
+      "gap": 14,
+      "padding": 16,
+      "avatarSize": 96
+    },
+    "trophy": {
+      "size": 96,
+      "gap": 16
+    },
+    "space": {
+      "xs": 4,
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 24,
+      "xxl": 32
+    },
+    "color": {
+      "ink": "#09043f",
+      "muted": "#515c98",
+      "surface": "#ffffff",
+      "correct": "#239764",
+      "wrong": "#dd4161"
+    }
+  },
+  "themes": {
+    "spelling": {
+      "accent": "#ff168b",
+      "light": "#ff8ec2",
+      "middle": "#ff52a3",
+      "bottom": "#f72390",
+      "border": "#ffa6cf",
+      "lip": "#be287d",
+      "shine": "#ffedf7",
+      "depth": "#b6006338",
+      "activeInk": "#ffffff",
+      "idleInk": "#515c98"
+    },
+    "english": {
+      "accent": "#ffc219",
+      "light": "#fff47b",
+      "middle": "#ffe34b",
+      "bottom": "#ffc119",
+      "border": "#ffe996",
+      "lip": "#c18a09",
+      "shine": "#ffffe2",
+      "depth": "#be680029",
+      "activeInk": "#ffffff",
+      "idleInk": "#515c98"
+    },
+    "flags": {
+      "accent": "#00b96b",
+      "light": "#86efc2",
+      "middle": "#3bd694",
+      "bottom": "#05af68",
+      "border": "#a5f3ce",
+      "lip": "#138656",
+      "shine": "#e6fff1",
+      "depth": "#00754438",
+      "activeInk": "#ffffff",
+      "idleInk": "#515c98"
+    },
+    "reading": {
+      "accent": "#a72ae7",
+      "light": "#df9aff",
+      "middle": "#c66bf5",
+      "bottom": "#9206d5",
+      "border": "#e599ff",
+      "lip": "#6e00b0",
+      "shine": "#ffe7ff",
+      "depth": "#6b00b638",
+      "activeInk": "#ffffff",
+      "idleInk": "#515c98"
+    },
+    "math": {
+      "accent": "#168cf0",
+      "light": "#87d3ff",
+      "middle": "#46b5ff",
+      "bottom": "#0876df",
+      "border": "#aadfff",
+      "lip": "#1461ae",
+      "shine": "#ecfaff",
+      "depth": "#126dc938",
+      "activeInk": "#ffffff",
+      "idleInk": "#515c98"
+    }
+  },
+  "overrides": {}
+}

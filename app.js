@@ -1,3 +1,6 @@
+import {createStudioGame} from './design-system/scenarios.mjs';
+import {designReady} from './shared/design-runtime.mjs';
+import {loadWords} from './shared/asset-loader.mjs';
 import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
@@ -20,7 +23,7 @@ const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
 let pinSuppressClickUntil=0;
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
-function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
+function save(key,value) {if(new URLSearchParams(location.search).has('studio'))return;try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
 const oldSettings=cleanSettings(read('maleDyktando.settings.v1',{}));
 let settings=cleanSettings(read(prefix+'settings',oldSettings));
 const savedConfigs=read(prefix+'configs',{});
@@ -75,6 +78,7 @@ async function refreshPlayers(){
  return players;
 }
 async function persistProgress({strict=false}={}){
+ if(new URLSearchParams(location.search).has('studio'))return;
  if(!activePlayer?.id)return;
  const playerId=activePlayer.id;
  const snapshot=globalThis.structuredClone?structuredClone(progress):JSON.parse(JSON.stringify(progress));
@@ -339,8 +343,9 @@ document.addEventListener('mala-nauka:flag-presentation',event=>{
  if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
 });
 function renderGame() {
+ if(game)root.dataset.state=game.state;
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
- if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
+ if(game.mode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}
  const feedback=game.state.startsWith('feedback'),correct=game.state==='feedback-correct',exposing=game.state==='exposing',q=game.current;
  if(q.kind==='memory'&&renderedQuestion!==game.question)memoryInput=[];
  if(q.kind==='reading-phrase'&&renderedQuestion!==game.question)phraseInput=[];
@@ -544,6 +549,47 @@ document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
-async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;words=validateWords(await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
+
+// Studio scenarios use the real renderers and Session, with a stopped clock.
+// No profile, score, backup or offline-cache writes happen in this mode.
+async function renderStudioScenario(){
+ const query=new URLSearchParams(location.search);
+ const screen=query.get('screen')||'wizard',state=query.get('state')||'initial';
+ selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
+ settings.sound=false;
+ activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
+ players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false}];selectedPlayerId=activePlayer.id;
+ progress=exampleProgress(words);lastResult=null;
+ for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
+ if(screen==='players'){if(state==='empty')players=[];playersPage();return;}
+ if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
+ if(screen==='player-pin'){pendingNickname='Ania';pendingAvatarId='c';pinInput='';playerPinPage();return;}
+ if(['home','settings','wizard','history'].includes(screen)){
+  navigate(screen);
+  if(screen==='history'&&state!=='dashboard'){
+   await new Promise(requestAnimationFrame);
+   if(state==='sessions'){root.querySelector('[data-progress="mode"][data-mode="english"]')?.click();root.querySelector('[data-progress="collection"]')?.click();}
+   else root.querySelector(`[data-progress="${state}"]`)?.click();
+  }
+  return;
+ }
+ if(screen==='results'&&selectedMode==='spelling'){
+  view='results';root.dataset.view=view;root.dataset.mode=selectedMode;
+  lastResult=exampleResult(words,state==='rule'?'mixed':state);
+  renderSpellingResult(root,lastResult,words,null,{animate:false});
+  if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
+  return;
+ }
+ game=createStudioGame(selectedMode,configs[selectedMode],words);
+ if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
+ view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
+ if(screen==='results'){game.correct=8;game.wrong=2;finish();}
+ if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
+ if(state==='pause')pause();
+}
+
+document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio'))void renderStudioScenario();});

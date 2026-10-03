@@ -1,3 +1,4 @@
+import {effectiveTokens} from '../design-system/model.mjs';
 export const JELLY_V4_DEFAULTS=Object.freeze({
  motion:Object.freeze({duration:.90,stretch:1.45,recoil:.55,bounce:.75,inertia:2.40,magnet:1.80}),
  shape:Object.freeze({radius:18,inset:4,squish:15,tilt:1.3,border:1,depth:1}),
@@ -9,7 +10,14 @@ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 
 export function createJellyV4({indicatorSelector}={}){
- const params=JELLY_V4_DEFAULTS;
+ const params=structuredClone(JELLY_V4_DEFAULTS);
+ function syncDesign(){
+  const tokens=effectiveTokens('jelly');
+  if(tokens.height===undefined)return;
+  params.motion.duration=tokens.duration/1000;
+  params.shape.radius=Math.max(8,tokens.radius-3);params.shape.inset=tokens.inset;
+  params.text.delay=tokens.inkDelay;params.text.duration=tokens.inkDuration;
+ }
  const motionAnimations=new WeakMap();
  const textAnimations=new WeakMap();
  const dragStates=new WeakMap();
@@ -19,6 +27,7 @@ export function createJellyV4({indicatorSelector}={}){
  function spanFor(label){return label?.querySelector('span')||null;}
 
  function ensurePrepared(container,index=0){
+  syncDesign();
   if(!container)return null;
   container.classList.add('jelly-v4-container');
   container.style.setProperty('--jelly-radius',params.shape.radius+'px');

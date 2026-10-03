@@ -1,3 +1,4 @@
+import {assetUrl,assetManifest} from '../shared/asset-loader.mjs';
 export const SCENES = new Map([
   ['r_ża', { key:'rose', asset:'rose.webp', layouts:['bubble'] }],
   ['kr_lik', { key:'bunny', asset:'bunny.webp', layouts:['bubble'] }],
@@ -701,11 +702,16 @@ export const WORD_SCENES = new Map([
   ['wnuczka', { key:'family-child', asset:'wozek.avif', layouts:['bubble'] }],
 ]);
 
-export function sceneFor(masked, word=''){ return WORD_SCENES.get(word) || SCENES.get(masked) || null; }
+export function sceneFor(masked, word=''){
+ const base=WORD_SCENES.get(word)||SCENES.get(masked)||null;
+ const assignment=assetManifest().words[word];
+ return assignment?{...base,key:base?.key||word,asset:assignment.path,layouts:['bubble']}:base;
+}
 export function chooseLayout(){ return 'bubble'; }
 export function sceneUrl(scene){
   if(!scene) return '';
-  const url = new URL(`../assets/scenes/${scene.asset || `${scene.key}.svg`}`, import.meta.url);
+  const path=scene.asset?.startsWith('assets/')?scene.asset:`assets/scenes/${scene.asset || `${scene.key}.svg`}`;
+  const url = new URL(assetUrl(path));
   url.searchParams.set('v', '27-final-assets');
   return url.href;
 }

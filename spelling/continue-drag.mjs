@@ -1,3 +1,4 @@
+import {effectiveTokens} from '../design-system/model.mjs';
 import { JELLY_V4_DEFAULTS } from '../shared/jelly-v4.mjs?v=3';
 
 // Completion depends on movement from the handle. A tap anywhere on the rail
@@ -6,7 +7,8 @@ export function dragFraction(start, current, travel) {
   return travel > 0 ? Math.max(0, Math.min(1, (current - start) / travel)) : 0;
 }
 export function completedDrag(fraction, distance) {
-  return fraction >= .96 && distance >= 24;
+  const threshold=(effectiveTokens('slider').threshold??96)/100;
+  return fraction >= threshold && distance >= 24;
 }
 
 export function createContinueDrag(rail, { canContinue, onComplete, completionDelay=240 }) {

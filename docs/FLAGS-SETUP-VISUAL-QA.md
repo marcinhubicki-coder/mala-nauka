@@ -1,5 +1,8 @@
 # Flagi — ekran ustawień, 2026-10-03
 
+Historical reference loop. The later orthography-consistency request and current
+verified layout are documented in [FLAGS-SHARED-CONTROLS-QA.md](FLAGS-SHARED-CONTROLS-QA.md).
+
 Branch: `design/profile-and-learning-v5`. Scope: flag setup only; gameplay camera and feedback stay unchanged.
 
 Reference: user-supplied 864 × 1536 mockup, adapted to the full iPhone 13 Pro viewport (390 × 844 CSS pixels). The operating-system status bar and the ChatGPT accessibility overlay are not recreated as app controls.

@@ -1,3 +1,4 @@
+import {createStudioGame} from './design-system/scenarios.mjs';
 import {designReady} from './shared/design-runtime.mjs';
 import {loadWords} from './shared/asset-loader.mjs';
 import { exampleProgress } from './progress-example.mjs?v=1';
@@ -547,7 +548,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;words=validateWords(await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;words=validateWords(await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
 
@@ -580,18 +581,13 @@ async function renderStudioScenario(){
   if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
   return;
  }
- if(selectedMode==='flags'){
-  const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');
-  const params=new URLSearchParams({country:'pl',variant:'flags'});
-  game=flagsPreviewSession(params);window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
- }else{
-  const source=selectedMode==='spelling'?[{...words.find(word=>word.word==='marzenie'),kind:'spelling'}]:createSource(selectedMode,configs[selectedMode],words,progress);
-  game=new Session(source,180,()=>0,()=>.42);game.mode=selectedMode;game.config=configs[selectedMode];
-  game.state='playing';game.exposureRemaining=0;game.remaining=145000;
- }
+ game=createStudioGame(selectedMode,configs[selectedMode],words);
+ if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
  if(state==='correct'||state==='wrong')game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));
  view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;renderGame();
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
  if(state==='pause')pause();
 }
+
+document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio'))void renderStudioScenario();});

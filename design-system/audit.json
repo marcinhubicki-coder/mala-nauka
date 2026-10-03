@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-03T15:24:27.554Z",
+  "date": "2026-10-03T15:54:58.179Z",
   "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
   "cleanup": {
     "removedAssets": 28,
@@ -484,12 +484,794 @@
     "dźwignia": "data/words-08.json",
     "niedźwiedź": "data/words-08.json"
   },
-  "cssBytes": 428631,
-  "jsBytes": 685525,
+  "fontUsage": [
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .page-head h1",
+      "role": "ui"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .english-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .english-v2-choice span,\n#app[data-mode=\"english\"][data-view=\"wizard\"] .english-time-choice span",
+      "role": "body"
+    },
+    {
+      "file": "angielski/wizard-retina.css",
+      "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": "#app[data-view=\"results\"][data-mode=\"spelling\"]",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-heading .eyebrow",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-title-wrap h1",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".round-score strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".round-summary-line em",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-stat-copy b",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-detail-head strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-word-copy strong",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-word-state",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-again,.result-collection",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-rule-dialog",
+      "role": "body"
+    },
+    {
+      "file": "app.css",
+      "selector": ".result-continue-rail .continue-handle",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-choice span",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button>span:last-child",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .page-head h1",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .reading-choice span",
+      "role": "body"
+    },
+    {
+      "file": "czytanie/wizard-retina.css",
+      "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:is([data-view=\"wizard\"],[data-view=\"game\"],[data-view=\"results\"])",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .page-head h1,#app[data-mode=\"flags\"] .wizard-intro h2,#app[data-mode=\"flags\"] legend,#app[data-mode=\"flags\"] .timer,#app[data-mode=\"flags\"] .start-button,#app[data-mode=\"flags\"] .flag-answer-label,#app[data-mode=\"flags\"] .flag-adventure-name,#app[data-mode=\"flags\"] .flag-adventure-country,#app[data-mode=\"flags\"] .flag-adventure-capital-question",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-segmented label>span",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-continent-chip>span",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .start-button>span:last-child",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-language-options button",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .time-block small",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .game-meta",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .game-meta strong",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-language-toggle.in-game",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .question-card .badge",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-adventure-capital",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .flag-country-hint,#app[data-mode=\"flags\"] .flag-capital-label",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .prompt",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback>p",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback-message strong",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .feedback-message small",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:has(.question-card.wrong) .feedback [data-action=\"next\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .result h1",
+      "role": "flag"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"game\"] .timer,#app[data-mode=\"flags\"] .flag-answer-label,#app[data-mode=\"flags\"] .flag-adventure-name",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"] .prompt",
+      "role": "body"
+    },
+    {
+      "file": "flagi/adventure.css",
+      "selector": "#app[data-mode=\"flags\"]:has(.question-card.correct) .feedback [data-action=\"next\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .flag-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "flagi/setup-retina.css",
+      "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-canvas",
+      "role": "ui"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"]",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .wizard-intro h2",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-v2-section legend",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-v2-choice span,\n#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-time-choice span",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-dyktando-copy strong",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .spelling-dyktando-time-copy",
+      "role": "body"
+    },
+    {
+      "file": "ortografia/wizard-retina.css",
+      "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"] .start-button",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": "#app[data-view=\"players\"], #app[data-view=\"player-create\"], #app[data-view=\"player-pin\"]",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-title h1",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-card strong",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".add-player-soft",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-continue",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-later",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": "#app[data-view=\"player-create\"] .page-head h1,#app[data-view=\"player-pin\"] .page-head h1",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-form-card h2,.pin-card h2",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-form-next",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-name-input",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".nickname-error",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".pin-fields>p",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".pin-mode label span",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-title h1,#app[data-view=\"player-create\"] .page-head h1,#app[data-view=\"player-pin\"] .page-head h1,.player-form-card h2,.pin-profile h2",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".player-card strong",
+      "role": "body"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".lab-head h1",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".preview-meta output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".scrub-row output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-head strong",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-head output",
+      "role": "display"
+    },
+    {
+      "file": "progress-bar-lab/lab.css",
+      "selector": ".parameter-tab",
+      "role": "display"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": "#app[data-view=\"history\"]",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-header h1",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-hero-copy p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-subtitle",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".collection-word small",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-empty p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-category-list span",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-achievement-list p,.progress-session-list p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".progress-category-list .category-pair span",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rules-categories button",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule summary",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule-body>p",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".learning-rule-body h2",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rule-word-grid figcaption",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".rules-views label>span",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": ":root",
+      "role": "flag"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "html",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .page-head h1",
+      "role": "display"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] :is(fieldset legend,.field-title)",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .step-dot",
+      "role": "body"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .ds-jelly label>span,.ds-component-stage .ds-jelly label>span",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-view=\"wizard\"][data-mode][data-ds] .start-button,.ds-component-stage .start-button",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": ".ds-component-stage",
+      "role": "ui"
+    },
+    {
+      "file": "shared/components.css",
+      "selector": "#app[data-ds] :is(.player-continue,.math-start-button,.math-result-again,.result:not(.spelling-result) .primary)",
+      "role": "ui"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) :is(.flag-segmented,.spelling-segmented,.flag-language-options) label>span",
+      "role": "body"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) .wizard-note",
+      "role": "body"
+    },
+    {
+      "file": "shared/wizard-controls.css",
+      "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) .start-button",
+      "role": "body"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".spelling-title",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app[data-view=\"game\"][data-mode=\"spelling\"] .word",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app[data-view=\"game\"][data-mode=\"spelling\"] .answers .answer",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".continue-copy",
+      "role": "ui"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": "#app.spelling-correct-feedback[data-mode=\"spelling\"] .feedback",
+      "role": "display"
+    },
+    {
+      "file": "spelling-art.css",
+      "selector": ".spelling-continue-rail .continue-copy",
+      "role": "body"
+    }
+  ],
+  "fontViews": {
+    "players": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "players-empty": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "player-create": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "player-pin": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "home": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "settings": [
+      "body",
+      "display"
+    ],
+    "spelling-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "spelling-initial": [
+      "body",
+      "display"
+    ],
+    "spelling-correct": [
+      "body",
+      "display"
+    ],
+    "spelling-wrong": [
+      "body",
+      "display"
+    ],
+    "spelling-results": [
+      "body",
+      "display"
+    ],
+    "english-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "english-initial": [
+      "body"
+    ],
+    "english-correct": [
+      "body"
+    ],
+    "english-wrong": [
+      "body"
+    ],
+    "english-results": [
+      "body"
+    ],
+    "flags-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "flags-initial": [
+      "body",
+      "flag"
+    ],
+    "flags-correct": [
+      "body",
+      "flag"
+    ],
+    "flags-wrong": [
+      "body",
+      "flag"
+    ],
+    "flags-results": [
+      "body",
+      "flag"
+    ],
+    "reading-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "reading-initial": [
+      "body"
+    ],
+    "reading-correct": [
+      "body"
+    ],
+    "reading-wrong": [
+      "body"
+    ],
+    "reading-results": [
+      "body"
+    ],
+    "math-settings": [
+      "body",
+      "ui",
+      "display"
+    ],
+    "math-initial": [
+      "body"
+    ],
+    "math-correct": [
+      "body"
+    ],
+    "math-wrong": [
+      "body"
+    ],
+    "math-results": [
+      "body"
+    ],
+    "spelling-rule": [
+      "body",
+      "display"
+    ],
+    "spelling-hint": [
+      "body",
+      "display"
+    ],
+    "spelling-pause": [
+      "body",
+      "display"
+    ],
+    "progress": [
+      "body",
+      "display"
+    ],
+    "collection": [
+      "body",
+      "display"
+    ],
+    "trophies": [
+      "body",
+      "display"
+    ],
+    "categories": [
+      "body",
+      "display"
+    ],
+    "rules": [
+      "body",
+      "display"
+    ],
+    "sessions": [
+      "body",
+      "display"
+    ]
+  },
+  "cssBytes": 431912,
+  "jsBytes": 679386,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 65254
+      "bytes": 65433
     },
     {
       "path": "app.css",
@@ -501,7 +1283,7 @@
     },
     {
       "path": "flagi/adventure.css",
-      "bytes": 38842
+      "bytes": 39019
     },
     {
       "path": "spelling/bubble.mjs",
@@ -509,7 +1291,7 @@
     },
     {
       "path": "sw.js",
-      "bytes": 33955
+      "bytes": 26841
     },
     {
       "path": "ortografia/wizard-v2.mjs",
@@ -517,11 +1299,11 @@
     },
     {
       "path": "progress-screen.css",
-      "bytes": 24179
+      "bytes": 24233
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 22656
+      "bytes": 22672
     },
     {
       "path": "angielski/wizard-v2.mjs",

@@ -1,3 +1,4 @@
+import {effectiveTokens} from '../design-system/model.mjs';
 export const JELLY_V4_DEFAULTS=Object.freeze({
  motion:Object.freeze({duration:.90,stretch:1.45,recoil:.55,bounce:.75,inertia:2.40,magnet:1.80}),
  shape:Object.freeze({radius:18,inset:4,squish:15,tilt:1.3,border:1,depth:1}),
@@ -11,8 +12,8 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 export function createJellyV4({indicatorSelector}={}){
  const params=structuredClone(JELLY_V4_DEFAULTS);
  function syncDesign(){
-  const tokens=globalThis.__MALA_NAUKA_DESIGN__?.tokens?.jelly;
-  if(!tokens)return;
+  const tokens=effectiveTokens('jelly');
+  if(tokens.height===undefined)return;
   params.motion.duration=tokens.duration/1000;
   params.shape.radius=Math.max(8,tokens.radius-3);params.shape.inset=tokens.inset;
   params.text.delay=tokens.inkDelay;params.text.duration=tokens.inkDuration;

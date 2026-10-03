@@ -1,4 +1,5 @@
 import {designReady} from '../shared/design-runtime.mjs';
+import {renderMathStudioResult} from './round-timer.js';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
 await designReady;
 const app = document.querySelector('#app');
@@ -602,6 +603,6 @@ if(new URLSearchParams(location.search).has('studio')){
   if(query.get('state')==='correct')state.locked=true;
   if(query.get('state')==='wrong'){state.hadMistake=true;const wrong=state.question.answers.find(answer=>answer!==state.question.correct);state.wrongAnswers.add(wrong);state.lastWrongAnswer=wrong;}
   renderGame({feedback:query.get('state')==='correct'?'Świetnie!':query.get('state')==='wrong'?'Spróbuj jeszcze raz.':'',feedbackType:query.get('state')==='correct'?'good':query.get('state')==='wrong'?'bad':''});
-  if(query.get('screen')==='results')window.dispatchEvent(new CustomEvent('math-round-end',{detail:{correct:8,wrong:2,duration:180,mode:'add'}}));
+  if(query.get('screen')==='results')renderMathStudioResult({correct:8,wrong:2,duration:180,mode:'add'});
  }
 }

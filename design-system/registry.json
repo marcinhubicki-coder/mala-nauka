@@ -22,14 +22,14 @@
       "id": "card",
       "name": "Kafel ustawień",
       "tokenGroup": "card",
-      "selector": ".setup-card",
+      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
       "description": "Jedna geometria i powierzchnia dla czterech trybów."
     },
     {
       "id": "jelly",
       "name": "Przełącznik jelly",
       "tokenGroup": "jelly",
-      "selector": ".jelly-v4-container",
+      "selector": ".jelly-v4-container,.rules-views",
       "description": "Przeciąganie lub wybór; kolor tekstu przełącza się z opóźnieniem."
     },
     {
@@ -43,7 +43,7 @@
       "id": "button",
       "name": "Przycisk główny",
       "tokenGroup": "button",
-      "selector": ".start-button,.player-continue,.result-action",
+      "selector": ".start-button,.player-continue,.math-start-button,.math-result-again,.result .primary,.spelling-result .result-collection",
       "description": "Przed wyborem, wciśnięty, wyłączony i ukończony."
     },
     {
@@ -57,28 +57,28 @@
       "id": "flashcard",
       "name": "Fiszka",
       "tokenGroup": "flashcard",
-      "selector": ".question-card,.spelling-question-card",
+      "selector": ".question-card,.spelling-question-card,.question-block",
       "description": "Wersja płaska: angielski/czytanie; wzbogacona: ortografia/flagi."
     },
     {
       "id": "slider",
       "name": "Przeciągnij dalej",
       "tokenGroup": "slider",
-      "selector": ".spelling-continue-rail,.result-action",
+      "selector": ".spelling-continue-rail,.result-continue-rail",
       "description": "Po błędzie zatrzymany czas; dalszy krok po osiągnięciu progu."
     },
     {
       "id": "popup",
       "name": "Popup / zasada",
       "tokenGroup": "popup",
-      "selector": "dialog,.result-rule",
+      "selector": "dialog,.result-rule-dialog",
       "description": "Zamykany popup; przewijanie dolnej części reguły."
     },
     {
       "id": "progress",
       "name": "Postęp i licznik",
       "tokenGroup": "progress",
-      "selector": "progress,.result-progress-track",
+      "selector": "progress,.round-progress,.math-round-progress",
       "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie."
     },
     {
@@ -109,7 +109,12 @@
         "button",
         "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "players-empty",
@@ -122,7 +127,12 @@
         "profile",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "player-create",
@@ -135,7 +145,12 @@
         "profile",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "player-pin",
@@ -149,7 +164,12 @@
         "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "home",
@@ -164,7 +184,12 @@
         "button",
         "profile"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "settings",
@@ -178,7 +203,11 @@
         "button",
         "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-settings",
@@ -194,7 +223,12 @@
         "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "spelling-initial",
@@ -206,11 +240,15 @@
       "components": [
         "flashcard",
         "answer",
+        "progress",
         "slider",
-        "popup",
-        "progress"
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-correct",
@@ -222,11 +260,15 @@
       "components": [
         "flashcard",
         "answer",
+        "progress",
         "slider",
-        "popup",
-        "progress"
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-wrong",
@@ -238,11 +280,15 @@
       "components": [
         "flashcard",
         "answer",
+        "progress",
         "slider",
-        "popup",
-        "progress"
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-results",
@@ -254,11 +300,15 @@
       "components": [
         "card",
         "button",
-        "slider",
         "progress",
-        "popup"
+        "popup",
+        "slider"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "english-settings",
@@ -271,10 +321,14 @@
         "layout",
         "card",
         "jelly",
-        "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "english-initial",
@@ -286,11 +340,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "english-correct",
@@ -302,11 +359,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "english-wrong",
@@ -318,11 +378,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "english-results",
@@ -333,12 +396,12 @@
       "route": "/angielski/",
       "components": [
         "card",
-        "button",
-        "slider",
-        "progress",
-        "popup"
+        "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "flags-settings",
@@ -354,7 +417,12 @@
         "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "flags-initial",
@@ -366,11 +434,15 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
     },
     {
       "id": "flags-correct",
@@ -382,11 +454,15 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
     },
     {
       "id": "flags-wrong",
@@ -398,11 +474,15 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
     },
     {
       "id": "flags-results",
@@ -413,12 +493,13 @@
       "route": "/flagi/",
       "components": [
         "card",
-        "button",
-        "slider",
-        "progress",
-        "popup"
+        "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ]
     },
     {
       "id": "reading-settings",
@@ -431,10 +512,14 @@
         "layout",
         "card",
         "jelly",
-        "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "reading-initial",
@@ -446,11 +531,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "reading-correct",
@@ -462,11 +550,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "reading-wrong",
@@ -478,11 +569,14 @@
       "components": [
         "flashcard",
         "answer",
-        "slider",
-        "popup",
-        "progress"
+        "progress",
+        "button",
+        "popup"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "reading-results",
@@ -493,12 +587,12 @@
       "route": "/czytanie/",
       "components": [
         "card",
-        "button",
-        "slider",
-        "progress",
-        "popup"
+        "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "math-settings",
@@ -510,11 +604,14 @@
       "components": [
         "layout",
         "card",
-        "jelly",
-        "toggle",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ]
     },
     {
       "id": "math-initial",
@@ -524,13 +621,14 @@
       "state": "initial",
       "route": "/matematyka/",
       "components": [
-        "flashcard",
         "answer",
-        "slider",
-        "popup",
+        "flashcard",
         "progress"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "math-correct",
@@ -540,13 +638,14 @@
       "state": "correct",
       "route": "/matematyka/",
       "components": [
-        "flashcard",
         "answer",
-        "slider",
-        "popup",
+        "flashcard",
         "progress"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "math-wrong",
@@ -556,13 +655,14 @@
       "state": "wrong",
       "route": "/matematyka/",
       "components": [
-        "flashcard",
         "answer",
-        "slider",
-        "popup",
+        "flashcard",
         "progress"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "math-results",
@@ -573,12 +673,12 @@
       "route": "/matematyka/",
       "components": [
         "card",
-        "button",
-        "slider",
-        "progress",
-        "popup"
+        "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ]
     },
     {
       "id": "spelling-rule",
@@ -592,7 +692,11 @@
         "card",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-hint",
@@ -605,7 +709,11 @@
         "popup",
         "flashcard"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "spelling-pause",
@@ -618,7 +726,11 @@
         "popup",
         "button"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "progress",
@@ -629,12 +741,13 @@
       "route": "/",
       "components": [
         "card",
-        "trophy",
-        "popup",
-        "profile",
-        "button"
+        "trophy"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "collection",
@@ -645,12 +758,14 @@
       "route": "/",
       "components": [
         "card",
-        "trophy",
         "popup",
-        "profile",
-        "button"
+        "jelly"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "trophies",
@@ -661,12 +776,13 @@
       "route": "/",
       "components": [
         "card",
-        "trophy",
-        "popup",
-        "profile",
-        "button"
+        "trophy"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "categories",
@@ -676,13 +792,13 @@
       "state": "categories",
       "route": "/",
       "components": [
-        "card",
-        "trophy",
-        "popup",
-        "profile",
-        "button"
+        "card"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "rules",
@@ -693,12 +809,14 @@
       "route": "/",
       "components": [
         "card",
-        "trophy",
         "popup",
-        "profile",
-        "button"
+        "jelly"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     },
     {
       "id": "sessions",
@@ -708,13 +826,13 @@
       "state": "sessions",
       "route": "/",
       "components": [
-        "card",
-        "trophy",
-        "popup",
-        "profile",
-        "button"
+        "card"
       ],
-      "fixture": true
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ]
     }
   ],
   "flows": [

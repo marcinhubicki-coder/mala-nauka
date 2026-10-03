@@ -14,7 +14,7 @@ export function applyDesign(value) {
 export const currentDesign = () => config;
 export async function initDesign() {
   const [settings, catalog] = await Promise.all(['design-system/config.json','design-system/assets.json'].map(async path => {
-    const response = await fetch(new URL(path, base));
+    const response = await fetch(new URL(path, window.__DS_CONTENT_ORIGIN__ || base),{cache:'no-cache'});
     if (!response.ok) throw Error(`Brak wspólnego pliku: ${path}`);
     return response.json();
   }));

@@ -49,3 +49,22 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 .ds-component-stage .ds-jelly input{position:absolute;opacity:0;width:1px;height:1px}
 .ds-component-stage .jelly-v4-indicator{position:absolute}
 @media(prefers-reduced-motion:reduce){#app[data-ds] *{scroll-behavior:auto}}
+/* Bind all instances recorded in the registry, including result and profile views. */
+#app[data-ds] :is(.player-continue,.math-start-button,.math-result-again,.result:not(.spelling-result) .primary){min-height:calc(var(--ds-button-height) * var(--ds-u));height:auto;border-radius:calc(var(--ds-button-radius) * var(--ds-u));padding:calc(var(--ds-space-sm) * var(--ds-u)) calc(var(--ds-button-padding-x) * var(--ds-u));font-size:calc(var(--ds-button-font-size) * var(--ds-u));font-family:var(--ds-font-ui);border-width:calc(var(--ds-button-border-width) * var(--ds-u))}
+#app[data-ds] .pin-mode{width:calc(var(--ds-toggle-width) * var(--ds-u));height:calc(var(--ds-toggle-height) * var(--ds-u));border-radius:calc(var(--ds-toggle-radius) * var(--ds-u))}
+#app[data-ds] .pin-mode label span{font-size:calc(var(--ds-toggle-label-size) * var(--ds-u))}
+#app[data-view="game"][data-mode][data-ds] .answer-grid{gap:calc(var(--ds-answer-gap) * var(--ds-u));width:calc(var(--ds-answer-width-percent) * 1%);margin-inline:auto}
+#app[data-view="game"][data-mode][data-ds] .question-block{border-radius:calc(var(--ds-flashcard-radius) * var(--ds-u));padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
+#app[data-view="game"][data-mode="spelling"][data-ds] .spelling-question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
+#app[data-view="game"][data-mode="flags"][data-ds] .question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
+#app[data-ds] .result-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
+#app[data-ds] .result-continue-rail .continue-handle{width:calc(var(--ds-slider-handle-size) * var(--ds-u));height:calc(var(--ds-slider-handle-size) * var(--ds-u))}
+#app[data-ds] :is(.round-progress,.math-round-progress){height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
+#app[data-ds] :is(.round-progress,.math-round-progress)>span{border-radius:inherit}
+#app[data-ds] :is(.settings-card,.category-card,.result-sheet){border-radius:calc(var(--ds-card-radius) * var(--ds-u));padding:calc(var(--ds-card-padding-top) * var(--ds-u)) calc(var(--ds-card-padding-x) * var(--ds-u)) calc(var(--ds-card-padding-bottom) * var(--ds-u))}
+#app[data-ds] .player-card{display:flex;gap:calc(var(--ds-profile-gap) * var(--ds-u))}
+#app[data-ds] .progress-achievement-list{gap:calc(var(--ds-trophy-gap) * var(--ds-u))}
+#app[data-ds] .spelling-result{--result-canvas:calc(var(--ds-layout-canvas-width) * 1px)}
+#app[data-ds] :is(.game-bar,.progress-header,.player-header){gap:calc(var(--ds-space-sm) * var(--ds-u))}
+#app[data-ds] .pin-profile{gap:calc(var(--ds-space-md) * var(--ds-u))}
+#app[data-ds] :is(.result-subtitle,.record,.prompt){color:var(--ds-color-muted)}

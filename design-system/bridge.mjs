@@ -1,5 +1,5 @@
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
-import {configureAssets,observeAssets,rewriteAssetNodes} from '../shared/asset-loader.mjs';
+import {configureAssets,observeAssets,rewriteAssetNodes,previewAssets,assetManifest} from '../shared/asset-loader.mjs';
 const query = new URLSearchParams(location.search);
 document.documentElement.dataset.dsView = query.get('viewId') || '';
 if(query.has('studio')){
@@ -9,7 +9,7 @@ if(query.has('studio')){
 }
 let registry, inspecting = false, highlight;
 function emit(data){if(parent!==window)parent.postMessage({channel:'mala-nauka-studio',...data},location.origin);}
-function componentFor(target){return registry?.components.find(component=>{try{return target.closest(component.selector);}catch{return false;}});}
+function componentFor(target){const candidates=registry?.components.map(component=>({component,node:target.closest(component.selector)})).filter(row=>row.node)||[];candidates.sort((a,b)=>a.node===b.node?(a.component.id==='toggle'?-1:b.component.id==='toggle'?1:0):a.node.contains(b.node)?1:-1);return candidates[0]?.component;}
 document.addEventListener('click', event=>{
  if(!inspecting)return;
  const component=componentFor(event.target);if(!component)return;
@@ -24,7 +24,7 @@ document.addEventListener('click', event=>{
 window.addEventListener('message',async event=>{
  if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-studio')return;
  const message=event.data;
- if(message.type==='design'){await designReady;applyDesign(message.config);if(message.assets){configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();}highlight?.remove();emit({type:'applied',revision:message.config.revision});}
+ if(message.type==='design'){await designReady;applyDesign(message.config);if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}highlight?.remove();emit({type:'applied',revision:message.config.revision});}
  if(message.type==='inspect'){inspecting=Boolean(message.enabled);if(!inspecting)highlight?.remove();}
  if(message.type==='metrics')emit({type:'metrics',metrics:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio,scroll:document.querySelector('#app')?.scrollHeight,viewport:document.querySelector('#app')?.clientHeight,errors:document.documentElement.dataset.dsError||''}});
 });

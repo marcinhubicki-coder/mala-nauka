@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 1,
+  "revision": 2,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -10,8 +10,7 @@
       "type": "webp",
       "group": "angielski",
       "references": [
-        "angielski/wizard-v2.mjs",
-        "sw.js"
+        "angielski/wizard-v2.mjs"
       ]
     },
     {
@@ -22,8 +21,7 @@
       "type": "svg",
       "group": "angielski",
       "references": [
-        "angielski/wizard-retina.css",
-        "sw.js"
+        "angielski/wizard-retina.css"
       ]
     },
     {
@@ -33,9 +31,7 @@
       "id": "b4ecb6acbebcfaf3",
       "type": "webp",
       "group": "angielski",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/angielski/wizard-london-retina-v2.webp",
@@ -45,8 +41,7 @@
       "type": "webp",
       "group": "angielski",
       "references": [
-        "angielski/wizard-retina.css",
-        "sw.js"
+        "angielski/wizard-retina.css"
       ]
     },
     {
@@ -57,8 +52,7 @@
       "type": "webp",
       "group": "angielski",
       "references": [
-        "angielski/wizard-v2.mjs",
-        "sw.js"
+        "angielski/wizard-v2.mjs"
       ]
     },
     {
@@ -80,8 +74,7 @@
         "ortografia/index.html",
         "ortografia/wizard-preview-frame.html",
         "profile-preview-frame.html",
-        "progress-preview-frame.html",
-        "sw.js"
+        "progress-preview-frame.html"
       ]
     },
     {
@@ -100,9 +93,7 @@
       "id": "503aaf9ccebdf3b2",
       "type": "webp",
       "group": "brand",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/brand/home-mark.webp",
@@ -111,9 +102,7 @@
       "id": "b0c0c73def066357",
       "type": "webp",
       "group": "brand",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/brand/player-avatars-3d.webp",
@@ -123,8 +112,7 @@
       "type": "webp",
       "group": "brand",
       "references": [
-        "player-profiles.css",
-        "sw.js"
+        "player-profiles.css"
       ]
     },
     {
@@ -136,8 +124,7 @@
       "group": "brand",
       "references": [
         "app.js",
-        "player-profiles.css",
-        "sw.js"
+        "player-profiles.css"
       ]
     },
     {
@@ -148,8 +135,7 @@
       "type": "webp",
       "group": "brand",
       "references": [
-        "app.js",
-        "sw.js"
+        "app.js"
       ]
     },
     {
@@ -162,8 +148,7 @@
       "references": [
         "app.js",
         "index.html",
-        "profile-preview-frame.html",
-        "sw.js"
+        "profile-preview-frame.html"
       ]
     },
     {
@@ -173,9 +158,7 @@
       "id": "45e4c7fd750f61f9",
       "type": "svg",
       "group": "brand",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/czytanie/wizard-mission-retina-v1.webp",
@@ -186,8 +169,7 @@
       "group": "czytanie",
       "references": [
         "czytanie/wizard-v2.mjs",
-        "ortografia/wizard-v2.mjs",
-        "sw.js"
+        "ortografia/wizard-v2.mjs"
       ]
     },
     {
@@ -198,8 +180,7 @@
       "type": "webp",
       "group": "czytanie",
       "references": [
-        "czytanie/wizard-retina.css",
-        "sw.js"
+        "czytanie/wizard-retina.css"
       ]
     },
     {
@@ -210,8 +191,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -222,8 +202,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -270,8 +249,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -282,8 +260,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -294,8 +271,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -306,8 +282,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -318,8 +293,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/flag-cloth.mjs",
-        "sw.js"
+        "flagi/flag-cloth.mjs"
       ]
     },
     {
@@ -330,8 +304,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -341,9 +314,7 @@
       "id": "8a67429383c94bb0",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/adventure/game-scene-v2.webp",
@@ -353,8 +324,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -365,8 +335,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -377,8 +346,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure-game.mjs",
-        "sw.js"
+        "flagi/adventure-game.mjs"
       ]
     },
     {
@@ -398,8 +366,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -410,8 +377,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -431,8 +397,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -443,8 +408,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/setup-retina.css",
-        "sw.js"
+        "flagi/setup-retina.css"
       ]
     },
     {
@@ -455,8 +419,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -467,8 +430,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -478,9 +440,7 @@
       "id": "fa22f9e59378b115",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/at.svg",
@@ -489,9 +449,7 @@
       "id": "2f6d8d093b7255e8",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/au.svg",
@@ -500,9 +458,7 @@
       "id": "347ee1e83cd9f9a3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/bd.svg",
@@ -511,9 +467,7 @@
       "id": "b509e5c29b8c3276",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/be.svg",
@@ -522,9 +476,7 @@
       "id": "6dfa7f50bd11ed38",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/br.svg",
@@ -533,9 +485,7 @@
       "id": "64d2ed01200cb139",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ca.svg",
@@ -545,8 +495,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -556,9 +505,7 @@
       "id": "b82250ad3398a02e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/cl.svg",
@@ -567,9 +514,7 @@
       "id": "2f6b5798b1e3dda5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/cn.svg",
@@ -578,9 +523,7 @@
       "id": "0a69caba4bd7d5b7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/cu.svg",
@@ -589,9 +532,7 @@
       "id": "4c6620e0cea2e4a3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/cz.svg",
@@ -600,9 +541,7 @@
       "id": "75e1ba4aac9b397e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/de.svg",
@@ -611,9 +550,7 @@
       "id": "ba340818226267d4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/dk.svg",
@@ -622,9 +559,7 @@
       "id": "6aec59f818bdbace",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ee.svg",
@@ -633,9 +568,7 @@
       "id": "28272695275dc909",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/eg.svg",
@@ -644,9 +577,7 @@
       "id": "44eb0ce18e921c19",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/fi.svg",
@@ -655,9 +586,7 @@
       "id": "e9852c99ea5d6b88",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/fj.svg",
@@ -666,9 +595,7 @@
       "id": "7a090c656606e765",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/FLAG-ICONS-SOURCE.txt",
@@ -686,9 +613,7 @@
       "id": "d4ede2c9021304db",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/gb.svg",
@@ -698,8 +623,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "angielski/wizard-retina.css",
-        "sw.js"
+        "angielski/wizard-retina.css"
       ]
     },
     {
@@ -709,9 +633,7 @@
       "id": "403eeb77d7d0c840",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ie.svg",
@@ -720,9 +642,7 @@
       "id": "95749af04797017c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/it.svg",
@@ -731,9 +651,7 @@
       "id": "bb320b249c7b14df",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/jp.svg",
@@ -742,9 +660,7 @@
       "id": "71611c791a91d918",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ma.svg",
@@ -753,9 +669,7 @@
       "id": "c79e36c96834546f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/mx.svg",
@@ -764,9 +678,7 @@
       "id": "795880d1967175d6",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ng.svg",
@@ -775,9 +687,7 @@
       "id": "fc7aeb8d07e32eb7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/nl.svg",
@@ -786,9 +696,7 @@
       "id": "59ca14f8019528a5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/no.svg",
@@ -797,9 +705,7 @@
       "id": "598a05929aba2d55",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/nz.svg",
@@ -808,9 +714,7 @@
       "id": "ce31cef95114a601",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/pe.svg",
@@ -820,8 +724,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -831,9 +734,7 @@
       "id": "b91f8b1be7dfc81f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/PIXEL-FLAGS-LICENSE.txt",
@@ -851,9 +752,7 @@
       "id": "478b9571d8726253",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/se.svg",
@@ -862,9 +761,7 @@
       "id": "44d60f9f7d24f1e1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ad.svg",
@@ -873,9 +770,7 @@
       "id": "1914f0d751b81005",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ae.svg",
@@ -884,9 +779,7 @@
       "id": "3bc52a4aac7c6c68",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/af.svg",
@@ -895,9 +788,7 @@
       "id": "313a7dd89f3d4bdc",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ag.svg",
@@ -906,9 +797,7 @@
       "id": "131282135f0f5cfc",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/al.svg",
@@ -917,9 +806,7 @@
       "id": "4ae4d2950f6a0852",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/am.svg",
@@ -928,9 +815,7 @@
       "id": "efb6cdaad5658ae5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ao.svg",
@@ -939,9 +824,7 @@
       "id": "3a4b1f9b0c95729b",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ar.svg",
@@ -950,9 +833,7 @@
       "id": "da39bfbe83fd35fa",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/at.svg",
@@ -961,9 +842,7 @@
       "id": "c0e5cb3c1d59fd00",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/au.svg",
@@ -972,9 +851,7 @@
       "id": "cbb2206c5e59a25d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/az.svg",
@@ -983,9 +860,7 @@
       "id": "33ad245b2125c36f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ba.svg",
@@ -994,9 +869,7 @@
       "id": "b321fe9b47c1cd74",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bb.svg",
@@ -1005,9 +878,7 @@
       "id": "46cfd88ab5ea96e7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bd.svg",
@@ -1016,9 +887,7 @@
       "id": "1aabb4a772651fb9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/be.svg",
@@ -1027,9 +896,7 @@
       "id": "d6aff6fa4c913404",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bf.svg",
@@ -1038,9 +905,7 @@
       "id": "606b17add6a8aeb9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bg.svg",
@@ -1049,9 +914,7 @@
       "id": "b6d979fc96dc6b46",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bh.svg",
@@ -1060,9 +923,7 @@
       "id": "7a519f58c9007731",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bi.svg",
@@ -1071,9 +932,7 @@
       "id": "5ef1a56b4ebe9032",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bj.svg",
@@ -1082,9 +941,7 @@
       "id": "0a46cbae6018acdb",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bn.svg",
@@ -1093,9 +950,7 @@
       "id": "4fc01eb8e4b3d477",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bo.svg",
@@ -1104,9 +959,7 @@
       "id": "ee1075ebb655dd82",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/br.svg",
@@ -1115,9 +968,7 @@
       "id": "b0a912826c3ffd72",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bs.svg",
@@ -1126,9 +977,7 @@
       "id": "1f179c39f296e5e3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bt.svg",
@@ -1137,9 +986,7 @@
       "id": "05ff0d4d72583578",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bw.svg",
@@ -1148,9 +995,7 @@
       "id": "180bfa4e76b78fa7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/by.svg",
@@ -1159,9 +1004,7 @@
       "id": "a1efa44ad1167d6d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/bz.svg",
@@ -1170,9 +1013,7 @@
       "id": "9aef8f4ef9d86bf9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ca.svg",
@@ -1182,8 +1023,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -1193,9 +1033,7 @@
       "id": "ad93c1afd68e6a73",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cf.svg",
@@ -1204,9 +1042,7 @@
       "id": "1b58dc2035ff0039",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cg.svg",
@@ -1215,9 +1051,7 @@
       "id": "628dcfc7f00ab09c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ch.svg",
@@ -1226,9 +1060,7 @@
       "id": "be4b8257f7ce4ea4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ci.svg",
@@ -1237,9 +1069,7 @@
       "id": "4ecfea70e4e0860f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cl.svg",
@@ -1248,9 +1078,7 @@
       "id": "bcf0ccdf0999a1cd",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cm.svg",
@@ -1259,9 +1087,7 @@
       "id": "c9a327dc0e355739",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cn.svg",
@@ -1270,9 +1096,7 @@
       "id": "981da9bdf82d48e3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/co.svg",
@@ -1281,9 +1105,7 @@
       "id": "6bab3c96c1657510",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cr.svg",
@@ -1292,9 +1114,7 @@
       "id": "4775ef01d28b8a88",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cu.svg",
@@ -1303,9 +1123,7 @@
       "id": "15013e0bb414c074",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cv.svg",
@@ -1314,9 +1132,7 @@
       "id": "2fa67e0a2477306f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cy.svg",
@@ -1325,9 +1141,7 @@
       "id": "d2ddf86c24e9d4dc",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/cz.svg",
@@ -1336,9 +1150,7 @@
       "id": "d601fcc2e5b1fd48",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/de.svg",
@@ -1347,9 +1159,7 @@
       "id": "efd480af5a154a76",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/dj.svg",
@@ -1358,9 +1168,7 @@
       "id": "2a22d382f85cef20",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/dk.svg",
@@ -1369,9 +1177,7 @@
       "id": "d2847c0bd7a1fb97",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/dm.svg",
@@ -1380,9 +1186,7 @@
       "id": "0a4bf1a27390308c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/do.svg",
@@ -1391,9 +1195,7 @@
       "id": "02e5f5efbc60a737",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/dz.svg",
@@ -1402,9 +1204,7 @@
       "id": "9ea0cf93222ab7b5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ec.svg",
@@ -1413,9 +1213,7 @@
       "id": "4472b0618e2f5e31",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ee.svg",
@@ -1424,9 +1222,7 @@
       "id": "25642310e287fbdc",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/eg.svg",
@@ -1435,9 +1231,7 @@
       "id": "3f85d1d2bdb03692",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/er.svg",
@@ -1446,9 +1240,7 @@
       "id": "64c98a80601fc019",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/es.svg",
@@ -1457,9 +1249,7 @@
       "id": "f9cfaff858e95f83",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/et.svg",
@@ -1468,9 +1258,7 @@
       "id": "43d5922fff81ae1a",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/fi.svg",
@@ -1479,9 +1267,7 @@
       "id": "012edd984cf18794",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/fj.svg",
@@ -1490,9 +1276,7 @@
       "id": "b23cbee897c889ce",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/fm.svg",
@@ -1501,9 +1285,7 @@
       "id": "23db3e9fe582cc8d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/fr.svg",
@@ -1512,9 +1294,7 @@
       "id": "8cdacc8d79bcf210",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ga.svg",
@@ -1523,9 +1303,7 @@
       "id": "f7b775c474b03312",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gb.svg",
@@ -1535,8 +1313,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "angielski/wizard-retina.css",
-        "sw.js"
+        "angielski/wizard-retina.css"
       ]
     },
     {
@@ -1546,9 +1323,7 @@
       "id": "eecc1f130ed02b21",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ge.svg",
@@ -1557,9 +1332,7 @@
       "id": "0280a1279c3d1d77",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gh.svg",
@@ -1568,9 +1341,7 @@
       "id": "53c55ca455293bce",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gm.svg",
@@ -1579,9 +1350,7 @@
       "id": "2aa3fad4e8820fb4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gn.svg",
@@ -1590,9 +1359,7 @@
       "id": "ee01e7dd4abb0a99",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gq.svg",
@@ -1601,9 +1368,7 @@
       "id": "61ddf0a98d1d4bf9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gr.svg",
@@ -1612,9 +1377,7 @@
       "id": "a184070f7678b067",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gt.svg",
@@ -1623,9 +1386,7 @@
       "id": "a20814d011af90ab",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gw.svg",
@@ -1634,9 +1395,7 @@
       "id": "6b81a234b51ceacb",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/gy.svg",
@@ -1645,9 +1404,7 @@
       "id": "5bd7a7b326efd9c2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/hn.svg",
@@ -1656,9 +1413,7 @@
       "id": "67130fa043e9d30d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/hr.svg",
@@ -1667,9 +1422,7 @@
       "id": "3c98eae5ee93f0d7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ht.svg",
@@ -1678,9 +1431,7 @@
       "id": "d45f0285b56379b6",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/hu.svg",
@@ -1689,9 +1440,7 @@
       "id": "ffc4edd580d4b978",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/id.svg",
@@ -1700,9 +1449,7 @@
       "id": "5cd3acc4939dd7ea",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ie.svg",
@@ -1711,9 +1458,7 @@
       "id": "f82568d70bd1624f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/il.svg",
@@ -1723,8 +1468,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/adventure.css",
-        "sw.js"
+        "flagi/adventure.css"
       ]
     },
     {
@@ -1734,9 +1478,7 @@
       "id": "91185efa1a9b52cd",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/iq.svg",
@@ -1745,9 +1487,7 @@
       "id": "073b07113d582dfe",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ir.svg",
@@ -1756,9 +1496,7 @@
       "id": "cb363e09bafbff6d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/is.svg",
@@ -1767,9 +1505,7 @@
       "id": "4ef2de6fb25ff5a1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/it.svg",
@@ -1778,9 +1514,7 @@
       "id": "9fa88118818d9b64",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/jm.svg",
@@ -1789,9 +1523,7 @@
       "id": "f837df1ac21a4c64",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/jo.svg",
@@ -1800,9 +1532,7 @@
       "id": "e3a570d5c50c15f4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/jp.svg",
@@ -1811,9 +1541,7 @@
       "id": "bfea80baf9989383",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ke.svg",
@@ -1822,9 +1550,7 @@
       "id": "699163d87382eb96",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kg.svg",
@@ -1833,9 +1559,7 @@
       "id": "b0cf3e6806af23d8",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kh.svg",
@@ -1844,9 +1568,7 @@
       "id": "21a9681682a2158c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ki.svg",
@@ -1855,9 +1577,7 @@
       "id": "01206661587925da",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/km.svg",
@@ -1866,9 +1586,7 @@
       "id": "81e1befbbdeab3b2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kn.svg",
@@ -1877,9 +1595,7 @@
       "id": "0832acb7396986c7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kp.svg",
@@ -1888,9 +1604,7 @@
       "id": "f79bc8b6502445b5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kr.svg",
@@ -1899,9 +1613,7 @@
       "id": "7a6cd5b51d0e2841",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kw.svg",
@@ -1910,9 +1622,7 @@
       "id": "172a4281fdaf4b16",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/kz.svg",
@@ -1921,9 +1631,7 @@
       "id": "381b22e4c287b13e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/la.svg",
@@ -1932,9 +1640,7 @@
       "id": "da591b989d90a90d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lb.svg",
@@ -1943,9 +1649,7 @@
       "id": "94b12b3f1dc43809",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lc.svg",
@@ -1954,9 +1658,7 @@
       "id": "99645e005699eba4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/li.svg",
@@ -1965,9 +1667,7 @@
       "id": "77a33513c5288a0f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/LICENSE.txt",
@@ -1985,9 +1685,7 @@
       "id": "ed3eee24d19872d6",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lr.svg",
@@ -1996,9 +1694,7 @@
       "id": "69f2ce4b9490ab3c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ls.svg",
@@ -2007,9 +1703,7 @@
       "id": "83d2e4152ef06ed3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lt.svg",
@@ -2018,9 +1712,7 @@
       "id": "dc0401993f6e14b3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lu.svg",
@@ -2029,9 +1721,7 @@
       "id": "a0a530e396ac2e24",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/lv.svg",
@@ -2040,9 +1730,7 @@
       "id": "15d4e812a30208a1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ly.svg",
@@ -2051,9 +1739,7 @@
       "id": "47d96b6e011cd540",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ma.svg",
@@ -2062,9 +1748,7 @@
       "id": "28cfcdecf9675b0a",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mc.svg",
@@ -2073,9 +1757,7 @@
       "id": "690c23fe64b6ac71",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/md.svg",
@@ -2084,9 +1766,7 @@
       "id": "987ca12a752ec2b3",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/me.svg",
@@ -2095,9 +1775,7 @@
       "id": "d284332e23ef88ae",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mg.svg",
@@ -2106,9 +1784,7 @@
       "id": "59246c21300e2456",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mh.svg",
@@ -2117,9 +1793,7 @@
       "id": "96d7c0b917a5c064",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mk.svg",
@@ -2128,9 +1802,7 @@
       "id": "22488dc890fe1e5f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ml.svg",
@@ -2139,9 +1811,7 @@
       "id": "49e84081981f2b8e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mm.svg",
@@ -2150,9 +1820,7 @@
       "id": "c0b2e23a7e202ff2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mn.svg",
@@ -2161,9 +1829,7 @@
       "id": "92d5422514f63fc1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mr.svg",
@@ -2172,9 +1838,7 @@
       "id": "ea338a9f7744fb25",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mt.svg",
@@ -2183,9 +1847,7 @@
       "id": "a2ad157eeb5f1bb9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mu.svg",
@@ -2194,9 +1856,7 @@
       "id": "51f86810118855ca",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mv.svg",
@@ -2205,9 +1865,7 @@
       "id": "5546d527d669b393",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mw.svg",
@@ -2216,9 +1874,7 @@
       "id": "29a3e7057ec47f18",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mx.svg",
@@ -2227,9 +1883,7 @@
       "id": "9dbc8ad8b35e52ce",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/my.svg",
@@ -2238,9 +1892,7 @@
       "id": "bb30e84a099d2d9d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/mz.svg",
@@ -2249,9 +1901,7 @@
       "id": "ad91c2f8e6d6f80f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/na.svg",
@@ -2260,9 +1910,7 @@
       "id": "caa43fcdebb595eb",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ne.svg",
@@ -2271,9 +1919,7 @@
       "id": "4b91653d53f76dda",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ng.svg",
@@ -2282,9 +1928,7 @@
       "id": "b7a2a45a6499095e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ni.svg",
@@ -2293,9 +1937,7 @@
       "id": "b9dfe1fc2aded19b",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/nl.svg",
@@ -2304,9 +1946,7 @@
       "id": "8f691f17fe708945",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/no.svg",
@@ -2315,9 +1955,7 @@
       "id": "ceea17af051dceef",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/np.svg",
@@ -2326,9 +1964,7 @@
       "id": "b84c02e2fa659d0b",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/nr.svg",
@@ -2337,9 +1973,7 @@
       "id": "f1de4b06479d454b",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/nz.svg",
@@ -2348,9 +1982,7 @@
       "id": "794a2c8c09796090",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/om.svg",
@@ -2359,9 +1991,7 @@
       "id": "3204f5aa802cf3b2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pa.svg",
@@ -2370,9 +2000,7 @@
       "id": "6181586e499d3baf",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pe.svg",
@@ -2382,8 +2010,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -2393,9 +2020,7 @@
       "id": "43e492331c192a94",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ph.svg",
@@ -2404,9 +2029,7 @@
       "id": "c3bd5e08ddc5f6db",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pk.svg",
@@ -2415,9 +2038,7 @@
       "id": "89e851c0d541d816",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pl.svg",
@@ -2426,9 +2047,7 @@
       "id": "369bb3e14ee718df",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ps.svg",
@@ -2437,9 +2056,7 @@
       "id": "5d95ca7526bf8edd",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pt.svg",
@@ -2448,9 +2065,7 @@
       "id": "a7a2cf0b44aaaaf4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/pw.svg",
@@ -2459,9 +2074,7 @@
       "id": "a61ab9d94f296830",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/py.svg",
@@ -2470,9 +2083,7 @@
       "id": "fe0968470b791054",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/qa.svg",
@@ -2481,9 +2092,7 @@
       "id": "fb955ef352ff3ba1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ro.svg",
@@ -2492,9 +2101,7 @@
       "id": "17a3a747fc5e6330",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/rs.svg",
@@ -2503,9 +2110,7 @@
       "id": "b6e08e2eca1ec4c2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ru.svg",
@@ -2514,9 +2119,7 @@
       "id": "7100aaae51ff3b6a",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/rw.svg",
@@ -2525,9 +2128,7 @@
       "id": "9512100aa3e8079e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sa.svg",
@@ -2536,9 +2137,7 @@
       "id": "5738c8cfca5fea63",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sb.svg",
@@ -2547,9 +2146,7 @@
       "id": "b34eabf373af639c",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sc.svg",
@@ -2558,9 +2155,7 @@
       "id": "30cdbe42a1aed2da",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sd.svg",
@@ -2569,9 +2164,7 @@
       "id": "25b3fa24693ccbb8",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/se.svg",
@@ -2580,9 +2173,7 @@
       "id": "b3b5071e6c1d4a0e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sg.svg",
@@ -2591,9 +2182,7 @@
       "id": "25de9044c2e2775f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/si.svg",
@@ -2602,9 +2191,7 @@
       "id": "3a5e0cac44baaea6",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sk.svg",
@@ -2613,9 +2200,7 @@
       "id": "578d0693bc952143",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sl.svg",
@@ -2624,9 +2209,7 @@
       "id": "d0c384b03a037f4e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sm.svg",
@@ -2635,9 +2218,7 @@
       "id": "fc3388637c187533",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sn.svg",
@@ -2646,9 +2227,7 @@
       "id": "6437db13c13fa5cc",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/so.svg",
@@ -2657,9 +2236,7 @@
       "id": "249e1acb87efcd0e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sr.svg",
@@ -2668,9 +2245,7 @@
       "id": "5194a6af4e0d8a35",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ss.svg",
@@ -2679,9 +2254,7 @@
       "id": "f7ac7017201841ee",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/st.svg",
@@ -2690,9 +2263,7 @@
       "id": "880c17f94cb564b1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sv.svg",
@@ -2701,9 +2272,7 @@
       "id": "4c2b4e2b8bbb85d6",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sy.svg",
@@ -2712,9 +2281,7 @@
       "id": "04c5e853ade8f2e5",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/sz.svg",
@@ -2723,9 +2290,7 @@
       "id": "5d6399c149d14330",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/td.svg",
@@ -2734,9 +2299,7 @@
       "id": "19a278fbd88e7fa2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tg.svg",
@@ -2745,9 +2308,7 @@
       "id": "f52b955fb48669d1",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/th.svg",
@@ -2756,9 +2317,7 @@
       "id": "329cc0d520536d6e",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tj.svg",
@@ -2767,9 +2326,7 @@
       "id": "cd1afa9808833e49",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tl.svg",
@@ -2778,9 +2335,7 @@
       "id": "09c763aa3e5a48e2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tm.svg",
@@ -2789,9 +2344,7 @@
       "id": "378178e3d5c91c62",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tn.svg",
@@ -2800,9 +2353,7 @@
       "id": "8e0274e5762a4d5f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/to.svg",
@@ -2811,9 +2362,7 @@
       "id": "b351703fccc1e08a",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tr.svg",
@@ -2822,9 +2371,7 @@
       "id": "256a1d6afbedb9f7",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tt.svg",
@@ -2833,9 +2380,7 @@
       "id": "04c13dcd0b3690f9",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tv.svg",
@@ -2844,9 +2389,7 @@
       "id": "d94fa5f107cbacdb",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/tz.svg",
@@ -2855,9 +2398,7 @@
       "id": "fd317abae009fa36",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ua.svg",
@@ -2866,9 +2407,7 @@
       "id": "2d869c23ebfefb2a",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ug.svg",
@@ -2877,9 +2416,7 @@
       "id": "ab6aa03e1324d54f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/us.svg",
@@ -2888,9 +2425,7 @@
       "id": "e7be4240cf579879",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/uy.svg",
@@ -2899,9 +2434,7 @@
       "id": "47656c0bf4961a1f",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/uz.svg",
@@ -2910,9 +2443,7 @@
       "id": "62ce6f1073416e8d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/va.svg",
@@ -2921,9 +2452,7 @@
       "id": "ef3d65a321288700",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/vc.svg",
@@ -2932,9 +2461,7 @@
       "id": "4e0a86447af4924d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ve.svg",
@@ -2943,9 +2470,7 @@
       "id": "5712f1c63ba0bfa2",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/vn.svg",
@@ -2954,9 +2479,7 @@
       "id": "2355037201315d74",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/vu.svg",
@@ -2965,9 +2488,7 @@
       "id": "57d3b67abf0e57ef",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ws.svg",
@@ -2976,9 +2497,7 @@
       "id": "6b1a7ebcce97d750",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/ye.svg",
@@ -2987,9 +2506,7 @@
       "id": "4ad43705cb40095d",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/za.svg",
@@ -2998,9 +2515,7 @@
       "id": "1755a5e16f1c9f51",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/zm.svg",
@@ -3009,9 +2524,7 @@
       "id": "2753554062cd3761",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/svg/zw.svg",
@@ -3020,9 +2533,7 @@
       "id": "e27fcdcc882d7175",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/ua.svg",
@@ -3031,9 +2542,7 @@
       "id": "dc6add49a70142e4",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/us.svg",
@@ -3042,9 +2551,7 @@
       "id": "743daacf889c4a68",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/flags/za.svg",
@@ -3053,9 +2560,7 @@
       "id": "956b6750f4939a77",
       "type": "svg",
       "group": "flags",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/fonts/Dosis-OFL.txt",
@@ -3074,12 +2579,9 @@
       "type": "woff",
       "group": "fonts",
       "references": [
-        "design-system/model.mjs",
-        "home-screen.css",
         "index.html",
         "profile-preview-frame.html",
-        "shared/design-runtime.mjs",
-        "sw.js"
+        "shared/design-runtime.mjs"
       ]
     },
     {
@@ -3099,12 +2601,7 @@
       "type": "woff",
       "group": "fonts",
       "references": [
-        "app.css",
-        "design-system/model.mjs",
-        "progress-bar-lab/lab.css",
-        "shared/design-runtime.mjs",
-        "spelling-art.css",
-        "sw.js"
+        "shared/design-runtime.mjs"
       ]
     },
     {
@@ -3124,10 +2621,7 @@
       "type": "woff",
       "group": "fonts",
       "references": [
-        "design-system/model.mjs",
-        "flagi/adventure.css",
-        "shared/design-runtime.mjs",
-        "sw.js"
+        "shared/design-runtime.mjs"
       ]
     },
     {
@@ -3147,14 +2641,9 @@
       "type": "woff",
       "group": "fonts",
       "references": [
-        "app.css",
-        "design-system/model.mjs",
-        "flagi/adventure.css",
         "index.html",
         "profile-preview-frame.html",
-        "shared/design-runtime.mjs",
-        "sw.js",
-        "ui-retina.css"
+        "shared/design-runtime.mjs"
       ]
     },
     {
@@ -3167,8 +2656,7 @@
       "references": [
         "home-screen.mjs",
         "index.html",
-        "profile-preview-frame.html",
-        "sw.js"
+        "profile-preview-frame.html"
       ]
     },
     {
@@ -3199,8 +2687,7 @@
         "matematyka/index.html",
         "ortografia/index.html",
         "ortografia/wizard-preview-frame.html",
-        "profile-preview-frame.html",
-        "sw.js"
+        "profile-preview-frame.html"
       ]
     },
     {
@@ -3210,9 +2697,7 @@
       "id": "4858266c36a56ac3",
       "type": "png",
       "group": "icon-512.png",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/icon.svg",
@@ -3221,9 +2706,7 @@
       "id": "b02ba2647333c8a1",
       "type": "svg",
       "group": "icon.svg",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/lion.svg",
@@ -3232,9 +2715,7 @@
       "id": "ef892865dfabbb86",
       "type": "svg",
       "group": "lion.svg",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/maps/africa.svg",
@@ -3244,8 +2725,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3256,8 +2736,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3268,8 +2747,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3289,8 +2767,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3301,8 +2778,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3313,8 +2789,7 @@
       "type": "svg",
       "group": "maps",
       "references": [
-        "flagi/europe-map.js",
-        "sw.js"
+        "flagi/europe-map.js"
       ]
     },
     {
@@ -3333,10 +2808,7 @@
       "id": "6919ca22cf59cea0",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "spelling-mockup-v05.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/answer-button-v051.svg",
@@ -3345,11 +2817,7 @@
       "id": "9a747f0265c342d4",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v051.css",
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/background-v053-note.txt",
@@ -3367,10 +2835,7 @@
       "id": "af45a1b22db87053",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "spelling-mockup-v05.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/bubble-frame-v051.svg",
@@ -3379,11 +2844,7 @@
       "id": "521762420c926abb",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v051.css",
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/bubble-frame-v053.webp",
@@ -3392,9 +2853,7 @@
       "id": "ef25562b0ae8936d",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/bubble-mask-v051.svg",
@@ -3403,11 +2862,7 @@
       "id": "6036818df039293f",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v051.css",
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/game-meadow-animals-v2.webp",
@@ -3436,8 +2891,7 @@
       "group": "ortografia",
       "references": [
         "spelling/art.mjs",
-        "spelling-art.css",
-        "sw.js"
+        "spelling-art.css"
       ]
     },
     {
@@ -3448,8 +2902,7 @@
       "type": "jpeg",
       "group": "ortografia",
       "references": [
-        "ortografia/result-screen.mjs",
-        "sw.js"
+        "ortografia/result-screen.mjs"
       ]
     },
     {
@@ -3459,11 +2912,7 @@
       "id": "62f3aabedc176940",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v051.css",
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/lake-background.webp",
@@ -3472,9 +2921,7 @@
       "id": "1376e95e703e43c3",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/result-background-v6.webp",
@@ -3484,8 +2931,7 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
-        "pwa-viewport.css",
-        "sw.js"
+        "pwa-viewport.css"
       ]
     },
     {
@@ -3495,9 +2941,7 @@
       "id": "f238e63826a2f8d0",
       "type": "png",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/result-hero-retina-v4.webp",
@@ -3506,9 +2950,7 @@
       "id": "8d1bc02a194443b3",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/result-hero-retina-v5.webp",
@@ -3518,8 +2960,7 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
-        "app.css",
-        "sw.js"
+        "app.css"
       ]
     },
     {
@@ -3529,9 +2970,7 @@
       "id": "7ddafa63861cf3ee",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/spelling-bg-v05.webp",
@@ -3540,10 +2979,7 @@
       "id": "e166e815df0e3089",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "spelling-mockup-v05.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/spelling-bg-v051.svg",
@@ -3552,10 +2988,7 @@
       "id": "b71d41a1a2152763",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v051.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/spelling-bg-v052.svg",
@@ -3564,10 +2997,7 @@
       "id": "da4fc4fd03454919",
       "type": "svg",
       "group": "ortografia",
-      "references": [
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/spelling-bg-v053.webp",
@@ -3576,9 +3006,7 @@
       "id": "61fcb1ce8d97bbc3",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/title-jak-jest-poprawnie.png",
@@ -3587,12 +3015,7 @@
       "id": "bb34a658199518c2",
       "type": "png",
       "group": "ortografia",
-      "references": [
-        "spelling-mockup-v05.css",
-        "spelling-quality-v051.css",
-        "spelling-quality-v052.css",
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/ortografia/WIZARD-ASSETS.md",
@@ -3611,8 +3034,7 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
-        "ortografia/wizard-retina.css",
-        "sw.js"
+        "ortografia/wizard-retina.css"
       ]
     },
     {
@@ -3624,8 +3046,7 @@
       "group": "ortografia",
       "references": [
         "czytanie/wizard-v2.mjs",
-        "ortografia/wizard-v2.mjs",
-        "sw.js"
+        "ortografia/wizard-v2.mjs"
       ]
     },
     {
@@ -3635,9 +3056,7 @@
       "id": "542fa61db19a6d12",
       "type": "webp",
       "group": "ortografia",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/progress/categories-v1.webp",
@@ -3647,8 +3066,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.css",
-        "sw.js"
+        "progress-screen.css"
       ]
     },
     {
@@ -3659,8 +3077,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.css",
-        "sw.js"
+        "progress-screen.css"
       ]
     },
     {
@@ -3670,9 +3087,7 @@
       "id": "106451cafe564724",
       "type": "webp",
       "group": "progress",
-      "references": [
-        "sw.js"
-      ]
+      "references": []
     },
     {
       "path": "assets/progress/hero-v2.webp",
@@ -3683,8 +3098,7 @@
       "group": "progress",
       "references": [
         "progress-preview-frame.html",
-        "progress-screen.css",
-        "sw.js"
+        "progress-screen.css"
       ]
     },
     {
@@ -3695,8 +3109,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.mjs",
-        "sw.js"
+        "progress-screen.mjs"
       ]
     },
     {
@@ -3725,8 +3138,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.css",
-        "sw.js"
+        "progress-screen.css"
       ]
     },
     {
@@ -3737,8 +3149,7 @@
       "type": "svg",
       "group": "progress",
       "references": [
-        "progress-screen.css",
-        "sw.js"
+        "progress-screen.css"
       ]
     },
     {
@@ -3749,8 +3160,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.mjs",
-        "sw.js"
+        "progress-screen.mjs"
       ]
     },
     {
@@ -3761,8 +3171,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3773,8 +3182,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3785,8 +3193,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3797,8 +3204,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3810,8 +3216,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3822,8 +3227,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3834,8 +3238,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3846,8 +3249,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3859,8 +3261,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3889,8 +3290,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3901,8 +3301,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3913,8 +3312,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3925,8 +3323,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3937,8 +3334,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3949,8 +3345,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3961,8 +3356,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3973,8 +3367,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3985,8 +3378,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -3997,8 +3389,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4010,8 +3401,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4023,8 +3413,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4035,8 +3424,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4047,8 +3435,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4059,8 +3446,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4071,8 +3457,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4083,8 +3468,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4095,8 +3479,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4107,8 +3490,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4119,8 +3501,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4131,8 +3512,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4143,8 +3523,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4155,8 +3534,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4167,8 +3545,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4179,8 +3556,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4191,8 +3567,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4203,8 +3578,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4215,8 +3589,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4227,8 +3600,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4239,8 +3611,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4251,8 +3622,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4263,8 +3633,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4275,8 +3644,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4287,8 +3655,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4299,8 +3666,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4311,8 +3677,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4324,8 +3689,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4336,8 +3700,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4348,8 +3711,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4360,8 +3722,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4372,8 +3733,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4385,8 +3745,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4397,8 +3756,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4410,8 +3768,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4422,8 +3779,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4434,8 +3790,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4446,8 +3801,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4458,8 +3812,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4470,8 +3823,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4482,8 +3834,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4494,8 +3845,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4506,8 +3856,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4518,8 +3867,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4530,8 +3878,7 @@
       "type": "json",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4543,8 +3890,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4555,8 +3901,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4567,8 +3912,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4579,8 +3923,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4591,8 +3934,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4604,8 +3946,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4616,8 +3957,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4629,8 +3969,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4641,8 +3980,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4653,8 +3991,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4665,8 +4002,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4677,8 +4013,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4689,8 +4024,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4701,8 +4035,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4713,8 +4046,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4725,8 +4057,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4737,8 +4068,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4749,8 +4079,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4762,8 +4091,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4774,8 +4102,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4786,8 +4113,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4798,8 +4124,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4810,8 +4135,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4822,8 +4146,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4834,8 +4157,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4846,8 +4168,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4858,8 +4179,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4870,8 +4190,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4882,8 +4201,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4894,8 +4212,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4907,8 +4224,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4919,8 +4235,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4931,8 +4246,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4943,8 +4257,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4955,8 +4268,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4967,8 +4279,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4979,8 +4290,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -4991,8 +4301,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5003,8 +4312,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5015,8 +4323,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5027,8 +4334,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5039,8 +4345,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5051,8 +4356,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5063,8 +4367,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5075,8 +4378,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5088,8 +4390,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5100,8 +4401,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5112,8 +4412,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5124,8 +4423,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5136,8 +4434,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5148,8 +4445,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5160,8 +4456,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5172,8 +4467,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5184,8 +4478,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5196,8 +4489,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5209,8 +4501,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5221,8 +4512,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5233,8 +4523,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5245,8 +4534,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5257,8 +4545,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5269,8 +4556,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5281,8 +4567,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5293,8 +4578,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5306,8 +4590,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5318,8 +4601,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5330,8 +4612,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5342,8 +4623,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5354,8 +4634,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5366,8 +4645,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5378,8 +4656,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5390,8 +4667,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5403,8 +4679,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5415,8 +4690,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5427,8 +4701,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5439,8 +4712,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5451,8 +4723,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5463,8 +4734,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5475,8 +4745,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5496,8 +4765,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5508,8 +4776,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5520,8 +4787,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5532,8 +4798,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5544,8 +4809,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5556,8 +4820,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5568,8 +4831,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5580,8 +4842,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5593,8 +4854,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5606,8 +4866,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5618,8 +4877,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5630,8 +4888,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5642,8 +4899,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5654,8 +4910,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5667,8 +4922,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5679,8 +4933,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5691,8 +4944,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5703,8 +4955,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5715,8 +4966,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5727,8 +4977,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5739,8 +4988,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5751,8 +4999,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5763,8 +5010,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5775,8 +5021,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5787,8 +5032,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5799,8 +5043,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5811,8 +5054,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5823,8 +5065,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5835,8 +5076,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5847,8 +5087,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5859,8 +5098,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5871,8 +5109,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5883,8 +5120,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5895,8 +5131,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5907,8 +5142,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5919,8 +5153,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5931,8 +5164,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5943,8 +5175,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5956,8 +5187,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5969,8 +5199,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5981,8 +5210,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -5994,8 +5222,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6007,8 +5234,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6019,8 +5245,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6031,8 +5256,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6043,8 +5267,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6055,8 +5278,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6067,8 +5289,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6079,8 +5300,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6091,8 +5311,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6103,8 +5322,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6115,8 +5333,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6127,8 +5344,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6139,8 +5355,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6151,8 +5366,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6164,8 +5378,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6176,8 +5389,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6189,8 +5401,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6201,8 +5412,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6213,8 +5423,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6225,8 +5434,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6246,8 +5454,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6258,8 +5465,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6271,8 +5477,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6284,8 +5489,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6296,8 +5500,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6308,8 +5511,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6320,8 +5522,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6332,8 +5533,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6345,8 +5545,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6357,8 +5556,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6369,8 +5567,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6381,8 +5578,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6394,8 +5590,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6407,8 +5602,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6419,8 +5613,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6431,8 +5624,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6443,8 +5635,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6455,8 +5646,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6467,8 +5657,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6479,8 +5668,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6491,8 +5679,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6503,8 +5690,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6515,8 +5701,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6527,8 +5712,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6539,8 +5723,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6551,8 +5734,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6563,8 +5745,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6575,8 +5756,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6588,8 +5768,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6600,8 +5779,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6612,8 +5790,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6633,8 +5810,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6645,8 +5821,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6657,8 +5832,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6669,8 +5843,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6681,8 +5854,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6693,8 +5865,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6705,8 +5876,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6717,8 +5887,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6730,8 +5899,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6742,8 +5910,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6754,8 +5921,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6766,8 +5932,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6778,8 +5943,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6790,8 +5954,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6803,8 +5966,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6815,8 +5977,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6827,8 +5988,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6839,8 +5999,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6851,8 +6010,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6863,8 +6021,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6875,8 +6032,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6887,8 +6043,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6899,8 +6054,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6912,8 +6066,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6925,8 +6078,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6938,8 +6090,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6950,8 +6101,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6962,8 +6112,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6974,8 +6123,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6986,8 +6134,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -6998,8 +6145,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7010,8 +6156,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7022,8 +6167,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7034,8 +6178,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7046,8 +6189,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7058,8 +6200,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7070,8 +6211,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7082,8 +6222,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7094,8 +6233,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7106,8 +6244,7 @@
       "type": "json",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7119,8 +6256,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7131,8 +6267,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7143,8 +6278,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7155,8 +6289,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7167,8 +6300,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7179,8 +6311,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7191,8 +6322,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7203,8 +6333,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7215,8 +6344,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7227,8 +6355,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7239,8 +6366,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7251,8 +6377,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7263,8 +6388,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7276,8 +6400,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7288,8 +6411,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7301,8 +6423,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7313,8 +6434,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7325,8 +6445,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7337,8 +6456,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7349,8 +6467,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7361,8 +6478,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7373,8 +6489,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7385,8 +6500,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7397,8 +6511,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7410,8 +6523,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7422,8 +6534,7 @@
       "type": "avif",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7434,8 +6545,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7447,8 +6557,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7459,8 +6568,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7471,8 +6579,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7483,8 +6590,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7495,8 +6601,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7507,8 +6612,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7519,8 +6623,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7531,8 +6634,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7543,8 +6645,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7555,8 +6656,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7567,8 +6667,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7579,8 +6678,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7591,8 +6689,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7603,8 +6700,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7615,8 +6711,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7627,8 +6722,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7639,8 +6733,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7651,8 +6744,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7664,8 +6756,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7676,8 +6767,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7688,8 +6778,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7700,8 +6789,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7712,8 +6800,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7724,8 +6811,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7736,8 +6822,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7748,8 +6833,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7760,8 +6844,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7773,8 +6856,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7786,8 +6868,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7798,8 +6879,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7811,8 +6891,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7823,8 +6902,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7835,8 +6913,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7847,8 +6924,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7859,8 +6935,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7871,8 +6946,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7883,8 +6957,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7895,8 +6968,7 @@
       "type": "jpg",
       "group": "scenes",
       "references": [
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     },
     {
@@ -7908,8 +6980,7 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs",
-        "sw.js"
+        "spelling/scenes.mjs"
       ]
     }
   ],

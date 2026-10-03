@@ -1,3 +1,4 @@
+import {validateAssets} from './validation.mjs';
 import {diff,validateConfig} from './model.mjs';
 export const REPOSITORY='marcinhubicki-coder/mala-nauka';
 export const BRANCH='design/system-v1';
@@ -11,7 +12,7 @@ export class GitClient {
  get head(){return this.#head;}
  disconnect(){this.#token='';this.#head='';}
  async request(path,method='GET',body){
-  const headers={Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2026-03-10'};
+  const headers={Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   if(this.#token)headers.Authorization=`Bearer ${this.#token}`;
   if(body)headers['Content-Type']='application/json';
   const response=await this.fetcher(`https://api.github.com/repos/${REPOSITORY}/${path}`,{method,headers,body:body?JSON.stringify(body):undefined,cache:'no-store'});
@@ -33,7 +34,7 @@ export class GitClient {
  acceptHead(head){if(!/^[0-9a-f]{40}$/.test(head))throw Error('Nieprawidłowy commit.');this.#head=head;}
  async save({config,assets,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
-  validateConfig(config);
+  validateConfig(config);validateAssets(assets);
   const ref=await this.request(`git/ref/heads/${BRANCH}`);
   if(ref.object.sha!==this.#head)throw new GitConflict('Branch zmienił się od ostatniego odczytu. Wczytaj aktualną wersję i scal zmiany.');
   const parent=await this.request(`git/commits/${this.#head}`);
@@ -61,4 +62,25 @@ export function mergeDraft(base,local,remote){
  const merged=structuredClone(remote);
  for(const change of changes){const keys=change.path.split('.');let cursor=merged;for(const key of keys.slice(0,-1))cursor=cursor[key]||={};if(change.after===undefined)delete cursor[keys.at(-1)];else cursor[keys.at(-1)]=change.after;}
  return merged;
+}
+
+// Catalog keys contain dots and slashes; merge values without splitting keys.
+export function mergeRecords(base,local,remote,label='rejestr'){
+ const merged=structuredClone(remote),conflicts=[];
+ for(const key of new Set([...Object.keys(base),...Object.keys(local)])){
+  if(JSON.stringify(base[key])===JSON.stringify(local[key]))continue;
+  if(JSON.stringify(base[key])!==JSON.stringify(remote[key])&&JSON.stringify(local[key])!==JSON.stringify(remote[key])){conflicts.push(`${label}: ${key}`);continue;}
+  if(local[key]===undefined)delete merged[key];else merged[key]=structuredClone(local[key]);
+ }
+ if(conflicts.length)throw new GitConflict('Te same wpisy zmieniły się na GitHub.',conflicts);
+ return merged;
+}
+export function mergeCatalog(base,local,remote){
+ const byPath=rows=>Object.fromEntries(rows.map(row=>[row.path,row]));
+ return {...remote,words:mergeRecords(base.words,local.words,remote.words,'słowo'),aliases:mergeRecords(base.aliases,local.aliases,remote.aliases,'alias'),assets:Object.values(mergeRecords(byPath(base.assets),byPath(local.assets),byPath(remote.assets),'asset')).sort((a,b)=>a.path.localeCompare(b.path))};
+}
+export function mergeWordPack(base,local,remote){
+ const byWord=rows=>Object.fromEntries(rows.map(row=>[row.word,row]));
+ const values=mergeRecords(byWord(base),byWord(local),byWord(remote),'treść słowa');
+ return remote.map(row=>values[row.word]);
 }

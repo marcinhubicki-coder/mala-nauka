@@ -6,7 +6,7 @@ const root=process.cwd(),out=resolve(root,'dist'),canonicalBranch='design/system
 let branch=process.env.VERCEL_GIT_COMMIT_REF;try{branch||=execFileSync('git',['branch','--show-current'],{encoding:'utf8'}).trim();}catch{}
 const consumer=process.argv.includes('--consumer')||Boolean(branch&&branch!==canonicalBranch);
 const source=(process.env.DS_SOURCE_URL||`https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/${canonicalBranch}/`).replace(/\/?$/,'/');
-const centralFiles=['design-system/config.json','design-system/assets.json','design-system/registry.json','design-system/audit.json','design-system/model.mjs','design-system/bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','spelling/scenes.mjs'];
+const centralFiles=['design-system/config.json','design-system/assets.json','design-system/registry.json','design-system/audit.json','design-system/model.mjs','design-system/validation.mjs','design-system/bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','spelling/scenes.mjs','spelling/continue-drag.mjs'];
 const files=new Map();
 async function walk(dir){for(const item of await readdir(dir,{withFileTypes:true})){if(['.git','dist','node_modules','.design-qa','docs','tests','tools'].includes(item.name)||item.name.startsWith('.'))continue;const path=resolve(dir,item.name);if(item.isDirectory()){if(consumer&&relative(root,path)==='assets')continue;await walk(path);}else if(!/\.(md|py)$/.test(path)){files.set(relative(root,path).split('\\').join('/'),await readFile(path));}}}
 await walk(root);
@@ -17,6 +17,7 @@ const assetBase=consumer?source:'/';
 const assetURL=path=>new URL(catalog.aliases[path]||path,consumer?source:'https://local.invalid/').href.replace('https://local.invalid','');
 // Convert the old font aliases without changing each renderer's typography role.
 function fonts(css){return css.replace(/@font-face\s*\{[^}]*\}\s*/g,'').replace(/font-family\s*:\s*["']?(ResultBody|MN Soft|Flag Body)["']?/g,'font-family:var(--ds-font-body)').replace(/font-family\s*:\s*["']?(ResultDisplay|Spelling)["']?/g,'font-family:var(--ds-font-display)').replace(/font-family\s*:\s*["']?Home Rounded["']?/g,'font-family:var(--ds-font-ui)').replace(/font-family\s*:\s*["']?Flag Display["']?/g,'font-family:var(--ds-font-flag)');}
+function canonicalFonts(css){return fonts(css).replace(/font(?:-family)?\s*:[^;{}]+/g,value=>value.replace(/(["']?)(ResultBody|MN Soft|Flag Body|ResultDisplay|Spelling|Home Rounded|Flag Display)\1/g,(_,quote,name)=>`var(--ds-font-${({ResultBody:'body','MN Soft':'body','Flag Body':'body',ResultDisplay:'display',Spelling:'display','Home Rounded':'ui','Flag Display':'flag'})[name]})`));}
 function assetReferences(text){return text.replace(/(?:\.\.?\/)*assets\/[^\s"'<>`)}]+\.(?:png|jpe?g|webp|avif|svg|woff2?)(?:\?[^\s"'<>`)}]*)?/g,path=>{
  const clean=path.replace(/^(\.\.?\/)+/,'').split('?')[0];return assetURL(clean);
 }).replace(/(['"])(?:\.\.?\/)*assets\/([a-z0-9/-]+\/)\1\s*\+/gi,(_,quote,folder)=>`${quote}${source}assets/${folder}${quote}+`);}
@@ -28,7 +29,7 @@ function cssURLs(text,file){return text.replace(/url\(\s*(['"]?)([^)'"\s]+)\1\s*
 function flattenCSS(file,stack=[]){
  file=posix.normalize(file.split('?')[0]);if(stack.includes(file))throw Error(`Zapętlony import CSS: ${file}`);
  const value=files.get(file);if(!value)throw Error(`Brak arkusza CSS: ${file}`);
- let text=fonts(value.toString());
+ let text=canonicalFonts(value.toString());
  text=text.replace(/@import\s+(?:url\()?\s*['"]([^'"]+)['"]\s*\)?\s*;/g,(_,path)=>flattenCSS(posix.join(posix.dirname(file),path),[...stack,file]));
  return cssURLs(text,file);
 }
@@ -46,7 +47,7 @@ function deduplicateCSS(css){
 }
 let bundled=0,removedCSSBytes=0;
 for(const [path,bytes] of [...files]){
- if(path.endsWith('.css'))files.set(path,Buffer.from(cssURLs(fonts(bytes.toString()),path)));
+ if(path.endsWith('.css'))files.set(path,Buffer.from(cssURLs(canonicalFonts(bytes.toString()),path)));
  if(/\.(mjs|js)$/.test(path)&&path!=='sw.js'){
   let text=bytes.toString();
   if(consumer){
@@ -83,6 +84,6 @@ const buildHash=createHash('sha256').update(files.get('design-system/config.json
 const core=[...files.keys()].filter(path=>/\.(html|css|mjs|js|json|webmanifest)$/.test(path)&&path!=='sw.js');
 const assetsToCache=catalog.assets.filter(asset=>!/\.txt$|\.md$/.test(asset.path)).map(asset=>assetURL(asset.path));
 if(consumer)for(let batch=1;batch<=8;batch++)assetsToCache.push(new URL(`data/words-0${batch}.json`,source).href);
-const sw=`const CACHE='mala-nauka-ds-${buildHash}';\nconst CORE=${JSON.stringify(core.map(path=>'/'+path))};\nconst ASSETS=${JSON.stringify(assetsToCache)};\nself.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);for(let start=0;start<CORE.length;start+=12)await Promise.all(CORE.slice(start,start+12).map(async url=>{const response=await fetch(url);if(!response.ok)throw Error(url);await cache.put(url,response);}));for(let start=0;start<ASSETS.length;start+=12)await Promise.allSettled(ASSETS.slice(start,start+12).map(async url=>{const response=await fetch(url);if(response.ok)await cache.put(url,response);}));self.skipWaiting();})()));\nself.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name.startsWith('mala-nauka-')&&name!==CACHE)await caches.delete(name);await self.clients.claim();})()));\nself.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||!(url.origin===location.origin||url.href.startsWith(${JSON.stringify(consumer?source:'https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/')})))return;if(request.mode==='navigate'){event.respondWith(fetch(request).catch(async()=>await caches.match(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname)||await caches.match('/index.html')));return;}event.respondWith(caches.match(request,{ignoreSearch:true}).then(cached=>cached||fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(CACHE);await cache.put(request,response.clone());}return response;})));});`;
+const sw=`const CACHE='mala-nauka-ds-${buildHash}';\nconst CORE=${JSON.stringify(core.map(path=>'/'+path))};\nconst ASSETS=${JSON.stringify(assetsToCache)};\nself.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);for(let start=0;start<CORE.length;start+=12)await Promise.all(CORE.slice(start,start+12).map(async url=>{const response=await fetch(url);if(!response.ok)throw Error(url);await cache.put(url,response);}));for(let start=0;start<ASSETS.length;start+=12)await Promise.allSettled(ASSETS.slice(start,start+12).map(async url=>{const response=await fetch(url);if(response.ok)await cache.put(url,response);}));self.skipWaiting();})()));\nself.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name.startsWith('mala-nauka-')&&name!==CACHE)await caches.delete(name);await self.clients.claim();})()));\nself.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||!(url.origin===location.origin||url.href.startsWith(${JSON.stringify(consumer?source:'https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/')})))return;if(/\\/design-system\\/(config|assets)\\.json$|\\/data\\/words-0[1-8]\\.json$/.test(url.pathname)){event.respondWith(fetch(request).then(async response=>{if(!response.ok)throw Error(url.href);const cache=await caches.open(CACHE);await cache.put(request,response.clone());return response;}).catch(()=>caches.match(request,{ignoreSearch:true})));return;}if(request.mode==='navigate'){event.respondWith(fetch(request).catch(async()=>await caches.match(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname)||await caches.match('/index.html')));return;}event.respondWith(caches.match(request,{ignoreSearch:true}).then(cached=>cached||fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(CACHE);await cache.put(request,response.clone());}return response;})));});`;
 await writeFile(resolve(out,'sw.js'),sw);
 console.log(JSON.stringify({branch,consumer,assetOrigin:assetBase,files:files.size,bundledPages:bundled,removedRepeatedCSSBytes:removedCSSBytes,sourceAssetCopies:consumer?0:catalog.assets.length,buildHash}));

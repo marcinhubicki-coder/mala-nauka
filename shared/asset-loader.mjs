@@ -1,8 +1,9 @@
+import {validateAssets} from '../design-system/validation.mjs';
 const projectRoot = new URL('../', import.meta.url);
 let manifest = {assets:[], aliases:{}, words:{}, revision:'unloaded'}, origin = projectRoot.href;
-let index = new Map();
+let index = new Map(), previewURLs={};
 export function configureAssets(value, base = projectRoot.href) {
-  if (value?.schemaVersion !== 1 || !Array.isArray(value.assets)) throw Error('Nieprawidłowy rejestr assetów.');
+  validateAssets(value);
   manifest = value; origin = base.endsWith('/') ? base : `${base}/`;
   index = new Map(value.assets.map(asset => [asset.path, asset]));
 }
@@ -10,7 +11,7 @@ export function assetUrl(path) {
   if (!path) return '';
   const clean = String(path).replace(/^.*?\/assets\//, 'assets/').replace(/^\.\.\//,'').replace(/^\//,'').split('?')[0];
   const canonical = manifest.aliases[clean] || clean;
-  return new URL(canonical, origin).href;
+  return previewURLs[canonical] || new URL(canonical, origin).href;
 }
 export function wordAsset(word, fallback = '') { return assetUrl(manifest.words[word]?.path || fallback); }
 export function assetInfo(path) { return index.get(manifest.aliases[path] || path); }
@@ -50,3 +51,5 @@ export async function loadWords() {
   }));
   return parts.flat();
 }
+
+export function previewAssets(urls={}){previewURLs=urls;}

@@ -1,1 +1,43 @@
-<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Mała Nauka — Podgląd postępów</title><meta name="theme-color" content="#b4eaff"><link rel="stylesheet" href="app.css?v=20261001-backup-v7"><link rel="stylesheet" href="spelling-art.css?v=20261001-feedback-v7"><script>window.__MALA_NAUKA_PROGRESS_PREVIEW__=true;if(new URLSearchParams(location.search).has('safe')){document.documentElement.style.setProperty('--app-safe-top','47px');document.documentElement.style.setProperty('--app-safe-bottom','34px');}</script><script src="pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="pwa-viewport.css?v=6-keyboard"><script type="module" src="app.js?v=20261001-backup-v7"></script></head><body><main id="app" tabindex="-1"></main><p id="storage-notice" hidden></p><dialog id="modal"></dialog></body></html>
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#b4eaff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mała Nauka">
+  <title>Mała Nauka — Podgląd postępów</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260930">
+  <link rel="preload" href="assets/progress/hero-v2.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="app.css?v=20261002-progress-loop-v12">
+  <link rel="stylesheet" href="spelling-art.css?v=20261001-feedback-v7">
+  <script>
+    window.__MALA_NAUKA_PROGRESS_PREVIEW__=true;
+    const previewParams=new URLSearchParams(location.search);
+    if(previewParams.has('safe')) {
+      document.documentElement.style.setProperty('--app-safe-top','47px');
+      document.documentElement.style.setProperty('--app-safe-bottom','34px');
+    }
+    // Desktop comparison only: real iOS already supplies its status bar.
+    if(previewParams.has('chrome') && window.top!==window.self)
+      document.documentElement.classList.add('preview-phone-chrome');
+  </script>
+  <style>
+    .preview-phone-status{display:none;position:fixed;z-index:100;inset:0 0 auto;height:47px;color:#050c11;pointer-events:none}
+    .preview-phone-chrome .preview-phone-status{display:block}
+    .preview-phone-status b{position:absolute;top:12px;left:35px;font:650 16.5px/22px -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-.5px}
+    .preview-phone-status svg{position:absolute;top:17px;right:27px;width:76px;height:16px}
+  </style>
+  <script src="pwa-viewport.js?v=2-keyboard"></script>
+  <link rel="stylesheet" href="pwa-viewport.css?v=6-keyboard">
+  <script type="module" src="app.js?v=20261002-progress-loop-v12"></script>
+</head>
+<body>
+  <main id="app" tabindex="-1"></main>
+  <p id="storage-notice" hidden></p>
+  <dialog id="modal"></dialog>
+  <div class="preview-phone-status" aria-hidden="true"><b>9:41</b><svg viewBox="0 0 76 16" fill="currentColor"><rect x="1" y="9" width="3" height="6" rx="1.2"/><rect x="6" y="6" width="3" height="9" rx="1.2"/><rect x="11" y="3" width="3" height="12" rx="1.2"/><rect x="16" width="3" height="15" rx="1.2"/><path d="M25 5a14 14 0 0 1 20 0l-2 2a11 11 0 0 0-16 0Zm4 4a8 8 0 0 1 12 0l-2 2a5 5 0 0 0-8 0Zm4 4a3 3 0 0 1 4 0l-2 2Z"/><rect x="53" y="3" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1"/><rect x="55" y="5" width="17" height="7" rx="1.5"/><rect x="75" y="6" width="1" height="5" rx=".5" opacity=".5"/></svg></div>
+</body>
+</html>

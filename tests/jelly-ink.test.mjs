@@ -39,3 +39,41 @@ test('theme colors cannot override the animated ink with important declarations'
   assert.doesNotMatch(css, /color:\s*var\(--jelly-(?:active|idle)-ink\)\s*!important/);
   assert.match(css, /#app\[data-mode\]\[data-view\].*jelly-v4-text-active/);
 });
+
+test('a captured tap commits its original label once and cancellation leaves the choice unchanged', () => {
+  const classes = () => ({ add() {}, remove() {}, toggle() {}, contains: () => true });
+  const style = () => ({ setProperty() {} });
+  const handlers = new Map(), captures = [], commits = [], suppressions = [];
+  const buffer = {
+    classList: classes(),
+    addEventListener: (name, handler) => handlers.set(name, handler),
+    setPointerCapture: id => captures.push(id), releasePointerCapture() {}
+  };
+  const labels = [0, 1].map(index => ({
+    classList: classes(), querySelector: () => ({ classList: classes() }),
+    getBoundingClientRect: () => ({ left: index * 100, right: (index + 1) * 100 })
+  }));
+  const node = { classList: classes(), style: style(), getBoundingClientRect: () => ({ left: 4, right: 96 }) };
+  const container = {
+    parentElement: buffer, classList: classes(), style: style(), dataset: { activeIndex: '0' },
+    querySelector: () => node, querySelectorAll: () => labels,
+    getBoundingClientRect: () => ({ left: 0, right: 200, width: 200 })
+  };
+  createJellyV4({ indicatorSelector: '.indicator' }).setupDrag(container, {
+    getActiveIndex: () => 0, commitIndex: index => commits.push(index),
+    suppressClick: ms => suppressions.push(ms)
+  });
+  const down = id => ({ button: 0, pointerId: id, clientX: 150, clientY: 20, target: { closest: () => labels[1] } });
+  handlers.get('pointerdown')(down(1));
+  assert.deepEqual(commits, []);
+  handlers.get('pointerup')({ pointerId: 1 });
+  handlers.get('pointerup')({ pointerId: 1 });
+  assert.deepEqual(captures, [1]);
+  assert.deepEqual(commits, [1]);
+  assert.equal(suppressions.length, 1);
+  handlers.get('pointerdown')(down(2));
+  handlers.get('pointercancel')({ pointerId: 2 });
+  handlers.get('pointerup')({ pointerId: 2 });
+  assert.deepEqual(commits, [1]);
+  assert.equal(container.dataset.activeIndex, '0');
+});

@@ -31,10 +31,17 @@ Po wybraniu konkretnego kontynentu suwak `Łatwe — Średnie — Trudne` pojawi
 
 ## Flagi, język i mapy
 
-SVG flag pochodzą z `flag-icons` v7.5.0 i są ładowane przez przypięty adres jsDelivr. Service worker zapisuje każdą flagę w cache po pierwszym pobraniu. Informacja o źródle i licencji znajduje się w `assets/flags/FLAG-ICONS-SOURCE.txt`.
+SVG flag pochodzą z `flag-icons` v7.5.0. Wszystkie 195 plików znajduje się lokalnie w `assets/flags/svg/` i jest pre-cache'owane przez service worker. Flagi nie wymagają połączenia z CDN. Licencja MIT znajduje się obok plików SVG.
 
 Przełącznik języka nazw krajów jest dostępny w module flag (PL / EN) i zapamiętuje wybór na urządzeniu. Zmienia nazwy na przyciskach odpowiedzi oraz nazwę kraju w feedbacku bez zmiany mechaniki punktów.
 
-Po błędnej odpowiedzi poprawna nazwa pojawia się najpierw przy fladze, a następnie flaga zmniejsza się i przesuwa do prawego górnego rogu powiększonego kafla. W środku pojawia się duża, stała mapa całego właściwego kontynentu, a poprawne państwo jest jedynie podświetlane. Ten sam renderer obsługuje Europę, Azję, Afrykę, Amerykę Północną, Amerykę Południową i Oceanię oraz zachowuje obsługę kliknięć pod przyszły tryb wskazywania kraju na mapie.
+Po błędnej odpowiedzi karta zachowuje wymiary. Nazwa kraju, stolica i miniatura flagi zajmują stałe miejsca u góry, a poniżej pojawia się mapa właściwego kontynentu z podświetlonym państwem. Ten sam renderer obsługuje Europę, Azję, Afrykę, Amerykę Północną, Amerykę Południową i Oceanię. Odpowiedzi zachowują swoje pozycje i wielkość przez cały przebieg pytania.
 
 Mapy kontynentów są lokalnymi SVG w `assets/maps/`, z osobnym elementem `data-country` dla każdego państwa. Są wygenerowane z danych Natural Earth i pre-cache'owane przez service worker, więc feedback mapowy nie zależy od zewnętrznego requestu w momencie odpowiedzi. Informacja o źródle znajduje się w `assets/maps/NATURAL-EARTH-SOURCE.txt`.
+
+## Oprawa przygody
+
+Aktualny widok korzysta z lokalnych SVG wszystkich 195 flag, wspólnej animowanej
+flagi na maszcie, papierowych kafli i map wewnątrz stałej karty. Szczegóły,
+proporcje Retina, kontrakt danych i zasady dodawania assetów:
+[`docs/FLAGS-ADVENTURE-V1.md`](../docs/FLAGS-ADVENTURE-V1.md).

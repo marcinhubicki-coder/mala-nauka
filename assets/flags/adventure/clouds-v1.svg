@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350">
+ <defs>
+  <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#acdafa"/><stop offset="1" stop-color="#eaf8ff"/></linearGradient>
+  <radialGradient id="cloud"><stop stop-color="#fffef8"/><stop offset=".74" stop-color="#fffef8" stop-opacity=".9"/><stop offset="1" stop-color="#fffef8" stop-opacity="0"/></radialGradient>
+ </defs>
+ <rect width="500" height="350" fill="url(#sky)"/>
+ <g fill="url(#cloud)">
+  <ellipse cx="70" cy="73" rx="94" ry="35"/><ellipse cx="132" cy="65" rx="45" ry="42"/><ellipse cx="91" cy="49" rx="35" ry="30"/>
+  <ellipse cx="428" cy="115" rx="100" ry="41"/><ellipse cx="380" cy="98" rx="56" ry="42"/>
+  <ellipse cx="100" cy="323" rx="173" ry="60"/><ellipse cx="64" cy="270" rx="49" ry="62"/><ellipse cx="155" cy="291" rx="74" ry="69"/>
+  <ellipse cx="312" cy="331" rx="147" ry="58"/><ellipse cx="274" cy="301" rx="62" ry="44"/>
+  <ellipse cx="454" cy="299" rx="134" ry="87"/><ellipse cx="404" cy="258" rx="57" ry="62"/>
+ </g>
+</svg>

@@ -1,0 +1,37 @@
+/* Flags use the spelling wizard composition, with their own scenery and green accent. */
+html:has(#app[data-mode="flags"][data-view="wizard"]){background:#65c6f2}
+body:has(#app[data-mode="flags"][data-view="wizard"])::before{background:#65c6f2 url('../assets/flags/adventure/setup-scene-v1.webp') center / 100% 100% no-repeat}
+body:has(#app[data-mode="flags"][data-view="wizard"])::after{display:none}
+#app[data-mode="flags"][data-view="wizard"]{
+ --wizard-safe-top:var(--app-safe-top,env(safe-area-inset-top,0px));--wizard-safe-bottom:var(--app-safe-bottom,env(safe-area-inset-bottom,0px));
+ --wizard-u:min(calc(100vw / 390),calc(480px / 390),calc((var(--app-viewport-height,100dvh) - var(--wizard-safe-top) - var(--wizard-safe-bottom)) / 755));
+ --flag-segment-height:calc(54 * var(--wizard-u));
+ --accent:#00b96b;--jelly-active-ink:#fff;--jelly-idle-ink:#515c98;--jelly-top:#6ce8b0;--jelly-bottom:#00b96b;--jelly-border-color:#26bb7e;--jelly-shadow:#13744838;
+ display:block;width:100%;max-width:none;margin:0;
+ padding:max(calc(47 * var(--wizard-u)),var(--wizard-safe-top)) max(calc(14 * var(--wizard-u)),calc((100vw - 390 * var(--wizard-u)) / 2 + 14 * var(--wizard-u))) max(calc(26 * var(--wizard-u)),var(--wizard-safe-bottom))!important;
+ overflow-x:hidden;overflow-y:auto;scrollbar-width:none;color:#09043f;font-family:ResultBody,ui-rounded,sans-serif;
+}
+#app[data-mode="flags"][data-view="wizard"]::-webkit-scrollbar{display:none}
+#app[data-mode="flags"][data-view="wizard"] .page-head{height:calc(43 * var(--wizard-u));gap:calc(13 * var(--wizard-u));margin:0 0 calc(21 * var(--wizard-u));padding-left:calc(6 * var(--wizard-u))}
+#app[data-mode="flags"][data-view="wizard"] .page-head h1{font-family:ResultDisplay,ui-rounded,sans-serif;font-size:calc(25 * var(--wizard-u));font-weight:700;letter-spacing:calc(-.8 * var(--wizard-u));line-height:1.1;color:#09043f}
+#app[data-mode="flags"][data-view="wizard"] .page-head .icon{display:grid;place-items:center;width:calc(43 * var(--wizard-u));height:calc(43 * var(--wizard-u));min-width:38px;min-height:38px;padding:8px;border:1px solid #ffffffdf;border-radius:calc(16 * var(--wizard-u));background:linear-gradient(140deg,#fff,#f8fcff);color:#09043f;box-shadow:0 calc(5 * var(--wizard-u)) calc(10 * var(--wizard-u)) #2672ae1a}
+#app[data-mode="flags"][data-view="wizard"] .page-head .icon svg{width:26px;height:26px}
+#app[data-mode="flags"][data-view="wizard"] .wizard-intro{position:relative;isolation:isolate;height:calc(94 * var(--wizard-u));padding:0;margin:0 0 calc(17 * var(--wizard-u));border:0;border-radius:calc(24 * var(--wizard-u));background:linear-gradient(115deg,#fffdf0,#fff6df);box-shadow:inset 0 2px 8px #fff8,0 3px 12px #457eaa18;min-width:0}
+#app[data-mode="flags"][data-view="wizard"] .flag-mission-art{left:calc(7 * var(--wizard-u));right:auto;bottom:0;width:calc(348 * var(--wizard-u));height:calc(114 * var(--wizard-u));max-height:none;object-fit:fill}
+#app[data-mode="flags"][data-view="wizard"] .wizard-intro>div{width:calc(154 * var(--wizard-u));margin-left:calc(92 * var(--wizard-u));flex:none}
+#app[data-mode="flags"][data-view="wizard"] .wizard-intro h2{font-family:'Home Rounded',ResultBody,sans-serif;font-size:calc(20 * var(--wizard-u));font-weight:800;letter-spacing:calc(-.25 * var(--wizard-u));white-space:nowrap;line-height:1.15;color:#09043f}
+#app[data-mode="flags"][data-view="wizard"] .wizard-intro p{font-size:calc(12.8 * var(--wizard-u));margin-top:calc(5 * var(--wizard-u));line-height:1.2;white-space:normal;color:#3c458b}
+#app[data-mode="flags"][data-view="wizard"] .setup-form{display:block;margin:0;min-width:0}
+#app[data-mode="flags"][data-view="wizard"] .setup-card.flag-wizard-v2{display:block;height:auto;min-height:0;padding:calc(13 * var(--wizard-u)) calc(18 * var(--wizard-u)) calc(20 * var(--wizard-u));border:calc(2 * var(--wizard-u)) solid #ffffffed;border-radius:calc(27 * var(--wizard-u));background:linear-gradient(130deg,#fffffff5,#ffffffec 56%,#f9fdfff5);box-shadow:inset 0 0 calc(13 * var(--wizard-u)) #cde9ff8c,0 calc(7 * var(--wizard-u)) calc(15 * var(--wizard-u)) #267ca518}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-section{min-width:0}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-section+.flag-v2-section{margin-top:calc(18 * var(--wizard-u))}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-section legend{display:flex;align-items:center;height:calc(31 * var(--wizard-u));gap:calc(8 * var(--wizard-u));margin-bottom:calc(8 * var(--wizard-u));font-family:'Home Rounded',ResultBody,sans-serif;font-size:calc(19.8 * var(--wizard-u));font-weight:800;color:#09043f;line-height:1.1;letter-spacing:calc(-.25 * var(--wizard-u))}
+#app[data-mode="flags"][data-view="wizard"] .step-dot{display:grid;place-items:center;flex:none;width:calc(31 * var(--wizard-u));height:calc(31 * var(--wizard-u));border-radius:50%;font-family:ResultBody,sans-serif;font-size:calc(19 * var(--wizard-u));font-weight:950;color:#0061d4;background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);border:1px solid #d2f3ff;box-shadow:inset 0 0 calc(5 * var(--wizard-u)) #ffffffba}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-game legend{float:left;width:auto}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-time legend{margin-bottom:calc(11 * var(--wizard-u))}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-game>.jelly-v4-buffer:has(.flag-language-options){float:right;width:calc(122 * var(--wizard-u))}
+#app[data-mode="flags"][data-view="wizard"] .flag-v2-game>.jelly-v4-buffer:has(.flag-v2-game-grid){clear:both;padding-top:0}
+#app[data-mode="flags"][data-view="wizard"] .flag-segmented label>span{padding:0;background:transparent;border:0;border-radius:inherit;letter-spacing:normal}
+#app[data-mode="flags"][data-view="wizard"] .flag-continent-panel:not(.is-open){padding:0!important;max-height:0;margin:0}
+#app[data-mode="flags"][data-view="wizard"] .flag-continent-chip input:checked+span{color:#fff;background:linear-gradient(#6ce8b0,#00b96b);border-color:#26bb7e}
+#app[data-mode="flags"][data-view="wizard"] .start-button>span:last-child:not([data-start-copy]){display:none}

@@ -1,4 +1,5 @@
 import { FLAGS } from '../data/flags.mjs';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
 
 const STORAGE_KEY = 'malaNauka.v1.flagsLanguage';
 const STYLE_ID = 'flags-language-toggle-styles';
@@ -6,6 +7,8 @@ const byId = new Map(FLAGS.map(flag => [flag.id, flag]));
 const byPl = new Map(FLAGS.map(flag => [flag.country.toLocaleLowerCase('pl-PL'), flag]));
 const byEn = new Map(FLAGS.map(flag => [flag.countryEn.toLocaleLowerCase('en-US'), flag]));
 let language = readLanguage();
+const languageJelly = createJellyV4({ indicatorSelector: '.flag-language-indicator' });
+let suppressLanguageClickUntil = 0;
 
 function readLanguage() {
   try {
@@ -93,10 +96,21 @@ function ensureToggle(root) {
   if (root.dataset.mode !== 'flags') return;
 
   if (root.dataset.view === 'wizard') {
-    const intro = root.querySelector('.wizard-intro');
-    if (intro && !intro.querySelector('[data-flag-language]')) {
-      intro.classList.add('has-flag-language');
-      intro.insertAdjacentHTML('beforeend', '<div class="flag-language-slot"><button type="button" class="flag-language-toggle" data-flag-language aria-label="Zmień język nazw krajów"></button></div>');
+    const section = root.querySelector('.flag-v2-game');
+    if (section && !section.querySelector('.flag-language-options')) {
+      section.querySelector('legend').insertAdjacentHTML('afterend', '<div class="flag-language-options" role="radiogroup" aria-label="Język nazw krajów"><i class="flag-language-indicator" aria-hidden="true"></i><label data-flag-language="pl"><input type="radio" name="flagLanguage" value="pl" aria-label="Nazwy krajów po polsku"><span>PL</span></label><label data-flag-language="en"><input type="radio" name="flagLanguage" value="en" aria-label="Country names in English"><span>EN</span></label></div>');
+      const toggle = section.querySelector('.flag-language-options');
+      languageJelly.setupDrag(toggle, {
+        getActiveIndex: () => language === 'en' ? 1 : 0,
+        commitIndex: index => setLanguage(index === 1 ? 'en' : 'pl'),
+        suppressClick: ms => { suppressLanguageClickUntil = performance.now() + ms; }
+      });
+    }
+    const toggle = section?.querySelector('.flag-language-options');
+    if (toggle) {
+      const index = language === 'en' ? 1 : 0;
+      toggle.querySelectorAll('input').forEach(input => { input.checked = input.value === language; });
+      if (toggle.dataset.activeIndex !== String(index)) languageJelly.update(toggle, index, { animate: toggle.dataset.activeIndex !== undefined });
     }
   }
 
@@ -115,6 +129,9 @@ function ensureToggle(root) {
   }
 
   root.querySelectorAll('[data-flag-language]').forEach(button => {
+    if (button.closest('.flag-language-options')) {
+      return;
+    }
     const code = language.toUpperCase();
     if (button.textContent !== code) button.textContent = code;
     button.setAttribute('aria-label', language === 'pl'
@@ -208,8 +225,20 @@ if (!document.getElementById(STYLE_ID)) {
 document.addEventListener('click', event => {
   const button = event.target.closest?.('[data-flag-language]');
   if (!button) return;
+  // Keyboard arrows activate the native radio before its change event. Do not
+  // cancel that click: cancellation restores the previous checked radio.
+  if (event.target.matches?.('input[name="flagLanguage"]')) return;
   event.preventDefault();
-  toggleLanguage();
+  if (button.closest('.flag-language-options') && performance.now() < suppressLanguageClickUntil) return;
+  if(button.dataset.flagLanguage)setLanguage(button.dataset.flagLanguage);
+  else toggleLanguage();
+});
+document.addEventListener('change', event => {
+  if (event.target?.name === 'flagLanguage') setLanguage(event.target.value);
+});
+window.addEventListener('resize', () => {
+  const toggle = document.querySelector('#app[data-view="wizard"] .flag-language-options');
+  if (toggle) languageJelly.update(toggle, language === 'en' ? 1 : 0, { animate: false });
 });
 
 const observer = new MutationObserver(() => queueMicrotask(() => refresh()));

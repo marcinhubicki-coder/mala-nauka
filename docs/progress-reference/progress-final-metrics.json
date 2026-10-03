@@ -1,0 +1,101 @@
+{
+  "initial": {
+    "clientHeight": 844,
+    "labels": [
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Opanowane\nrz / ż",
+        "width": 96
+      },
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Opanowane\nu / ó",
+        "width": 96
+      },
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Komplet słów\njuż wkrótce",
+        "width": 96
+      }
+    ],
+    "rects": {
+      ".progress-achievements": {
+        "height": 169.6875,
+        "width": 364,
+        "x": 13,
+        "y": 553
+      },
+      ".progress-header": {
+        "height": 38,
+        "width": 356,
+        "x": 17,
+        "y": 42
+      },
+      ".progress-links": {
+        "height": 142,
+        "width": 364,
+        "x": 13,
+        "y": 402.5
+      },
+      ".progress-modes": {
+        "height": 51,
+        "width": 358,
+        "x": 16,
+        "y": 88
+      },
+      ".progress-rules-link": {
+        "height": 95,
+        "width": 364,
+        "x": 13,
+        "y": 731.6875
+      },
+      ".progress-stats": {
+        "height": 65,
+        "width": 364,
+        "x": 13,
+        "y": 327.5
+      },
+      ".trophy-next": {
+        "height": 31,
+        "width": 31,
+        "x": 340,
+        "y": 631.1875
+      }
+    },
+    "scrollHeight": 844
+  },
+  "carousel": {
+    "arrowY": 631.1875,
+    "labels": [
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Komplet słów\njuż wkrótce",
+        "width": 96
+      },
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Opanowane\nch / h",
+        "width": 96
+      },
+      {
+        "height": 33,
+        "scrollHeight": 33,
+        "scrollWidth": 96,
+        "text": "Pierwsze 10 słów\nw Twojej kolekcji",
+        "width": 96
+      }
+    ],
+    "rulesY": 731.6875,
+    "scrollHeight": 844
+  }
+}

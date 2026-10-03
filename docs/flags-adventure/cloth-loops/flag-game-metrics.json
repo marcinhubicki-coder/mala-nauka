@@ -1,0 +1,114 @@
+{
+  "before": {
+    "answers": [
+      {
+        "bottom": 582,
+        "height": 76,
+        "left": 18,
+        "right": 189,
+        "top": 506,
+        "width": 171,
+        "x": 18,
+        "y": 506
+      },
+      {
+        "bottom": 582,
+        "height": 76,
+        "left": 201,
+        "right": 372,
+        "top": 506,
+        "width": 171,
+        "x": 201,
+        "y": 506
+      },
+      {
+        "bottom": 668,
+        "height": 76,
+        "left": 18,
+        "right": 189,
+        "top": 592,
+        "width": 171,
+        "x": 18,
+        "y": 592
+      },
+      {
+        "bottom": 668,
+        "height": 76,
+        "left": 201,
+        "right": 372,
+        "top": 592,
+        "width": 171,
+        "x": 201,
+        "y": 592
+      }
+    ],
+    "card": {
+      "bottom": 458,
+      "height": 275,
+      "left": 24,
+      "right": 366,
+      "top": 183,
+      "width": 342,
+      "x": 24,
+      "y": 183
+    },
+    "revealed": false
+  },
+  "wrong": {
+    "answers": [
+      {
+        "bottom": 582,
+        "height": 76,
+        "left": 18,
+        "right": 189,
+        "top": 506,
+        "width": 171,
+        "x": 18,
+        "y": 506
+      },
+      {
+        "bottom": 582,
+        "height": 76,
+        "left": 201,
+        "right": 372,
+        "top": 506,
+        "width": 171,
+        "x": 201,
+        "y": 506
+      },
+      {
+        "bottom": 668,
+        "height": 76,
+        "left": 18,
+        "right": 189,
+        "top": 592,
+        "width": 171,
+        "x": 18,
+        "y": 592
+      },
+      {
+        "bottom": 668,
+        "height": 76,
+        "left": 201,
+        "right": 372,
+        "top": 592,
+        "width": 171,
+        "x": 201,
+        "y": 592
+      }
+    ],
+    "card": {
+      "bottom": 458,
+      "height": 275,
+      "left": 24,
+      "right": 366,
+      "top": 183,
+      "width": 342,
+      "x": 24,
+      "y": 183
+    },
+    "clock": "2:25",
+    "scroll": 844,
+    "state": "question-card card wrong flag-map-review is-map-visible"
+  }
+}

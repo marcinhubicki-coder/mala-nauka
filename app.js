@@ -1,5 +1,5 @@
 import { exampleProgress } from './progress-example.mjs?v=1';
-import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=5-rules-jelly';
+import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
@@ -7,12 +7,12 @@ import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges'
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261001-adventure';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
 import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
 import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
-import { createJellyV4 } from './shared/jelly-v4.mjs?v=2';
+import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
@@ -246,7 +246,7 @@ async function start() {
  settleResult(root);
  const config=configs[selectedMode];
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
+ game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
  const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
  if(selectedMode==='spelling'){
@@ -333,6 +333,11 @@ function renderPhraseInput() {
   button.classList.toggle('is-used',used);
  });
 }
+document.addEventListener('mala-nauka:flag-presentation',event=>{
+ if(view!=='game'||game?.mode!=='flags'||game.current?.countryId!==event.detail.countryId)return;
+ const state=game.state==='paused'?game.resumeState:game.state;
+ if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
+});
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
@@ -364,10 +369,11 @@ function renderGame() {
  }else{
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
- root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${game.state==='feedback-wrong'?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
- <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
+ root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
+ <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
  <p class="prompt">${promptText}</p>${answersBlock}
- <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?'Tak właśnie!':'Czas czeka na Ciebie.'}</small></div>${correct?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
+ <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?(game.mode==='flags'?'Zapamiętaj kraj i jego stolicę.':'Tak właśnie!'):'Czas czeka na Ciebie.'}</small></div>${correct&&game.mode!=='flags'?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
+ if(game.mode==='flags')document.dispatchEvent(new CustomEvent('mala-nauka:flag-prepare',{detail:{countryId:game.current.countryId,nextCountryId:game.prepareNext()?.countryId}}));
  renderedState=game.state;renderedQuestion=game.question;updateClock();
  if(feedback&&!correct)root.querySelector('[data-action="next"]')?.focus({preventScroll:true});else if(!feedback&&!exposing)root.querySelector(q.kind==='memory'?'.memory-key':q.kind==='reading-phrase'?'.phrase-word':'.answer')?.focus({preventScroll:true});
 }
@@ -538,6 +544,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();

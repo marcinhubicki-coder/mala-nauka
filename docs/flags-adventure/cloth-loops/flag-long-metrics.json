@@ -1,0 +1,48 @@
+{
+  "before": {
+    "answersY": 506,
+    "cardH": 263,
+    "cardY": 183,
+    "name": "Republika\nŚrodkowoafrykańska",
+    "nameH": 62,
+    "nameScrollH": 62
+  },
+  "after": {
+    "answersY": 506,
+    "cardH": 263,
+    "cardY": 183,
+    "labels": [
+      {
+        "h": 27,
+        "scrollH": 29,
+        "scrollW": 143,
+        "text": "Iceland",
+        "w": 143
+      },
+      {
+        "h": 44,
+        "scrollH": 46,
+        "scrollW": 143,
+        "text": "Central African\nRepublic",
+        "w": 143
+      },
+      {
+        "h": 27,
+        "scrollH": 29,
+        "scrollW": 143,
+        "text": "Switzerland",
+        "w": 143
+      },
+      {
+        "h": 27,
+        "scrollH": 29,
+        "scrollW": 143,
+        "text": "Serbia",
+        "w": 143
+      }
+    ],
+    "name": "Central African\nRepublic",
+    "nameH": 62,
+    "nameScrollH": 62
+  }
+}

@@ -193,7 +193,7 @@
     }
   }
 
-  const api = Object.freeze({ mount, supports, mapUrls: MAP_URLS });
+  const api = Object.freeze({ mount, supports, preload: loadSource, mapUrls: MAP_URLS });
   window.MalaNaukaContinentMap = api;
   window.MalaNaukaEuropeMap = api;
 })();

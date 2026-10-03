@@ -47,3 +47,17 @@ Built-in ImageGen edit mode was used for both assets. Final project paths:
 - `assets/angielski/wizard-mission-retina-v2.webp`: edit the existing spelling mission banner using the English screenshot as the appearance reference; replace abc with Union Jack and pencil with a small Union Jack flag; preserve boy, hat, yellow hoodie, green backpack, stars and cream banner; blank central area; transparent outside the art. Converted to 1200 × 404 alpha WebP, quality 90.
 
 Keep scene and foreground in one shared coordinate system. Do not repeat the previous approach of drawing large blank rectangles over scenery or merging separately framed London images.
+
+## Boy and lamp follow-up · 2026-10-03
+
+Verified code commit: `a029b4318e4b6d62afcccfcb8af591ff55681ba2`.
+Reference: `BD61AC07-75D8-4DE8-833A-BC916EF45068.jpeg` (711 × 1536).
+
+1. Reconstruct the reference boy as a separate transparent WebP (360 × 345, 47,816 bytes). Render at 119 × 115 CSS px, x=251, y=88, with its bottom aligned to the banner at y=203. The hat protrudes above the banner. Retain the left flag from the existing art and exclude the previous boy.
+2. Replace the coarse lamp polygon with a reproducible SVG silhouette traced from the same backdrop pixels. `tools/build-english-lamp-mask.py` retains 16,171 lamp pixels, excludes all classified blue sky pixels, preserves small openings and glass highlights, and writes 22 contours. Both standard and WebKit mask declarations use the same full-viewport coordinates as the scene.
+3. The first deployed zoom check exposed a three-value CSS inset that also clipped the left flag. Iteration two adds an explicit zero left inset and widens the right exclusion to remove every part of the previous boy. Repeat the 3× detail check and full 390 × 844 check after deployment.
+
+Results: all mission images load; no viewport overflow (scroll height 844); boy and foreground have `pointer-events: none`; 2 min tap updates the checked radio and start label, then 3 min restores the reference state. Four existing Jelly/PWA checks and `git diff --check` pass. Service worker v130 precaches the boy and SVG mask. Inspected lamp edges at 3× have no cyan polygon wedge over the card. The previously documented physical iPhone/Safari verification boundary still applies; the boy is a reconstruction, not an exact extraction of the original artwork.
+
+Proof: `qa/english-boy-lamp-final.jpg` and `qa/english-boy-lamp-detail.jpg`.
+Detail comparison page: `qa/english-art-detail.html`.

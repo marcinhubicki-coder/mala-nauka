@@ -563,6 +563,7 @@ async function renderStudioScenario(){
  activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress=exampleProgress(words);lastResult=null;
+ for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
  if(screen==='players'){if(state==='empty')players=[];playersPage();return;}
  if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
  if(screen==='player-pin'){pendingNickname='Ania';pendingAvatarId='c';pinInput='';playerPinPage();return;}

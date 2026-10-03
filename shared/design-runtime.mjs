@@ -28,6 +28,11 @@ export async function initDesign() {
   const annotate = () => {
     if (!app) return;
     if(app.dataset.ds!=='1')app.dataset.ds='1';
+    if(location.pathname.includes('/matematyka/')){
+      if(app.dataset.mode!=='math')app.dataset.mode='math';
+      const mathView=app.querySelector('.math-result-screen')?'results':app.querySelector('[data-math-quiz],.quiz-screen')?'game':app.querySelector('.category-grid')?'wizard':'';
+      if(mathView&&app.dataset.view!==mathView)app.dataset.view=mathView;
+    }
     if(!new URLSearchParams(location.search).has('studio')){
       const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
       const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');

@@ -3,5 +3,6 @@
   "sourceBranch": "design/system-v1",
   "sourceURL": "https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/design/system-v1/",
   "liveConfig": true,
-  "localAssets": false
+  "localAssets": false,
+  "rebuildTrigger": "cc6e2ef0605fd74e5d0eeceba62575685626c1fd"
 }

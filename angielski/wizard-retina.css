@@ -1,0 +1,457 @@
+/* English setup — Retina/full-bleed mockup pass.
+   Geometry follows the production spelling wizard; Jelly V4 keeps motion shared. */
+
+html:has(#app[data-view="wizard"][data-mode="english"]),
+body:has(#app[data-view="wizard"][data-mode="english"]) {
+  background:#43b8e8 url('../assets/angielski/wizard-london-retina-v2.webp') center / 100% 100% no-repeat;
+}
+
+body:has(#app[data-view="wizard"][data-mode="english"])::before,
+body:has(#app[data-view="wizard"][data-mode="english"])::after {
+  content:none!important;
+}
+
+/* Both contours reuse the background pixels and viewport coordinates. This
+   creates depth without a second scene, alpha bitmap, blur or animation. */
+.english-scene-foreground { position:fixed;inset:0;z-index:2;pointer-events:none; }
+.english-scene-foreground > span {
+  position:absolute;inset:0;
+  background:url('../assets/angielski/wizard-london-retina-v2.webp') center / 100% 100% no-repeat;
+}
+.english-scene-lamp {
+  -webkit-mask:url('../assets/angielski/wizard-lamp-mask-v3.svg') center / 100% 100% no-repeat;
+  mask:url('../assets/angielski/wizard-lamp-mask-v3.svg') center / 100% 100% no-repeat;
+}
+.english-scene-tower {
+  clip-path:polygon(96.1% 57.8%,96.4% 57.8%,96.5% 59.1%,97.0% 60.3%,97.45% 61.0%,98.25% 61.6%,98.0% 61.9%,98.15% 62.6%,99.2% 63.5%,99.9% 63.9%,100% 63.9%,100% 67.6%,91.95% 67.6%,91.95% 65.4%,92.7% 64.95%,92.25% 64.6%,92.55% 64.1%,94.0% 63.45%,94.25% 62.5%,94.15% 62.1%,94.6% 61.5%,94.95% 61.1%,95.5% 60.0%,95.9% 58.7%);
+}
+
+#app[data-mode="english"][data-view="wizard"] {
+  --english-safe-top:var(--app-safe-top,env(safe-area-inset-top,0px));
+  --english-safe-bottom:var(--app-safe-bottom,env(safe-area-inset-bottom,0px));
+  --english-u:min(
+    calc(100vw / 390),
+    calc(480px / 390),
+    calc((var(--app-viewport-height,100dvh) - var(--english-safe-top) - var(--english-safe-bottom)) / 755)
+  );
+  --accent:#ffc51d;
+  --jelly-active-ink:#812d00;
+  --jelly-idle-ink:#515c98;
+  --jelly-top:#fff176;
+  --jelly-bottom:#ffc219;
+  --jelly-border-color:#f1b30a;
+  --jelly-shadow:rgba(150,88,0,.22);
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:0!important;
+  overflow-x:hidden;
+  overflow-y:auto;
+  scrollbar-width:none;
+  color:#09043f;
+  background:transparent!important;
+  font-family:ResultBody,ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+#app[data-mode="english"][data-view="wizard"]::-webkit-scrollbar { display:none; }
+
+.english-wizard-canvas {
+  position:relative;
+  z-index:1;
+  width:calc(390 * var(--english-u));
+  max-width:100%;
+  margin:0 auto;
+  padding:max(calc(47 * var(--english-u)),var(--english-safe-top)) calc(20 * var(--english-u)) max(calc(26 * var(--english-u)),var(--english-safe-bottom));
+}
+
+#app[data-mode="english"][data-view="wizard"] .page-head {
+  height:calc(43 * var(--english-u));
+  gap:calc(13 * var(--english-u));
+  margin:0 0 calc(23 * var(--english-u));
+  padding-left:0;
+}
+
+#app[data-mode="english"][data-view="wizard"] .page-head h1 {
+  color:#09043f;
+  font-family:ResultDisplay,"Home Rounded",ui-rounded,sans-serif;
+  font-size:calc(25 * var(--english-u));
+  font-weight:750;
+  letter-spacing:calc(-.8 * var(--english-u));
+  line-height:1.1;
+}
+
+#app[data-mode="english"][data-view="wizard"] .page-head .icon {
+  width:calc(43 * var(--english-u));
+  height:calc(43 * var(--english-u));
+  min-width:38px;
+  min-height:38px;
+  border:1px solid rgba(255,255,255,.93);
+  border-radius:calc(16 * var(--english-u));
+  background:linear-gradient(140deg,#fff,#f8fcff);
+  color:#09043f;
+  font-size:calc(30 * var(--english-u));
+  box-shadow:0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(38,114,174,.10);
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-intro {
+  position:relative;
+  isolation:isolate;
+  height:calc(90 * var(--english-u));
+  margin-top:0;
+  margin-bottom:calc(24 * var(--english-u));
+  padding:0;
+  overflow:visible;
+  border:0;
+  border-radius:calc(24 * var(--english-u));
+  background:
+    radial-gradient(ellipse at 12% 34%,rgba(255,247,172,.62),transparent 38%),
+    linear-gradient(90deg,rgba(255,250,211,.96),rgba(255,251,226,.96) 55%,rgba(255,249,207,.94))!important;
+  box-shadow:
+    inset 0 calc(1 * var(--english-u)) calc(3 * var(--english-u)) rgba(255,255,255,.72),
+    0 calc(4 * var(--english-u)) calc(10 * var(--english-u)) rgba(178,139,45,.08);
+}
+
+.english-mission-art {
+  position:absolute;
+  z-index:1;
+  left:calc(-7 * var(--english-u));
+  bottom:calc(-1 * var(--english-u));
+  display:block;
+  width:calc(364 * var(--english-u));
+  height:calc(119 * var(--english-u));
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  clip-path:inset(-100% 37.5% calc(1 * var(--english-u)) 0 round 0 0 0 calc(24 * var(--english-u)));
+}
+
+.english-mission-boy {
+  position:absolute;
+  z-index:2;
+  right:0;
+  bottom:0;
+  display:block;
+  width:calc(119 * var(--english-u));
+  height:calc(115 * var(--english-u));
+  object-fit:contain;
+  object-position:right bottom;
+  pointer-events:none;
+  user-select:none;
+  clip-path:inset(-50% 0 0 round 0 0 calc(24 * var(--english-u)) 0);
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-intro::after {
+  content:none;
+  position:absolute;
+  z-index:4;
+  right:calc(8 * var(--english-u));
+  top:calc(27 * var(--english-u));
+  width:calc(34 * var(--english-u));
+  height:calc(23 * var(--english-u));
+  border:calc(2 * var(--english-u)) solid #fff;
+  border-radius:calc(3.5 * var(--english-u));
+  background:#fff url('../assets/flags/gb.svg') center / cover no-repeat;
+  box-shadow:0 calc(3 * var(--english-u)) calc(5 * var(--english-u)) rgba(83,55,35,.16);
+  transform:rotate(8deg);
+  pointer-events:none;
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-intro > div {
+  position:relative;
+  z-index:3;
+  width:calc(160 * var(--english-u));
+  margin-left:calc(91 * var(--english-u));
+  padding-top:calc(23 * var(--english-u));
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-intro h2 {
+  margin:0;
+  color:#09043f;
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(18.4 * var(--english-u));
+  font-weight:850;
+  letter-spacing:calc(-.25 * var(--english-u));
+  line-height:1.05;
+  white-space:nowrap;
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-intro p {
+  margin-top:calc(5 * var(--english-u));
+  color:#3c458b;
+  font-size:calc(12.8 * var(--english-u));
+  line-height:1.2;
+  white-space:nowrap;
+}
+
+#app[data-mode="english"][data-view="wizard"] .mode-icon.hello {
+  visibility:hidden;
+  position:absolute;
+  z-index:5;
+  left:calc(20 * var(--english-u));
+  top:calc(23 * var(--english-u));
+  display:grid;
+  place-items:center;
+  width:calc(67 * var(--english-u));
+  height:calc(54 * var(--english-u));
+  padding:calc(7 * var(--english-u));
+  border:1px solid rgba(255,248,181,.95);
+  border-radius:calc(15 * var(--english-u));
+  background:linear-gradient(145deg,#fff5b8 0%,#ffe47a 100%);
+  box-shadow:0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(157,101,5,.14),inset 0 calc(2 * var(--english-u)) calc(3 * var(--english-u)) rgba(255,255,255,.72);
+  transform:rotate(-7deg);
+}
+
+#app[data-mode="english"][data-view="wizard"] .mode-icon.hello svg {
+  width:100%;
+  height:100%;
+  filter:drop-shadow(0 calc(2 * var(--english-u)) calc(2 * var(--english-u)) rgba(25,35,78,.15));
+}
+
+#app[data-mode="english"][data-view="wizard"] .setup-form {
+  margin:0;
+}
+
+#app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2 {
+  border:calc(2 * var(--english-u)) solid rgba(255,255,255,.93);
+  border-radius:calc(27 * var(--english-u));
+  padding:calc(12 * var(--english-u)) calc(17 * var(--english-u)) calc(19 * var(--english-u));
+  background:linear-gradient(130deg,#ffffff 0%,#fbfdff 58%,#f8fcff 100%);
+  box-shadow:
+    inset 0 0 calc(13 * var(--english-u)) rgba(205,233,255,.55),
+    0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(34,48,72,.075);
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-v2-section + .english-v2-section {
+  margin-top:calc(15 * var(--english-u));
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-v2-section legend {
+  display:flex;
+  align-items:center;
+  height:calc(28 * var(--english-u));
+  gap:calc(8 * var(--english-u));
+  margin-bottom:calc(9 * var(--english-u));
+  color:#09043f;
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(18 * var(--english-u));
+  font-weight:850;
+  line-height:1.1;
+  letter-spacing:calc(-.25 * var(--english-u));
+}
+
+#app[data-mode="english"][data-view="wizard"] .step-dot {
+  flex:none;
+  display:grid;
+  place-items:center;
+  width:calc(28 * var(--english-u));
+  height:calc(28 * var(--english-u));
+  border:1px solid #d2f3ff;
+  border-radius:50%;
+  color:#0061d4;
+  background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);
+  box-shadow:inset 0 0 calc(5 * var(--english-u)) rgba(255,255,255,.73);
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(19 * var(--english-u));
+  font-weight:950;
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-segmented {
+  height:calc(55 * var(--english-u));
+  min-height:0;
+  border:calc(1 * var(--english-u)) solid #cbe5ff;
+  border-radius:calc(21 * var(--english-u))!important;
+  background:linear-gradient(155deg,#fff 0%,#f7fafc 80%,#f3f9fc);
+  box-shadow:
+    0 0 0 calc(.5 * var(--english-u)) rgba(224,245,255,.40),
+    inset 0 calc(1 * var(--english-u)) calc(3 * var(--english-u)) #fff,
+    0 calc(3 * var(--english-u)) calc(7 * var(--english-u)) rgba(54,112,188,.035);
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-segment-indicator {
+  top:calc(4 * var(--english-u))!important;
+  bottom:calc(4 * var(--english-u))!important;
+  border:calc(1 * var(--english-u)) solid #f0b20a!important;
+  border-radius:calc(18 * var(--english-u))!important;
+  background:linear-gradient(180deg,#fff47b 0%,#ffe34b 31%,#ffcd1e 76%,#ffc119 100%)!important;
+  box-shadow:
+    0 calc(3 * var(--english-u)) calc(5 * var(--english-u)) rgba(139,83,0,.22),
+    inset 0 calc(2 * var(--english-u)) calc(2 * var(--english-u)) rgba(255,255,226,.95),
+    inset 0 calc(-3 * var(--english-u)) calc(3 * var(--english-u)) rgba(190,104,0,.16)!important;
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-v2-choice span,
+#app[data-mode="english"][data-view="wizard"] .english-time-choice span {
+  padding:calc(10 * var(--english-u)) calc(8 * var(--english-u));
+  color:#515c98;
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(16 * var(--english-u));
+  font-weight:820;
+  line-height:1;
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-time-choice span {
+  font-size:calc(15.2 * var(--english-u));
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-v2-choice input:checked + span,
+#app[data-mode="english"][data-view="wizard"] .english-time-choice input:checked + span {
+  color:#812d00;
+  text-shadow:0 calc(1 * var(--english-u)) 0 rgba(255,255,255,.24);
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-category-panel.is-open {
+  max-height:calc(360 * var(--english-u));
+  padding-top:calc(8 * var(--english-u));
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-category-grid {
+  gap:calc(8 * var(--english-u));
+  padding:calc(10 * var(--english-u)) calc(8 * var(--english-u));
+  border-color:#cbe5ff;
+  border-radius:calc(18 * var(--english-u));
+  background:linear-gradient(155deg,#fff,#edf4ff);
+  box-shadow:0 0 0 calc(3 * var(--english-u)) rgba(224,245,255,.68);
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-category-chip span {
+  border-color:#d2e4f3;
+  border-radius:calc(14 * var(--english-u));
+  background:rgba(255,255,255,.86);
+  color:#596b94;
+}
+
+#app[data-mode="english"][data-view="wizard"] .english-category-chip input:checked + span {
+  border-color:#f0b20a;
+  background:linear-gradient(180deg,#fff47b,#ffcd1e);
+  color:#812d00;
+  box-shadow:0 calc(4 * var(--english-u)) calc(9 * var(--english-u)) rgba(139,83,0,.14);
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-note {
+  position:relative;
+  isolation:isolate;
+  align-self:center;
+  max-width:100%;
+  margin:calc(14 * var(--english-u)) auto calc(11 * var(--english-u));
+  padding:calc(5 * var(--english-u)) calc(10 * var(--english-u));
+  color:#3c4c8b;
+  font-size:calc(12 * var(--english-u));
+  line-height:1.25;
+  text-align:center;
+  white-space:nowrap;
+}
+
+#app[data-mode="english"][data-view="wizard"] .wizard-note::before {
+  content:none;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button {
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  height:calc(56 * var(--english-u));
+  min-height:0;
+  padding:0 calc(24 * var(--english-u));
+  border:calc(2 * var(--english-u)) solid #ffd95a;
+  border-radius:calc(33 * var(--english-u));
+  color:#742900;
+  background:linear-gradient(180deg,#fff375 0%,#ffdf2c 39%,#ffc11b 100%);
+  box-shadow:
+    0 calc(4 * var(--english-u)) 0 #e29a09,
+    0 calc(9 * var(--english-u)) calc(8 * var(--english-u)) rgba(255,207,79,.48),
+    inset 0 calc(2 * var(--english-u)) calc(3 * var(--english-u)) rgba(255,255,202,.95),
+    inset 0 calc(-5 * var(--english-u)) calc(5 * var(--english-u)) rgba(210,111,0,.18);
+  font-family:ResultBody,ui-rounded,sans-serif;
+  font-size:calc(22 * var(--english-u));
+  font-weight:850;
+  line-height:1;
+  text-align:left;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button::before {
+  content:"";
+  position:absolute;
+  left:calc(10 * var(--english-u));
+  top:calc(5 * var(--english-u));
+  width:calc(20 * var(--english-u));
+  height:calc(9 * var(--english-u));
+  border-radius:50%;
+  background:linear-gradient(#fff,rgba(255,255,255,.50));
+  transform:rotate(-28deg);
+  pointer-events:none;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button::after {
+  content:"";
+  position:absolute;
+  right:calc(15 * var(--english-u));
+  top:calc(5 * var(--english-u));
+  width:calc(15 * var(--english-u));
+  height:calc(7 * var(--english-u));
+  border-radius:50%;
+  background:rgba(255,255,255,.35);
+  transform:rotate(30deg);
+  pointer-events:none;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button [data-start-copy] {
+  position:relative;
+  z-index:2;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button > span[aria-hidden="true"] {
+  position:relative;
+  z-index:2;
+  margin-left:auto;
+  font-size:calc(29 * var(--english-u));
+  line-height:1;
+}
+
+#app[data-mode="english"][data-view="wizard"] .start-button:disabled { opacity:.62; }
+
+#app[data-mode="english"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus,
+#app[data-mode="english"][data-view="wizard"] :is(button,input,label,fieldset,legend,div):focus-visible {
+  outline:none!important;
+}
+
+@media (max-height:760px) {
+  #app[data-mode="english"][data-view="wizard"] .english-v2-section + .english-v2-section {
+    margin-top:calc(15 * var(--english-u));
+  }
+  #app[data-mode="english"][data-view="wizard"] .wizard-note {
+    margin-top:calc(12 * var(--english-u));
+    margin-bottom:calc(11 * var(--english-u));
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  #app[data-mode="english"][data-view="wizard"] .start-button,
+  #app[data-mode="english"][data-view="wizard"] .start-button *,
+  #app[data-mode="english"][data-view="wizard"] .english-segment-indicator {
+    animation:none!important;
+    transition:none!important;
+  }
+}
+
+/* Mockup detail: the yellow star breaks the mission-card silhouette, like the spelling hero art. */
+#app[data-mode="english"][data-view="wizard"] .wizard-intro .mode-icon.hello::after {
+  content:"★";
+  position:absolute;
+  z-index:7;
+  right:calc(-2 * var(--english-u));
+  top:calc(-12 * var(--english-u));
+  color:#ffd400;
+  font-size:calc(24 * var(--english-u));
+  line-height:1;
+  text-shadow:
+    0 calc(2 * var(--english-u)) calc(2 * var(--english-u)) rgba(186,113,0,.22),
+    0 0 calc(2 * var(--english-u)) #fff7a5;
+  transform:rotate(10deg);
+  pointer-events:none;
+}

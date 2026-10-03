@@ -1,23 +1,16 @@
-import { exampleProgress } from './progress-example.mjs?v=1';
-import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
-import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
-import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
-import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule } from './ortografia/result-screen.mjs?v=16-unified';
+import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=7-smooth-reel-finish';
+import { closeResultRule } from './ortografia/result-rules.mjs?v=5-fixed-rule-scroll';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
-import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
-import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
-import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
-import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
-import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
-import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
-import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
+import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20260930-release';
+import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=31-count-rounds';
+import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=4-count-rounds';
+import { createSpellingArt } from './spelling/art.mjs?v=20260930-release';
+import { playerService } from './player-service.mjs?v=3-retina-3d';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
-const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
-const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
-let pinSuppressClickUntil=0;
+const spellingArt=createSpellingArt(root);
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
@@ -28,12 +21,12 @@ let configs=Object.fromEntries(modeIds.map(mode=>[mode,cleanConfig(mode,savedCon
 const legacyProgressRaw=read(prefix+'progress');
 const legacyProgress=legacyProgressRaw===null?migrateProgress(read('maleDyktando.history.v1',[]),read('maleDyktando.best.v1',{})):cleanProgress(legacyProgressRaw);
 let progress=cleanProgress(null);
-let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false;
+let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='';
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let gameTicker = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
 function startGameTicker(){stopGameTicker();gameTicker=setInterval(()=>{if(view!=='game'||!game){stopGameTicker();return;}game.tick();syncGame();},50);}
-let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
+let offlineReady=false,collectionReturn=null;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
@@ -60,9 +53,7 @@ const fallbackAvatarId=player=>{
  return ['a','b','c','d'][sum%4];
 };
 function avatarMarkup(player,extra=''){
- const key=AVATARS.includes(player?.avatarId)?player.avatarId:fallbackAvatarId(player);
- const index=AVATARS.indexOf(key)-4;
- if(index>=0)return `<span class="player-avatar-art player-avatar-extra ${extra}" data-avatar="${key}" aria-hidden="true"><svg viewBox="${index%4*320} ${index<4?302:650} 320 320" preserveAspectRatio="xMidYMid slice"><image href="assets/brand/player-avatars-extra-v1.webp" width="1280" height="1280"/></svg></span>`;
+ const key=avatarThemes[player?.avatarId]?player.avatarId:fallbackAvatarId(player);
  return `<span class="player-avatar-art ${extra}" data-avatar="${key}" aria-hidden="true"></span>`;
 }
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
@@ -74,12 +65,12 @@ async function refreshPlayers(){
  }
  return players;
 }
-async function persistProgress({strict=false}={}){
+async function persistProgress(){
  if(!activePlayer?.id)return;
  const playerId=activePlayer.id;
  const snapshot=globalThis.structuredClone?structuredClone(progress):JSON.parse(JSON.stringify(progress));
  try{await playerService.saveProgress(playerId,snapshot);}
- catch(error){const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;if(strict)throw error;}
+ catch{const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;}
 }
 async function activatePlayer(player){
  if(!player)return;
@@ -96,7 +87,7 @@ function playersPage(){
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0;
  const list=hasPlayers
-  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
+  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
   :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
@@ -108,48 +99,24 @@ function playersPage(){
 
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
- root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
- root.scrollTop=0;
-}
-function pinFieldsMarkup(){
- const creating=Boolean(pendingNickname),setting=editingPin;
- const error=pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:'';
- if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${error}${btn('Dalej','submit-pin','primary player-form-next')}`;
- const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
- return `<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${error}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`;
-}
-function renderPinFields(animate=false){
- const fields=root.querySelector('.pin-fields');if(!fields)return;
- fields.innerHTML=pinFieldsMarkup();
- if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
-}
-function setPinMode(index){
- const container=root.querySelector('.pin-mode');if(!container||view!=='player-pin')return;
- const enabled=index===0,changed=pendingPinEnabled!==enabled;
- pendingPinEnabled=enabled;
- container.querySelectorAll('input').forEach(input=>{input.checked=(input.value==='pin')===enabled;});
- pinJelly.update(container,index,{animate:true});
- if(changed){pinInput='';pinError='';renderPinFields(true);}
+ root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="20" minlength="2" autocomplete="off" autocapitalize="words" placeholder="np. Maja" value="${escape(pendingNickname)}" required><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${['a','b','c','d'].map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
+ requestAnimationFrame(()=>root.querySelector('#player-nickname')?.focus({preventScroll:true}));
 }
 function playerPinPage(){
  spellingArt.reset();view='player-pin';root.dataset.view=view;delete root.dataset.mode;
- const creating=Boolean(pendingNickname),setting=editingPin;
- const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting?activePlayer:players.find(item=>item.id===pendingPlayerId);
- const name=player?.nickname||'Gracz';
- root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section>`;
- const container=root.querySelector('.pin-mode');
- if(container){
-  pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
-  pinJelly.setupDrag(container,{getActiveIndex:()=>pendingPinEnabled?0:1,commitIndex:setPinMode,suppressClick:ms=>{pinSuppressClickUntil=performance.now()+ms;}});
- }
+ const creating=Boolean(pendingNickname);
+ const player=players.find(item=>item.id===pendingPlayerId);
+ const tempPlayer=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:player;
+ const name=tempPlayer?.nickname||'Gracz';
+ const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
+ root.innerHTML=pageHead(creating?'Ustaw PIN':'Wpisz PIN',creating?'add-player':'players')+`<section class="pin-card">${avatarMarkup(tempPlayer,'player-avatar-large')}<h2>${escape(name)}</h2><p>${creating?'Ustaw 4 cyfry. PIN służy tylko do przełączania profili na urządzeniu.':'Wpisz 4-cyfrowy PIN.'}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:''}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':'Wejdź do profilu'}"`)}</div></section>`;
 }
 async function submitPlayerPin(){
- if((!pendingNickname||pendingPinEnabled)&&pinInput.length!==4)return;
- if(editingPin){try{activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:true,pin:pinInput});editingPin=false;await refreshPlayers();navigate('settings');}catch(error){pinError=error.message;playerPinPage();}return;}
+ if(pinInput.length!==4)return;
  if(pendingNickname){
   try{
    const firstProfile=players.length===0;
-   const player=await playerService.createPlayer({nickname:pendingNickname,pin:pinInput,avatarId:pendingAvatarId,pinEnabled:pendingPinEnabled});
+   const player=await playerService.createPlayer({nickname:pendingNickname,pin:pinInput,avatarId:pendingAvatarId});
    if(firstProfile)await playerService.migrateLegacyProgress(player.id,legacyProgress);
    await playerService.useCreatedPlayer(player.id);
    await refreshPlayers();
@@ -165,12 +132,11 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
- editingPin=false;
- stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
+ stopGameTicker();settleResult(root);
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
  spellingArt.reset();
- view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&selectedMode==='spelling'?'#70d1f3':'#f5f8ff');
+ view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&(selectedMode==='spelling'||selectedMode==='english')?'#70d1f3':'#f5f8ff');
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
@@ -181,7 +147,6 @@ function home() {
  root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});
 }
 function wizard() {
- if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
  root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color}">${modeIcon(selectedMode)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
@@ -192,72 +157,21 @@ function wizard() {
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
  root.innerHTML=pageHead('Ustawienia')+`<section class="card"><label class="setting" for="sound"><span><strong>Dźwięki</strong><small>Krótki dźwięk po odpowiedzi</small></span><input id="sound" type="checkbox" role="switch" ${settings.sound?'checked':''}></label><label class="setting" for="difficulty"><span><strong>Pokazuj poziom</strong><small>Mała etykieta przy pytaniu</small></span><input id="difficulty" type="checkbox" role="switch" ${settings.difficulty?'checked':''}></label></section>
- <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section>${activePlayer?.id!=='guest'?`<section class="card pin-settings"><div><strong>PIN profilu</strong><p>${activePlayer?.hasPin?'Przełączanie tego profilu wymaga kodu.':'Przełączanie tego profilu nie wymaga kodu.'}</p></div>${btn(activePlayer?.hasPin?'Wyłącz PIN':'Ustaw PIN',activePlayer?.hasPin?'disable-pin':'enable-pin','secondary')}</section>`:''}<section class="card backup-card"><h2>Kopia danych</h2><p>Przenieś profile, postępy i ustawienia do innej wersji gry lub na drugie urządzenie.</p><div class="backup-actions">${btn('Eksportuj dane','export-backup','secondary')}${btn('Importuj dane','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><small>Plik JSON zachowuje również PIN-y profili.</small></section><section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
-}
-function backupPreferences(){return {settings,configs,spellingWizard:read(prefix+'spellingWizardV2')};}
-function backupStatus(message){const status=root.querySelector('#backup-status');if(status)status.textContent=message;}
-async function exportBackup(){
- if(backupBusy)return;backupBusy=true;
- try{
-  await persistProgress({strict:true});
-  const backup=await playerService.exportBackup(backupPreferences());
-  const url=URL.createObjectURL(new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}));
-  const link=document.createElement('a');link.href=url;link.download=`mala-nauka-kopia-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
-  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
-  backupStatus('Kopia gotowa. Zachowaj plik w aplikacji Pliki.');
- }catch(error){backupStatus(error?.message||'Nie udało się przygotować kopii danych.');}
- finally{backupBusy=false;}
-}
-async function previewBackup(file){
- if(!file||backupBusy)return;backupBusy=true;pendingBackup=null;
- try{
-  if(file.size>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
-  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing);
-  pendingBackup=backup;
-  showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} Przywrócimy też ustawienia gry.</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
- }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
- finally{backupBusy=false;}
-}
-async function importBackup(){
- if(!pendingBackup||backupBusy)return;backupBusy=true;
- const keys=[prefix+'settings',prefix+'configs',prefix+'spellingWizardV2'];
- const previous=keys.map(key=>localStorage.getItem(key));
- try{
-  const backup=pendingBackup,preferences=backup.preferences;
-  try{
-   localStorage.setItem(keys[0],JSON.stringify(preferences.settings));localStorage.setItem(keys[1],JSON.stringify(preferences.configs));
-   if(preferences.spellingWizard)localStorage.setItem(keys[2],JSON.stringify(preferences.spellingWizard));else localStorage.removeItem(keys[2]);
-   await playerService.importBackup(backup);
-  }catch(error){for(let i=0;i<keys.length;i++){try{if(previous[i]===null)localStorage.removeItem(keys[i]);else localStorage.setItem(keys[i],previous[i]);}catch{}}throw error;}
-  settings=preferences.settings;configs=preferences.configs;pendingBackup=null;activePlayer=null;progress=cleanProgress(null);collectionReturn=null;
-  modal.close();await refreshPlayers();playersPage();
- }catch(error){modal.close();backupStatus(error?.message||'Nie udało się zapisać kopii danych.');}
- finally{backupBusy=false;}
+ <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section><section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
 function historyPage() {
- setScreenTheme('#b4eaff');
- renderProgressScreen(root,{progress,words,backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
-  onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});
+ const head=collectionReturn?`<header class="page-head">${btn('×','return-results','icon','aria-label="Zamknij kolekcję i wróć do wyników"')}<h1 tabindex="-1">Moja kolekcja</h1></header>`:pageHead('Moje wyniki');
+ root.innerHTML=head+`<section class="card"><h2>Twoje rekordy</h2><p class="muted">Punkty według trybu i czasu rundy.</p><div class="record-table"><table><thead><tr><th scope="col">Tryb</th>${DURATIONS.map(d=>`<th scope="col">${minutes(d)}</th>`).join('')}</tr></thead><tbody>${modeIds.map(mode=>`<tr><th scope="row">${MODES[mode].name}</th>${DURATIONS.map(d=>`<td>${progress.best[`${mode}:${d}`]??'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section><h2 class="space-top">Ostatnie gry</h2>`+
+ (progress.history.length?progress.history.map(r=>`<article class="history-item"><div><strong>${MODES[r.mode].name}</strong><b>${r.correct} pkt</b></div><p>${accuracy(r.correct,r.wrong)}% poprawnych · ${r.correct+r.wrong} zadań · ${r.mode==='spelling'?spellingRoundLabel(r):minutes(r.duration)}</p><small>${escape(resultScopeLabel(r))}<br>${escape(new Date(r.date).toLocaleString('pl-PL',{dateStyle:'short',timeStyle:'short'}))}${r.early?' · zakończona wcześniej':''}</small></article>`).join(''):'<section class="empty card"><span aria-hidden="true">✦</span><h2>Tu pojawią się Twoje przygody</h2><p>Wybierz tryb i zagraj pierwszą rundę.</p>'+btn('Wybierz przygodę','home','primary')+'</section>');
 }
 function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{/* Optional sound. */}}
 function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||audio.state!=='running')return;const tone=audio.createOscillator(),gain=audio.createGain(),t=audio.currentTime;tone.type='sine';tone.frequency.setValueAtTime(correct?660:220,t);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.045,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.14);tone.connect(gain);gain.connect(audio.destination);tone.start(t);tone.stop(t+.15);tone.onended=()=>{tone.disconnect();gain.disconnect();};}catch{/* Keep playing without audio. */}}
-async function start() {
+function start() {
  settleResult(root);
  const config=configs[selectedMode];
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
- const nextGame=game;
- const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
- if(selectedMode==='spelling'){
-  game.pause();
-  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);}
-  catch{render();root.inert=false;}
-  if(game!==nextGame||view!=='game')return;
-  if(document.hidden){pause();return;}
-  game.resume();spellingArt.setPaused(false);syncGame();startGameTicker();
- }else{render();startGameTicker();}
-
+ game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;renderGame();startGameTicker();
 }
 function balancedReadingPrompt(text){
  const words=String(text||'').trim().split(/\s+/).filter(Boolean);
@@ -333,11 +247,6 @@ function renderPhraseInput() {
   button.classList.toggle('is-used',used);
  });
 }
-document.addEventListener('mala-nauka:flag-presentation',event=>{
- if(view!=='game'||game?.mode!=='flags'||game.current?.countryId!==event.detail.countryId)return;
- const state=game.state==='paused'?game.resumeState:game.state;
- if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
-});
 function renderGame() {
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
@@ -369,11 +278,10 @@ function renderGame() {
  }else{
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
- root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
- <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
+ root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${game.state==='feedback-wrong'?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
+ <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
  <p class="prompt">${promptText}</p>${answersBlock}
- <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?(game.mode==='flags'?'Zapamiętaj kraj i jego stolicę.':'Tak właśnie!'):'Czas czeka na Ciebie.'}</small></div>${correct&&game.mode!=='flags'?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
- if(game.mode==='flags')document.dispatchEvent(new CustomEvent('mala-nauka:flag-prepare',{detail:{countryId:game.current.countryId,nextCountryId:game.prepareNext()?.countryId}}));
+ <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?'Tak właśnie!':'Czas czeka na Ciebie.'}</small></div>${correct?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
  renderedState=game.state;renderedQuestion=game.question;updateClock();
  if(feedback&&!correct)root.querySelector('[data-action="next"]')?.focus({preventScroll:true});else if(!feedback&&!exposing)root.querySelector(q.kind==='memory'?'.memory-key':q.kind==='reading-phrase'?'.phrase-word':'.answer')?.focus({preventScroll:true});
 }
@@ -381,10 +289,10 @@ function updateClock(){
  const timer=root.querySelector('.timer');if(!timer||!game)return;
  const progressNode=root.querySelector('progress');
  if(game.untimed){
-  const current=Math.min(game.question,game.questionLimit||80),value=current+'/'+(game.questionLimit||80);
+  const left=game.questionsRemaining(),value=String(left??0);
   if(timer.textContent!==value)timer.textContent=value;
-  timer.classList.remove('urgent');timer.setAttribute('aria-label','Pytanie '+current+' z '+(game.questionLimit||80));
-  if(progressNode){progressNode.max=game.questionLimit||80;progressNode.value=current;}
+  timer.classList.remove('urgent');timer.setAttribute('aria-label','Pozostało pytań: '+value);
+  if(progressNode){progressNode.max=game.questionLimit||80;progressNode.value=left??0;}
   return;
  }
  const seconds=Math.ceil(game.remaining/1000),value=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
@@ -434,13 +342,8 @@ function finish(early=false,goHome=false){
 }
 function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
- if(action==='export-backup'){await exportBackup();return;}
- if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
- if(action==='confirm-import'){await importBackup();return;}
- if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
  if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
- if(action==='edit-player'){editingPin=false;pinInput='';pinError='';playerCreatePage();return;}
- if(action==='add-player'){editingPin=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='add-player'){pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
  if(action==='choose-player'){
   selectedPlayerId=button.dataset.player;
   root.querySelectorAll('.player-card').forEach(card=>{
@@ -452,17 +355,15 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   return;
  }
  if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
- if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
+ if(action==='continue-player'){if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';playerPinPage();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
- if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
- if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
+ if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';playerPinPage();}return;}
+ if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';playerPinPage();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
- if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
- if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();settingsPage();return;}
  if(action==='switch-player'){playerService.lockSession();activePlayer=null;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
  if(['home','settings'].includes(action))navigate(action);
  if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
- if(action==='return-results'&&collectionReturn){destroyProgressScreen(root);closeResultRule(root,false);const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='return-results'&&collectionReturn){const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
  if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
@@ -495,55 +396,27 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   memoryInput.pop();renderMemoryInput();return;
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
- if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
+ if(action==='next'&&view==='game'&&!modal.open){game.skipFeedback();syncGame();}
  if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }
-root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastResult){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);void start();}});
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
-root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const error=root.querySelector('#nickname-error');if(error)error.hidden=true;e.target.removeAttribute('aria-invalid');}});
-root.addEventListener('submit',e=>{
- if(e.target.id==='player-create-form'){
-  e.preventDefault();const data=new FormData(e.target);
-  const nickname=String(data.get('nickname')||'').normalize('NFC').trim().replace(/\s+/g,' '),length=[...nickname].length;
-  if(length<3||length>NICKNAME_MAX_LENGTH){
-   const input=e.target.querySelector('#player-nickname'),error=e.target.querySelector('#nickname-error');
-   error.textContent=length<3?'Wpisz nick — co najmniej 3 znaki.':`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`;
-   error.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;
-  }
-  document.activeElement?.blur();pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
- }
- if(e.target.id==='setup-form'){e.preventDefault();start();}
-});
-root.addEventListener('click',event=>{
- if(view!=='player-pin')return;
- const buffer=event.target.closest('.jelly-v4-buffer');
- const label=event.target.closest('.pin-mode > label')||[...(buffer?.querySelectorAll('.pin-mode > label')||[])].find(node=>{const r=node.getBoundingClientRect();return event.clientX>=r.left&&event.clientX<=r.right&&event.clientY>=r.top&&event.clientY<=r.bottom;});
- if(!label)return;event.preventDefault();
- if(performance.now()<pinSuppressClickUntil)return;
- const input=label.querySelector('input');setPinMode(input.value==='pin'?0:1);
-});
-window.addEventListener('resize',()=>{
- const container=root.querySelector('.pin-mode');
- if(view==='player-pin'&&container&&!container.classList.contains('jelly-v4-moving'))pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
-});
+root.addEventListener('submit',e=>{if(e.target.id==='player-create-form'){e.preventDefault();const data=new FormData(e.target);const nickname=String(data.get('nickname')||'').trim();if(nickname.length<2){e.target.querySelector('#player-nickname')?.focus();return;}pendingNickname=nickname.slice(0,20);pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;}if(e.target.id==='setup-form'){e.preventDefault();start();}});
 root.addEventListener('change',e=>{
- if(view==='settings'&&e.target.id==='backup-file'){void previewBackup(e.target.files?.[0]);e.target.value='';return;}
- if(view==='player-pin'&&e.target.name==='profilePinMode'){setPinMode(e.target.value==='pin'?0:1);return;}
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
   // Some approved spelling categories have no records at a given difficulty.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
-  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wybierz inny zestaw dyktanda.':'';root.querySelector('.start-button').disabled=empty;
+  const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wyłącz „Tylko dyktando”.':'';root.querySelector('.start-button').disabled=empty;
  }
  if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList.add('keyboard');if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||modal.open||view!=='game')return;if(/^[1-6]$/.test(e.key)&&game.state==='playing'){e.preventDefault();root.querySelectorAll('.answer')[Number(e.key)-1]?.click();}if(e.key==='Escape'){e.preventDefault();pause();}});
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game')pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();

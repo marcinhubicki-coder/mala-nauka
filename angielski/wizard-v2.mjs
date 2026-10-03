@@ -1,4 +1,4 @@
-import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
+import { createJellyV4 } from '../shared/jelly-v4.mjs?v=4-tap-target';
 
 const root=document.querySelector('#app');
 const STORAGE_KEY='malaNauka.v1.englishWizardV2';
@@ -383,6 +383,7 @@ function applySegmentSelection(input){
 function setupDrag(container){
  if(!container||container.dataset.jellyV4DragReady==='true')return;
  jellyV4.setupDrag(container,{
+  captureOnDrag:true,
   getActiveIndex:()=>activeIndexFor(container),
   commitIndex:index=>{
    const list=[...container.querySelectorAll(':scope > label')];
@@ -421,6 +422,38 @@ function install(){
   '<fieldset class="english-v2-section english-v2-time"><legend><span class="step-dot">3</span>Jak długo dasz radę?</legend><div class="english-time-segmented english-segmented" data-segmented="time">'+durationChoices()+'</div></fieldset>';
  const note=root.querySelector('.wizard-note');
  if(note)note.textContent='Wybierz słówka, które chcesz dziś poćwiczyć.';
+
+ // Match the spelling wizard's Retina structure exactly: one fixed 390pt canvas
+ // plus a real mission artwork element, so the character/stars can protrude
+ // outside the yellow card without being flattened by background painting.
+ const canvas=document.createElement('div');
+ canvas.className='english-wizard-canvas';
+ while(root.firstChild)canvas.append(root.firstChild);
+ root.append(canvas);
+ const foreground=document.createElement('div');
+ foreground.className='english-scene-foreground';
+ foreground.setAttribute('aria-hidden','true');
+ foreground.innerHTML='<span class="english-scene-lamp"></span><span class="english-scene-tower"></span>';
+ root.append(foreground);
+
+ const intro=root.querySelector('.wizard-intro');
+ if(intro&&!intro.querySelector('.english-mission-art')){
+  const art=document.createElement('img');
+  art.className='english-mission-art';
+  art.src=new URL('../assets/angielski/wizard-mission-retina-v2.webp',import.meta.url).href;
+  art.alt='';
+  art.width=1200;
+  art.height=404;
+  intro.prepend(art);
+  const boy=document.createElement('img');
+  boy.className='english-mission-boy';
+  boy.src=new URL('../assets/angielski/wizard-boy-retina-v3.webp',import.meta.url).href;
+  boy.alt='';
+  boy.width=360;
+  boy.height=345;
+  intro.append(boy);
+ }
+
  updateStartButton(false);
  syncEditorUI(false,{resetAction:true});
  syncHidden(true);

@@ -134,6 +134,8 @@ function updateStartButton(animate=false){
   copy=button.querySelector('[data-start-copy]');
  }
  const next=START_COPY[state.duration]||'Zaczynamy!';
+ const arrow=button.lastElementChild;
+ if(arrow&&!arrow.querySelector('svg'))arrow.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7"/></svg>';
  if(copy.textContent!==next){
   copy.textContent=next;
   if(animate){
@@ -225,6 +227,7 @@ function install(){
   '<button class="primary start-button" type="submit"><span data-start-copy>Zaczynamy!</span><span aria-hidden="true">→</span></button>';
  const canvas=document.createElement('div');canvas.className='reading-wizard-canvas';
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
+ const back=root.querySelector('.page-head .icon');if(back)back.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>';
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
  if(intro){const art=document.createElement('img');art.className='reading-mission-art';art.src=new URL('../assets/czytanie/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=2048;art.height=733;intro.prepend(art);}
  const theme=document.querySelector('meta[name="theme-color"]');if(theme)theme.content='#65c8f4';

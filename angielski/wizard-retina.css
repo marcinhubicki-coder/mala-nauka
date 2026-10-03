@@ -3,17 +3,12 @@
 
 html:has(#app[data-view="wizard"][data-mode="english"]),
 body:has(#app[data-view="wizard"][data-mode="english"]) {
-  background:#70d1f3 url('../assets/ortografia/wizard-meadow-animals-v2.webp') center bottom / cover no-repeat;
+  background:#43b8e8 url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% 100% no-repeat;
 }
 
 body:has(#app[data-view="wizard"][data-mode="english"])::before,
 body:has(#app[data-view="wizard"][data-mode="english"])::after {
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
-  background:url('../assets/angielski/wizard-london-retina-v1.webp') center bottom / 100% 100% no-repeat;
+  content:none!important;
 }
 
 /* Hard hand-off is hidden directly under the setup card. No mask blur = no cyan band. */
@@ -211,8 +206,8 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2 {
   border:calc(2 * var(--english-u)) solid rgba(255,255,255,.93);
   border-radius:calc(27 * var(--english-u));
-  padding:calc(13 * var(--english-u)) calc(18 * var(--english-u)) calc(20 * var(--english-u));
-  background:linear-gradient(130deg,rgba(255,255,255,.96),rgba(255,255,255,.91) 56%,rgba(249,253,255,.96));
+  padding:calc(13 * var(--english-u)) calc(18 * var(--english-u)) calc(18 * var(--english-u));
+  background:linear-gradient(130deg,#ffffff 0%,#fbfdff 58%,#f8fcff 100%);
   box-shadow:
     inset 0 0 calc(13 * var(--english-u)) rgba(205,233,255,.55),
     0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(34,48,72,.075);
@@ -329,7 +324,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   isolation:isolate;
   align-self:center;
   max-width:100%;
-  margin:calc(15 * var(--english-u)) auto calc(10 * var(--english-u));
+  margin:calc(14 * var(--english-u)) auto calc(11 * var(--english-u));
   padding:calc(5 * var(--english-u)) calc(10 * var(--english-u));
   color:#3c4c8b;
   font-size:calc(12 * var(--english-u));
@@ -349,11 +344,11 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   align-items:center;
   justify-content:space-between;
   width:100%;
-  height:calc(62 * var(--english-u));
+  height:calc(66 * var(--english-u));
   min-height:0;
   padding:0 calc(24 * var(--english-u));
   border:calc(2 * var(--english-u)) solid #ffd95a;
-  border-radius:calc(31 * var(--english-u));
+  border-radius:calc(33 * var(--english-u));
   color:#742900;
   background:linear-gradient(180deg,#fff375 0%,#ffdf2c 39%,#ffc11b 100%);
   box-shadow:

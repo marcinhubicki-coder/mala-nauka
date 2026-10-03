@@ -201,7 +201,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
 #app[data-mode="english"][data-view="wizard"] .setup-card.english-wizard-v2 {
   border:calc(2 * var(--english-u)) solid rgba(255,255,255,.93);
   border-radius:calc(27 * var(--english-u));
-  padding:calc(13 * var(--english-u)) calc(18 * var(--english-u)) calc(18 * var(--english-u));
+  padding:calc(12 * var(--english-u)) calc(17 * var(--english-u)) calc(19 * var(--english-u));
   background:linear-gradient(130deg,#ffffff 0%,#fbfdff 58%,#f8fcff 100%);
   box-shadow:
     inset 0 0 calc(13 * var(--english-u)) rgba(205,233,255,.55),
@@ -247,11 +247,11 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   min-height:0;
   border:calc(1 * var(--english-u)) solid #cbe5ff;
   border-radius:calc(21 * var(--english-u))!important;
-  background:linear-gradient(155deg,#fff 0%,#edf4ff 80%,#e8f1ff);
+  background:linear-gradient(155deg,#fff 0%,#f7fafc 80%,#f3f9fc);
   box-shadow:
-    0 0 0 calc(4 * var(--english-u)) rgba(224,245,255,.80),
+    0 0 0 calc(.5 * var(--english-u)) rgba(224,245,255,.40),
     inset 0 calc(1 * var(--english-u)) calc(3 * var(--english-u)) #fff,
-    0 calc(4 * var(--english-u)) calc(7 * var(--english-u)) rgba(54,112,188,.07);
+    0 calc(3 * var(--english-u)) calc(7 * var(--english-u)) rgba(54,112,188,.035);
 }
 
 #app[data-mode="english"][data-view="wizard"] .english-segment-indicator {

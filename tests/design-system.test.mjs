@@ -9,7 +9,7 @@ import {createStudioGame} from '../design-system/scenarios.mjs';
 import {validateWords} from '../game.mjs';
 import {cleanConfig} from '../modes.mjs';
 const read=path=>readFile(new URL('../'+path,import.meta.url),'utf8').then(JSON.parse);
-const config=await read('design-system/config.json'),assets=await read('design-system/assets.json'),registry=await read('design-system/registry.json');
+const config=await read('design-system/config.json'),assets=await read('design-system/assets.json'),registry=await read('design-system/registry.json'),rules=await read('design-system/rules.json');
 const words=validateWords((await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat());
 test('import rejects malformed CSS, unknown roles, prototype keys and invalid dimensions',()=>{
  for(const mutate of [c=>c.tokens.jelly.height=2,c=>c.tokens.jelly.inset=Infinity,c=>c.themes.flags.accent='red;display:none',c=>c.typography['bad-role']='nunito',c=>c.overrides=JSON.parse('{"__proto__":{"x":1}}'),c=>c.tokens.unknown={height:5}]){const c=clone(config);mutate(c);assert.throws(()=>validateConfig(c));}
@@ -82,4 +82,12 @@ test('normal routes share studio view IDs for settings, feedback, profiles and a
  assert.equal(viewIdFor({view:'players',hasPlayers:false}),'players-empty');
  assert.equal(viewIdFor({view:'history',historyState:'achievements'}),'trophies');
  assert.equal(viewIdFor({view:'results',popup:'rule'}),'spelling-rule');
+});
+
+test('shared rules join the same atomic save and credentials never enter content',async()=>{
+ const server=github(),git=new GitClient(server.fetcher);await git.connect('test-only-token',config);
+ await git.save({config,assets,rules,message:'Shared rules'});
+ const tree=server.calls.find(c=>c.path==='git/trees').body.tree;
+ assert.ok(tree.some(row=>row.path==='design-system/rules.json'&&JSON.parse(row.content).assignments.góra));
+ assert.ok(!JSON.stringify(tree).includes('test-only-token'));
 });

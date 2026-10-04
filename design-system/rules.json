@@ -1,0 +1,3677 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "rules": {
+    "rule-7a2b6ca06348": {
+      "title": "Zapamiętaj „ó”",
+      "category": "u/ó",
+      "type": "memory",
+      "explanation": "Zapis przez ó warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-52297ad0d10a": {
+      "title": "Ó wymienia się na o",
+      "category": "u/ó",
+      "type": "exchange",
+      "explanation": "Ó wymienia się na o. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-622c398b69a8": {
+      "title": "Ó wymienia się na e",
+      "category": "u/ó",
+      "type": "exchange",
+      "explanation": "Ó wymienia się na e. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-4e98d3e3541a": {
+      "title": "Ó wymienia się na a",
+      "category": "u/ó",
+      "type": "exchange",
+      "explanation": "Ó wymienia się na a. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-cf40bda3f6f8": {
+      "title": "Ó w zakończeniu -ówka",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "Piszemy ó w zakończeniu -ówka. To częsty wzór, który pomaga zapamiętać pisownię.",
+      "edited": false
+    },
+    "rule-963b4bc6ac64": {
+      "title": "Ó w zakończeniu -ów",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "Zakończenie -ów zapisujemy przez ó.",
+      "edited": false
+    },
+    "rule-9466bdebc5dd": {
+      "title": "Zapamiętaj „u”",
+      "category": "u/ó",
+      "type": "memory",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-9964569033a5": {
+      "title": "U na początku wyrazu",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
+      "edited": false
+    },
+    "rule-f55d066ad7a8": {
+      "title": "Rz po spółgłosce „d”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „d”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-06771f6a98b1": {
+      "title": "Zapamiętaj „rz”",
+      "category": "rz/ż",
+      "type": "memory",
+      "explanation": "Zapis przez rz warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-80e197379ad3": {
+      "title": "Rz po spółgłosce „g”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „g”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-c89378cb52cf": {
+      "title": "Rz po spółgłosce „b”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „b”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-b9b42559239a": {
+      "title": "Rz po spółgłosce „k”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „k”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-8b3d6f94ff3a": {
+      "title": "Rz po spółgłosce „w”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „w”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-e0dc4eec9907": {
+      "title": "U w zakończeniu -ura",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "Zapisujemy u w zakończeniu -ura. Ten wzór pomaga zapamiętać wiele podobnych wyrazów.",
+      "edited": false
+    },
+    "rule-76cb2ead5477": {
+      "title": "U w zakończeniu -unek",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "Zapisujemy u w zakończeniu -unek. Ten wzór pomaga zapamiętać wiele podobnych wyrazów.",
+      "edited": false
+    },
+    "rule-6782ac4aa375": {
+      "title": "U w zakończeniach -uję, -ujesz, -ujemy, -ujecie",
+      "category": "u/ó",
+      "type": "pattern",
+      "explanation": "W cząstce -uj- w tych zakończeniach czasowników zawsze piszemy u.",
+      "edited": false
+    },
+    "rule-d18a02e126f9": {
+      "title": "Wyjątek od zakończenia -ówka",
+      "category": "u/ó",
+      "type": "exception",
+      "explanation": "W słowach skuwka, wsuwka i zasuwka piszemy u. Zapamiętaj te wyjątki od zasady dotyczącej zakończenia -ówka.",
+      "edited": false
+    },
+    "rule-20811d4fde25": {
+      "title": "Rz po spółgłosce „t”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „t”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-dcfaafc3803e": {
+      "title": "Rz po spółgłosce „p”",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "Rz po spółgłosce „p”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
+      "edited": false
+    },
+    "rule-813fd49c10b8": {
+      "title": "Zakończenie -arz",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "W nazwach osób wykonujących zawód lub czynność zakończenie -arz zapisujemy przez rz.",
+      "edited": false
+    },
+    "rule-e5068451a5f2": {
+      "title": "Zakończenie -erz",
+      "category": "rz/ż",
+      "type": "pattern",
+      "explanation": "W wielu rzeczownikach rodzaju męskiego zakończenie -erz zapisujemy przez rz.",
+      "edited": false
+    },
+    "rule-d89178cfe657": {
+      "title": "Rodzina wyrazów z „rz”",
+      "category": "rz/ż",
+      "type": "memory",
+      "explanation": "W tej rodzinie wyrazów zachowujemy zapis przez rz. Pomocne słowa znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-6edfc8693dd8": {
+      "title": "Zapamiętaj „ż”",
+      "category": "rz/ż",
+      "type": "memory",
+      "explanation": "Zapis przez ż warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-7f9f48cf3be9": {
+      "title": "Ż wymienia się na g",
+      "category": "rz/ż",
+      "type": "exchange",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-fc14f1344b73": {
+      "title": "Ż wymienia się na s",
+      "category": "rz/ż",
+      "type": "exchange",
+      "explanation": "Ż wymienia się na s. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-585df4f063e8": {
+      "title": "Ż wymienia się na h",
+      "category": "rz/ż",
+      "type": "exchange",
+      "explanation": "Ż wymienia się na h. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-6c7aca4cf9ac": {
+      "title": "Zapamiętaj „ch”",
+      "category": "ch/h",
+      "type": "memory",
+      "explanation": "Zapis przez ch warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-fabfda1ad713": {
+      "title": "Ch wymienia się na sz",
+      "category": "ch/h",
+      "type": "exchange",
+      "explanation": "Ch wymienia się na sz. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-cb15c7a8b263": {
+      "title": "Zapamiętaj „h”",
+      "category": "ch/h",
+      "type": "memory",
+      "explanation": "Zapis przez h warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
+      "edited": false
+    },
+    "rule-fafff27b4091": {
+      "title": "H wymienia się na ż",
+      "category": "ch/h",
+      "type": "exchange",
+      "explanation": "H wymienia się na ż. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "edited": false
+    },
+    "rule-38b408ee320a": {
+      "title": "„ci” przed samogłoską",
+      "category": "ć/ci",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
+      "edited": false
+    },
+    "rule-490b50efad90": {
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "category": "ć/ci",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "edited": false
+    },
+    "rule-75efae8f2a87": {
+      "title": "„si” przed samogłoską",
+      "category": "ś/si",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
+      "edited": false
+    },
+    "rule-fd8b898dfda5": {
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "category": "ś/si",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "edited": false
+    },
+    "rule-583e3ea10e7f": {
+      "title": "„zi” przed samogłoską",
+      "category": "ź/zi",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "edited": false
+    },
+    "rule-6f79a48d47aa": {
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "category": "ź/zi",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "edited": false
+    },
+    "rule-c9cdc93fc8ea": {
+      "title": "„ni” przed samogłoską",
+      "category": "ń/ni",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
+      "edited": false
+    },
+    "rule-e387eac01ece": {
+      "title": "„ń” przed spółgłoską lub na końcu",
+      "category": "ń/ni",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "edited": false
+    },
+    "rule-ef3c6ae8ce82": {
+      "title": "„dzi” przed samogłoską",
+      "category": "dź/dzi",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "edited": false
+    },
+    "rule-23e21c044e0b": {
+      "title": "„dź” przed spółgłoską lub na końcu",
+      "category": "dź/dzi",
+      "type": "pattern",
+      "explanation": "Miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
+      "edited": false
+    }
+  },
+  "assignments": {
+    "król": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "góra": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "córka": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wózek": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "pióro": {
+      "primary": "rule-622c398b69a8",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ósemka": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "róża": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "skóra": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "żółw": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żółty": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "stół": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wróbel": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "jaskółka": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "królik": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ogród": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "samochód": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "miód": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "dół": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ból": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "sól": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kółko": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "półka": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "północ": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "półwysep": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "późno": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi"
+      ]
+    },
+    "później": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "ń/ni"
+      ]
+    },
+    "późny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi"
+      ]
+    },
+    "źródło": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi"
+      ]
+    },
+    "próba": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "próżny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "równo": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "równy": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "różny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "różnica": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "różowy": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "sposób": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "który": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "mój": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "twój": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "swój": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "mówić": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "wrócić": {
+      "primary": "rule-4e98d3e3541a",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "pomóc": {
+      "primary": "rule-4e98d3e3541a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "mózg": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wójt": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "włókno": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "góral": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "górski": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "krótki": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "krótko": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ogórek": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wiewiórka": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "sokół": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "łóżko": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "zbiórka": {
+      "primary": "rule-622c398b69a8",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wóz": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "nóżka": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "siódemka": {
+      "primary": "rule-622c398b69a8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ś/si"
+      ]
+    },
+    "pszczółka": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ołówek": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "trójkąt": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "siatkówka": {
+      "primary": "rule-cf40bda3f6f8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ś/si"
+      ]
+    },
+    "złotówka": {
+      "primary": "rule-cf40bda3f6f8",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "rodziców": {
+      "primary": "rule-963b4bc6ac64",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "krzyżówka": {
+      "primary": "rule-cf40bda3f6f8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "Kraków": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "zwierzaków": {
+      "primary": "rule-963b4bc6ac64",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "pomysłów": {
+      "primary": "rule-963b4bc6ac64",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wróżba": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "równanie": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "spóźniony": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "ń/ni"
+      ]
+    },
+    "wzgórze": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "ósmy": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ówczesny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "skrót": {
+      "primary": "rule-4e98d3e3541a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "obrót": {
+      "primary": "rule-4e98d3e3541a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "powrót": {
+      "primary": "rule-4e98d3e3541a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wybór": {
+      "primary": "rule-622c398b69a8",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "zbiór": {
+      "primary": "rule-622c398b69a8",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "utwór": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "twórca": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "szczegół": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ogół": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wspólny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "główny": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "głód": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "próg": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wzór": {
+      "primary": "rule-52297ad0d10a",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kłótnia": {
+      "primary": "rule-7a2b6ca06348",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "buty": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "cukier": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kura": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kubek": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kula": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ulica": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ubranie": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "uczeń": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "uczennica": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "urząd": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "urlop": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "urodziny": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "uśmiech": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ś/si"
+      ]
+    },
+    "umyć": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "umieć": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "uszy": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ulewa": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "układ": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ukryć": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "ugotować": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "buda": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "budzik": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "burak": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "murawa": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "duży": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "drugi": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "gruby": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "grupa": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "gumka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "muszla": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "nuty": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kupić": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "kurtka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ludzie": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "lupa": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "muzyka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "pusty": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "nudny": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "numer": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "pudełko": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "rudy": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "pudło": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "punkt": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "rura": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ruszyć": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "sufit": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "sukienka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "szuflada": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "trudny": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "tutaj": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "tulipan": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "turysta": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wnuk": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wnuczka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "zupa": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "tuba": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "tunel": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kapturek": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "upominek": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "autobus": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "usterka": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wulkan": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "puchaty": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "kucharz": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "kuchenka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "drzewo": {
+      "primary": "rule-f55d066ad7a8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzeka": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "warzywo": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "korzeń": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "burza": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "rzodkiewka": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "grzyb": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "brzoza": {
+      "primary": "rule-c89378cb52cf",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "krzesło": {
+      "primary": "rule-b9b42559239a",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "wrzesień": {
+      "primary": "rule-8b3d6f94ff3a",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "rzadki": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rząd": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzecz": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzemiosło": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzut": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "rzepa": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzęsa": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rzucić": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "krzak": {
+      "primary": "rule-b9b42559239a",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "brzeg": {
+      "primary": "rule-c89378cb52cf",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "lektura": {
+      "primary": "rule-e0dc4eec9907",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "ratunek": {
+      "primary": "rule-76cb2ead5477",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "rysunek": {
+      "primary": "rule-76cb2ead5477",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "klawiatura": {
+      "primary": "rule-e0dc4eec9907",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "temperatura": {
+      "primary": "rule-e0dc4eec9907",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "obrus": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "racuch": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "kapelusz": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "tłum": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "zakupy": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "południe": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ń/ni"
+      ]
+    },
+    "już": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "szukać": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "uparty": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "upiór": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "uroczy": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "udo": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "umysł": {
+      "primary": "rule-9964569033a5",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "rysujemy": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wędrujemy": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "żartujesz": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "leniuchujesz": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ń/ni"
+      ]
+    },
+    "pilnujesz": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "kupujecie": {
+      "primary": "rule-6782ac4aa375",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "skuwka": {
+      "primary": "rule-d18a02e126f9",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "zasuwka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wsuwka": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó"
+      ]
+    },
+    "wsuwać": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "zasuwać": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "zakuwać": {
+      "primary": "rule-9466bdebc5dd",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ć/ci"
+      ]
+    },
+    "brzydki": {
+      "primary": "rule-c89378cb52cf",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "grzebień": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "grzech": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "grzejnik": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "drzwi": {
+      "primary": "rule-f55d066ad7a8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "drzemka": {
+      "primary": "rule-f55d066ad7a8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "trzeci": {
+      "primary": "rule-20811d4fde25",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "trzmiel": {
+      "primary": "rule-20811d4fde25",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "trzcina": {
+      "primary": "rule-20811d4fde25",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "wrzos": {
+      "primary": "rule-8b3d6f94ff3a",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przód": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "przed": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przez": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przygoda": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przyjaciel": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "przyroda": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przykład": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "sprzątać": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "wrzątek": {
+      "primary": "rule-8b3d6f94ff3a",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "krzyż": {
+      "primary": "rule-b9b42559239a",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "lekarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "malarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "piekarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "piłkarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "kolejarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "murarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "pisarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "rycerz": {
+      "primary": "rule-e5068451a5f2",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "talerz": {
+      "primary": "rule-e5068451a5f2",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "kalendarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "cmentarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "korytarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "komentarz": {
+      "primary": "rule-813fd49c10b8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "zwierzę": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "zwierzak": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "jarzębina": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "porządek": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "porzeczka": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "marzenie": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "marzyć": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "orzech": {
+      "primary": "rule-06771f6a98b1",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "brzuch": {
+      "primary": "rule-c89378cb52cf",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "grzmot": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "grzać": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "ogrzać": {
+      "primary": "rule-80e197379ad3",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "zmarznąć": {
+      "primary": "rule-d89178cfe657",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "przedszkole": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przerwa": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przepraszam": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "przepis": {
+      "primary": "rule-dcfaafc3803e",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żaba": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żółtko": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "łyżka": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "książka": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ś/si"
+      ]
+    },
+    "ważny": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "jeż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "jeżyna": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żart": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żarówka": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żelazo": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żona": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żuk": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żubr": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żurek": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żyrafa": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "życie": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "żyto": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "życzenie": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "życzliwy": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żegnać": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "żagiel": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żołądek": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żołnierz": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "żmija": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żniwa": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "żuraw": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "żwir": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "żartować": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "odważny": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "uważny": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "podróż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "podróżnik": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "garaż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "bagaż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "plaża": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "straż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "strażak": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "kałuża": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "wieża": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "wąż": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "nożyczki": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "łyżwy": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "łyżeczka": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "pożar": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "pożegnać": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "pożyczyć": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "pożywienie": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "możliwość": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci",
+        "ś/si"
+      ]
+    },
+    "możliwy": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "każdy": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "wyżej": {
+      "primary": "rule-fc14f1344b73",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "niżej": {
+      "primary": "rule-fc14f1344b73",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ń/ni"
+      ]
+    },
+    "bliżej": {
+      "primary": "rule-fc14f1344b73",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "świeży": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ś/si"
+      ]
+    },
+    "drużyna": {
+      "primary": "rule-585df4f063e8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż"
+      ]
+    },
+    "koleżanka": {
+      "primary": "rule-7f9f48cf3be9",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "mężczyzna": {
+      "primary": "rule-fc14f1344b73",
+      "additional": [],
+      "families": [
+        "rz/ż"
+      ]
+    },
+    "ciężki": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "ciężar": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "ciężarówka": {
+      "primary": "rule-6edfc8693dd8",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "rz/ż",
+        "ć/ci"
+      ]
+    },
+    "chleb": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chmura": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "choinka": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "schody": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "ucho": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "dach": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "mucha": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "kuchnia": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ń/ni"
+      ]
+    },
+    "chłopiec": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "zachód": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "wschód": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chata": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chustka": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chudy": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chrupki": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chrząszcz": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "chrzan": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "chwila": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chwalić": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "chować": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "chodzić": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "choroba": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chory": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chomik": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chłód": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chłodny": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chłopak": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chmiel": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chrapać": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "chcieć": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "chociaż": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "chirurg": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "chemia": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "chór": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "cichy": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "cicho": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "suchy": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "suchar": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "puchar": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "duch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "huragan": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "ruch": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "puch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "mech": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "pech": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "śmiech": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ś/si"
+      ]
+    },
+    "pośpiech": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ś/si"
+      ]
+    },
+    "strach": {
+      "primary": "rule-fabfda1ad713",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "zapach": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "łańcuch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ń/ni"
+      ]
+    },
+    "fartuch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "maluch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "okruch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "wybuch": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "wydech": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "oddech": {
+      "primary": "rule-6c7aca4cf9ac",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hotel": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hamak": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "herbata": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "bohater": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hulajnoga": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "huśtawka": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ś/si"
+      ]
+    },
+    "hokej": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "humor": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "hala": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hałas": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hak": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "harcerz": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "rz/ż",
+        "ch/h"
+      ]
+    },
+    "hasło": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hamulec": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "historia": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "higiena": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hipopotam": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hiena": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "horyzont": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hektar": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "helikopter": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "herb": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "huta": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "hodować": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "hodowla": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "honor": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hymn": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hokeista": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "harmonia": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ń/ni"
+      ]
+    },
+    "harfa": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "hamburger": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "hobby": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "wahadło": {
+      "primary": "rule-cb15c7a8b263",
+      "additional": [],
+      "families": [
+        "ch/h"
+      ]
+    },
+    "druh": {
+      "primary": "rule-fafff27b4091",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "druhna": {
+      "primary": "rule-fafff27b4091",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ch/h"
+      ]
+    },
+    "ciasto": {
+      "primary": "rule-38b408ee320a",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "ciocia": {
+      "primary": "rule-38b408ee320a",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "cień": {
+      "primary": "rule-38b408ee320a",
+      "additional": [],
+      "families": [
+        "ć/ci",
+        "ń/ni"
+      ]
+    },
+    "ciepło": {
+      "primary": "rule-38b408ee320a",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "ciemno": {
+      "primary": "rule-38b408ee320a",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "ćma": {
+      "primary": "rule-490b50efad90",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "ćwiczyć": {
+      "primary": "rule-490b50efad90",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "ćwiczenie": {
+      "primary": "rule-490b50efad90",
+      "additional": [],
+      "families": [
+        "ć/ci",
+        "ń/ni"
+      ]
+    },
+    "ćwierć": {
+      "primary": "rule-490b50efad90",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "spać": {
+      "primary": "rule-490b50efad90",
+      "additional": [],
+      "families": [
+        "ć/ci"
+      ]
+    },
+    "siedem": {
+      "primary": "rule-75efae8f2a87",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siostra": {
+      "primary": "rule-75efae8f2a87",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siano": {
+      "primary": "rule-75efae8f2a87",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "sierpień": {
+      "primary": "rule-75efae8f2a87",
+      "additional": [],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "siedzieć": {
+      "primary": "rule-75efae8f2a87",
+      "additional": [],
+      "families": [
+        "ć/ci",
+        "ś/si",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "świat": {
+      "primary": "rule-fd8b898dfda5",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "środa": {
+      "primary": "rule-fd8b898dfda5",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "śnieg": {
+      "primary": "rule-fd8b898dfda5",
+      "additional": [],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "ślimak": {
+      "primary": "rule-fd8b898dfda5",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ślad": {
+      "primary": "rule-fd8b898dfda5",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "zima": {
+      "primary": "rule-583e3ea10e7f",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "ziemia": {
+      "primary": "rule-583e3ea10e7f",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "zielony": {
+      "primary": "rule-583e3ea10e7f",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "ziarno": {
+      "primary": "rule-583e3ea10e7f",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "zioło": {
+      "primary": "rule-583e3ea10e7f",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "źrenica": {
+      "primary": "rule-6f79a48d47aa",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "ń/ni"
+      ]
+    },
+    "źrebak": {
+      "primary": "rule-6f79a48d47aa",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "źle": {
+      "primary": "rule-6f79a48d47aa",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "woźny": {
+      "primary": "rule-6f79a48d47aa",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "groźny": {
+      "primary": "rule-6f79a48d47aa",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "niebo": {
+      "primary": "rule-c9cdc93fc8ea",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "niedziela": {
+      "primary": "rule-c9cdc93fc8ea",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "ń/ni",
+        "dź/dzi"
+      ]
+    },
+    "niebieski": {
+      "primary": "rule-c9cdc93fc8ea",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "anioł": {
+      "primary": "rule-c9cdc93fc8ea",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "koniec": {
+      "primary": "rule-c9cdc93fc8ea",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "bańka": {
+      "primary": "rule-e387eac01ece",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "tańczyć": {
+      "primary": "rule-e387eac01ece",
+      "additional": [],
+      "families": [
+        "ć/ci",
+        "ń/ni"
+      ]
+    },
+    "państwo": {
+      "primary": "rule-e387eac01ece",
+      "additional": [],
+      "families": [
+        "ń/ni"
+      ]
+    },
+    "kończyć": {
+      "primary": "rule-e387eac01ece",
+      "additional": [],
+      "families": [
+        "ć/ci",
+        "ń/ni"
+      ]
+    },
+    "hańba": {
+      "primary": "rule-e387eac01ece",
+      "additional": [],
+      "families": [
+        "ch/h",
+        "ń/ni"
+      ]
+    },
+    "dziecko": {
+      "primary": "rule-ef3c6ae8ce82",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dziura": {
+      "primary": "rule-ef3c6ae8ce82",
+      "additional": [],
+      "families": [
+        "u/ó",
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dzik": {
+      "primary": "rule-ef3c6ae8ce82",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dziadek": {
+      "primary": "rule-ef3c6ae8ce82",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dziewczyna": {
+      "primary": "rule-ef3c6ae8ce82",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dźwig": {
+      "primary": "rule-23e21c044e0b",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dźwięk": {
+      "primary": "rule-23e21c044e0b",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dźwięczny": {
+      "primary": "rule-23e21c044e0b",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "dź/dzi"
+      ]
+    },
+    "dźwignia": {
+      "primary": "rule-23e21c044e0b",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "ń/ni",
+        "dź/dzi"
+      ]
+    },
+    "niedźwiedź": {
+      "primary": "rule-23e21c044e0b",
+      "additional": [],
+      "families": [
+        "ź/zi",
+        "ń/ni",
+        "dź/dzi"
+      ]
+    }
+  }
+}

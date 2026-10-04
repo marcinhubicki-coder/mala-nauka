@@ -1,3 +1,4 @@
+import {configureRules,ruleLibrary} from '../shared/rules-library.mjs';
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
 import {configureAssets,rewriteAssetNodes,previewAssets,assetManifest} from '../shared/asset-loader.mjs';
 
@@ -134,6 +135,7 @@ if (studio) {
     if(message.type==='design'){
       await designReady;applyDesign(message.config);
       if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}
+      if(message.rules&&JSON.stringify(ruleLibrary())!==JSON.stringify(message.rules)){configureRules(message.rules);document.dispatchEvent(new CustomEvent('mala-nauka:rules'));}
       scheduleReport();
     }
     if(message.type==='inspect'){inspecting=Boolean(message.enabled);showHighlight=Boolean(message.highlight);paintHighlight();}

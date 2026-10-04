@@ -1,3 +1,4 @@
+import {validateRules} from '../shared/rules-library.mjs';
 import {validateAssets} from './validation.mjs';
 import {diff,validateConfig} from './model.mjs';
 export const REPOSITORY='marcinhubicki-coder/mala-nauka';
@@ -30,15 +31,20 @@ export class GitClient {
    return {head:this.#head,remote,stale:diff(baseConfig,remote).length>0};
   }catch(error){this.disconnect();throw error;}
  }
- async latest(){const ref=await this.request(`git/ref/heads/${BRANCH}`);return {head:ref.object.sha,config:await this.readJSON('design-system/config.json',ref.object.sha),assets:await this.readJSON('design-system/assets.json',ref.object.sha)};}
+ async latest(){
+  const ref=await this.request(`git/ref/heads/${BRANCH}`),head=ref.object.sha;
+  const [config,assets,rules]=await Promise.all(['config','assets','rules'].map(name=>this.readJSON(`design-system/${name}.json`,head)));
+  return {head,config,assets,rules};
+ }
  acceptHead(head){if(!/^[0-9a-f]{40}$/.test(head))throw Error('Nieprawidłowy commit.');this.#head=head;}
- async save({config,assets,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
+ async save({config,assets,rules,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
-  validateConfig(config);validateAssets(assets);
+  validateConfig(config);validateAssets(assets);if(rules)validateRules(rules);
   const ref=await this.request(`git/ref/heads/${BRANCH}`);
   if(ref.object.sha!==this.#head)throw new GitConflict('Branch zmienił się od ostatniego odczytu. Wczytaj aktualną wersję i scal zmiany.');
   const parent=await this.request(`git/commits/${this.#head}`);
   const tree=[{path:'design-system/config.json',mode:'100644',type:'blob',content:JSON.stringify(config,null,2)+'\n'},{path:'design-system/assets.json',mode:'100644',type:'blob',content:JSON.stringify(assets,null,2)+'\n'}];
+  if(rules)tree.push({path:'design-system/rules.json',mode:'100644',type:'blob',content:JSON.stringify(rules,null,2)+'\n'});
   for(const upload of uploads){
    if(!/^assets\/managed\/[0-9a-f]{64}\.(png|jpe?g|webp|avif)$/.test(upload.path))throw Error('Nieprawidłowa ścieżka assetu.');
    const blob=await this.request('git/blobs','POST',{content:bytesToBase64(upload.bytes),encoding:'base64'});

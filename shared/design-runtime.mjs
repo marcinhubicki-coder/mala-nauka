@@ -1,3 +1,4 @@
+import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 const base = new URL('../', import.meta.url);
@@ -13,11 +14,12 @@ export function applyDesign(value) {
 }
 export const currentDesign = () => config;
 export async function initDesign() {
-  const [settings, catalog] = await Promise.all(['design-system/config.json','design-system/assets.json'].map(async path => {
+  const [settings, catalog, rules] = await Promise.all(['design-system/config.json','design-system/assets.json','design-system/rules.json'].map(async path => {
     const response = await fetch(new URL(path, window.__DS_CONTENT_ORIGIN__ || base),{cache:'no-cache'});
     if (!response.ok) throw Error(`Brak wspólnego pliku: ${path}`);
     return response.json();
   }));
+  configureRules(rules);
   configureAssets(catalog, window.__DS_ASSET_ORIGIN__ || base.href);
   let fonts = document.getElementById('ds-font-faces');
   if (!fonts) {fonts = document.createElement('style'); fonts.id = 'ds-font-faces'; document.head.append(fonts);}

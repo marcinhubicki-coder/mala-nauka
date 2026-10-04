@@ -1,3 +1,4 @@
+import {resolveRules,configureRules,ruleLibrary} from './rules-library.mjs';
 import {validateAssets} from '../design-system/validation.mjs';
 const projectRoot = new URL('../', import.meta.url);
 let manifest = {assets:[], aliases:{}, words:{}, revision:'unloaded'}, origin = projectRoot.href;
@@ -42,14 +43,15 @@ export async function preloadAssets(paths) {
     const picture = new Image(); picture.onload = resolve; picture.onerror = reject; picture.src = assetUrl(path);
   })));
 }
-export async function loadWords() {
+export async function loadWords({raw=false}={}) {
   const base = window.__DS_CONTENT_ORIGIN__ || projectRoot.href;
   const parts = await Promise.all(Array.from({length:8}, async (_, index) => {
     const response = await fetch(new URL(`data/words-0${index+1}.json`, base));
     if (!response.ok) throw Error('Nie udało się wczytać wspólnej bazy słów.');
     return response.json();
   }));
-  return parts.flat();
+  if(!ruleLibrary()){const response=await fetch(new URL('design-system/rules.json',base),{cache:'no-cache'});if(!response.ok)throw Error('Nie udało się wczytać wspólnej biblioteki zasad.');configureRules(await response.json());}
+  return raw?parts.flat():resolveRules(parts.flat());
 }
 
 export function previewAssets(urls={}){previewURLs=urls;}

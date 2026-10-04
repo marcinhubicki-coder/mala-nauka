@@ -143,7 +143,7 @@ export class StudioPreview {
       if(id===this.viewId){
         const available=this.available();
         if(!message.selection && available.has(this.componentId))this.send(frame,'focus',{component:this.componentId,reveal:false});
-        if(this.editingMode==='view'&&!available.has(this.componentId)){this.componentId=this.view.components.find(component=>available.has(component))||this.componentId;this.notifyState();this.renderInspector();this.focus(false);}
+        if(message.items?.some(item=>item.index>=0&&item.visible)&&this.editingMode==='view'&&!available.has(this.componentId)){this.componentId=this.view.components.find(component=>available.has(component))||this.componentId;this.notifyState();this.renderInspector();this.focus(false);}
         this.renderPills();this.renderSelectionPanel();
       }
     }
@@ -181,7 +181,7 @@ export class StudioPreview {
     if(target.id==='show-absent'){this.showAbsent=target.checked;this.renderPills();}
     if(target.id==='preview-zoom'){this.zoom=target.value;this.syncGallery();}
     if(target.id==='compare-views'){this.compare=target.checked;this.compareViews=relatedViews(this.registry,this.componentId).slice(0,2).map(view=>view.id);if(this.compare&&!this.compareViews.includes(this.viewId))this.compareViews.unshift(this.viewId);this.renderToolbar();this.syncGallery();}
-    if(target.dataset.compareView){const id=target.dataset.compareView;this.compareViews=target.checked?[...this.compareViews,id]:this.compareViews.filter(view=>view!==id);if(this.compareViews.length&&!this.compareViews.includes(this.viewId))this.viewId=this.compareViews[0];this.notifyState();this.syncGallery();this.renderToolbar();this.renderInspector();}
+    if(target.dataset.compareView){const id=target.dataset.compareView;if(!target.checked&&this.compareViews.length===1){target.checked=true;this.notice('Pozostaw co najmniej jeden ekran do porównania.');return;}this.compareViews=target.checked?[...this.compareViews,id]:this.compareViews.filter(view=>view!==id);if(this.compareViews.length&&!this.compareViews.includes(this.viewId))this.viewId=this.compareViews[0];this.notifyState();this.syncGallery();this.renderToolbar();this.renderInspector();}
     if(target.id==='selected-instance')this.send(this.activeFrame(),'focus',{id:target.value,reveal:true});
   }
   input(event){

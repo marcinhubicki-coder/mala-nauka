@@ -24,3 +24,9 @@ test('saved animation settings remain valid and their impact includes every regi
  validateConfig(config);assert.equal(changedViews([{path:'motion.duration'}],registry).length,registry.views.length);
  config.motion.duration=-1;assert.throws(()=>validateConfig(config));
 });
+
+test('the default clock resolves elapsed time and cancellation through its real timer adapter',async()=>{
+ const clock=new PlaybackClock(),generation=clock.start();
+ assert.equal(await clock.pause(2,generation),true);
+ const pending=clock.pause(100,generation);clock.cancel();assert.equal(await pending,false);
+});

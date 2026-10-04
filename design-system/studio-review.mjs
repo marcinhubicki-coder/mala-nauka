@@ -20,7 +20,7 @@ export function changeLabel(row,registry,config,rules,kind='config'){
 }
 export function valueText(value){
   if(value===undefined)return 'Usunięto';if(typeof value==='boolean')return value?'Tak':'Nie';
-  if(typeof value==='string')return FONT_NAMES[value]||value;
+  if(typeof value==='string')return FONT_NAMES[value]||({none:'Bez animacji',fade:'Łagodne pojawienie',slide:'Przesunięcie z prawej',ease:'Łagodne','ease-out':'Zwalnia na końcu','ease-in-out':'Łagodny początek i koniec',linear:'Stała prędkość'})[value]||value;
   if(typeof value==='number')return value.toLocaleString('pl-PL');
   if(value?.path)return value.path.split('/').at(-1);
   if(Array.isArray(value))return value.join(', ')||'Brak';

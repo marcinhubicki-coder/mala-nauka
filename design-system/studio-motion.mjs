@@ -93,7 +93,7 @@ export class StudioMotion {
   choosePair(from,to){this.stop();this.from=from;this.to=to;this.current=from;this.workspace.querySelector('#motion-from').value=from;this.workspace.querySelector('#motion-to').value=to;this.syncFrames();}
   click(event){
     if(!this.isOpen)return;const button=event.target.closest('button');if(!button)return;
-    if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play();}
+    if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
     if(button.id==='motion-first'||button.id==='motion-second'){this.stop();void this.show(button.id==='motion-first'?this.from:this.to,false);}
     if(button.dataset.motionPair)this.choosePair(...button.dataset.motionPair.split(','));
     if(button.dataset.motionReset)this.edit('motion.'+button.dataset.motionReset,this.saved[button.dataset.motionReset]);

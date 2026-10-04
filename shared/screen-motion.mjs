@@ -16,7 +16,7 @@ export function animateScreen(node,motion=DEFAULT_MOTION,{reduced=globalThis.mat
 }
 // Both cancellation and changing screens invalidate callbacks still waiting to run.
 export class PlaybackClock {
-  constructor({setTimer=setTimeout,clearTimer=clearTimeout}={}){this.setTimer=setTimer;this.clearTimer=clearTimer;this.generation=0;this.pending=null;}
+  constructor({setTimer=(callback,delay)=>globalThis.setTimeout(callback,delay),clearTimer=id=>globalThis.clearTimeout(id)}={}){this.setTimer=setTimer;this.clearTimer=clearTimer;this.generation=0;this.pending=null;}
   cancel(){this.generation++;if(this.pending){this.clearTimer(this.pending.timer);this.pending.resolve(false);this.pending=null;}}
   start(){this.cancel();return this.generation;}
   valid(generation){return generation===this.generation;}

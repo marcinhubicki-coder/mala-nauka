@@ -2,7 +2,9 @@
 
 Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt wyglądu, komponentów i ilustracji oraz narzędzie do jego edycji.
 
-![Design Studio: rzeczywisty ekran ortografii oraz inspektor wspólnego komponentu jelly](studio-preview-20261004.jpg)
+![Design Studio: wybór po widoku, aktywny stan Kategorie oraz suwaki ze znacznikiem zapisanej wartości](studio-visual-20261004.jpg)
+
+Zrzut pokazuje sprawdzoną wersję wizualną `0bd11b8`; kolejny commit poprawia dopasowanie całej ramki telefonu do dostępnej wysokości. [Zakres weryfikacji](verification.md) opisuje wyniki i ograniczenie dostępu do ostatniego podglądu.
 
 ## Zacznij od panelu
 

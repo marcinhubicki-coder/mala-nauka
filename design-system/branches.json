@@ -15,18 +15,18 @@
   },
   "historical": "release/*, trigger-temp*, wcześniejsze tunery i próby: migawki Git, nie baza nowych prac",
   "verification": {
-    "tests": 57,
+    "tests": 65,
     "consumerBuilds": 6,
     "deploymentState": "READY",
-    "canonicalCommitTested": "003a135c04089bcb0f906430903afef1881f2f39",
-    "consumerSourceCommitTested": "842107198767b5c96ce298f41e65c6bc3ad92799"
+    "canonicalCommitTested": "13269e22f8c92e350dbd9007d155671ff96d4bca",
+    "consumerSourceCommitTested": "13269e22f8c92e350dbd9007d155671ff96d4bca"
   },
   "consumerCommits": {
-    "design/english-v0.1": "d2072223ad2d7107b0bec5ec8d54af0ad3347d1b",
-    "czytanie-v1": "bbe304899cc0f83e1e6f088c0f15a53c1e30cf40",
-    "design/profile-and-learning-v5": "9b5a4332078d9253bf31710053dbe4ebb161a8af",
-    "design/spelling-v0.3-preview": "8c0206261f90e04dd968544450c91f44a8d1d6b7",
-    "design/flags-v0.1": "4318e5dc270f7311e2575e4e4ad817074b4ceb94",
-    "matematyka-v1": "c8c7f242816761f1757cb1c99675d3b5e34ab304"
+    "czytanie-v1": "ffd54027d1170f7e81508b4faa5e271f008f840d",
+    "design/english-v0.1": "e847583a97a806fd68b1c283a65163178951a8ab",
+    "design/flags-v0.1": "95656d44824ac510516b123dbeb888f824e26358",
+    "design/profile-and-learning-v5": "08b61d963d53d9d5762274984f94203b6ef91bd2",
+    "design/spelling-v0.3-preview": "789d454b4961f54d8ad77c0f0d54994f1e8b8d08",
+    "matematyka-v1": "5933943ab45ae6e0517e37b3b5bf250d98f72a20"
   }
 }

@@ -7,7 +7,7 @@ Kanonicznym źródłem jest `design/system-v1`:
 - `assets/`: pliki ilustracji, teł, ikon i fontów;
 - `data/words-01.json` … `words-08.json`: **455 haseł** i ich treści;
 - `design-system/assets.json`: **678 unikalnych plików**, hashe, aliasy i jedno przypisanie ilustracji na hasło.
-- `design-system/rules.json`: **41 wspólnych zasad**, przypisania zasad do słów oraz wykryte grupy liter.
+- `design-system/rules.json`: **49 wspólnych zasad** (41 dotychczasowych i 8 zasad ogólnych dla dodatkowych grup), przypisania zasad do słów oraz wykryte grupy liter.
 
 Konsumenci pobierają ten kontrakt podczas builda i korzystają z centralnych URL-i `raw.githubusercontent.com`. Fonty, CSS, HTML, dynamicznie tworzone obrazki i sceny przechodzą przez ten sam resolver. Zmieniona ilustracja jednego hasła nie zmienia innych haseł współdzielących wcześniejszy obrazek.
 
@@ -25,7 +25,7 @@ Nowy upload ma adres `assets/managed/<SHA-256>.<format>`. Identyczny hash ponown
 
 **Grafiki → Współdzielone** pokazuje 51 ilustracji przypisanych do kilku słów. Kliknięcie ilustracji pokazuje wszystkie powiązane słowa. Scalenie wybranych ilustracji pozwala wybrać jedną docelową grafikę i przejrzeć listę słów przed zmianą. Przypisania i dawne aliasy wskazują wtedy jeden aktywny asset; oryginalne pliki pozostają w rejestrze dla innych użyć i możliwości powrotu. To scalenie przypisań różnych obrazków, a nie automatyczne uznanie ich za identyczne pliki.
 
-**Zasady** mają jedną edytowaną treść. Początkowa migracja zachowuje obecne wyjaśnienia słów. Świadomy zapis wspólnej zasady uruchamia jej treść dla wszystkich słów, w których jest zasadą ćwiczoną. Indywidualne przykłady, formy i źródła pozostają zachowane; Studio nie oferuje osobnego nadpisania wyjaśnienia pojedynczego słowa. Dodatkowe powiązania z innymi grupami nie zmieniają litery sprawdzanej w grze.
+**Zasady** mają jedną edytowaną treść. Początkowa migracja zachowuje obecne wyjaśnienia słów. Świadomy zapis wspólnej zasady uruchamia jej treść dla wszystkich słów, w których jest zasadą ćwiczoną. Indywidualne przykłady, formy i źródła pozostają zachowane; Studio nie oferuje osobnego nadpisania wyjaśnienia pojedynczego słowa. Pule kategorii powstają automatycznie z pisowni hasła: „brzuch” należy do rz/ż, u/ó i ch/h, zawsze z jedną ilustracją. Wybrana kategoria określa jedną ćwiczoną lukę. Pozostałe litery zostają widoczne, a to samo słowo nie wraca w obrębie rundy. Dodatkowe grupy korzystają ze wspólnych ogólnych zasad, bez dopisywania niesprawdzonego uzasadnienia gramatycznego do każdego słowa.
 
 Nie usuwamy pliku wyłącznie na podstawie braku statycznego odwołania: część scen i atlasów jest wybierana dynamicznie. Nowa baza jest zachowana; scalono rzeczywiste duplikaty i nieaktywne pliki kodu.
 

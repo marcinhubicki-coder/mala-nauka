@@ -1,6 +1,6 @@
 # Weryfikacja
 
-Aktualny przegląd wykonano 4 października 2026 dla interfejsu telefonu `b098d1ef686b0723b94d2d77d92d6ae5e107d7cb`. `npm test` zbudował 15 stron i zakończył się wynikiem **57 / 57**. Build zawiera 922 pliki i 678 kanonicznych assetów. Poniżej są trzy iteracje mobilne oraz wyniki wcześniejszej weryfikacji całego systemu.
+Ostatnia kontrola z 4 października 2026 obejmuje pule ortografii, efekty odpowiedzi i naliczanie punktów: **65 / 65 testów** oraz sześć aktualizacji konsumentów. Wyniki są na końcu dokumentu. Poniższy przegląd interfejsu telefonu `b098d1ef686b0723b94d2d77d92d6ae5e107d7cb` dotyczy wcześniejszego etapu: 57 / 57 testów, 15 stron, 922 pliki i 678 kanonicznych assetów.
 
 ## Trzy iteracje telefonu
 
@@ -65,7 +65,7 @@ Wcześniejszy przegląd podstawowego systemu potwierdził ekrany pięciu gier (u
 
 Realne commity implementacji zapisano na GitHub i uruchomiły buildy. Nie wykonano zapisu z interfejsu Studio z osobistym tokenem użytkownika ani rzeczywistego konfliktu dwóch osób w przeglądarce. Ścieżka zapisu i rozstrzygania konfliktu ma testy kontrolowanego transportu. Token trzeba podłączyć we własnej przeglądarce; Studio przechowuje go tylko w pamięci karty.
 
-Sześć konsumentów zbudowano z centralnym kontraktem `842107198767b5c96ce298f41e65c6bc3ad92799`. Późniejsze poprawki dotyczą interfejsu Studio i jego zegara podglądu; nie zmieniają przejść aplikacji konsumenta. Kolejny build pobiera aktualne moduły. Zmiana zapisanych tokenów, reguł, animacji lub przypisań grafik jest pobierana online z jednego centralnego źródła.
+Na wcześniejszym etapie sześć konsumentów zbudowano z centralnym kontraktem `842107198767b5c96ce298f41e65c6bc3ad92799`. Aktualizacja rozgrywki opisana niżej pobiera również kanoniczne moduły pul, efektów i punktów. Zmiana zapisanych tokenów, reguł, animacji lub przypisań grafik jest pobierana online z jednego centralnego źródła.
 
 Symulator renderuje rzeczywistą aplikację w 390 × 844. DPR 3 określa cel graficzny, nie sprzętowy DPR przeglądarki desktopowej. Test Safari i instalowanej PWA na fizycznym iPhonie pozostaje osobną kontrolą.
 
@@ -87,3 +87,24 @@ Nie wykonano merge do `main` ani publikacji produkcyjnej.
 3. **Telefon i relacje:** sprawdzono edytor w ramce 390 × 844 oraz 360 × 800. Brak przewijania strony na boki, przyciski +/− mają 44 × 44 px. Zmiana Gwiazdy 1050 → 1100 ms aktualizuje szkic i budżet; Cofnij przywraca zapis. Przejście z podglądu do ustawień zatrzymuje animację. Uproszczono ustawienia błędu, dodano komunikat ładowania, automatyczne otwarcie podglądu po wyborze zestawu i kontrolę rozbieżnych progów combo. Ustawienia bańki objęły również ekrany zasad.
 
 To próby w Chrome, w tym prawdziwe wąskie ramki CSS, a nie pomiar fizycznego iPhone’a lub Safari. Miernik nie deklaruje poboru mocy w watach ani rzeczywistego czasu GPU. Ograniczony ruch jest obsługiwany w kodzie; fizyczna zmiana ustawienia iOS wymaga próby na urządzeniu.
+
+`npm run design:check` przechodzi: **65 / 65**, aktualny audyt i build. Końcowy ekran gry potwierdza wariant „brzu_” → „brzuch” po wybraniu „ch”. Osobny panel błędnej odpowiedzi pokazuje tylko właściwe ustawienia reakcji. Krok suwaka czasu błędu zmniejszono do 10 ms, żeby jego pozycja dokładnie odpowiadała zapisanym 440 ms.
+
+### Aktualizacja sześciu konsumentów
+
+Każdy build pobrał kontrakt z `13269e22f8c92e350dbd9007d155671ff96d4bca`, bez lokalnego folderu `assets/` i bez paczek słów. Próba starszych branchy wykryła brak `mastery.mjs`, `scroll-edges.mjs` i `dictation.mjs`: listę centralnych zależności uzupełniono. Build sprawdza teraz importy względne i zatrzymuje publikację, jeśli brakuje modułu. Wszystkie sześć buildów i wdrożeń Vercel ma wynik **READY**.
+
+| Branch | Commit adaptera |
+| --- | --- |
+| czytanie-v1 | `ffd54027d1170f7e81508b4faa5e271f008f840d` |
+| design/english-v0.1 | `e847583a97a806fd68b1c283a65163178951a8ab` |
+| design/flags-v0.1 | `95656d44824ac510516b123dbeb888f824e26358` |
+| design/profile-and-learning-v5 | `08b61d963d53d9d5762274984f94203b6ef91bd2` |
+| design/spelling-v0.3-preview | `789d454b4961f54d8ad77c0f0d54994f1e8b8d08` |
+| matematyka-v1 | `5933943ab45ae6e0517e37b3b5bf250d98f72a20` |
+
+Są to próby buildów i kompletności importów. Nie wykonano pełnego przeglądu każdego historycznego interfejsu konsumenta. Produkcyjny `main` pozostał bez zmian.
+
+Próba pełnej ścieżki w końcowym podglądzie: gość → Kategorie / Trudne / ź/zi / Słowa. Wybrane 20 słów jest ograniczone do rzeczywistych 5 w puli; komunikat zapowiada zakończenie bez powtórek. Kolejno: później, źrebak, zielony, spóźniony, źrenica. Wynik końcowy to 5/5, 100% i 5 punktów. Szczegóły potwierdzają wyczerpanie puli. Studio w tej samej karcie wczytuje wszystkie pięć odpowiedzi i zachowuje 5 punktów naliczonych w chwili gry.
+
+Mobilny wybór Gwiazd otwiera Podgląd automatycznie. Przegląd 10 efektów kończy się na Kręgach i zbiera 15 interwałów klatek; pomiar zdalnej karty pokazuje zaniżoną płynność, więc nie traktujemy go jako wyniku sprzętu iPhone. Interfejs wyjaśnia wpływ tła i zdalnego podglądu. Przejście do Ustawień zatrzymuje ruch; strona ma szerokość 390 px i przyciski 44 × 44 px.

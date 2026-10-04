@@ -1,6 +1,6 @@
 # Weryfikacja
 
-Wykonano 3 października 2026. Testowana pełna wersja: `60509158dcb8dcd798dc9e478cd4cc2cc0e69ff7`.
+Wykonano 3–4 października 2026. Pierwszy pełny przegląd: `60509158dcb8dcd798dc9e478cd4cc2cc0e69ff7`. Po przywróceniu środowiska ponownie wykonano build i **44 / 44 testy** dla najnowszej implementacji `cc6e2ef0605fd74e5d0eeceba62575685626c1fd` oraz domknięto poniższe kontrole przeglądarkowe.
 
 ## Wyniki
 
@@ -19,13 +19,15 @@ Wykonano 3 października 2026. Testowana pełna wersja: `60509158dcb8dcd798dc9e4
 | 5 trybów | Ustawienia, początek, poprawna i błędna odpowiedź, wyniki: otwarte i sprawdzone |
 | Profile i home | Wybór, pusty wybór, tworzenie, PIN, start i ustawienia: otwarte |
 | Ortografia | Popup zasady, podpowiedź, pauza oraz slider po błędzie: otwarte |
-| Postępy | Dashboard, kolekcja i wejścia do podstron; obrazy bez zaobserwowanych błędów |
+| Postępy | Dashboard i kolekcja; treść pucharów i przykładowa ukończona runda w historii potwierdzone |
+| Upload i reload | PNG 1200 × 1200 dodany do pojedynczego hasła; po reload odtworzono przypisanie, plik i miniaturę o pełnych wymiarach z IndexedDB |
+| Końcowe poprawki | Nagłówek postępów mieści się na ekranie; brak desktopowego scrollbara; matematyka ma adnotacje wspólnego systemu oraz stan błędnej odpowiedzi |
 
 Testy zapisu Git używają kontrolowanego transportu bez prawdziwego tokenu użytkownika. Realne commity tego wdrożenia zostały utworzone w GitHub i uruchomiły poprawne buildy. Nie wykonano dodatkowego commitu z poziomu panelu z osobistym tokenem.
 
-## Granice tej sesji
+## Pozostała weryfikacja
 
-Środowisko przeglądarki i terminala rozłączyło się przy ostatnim przeglądzie loadera. Nie ukończono końcowego testu upload → reload → zapis przez interfejs ani eksportu zrzutu podglądu. Drobne końcowe korekty ukrywania scrollbarów, dopasowania nagłówka wyników i danych przykładowej historii wprowadzono po tym rozłączeniu; wymagają wzrokowego potwierdzenia. Nie należy przedstawiać ich jako dodatkowego zakończonego testu przeglądarkowego.
+Rozłączenie środowiska przerwało wcześniejszy przegląd. 4 października wznowiono testy i potwierdzono upload → reload oraz końcowe korekty widoków. Próbna ilustracja pozostała wyłącznie w lokalnym szkicu testowej przeglądarki; nie została zapisana w bazie Git. Panel włącza zapis przy niezapisanych zmianach i wymaga połączenia GitHub. Nie przeprowadzono pierwszego zapisu przez interfejs z osobistym tokenem użytkownika; taki token trzeba podłączyć we własnej przeglądarce. Atomowy zapis i oba przypadki konfliktu pozostają objęte testami kontrolowanego transportu.
 
 Galeria, upload z SHA-256, miniatury, trwały szkic IndexedDB i zapis Git są zaimplementowane. Walidacja, aliasy i zapis/konflikty objęto testami. Symulator nie zastępuje testu Safari/PWA na fizycznym iPhonie; DPR 3 określa cel graficzny, nie sprzętowy DPR przeglądarki desktopowej.
 

@@ -18,14 +18,14 @@
     "tests": 44,
     "consumerBuilds": 6,
     "deploymentState": "READY",
-    "canonicalCommitTested": "60509158dcb8dcd798dc9e478cd4cc2cc0e69ff7"
+    "canonicalCommitTested": "cc6e2ef0605fd74e5d0eeceba62575685626c1fd"
   },
   "consumerCommits": {
-    "design/english-v0.1": "f0230bcb64af8cd412c788e0780bbe8dccdb5367",
-    "czytanie-v1": "11758b555b31ad018c0a3ded263d04ae22ded42e",
-    "design/profile-and-learning-v5": "f4e5c8b96caef67a5d299d0f7f703c1574674d51",
-    "design/spelling-v0.3-preview": "18f1198571728eced43fbbdd9b81ae2c576272ce",
-    "design/flags-v0.1": "78de12e462f7c8bc8be844586ec5a9af24d4bc9a",
-    "matematyka-v1": "fb410167929f12687462deb226fcfa714fd3d5c6"
+    "design/english-v0.1": "709367dee7a3f5a3ce708a5bc3df42989518237a",
+    "czytanie-v1": "d281b15d1420dbb81ad4ae9aa4c0d2470f55b106",
+    "design/profile-and-learning-v5": "19f170b3dc0b9dd2804c61a352000bb03c9b92e6",
+    "design/spelling-v0.3-preview": "b951a1cc56dbb53808abf0716c5730dc7ab1eea3",
+    "design/flags-v0.1": "502fefc0055902045c4cf04672ac2d51304e3754",
+    "matematyka-v1": "7eafaadd95b8a2588425bf75a8077471d8c0deab"
   }
 }

@@ -1,5 +1,6 @@
 import { createContinueDrag } from './continue-drag.mjs?v=3';
-import { burstFireworks } from './fireworks.mjs?v=1';
+import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
+import {playResponseEffect,applyBubbleSettings} from './response-effects.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
@@ -8,6 +9,8 @@ import { RULES, lightbulbSvg } from './hints.mjs';
 // One session owns one scene. Only its picture and ink change between questions.
 export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const pickEffect=createEffectPicker();
+  const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
   let animations = [], resizeObserver, background, continueDrag, stopFireworks;
   const themeMeta = document.querySelector('meta[name="theme-color"]');
@@ -83,6 +86,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     bubble = createBubble(app.querySelector('.spelling-visual'));
+    applyBubbleSettings(bubble,effectConfig());
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
     document.fonts.ready.then(() => { if (session === game) fitWord(); });
   }
@@ -165,15 +169,19 @@ export function createSpellingArt(app, { onContinue } = {}) {
       const rays='<svg class="feedback-rays" viewBox="0 0 30 42" fill="none" aria-hidden="true"><path d="m24 11-10-6M19 21H7m17 10-10 6" stroke="#ffd43b" stroke-width="5.5" stroke-linecap="round"/><path d="m24 10-9-5M18 20H7m16 10-9 6" stroke="#ffe879" stroke-width="1.2" stroke-linecap="round"/></svg>';
       nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
-      if(correct){stopFireworks?.();stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));}
-      else{continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
+      const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
+      const {preset}=pickEffect(effects);stopFireworks?.();
+      stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo,target:app.querySelector('.soap-svg')});
+      if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
+      if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
-    if(paused)continueDrag?.reset();
+    if(paused){continueDrag?.reset();stopFireworks?.();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
+  document.addEventListener('mala-nauka:design',()=>{if(bubble)applyBubbleSettings(bubble,effectConfig());});
   return { render, reset, setPaused, closeHint };
 }

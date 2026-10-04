@@ -77,3 +77,5 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 #app[data-ds]::-webkit-scrollbar{display:none}
 #app[data-ds] .progress-hero-copy{right:calc(18 * var(--progress-u))}
 #app[data-ds] .progress-hero-line{transform:translateX(calc(10 * var(--progress-u)))}
+
+.round-score-audit{font:600 12px/1.6 var(--ds-font-body);color:#4b497a;margin:10px 0;padding:10px 14px;background:#ffffffb0;border-radius:16px}.round-score-audit summary{cursor:pointer;font-weight:800}.round-score-audit p{margin:7px 0 0;font-size:11px}

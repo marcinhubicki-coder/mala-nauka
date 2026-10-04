@@ -182,5 +182,134 @@
     "duration": 320,
     "distance": 18,
     "easing": "ease-out"
+  },
+  "effects": {
+    "enabled": true,
+    "randomize": true,
+    "comboEvery": 3,
+    "comboBoost": 1.35,
+    "particleBudget": 36,
+    "bubble": {
+      "speed": 4.7,
+      "amplitude": 3.25,
+      "orbit": 1.35,
+      "transitionDuration": 1200,
+      "transitionBlur": 5.3,
+      "transitionSparks": 18
+    },
+    "wrong": {
+      "duration": 440,
+      "shake": 5,
+      "color": "#dd4161"
+    },
+    "presets": {
+      "spark": {
+        "name": "Iskry",
+        "enabled": true,
+        "style": "spark",
+        "particles": 24,
+        "duration": 850,
+        "spread": 82,
+        "scale": 1.08,
+        "color": "#ffc82f"
+      },
+      "star": {
+        "name": "Gwiazdy",
+        "enabled": true,
+        "style": "star",
+        "particles": 18,
+        "duration": 1050,
+        "spread": 92,
+        "scale": 1.08,
+        "color": "#ff4ca0"
+      },
+      "confetti": {
+        "name": "Konfetti",
+        "enabled": true,
+        "style": "confetti",
+        "particles": 30,
+        "duration": 1100,
+        "spread": 88,
+        "scale": 1.08,
+        "color": "#52ce9a"
+      },
+      "halo": {
+        "name": "Aureola",
+        "enabled": true,
+        "style": "halo",
+        "particles": 10,
+        "duration": 700,
+        "spread": 66,
+        "scale": 1.08,
+        "color": "#934dff"
+      },
+      "comet": {
+        "name": "Komety",
+        "enabled": true,
+        "style": "comet",
+        "particles": 18,
+        "duration": 950,
+        "spread": 98,
+        "scale": 1.08,
+        "color": "#4cafff"
+      },
+      "petal": {
+        "name": "Płatki",
+        "enabled": true,
+        "style": "petal",
+        "particles": 22,
+        "duration": 1000,
+        "spread": 74,
+        "scale": 1.08,
+        "color": "#ff8bbd"
+      },
+      "orbit": {
+        "name": "Orbity",
+        "enabled": true,
+        "style": "orbit",
+        "particles": 16,
+        "duration": 1050,
+        "spread": 85,
+        "scale": 1.08,
+        "color": "#b49bff"
+      },
+      "fountain": {
+        "name": "Fontanna",
+        "enabled": true,
+        "style": "fountain",
+        "particles": 28,
+        "duration": 900,
+        "spread": 90,
+        "scale": 1.08,
+        "color": "#69d9dc"
+      },
+      "diamond": {
+        "name": "Diamenty",
+        "enabled": true,
+        "style": "diamond",
+        "particles": 20,
+        "duration": 800,
+        "spread": 76,
+        "scale": 1.08,
+        "color": "#ffc82f"
+      },
+      "ripple": {
+        "name": "Kręgi",
+        "enabled": true,
+        "style": "ripple",
+        "particles": 8,
+        "duration": 750,
+        "spread": 60,
+        "scale": 1.08,
+        "color": "#52ce9a"
+      }
+    }
+  },
+  "scoring": {
+    "correctPoints": 1,
+    "wrongPenalty": 0,
+    "hintPercent": 100,
+    "comboEvery": 3,
+    "comboBonus": 0
   }
 }

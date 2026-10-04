@@ -1,0 +1,58 @@
+{
+  "entries": 455,
+  "uniqueWords": 455,
+  "duplicates": [],
+  "multipleCategories": 162,
+  "missingAssets": [],
+  "pools": [
+    {
+      "category": "u/ó",
+      "primary": 184,
+      "total": 235,
+      "basic": 146
+    },
+    {
+      "category": "rz/ż",
+      "primary": 130,
+      "total": 152,
+      "basic": 78
+    },
+    {
+      "category": "ch/h",
+      "primary": 91,
+      "total": 102,
+      "basic": 48
+    },
+    {
+      "category": "ć/ci",
+      "primary": 10,
+      "total": 53,
+      "basic": 29
+    },
+    {
+      "category": "ś/si",
+      "primary": 10,
+      "total": 20,
+      "basic": 9
+    },
+    {
+      "category": "ź/zi",
+      "primary": 10,
+      "total": 15,
+      "basic": 10
+    },
+    {
+      "category": "ń/ni",
+      "primary": 10,
+      "total": 41,
+      "basic": 9
+    },
+    {
+      "category": "dź/dzi",
+      "primary": 10,
+      "total": 17,
+      "basic": 6
+    }
+  ],
+  "checkedAt": "build"
+}

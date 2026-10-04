@@ -18,10 +18,12 @@ function dimensions(){
 }
 function setPane(next){
   if(mobile.matches&&next!=='preview'){
+    workspace.querySelector('#effect-stop')?.click();
     const play=workspace.querySelector('#motion-play');
     if(play?.textContent.includes('Zatrzymaj'))play.click();
   }
   pane=next;document.body.dataset.mobilePane=pane;
+  document.dispatchEvent(new CustomEvent('mala-nauka:studio-pane',{detail:{pane}}));
   for(const button of dock.querySelectorAll('[data-mobile-pane]'))button.setAttribute('aria-pressed',String(button.dataset.mobilePane===pane));
   paneAccess();
   dimensions();
@@ -77,14 +79,14 @@ function sync(){
       const copy=button.cloneNode(true);copy.removeAttribute('title');copy.setAttribute('aria-current',button.classList.contains('active')?'page':'false');return copy;
     }));
   }
-  const next=workspace.querySelector('.component-layout')?'components':workspace.querySelector('.motion-workspace')?'motion':'';
+  const next=workspace.querySelector('.component-layout')?'components':workspace.querySelector('.effect-workspace')?'effects':workspace.querySelector('.motion-workspace')?'motion':'';
   if(editor!==next){editor=next;setPane('choose');}
   dock.hidden=!mobile.matches||!editor;
   document.body.classList.toggle('mobile-editor',mobile.matches&&Boolean(editor));
   const name=workspace.querySelector('#inspector h2')?.textContent;
   const view=workspace.querySelector('#view-select')?.selectedOptions[0]?.textContent;
   const comparing=workspace.querySelector('.preview-gallery.comparison');
-  const context=editor==='components'?[name,comparing?'przesuń ekrany palcem':view].filter(Boolean).join(' · '):editor==='motion'?'Przejścia między ekranami':'';
+  const context=editor==='components'?[name,comparing?'przesuń ekrany palcem':view].filter(Boolean).join(' · '):editor==='motion'?'Przejścia między ekranami':editor==='effects'?'Efekty odpowiedzi i bańka':'';
   const label=document.getElementById('mobile-editor-context');if(label.textContent!==context)label.textContent=context||'';
   const connection=document.getElementById('connect-git').textContent;
   if(document.getElementById('mobile-connect-git').textContent!==connection)document.getElementById('mobile-connect-git').textContent=connection;

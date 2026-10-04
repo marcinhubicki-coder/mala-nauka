@@ -12,7 +12,9 @@ export function changeLabel(row,registry,config,rules,kind='config'){
   if(kind==='assets')return keys[0]==='words'?`Grafika słowa: ${keys[1]}`:keys[0]==='aliases'?'Scalenie grafik':'Rejestr grafik';
   if(keys[0]==='typography')return `Krój pisma: ${{body:'Teksty i opisy',ui:'Kontrolki',display:'Nagłówki',flag:'Kraje'}[keys[1]]||keys[1]}`;
   if(keys[0]==='motion')return `Przejścia ekranów · ${{style:'Styl',duration:'Czas',distance:'Odległość',easing:'Tempo'}[keys[1]]||'Ustawienia'}`;
-  if(keys[0]==='componentNames')return `Nazwa: ${registry.components.find(c=>c.id===keys[1])?.name||'element'}`;
+  if(keys[0]==='effects')return `Efekty i bańka · ${config.effects?.presets?.[keys[2]]?.name||({bubble:'Bańka',wrong:'Reakcja na błąd',comboEvery:'Próg combo',comboBoost:'Siła combo',particleBudget:'Budżet drobinek',randomize:'Losowanie',enabled:'Aktywne efekty'})[keys[1]]||'Ustawienia'} · ${{duration:'Czas',particles:'Drobinki',spread:'Zasięg',scale:'Powiększenie',color:'Kolor',name:'Nazwa',enabled:'Aktywny',style:'Kształt'}[keys.at(-1)]||''}`;
+   if(keys[0]==='scoring')return `Punkty ortografii · ${{correctPoints:'Poprawna odpowiedź',wrongPenalty:'Kara za błąd',hintPercent:'Wpływ podpowiedzi',comboEvery:'Próg bonusu',comboBonus:'Bonus combo'}[keys[1]]||'Ustawienia'}`;
+   if(keys[0]==='componentNames')return `Nazwa: ${registry.components.find(c=>c.id===keys[1])?.name||'element'}`;
   if(keys[0]==='themes')return `${MODE_NAMES[keys[1]]} · kolor ${ {accent:'główny',light:'światło',middle:'środek',bottom:'głębia',border:'obrys',lip:'podstawa',shine:'blask',depth:'cień',activeInk:'aktywnego napisu',idleInk:'nieaktywnego napisu'}[keys[2]]||keys[2]}`;
   const group=keys[0]==='overrides'?keys[2]:keys[1],field=keys[0]==='overrides'?keys[3]:keys[2],component=registry.components.find(c=>c.tokenGroup===group);
   const view=keys[0]==='overrides'?registry.views.find(v=>v.id===keys[1])?.name+' · ':'';

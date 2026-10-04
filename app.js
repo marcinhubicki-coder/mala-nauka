@@ -1,3 +1,4 @@
+import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
 import {createStudioGame} from './design-system/scenarios.mjs';
 import {designReady} from './shared/design-runtime.mjs';
@@ -252,7 +253,7 @@ async function start() {
  settleResult(root);
  const config=configs[selectedMode];
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
+ game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
  const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
  if(selectedMode==='spelling'){
@@ -430,6 +431,7 @@ function finish(early=false,goHome=false){
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
  const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
+ if(game.mode==='spelling'){result.scoring=game.scoring||structuredClone(DEFAULT_SCORING);result.score=scoreAttempts(result.attempts,result.scoring).total;result.poolExhausted=game.poolExhausted===true;}
  const record=recordResult(progress,result);void persistProgress();lastResult=result;
  if(goHome&&result.mode!=='spelling'){navigate('home');return;}view='results';
  if(result.mode==='spelling'){

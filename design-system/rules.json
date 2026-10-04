@@ -288,6 +288,70 @@
       "type": "pattern",
       "explanation": "Miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "edited": false
+    },
+    "rule-000000000001": {
+      "category": "u/ó",
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000002": {
+      "category": "rz/ż",
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000003": {
+      "category": "ch/h",
+      "type": "memory",
+      "title": "Zapis ch/h",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ch lub h. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000004": {
+      "category": "ć/ci",
+      "type": "memory",
+      "title": "Zapis ć/ci",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000005": {
+      "category": "ś/si",
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000006": {
+      "category": "ź/zi",
+      "type": "memory",
+      "title": "Zapis ź/zi",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ź lub zi. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000007": {
+      "category": "ń/ni",
+      "type": "memory",
+      "title": "Zapis ń/ni",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ń lub ni. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
+    },
+    "rule-000000000008": {
+      "category": "dź/dzi",
+      "type": "memory",
+      "title": "Zapis dź/dzi",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
+      "edited": false,
+      "poolDefault": true
     }
   },
   "assignments": {
@@ -335,7 +399,9 @@
     },
     "róża": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -350,7 +416,9 @@
     },
     "żółw": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -358,7 +426,9 @@
     },
     "żółty": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -401,7 +471,9 @@
     },
     "samochód": {
       "primary": "rule-52297ad0d10a",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -465,7 +537,9 @@
     },
     "późno": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000006"
+      ],
       "families": [
         "u/ó",
         "ź/zi"
@@ -473,7 +547,10 @@
     },
     "później": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000006",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ź/zi",
@@ -482,7 +559,9 @@
     },
     "późny": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000006"
+      ],
       "families": [
         "u/ó",
         "ź/zi"
@@ -490,7 +569,9 @@
     },
     "źródło": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000006"
+      ],
       "families": [
         "u/ó",
         "ź/zi"
@@ -505,7 +586,9 @@
     },
     "próżny": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -527,7 +610,9 @@
     },
     "różny": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -535,7 +620,10 @@
     },
     "różnica": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -544,7 +632,9 @@
     },
     "różowy": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -587,7 +677,9 @@
     },
     "mówić": {
       "primary": "rule-52297ad0d10a",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -595,7 +687,9 @@
     },
     "wrócić": {
       "primary": "rule-4e98d3e3541a",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -680,7 +774,9 @@
     },
     "łóżko": {
       "primary": "rule-52297ad0d10a",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -702,7 +798,9 @@
     },
     "nóżka": {
       "primary": "rule-52297ad0d10a",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -710,7 +808,9 @@
     },
     "siódemka": {
       "primary": "rule-622c398b69a8",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "u/ó",
         "ś/si"
@@ -739,7 +839,9 @@
     },
     "siatkówka": {
       "primary": "rule-cf40bda3f6f8",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "u/ó",
         "ś/si"
@@ -754,7 +856,9 @@
     },
     "rodziców": {
       "primary": "rule-963b4bc6ac64",
-      "additional": [],
+      "additional": [
+        "rule-000000000008"
+      ],
       "families": [
         "u/ó",
         "dź/dzi"
@@ -762,7 +866,9 @@
     },
     "krzyżówka": {
       "primary": "rule-cf40bda3f6f8",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -777,7 +883,9 @@
     },
     "zwierzaków": {
       "primary": "rule-963b4bc6ac64",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -792,7 +900,9 @@
     },
     "wróżba": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -800,7 +910,9 @@
     },
     "równanie": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -808,7 +920,10 @@
     },
     "spóźniony": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000006",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ź/zi",
@@ -817,7 +932,9 @@
     },
     "wzgórze": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -937,7 +1054,9 @@
     },
     "kłótnia": {
       "primary": "rule-7a2b6ca06348",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -987,7 +1106,9 @@
     },
     "ubranie": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -995,7 +1116,9 @@
     },
     "uczeń": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -1003,7 +1126,9 @@
     },
     "uczennica": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -1011,7 +1136,9 @@
     },
     "urząd": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1026,7 +1153,9 @@
     },
     "urodziny": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000008"
+      ],
       "families": [
         "u/ó",
         "dź/dzi"
@@ -1034,7 +1163,10 @@
     },
     "uśmiech": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000003",
+        "rule-000000000005"
+      ],
       "families": [
         "u/ó",
         "ch/h",
@@ -1043,7 +1175,9 @@
     },
     "umyć": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1051,7 +1185,9 @@
     },
     "umieć": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1080,7 +1216,9 @@
     },
     "ukryć": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1088,7 +1226,9 @@
     },
     "ugotować": {
       "primary": "rule-9964569033a5",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1103,7 +1243,9 @@
     },
     "budzik": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000008"
+      ],
       "families": [
         "u/ó",
         "dź/dzi"
@@ -1125,7 +1267,9 @@
     },
     "duży": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1175,7 +1319,9 @@
     },
     "kupić": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1190,7 +1336,9 @@
     },
     "ludzie": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000008"
+      ],
       "families": [
         "u/ó",
         "dź/dzi"
@@ -1268,7 +1416,9 @@
     },
     "ruszyć": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1395,7 +1545,9 @@
     },
     "puchaty": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -1403,7 +1555,10 @@
     },
     "kucharz": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000002",
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -1412,7 +1567,9 @@
     },
     "kuchenka": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -1441,7 +1598,9 @@
     },
     "korzeń": {
       "primary": "rule-06771f6a98b1",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -1449,7 +1608,9 @@
     },
     "burza": {
       "primary": "rule-06771f6a98b1",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1485,7 +1646,10 @@
     },
     "wrzesień": {
       "primary": "rule-8b3d6f94ff3a",
-      "additional": [],
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ś/si",
@@ -1522,7 +1686,9 @@
     },
     "rzut": {
       "primary": "rule-06771f6a98b1",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1544,7 +1710,10 @@
     },
     "rzucić": {
       "primary": "rule-06771f6a98b1",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -1609,7 +1778,9 @@
     },
     "racuch": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -1638,7 +1809,9 @@
     },
     "południe": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ń/ni"
@@ -1646,7 +1819,9 @@
     },
     "już": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1654,7 +1829,9 @@
     },
     "szukać": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1711,7 +1888,9 @@
     },
     "żartujesz": {
       "primary": "rule-6782ac4aa375",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1719,7 +1898,10 @@
     },
     "leniuchujesz": {
       "primary": "rule-6782ac4aa375",
-      "additional": [],
+      "additional": [
+        "rule-000000000003",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ch/h",
@@ -1735,7 +1917,9 @@
     },
     "kupujecie": {
       "primary": "rule-6782ac4aa375",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1764,7 +1948,9 @@
     },
     "wsuwać": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1772,7 +1958,9 @@
     },
     "zasuwać": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1780,7 +1968,9 @@
     },
     "zakuwać": {
       "primary": "rule-9466bdebc5dd",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "ć/ci"
@@ -1795,7 +1985,9 @@
     },
     "grzebień": {
       "primary": "rule-80e197379ad3",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -1803,7 +1995,9 @@
     },
     "grzech": {
       "primary": "rule-80e197379ad3",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "rz/ż",
         "ch/h"
@@ -1811,7 +2005,9 @@
     },
     "grzejnik": {
       "primary": "rule-80e197379ad3",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -1833,7 +2029,9 @@
     },
     "trzeci": {
       "primary": "rule-20811d4fde25",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -1848,7 +2046,9 @@
     },
     "trzcina": {
       "primary": "rule-20811d4fde25",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -1863,7 +2063,9 @@
     },
     "przód": {
       "primary": "rule-dcfaafc3803e",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -1892,7 +2094,9 @@
     },
     "przyjaciel": {
       "primary": "rule-dcfaafc3803e",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -1914,7 +2118,9 @@
     },
     "sprzątać": {
       "primary": "rule-dcfaafc3803e",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -1971,7 +2177,9 @@
     },
     "murarz": {
       "primary": "rule-813fd49c10b8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2063,7 +2271,9 @@
     },
     "marzenie": {
       "primary": "rule-d89178cfe657",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2071,7 +2281,9 @@
     },
     "marzyć": {
       "primary": "rule-d89178cfe657",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2079,7 +2291,9 @@
     },
     "orzech": {
       "primary": "rule-06771f6a98b1",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "rz/ż",
         "ch/h"
@@ -2087,7 +2301,10 @@
     },
     "brzuch": {
       "primary": "rule-c89378cb52cf",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000003"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -2103,7 +2320,9 @@
     },
     "grzać": {
       "primary": "rule-80e197379ad3",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2111,7 +2330,9 @@
     },
     "ogrzać": {
       "primary": "rule-80e197379ad3",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2119,7 +2340,9 @@
     },
     "zmarznąć": {
       "primary": "rule-d89178cfe657",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2162,7 +2385,9 @@
     },
     "żółtko": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2177,7 +2402,9 @@
     },
     "książka": {
       "primary": "rule-7f9f48cf3be9",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "rz/ż",
         "ś/si"
@@ -2213,7 +2440,9 @@
     },
     "żarówka": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2235,7 +2464,9 @@
     },
     "żuk": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2243,7 +2474,9 @@
     },
     "żubr": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2251,7 +2484,9 @@
     },
     "żurek": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2266,7 +2501,9 @@
     },
     "życie": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2281,7 +2518,9 @@
     },
     "życzenie": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2296,7 +2535,9 @@
     },
     "żegnać": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2318,7 +2559,9 @@
     },
     "żołnierz": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2333,7 +2576,9 @@
     },
     "żniwa": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2341,7 +2586,9 @@
     },
     "żuraw": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2356,7 +2603,9 @@
     },
     "żartować": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2371,7 +2620,9 @@
     },
     "uważny": {
       "primary": "rule-7f9f48cf3be9",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2379,7 +2630,9 @@
     },
     "podróż": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2387,7 +2640,10 @@
     },
     "podróżnik": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -2431,7 +2687,9 @@
     },
     "kałuża": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2481,7 +2739,9 @@
     },
     "pożegnać": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2489,7 +2749,9 @@
     },
     "pożyczyć": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2497,7 +2759,9 @@
     },
     "pożywienie": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2505,7 +2769,10 @@
     },
     "możliwość": {
       "primary": "rule-7f9f48cf3be9",
-      "additional": [],
+      "additional": [
+        "rule-000000000004",
+        "rule-000000000005"
+      ],
       "families": [
         "rz/ż",
         "ć/ci",
@@ -2535,7 +2802,9 @@
     },
     "niżej": {
       "primary": "rule-fc14f1344b73",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "rz/ż",
         "ń/ni"
@@ -2550,7 +2819,9 @@
     },
     "świeży": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "rz/ż",
         "ś/si"
@@ -2558,7 +2829,9 @@
     },
     "drużyna": {
       "primary": "rule-585df4f063e8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "rz/ż"
@@ -2580,7 +2853,9 @@
     },
     "ciężki": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2588,7 +2863,9 @@
     },
     "ciężar": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ć/ci"
@@ -2596,7 +2873,10 @@
     },
     "ciężarówka": {
       "primary": "rule-6edfc8693dd8",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000004"
+      ],
       "families": [
         "u/ó",
         "rz/ż",
@@ -2612,7 +2892,9 @@
     },
     "chmura": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2634,7 +2916,9 @@
     },
     "ucho": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2649,7 +2933,9 @@
     },
     "mucha": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2657,7 +2943,10 @@
     },
     "kuchnia": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ch/h",
@@ -2673,7 +2962,9 @@
     },
     "zachód": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2681,7 +2972,9 @@
     },
     "wschód": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2696,7 +2989,9 @@
     },
     "chustka": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2704,7 +2999,9 @@
     },
     "chudy": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2712,7 +3009,9 @@
     },
     "chrupki": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2720,7 +3019,9 @@
     },
     "chrząszcz": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "rz/ż",
         "ch/h"
@@ -2728,7 +3029,9 @@
     },
     "chrzan": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "rz/ż",
         "ch/h"
@@ -2743,7 +3046,9 @@
     },
     "chwalić": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2751,7 +3056,9 @@
     },
     "chować": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2759,7 +3066,10 @@
     },
     "chodzić": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004",
+        "rule-000000000008"
+      ],
       "families": [
         "ch/h",
         "ć/ci",
@@ -2789,7 +3099,9 @@
     },
     "chłód": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2818,7 +3130,9 @@
     },
     "chrapać": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2826,7 +3140,9 @@
     },
     "chcieć": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2834,7 +3150,10 @@
     },
     "chociaż": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000002",
+        "rule-000000000004"
+      ],
       "families": [
         "rz/ż",
         "ch/h",
@@ -2843,7 +3162,9 @@
     },
     "chirurg": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2858,7 +3179,9 @@
     },
     "chór": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2866,7 +3189,9 @@
     },
     "cichy": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2874,7 +3199,9 @@
     },
     "cicho": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -2882,7 +3209,9 @@
     },
     "suchy": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2890,7 +3219,9 @@
     },
     "suchar": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2898,7 +3229,9 @@
     },
     "puchar": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2906,7 +3239,9 @@
     },
     "duch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2914,7 +3249,9 @@
     },
     "huragan": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2922,7 +3259,9 @@
     },
     "ruch": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2930,7 +3269,9 @@
     },
     "puch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2952,7 +3293,9 @@
     },
     "śmiech": {
       "primary": "rule-fabfda1ad713",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "ch/h",
         "ś/si"
@@ -2960,7 +3303,9 @@
     },
     "pośpiech": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000005"
+      ],
       "families": [
         "ch/h",
         "ś/si"
@@ -2982,7 +3327,10 @@
     },
     "łańcuch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000007"
+      ],
       "families": [
         "u/ó",
         "ch/h",
@@ -2991,7 +3339,9 @@
     },
     "fartuch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -2999,7 +3349,9 @@
     },
     "maluch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3007,7 +3359,9 @@
     },
     "okruch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3015,7 +3369,9 @@
     },
     "wybuch": {
       "primary": "rule-6c7aca4cf9ac",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3065,7 +3421,9 @@
     },
     "hulajnoga": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3073,7 +3431,10 @@
     },
     "huśtawka": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001",
+        "rule-000000000005"
+      ],
       "families": [
         "u/ó",
         "ch/h",
@@ -3089,7 +3450,9 @@
     },
     "humor": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3118,7 +3481,9 @@
     },
     "harcerz": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000002"
+      ],
       "families": [
         "rz/ż",
         "ch/h"
@@ -3133,7 +3498,9 @@
     },
     "hamulec": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3197,7 +3564,9 @@
     },
     "huta": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3205,7 +3574,9 @@
     },
     "hodować": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ch/h",
         "ć/ci"
@@ -3241,7 +3612,9 @@
     },
     "harmonia": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ch/h",
         "ń/ni"
@@ -3256,7 +3629,9 @@
     },
     "hamburger": {
       "primary": "rule-cb15c7a8b263",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3278,7 +3653,9 @@
     },
     "druh": {
       "primary": "rule-fafff27b4091",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3286,7 +3663,9 @@
     },
     "druhna": {
       "primary": "rule-fafff27b4091",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "ch/h"
@@ -3308,7 +3687,9 @@
     },
     "cień": {
       "primary": "rule-38b408ee320a",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ć/ci",
         "ń/ni"
@@ -3344,7 +3725,9 @@
     },
     "ćwiczenie": {
       "primary": "rule-490b50efad90",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ć/ci",
         "ń/ni"
@@ -3387,7 +3770,9 @@
     },
     "sierpień": {
       "primary": "rule-75efae8f2a87",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ś/si",
         "ń/ni"
@@ -3395,7 +3780,10 @@
     },
     "siedzieć": {
       "primary": "rule-75efae8f2a87",
-      "additional": [],
+      "additional": [
+        "rule-000000000004",
+        "rule-000000000008"
+      ],
       "families": [
         "ć/ci",
         "ś/si",
@@ -3418,7 +3806,9 @@
     },
     "śnieg": {
       "primary": "rule-fd8b898dfda5",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ś/si",
         "ń/ni"
@@ -3475,7 +3865,9 @@
     },
     "źrenica": {
       "primary": "rule-6f79a48d47aa",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ź/zi",
         "ń/ni"
@@ -3518,7 +3910,9 @@
     },
     "niedziela": {
       "primary": "rule-c9cdc93fc8ea",
-      "additional": [],
+      "additional": [
+        "rule-000000000008"
+      ],
       "families": [
         "ń/ni",
         "dź/dzi"
@@ -3554,7 +3948,9 @@
     },
     "tańczyć": {
       "primary": "rule-e387eac01ece",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ć/ci",
         "ń/ni"
@@ -3569,7 +3965,9 @@
     },
     "kończyć": {
       "primary": "rule-e387eac01ece",
-      "additional": [],
+      "additional": [
+        "rule-000000000004"
+      ],
       "families": [
         "ć/ci",
         "ń/ni"
@@ -3577,7 +3975,9 @@
     },
     "hańba": {
       "primary": "rule-e387eac01ece",
-      "additional": [],
+      "additional": [
+        "rule-000000000003"
+      ],
       "families": [
         "ch/h",
         "ń/ni"
@@ -3592,7 +3992,9 @@
     },
     "dziura": {
       "primary": "rule-ef3c6ae8ce82",
-      "additional": [],
+      "additional": [
+        "rule-000000000001"
+      ],
       "families": [
         "u/ó",
         "dź/dzi"
@@ -3642,7 +4044,9 @@
     },
     "dźwignia": {
       "primary": "rule-23e21c044e0b",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ń/ni",
         "dź/dzi"
@@ -3650,7 +4054,9 @@
     },
     "niedźwiedź": {
       "primary": "rule-23e21c044e0b",
-      "additional": [],
+      "additional": [
+        "rule-000000000007"
+      ],
       "families": [
         "ń/ni",
         "dź/dzi"

@@ -1,3 +1,4 @@
+import {canonicalWords} from '../spelling/word-pools.mjs';
 import {resolveRules,configureRules,ruleLibrary} from './rules-library.mjs';
 import {validateAssets} from '../design-system/validation.mjs';
 const projectRoot = new URL('../', import.meta.url);
@@ -51,7 +52,7 @@ export async function loadWords({raw=false}={}) {
     return response.json();
   }));
   if(!ruleLibrary()){const response=await fetch(new URL('design-system/rules.json',base),{cache:'no-cache'});if(!response.ok)throw Error('Nie udało się wczytać wspólnej biblioteki zasad.');configureRules(await response.json());}
-  return raw?parts.flat():resolveRules(parts.flat());
+  return raw?parts.flat():resolveRules(canonicalWords(parts.flat()));
 }
 
 export function previewAssets(urls={}){previewURLs=urls;}

@@ -21,7 +21,7 @@ test('every word has valid learning data and the bank covers every learning cate
 
 test('a real session keeps an independent rule snapshot for both correct and wrong attempts', () => {
   const word = structuredClone(words.find(word => word.word === 'marzenie'));
-  const session = new Session([{...word, kind: 'spelling'}], 180, () => 0);
+  const session = new Session([{...word, kind: 'spelling'},{...words.find(w=>w.word!==word.word&&w.learning.type==='memory'),kind:'spelling'}], 180, () => 0,()=>.99);
   session.answer(word.answer);
   assert.equal(session.attempts[0].correct, true);
   assert.deepEqual(session.attempts[0].learning, word.learning);

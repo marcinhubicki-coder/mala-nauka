@@ -3,7 +3,9 @@ export const RULE_CATEGORIES=['u/ó','rz/ż','ch/h','ć/ci','ś/si','ź/zi','ń/
 const reserved=new Set(['__proto__','constructor','prototype']);
 export function orthographyFamilies(word){
   const text=String(word).normalize('NFC').toLocaleLowerCase('pl');
-  return RULE_CATEGORIES.filter((_,index)=>[/[uó]/,/rz|ż/,/ch|h/,/ć|ci/,/ś|si/,/ź|zi/,/ń|ni/,/dź|dzi/][index].test(text));
+  const lookup={u:'u/ó',ó:'u/ó',rz:'rz/ż',ż:'rz/ż',ch:'ch/h',h:'ch/h',ć:'ć/ci',ci:'ć/ci',ś:'ś/si',si:'ś/si',ź:'ź/zi',zi:'ź/zi',ń:'ń/ni',ni:'ń/ni',dź:'dź/dzi',dzi:'dź/dzi'};
+  const found=new Set([...text.matchAll(/dzi|dź|rz|ch|ci|si|zi|ni|[uóżhćśźń]/g)].map(match=>lookup[match[0]]));
+  return RULE_CATEGORIES.filter(family=>found.has(family));
 }
 export function validateRules(value){
   if(value?.schemaVersion!==1||!Number.isInteger(value.revision)||value.revision<1||!value.rules||!value.assignments)throw Error('Nieprawidłowa biblioteka zasad.');

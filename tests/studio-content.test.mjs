@@ -25,6 +25,7 @@ test('letter analysis can map several families without inserting words or changi
  const before=JSON.stringify(rules);
  assert.deepEqual(orthographyFamilies('chrzanić'),['rz/ż','ch/h','ć/ci','ń/ni']);
  assert.deepEqual(orthographyFamilies('CHrZaNiĆ'),orthographyFamilies('chrzanić'));
+ assert.deepEqual(orthographyFamilies('budzik'),['u/ó','dź/dzi']);
  assert.equal(rules.assignments.chrzanić,undefined);assert.equal(JSON.stringify(rules),before);
 });
 test('merging illustration assignments redirects every use and old alias without deleting original files',()=>{

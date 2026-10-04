@@ -11,3 +11,12 @@ export function mergeAssetAssignments(catalog,paths,target){
   for(const path of sources)next.aliases[path]=target;
   return validateAssets(next);
 }
+
+export function catalogChanges(base,local){
+  const rows=[];
+  for(const group of ['words','aliases'])for(const key of new Set([...Object.keys(base[group]),...Object.keys(local[group])])){
+    const before=base[group][key],after=local[group][key];
+    if(JSON.stringify(before)!==JSON.stringify(after))rows.push({path:[group,key],before,after});
+  }
+  return rows;
+}

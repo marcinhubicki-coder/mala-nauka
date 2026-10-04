@@ -1,3 +1,4 @@
+import {animateScreen,DEFAULT_MOTION} from './screen-motion.mjs';
 import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
@@ -27,8 +28,10 @@ export async function initDesign() {
   fonts.textContent = faces.map(([name,file,weight]) => `@font-face{font-family:"${name}";src:url("${assetUrl('assets/fonts/'+file)}") format("woff");font-style:normal;font-weight:${weight};font-display:swap}`).join('');
   applyDesign(settings); observeAssets();
   const app = document.getElementById('app');
+  let previousScreen,screenAnimation;
   const annotate = () => {
     if (!app) return;
+    const screen=app.dataset.view;if(screen&&previousScreen&&screen!==previousScreen){screenAnimation?.cancel();screenAnimation=animateScreen(app,config.motion||DEFAULT_MOTION);}if(screen)previousScreen=screen;
     if(app.dataset.ds!=='1')app.dataset.ds='1';
     if(location.pathname.includes('/matematyka/')){
       if(app.dataset.mode!=='math')app.dataset.mode='math';

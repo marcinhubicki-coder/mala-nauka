@@ -150,9 +150,11 @@ if (studio) {
       if(message.id && !items.has(message.id))return;
       if(message.component && !registry.components.some(item=>item.id===message.component))return;
       const key=message.id||'component:'+message.component;
-      if(message.mode==='visible')temporaryVisibility.delete(key);else temporaryVisibility.set(key,message.mode);
+      if(message.component){for(const old of temporaryVisibility.keys())if(old.startsWith(message.component+':'))temporaryVisibility.delete(old);}
+      if(message.mode==='visible'&&(!message.id||!temporaryVisibility.has('component:'+items.get(message.id)?.component)))temporaryVisibility.delete(key);else temporaryVisibility.set(key,message.mode);
       report();
     }
+    if(message.type==='reset-visibility'){temporaryVisibility.clear();report();}
     if(message.type==='reset-preview'){temporaryVisibility.clear();selection=null;report();}
   });
   registry=await (await fetch(new URL('./registry.json',import.meta.url))).json();

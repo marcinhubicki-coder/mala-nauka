@@ -1,3 +1,4 @@
+import {validateMotion} from '../shared/screen-motion.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
@@ -33,6 +34,7 @@ export function validateConfig(config) {
     safeKeys(config.componentNames);
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
+  if(config.motion)validateMotion(config.motion);
   validateTokens(config.tokens);
   safeKeys(config.themes);
   for(const mode of MODES){const theme=config.themes[mode];safeKeys(theme);if(THEME_FIELDS.some(key=>!theme[key]))throw Error(`Niepełna paleta: ${mode}.`);for(const [key,value]of Object.entries(theme))if(!THEME_FIELDS.includes(key)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value))throw Error(`Nieprawidłowy kolor: ${mode}.${key}.`);}
@@ -66,6 +68,7 @@ export function changedViews(changes, registry) {
   return registry.views.filter(view => changes.some(change => {
     if (change.path.startsWith('overrides.')) return change.path.split('.')[1] === view.id;
     if (change.path.startsWith('themes.')) return change.path.split('.')[1] === view.mode;
+    if (change.path.startsWith('motion')) return true;
     if (change.path.startsWith('typography.')) return true;
     if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);
     const component = change.path.split('.')[1];

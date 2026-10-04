@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "revision": 1,
-  "name": "Ma\u0142a Nauka",
+  "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
     "body": "nunito",
@@ -176,5 +176,11 @@
       "idleInk": "#515c98"
     }
   },
-  "overrides": {}
+  "overrides": {},
+  "motion": {
+    "style": "fade",
+    "duration": 320,
+    "distance": 18,
+    "easing": "ease-out"
+  }
 }

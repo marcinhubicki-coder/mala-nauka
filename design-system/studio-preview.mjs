@@ -39,7 +39,7 @@ export class StudioPreview {
   resizePhone(){
     const gallery=this.workspace.querySelector('#preview-gallery');if(!gallery||this.compare||this.zoom==='100')return;
     const scale=Math.max(.28,Math.min(1,(gallery.clientWidth-24)/414,(gallery.clientHeight-30)/876));
-    gallery.style.setProperty('--phone-scale',String(scale));
+    gallery.style.setProperty('--preview-phone-scale',String(scale));
   }
   renderToolbar(){
     if(!this.isOpen)return;

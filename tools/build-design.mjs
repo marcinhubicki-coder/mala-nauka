@@ -6,7 +6,7 @@ const root=process.cwd(),out=resolve(root,'dist'),canonicalBranch='design/system
 let branch=process.env.VERCEL_GIT_COMMIT_REF;try{branch||=execFileSync('git',['branch','--show-current'],{encoding:'utf8'}).trim();}catch{}
 const consumer=process.argv.includes('--consumer')||Boolean(branch&&branch!==canonicalBranch);
 const source=(process.env.DS_SOURCE_URL||`https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/${canonicalBranch}/`).replace(/\/?$/,'/');
-const centralFiles=['design-system/config.json','design-system/rules.json','design-system/assets.json','design-system/registry.json','design-system/audit.json','design-system/model.mjs','design-system/preview-model.mjs','design-system/validation.mjs','design-system/bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/rules-library.mjs','shared/screen-motion.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','spelling/scenes.mjs','spelling/continue-drag.mjs'];
+const centralFiles=['design-system/config.json','design-system/rules.json','design-system/assets.json','design-system/registry.json','design-system/audit.json','design-system/model.mjs','design-system/preview-model.mjs','design-system/validation.mjs','design-system/bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/rules-library.mjs','shared/screen-motion.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','shared/mastery.mjs','shared/scroll-edges.mjs','spelling/scenes.mjs','spelling/continue-drag.mjs','spelling/word-pools.mjs','spelling/effect-model.mjs','spelling/response-effects.mjs','spelling/scoring.mjs','spelling/round.mjs','spelling/art.mjs','spelling/bubble.mjs','spelling/dictation.mjs','game.mjs','modes.mjs','progress.mjs','ortografia/result-screen.mjs'];
 const files=new Map();
 async function walk(dir){for(const item of await readdir(dir,{withFileTypes:true})){if(['.git','dist','node_modules','.design-qa','docs','tests','tools'].includes(item.name)||item.name.startsWith('.'))continue;const path=resolve(dir,item.name);if(item.isDirectory()){if(consumer&&relative(root,path)==='assets')continue;await walk(path);}else if(!/\.(md|py)$/.test(path)){files.set(relative(root,path).split('\\').join('/'),await readFile(path));}}}
 await walk(root);
@@ -52,7 +52,7 @@ for(const [path,bytes] of [...files]){
  if(/\.(mjs|js)$/.test(path)&&path!=='sw.js'){
   let text=bytes.toString();
   if(consumer){
-   // Existing consumers keep their game logic; only the shared database is replaced.
+   // Keep each consumer's app shell and use the canonical gameplay modules above.
    if(path==='app.js'&&!text.includes("from './shared/design-runtime.mjs'")){
     text="import {designReady} from './shared/design-runtime.mjs';\nimport {loadWords} from './shared/asset-loader.mjs';\n"+text;
     text=text.replace(/const parts=await Promise\.all\(Array\.from\(\{length:8\},async\(_,i\)=>\{[\s\S]*?words=validateWords\(parts\.flat\(\)\);/,'await designReady;words=validateWords(await loadWords());');
@@ -80,6 +80,14 @@ for(const [path,bytes] of [...files]){
 }
 // Consumer builds contain no duplicate assets or word packs.
 if(consumer)for(const path of [...files.keys()])if(/^data\/words-0[1-8]\.json$/.test(path))files.delete(path);
+// Fail the build before publishing a module graph with missing relative imports.
+for(const [path,bytes] of files){
+ if(!/\.(mjs|js)$/.test(path)||path==='sw.js')continue;
+ for(const match of bytes.toString().matchAll(/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)["'](\.[^"']+)["']/g)){
+  const target=posix.normalize(posix.join(posix.dirname(path),match[1].split('?')[0]));
+  if(/\.(mjs|js)$/.test(target)&&!files.has(target))throw Error(`Brak zależności modułu: ${path} → ${target}. Uzupełnij centralFiles.`);
+ }
+}
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
 for(const [path,bytes] of files){const target=resolve(out,path);await mkdir(dirname(target),{recursive:true});await writeFile(target,bytes);}
 const buildDigest=createHash('sha256');for(const [path,bytes]of files)if(path!=='sw.js'&&!path.startsWith('assets/'))buildDigest.update(path).update(bytes);const buildHash=buildDigest.digest('hex').slice(0,12);

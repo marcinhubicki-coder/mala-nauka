@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {EMPTY_BATCHES,createCandidate,addCandidates,validateBatches,batchSummary,batchWords,candidateProblems,publicationPlan,validatePublication,matchBatchImage} from '../design-system/batch-model.mjs';
+import {EMPTY_BATCHES,createCandidate,addCandidates,validateBatches,batchSummary,batchWords,candidateProblems,publicationPlan,validatePublication,matchBatchImage,requeueRejected} from '../design-system/batch-model.mjs';
 import {spellingPool} from '../spelling/word-pools.mjs';
 import {mergeWordPack} from '../design-system/git-client.mjs';
 import {planStudioMerge,resolveStudioMerge} from '../design-system/merge-model.mjs';
@@ -56,4 +56,11 @@ test('blueprint templates validate nested layers and reject invalid hierarchy, e
 });
 test('performance colours distinguish measurable frame and script budgets and hide absent memory',()=>{
  const green=performanceStatus({ready:true,fps:60,p95:16.7,samples:60,setupMs:2});assert.equal(green.overall,'green');assert.equal(green.cards.length,2);assert.equal(performanceStatus({ready:true,fps:45,p95:25,setupMs:10}).overall,'yellow');assert.equal(performanceStatus({ready:true,fps:20,p95:60,setupMs:2}).overall,'red');assert.equal(performanceStatus({setupMs:17}).overall,'red');assert.equal(performanceStatus({}).cards.length,0);assert.equal(performanceStatus({memory:{heapMB:80,heapLimitMB:100}}).cards[0].status,'red');assert.equal(performanceStatus({memory:{heapMB:20}}).cards[0].status,'neutral');
+});
+
+test('deferred words can return as a selected batch without duplicating accepted words',()=>{
+ const v=structuredClone(queue);const old=v.batches[0];old.stage='published';old.words[1].selected=false;const next=requeueRejected(v,old.id,'batch-retry-test');assert.equal(next.batches[0].words.length,old.words.length-1);assert.equal(next.batches.at(-1).words[0].word,old.words[1].word);assert.equal(next.batches.at(-1).words[0].selected,true);assert.equal(new Set(batchWords(next).map(w=>w.word)).size,batchWords(next).length);assert.throws(()=>requeueRejected(queue,queue.batches[0].id));
+});
+test('short frame samples do not show a green overall status based only on setup time',()=>{
+ assert.equal(performanceStatus({ready:false,setupMs:1,memory:{heapMB:10,heapLimitMB:100}}).overall,'neutral');
 });

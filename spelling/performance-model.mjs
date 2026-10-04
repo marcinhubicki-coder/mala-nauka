@@ -12,8 +12,8 @@ export function performanceStatus(metrics){
  if(Number.isFinite(metrics.setupMs))cards.push({id:'script',label:'Przygotowanie efektu · JS',value:`${metrics.setupMs} ms`,detail:'Czas jednej operacji, nie procent CPU',status:metrics.setupMs<=8?'green':metrics.setupMs<=1000/60?'yellow':'red'});
  if(Number.isFinite(metrics.memory?.heapMB)){
   const m=metrics.memory,ratio=m.heapLimitMB>0?m.heapMB/m.heapLimitMB:null;
-  cards.push({id:'memory',label:'Pamięć JS · cała karta',value:`${m.heapMB} MB`,detail:ratio!==null?`${Math.round(ratio*100)}% z limitu ${m.heapLimitMB} MB`:'Sterta JavaScriptu tej karty',status:ratio===null?'neutral':ratio<.5?'green':ratio<=.75?'yellow':'red'});
+  cards.push({id:'memory',label:'Pamięć JS · cała karta',value:`${m.heapMB} MB`,detail:ratio!==null?`${(ratio*100).toFixed(1)}% z limitu ${m.heapLimitMB} MB`:'Sterta JavaScriptu tej karty',status:ratio===null?'neutral':ratio<.5?'green':ratio<=.75?'yellow':'red'});
  }
- const statuses=cards.map(c=>c.status),overall=statuses.includes('red')?'red':statuses.includes('yellow')?'yellow':statuses.includes('green')?'green':'neutral';
+ const statuses=cards.map(c=>c.status),overall=statuses.includes('red')?'red':statuses.includes('yellow')?'yellow':statuses.includes('green')&&metrics.ready?'green':'neutral';
  return {cards,overall};
 }

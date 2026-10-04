@@ -84,3 +84,12 @@ export function matchBatchImage(filename,batch){
  if(matches.length!==1)throw Error(matches.length?'Nazwa pasuje do kilku słów. Użyj polskich znaków.':'Nazwa pliku nie pasuje do zaznaczonego hasła.');
  return matches[0];
 }
+
+export function requeueRejected(value,id,newId='batch-'+Date.now()){
+ const next=structuredClone(value),batch=next.batches.find(b=>b.id===id);
+ if(batch?.stage!=='published')throw Error('Najpierw zaakceptuj gotową część batcha.');
+ const rejected=batch.words.filter(r=>!r.selected);if(!rejected.length)throw Error('W tym batchu nie ma odłożonych haseł.');
+ batch.words=batch.words.filter(r=>r.selected);
+ next.batches.push({id:newId,name:batch.name.slice(0,75)+' · ponowna ocena',stage:'proposed',words:rejected.map(r=>({...r,selected:true}))});
+ return validateBatches(next);
+}

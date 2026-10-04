@@ -42,6 +42,17 @@
   body[data-mobile-pane=preview] #preview-toolbar,body[data-mobile-pane=preview] #preview-guide,body[data-mobile-pane=preview] #component-strip,body[data-mobile-pane=preview] #preview-controls{display:none}
   body[data-mobile-pane=preview] .motion-route,body[data-mobile-pane=preview] .motion-shortcuts,body[data-mobile-pane=preview] .motion-preview>.page-intro{display:none}
   .preview-gallery:not(.native-size){height:auto;min-height:0;flex:1}
+  .preview-gallery.native-size:not(.comparison){width:100%;overflow:auto;grid-template-columns:414px}
+  .preview-gallery.comparison{display:flex;gap:12px;width:100%;height:auto;min-height:0;flex:1;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:12px}
+  .preview-gallery.comparison>.preview-tile{flex:0 0 100%;height:100%;scroll-snap-align:start;position:relative}
+  .preview-gallery.comparison .phone-zone{display:block;position:relative;height:calc(100% - 56px);min-height:0;padding:0;margin-top:10px}
+  .preview-gallery.comparison .phone-outer{position:absolute;top:0;left:50%;margin-left:-207px;transform:scale(var(--mobile-preview-scale,.5));transform-origin:top center}
+  .preview-tile-heading{min-height:44px;font-size:13px}
+  .preview-tile-heading span{font-size:11px}
+  .compare-choices p:not(.mobile-comparison-hint){display:none}
+  .compare-checkboxes{display:grid;grid-template-columns:1fr}
+  .compare-checkboxes label{min-height:44px;font-size:14px;align-items:center}
+  .compare-heading{flex-wrap:wrap;gap:8px}
   .component-layout.wide-preview>.inspector{display:none}
   body[data-mobile-pane=edit] .component-layout.wide-preview>.inspector{display:block}
   .editing-path{display:flex;gap:4px;width:100%}
@@ -144,4 +155,21 @@
   .conflict-card>div{grid-template-columns:1fr}
   .conflict-card label{font-size:14px}
   .change-list{font-size:13px;max-height:none}
+  .motion-preview>div:not(.motion-stage),.motion-preview>p{flex-shrink:0}
+  .motion-route{gap:12px}
+  .motion-route label{font-size:14px;gap:6px}
+  .motion-route select{font-size:16px;min-height:44px;padding:10px}
+  .motion-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .motion-playbar{display:grid;grid-template-columns:1fr auto;gap:8px;margin:0}
+  .motion-playbar .solid-button{font-size:14px;min-height:44px}
+  .motion-playbar label{font-size:13px;min-height:44px}
+  .motion-playbar label:last-child{grid-column:1/-1;justify-content:space-between;gap:8px}
+  .motion-playbar input[type=number]{font-size:16px;min-height:44px;width:82px}
+  .motion-status{font-size:13px;line-height:1.5;margin:8px 0}
+  .motion-stage{height:auto;min-height:285px;flex:1}
+  .motion-manual{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .motion-manual button{font-size:13px;padding:8px;min-height:44px}
+  .preview-layers summary,.behaviour summary{min-height:44px;font-size:14px;display:flex;align-items:center}
+  .layer-row{flex-wrap:wrap;gap:8px}
+  .layer-row button,.layer-row select{min-height:44px;font-size:14px}
 }

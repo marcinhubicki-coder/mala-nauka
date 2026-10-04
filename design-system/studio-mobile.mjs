@@ -3,14 +3,24 @@ const mobile=matchMedia('(max-width: 690px)'),workspace=document.getElementById(
 const menu=document.getElementById('mobile-navigation'),dock=document.getElementById('mobile-editor-dock');
 const topbar=document.querySelector('.studio-topbar'),root=document.documentElement;
 const modal=document.getElementById('studio-modal');
-let pane='choose',editor='',navigationSignature='',scheduled=false;
+let pane='choose',editor='',navigationSignature='',scheduled=false,observedGallery;
+const galleryObserver=new ResizeObserver(dimensions);
 
 function dimensions(){
   if(!mobile.matches)return;
   root.style.setProperty('--mobile-header-height',topbar.getBoundingClientRect().height+'px');
   root.style.setProperty('--mobile-dock-height',dock.hidden?'0px':dock.getBoundingClientRect().height+'px');
+  const gallery=workspace.querySelector('.preview-gallery.comparison');
+  if(gallery?.clientWidth&&gallery.clientHeight){
+    const scale=Math.min(1,(gallery.clientWidth-20)/414,(gallery.clientHeight-100)/876);
+    gallery.style.setProperty('--mobile-preview-scale',String(Math.max(.2,scale)));
+  }
 }
 function setPane(next){
+  if(mobile.matches&&next!=='preview'){
+    const play=workspace.querySelector('#motion-play');
+    if(play?.textContent.includes('Zatrzymaj'))play.click();
+  }
   pane=next;document.body.dataset.mobilePane=pane;
   for(const button of dock.querySelectorAll('[data-mobile-pane]'))button.setAttribute('aria-pressed',String(button.dataset.mobilePane===pane));
   dimensions();
@@ -40,6 +50,15 @@ function touchDialog(){
   const close=document.createElement('button');close.type='button';close.className='mobile-only mobile-dialog-close icon-button';
   close.textContent='×';close.setAttribute('aria-label','Zamknij okno');close.onclick=()=>modal.close();modal.prepend(close);
 }
+function touchPreview(){
+  const gallery=workspace.querySelector('#preview-gallery');
+  if(gallery!==observedGallery){galleryObserver.disconnect();observedGallery=gallery;if(gallery)galleryObserver.observe(gallery);}
+  const choices=workspace.querySelector('.compare-choices');
+  if(choices&&!choices.querySelector('.mobile-comparison-hint')){
+    const hint=document.createElement('p');hint.className='mobile-only mobile-comparison-hint';
+    hint.textContent='Na telefonie przesuwaj ekrany palcem. Każdy zachowuje widok 390 × 844, a jego podgląd dopasowuje się do miejsca.';choices.append(hint);
+  }
+}
 function sync(){
   scheduled=false;
   const buttons=[...document.querySelectorAll('#navigation [data-page]')];
@@ -54,12 +73,15 @@ function sync(){
   if(editor!==next){editor=next;setPane('choose');}
   dock.hidden=!mobile.matches||!editor;
   document.body.classList.toggle('mobile-editor',mobile.matches&&Boolean(editor));
-  const context=editor==='components'?workspace.querySelector('#inspector h2')?.textContent:editor==='motion'?'Przejścia między ekranami':'';
+  const name=workspace.querySelector('#inspector h2')?.textContent;
+  const view=workspace.querySelector('#view-select')?.selectedOptions[0]?.textContent;
+  const comparing=workspace.querySelector('.preview-gallery.comparison');
+  const context=editor==='components'?[name,comparing?'przesuń ekrany palcem':view].filter(Boolean).join(' · '):editor==='motion'?'Przejścia między ekranami':'';
   const label=document.getElementById('mobile-editor-context');if(label.textContent!==context)label.textContent=context||'';
   const connection=document.getElementById('connect-git').textContent;
   if(document.getElementById('mobile-connect-git').textContent!==connection)document.getElementById('mobile-connect-git').textContent=connection;
   if(!mobile.matches&&menu.open)menu.close();
-  touchControls();touchDialog();
+  touchControls();touchDialog();touchPreview();
   dimensions();
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(sync);}}
@@ -71,6 +93,12 @@ menu.addEventListener('click',event=>{
 });
 document.getElementById('mobile-connect-git').onclick=()=>{menu.close();document.getElementById('connect-git').click();};
 dock.addEventListener('click',event=>{const button=event.target.closest('[data-mobile-pane]');if(button)setPane(button.dataset.mobilePane);});
+workspace.addEventListener('click',event=>{
+  if(!mobile.matches)return;
+  const button=event.target.closest('button');if(!button)return;
+  if(button.matches('[data-component],[data-open-view],[data-preview-action],[data-layer-select],#start-compare'))requestAnimationFrame(()=>setPane('preview'));
+  if(button.matches('[data-active-view]'))requestAnimationFrame(()=>setPane('edit'));
+},true);
 window.addEventListener('message',event=>{
   if(!mobile.matches||event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio'||event.data.type!=='select')return;
   if([...workspace.querySelectorAll('iframe')].some(frame=>frame.contentWindow===event.source))setPane('edit');

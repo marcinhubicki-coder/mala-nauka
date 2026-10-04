@@ -10,7 +10,7 @@ export class StudioMotion {
     this.workspace.addEventListener('focusout',()=>this.endEdit?.());
     window.addEventListener('message',event=>this.receive(event));
   }
-  get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace'));}
+  get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace:not(.effect-workspace)'));}
   get motion(){return this.getDesign().config.motion||DEFAULT_MOTION;}
   get saved(){return this.getBase().motion||DEFAULT_MOTION;}
   frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}

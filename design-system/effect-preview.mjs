@@ -19,7 +19,7 @@ function play(event='correct',id=selected,comboCount=1,runId=0){
  document.getElementById('combo-label').textContent=combo?`Seria ×${streak}`:'Próba efektu';
  document.getElementById('effect-copy').textContent=event==='wrong'?'Przyjrzyj się poprawnej odpowiedzi':combo?'Świetna seria!':'Pięknie!';
  stop=playResponseEffect(host,{config:effects,preset,event,combo,target:host.querySelector('.soap-svg'),onMetrics:metrics=>send('metrics',{metrics,run:runId})});
- send('played',{id,event,streak});
+ send('played',{id,event,streak,run:runId});
 }
 window.addEventListener('message',async event=>{
  if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-effects')return;

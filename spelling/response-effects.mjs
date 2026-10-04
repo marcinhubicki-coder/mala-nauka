@@ -45,7 +45,7 @@ export function playResponseEffect(host,{config=DEFAULT_EFFECTS,preset=config.pr
  const stop=()=>{
   if(stopped)return;stopped=true;clearTimeout(timer);cancelAnimationFrame(frame);observer?.disconnect();
   animations.forEach(a=>a.cancel());layer.remove();document.removeEventListener('visibilitychange',hidden);
-  onMetrics({...frameStats(frames),particles:event==='wrong'||motion?0:budget.particles,requested:budget.requested,capped:budget.capped,duration,setupMs:Math.round(setupMs*10)/10,reduced:motion,memory:memory(),cancelled:document.hidden});
+  onMetrics({...frameStats(frames),intervals:frames,presetName:preset.name,particles:event==='wrong'||motion?0:budget.particles,requested:budget.requested,capped:budget.capped,duration,setupMs:Math.round(setupMs*10)/10,reduced:motion,memory:memory(),cancelled:document.hidden});
  };
  const hidden=()=>{if(document.hidden)stop();};document.addEventListener('visibilitychange',hidden);
  const tick=now=>{if(stopped)return;if(last)frames.push(now-last);last=now;frame=requestAnimationFrame(tick);};

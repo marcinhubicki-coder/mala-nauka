@@ -1,6 +1,6 @@
 import {html,number,savedMarker} from './preview-model.mjs';
 import {get} from './model.mjs';
-import {DEFAULT_EFFECTS,EFFECT_STYLES,effectBudget,createEffectPicker} from '../spelling/effect-model.mjs';
+import {DEFAULT_EFFECTS,EFFECT_STYLES,effectBudget,createEffectPicker,frameStats} from '../spelling/effect-model.mjs';
 import {DEFAULT_SCORING,scoreAttempts} from '../spelling/scoring.mjs';
 
 const labels={duration:'Czas efektu',particles:'Liczba drobinek',spread:'Zasięg',scale:'Powiększenie bańki',speed:'Tempo bańki',amplitude:'Falowanie',orbit:'Ruch wokół środka',transitionDuration:'Zmiana obrazka',transitionBlur:'Rozmycie przy zmianie',transitionSparks:'Drobinki przy zmianie',particleBudget:'Maksimum drobinek',comboEvery:'Combo co tyle odpowiedzi',comboBoost:'Siła combo',shake:'Drgnięcie przy błędzie',correctPoints:'Punkty za poprawną',wrongPenalty:'Odjęcie za błąd',hintPercent:'Punkty z podpowiedzią (%)',comboBonus:'Bonus combo'};
@@ -34,10 +34,10 @@ export class StudioPlay {
  updateBudget(){
   const node=this.workspace.querySelector('#effect-budget');if(!node)return;
   const p=this.effects.presets[this.id],b=effectBudget(this.effects,p,this.event==='combo');
-  node.innerHTML=`<strong>${this.event==='wrong'?'Sygnał błędu':`${b.particles} drobinek · ${b.duration} ms`}</strong><span>${b.capped?'Budżet przycina liczbę drobinek — także przy combo.':'W granicach budżetu. Transformacje i przezroczystość.'}</span><small>Obciążenie GPU: szacunek geometrii, ${b.load}. Moc/energia w watach niedostępna.</small>`;
+  node.innerHTML=`<meter class=budget-meter min=0 max=48 value=${b.particles} aria-label="Budżet drobinek"></meter><strong>${this.event==='wrong'?'Sygnał błędu':`${b.particles} drobinek · ${b.duration} ms`}</strong><span>${b.capped?'Budżet przycina liczbę drobinek — także przy combo.':'W granicach budżetu. Transformacje i przezroczystość.'}</span><small>Obciążenie GPU: szacunek geometrii, ${b.load}. Moc/energia w watach niedostępna.</small>`;
  }
  play(tour=false){
-  if(!this.ready)return;this.stop();this.running=true;this.touring=tour;this.tourIndex=0;this.playOne();
+  if(!this.ready)return;this.stop();this.running=true;this.measurements=[];this.touring=tour;this.tourIndex=0;this.playOne();
  }
  playOne(){
   if(!this.running||document.hidden)return;
@@ -49,10 +49,11 @@ export class StudioPlay {
  message(e){
   const frame=this.workspace.querySelector('#effect-frame');if(e.origin!==location.origin||e.source!==frame?.contentWindow||e.data?.channel!=='mala-nauka-effects')return;
   if(e.data.type==='ready'){this.ready=true;this.sendDesign();this.post(document.body.classList.contains('mobile-editor')&&document.body.dataset.mobilePane!=='preview'?'stop':'resume');this.workspace.querySelector('#effect-play').disabled=false;this.updateBudget();}
+  if(e.data.type==='played'&&e.data.run===0){this.run=0;this.running=false;this.measurements=[];}
   if(e.data.type==='metrics'){
    if(e.data.run!==this.run)return;
-   const m=e.data.metrics,node=this.workspace.querySelector('#effect-meter');
-   if(node)node.innerHTML=m.disabled?'Efekty wyłączone w ustawieniach.':`<strong>${m.reduced?'Ograniczony ruch':m.ready?`${m.fps} FPS · ${m.rating}`:'Za krótka próbka'}</strong><span>${m.ready?`95% klatek ≤ ${m.p95} ms · ${m.longFrames} klatek powyżej 25 ms`:'Odtwórz ponownie, aby zebrać klatki.'}</span><span>CPU / JS: przygotowanie ${m.setupMs??0} ms · ${m.particles} drobinek</span><small>${m.memory?`Pamięć JS: ${m.memory.heapMB} MB (cała karta)`:'Pamięć: pomiar niedostępny w tej przeglądarce'} · moc/energia: brak pomiaru</small>`;
+   const m=e.data.metrics;this.measurements=[...(this.measurements||[]),...(m.intervals||[])].slice(-300);Object.assign(m,frameStats(this.measurements));const node=this.workspace.querySelector('#effect-meter');
+   if(node)node.innerHTML=m.disabled?'Efekty wyłączone w ustawieniach.':`${m.ready?`<meter class=frame-meter min=0 max=60 value=${Math.min(60,m.fps)} aria-label="Płynność względem 60 FPS"></meter>`:''}<strong>${html(m.presetName||'Efekt')} · ${m.reduced?'Ograniczony ruch':m.ready?`${m.fps} FPS · ${m.rating}`:`Próbka: ${m.samples||0} klatek`}</strong><span>${m.ready?`95% klatek ≤ ${m.p95} ms · ${m.longFrames} wolnych · ${m.samples} klatek próbki`:'Włącz pętlę, aby zebrać więcej klatek.'}</span><span>CPU / JS: przygotowanie ${m.setupMs??0} ms · ${m.particles} drobinek</span><small>${m.memory?`Pamięć JS: ${m.memory.heapMB} MB (cała karta)`:'Pamięć: pomiar niedostępny w tej przeglądarce'} · moc/energia: brak pomiaru</small>`;
    if(this.running&&(this.loop||this.touring)){
     if(this.touring&&++this.tourIndex>=10){this.running=false;return;}
     this.timer=setTimeout(()=>this.playOne(),this.delay);
@@ -64,7 +65,7 @@ export class StudioPlay {
   if(b.dataset.effectId){this.stop();this.id=b.dataset.effectId;this.workspace.querySelectorAll('[data-effect-id]').forEach(n=>{n.classList.toggle('active',n.dataset.effectId===this.id);n.setAttribute('aria-pressed',String(n.dataset.effectId===this.id));});this.workspace.querySelector('#play-inspector').innerHTML=this.effectInspector(this.effects.presets[this.id]);this.updateBudget();}
   if(b.id==='effect-play')this.play();if(b.id==='effect-stop')this.stop();if(b.id==='effect-tour')this.play(true);
   if(b.id==='effect-change-picture')this.post('picture');
-  if(b.dataset.playReset){const path=b.dataset.playReset;this.edit(path,get(this.getBase(),path));this.endEdit();this.refreshControl(path);if(this.workspace.querySelector('[data-play-lab=scoring]'))this.updateScore();}
+  if(b.dataset.playReset){const path=b.dataset.playReset;this.edit(path,get(this.getBase(),path)??get({effects:DEFAULT_EFFECTS,scoring:DEFAULT_SCORING},path));this.endEdit();this.refreshControl(path);if(this.workspace.querySelector('[data-play-lab=scoring]'))this.updateScore();}
   if(b.dataset.scoreScenario){this.sample={...this.sample,...{perfect:{correct:10,wrong:0,hints:0,order:'series'},mistakes:{correct:7,wrong:3,hints:0,order:'mixed'},help:{correct:8,wrong:2,hints:3,order:'series'},empty:{correct:0,wrong:0,hints:0,order:'series'}}[b.dataset.scoreScenario]};this.renderScoring();}
  }
  refreshControl(path){for(const n of this.workspace.querySelectorAll('[data-play-value]'))if(n.dataset.playValue===path)n.value=get(this.config,path);}

@@ -88,7 +88,7 @@ export class StudioMotion {
     if(!this.isOpen||event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio')return;
     const frame=this.frames().find(row=>row.contentWindow===event.source);if(!frame)return;
     if(event.data.type==='ready'){this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:false,highlight:false});}
-    if(event.data.type==='inventory'&&event.data.items?.some(item=>item.index>=0&&item.visible)){const id=frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}
+    if(event.data.type==='inventory'&&(event.data.rendered||event.data.items?.some(item=>item.index>=0&&item.visible))){const id=frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}
   }
   choosePair(from,to){this.stop();this.from=from;this.to=to;this.current=from;this.workspace.querySelector('#motion-from').value=from;this.workspace.querySelector('#motion-to').value=to;this.syncFrames();}
   click(event){

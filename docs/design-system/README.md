@@ -6,24 +6,25 @@ Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt w
 
 ## Zacznij od panelu
 
-1. **Komponenty**: wybierz tryb oraz widok/stan. Telefon ma rzeczywisty viewport **390 × 844 pt**. Zaznacz „Wskaż komponent”, aby kliknąć element gry i zobaczyć pomiar.
-2. Zmieniaj wysokość, szerokość, padding, gap, promień, cień i animację suwakiem lub liczbą. Podgląd korzysta z rzeczywistych rendererów gry.
-3. Zakres **Wszędzie** zmienia wspólny komponent. Zakres **Tylko ten widok** zapisuje jawny wyjątek. Powiązane widoki są dostępne w inspektorze.
-4. **Typografia** pokazuje rodziny, role, powiązane widoki i deklaracje CSS. „Scal / zamień” przenosi role na wybraną rodzinę.
-5. **Assety i słowa**: szukaj hasła, obejrzyj miniaturę, zmień ilustrację lub treść zasady. Upload PNG/JPG/WebP/AVIF, do 12 MB, dla ilustracji słowa proporcja 1:1.
-6. **Połącz GitHub**: fine-grained token dla tego repozytorium, `Contents: Read and write`. Token istnieje wyłącznie w pamięci bieżącej karty.
-7. **Zapisz na GitHub**: przejrzyj zmianę i podaj opis. Jeden commit obejmuje tokeny, przypisania, nowe pliki oraz edytowane paczki słów. Vercel buduje nowy preview.
+1. **Komponenty → Według widoku**: wybierz ekran i wskaż element pastylką lub kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.
+2. **Według elementu → Porównaj użycia**: zaznacz ekrany do porównania. Telefony mają 390 × 844 bez skalowania i układają się obok siebie, jeśli jest miejsce.
+3. Zmieniaj suwaki, oglądając znacznik **Ostatnio zapisano**. Wybierz instancję/kontener i przełącz jego stan. **Warstwy i widoczność** pozwalają chwilowo ukryć element z zachowaniem miejsca albo z przesunięciem pozostałych.
+4. **Typografia** pokazuje fonty, role i miejsca użycia. **Baza słów i grafik** pokazuje miniatury, wspólne zasady i powiązania grafik ze słowami; umożliwia ich scalenie.
+5. **Animacje**: wybierz dwa ekrany, ustaw ruch i uruchom Play lub Pętlę z przerwą.
+6. **Cofnij / Ponów** obejmują wygląd, zasady i grafiki. **?** otwiera pomoc z przykładami. Szkic przetrwa odświeżenie w tej przeglądarce.
+7. **Połącz GitHub → Zapisz na GitHub**: przejrzyj zmiany i zapisz jeden commit na tym branchu. Konflikty rozstrzygaj kartami „Twoja wersja” / „Zapisana na GitHub”.
 
-Szkic tokenów jest zapisywany w przeglądarce. Binaria uploadów i edytowane paczki przechowuje IndexedDB. Szkic nie jest wspólną wersją dla innych branchy; udostępnia go dopiero commit. Wersje pozwalają cofnąć zmianę, importować/eksportować JSON, przywrócić wcześniejszy szkic i otworzyć historię Git.
+Pełna instrukcja bez wiedzy o kodzie: **[Praca wizualna](visual-guide.md)**.
 
 ## Dokumenty
 
 | Dokument | Zakres |
 | --- | --- |
+| [Praca wizualna](visual-guide.md) | Scenariusze dla użytkownika: wybór, porównanie, warstwy, zasady, grafiki i animacje |
 | [Zasady i tokeny](principles.md) | Wzorzec ortografii, cień z angielskiego, geometria, warianty, Retina |
 | [Komponenty i widoki](components.md) | Katalog, stany, warunki, relacje, fonty |
 | [Assety i branche](assets-and-branches.md) | Jedna baza, deduplikacja, konsumenci, caching |
 | [Zapis i rozwój](development.md) | Git, konflikty, pliki, build, porządkowanie, zasady mockupów |
 | [Weryfikacja](verification.md) | Testy, przegląd wizualny, granice symulacji |
 
-Źródłami prawdy są `config.json`, `registry.json` i `assets.json`. Dokumentacja wyjaśnia kontrakt; nie tworzy drugiej kopii jego wartości.
+Źródłami prawdy są `config.json`, `registry.json`, `assets.json` i `rules.json`. Dokumentacja wyjaśnia kontrakt; nie tworzy drugiej kopii jego wartości.

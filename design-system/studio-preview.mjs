@@ -150,7 +150,6 @@ export class StudioPreview {
       if(id===this.viewId){
         const available=this.available();
         if(!message.selection && available.has(this.componentId))this.send(frame,'focus',{component:this.componentId,reveal:false});
-        if(message.items?.some(item=>item.index>=0&&item.visible)&&this.editingMode==='view'&&!available.has(this.componentId)){this.componentId=this.view.components.find(component=>available.has(component))||this.componentId;this.notifyState();this.renderInspector();this.focus(false);}
         this.renderPills();this.renderSelectionPanel();this.renderLayers();
       }
     }

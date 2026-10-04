@@ -10,7 +10,7 @@ export function playResponseEffect(host,{config=DEFAULT_EFFECTS,preset=config.pr
  const start=performance.now(),motion=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const budget=effectBudget(config,preset,combo),animations=[],frames=[];
  let stopped=false,timer,frame,last=0,observer;
- const memory=()=>performance.memory?{heapMB:Math.round(performance.memory.usedJSHeapSize/1048576),scope:'Cała karta, nie sam efekt'}:null;
+ const memory=()=>performance.memory?{heapMB:Math.round(performance.memory.usedJSHeapSize/1048576),heapLimitMB:Math.round(performance.memory.jsHeapSizeLimit/1048576),scope:'Cała karta, nie sam efekt'}:null;
  if(!config.enabled||document.hidden){onMetrics({disabled:true,particles:0,memory:memory()});return ()=>{};}
  const layer=document.createElement('div');layer.className='response-effect-layer';layer.setAttribute('aria-hidden','true');
  Object.assign(layer.style,{position:'absolute',inset:'0',pointerEvents:'none',overflow:'visible',zIndex:'4'});

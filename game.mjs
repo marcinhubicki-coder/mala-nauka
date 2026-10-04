@@ -1,5 +1,5 @@
 import { validLearning } from './spelling/learning.mjs?v=1';
-import {spellingPool,wordKey} from './spelling/word-pools.mjs';
+import {spellingPool,wordKey,wordSlots} from './spelling/word-pools.mjs';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
 export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
@@ -17,6 +17,7 @@ export function shuffle(items, random = Math.random) {
 export function validateWords(words) {
   if (!Array.isArray(words) || words.length < 455 || new Set(words.map(w => w.word)).size !== words.length) throw Error('Niepełna baza słów.');
   for (const w of words) {
+    if(w.categoryDifficulties){const families=wordSlots(w).map(r=>r.category);if(Object.keys(w.categoryDifficulties).some(c=>!families.includes(c))||families.some(c=>![1,2].includes(w.categoryDifficulties[c]))||w.categoryDifficulties[w.category]!==w.difficulty)throw Error('Nieprawidłowe poziomy kategorii słowa.');}
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||

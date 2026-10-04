@@ -1,3 +1,4 @@
+import {validateRecipes,validateBlueprints,recipesCSS,ATOMS} from '../shared/component-recipes.mjs';
 import {validateEffects} from '../spelling/effect-model.mjs';
 import {validateScoring} from '../spelling/scoring.mjs';
 import {validateMotion} from '../shared/screen-motion.mjs';
@@ -38,6 +39,7 @@ export function validateConfig(config) {
   }
   if(config.motion)validateMotion(config.motion);
   if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
+  if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(config.tokens);
   safeKeys(config.themes);
   for(const mode of MODES){const theme=config.themes[mode];safeKeys(theme);if(THEME_FIELDS.some(key=>!theme[key]))throw Error(`Niepełna paleta: ${mode}.`);for(const [key,value]of Object.entries(theme))if(!THEME_FIELDS.includes(key)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value))throw Error(`Nieprawidłowy kolor: ${mode}.${key}.`);}
@@ -65,7 +67,7 @@ export function configCSS(config) {
     if (!/^[a-z0-9-]+$/.test(view)) throw Error('Nieprawidłowy identyfikator widoku.');
     css += `html[data-ds-view="${view}"]{${variables(overrides)}}`;
   }
-  return css;
+  return css+recipesCSS(config.recipes);
 }
 export function changedViews(changes, registry) {
   return registry.views.filter(view => changes.some(change => {
@@ -74,6 +76,7 @@ export function changedViews(changes, registry) {
     if (change.path.startsWith('motion')) return true;
     if(change.path.startsWith('effects.'))return view.mode==='spelling'&&['initial','correct','wrong','rule','hint'].some(state=>view.id.endsWith('-'+state));
     if(change.path.startsWith('scoring.'))return view.id==='spelling-results';
+    if(change.path.startsWith('recipes.'))return ATOMS[change.path.split('.')[1]]?.parents.some(p=>view.components.includes(p))||false;
     if (change.path.startsWith('typography.')) return true;
     if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);
     const component = change.path.split('.')[1];

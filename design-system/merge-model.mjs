@@ -1,6 +1,7 @@
 import {validateAssets} from './validation.mjs';
 import {validateConfig} from './model.mjs';
 import {validateRules} from '../shared/rules-library.mjs';
+import {validateBatches,EMPTY_BATCHES} from './batch-model.mjs';
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const object=value=>value&&typeof value==='object'&&!Array.isArray(value);
 const copy=value=>value===undefined?undefined:structuredClone(value);
@@ -28,9 +29,9 @@ const catalogMap=value=>({...value,assets:Object.fromEntries(value.assets.map(as
 const catalogArray=value=>({...value,assets:Object.values(value.assets).sort((a,b)=>a.path.localeCompare(b.path))});
 export function planStudioMerge(base,local,remote){
   const value={},conflicts=[];
-  for(const kind of ['config','assets','rules']){
+  for(const kind of ['config','assets','rules',...(base.batches||local.batches||remote.batches?['batches']:[])]){
     const convert=kind==='assets'?catalogMap:row=>row;
-    const merged=mergeValues(convert(base[kind]),convert(local[kind]),convert(remote[kind]),kind);
+    const merged=mergeValues(convert(base[kind]||(kind==='batches'?EMPTY_BATCHES:undefined)),convert(local[kind]||(kind==='batches'?EMPTY_BATCHES:undefined)),convert(remote[kind]||(kind==='batches'?EMPTY_BATCHES:undefined)),kind);
     value[kind]=merged.value;conflicts.push(...merged.conflicts);
   }
   return {value,conflicts};
@@ -45,5 +46,6 @@ export function resolveStudioMerge(plan,choices={}){
   }
   value.assets=catalogArray(value.assets);
   validateConfig(value.config);validateAssets(value.assets);validateRules(value.rules);
+  if(value.batches)validateBatches(value.batches);
   return value;
 }

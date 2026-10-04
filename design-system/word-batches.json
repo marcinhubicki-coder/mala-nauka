@@ -1,0 +1,3679 @@
+{
+  "schemaVersion": 1,
+  "targetPerCategory": 100,
+  "batches": [
+    {
+      "id": "batch-20261004-01",
+      "name": "Dom i codzienne czynności · 1",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-63-69-15b-6e-69-65-6e-69-65",
+          "word": "ciśnienie",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-63-69-15b-6e-69-65-6e-69-6f-6d-69-65-72-7a",
+          "word": "ciśnieniomierz",
+          "categories": [
+            "rz/ż",
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 2,
+            "ć/ci": 2,
+            "ś/si": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-63-69-75-63-68",
+          "word": "ciuch",
+          "categories": [
+            "u/ó",
+            "ch/h",
+            "ć/ci"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ch/h": 1,
+            "ć/ci": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-6e-61-6c-65-17a-107",
+          "word": "znaleźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-02",
+      "name": "Przyroda i małe odkrycia · 1",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-63-6f-15b",
+          "word": "coś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-63-7a-119-15b-107",
+          "word": "część",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-15b",
+          "word": "dziś",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-61-72-15b-107",
+          "word": "garść",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-105-73-69-65-6e-69-63-61",
+          "word": "gąsienica",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-64-7a-69-65-15b",
+          "word": "gdzieś",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-119-15b",
+          "word": "gęś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-69-15b-107",
+          "word": "kiść",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-74-6f-15b",
+          "word": "ktoś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6c-65-15b-6e-69-63-7a-79",
+          "word": "leśniczy",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6c-69-15b-107",
+          "word": "liść",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-142-6f-15b",
+          "word": "łoś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6d-69-15b",
+          "word": "miś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-15b-6e-69-65-17c-6f-6e-79",
+          "word": "ośnieżony",
+          "categories": [
+            "rz/ż",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-61-15b-6e-69-6b",
+          "word": "paśnik",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-69-65-15b-144",
+          "word": "pieśń",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-f3-77-69-65-15b-6e-69-6b",
+          "word": "rówieśnik",
+          "categories": [
+            "u/ó",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-79-15b",
+          "word": "ryś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-61-107",
+          "word": "siać",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-107",
+          "word": "sieć",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-64-65-6d-64-7a-69-65-73-69-105-74",
+          "word": "siedemdziesiąt",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-64-7a-69-62-61",
+          "word": "siedziba",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-64-7a-69-73-6b-6f",
+          "word": "siedzisko",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-72-6f-63-69-6e-69-65-63",
+          "word": "sierociniec",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-03",
+      "name": "Przyroda i małe odkrycia · 2",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-73-69-65-72-70",
+          "word": "sierp",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-77",
+          "word": "siew",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-65-77-6e-69-6b",
+          "word": "siewnik",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-6c-6e-69-6b",
+          "word": "silnik",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-6c-6e-79",
+          "word": "silny",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-142-61",
+          "word": "siła",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-142-6f-77-6e-69-61",
+          "word": "siłownia",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-6e-79",
+          "word": "siny",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-74-6b-6f",
+          "word": "sitko",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-69-74-6f",
+          "word": "sito",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-63-69-65-67",
+          "word": "ścieg",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-63-69-73-6b",
+          "word": "ścisk",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6c-65-64-17a",
+          "word": "śledź",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6c-69-6e-61",
+          "word": "ślina",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6c-69-77-61",
+          "word": "śliwa",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6c-69-7a-67",
+          "word": "ślizg",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6c-75-62",
+          "word": "ślub",
+          "categories": [
+            "u/ó",
+            "ś/si"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6d-69-61-107",
+          "word": "śmiać",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6d-69-65-74-6e-69-6b",
+          "word": "śmietnik",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-61-64-61-6e-69-65",
+          "word": "śniadanie",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-107",
+          "word": "śnić",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-65-67-6f-77-79",
+          "word": "śniegowy",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-65-17c-6b-61",
+          "word": "śnieżka",
+          "categories": [
+            "rz/ż",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-65-17c-6e-79",
+          "word": "śnieżny",
+          "categories": [
+            "rz/ż",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-04",
+      "name": "Przyroda i małe odkrycia · 3",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-15b-6e-69-65-17c-79-63-61",
+          "word": "śnieżyca",
+          "categories": [
+            "rz/ż",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-6e-69-65-17c-79-6e-6b-61",
+          "word": "śnieżynka",
+          "categories": [
+            "rz/ż",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-72-f3-64-7a-69-65-6d-6e-79",
+          "word": "śródziemny",
+          "categories": [
+            "u/ó",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-72-75-62-61",
+          "word": "śruba",
+          "categories": [
+            "u/ó",
+            "ś/si"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-77-69-6e-69-61",
+          "word": "świnia",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-15b-77-69-74",
+          "word": "świt",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-74-72-65-15b-107",
+          "word": "treść",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-15b-6d-69-65-63-68-61-107",
+          "word": "uśmiechać",
+          "categories": [
+            "u/ó",
+            "ch/h",
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ch/h": 1,
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-15b-6d-69-65-63-68-6e-69-119-74-79",
+          "word": "uśmiechnięty",
+          "categories": [
+            "u/ó",
+            "ch/h",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 2,
+            "ch/h": 2,
+            "ś/si": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-65-15b",
+          "word": "wieś",
+          "categories": [
+            "ś/si"
+          ],
+          "levels": {
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-65-15b-107",
+          "word": "wieść",
+          "categories": [
+            "ć/ci",
+            "ś/si"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-15b-6e-69-61",
+          "word": "wiśnia",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-05",
+      "name": "Ziemia, zima i zielony świat · 1",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-62-75-7a-69-61",
+          "word": "buzia",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-62-75-7a-69-61-6b",
+          "word": "buziak",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-6f-77-69-65-7a-69-65",
+          "word": "dowiezie",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-6f-77-69-65-17a-107",
+          "word": "dowieźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-61-142-105-17a",
+          "word": "gałąź",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-72-6f-7a-69-107",
+          "word": "grozić",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-72-6f-17a-62-61",
+          "word": "groźba",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-72-6f-17a-6e-69-65",
+          "word": "groźnie",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-72-75-7a-69-144-73-6b-69",
+          "word": "gruziński",
+          "categories": [
+            "u/ó",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-77-6f-17a-64-7a-69-61-72-7a",
+          "word": "gwoździarz",
+          "categories": [
+            "rz/ż",
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "rz/ż": 2,
+            "ź/zi": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-77-6f-17a-64-7a-69-6b",
+          "word": "gwoździk",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-77-6f-17a-64-7a-69-6f-77-79",
+          "word": "gwoździowy",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-77-6f-17a-64-17a",
+          "word": "gwoźdź",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6a-65-7a-69-6f-72-6b-6f",
+          "word": "jeziorko",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6a-65-7a-69-6f-72-6e-79",
+          "word": "jeziorny",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6a-65-7a-69-6f-72-6f",
+          "word": "jezioro",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-7a-69-6f-142",
+          "word": "kozioł",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-7a-69-6f-142-65-6b",
+          "word": "koziołek",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-17a-6c-61-6b",
+          "word": "koźlak",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-17a-6c-61-72-7a",
+          "word": "koźlarz",
+          "categories": [
+            "rz/ż",
+            "ź/zi"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-17a-6c-105-74-6b-6f",
+          "word": "koźlątko",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-17a-6c-119",
+          "word": "koźlę",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-17a-6c-69",
+          "word": "koźli",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6c-75-17a-6e-6f",
+          "word": "luźno",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-06",
+      "name": "Ziemia, zima i zielony świat · 2",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-6c-75-17a-6e-79",
+          "word": "luźny",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6d-69-65-64-7a-69-61-6b",
+          "word": "miedziak",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6d-69-65-64-17a",
+          "word": "miedź",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-64-77-69-65-7a-69-65",
+          "word": "odwiezie",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-64-77-69-65-17a-107",
+          "word": "odwieźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-70-f3-17a-6e-69-107",
+          "word": "opóźnić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-70-f3-17a-6e-69-6f-6e-79",
+          "word": "opóźniony",
+          "categories": [
+            "u/ó",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-7a-69-6d-69-6e-61",
+          "word": "ozimina",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-7a-69-6d-79",
+          "word": "ozimy",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-7a-69-6f-6d",
+          "word": "poziom",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-7a-69-6f-6d-6b-61",
+          "word": "poziomka",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-7a-69-6f-6d-6f",
+          "word": "poziomo",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-7a-69-6f-6d-79",
+          "word": "poziomy",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-7a-79-6a-61-17a-6e-69-107",
+          "word": "przyjaźnić",
+          "categories": [
+            "rz/ż",
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 2,
+            "ć/ci": 2,
+            "ź/zi": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-7a-79-6a-61-17a-144",
+          "word": "przyjaźń",
+          "categories": [
+            "rz/ż",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-7a-6c-75-17a-6e-69-107",
+          "word": "rozluźnić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-7a-65-17a-62-61",
+          "word": "rzeźba",
+          "categories": [
+            "rz/ż",
+            "ź/zi"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-7a-65-17a-62-69-107",
+          "word": "rzeźbić",
+          "categories": [
+            "rz/ż",
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-70-f3-17a-6e-69-107",
+          "word": "spóźnić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-77-69-119-7a-69-107",
+          "word": "uwięzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-7a-69-65-6d-69-107",
+          "word": "uziemić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-119-7a-69-107",
+          "word": "więzić",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-119-7a-69-65-6e-69-65",
+          "word": "więzienie",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-69-119-17a",
+          "word": "więź",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-07",
+      "name": "Ziemia, zima i zielony świat · 3",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-77-6f-17a-6e-61",
+          "word": "woźna",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-6f-17a-6e-69-63-61",
+          "word": "woźnica",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-79-77-69-65-7a-69-65",
+          "word": "wywiezie",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-79-77-69-65-17a-107",
+          "word": "wywieźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-61-67-72-6f-7a-69-107",
+          "word": "zagrozić",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-61-77-69-65-7a-69-65",
+          "word": "zawiezie",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-61-77-69-65-17a-107",
+          "word": "zawieźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-61-72-65-6e-6b-6f",
+          "word": "ziarenko",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-61-72-6e-69-73-74-6f-15b-107",
+          "word": "ziarnistość",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "ź/zi": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-61-72-6e-69-73-74-79",
+          "word": "ziarnisty",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-61-72-6e-6b-6f",
+          "word": "ziarnko",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-61-72-6b-61",
+          "word": "zielarka",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-61-72-7a",
+          "word": "zielarz",
+          "categories": [
+            "rz/ż",
+            "ź/zi"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-65",
+          "word": "ziele",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-65-6e-69-107",
+          "word": "zielenić",
+          "categories": [
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-65-6e-69-65-63",
+          "word": "zieleniec",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-65-6e-69-65-107",
+          "word": "zielenieć",
+          "categories": [
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-65-6e-69-6e-61",
+          "word": "zielenina",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-6e-69-6b",
+          "word": "zielnik",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-6f-6e-6b-61",
+          "word": "zielonka",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6c-6f-6e-6f",
+          "word": "zielono",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6d-69-61-6e-69-6e",
+          "word": "ziemianin",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6d-69-73-74-79",
+          "word": "ziemisty",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6d-6e-69-61-6b",
+          "word": "ziemniak",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-08",
+      "name": "Ziemia, zima i zielony świat · 4",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-7a-69-65-6d-6e-69-61-6b-69",
+          "word": "ziemniaki",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-6d-6e-79",
+          "word": "ziemny",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-77-61-107",
+          "word": "ziewać",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-77-61-6e-69-65",
+          "word": "ziewanie",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-65-77-6e-69-119-63-69-65",
+          "word": "ziewnięcie",
+          "categories": [
+            "ć/ci",
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ź/zi": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6e-69-63-61",
+          "word": "zimnica",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6e-6f",
+          "word": "zimno",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6e-79",
+          "word": "zimny",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6f-77-61-107",
+          "word": "zimować",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6f-77-61-6e-69-65",
+          "word": "zimowanie",
+          "categories": [
+            "ź/zi",
+            "ń/ni"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6d-6f-77-79",
+          "word": "zimowy",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6f-142-6f-77-79",
+          "word": "ziołowy",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-6f-6e-105-107",
+          "word": "zionąć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-f3-142-6b-61",
+          "word": "ziółka",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-69-f3-142-6b-6f",
+          "word": "ziółko",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-77-69-65-7a-69-65",
+          "word": "zwiezie",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-77-69-65-17a-107",
+          "word": "zwieźć",
+          "categories": [
+            "ć/ci",
+            "ź/zi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-64-17a-62-142-6f",
+          "word": "źdźbło",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-64-17a-62-142-6f-77-79",
+          "word": "źdźbłowy",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-72-65-62-61-63-7a-65-6b",
+          "word": "źrebaczek",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-72-65-62-69-119",
+          "word": "źrebię",
+          "categories": [
+            "ź/zi"
+          ],
+          "levels": {
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-72-f3-64-65-142-6b-6f",
+          "word": "źródełko",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-72-f3-64-6c-61-6e-79",
+          "word": "źródlany",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-17a-72-f3-64-142-6f-77-79",
+          "word": "źródłowy",
+          "categories": [
+            "u/ó",
+            "ź/zi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ź/zi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-09",
+      "name": "Dni, dźwięki i opowieści · 1",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-62-75-64-7a-69-107",
+          "word": "budzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-63-68-6f-64-7a-69-6b",
+          "word": "chodzik",
+          "categories": [
+            "ch/h",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ch/h": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-6f-63-68-6f-64-7a-69-107",
+          "word": "dochodzić",
+          "categories": [
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ch/h": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-64-75-6e-69-6f",
+          "word": "dziadunio",
+          "categories": [
+            "u/ó",
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ń/ni": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-64-7a-69-6f",
+          "word": "dziadzio",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-64-7a-69-75-15b",
+          "word": "dziadziuś",
+          "categories": [
+            "u/ó",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142",
+          "word": "dział",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142-61-63-7a",
+          "word": "działacz",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142-61-107",
+          "word": "działać",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142-61-6c-6e-6f-15b-107",
+          "word": "działalność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142-6b-61",
+          "word": "działka",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-61-142-6f-77-79",
+          "word": "działowy",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-63-69",
+          "word": "dzieci",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-63-69-61-6b",
+          "word": "dzieciak",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-63-69-6e-61",
+          "word": "dziecina",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-63-69-144-73-74-77-6f",
+          "word": "dzieciństwo",
+          "categories": [
+            "ć/ci",
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ń/ni": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-64-7a-69-63",
+          "word": "dziedzic",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6a-65",
+          "word": "dzieje",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6a-6f-77-79",
+          "word": "dziejowy",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6c-69-107",
+          "word": "dzielić",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6c-6e-6f-15b-107",
+          "word": "dzielność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6c-6e-79",
+          "word": "dzielny",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-142-6f",
+          "word": "dzieło",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-6e-6e-69-6b",
+          "word": "dziennik",
+          "categories": [
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ń/ni": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-10",
+      "name": "Dni, dźwięki i opowieści · 2",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-64-7a-69-65-6e-6e-79",
+          "word": "dzienny",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-144",
+          "word": "dzień",
+          "categories": [
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ń/ni": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-105-74-6b-61",
+          "word": "dziesiątka",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-105-74-79",
+          "word": "dziesiąty",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-119-63-69-6f-6c-61-74-65-6b",
+          "word": "dziesięciolatek",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-119-63-69-6f-6c-65-63-69-65",
+          "word": "dziesięciolecie",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-119-63-69-6f-6c-65-74-6e-69",
+          "word": "dziesięcioletni",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "ń/ni": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-73-69-119-107",
+          "word": "dziesięć",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-77-69-119-63-69-6f-6c-65-74-6e-69",
+          "word": "dziewięcioletni",
+          "categories": [
+            "ć/ci",
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ń/ni": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-65-77-69-119-107-64-7a-69-65-73-69-105-74",
+          "word": "dziewięćdziesiąt",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-6b-69",
+          "word": "dziki",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-6b-6f-15b-107",
+          "word": "dzikość",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-6f-62-61-107",
+          "word": "dziobać",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-6f-62-61-6b",
+          "word": "dziobak",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-f3-62",
+          "word": "dziób",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-f3-62-65-6b",
+          "word": "dzióbek",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-75-70-6c-61",
+          "word": "dziupla",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-75-72-6b-61",
+          "word": "dziurka",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-77-6e-69-65",
+          "word": "dziwnie",
+          "categories": [
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ń/ni": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-7a-69-77-6e-79",
+          "word": "dziwny",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-17a-77-69-119-63-7a-6e-6f-15b-107",
+          "word": "dźwięczność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-17a-77-69-119-6b-6f-6e-61-15b-6c-61-64-6f-77-63-7a-79",
+          "word": "dźwiękonaśladowczy",
+          "categories": [
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-17a-77-69-67-61-107",
+          "word": "dźwigać",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-6f-64-7a-69-6e-61",
+          "word": "godzina",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-11",
+      "name": "Dni, dźwięki i opowieści · 3",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-67-6f-17a-64-7a-69-6b",
+          "word": "goździk",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-67-6f-17a-64-7a-69-6b-6f-77-79",
+          "word": "goździkowy",
+          "categories": [
+            "ź/zi",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ź/zi": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-72-61-77-119-64-17a",
+          "word": "krawędź",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-142-61-62-119-64-7a-69",
+          "word": "łabędzi",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-142-61-62-119-64-17a",
+          "word": "łabędź",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-142-f3-64-17a",
+          "word": "łódź",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6e-75-64-7a-69-107",
+          "word": "nudzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-62-75-64-7a-69-107",
+          "word": "obudzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-64-64-7a-69-61-142",
+          "word": "oddział",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-64-70-6f-77-69-65-64-7a-69-61-6c-6e-6f-15b-107",
+          "word": "odpowiedzialność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-64-7a-69-61-142",
+          "word": "podział",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-64-7a-69-65-6c-6e-6f-15b-107",
+          "word": "podzielność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-64-7a-69-77",
+          "word": "podziw",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-61-77-64-7a-69-77-6f-15b-107",
+          "word": "prawdziwość",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-7a-65-63-68-6f-64-7a-69-107",
+          "word": "przechodzić",
+          "categories": [
+            "rz/ż",
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "rz/ż": 2,
+            "ch/h": 2,
+            "ć/ci": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-7a-79-63-68-6f-64-7a-69-107",
+          "word": "przychodzić",
+          "categories": [
+            "rz/ż",
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "rz/ż": 2,
+            "ch/h": 2,
+            "ć/ci": 2,
+            "dź/dzi": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-61-64-7a-69-107",
+          "word": "radzić",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-64-7a-69-63",
+          "word": "rodzic",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-64-7a-69-107",
+          "word": "rodzić",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-64-7a-69-6e-61",
+          "word": "rodzina",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-7a-64-7a-69-61-142",
+          "word": "rozdział",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-61-64-7a-69-107",
+          "word": "sadzić",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-73-63-68-6f-64-7a-69-107",
+          "word": "schodzić",
+          "categories": [
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ch/h": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-64-7a-69-61-142",
+          "word": "udział",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-12",
+      "name": "Dni, dźwięki i opowieści · 4",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-75-64-17a-77-69-67",
+          "word": "udźwig",
+          "categories": [
+            "u/ó",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-72-6f-64-7a-69-107",
+          "word": "urodzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-63-68-6f-64-7a-69-107",
+          "word": "wchodzić",
+          "categories": [
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ch/h": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-79-63-68-6f-64-7a-69-107",
+          "word": "wychodzić",
+          "categories": [
+            "ch/h",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ch/h": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-79-64-7a-69-61-142",
+          "word": "wydział",
+          "categories": [
+            "dź/dzi"
+          ],
+          "levels": {
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-62-75-64-7a-69-107",
+          "word": "zbudzić",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-64-7a-69-77-69-107",
+          "word": "zdziwić",
+          "categories": [
+            "ć/ci",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    },
+    {
+      "id": "batch-20261004-13",
+      "name": "Słowa i ich rodziny · 1",
+      "stage": "proposed",
+      "words": [
+        {
+          "id": "word-63-69-65-72-144",
+          "word": "cierń",
+          "categories": [
+            "ć/ci",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-64-6f-6e-69-65-15b-107",
+          "word": "donieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6a-65-73-69-65-6e-69-105",
+          "word": "jesienią",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6a-65-73-69-65-144",
+          "word": "jesień",
+          "categories": [
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6b-6f-6e-69-65-63-7a-6e-6f-15b-107",
+          "word": "konieczność",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 2,
+            "ś/si": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6c-65-6e-69-75-63-68-6f-77-61-107",
+          "word": "leniuchować",
+          "categories": [
+            "u/ó",
+            "ch/h",
+            "ć/ci",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 2,
+            "ch/h": 2,
+            "ć/ci": 2,
+            "ń/ni": 2
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6e-69-107",
+          "word": "nić",
+          "categories": [
+            "ć/ci",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-6f-64-6e-69-65-15b-107",
+          "word": "odnieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-69-65-72-15b-63-69-65-144",
+          "word": "pierścień",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-64-6e-69-65-15b-107",
+          "word": "podnieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-6f-6e-69-65-15b-107",
+          "word": "ponieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-70-72-7a-65-6e-69-65-15b-107",
+          "word": "przenieść",
+          "categories": [
+            "rz/ż",
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "rz/ż": 1,
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-72-6f-7a-6e-69-65-15b-107",
+          "word": "roznieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-74-79-64-7a-69-65-144",
+          "word": "tydzień",
+          "categories": [
+            "ń/ni",
+            "dź/dzi"
+          ],
+          "levels": {
+            "ń/ni": 1,
+            "dź/dzi": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-75-6e-69-65-15b-107",
+          "word": "unieść",
+          "categories": [
+            "u/ó",
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "u/ó": 1,
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-77-79-6e-69-65-15b-107",
+          "word": "wynieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        },
+        {
+          "id": "word-7a-61-6e-69-65-15b-107",
+          "word": "zanieść",
+          "categories": [
+            "ć/ci",
+            "ś/si",
+            "ń/ni"
+          ],
+          "levels": {
+            "ć/ci": 1,
+            "ś/si": 1,
+            "ń/ni": 1
+          },
+          "selected": true,
+          "assetPath": null
+        }
+      ]
+    }
+  ]
+}

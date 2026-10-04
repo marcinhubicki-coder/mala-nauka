@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-04T19:43:20.338Z",
+  "date": "2026-10-04T20:53:35.076Z",
   "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
   "cleanup": {
     "removedAssets": 28,
@@ -1272,7 +1272,7 @@
     ]
   },
   "cssBytes": 433023,
-  "jsBytes": 707797,
+  "jsBytes": 717017,
   "largeFiles": [
     {
       "path": "app.js",
@@ -1292,7 +1292,7 @@
     },
     {
       "path": "spelling/bubble.mjs",
-      "bytes": 37212
+      "bytes": 37406
     },
     {
       "path": "sw.js",

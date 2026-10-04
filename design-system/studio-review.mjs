@@ -1,9 +1,13 @@
+import {ATOMS} from '../shared/component-recipes.mjs';
 import {html,FIELD_LABELS,componentName,MODE_NAMES} from './preview-model.mjs';
 import {FONT_NAMES} from './model.mjs';
 import {resolveStudioMerge} from './merge-model.mjs';
 
 export function changeLabel(row,registry,config,rules,kind='config'){
   const keys=Array.isArray(row.path)?row.path:String(row.path).split('.');
+  if(kind==='batches')return 'Kolejka batchy · wybór słów, grafiki i poziomy';
+  if(keys[0]==='recipes')return `Globalny przepis · ${ATOMS[keys[1]]?.name||'Atomy'}`;
+  if(keys[0]==='blueprints')return 'Biblioteka próbnych elementów';
   if(kind==='rules'){
     if(keys[0]==='rules')return `${rules.rules[keys[1]]?.title||'Zasada'} · ${keys[2]==='title'?'Nazwa':keys[2]==='explanation'?'Treść':'Wspólna zasada'}`;
     if(keys[0]==='assignments')return `Powiązania zasad: ${keys[1]}`;
@@ -25,7 +29,7 @@ export function valueText(value){
   if(typeof value==='string')return FONT_NAMES[value]||({none:'Bez animacji',fade:'Łagodne pojawienie',slide:'Przesunięcie z prawej',ease:'Łagodne','ease-out':'Zwalnia na końcu','ease-in-out':'Łagodny początek i koniec',linear:'Stała prędkość'})[value]||value;
   if(typeof value==='number')return value.toLocaleString('pl-PL');
   if(value?.path)return value.path.split('/').at(-1);
-  if(Array.isArray(value))return value.join(', ')||'Brak';
+  if(Array.isArray(value))return value.length&&typeof value[0]==='object'?`${value.length} wpisów w zestawie`:value.join(', ')||'Brak';
   return 'Zmieniony zestaw ustawień';
 }
 export function reviewRows(rows,registry,config,rules,kind='config'){

@@ -130,6 +130,7 @@ export function createBubble(host, options={}) {
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
+  let frameRate=b.frameRate||24;
   let tuning = normalizeTuning(options.tuning);
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
@@ -317,7 +318,7 @@ export function createBubble(host, options={}) {
   }
   applyHeavy();
 
-  let frame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, paused = false, destroyed = false;
+  let frame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, nextDraw=0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
 
   const fmt=value=>value.toFixed(2);
@@ -497,14 +498,15 @@ export function createBubble(host, options={}) {
   function loop(now) {
     frame = 0;
     if (destroyed || options.motion === false || paused || document.hidden || reduced.matches) { last = 0; return; }
-    if (!last || now-last >= 1000/24) {
+    if (!last || now>=nextDraw) {
+      const period=1000/frameRate;nextDraw=now+period-(nextDraw?Math.min(period,Math.max(0,now-nextDraw)):0);
       elapsed += last ? Math.min((now-last)/1000,.1) * tuning.speed : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);
   }
   function syncMotion() {
-    cancelAnimationFrame(frame); frame=0; last=0;
+    cancelAnimationFrame(frame); frame=0; last=0; nextDraw=0;
     host.classList.toggle('soap-still', options.motion === false || paused || document.hidden || reduced.matches);
     if (!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches) frame=requestAnimationFrame(loop);
   }
@@ -702,7 +704,7 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
-  const designChanged=event=>{const e=event.detail?.effects||DEFAULT_EFFECTS;setTuning({speed:e.bubble.speed});setChaos({amplitude:e.bubble.amplitude,orbit:e.bubble.orbit});setTransition({duration:e.bubble.transitionDuration/1000,blur:e.bubble.transitionBlur,sparks:Math.min(e.bubble.transitionSparks,e.particleBudget)});};
+  const designChanged=event=>{const e=event.detail?.effects||DEFAULT_EFFECTS;frameRate=e.bubble.frameRate||24;setTuning({speed:e.bubble.speed});setChaos({amplitude:e.bubble.amplitude,orbit:e.bubble.orbit});setTransition({duration:e.bubble.transitionDuration/1000,blur:e.bubble.transitionBlur,sparks:Math.min(e.bubble.transitionSparks,e.particleBudget)});};
   document.addEventListener('mala-nauka:design',designChanged);
   return {
     preloadScene,

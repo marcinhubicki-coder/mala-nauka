@@ -18,7 +18,7 @@
     "tests": 65,
     "consumerBuilds": 6,
     "deploymentState": "READY",
-    "canonicalCommitTested": "13269e22f8c92e350dbd9007d155671ff96d4bca",
+    "canonicalCommitTested": "82bea29ecfe38368ca35d5a7c8f775543e60488a",
     "consumerSourceCommitTested": "13269e22f8c92e350dbd9007d155671ff96d4bca"
   },
   "consumerCommits": {

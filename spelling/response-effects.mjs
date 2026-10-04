@@ -29,7 +29,8 @@ export function playResponseEffect(host,{config=DEFAULT_EFFECTS,preset=config.pr
   for(let i=0;i<budget.particles;i++){
    const node=document.createElement('i'),angle=2*Math.PI*i/Math.max(1,budget.particles),spread=preset.spread*(.65+(i%4)*.12),x=Math.cos(angle)*spread,y=Math.sin(angle)*spread;
    const style=preset.style,size=style==='halo'||style==='ripple'?30:style==='comet'?14:8;
-   Object.assign(node.style,{position:'absolute',left:'50%',top:style==='fountain'?'78%':'50%',width:size+'px',height:(style==='confetti'?12:size)+'px',background:style==='halo'||style==='ripple'?'transparent':preset.color,border:style==='halo'||style==='ripple'?`2px solid ${preset.color}`:'0',borderRadius:['star','diamond','confetti'].includes(style)?'2px':'50%',opacity:'0',margin:`-${size/2}px`,transformOrigin:'center'});
+   Object.assign(node.style,{position:'absolute',left:'50%',top:style==='fountain'?'78%':'50%',width:size+'px',height:(style==='confetti'?12:size)+'px',background:style==='halo'||style==='ripple'?'transparent':preset.color,border:style==='halo'||style==='ripple'?`2px solid ${preset.color}`:'0',borderRadius:style==='petal'?'80% 0 80% 0':['star','diamond','confetti'].includes(style)?'2px':'50%',opacity:'0',margin:`-${size/2}px`,transformOrigin:'center'});
+   if(style==='comet'){node.style.width='20px';node.style.height='5px';node.style.background=`linear-gradient(90deg,transparent,${preset.color})`;}
    if(style==='star')node.style.clipPath='polygon(50% 0,61% 35%,98% 35%,68% 58%,79% 94%,50% 72%,21% 94%,32% 58%,2% 35%,39% 35%)';
    layer.append(node);
    const from=style==='orbit'?`translate(${x*.4}px,${y*.4}px)`:'translate(0,0)';
@@ -38,7 +39,8 @@ export function playResponseEffect(host,{config=DEFAULT_EFFECTS,preset=config.pr
     style==='ripple'||style==='halo'?`translate(${x*.45}px,${y*.45}px) scale(${2+i%3})`:
     style==='comet'?`translate(${x}px,${y}px) rotate(${angle*180/Math.PI}deg) scaleX(.25)`:
     style==='diamond'?`translate(${x}px,${y}px) rotate(45deg)`:`translate(${x}px,${y}px) rotate(${i*21}deg)`;
-   animate(node,[{opacity:0,transform:from+' scale(.4)'},{opacity:1,offset:.18},{opacity:0,transform:to}],{duration:duration-(i%3)*35,delay:(i%4)*20,easing:'cubic-bezier(.16,.65,.25,1)'});
+   const orbitMid=style==='orbit'?{opacity:1,transform:`translate(${Math.cos(angle+1)*spread}px,${Math.sin(angle+1)*spread}px)`,offset:.55}:{opacity:1,offset:.18};
+   animate(node,[{opacity:0,transform:from+' scale(.4)'},orbitMid,{opacity:0,transform:to}],{duration:duration-(i%3)*35,delay:(i%4)*20,easing:'cubic-bezier(.16,.65,.25,1)'});
   }
  }
  const setupMs=performance.now()-start;

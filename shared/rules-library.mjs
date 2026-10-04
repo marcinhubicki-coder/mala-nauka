@@ -9,7 +9,10 @@ export function orthographyFamilies(word){
 }
 export function validateRules(value){
   if(value?.schemaVersion!==1||!Number.isInteger(value.revision)||value.revision<1||!value.rules||!value.assignments)throw Error('Nieprawidłowa biblioteka zasad.');
+  const defaults=new Set();
   for(const [id,rule]of Object.entries(value.rules)){
+    if(rule.poolDefault!==undefined&&typeof rule.poolDefault!=='boolean')throw Error('Nieprawidłowa zasada wspólna dla puli.');
+    if(rule.poolDefault){if(defaults.has(rule.category))throw Error('Pula ma dwie ogólne zasady. Scal wspólną treść.');defaults.add(rule.category);}
     if(!/^rule-[a-f0-9]{12}$/.test(id)||!RULE_CATEGORIES.includes(rule.category)||!['exchange','pattern','exception','memory'].includes(rule.type)||typeof rule.edited!=='boolean')throw Error('Nieprawidłowa zasada.');
     for(const [key,max]of [['title',120],['explanation',600]])if(typeof rule[key]!=='string'||!rule[key].trim()||rule[key].length>max||/[<>\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(rule[key]))throw Error('Uzupełnij poprawną nazwę i treść zasady (do 600 znaków).');
   }

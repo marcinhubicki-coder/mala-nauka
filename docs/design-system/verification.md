@@ -79,3 +79,11 @@ Symulator renderuje rzeczywistą aplikację w 390 × 844. DPR 3 określa cel gra
 6. Po pełnym pobraniu uruchom instalowaną PWA offline.
 
 Nie wykonano merge do `main` ani publikacji produkcyjnej.
+
+## Rozgrywka i efekty — 4 października 2026
+
+1. **Dane i mechanika:** sprawdzono 455 unikalnych słów, 162 wielokategoryjne, brak duplikatów i brakujących przypisań grafiki. Test przechodzi każdą kategorię oraz pulę mieszaną do wyczerpania, bez ponownego użycia słowa. „Brzuch” ma trzy prawidłowe luki i jeden adres ilustracji. Zgodne duplikaty są scalane, sprzeczne poziomy odrzucane. Dodatkowa reguła grupy jest propagowana z jednej treści.
+2. **Desktop i edycja:** rzeczywisty podgląd wykazał konflikt rozpoznawania sekcji edytora przejść i efektów. Poprawiono zakres obu kontrolerów. Sprawdzono zmianę czasu 850 → 1200 ms, aktualizację budżetu, znaczniki zapisanej wartości, combo z przycięciem do 36 drobinek, pętlę i zatrzymanie. Krótkie próbki wydajności rozbudowano o zbieranie klatek w pętli, zamiast zgadywać wynik. Przeliczenie próbnej rundy 80 − 15 − 10 + 4 = 59 punktów i pusta runda = 0 zostały potwierdzone w UI.
+3. **Telefon i relacje:** sprawdzono edytor w ramce 390 × 844 oraz 360 × 800. Brak przewijania strony na boki, przyciski +/− mają 44 × 44 px. Zmiana Gwiazdy 1050 → 1100 ms aktualizuje szkic i budżet; Cofnij przywraca zapis. Przejście z podglądu do ustawień zatrzymuje animację. Uproszczono ustawienia błędu, dodano komunikat ładowania, automatyczne otwarcie podglądu po wyborze zestawu i kontrolę rozbieżnych progów combo. Ustawienia bańki objęły również ekrany zasad.
+
+To próby w Chrome, w tym prawdziwe wąskie ramki CSS, a nie pomiar fizycznego iPhone’a lub Safari. Miernik nie deklaruje poboru mocy w watach ani rzeczywistego czasu GPU. Ograniczony ruch jest obsługiwany w kodzie; fizyczna zmiana ustawienia iOS wymaga próby na urządzeniu.

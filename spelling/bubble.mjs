@@ -1,3 +1,4 @@
+import {DEFAULT_EFFECTS} from './effect-model.mjs';
 let instance = 0;
 const TAU = Math.PI * 2;
 
@@ -124,6 +125,8 @@ function normalizeTransition(input={}){
 }
 
 export function createBubble(host, options={}) {
+  const design=globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS,b=design.bubble;
+  options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,design.particleBudget),...options.transition}};
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
@@ -699,6 +702,8 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
+  const designChanged=event=>{const e=event.detail?.effects||DEFAULT_EFFECTS;setTuning({speed:e.bubble.speed});setChaos({amplitude:e.bubble.amplitude,orbit:e.bubble.orbit});setTransition({duration:e.bubble.transitionDuration/1000,blur:e.bubble.transitionBlur,sparks:Math.min(e.bubble.transitionSparks,e.particleBudget)});};
+  document.addEventListener('mala-nauka:design',designChanged);
   return {
     preloadScene,
     transitionToScene,
@@ -718,6 +723,7 @@ export function createBubble(host, options={}) {
     },
     destroy() {
       destroyed=true; loadToken++; cancelAnimationFrame(frame);
+      document.removeEventListener('mala-nauka:design',designChanged);
       transitions.forEach(animation=>animation.cancel()); transitions=[];
       document.removeEventListener('visibilitychange',syncMotion);
       reduced.removeEventListener('change',motionPreferenceChanged);

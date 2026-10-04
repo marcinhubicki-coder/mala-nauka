@@ -31,3 +31,5 @@ Pełna instrukcja bez wiedzy o kodzie: **[Praca wizualna](visual-guide.md)**.
 | [Weryfikacja](verification.md) | Testy, przegląd wizualny, granice symulacji |
 
 Źródłami prawdy są `config.json`, `registry.json`, `assets.json` i `rules.json`. Dokumentacja wyjaśnia kontrakt; nie tworzy drugiej kopii jego wartości.
+
+Pule słów, dziesięć efektów, bańka, rzeczywiste ograniczenia pomiaru wydajności i naliczanie punktów: [przewodnik rozgrywki](gameplay-guide.md).

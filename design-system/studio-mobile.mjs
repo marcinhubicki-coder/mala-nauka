@@ -86,7 +86,7 @@ function sync(){
   const name=workspace.querySelector('#inspector h2')?.textContent;
   const view=workspace.querySelector('#view-select')?.selectedOptions[0]?.textContent;
   const comparing=workspace.querySelector('.preview-gallery.comparison');
-  const context=editor==='components'?[name,comparing?'przesuń ekrany palcem':view].filter(Boolean).join(' · '):editor==='motion'?'Przejścia między ekranami':editor==='effects'?'Efekty odpowiedzi i bańka':'';
+  const context=editor==='components'?[name,comparing?'przesuń ekrany palcem':view].filter(Boolean).join(' · '):editor==='motion'?'Przejścia między ekranami':editor==='effects'?['Efekty',workspace.querySelector('#play-inspector h2')?.textContent].filter(Boolean).join(' · '):'';
   const label=document.getElementById('mobile-editor-context');if(label.textContent!==context)label.textContent=context||'';
   const connection=document.getElementById('connect-git').textContent;
   if(document.getElementById('mobile-connect-git').textContent!==connection)document.getElementById('mobile-connect-git').textContent=connection;
@@ -106,7 +106,7 @@ dock.addEventListener('click',event=>{const button=event.target.closest('[data-m
 workspace.addEventListener('click',event=>{
   if(!mobile.matches)return;
   const button=event.target.closest('button');if(!button)return;
-  if(button.matches('[data-component],[data-open-view],[data-preview-action],[data-layer-select],#start-compare'))requestAnimationFrame(()=>setPane('preview'));
+  if(button.matches('[data-component],[data-open-view],[data-preview-action],[data-layer-select],#start-compare,[data-effect-id]'))requestAnimationFrame(()=>setPane('preview'));
   if(button.matches('[data-active-view]'))requestAnimationFrame(()=>setPane('edit'));
 },true);
 window.addEventListener('message',event=>{

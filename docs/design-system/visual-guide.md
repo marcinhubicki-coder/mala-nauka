@@ -46,7 +46,7 @@ To ustawienia chwilowe podglądu; nie są zapisywane do wspólnego wyglądu. **Z
 3. Otwórz dwa powiązane słowa i sprawdź wynik. Przykłady, formy i źródła poszczególnych słów pozostają zachowane.
 4. Zapisz commit, aby używały tego pozostałe branche.
 
-Biblioteka ma **41 zasad i 455 przypisań**. Dotychczasowe wyjaśnienia pozostają zachowane do świadomej edycji wspólnej zasady. W studio nie edytujesz osobnego wyjaśnienia pojedynczego słowa.
+Biblioteka ma **49 zasad i 455 przypisań** (41 dotychczasowych i 8 ogólnych dla dodatkowych pul). Dotychczasowe wyjaśnienia pozostają zachowane do świadomej edycji wspólnej zasady. W studio nie edytujesz osobnego wyjaśnienia pojedynczego słowa.
 
 Słowo może mieć wiele wykrytych grup liter i dodatkowych powiązań z zasadami. Konkretna odpowiedź ćwiczona w grze nadal ma jedną zasadę główną. **Powiąż z kolejną zasadą** dodaje relację, a nie osobną treść.
 

@@ -194,7 +194,11 @@ function wizard() {
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
  <fieldset><legend><span class="step-dot">2</span>${selectedMode==='reading'?'Co czytamy?':'Wybierz poziom'}</legend><div class="choices levels ${selectedMode==='spelling'?'four':''}">${mode.levels.map((label,index)=>{const value=selectedMode==='spelling'?index:index+1;return `<label class="choice"><input type="radio" name="difficulty" value="${value}" ${config.difficulty===value?'checked':''}><span>${label}</span></label>`;}).join('')}</div></fieldset>
  <fieldset><legend><span class="step-dot">3</span>Ile mamy czasu?</legend><div class="choices four">${DURATIONS.map(d=>`<label class="choice"><input type="radio" name="duration" value="${d}" ${config.duration===d?'checked':''}><span>${minutes(d)}</span></label>`).join('')}</div></fieldset></section>
- <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;
+ <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
+}
+function spellingPoolNote(){
+ if(selectedMode!=='spelling'||view!=='wizard')return;const note=root.querySelector('.wizard-note');if(!note)return;const c=configs.spelling,size=createSource('spelling',c,words).length;
+ note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`:'Każde słowo raz w rundzie. Po pomyłce czas czeka.';
 }
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
@@ -542,7 +546,7 @@ root.addEventListener('change',e=>{
  if(view==='settings'&&e.target.id==='backup-file'){void previewBackup(e.target.files?.[0]);e.target.value='';return;}
  if(view==='player-pin'&&e.target.name==='profilePinMode'){setPinMode(e.target.value==='pin'?0:1);return;}
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);spellingPoolNote();
   // Some approved spelling categories have no records at a given difficulty.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
   const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wybierz inny zestaw dyktanda.':'';root.querySelector('.start-button').disabled=empty;

@@ -1,4 +1,5 @@
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
+import {COMPONENT_IDS} from './preview-model.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);
@@ -28,6 +29,10 @@ export function validateConfig(config) {
   if(Object.keys(config.typography).some(role=>!['body','ui','display','flag'].includes(role)))throw Error('Nieznana rola fontu.');
   for (const role of ['body','ui','display','flag']) if (!FONT_IDS.includes(config.typography?.[role])) throw Error(`Nieprawidłowy font: ${role}.`);
   if(!Number.isInteger(config.revision)||config.revision<1)throw Error('Nieprawidłowa rewizja.');
+  if(config.componentNames){
+    safeKeys(config.componentNames);
+    for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
+  }
   validateTokens(config.tokens);
   safeKeys(config.themes);
   for(const mode of MODES){const theme=config.themes[mode];safeKeys(theme);if(THEME_FIELDS.some(key=>!theme[key]))throw Error(`Niepełna paleta: ${mode}.`);for(const [key,value]of Object.entries(theme))if(!THEME_FIELDS.includes(key)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value))throw Error(`Nieprawidłowy kolor: ${mode}.${key}.`);}
@@ -62,6 +67,7 @@ export function changedViews(changes, registry) {
     if (change.path.startsWith('overrides.')) return change.path.split('.')[1] === view.id;
     if (change.path.startsWith('themes.')) return change.path.split('.')[1] === view.mode;
     if (change.path.startsWith('typography.')) return true;
+    if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);
     const component = change.path.split('.')[1];
     return view.components.some(id => registry.components.find(item => item.id === id)?.tokenGroup === component);
   }));

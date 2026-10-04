@@ -1,3 +1,5 @@
+import {StudioPreview} from './studio-preview.mjs';
+import {componentName,effectiveValue} from './preview-model.mjs';
 import {contentDraft} from './draft-store.mjs';
 import {validateAssets} from './validation.mjs';
 import {clone,get,set,diff,changedViews,validateConfig,FONT_IDS,FONT_NAMES,FONT_FILES} from './model.mjs';
@@ -36,29 +38,31 @@ let toastTimer;
 function toast(message){const element=document.getElementById('toast');element.textContent=message;element.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>element.classList.remove('visible'),4500);}
 function checkpoint(){undo.push(clone(config));if(undo.length>50)undo.shift();redo=[];}
 function header(){const count=changes().length+stagedCount();document.getElementById('page-title').textContent=titleFor(page);document.getElementById('draft-status').textContent=count?`${count} zmian w szkicu`:'Zapisana wersja';document.getElementById('change-count').textContent=count||'';document.getElementById('connect-git').textContent=git.connected?'GitHub połączony':'Połącz GitHub';document.getElementById('save-git').disabled=busy||!count;}
-function sendDesign(){previewAssets(Object.fromEntries(objectURLs));applyDesign(config);configureAssets(assets,new URL('../',import.meta.url).href);frame()?.contentWindow?.postMessage({channel:'mala-nauka-studio',type:'design',config,assets,previewURLs:Object.fromEntries(objectURLs)},location.origin);header();stash();}
+function sendDesign(){previewAssets(Object.fromEntries(objectURLs));applyDesign(config);configureAssets(assets,new URL('../',import.meta.url).href);preview.sendDesign();header();stash();}
 function navigate(next){page=next;document.querySelectorAll('#navigation button').forEach(button=>button.classList.toggle('active',button.dataset.page===page));header();render();}
 document.getElementById('navigation').innerHTML=nav.map(([id,icon,label])=>`<button type="button" data-page="${id}" class="${id===page?'active':''}" title="${label}"><span class="nav-icon" aria-hidden="true">${icon}</span><span class="nav-text">${label}</span></button>`).join('');
 document.getElementById('navigation').addEventListener('click',event=>{const button=event.target.closest('[data-page]');if(button)navigate(button.dataset.page);});
-const fieldLabels={canvasWidth:'Szerokość płótna',sidePadding:'Padding boków',safeTop:'Górna bezpieczna strefa',safeBottom:'Dolna bezpieczna strefa',sectionGap:'Odstęp sekcji',headerHeight:'Wysokość nagłówka',headerGap:'Odstęp w nagłówku',headerBottom:'Odstęp pod nagłówkiem',missionHeight:'Wysokość misji',missionBottom:'Odstęp pod misją',height:'Wysokość',compactHeight:'Wysokość odpowiedzi kompaktowej',compactFontSize:'Tekst odpowiedzi kompaktowej',radius:'Zaokrąglenie',paddingX:'Padding poziomy',paddingTop:'Padding górny',paddingBottom:'Padding dolny',padding:'Padding',borderWidth:'Grubość obrysu',inset:'Inset jelly',labelSize:'Rozmiar etykiety',labelWeight:'Waga etykiety',trackShadowY:'Przesunięcie cienia',trackShadowBlur:'Rozmycie cienia',trackShadowOpacity:'Krycie cienia',duration:'Czas animacji',inkDelay:'Opóźnienie koloru tekstu',inkDuration:'Animacja koloru tekstu',width:'Szerokość',widthPercent:'Szerokość grupy',fontSize:'Rozmiar tekstu',shadowY:'Przesunięcie podstawy',shadowBlur:'Rozmycie podstawy',gap:'Odstęp',handleSize:'Rozmiar uchwytu',threshold:'Próg zakończenia',maxHeightPercent:'Maksymalna wysokość',avatarSize:'Rozmiar avatara',size:'Rozmiar pucharu'};
-function rangeFor(group,key){
- if(key==='canvasWidth')return[320,480,1,'px'];if(key==='duration')return[0,5000,50,'ms'];if(/Duration|Delay/.test(key))return[0,1500,10,'ms'];if(key==='labelWeight')return[400,950,50,''];if(key==='trackShadowOpacity')return[0,.5,.005,''];if(key==='threshold')return[70,100,1,'%'];if(key==='widthPercent'||key==='maxHeightPercent')return[50,100,1,'%'];if(key==='height'&&group==='jelly')return[28,96,1,'px'];if(key==='height')return[16,120,1,'px'];if(key==='width')return[60,220,1,'px'];if(/Size|size/.test(key))return[8,key==='avatarSize'||key==='size'?180:64,.2,'px'];if(/radius/.test(key))return[4,60,1,'px'];if(/Height/.test(key))return[20,150,1,'px'];if(/Opacity/.test(key))return[0,1,.01,''];return[0,60,.5,'px'];
+const preview=new StudioPreview({
+  workspace,registry,getDesign:()=>({config,assets,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base,
+  onState:state=>{viewId=state.viewId;componentId=state.componentId;scope=state.scope;},notice:message=>toast(message),
+  edit:(path,value)=>{if(lastToken!==path){checkpoint();lastToken=path;}set(config,path,value);sendDesign();},
+  endEdit:()=>{lastToken='';},
+  reset:(group,key,targetScope,targetView)=>{
+    checkpoint();
+    const values=key?{[key]:effectiveValue(base,targetView,group,key,targetScope)}:{...base.tokens[group],...base.overrides?.[targetView]?.[group]};
+    if(targetScope==='view'){
+      for(const [name,value]of Object.entries(values))set(config,`overrides.${targetView}.${group}.${name}`,value);
+    }else config.tokens[group]=key?{...config.tokens[group],...values}:clone(base.tokens[group]);
+    sendDesign();
+  },
+  rename:component=>openRename(component)
+});
+function renderComponents(){preview.render();}
+function renderInspector(){preview.renderInspector();}
+function openRename(component){
+  showDialog(`<h2>Nazwa elementu</h2><p>Nazwa pomaga odnaleźć ten sam element w różnych ekranach. Powiązania i działanie pozostają zachowane.</p><form id=rename-form><label class=form-field><span>Twoja nazwa</span><input id=component-name maxlength=60 value='${escape(componentName(component,config))}' required></label><p class=modal-error id=rename-error role=alert></p><div class=modal-actions><button type=button class=quiet-button data-close>Anuluj</button><button class=solid-button type=submit>Zmień nazwę w szkicu</button></div></form>`);
+  modal.querySelector('form').onsubmit=event=>{event.preventDefault();try{const name=modal.querySelector('#component-name').value.trim();const next=clone(config);next.componentNames||={};next.componentNames[component.id]=name;validateConfig(next);checkpoint();config=next;modal.close();sendDesign();preview.renderToolbar();preview.renderInspector();toast('Nazwa zmieniona w szkicu. Powiązania są zachowane.');}catch(error){modal.querySelector('#rename-error').textContent=error.message;}};
 }
-function tokenPath(group,key){return scope==='view'?`overrides.${viewId}.${group}.${key}`:`tokens.${group}.${key}`;}
-function effective(group,key){return(scope==='view'?get(config,`overrides.${viewId}.${group}.${key}`):undefined)??config.tokens[group][key];}
-function control(group,key){const [min,max,step,unit]=rangeFor(group,key),value=effective(group,key);return `<div class="control"><div class="control-top"><label for="range-${group}-${key}">${fieldLabels[key]||key}</label><span class="control-value"><input aria-label="${fieldLabels[key]||key}" type="number" data-token="${group}.${key}" value="${value}" min="${min}" max="${max}" step="${step}"><span>${unit}</span></span></div><input id="range-${group}-${key}" aria-label="${fieldLabels[key]||key}" type="range" data-token="${group}.${key}" min="${min}" max="${max}" step="${step}" value="${value}"><div class="control-limits"><span>${min} ${unit}</span><span>${max} ${unit}</span></div></div>`;}
-function viewURL(view=selectedView()){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id}).toString();return url.href;}
-function phone(){return `<div class="phone-zone"><div class="phone-outer"><div class="phone-inner"><iframe id="device-frame" title="Rzeczywisty ekran Małej Nauki w symulatorze iPhone 13 Pro" src="${escape(viewURL())}"></iframe><div class="phone-notch"></div><div class="phone-status"><span>9:41</span><span class="phone-signals">▮▮▮ ◔ ▰</span></div><div class="phone-homebar"></div></div><span class="phone-note">390 × 844 pt · cel Retina: 1170 × 2532 px</span></div></div>`;}
-function renderComponents(){
- const view=selectedView(),component=selectedComponent(),modeViews=registry.views.filter(row=>row.mode===view.mode||['players','players-empty','home','player-create','player-pin','settings','progress','collection','trophies','categories','rules','sessions'].includes(row.id));
- workspace.innerHTML=`<div class="component-layout"><section class="preview-column"><div class="preview-toolbar"><select id="mode-select" aria-label="Tryb gry">${Object.entries(names).map(([id,name])=>`<option value="${id}" ${id===view.mode?'selected':''}>${name}</option>`).join('')}</select><select id="view-select" aria-label="Widok i stan">${modeViews.map(row=>`<option value="${row.id}" ${row.id===viewId?'selected':''}>${escape(row.name)}</option>`).join('')}</select></div><div class="component-strip">${registry.components.map(row=>`<button type="button" data-component="${row.id}" class="${row.id===componentId?'selected':''}">${escape(row.name)}</button>`).join('')}</div><div class="preview-subbar"><label><input type="checkbox" id="inspect-mode" ${inspecting?'checked':''}>Wskaż komponent na ekranie</label><a href="${escape(viewURL())}" target="_blank" rel="noopener">Otwórz podgląd ↗</a></div>${phone()}</section><aside id="inspector" class="inspector"></aside></div>`;
- renderInspector();frame().addEventListener('load',()=>{sendDesign();sendInspect();});
-}
-function renderInspector(){
- const component=selectedComponent(),group=component.tokenGroup,used=registry.views.filter(view=>view.components.includes(component.id));
- document.getElementById('inspector').innerHTML=`<span class="inspector-kicker">${escape(group)} / komponent</span><h2>${escape(component.name)}</h2><p class="description">${escape(component.description)}</p><label class="scope"><span>Zakres zmiany</span><select id="scope-select"><option value="global" ${scope==='global'?'selected':''}>Wszędzie — wspólny komponent</option><option value="view" ${scope==='view'?'selected':''}>Tylko: ${escape(selectedView().name)}</option></select></label><div class="component-contract"><p>${(component.variants||[]).map(escape).join(' · ')}</p><div class="affected-chips">${(component.states||[]).map(state=>`<span>${escape(state)}</span>`).join('')}</div></div><div>${Object.keys(config.tokens[group]).filter(key=>typeof config.tokens[group][key]==='number').map(key=>control(group,key)).join('')}</div><div class="inspector-bottom"><button class="small-button" id="reset-component">Przywróć zapisane wartości</button><div class="affected"><strong>${used.length} widoków</strong> korzysta z komponentu<div class="affected-chips">${[...new Set(used.map(view=>names[view.mode]))].map(name=>`<span>${name}</span>`).join('')}</div></div><p class="description" id="component-metrics">${selectedView().components.includes(componentId)?'':'Ten komponent występuje w innym widoku. Wybierz jeden z powiązanych ekranów poniżej.'}</p><details class="component-conditions"><summary>Warunki działania</summary><ul>${(component.conditions||[]).map(value=>`<li>${escape(value)}</li>`).join('')}</ul></details><div class="affected-links">${used.map(row=>`<button class="small-button" data-open-view="${row.id}">${escape(row.name)}</button>`).join('')}</div></div>`;
-}
-function sendInspect(){frame()?.contentWindow?.postMessage({channel:'mala-nauka-studio',type:'inspect',enabled:inspecting},location.origin);}
 function renderColors(){
  workspace.innerHTML=`<div class="content-page"><div class="page-intro"><div><h2>Jeden rytm. Pięć kolorów.</h2><p>Tryb zmienia paletę i ilustrację. Wymiary komponentów pozostają wspólne.</p></div><button class="quiet-button" data-open-components>Sprawdź na ekranie</button></div><div class="color-modes">${Object.entries(config.themes).map(([mode,theme])=>`<article class="theme-card"><div class="theme-hero" style="background:linear-gradient(160deg,${theme.light},${theme.accent})">${names[mode]}</div><div class="theme-fields">${[['accent','Główny'],['light','Światło'],['middle','Środek'],['bottom','Głębia'],['border','Obrys'],['lip','Podstawa'],['activeInk','Aktywny tekst'],['idleInk','Nieaktywny tekst']].map(([key,label])=>`<label class="color-field"><span>${label}</span><div><input type="color" aria-label="${names[mode]} ${label}" data-color="themes.${mode}.${key}" value="${theme[key].slice(0,7)}"><input type="text" aria-label="${names[mode]} ${label} HEX" data-color="themes.${mode}.${key}" value="${theme[key]}" maxlength="9"></div></label>`).join('')}</div></article>`).join('')}</div><section class="panel" style="margin-top:24px"><h3>Kolory wspólne</h3><div style="display:flex;gap:24px;flex-wrap:wrap">${Object.entries(config.tokens.color).map(([key,value])=>`<label class="color-field"><span>${key}</span><input type="color" data-color="tokens.color.${key}" value="${value}" aria-label="${key}"></label>`).join('')}</div></section><section class="panel"><h3>Skala odstępów</h3><p style="color:#8292ae;font-size:12px;margin-bottom:15px">Punkty odniesienia dla nowych układów. Konkretne odstępy istniejących komponentów edytujesz w zakładce Komponenty.</p><div style="display:flex;gap:20px;flex-wrap:wrap">${Object.entries(config.tokens.space).map(([key,value])=>`<label class="form-field"><span>${key.toUpperCase()}</span><input type="number" data-space="${key}" value="${value}" min="0" max="64" style="width:70px"></label>`).join('')}</div></section></div>`;
 }
@@ -83,10 +87,6 @@ function renderVersions(){workspace.innerHTML=`<div class="content-page"><div cl
 function render(){({components:renderComponents,colors:renderColors,fonts:renderFonts,assets:renderAssets,views:renderViews,audit:renderAudit,docs:renderDocs,versions:renderVersions}[page]||renderComponents)();}
 workspace.addEventListener('change',event=>{
  const target=event.target;
- if(target.id==='mode-select'){viewId=target.value+'-settings';renderComponents();}
- if(target.id==='view-select'){viewId=target.value;renderComponents();}
- if(target.id==='scope-select'){scope=target.value;renderInspector();}
- if(target.id==='inspect-mode'){inspecting=target.checked;sendInspect();}
  if(target.id==='asset-filter'){assetFilter=target.value;assetPage=0;document.getElementById('word-cards').innerHTML=wordCards();}
  if(target.dataset.fontRole){checkpoint();config.typography[target.dataset.fontRole]=target.value;sendDesign();renderFonts();}
  if(target.dataset.space){checkpoint();config.tokens.space[target.dataset.space]=Math.max(0,Math.min(64,Number(target.value)));sendDesign();}
@@ -95,13 +95,6 @@ workspace.addEventListener('change',event=>{
 let lastToken='';
 workspace.addEventListener('input',event=>{
  const target=event.target;
- if(target.dataset.token){
-  const [group,key]=target.dataset.token.split('.'),[min,max]=rangeFor(group,key),value=Number(target.value);if(!Number.isFinite(value)||value<min||value>max)return;
-  if(lastToken!==target.dataset.token){checkpoint();lastToken=target.dataset.token;}
-  set(config,tokenPath(group,key),value);
-  for(const other of workspace.querySelectorAll(`[data-token="${target.dataset.token}"]`))if(other!==target)other.value=value;
-  sendDesign();
- }
  if(target.dataset.color&&/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(target.value)){if(lastToken!==target.dataset.color){checkpoint();lastToken=target.dataset.color;}set(config,target.dataset.color,target.value);sendDesign();for(const other of workspace.querySelectorAll(`[data-color="${target.dataset.color}"]`))if(other!==target)other.value=target.value;}
  if(target.id==='asset-search'){search=target.value;assetPage=0;document.getElementById('word-cards').innerHTML=wordCards();}
 });
@@ -109,7 +102,7 @@ workspace.addEventListener('pointerup',()=>{lastToken='';});
 workspace.addEventListener('click',async event=>{
  const button=event.target.closest('button,a');if(!button)return;
  if(button.dataset.component){componentId=button.dataset.component;workspace.querySelectorAll('[data-component]').forEach(node=>node.classList.toggle('selected',node.dataset.component===componentId));renderInspector();}
- if(button.dataset.openView){viewId=button.dataset.openView;navigate('components');}
+ if(button.dataset.openView){preview.openView(button.dataset.openView);navigate('components');}
  if(button.dataset.openComponents!==undefined)navigate('components');
  if(button.id==='reset-component'){checkpoint();const group=selectedComponent().tokenGroup;if(scope==='view')delete config.overrides[viewId]?.[group];else config.tokens[group]=clone(base.tokens[group]);sendDesign();renderInspector();}
  if(button.dataset.mergeFont){const from=button.dataset.mergeFont,to=workspace.querySelector(`[data-font-target="${from}"]`).value;checkpoint();for(const role of Object.keys(config.typography))if(config.typography[role]===from)config.typography[role]=to;sendDesign();renderFonts();toast(`Role ${from} korzystają teraz z ${to}. Zapisz commit po sprawdzeniu widoków.`);}
@@ -126,11 +119,6 @@ workspace.addEventListener('click',async event=>{
  if(button.dataset.restoreDraft!==undefined){checkpoint();config=clone(draftHistory[Number(button.dataset.restoreDraft)].config);sendDesign();render();}
 });
 function downloadJSON(value,name){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const link=Object.assign(document.createElement('a'),{href:url,download:name});link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-window.addEventListener('message',event=>{
- if(event.origin!==location.origin||event.source!==frame()?.contentWindow||event.data?.channel!=='mala-nauka-studio')return;
- if(event.data.type==='ready'){sendDesign();sendInspect();}
- if(event.data.type==='select'){componentId=event.data.component;renderInspector();workspace.querySelectorAll('[data-component]').forEach(node=>node.classList.toggle('selected',node.dataset.component===componentId));const metrics=event.data.metrics;document.getElementById('component-metrics').textContent=`Zmierzony element: ${metrics.width.toFixed(1)} × ${metrics.height.toFixed(1)} px · padding ${metrics.padding} · font ${metrics.fontSize}.`;}
-});
 function showDialog(html){modal.innerHTML=html;modal.showModal();modal.querySelector('[data-close]')?.addEventListener('click',()=>modal.close());}
 function openConnect(){
  showDialog(`<h2>Połącz GitHub</h2><p>Zapis trafia na <strong>${BRANCH}</strong> w repozytorium Małej Nauki.</p><p>Użyj fine-grained tokenu z dostępem do tego repozytorium i uprawnieniem <strong>Contents: Read and write</strong>. Token pozostaje w pamięci tej karty.</p><a class="small-button" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Utwórz token na GitHub ↗</a><form id="git-form"><label class="form-field"><span>Token GitHub</span><input id="git-token" type="password" autocomplete="off" spellcheck="false" required placeholder="github_pat_…"></label><p id="git-error" class="modal-error" role="alert"></p><div class="modal-actions"><button type="button" data-close class="quiet-button">Anuluj</button><button type="submit" class="solid-button">Połącz</button></div></form>`);

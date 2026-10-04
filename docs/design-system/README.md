@@ -4,12 +4,12 @@ Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt w
 
 ![Design Studio: wybór po widoku, aktywny stan Kategorie oraz suwaki ze znacznikiem zapisanej wartości](studio-visual-20261004.jpg)
 
-Zrzut pokazuje sprawdzoną wersję wizualną `0bd11b8`; kolejny commit poprawia dopasowanie całej ramki telefonu do dostępnej wysokości. [Zakres weryfikacji](verification.md) opisuje wyniki i ograniczenie dostępu do ostatniego podglądu.
+Zrzut pokazuje wcześniejszy układ desktopowy. Aktualne dopasowanie oraz trzy iteracje interfejsu telefonu opisuje [Zakres weryfikacji](verification.md). [Instrukcja telefonu](mobile-guide.md) pokazuje pracę przez Wybór, Podgląd i Ustawienia.
 
 ## Zacznij od panelu
 
 1. **Komponenty → Według widoku**: wybierz ekran i wskaż element pastylką lub kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.
-2. **Według elementu → Porównaj użycia**: zaznacz ekrany do porównania. Telefony mają 390 × 844 bez skalowania i układają się obok siebie, jeśli jest miejsce.
+2. **Według elementu → Porównaj użycia**: zaznacz ekrany do porównania. Na desktopie telefony mają 390 × 844 bez skalowania i układają się obok siebie, jeśli jest miejsce. Na telefonie podglądy dopasowują się do miejsca i przewijają poziomo.
 3. Zmieniaj suwaki, oglądając znacznik **Ostatnio zapisano**. Wybierz instancję/kontener i przełącz jego stan. **Warstwy i widoczność** pozwalają chwilowo ukryć element z zachowaniem miejsca albo z przesunięciem pozostałych.
 4. **Typografia** pokazuje fonty, role i miejsca użycia. **Baza słów i grafik** pokazuje miniatury, wspólne zasady i powiązania grafik ze słowami; umożliwia ich scalenie.
 5. **Animacje**: wybierz dwa ekrany, ustaw ruch i uruchom Play lub Pętlę z przerwą.
@@ -23,6 +23,7 @@ Pełna instrukcja bez wiedzy o kodzie: **[Praca wizualna](visual-guide.md)**.
 | Dokument | Zakres |
 | --- | --- |
 | [Praca wizualna](visual-guide.md) | Scenariusze dla użytkownika: wybór, porównanie, warstwy, zasady, grafiki i animacje |
+| [Praca na telefonie](mobile-guide.md) | Menu sekcji, trzy panele, sterowanie dotykiem i przenoszenie pracy między urządzeniami |
 | [Zasady i tokeny](principles.md) | Wzorzec ortografii, cień z angielskiego, geometria, warianty, Retina |
 | [Komponenty i widoki](components.md) | Katalog, stany, warunki, relacje, fonty |
 | [Assety i branche](assets-and-branches.md) | Jedna baza, deduplikacja, konsumenci, caching |

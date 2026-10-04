@@ -1,6 +1,26 @@
 # Weryfikacja
 
-Końcowy przegląd wykonano 4 października 2026 dla implementacji `003a135c04089bcb0f906430903afef1881f2f39`. `npm test` zbudował 15 stron i zakończył się wynikiem **57 / 57**. Zmiany powstały w trzech rundach, z kontrolą rzeczywistych ekranów w przeglądarce po każdej rundzie.
+Aktualny przegląd wykonano 4 października 2026 dla interfejsu telefonu `b098d1ef686b0723b94d2d77d92d6ae5e107d7cb`. `npm test` zbudował 15 stron i zakończył się wynikiem **57 / 57**. Build zawiera 922 pliki i 678 kanonicznych assetów. Poniżej są trzy iteracje mobilne oraz wyniki wcześniejszej weryfikacji całego systemu.
+
+## Trzy iteracje telefonu
+
+| Iteracja | Co wykryto i poprawiono | Sprawdzenie w przeglądarce |
+| --- | --- | --- |
+| 1 · Nawigacja | Boczny pasek i równoczesne kolumny ściskały ekran; dodano menu sekcji oraz Wybór / Podgląd / Ustawienia | Menu pokazuje pełne nazwy dziewięciu sekcji. Przełączanie paneli zachowuje wybór i szkic. Pierwszy test wykrył jeszcze galerię o zerowej wysokości i ukryty status szkicu |
+| 2 · Edycja dotykiem | Poprawiono wysokość galerii i status; dodano − / +, duże suwaki, pola oraz okna bazy | 54 → 55 px; podpis i znacznik nadal pokazują zapisane 54. Cofnij wraca do 54. Słowo brzuch i wspólna zasada mieszczą się w oknie z przewijaniem, bez poziomego przepełnienia |
+| 3 · Porównanie i ruch | Dodano przewijanie ekranów palcem; zmniejszono obszar animacji; ukryte podglądy pozostają wyrenderowane i nie przechwytują fokusu | Dwa iframe mają nadal 390 × 844; ramki dopasowują się do telefonu. Przy 360 px ręczne przyciski kończą się na Y 708, nad paskiem na Y 720. Pętla 500 ms przechodzi do Ortografii i zatrzymuje się po wejściu w Ustawienia. Ukryty podgląd zachowuje instancję 322 × 55, a po cofnięciu 322 × 54 oraz aktywne Kategorie |
+
+Sprawdzono viewporty **360 × 800**, **390 × 844** i **430 × 932**. W komponentach, bazie grafik, typografii i relacjach szerokość całej strony nie przekracza szerokości ekranu. Pola typografii mają 16 px i 44 px wysokości; wybór grafiki ma obszar dotyku 44 px. Asset loader otwiera się bez poziomego przepełnienia. Duże tabele przewijają się we własnym panelu.
+
+Poziome przewinięcie po nagłówku przesunęło galerię o 378 px do drugiego ekranu; **Edytuj ten ekran** otworzyło ustawienia `english-settings`. Kontrola desktopu potwierdziła ukrycie mobilnego paska oraz dwa telefony na tej samej wysokości, z `transform: none` i iframe 390 × 844. Zmiany interfejsu są w oddzielnym CSS i adapterze; bazowe pliki edytora, konfiguracji, zasad, assetów i gier pozostają takie jak przed pracami mobilnymi.
+
+Do powtórzenia prób służy `/design-system/phone-preview.html`: osadza rzeczywiste Studio w wybranym viewportcie telefonu. Zwykły `/design-system/` sam dobiera układ. Ten test potwierdza układ CSS i interakcje w Chrome; nie zastępuje próby klawiatury, safe area i Safari na fizycznym iPhonie.
+
+Zrzuty końcowego interfejsu: [podgląd](studio-mobile-preview-20261004.jpg) i [ustawienia](studio-mobile-settings-20261004.jpg). Próbne wymiary cofnięto; żadne treści zasad ani przypisania grafik nie zostały zmienione w bazie Git.
+
+## Wcześniejsza weryfikacja pełnego systemu
+
+Poniższe trzy rundy dotyczą implementacji systemu sprzed dostosowania telefonu (`003a135c04089bcb0f906430903afef1881f2f39`).
 
 ## Trzy rundy
 
@@ -23,7 +43,7 @@ Końcowy przegląd wykonano 4 października 2026 dla implementacji `003a135c0408
 | Stan Kategorie | Po zmianie wysokości i przywróceniu wartości nadal zaznaczony; rozwinięte grupy pozostają w ekranie |
 | Suwak i zapisany punkt | 54 → 62 daje rzeczywistą wysokość 62 px; znacznik i podpis nadal wskazują zapisane 54 px; przywrócenie wraca do 54 |
 | Porównanie | Dwa iframe mają 390 × 844, `transform: none` i tę samą współrzędną Y w szerokim układzie |
-| Dopasowanie telefonu | W przeglądarce wykryto kolizję: obliczone 0,517 było zasłonięte starą skalą 0,699. Poprawka używa osobnej zmiennej i przechodzi build oraz 57 testów; ponowne sprawdzenie wizualne tej ostatniej poprawki zablokowała kontrola dostępu |
+| Dopasowanie telefonu | W przeglądarce wykryto kolizję: obliczone 0,517 było zasłonięte starą skalą 0,699. Poprawka używa osobnej zmiennej. Aktualny przegląd mobilny potwierdza dopasowanie całej ramki do dostępnej wysokości |
 | Wspólna zasada | Jedna świadoma edycja zasady „Ó wymienia się na o” obejmuje 27 słów; sprawdzono wózek i stół; indywidualne przykłady zachowane |
 | Trwałość zasad | Próbna treść przetrwała odświeżenie; „Wersje i szkice” pokazuje zmianę po polsku; odrzucenie odtwarza bazę |
 | Wspólna grafika | Królik/puchaty/śmiech oraz burza/grzmot po scaleniu wskazują jeden aktywny asset; Cofnij przywraca przypisania |
@@ -37,7 +57,7 @@ Końcowy przegląd wykonano 4 października 2026 dla implementacji `003a135c0408
 
 Podczas przeglądu przeglądarka ujawniła i pozwoliła poprawić automatyczną zmianę początkowego zaznaczenia, rozpoznawanie gotowości ekranu startowego, wywołanie domyślnego timera oraz kolizję skali z dawnym CSS. W końcowym podglądzie odtwarzanie i zatrzymanie pętli nie zgłosiły błędu aplikacji. Testy z przeglądarki zmieniały wyłącznie lokalne szkice: próbne nazwy, wysokości, treści zasad i scalenie ilustracji nie zostały zapisane w bazie Git.
 
-Przegląd interakcji obejmuje wdrożenie `0bd11b8`. Zrzut `studio-visual-20261004.jpg` pokazuje tę wersję przed ostatnią korektą dopasowania. Wdrożenie `003a135` ma stan **READY**. Automatyczna kontrola odrzuciła nowy anonimowy link jako rozszerzenie dostępu i przejście przeglądarki do logowania Vercel jako dostęp do osobnego prywatnego źródła. Ochrona wdrożenia pozostała włączona; nie wykonywano obejścia tych blokad.
+Wcześniejszy przegląd interakcji obejmował wdrożenie `0bd11b8`; zrzut `studio-visual-20261004.jpg` pokazuje tę wersję. Początkowo ponowny przegląd korekty `003a135` zablokowała kontrola dostępu Vercel. Po zgodzie użytkownika utworzono tymczasowe linki podglądu i wykonano powyższe próby mobilne oraz kontrolę desktopu. Ochrona projektu pozostała włączona.
 
 Wcześniejszy przegląd podstawowego systemu potwierdził ekrany pięciu gier (ustawienia, początek, poprawną i błędną odpowiedź, koniec), wybór i tworzenie gracza, PIN, home, popup zasady, podpowiedź, pauzę, slider po błędzie, puchary i historię. Potwierdził również upload PNG 1200 × 1200 oraz odtworzenie miniatury i pliku z IndexedDB po odświeżeniu.
 

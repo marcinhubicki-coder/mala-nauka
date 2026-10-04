@@ -2,6 +2,8 @@
 
 Panel służy do edycji wspólnych elementów aplikacji. Zmieniasz szkic i oglądasz skutki na rzeczywistych ekranach. Dopiero **Zapisz na GitHub** udostępnia zmianę innym branchom.
 
+Na telefonie używaj dolnych przycisków **Wybór / Podgląd / Ustawienia** oraz menu **☰**. Suwaki mają przyciski **− / +**, a zapis pozostaje u góry. [Instrukcja mobilna](mobile-guide.md) opisuje ten układ.
+
 ## Chcę poprawić konkretny ekran
 
 1. Otwórz **Komponenty → Według widoku** i wybierz ekran oraz stan.
@@ -17,7 +19,7 @@ Obrys i wybieranie kliknięciem są niezależne. Gdy chcesz normalnie klikać w 
 
 **Według elementu → Porównaj użycia** pokazuje listę powiązanych ekranów. Zaznacz te, które chcesz oglądać. **Ustawienia gier** wybiera zestaw powiązanych ustawień. **Więcej miejsca na ekrany** chowa ustawienia z boku; **Pokaż ustawienia** przywraca je.
 
-W porównaniu każdy ekran ma viewport **390 × 844** i nie jest skalowany. Dwa mieszczą się obok siebie, jeśli dostępna szerokość pozwala; kolejne przechodzą do następnego rzędu. Porównanie przewijasz. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
+W porównaniu każdy ekran ma viewport **390 × 844**. Na desktopie ramka nie jest skalowana: dwa ekrany mieszczą się obok siebie, jeśli dostępna szerokość pozwala; kolejne przechodzą do następnego rzędu. Na telefonie ramki dopasowują się do miejsca, a kolejne ekrany oglądasz przez przesuwanie poziomo. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
 
 **Zmień nazwę elementu** zmienia etykietę używaną w studio. Relacje i działanie są zachowane.
 

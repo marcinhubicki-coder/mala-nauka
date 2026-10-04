@@ -23,8 +23,15 @@ function setPane(next){
   }
   pane=next;document.body.dataset.mobilePane=pane;
   for(const button of dock.querySelectorAll('[data-mobile-pane]'))button.setAttribute('aria-pressed',String(button.dataset.mobilePane===pane));
+  paneAccess();
   dimensions();
   if(mobile.matches)window.scrollTo({top:0,behavior:'instant'});
+}
+function paneAccess(){
+  const preview=workspace.querySelector('.preview-column,.motion-preview');
+  if(preview)preview.inert=mobile.matches&&pane==='edit';
+  const gallery=workspace.querySelector('#preview-gallery,.motion-stage');
+  if(gallery)gallery.inert=mobile.matches&&pane!=='preview';
 }
 function touchControls(){
   if(!mobile.matches)return;
@@ -51,6 +58,7 @@ function touchDialog(){
   close.textContent='×';close.setAttribute('aria-label','Zamknij okno');close.onclick=()=>modal.close();modal.prepend(close);
 }
 function touchPreview(){
+  if(mobile.matches)for(const frame of workspace.querySelectorAll('.device-frame'))frame.loading='eager';
   const gallery=workspace.querySelector('#preview-gallery');
   if(gallery!==observedGallery){galleryObserver.disconnect();observedGallery=gallery;if(gallery)galleryObserver.observe(gallery);}
   const choices=workspace.querySelector('.compare-choices');
@@ -81,7 +89,7 @@ function sync(){
   const connection=document.getElementById('connect-git').textContent;
   if(document.getElementById('mobile-connect-git').textContent!==connection)document.getElementById('mobile-connect-git').textContent=connection;
   if(!mobile.matches&&menu.open)menu.close();
-  touchControls();touchDialog();touchPreview();
+  touchControls();touchDialog();touchPreview();paneAccess();
   dimensions();
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(sync);}}

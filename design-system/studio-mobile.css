@@ -36,9 +36,10 @@
   .preview-column{display:flex;flex-direction:column}
   .preview-column>div:not(.preview-gallery){flex-shrink:0}
   .component-layout>.inspector,.motion-workspace>.inspector{display:none;position:static;max-height:none;height:100%;padding:18px 16px;overflow:auto;border:0;min-width:0;width:100%}
-  body[data-mobile-pane=edit] .component-layout>.preview-column,body[data-mobile-pane=edit] .motion-preview{display:none}
+  body[data-mobile-pane=edit] .component-layout>.preview-column,body[data-mobile-pane=edit] .motion-preview{position:fixed;left:-10000px;top:var(--mobile-header-height);visibility:hidden;height:calc(100dvh - var(--mobile-header-height) - var(--mobile-dock-height))}
   body[data-mobile-pane=edit] .component-layout>.inspector,body[data-mobile-pane=edit] .motion-workspace>.inspector{display:block}
-  body[data-mobile-pane=choose] .preview-gallery,body[data-mobile-pane=choose] .motion-stage,body[data-mobile-pane=choose] .motion-playbar,body[data-mobile-pane=choose] .motion-status,body[data-mobile-pane=choose] .motion-manual{display:none}
+  body[data-mobile-pane=choose] .preview-gallery,body[data-mobile-pane=edit] .preview-gallery,body[data-mobile-pane=choose] .motion-stage{position:fixed;left:-10000px;top:var(--mobile-header-height);visibility:hidden;width:calc(100% - 24px);height:calc(100dvh - var(--mobile-header-height) - var(--mobile-dock-height) - 24px)}
+  body[data-mobile-pane=choose] .motion-playbar,body[data-mobile-pane=choose] .motion-status,body[data-mobile-pane=choose] .motion-manual{display:none}
   body[data-mobile-pane=preview] #preview-toolbar,body[data-mobile-pane=preview] #preview-guide,body[data-mobile-pane=preview] #component-strip,body[data-mobile-pane=preview] #preview-controls{display:none}
   body[data-mobile-pane=preview] .motion-route,body[data-mobile-pane=preview] .motion-shortcuts,body[data-mobile-pane=preview] .motion-preview>.page-intro{display:none}
   .preview-gallery:not(.native-size){height:auto;min-height:0;flex:1}

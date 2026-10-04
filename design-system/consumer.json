@@ -4,7 +4,10 @@
   "sourceURL": "https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/design/system-v1/",
   "liveConfig": true,
   "localAssets": false,
-  "rebuildTrigger": "842107198767b5c96ce298f41e65c6bc3ad92799",
+  "rebuildTrigger": "13269e22f8c92e350dbd9007d155671ff96d4bca",
   "liveRules": true,
-  "screenMotion": true
+  "screenMotion": true,
+  "automaticPools": true,
+  "responseEffects": true,
+  "scoring": true
 }

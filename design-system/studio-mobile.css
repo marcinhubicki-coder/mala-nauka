@@ -1,0 +1,86 @@
+/* Mobile Studio uses the same editor, draft and frames as desktop. */
+.mobile-only{display:none}
+.topbar-title{display:flex;align-items:center;gap:10px}
+#mobile-navigation{border:1px solid #dce5f3;border-radius:16px;width:560px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:18px;color:#253a60}
+#mobile-navigation::backdrop{background:#101c3c77;backdrop-filter:blur(3px)}
+.mobile-menu-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.mobile-menu-heading h2{font-size:20px}
+#mobile-navigation-list{display:grid;gap:6px}
+#mobile-navigation-list button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border-radius:9px;background:#f3f6fd;color:#506a96;font-size:16px;min-height:48px}
+#mobile-navigation-list button.active{background:#315af2;color:#fff}
+#mobile-connect-git{width:100%;margin-top:16px}
+#mobile-navigation p{font-size:12px;line-height:1.6;color:#7384a3;margin-top:12px}
+@media(max-width:690px){
+  html{--mobile-header-height:140px;--mobile-dock-height:84px;scroll-padding-top:var(--mobile-header-height)}
+  html,body{min-width:0;max-width:100%;font-size:15px}
+  .mobile-only{display:inline-flex}
+  .sidebar{display:none}
+  .studio-main{margin-left:0;width:100%;min-width:0}
+  .studio-shell{min-height:100dvh}
+  .studio-topbar{height:auto;min-height:0;padding:8px 12px;gap:7px;display:grid;grid-template-columns:1fr;position:sticky;top:0;z-index:6;padding-top:max(8px,env(safe-area-inset-top));background:#fff}
+  .studio-topbar .topbar-title{min-width:0}
+  .studio-topbar h1{font-size:19px;white-space:normal;margin-top:0}
+  .studio-topbar .breadcrumb{display:none}
+  #mobile-menu-open{width:44px;height:44px;padding:0;font-size:22px;justify-content:center;flex:none}
+  .top-actions{display:grid;grid-template-columns:44px 1fr 44px 1.35fr;gap:7px}
+  .top-actions button{min-height:44px;font-size:14px}
+  .top-actions #studio-help{padding:0;font-size:18px}
+  .top-actions #undo-toolbar,.top-actions #redo-toolbar{font-size:14px;padding:8px}
+  .top-actions #connect-git,.desktop-save-label{display:none}
+  #save-git{padding:8px;white-space:nowrap}
+  #draft-status{grid-column:1/-1;grid-row:2;font-size:11px;line-height:1.2;margin:0}
+  .workspace{min-height:calc(100dvh - var(--mobile-header-height));padding-bottom:env(safe-area-inset-bottom)}
+  .mobile-editor .workspace{min-height:0}
+  .component-layout,.motion-workspace{display:flex;flex-direction:column;width:100%;height:calc(100dvh - var(--mobile-header-height) - var(--mobile-dock-height));min-height:0}
+  .preview-column,.motion-preview{padding:12px;min-width:0;width:100%;overflow:auto;scrollbar-gutter:auto;min-height:0;flex:1}
+  .component-layout>.inspector,.motion-workspace>.inspector{display:none;position:static;max-height:none;height:100%;padding:18px 16px;overflow:auto;border:0;min-width:0;width:100%}
+  body[data-mobile-pane=edit] .component-layout>.preview-column,body[data-mobile-pane=edit] .motion-preview{display:none}
+  body[data-mobile-pane=edit] .component-layout>.inspector,body[data-mobile-pane=edit] .motion-workspace>.inspector{display:block}
+  body[data-mobile-pane=choose] .preview-gallery,body[data-mobile-pane=choose] .motion-stage,body[data-mobile-pane=choose] .motion-playbar,body[data-mobile-pane=choose] .motion-status,body[data-mobile-pane=choose] .motion-manual{display:none}
+  body[data-mobile-pane=preview] #preview-toolbar,body[data-mobile-pane=preview] #preview-guide,body[data-mobile-pane=preview] #component-strip,body[data-mobile-pane=preview] #preview-controls{display:none}
+  body[data-mobile-pane=preview] .motion-route,body[data-mobile-pane=preview] .motion-shortcuts,body[data-mobile-pane=preview] .motion-preview>.page-intro{display:none}
+  .preview-gallery:not(.native-size){height:auto;min-height:0;flex:1}
+  .component-layout.wide-preview>.inspector{display:none}
+  body[data-mobile-pane=edit] .component-layout.wide-preview>.inspector{display:block}
+  .editing-path{display:flex;gap:4px;width:100%}
+  .editing-path button{flex:1;min-height:44px;font-size:14px;padding:8px}
+  .preview-toolbar{display:grid;grid-template-columns:1fr;width:100%;gap:12px}
+  .preview-toolbar label{font-size:13px;min-width:0}
+  .preview-toolbar select{width:100%;max-width:100%;font-size:16px;min-height:44px}
+  .element-search{align-items:stretch;flex-wrap:wrap;gap:8px}
+  .element-search>input{width:100%;max-width:100%;font-size:16px;min-height:44px}
+  .element-search label,.preview-switches label,.preview-options>label{font-size:13px;min-height:44px}
+  .preview-guide{font-size:13px;line-height:1.6}
+  .component-strip{gap:8px;margin-top:14px}
+  .component-strip button{min-height:44px;font-size:13px;padding:9px 12px}
+  .preview-options{display:flex;gap:8px;align-items:stretch}
+  .preview-options>label{width:100%;justify-content:space-between}
+  .preview-options select{font-size:16px;min-height:44px;max-width:240px}
+  .preview-options .quiet-button,.preview-open{font-size:13px;min-height:44px;padding:10px;display:flex;align-items:center;justify-content:center}
+  .preview-open{margin-left:0;border:1px solid #dce4ef;background:#fff;border-radius:7px}
+  #wide-preview{display:none}
+  .preview-subbar{gap:10px}
+  .mobile-editor-dock{display:block;position:fixed;bottom:0;left:0;right:0;z-index:6;background:#fff;border-top:1px solid #dce5f3;padding:6px 10px max(7px,env(safe-area-inset-bottom));box-shadow:0 -4px 15px #17274909}
+  .mobile-editor-dock[hidden]{display:none}
+  .mobile-editor-dock p{font-size:11px;color:#617895;text-align:center;line-height:1.4;padding:0 4px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-editor-dock>div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .mobile-editor-dock button{min-height:46px;border-radius:9px;color:#52719d;background:#f1f5fc;font-size:14px;font-weight:750}
+  .mobile-editor-dock button[aria-pressed=true]{background:#315af2;color:#fff}
+  .content-page{padding:20px 12px;width:100%}
+  .page-intro h2{font-size:22px}
+  .page-intro p{font-size:14px}
+  .quiet-button,.solid-button,.small-button,.icon-button,.state-pill{min-height:44px;font-size:14px;white-space:normal}
+  input,select,textarea,.form-field input,.form-field select,.scope select,.selected-element select{font-size:16px;min-height:44px;max-width:100%}
+  input[type=checkbox],input[type=radio]{min-height:0;flex:none;width:20px;height:20px}
+  .scope>span,.selected-element label,.control-top label{font-size:14px}
+  .description,.scope-help,.live-states>p{font-size:13px}
+  .selected-element{padding:12px}
+  .control{padding:16px 0}
+  .saved-value{font-size:12px;gap:10px}
+  .saved-value button{font-size:12px;min-height:44px;padding:8px}
+  .control-value input{font-size:16px;width:76px;min-height:44px}
+  .control input[type=range]{height:44px;margin:0;touch-action:pan-y}
+  .range-wrap{padding:0;margin:4px 0}
+  .saved-mark{top:11px;bottom:11px}
+  #toast{bottom:calc(var(--mobile-dock-height) + 12px);font-size:13px;width:max-content;max-width:calc(100vw - 24px);line-height:1.5}
+}

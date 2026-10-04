@@ -124,3 +124,22 @@ Zbiorczy formularz został uruchomiony z rzeczywistym plikiem `cisnienie.jpg`: d
 Kontrola `npm run design:check`: **81 testów**, audyt i build. Baza gry nadal zawiera 455 unikalnych haseł. Plik kolejki zawiera 256 propozycji w 13 grupach: wszystkie początkowo zaznaczone, bez ilustracji, żadna grupa opublikowana. Plan osiąga minimum 100 w ośmiu kategoriach; wejście do gry wymaga decyzji użytkownika i zdjęć. Generator kolejnych propozycji zachowuje dotychczasowe decyzje, ilustracje i poziomy zamiast zastępować kolejkę.
 
 Testy graniczne odróżniają zielony, żółty, czerwony i neutralny status; brak danych pamięci usuwa kartę pamięci. Krótka próbka klatek nie otrzymuje ogólnego zielonego statusu wyłącznie na podstawie szybkiego przygotowania JS. To weryfikacja przeglądarkowego podglądu i symulacji rozmiaru, bez pomiaru procesora, baterii i fizycznego iPhone’a.
+
+### Końcowy podgląd i wspólne źródło
+
+Wersja `72308a1` została ponownie sprawdzona w przeglądarce. Zmiana symulatora z 390 na 360 px automatycznie dopasowała próbkę buildera: płótno ma 285 px w kontenerze 287 px. Dokument ma 345 px szerokości i tyle samo szerokości przewijania, bez poziomego przepełnienia. Hierarchia pokazuje etykietę jako dziecko przycisku oraz osobny typ sekcji-kontenera. Próba nie zmieniła zapisanych ustawień.
+
+Zrzuty końcowego interfejsu: [akceptacja batchy](studio-batches-20261004-v3.jpg) i [builder z hierarchią oraz znacznikami zapisanych wartości](studio-builder-20261004-v3.jpg).
+
+Sześć adapterów pobiera teraz również przepisy atomów i model kategorii z indywidualną trudnością. Wszystkie lokalne buildy przeszły; licznik lokalnych kopii assetów wynosi 0. Każde odpowiadające im wdrożenie Vercel ma status **READY**.
+
+| Branch | Commit adaptera |
+| --- | --- |
+| czytanie-v1 | `d37ae8c1e21ef909974d040a4569b193d57ceb9b` |
+| design/english-v0.1 | `984b1eee3c2a525bc74e87eae47e6482d4037d62` |
+| design/flags-v0.1 | `ba68bcb277503829ab5c44171631045319545bc2` |
+| design/profile-and-learning-v5 | `96214b484c9c401a0ea140135476f944c01f0557` |
+| design/spelling-v0.3-preview | `5d25598cfd91537700f9bd066d2f5075b8cebccb` |
+| matematyka-v1 | `aae03f573b66d659a92d18107018e9fdb3bc760e` |
+
+Produkcja i branch `main` pozostają bez zmian. Dane proponowanych słów czekają na decyzję użytkownika.

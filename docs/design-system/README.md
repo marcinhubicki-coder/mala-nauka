@@ -2,6 +2,8 @@
 
 Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt wyglądu, komponentów i ilustracji oraz narzędzie do jego edycji.
 
+![Design Studio: rzeczywisty ekran ortografii oraz inspektor wspólnego komponentu jelly](studio-preview-20261004.jpg)
+
 ## Zacznij od panelu
 
 1. **Komponenty**: wybierz tryb oraz widok/stan. Telefon ma rzeczywisty viewport **390 × 844 pt**. Zaznacz „Wskaż komponent”, aby kliknąć element gry i zobaczyć pomiar.

@@ -1,5 +1,5 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {createCandidate,batchSummary,validateBatches} from '../design-system/batch-model.mjs';
+import {createCandidate,batchSummary,validateBatches,batchWords} from '../design-system/batch-model.mjs';
 const lists={
  'Dom i codzienne czynności':`ciasto ciastko ciasteczko ciasny cichy cisza cis ciekawy ciekawość cielę cielak cień ciepło ciepły ciepłota ciecz ciężar ciężki ciężarówka cięcie ciąć cierpliwy cierpliwość cierpieć cieszyć ciśnienie ciśnieniomierz ciuch ciocia ciotka ciupaga ciżemka ćma ćwikła ćwiczyć ćwiczenie ćwierć ćwierkać ćwierkanie ćwierćnuta ćwiek wyćwiczyć przećwiczyć poćwiczyć pisać rysować czytać mówić malować biegać skakać pływać tańczyć śpiewać grać szukać zbierać budować gotować piłować życzyć znaleźć wrócić siedzieć lecieć latać patrzeć słyszeć uczyć powtórzyć liczyć liczenie liczydło pociąg pociągnąć kociak kociątko bocian bociani cukier cukiernica cukierniczy macierz miłość radość przyjemność cierpliwie pociecha pocieszyć pocieszenie ucierać ucieranie ocierać docierać nacierać zacierać wycierać przecierać ciemny ciemność ciemno ciemnia ciemiernik ciepłownia cieplarnia ciekawostka ciastkarnia cielęcina cichutki cicho cichnąć ucichnąć wyciszyć wyciszenie zacisze zaciszny ciesielstwo cieśla cios ciosać ciemię cieniować cieniowanie cięciwa` ,
  'Przyroda i małe odkrycia':`siano siatka sitko sito siła siłownia silny silnik siny sierpień sierp siedem siedemnaście siedemdziesiąt siedzieć siedzisko siedziba siadać siodło sikora sikorka siew siewca siewnik siać sieć sieciowy sieczka siekać siekiera sierść sierżant sierota sierociniec sielanka sielski siostra siostrzenica siostrzeniec siódmy ślimak śliwka śliwa śledź śmiech śmietana śmietanka śmietnik śmieci śmieszny śmiały śmiać ściana ścieżka ścieg ścisk ścierać ściereczka ścinać ściąga ściągać ścianka ścigacz ścigać ślad ślina śliski ślub ślizgać ślizgawka ślizg środa środek śródmieście śródziemny śruba śrubka śrubokręt świeca świeczka świecić świetlik światło świat świadek świadectwo święto świętować świąteczny świt świnka świnia świerszcz śpiący śpioch śpiew śpiewak śpiewać śnieg śnieżka śnieżny śnieżyca śnieżynka śnić śniadanie śniegowy światłowód ściółka leśny leśniczy leśniczówka roślina roślinka miś ktoś coś gdzieś dziś wieś gęś łoś ryś kiść liść garść wieść część treść maślak wiśnia pieśń paśnik gąsienica rześki ośmiornica ośmiokąt ośmioletni ośmiolatek ośnieżony uśmiech uśmiechać uśmiechnięty pośpiech pośpieszyć poświęcić poświęcenie rówieśnik rówieśniczka` ,
@@ -8,12 +8,14 @@ const lists={
  'Słowa i ich rodziny':`koń kończyć zakończyć końcówka końcowy kończyna bańka baniak dłoń dłonie słoń słonik słoniątko słonina słonecznik dzień tydzień tygodniowy tygodnik jesień jesienny jesienią kamień kamienny kamienica kamieniarz kamieniołom ogień ognisko ogniwo ognik ognisty cień cieniutki cienki cieniować cieniowanie pień pieniek pniak pnie pniowy jeleń jeleni jeleniowaty pierścień pierścionek korzeń korzeniowy ukorzenić ukorzeniony stopień stopniowy stopniowo promień promienny promieniować promieniowanie promiennik płomień płomienny grzebień strumień strumieniowy przyjaźń gąsienica gąsieniczka niebo niebieski niebiański niezwykły niecierpliwy niepewny niewidoczny nisko niski niteczka nitka nić nic nikt niedaleko nieduży nieduża niespodzianka niespokojny niedźwiedź śniadanie śnić pieśń tańczyć taniec tancerka taneczny tańczenie równina równiutki roślinny roślinka roślinność pani panienka niania  niwa   jarzębina jarzeniowy konieczny koniecznie konieczność konie początek początkowy kończenie spełnienie spełnić spełniony uzupełnić uzupełnienie płynnie płynny ręcznie ręczny rocznik rocznica uczennica uczeń uczniowie uczniowski szczenię szczeniak szczeniaczek kuchnia kuchenny  leniwy lenistwo leniuszek leniuchować cierniowy cierń ciernie koniczyna konik koniki płetwa piórnik długopis notatnik notes dziennik podnieść unieść wniesienie donieść niesienie przenieść przeniesienie zanieść ponieść roznieść odnieść odniesienie podniesienie wynieść wyniesienie`};
 // This file only prepares review proposals. It never changes the eight game packs.
 const active=(await Promise.all(Array.from({length:8},(_,i)=>readFile(`data/words-0${i+1}.json`,'utf8').then(JSON.parse)))).flat();
-const known=new Set(active.map(w=>w.word)),value={schemaVersion:1,targetPerCategory:100,batches:[]};let index=1;const all=[];
+let value;try{value=validateBatches(JSON.parse(await readFile('design-system/word-batches.json','utf8')));}catch(error){if(error.code!=='ENOENT')throw error;value={schemaVersion:1,targetPerCategory:100,batches:[]};}
+const known=new Set([...active.map(w=>w.word),...batchWords(value).map(w=>w.word)]);let index=1;const all=[];
+while(value.batches.some(b=>b.id===`batch-20261004-${String(index).padStart(2,'0')}`))index++;
 for(const [theme,text]of Object.entries(lists)){
  const rows=[];for(const word of text.split(/\s+/)){if(known.has(word))continue;try{const row=createCandidate(word,{difficulty:word.length>9?2:1});known.add(word);rows.push(row);}catch{}}
  all.push(...rows.map(row=>({...row,theme})));
 }
-const counts=new Map(batchSummary(value,active).map(r=>[r.category,r.active]));
+const counts=new Map(batchSummary(value,active).map(r=>[r.category,r.total]));
 const selected=[],remaining=[...all];
 while([...counts.values()].some(n=>n<112)){
  let best=-1,score=0;
@@ -26,7 +28,7 @@ while([...counts.values()].some(n=>n<112)){
 }
 for(const theme of Object.keys(lists)){
  const rows=selected.filter(r=>r.theme===theme).map(({theme,...row})=>row).sort((a,b)=>a.word.localeCompare(b.word,'pl'));
- for(let start=0;start<rows.length;start+=24)value.batches.push({id:`batch-20261004-${String(index++).padStart(2,'0')}`,name:`${theme} · ${Math.floor(start/24)+1}`,stage:'proposed',words:rows.slice(start,start+24)});
+ for(let start=0;start<rows.length;start+=24){while(value.batches.some(b=>b.id===`batch-20261004-${String(index).padStart(2,'0')}`))index++;value.batches.push({id:`batch-20261004-${String(index++).padStart(2,'0')}`,name:`${theme} · ${Math.floor(start/24)+1}`,stage:'proposed',words:rows.slice(start,start+24)});}
 }
 validateBatches(value);const summary=batchSummary(value,active);
 if(summary.some(row=>row.total<100))throw Error('Propozycje nie wypełniają minimalnej puli: '+JSON.stringify(summary));

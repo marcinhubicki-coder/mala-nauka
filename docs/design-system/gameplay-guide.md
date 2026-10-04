@@ -76,3 +76,5 @@ Domyślnie zachowujemy 1 punkt za poprawną odpowiedź, bez kar i bonusu; podpow
 Progi efektu combo i punktowego bonusu są osobne. Przy aktywnym bonusie Studio informuje o ich rozbieżności. Błąd lub podpowiedź zeruje serię, a bonus wpada przy każdym pełnym progu, np. przy 3, 6 i 9 poprawnych bez pomocy.
 
 Zasady są kopiowane na początek rundy i zapisane razem z jej wynikiem. Późniejsze zmiany nie przeliczają historii. Starsze rundy zachowują pierwotne 1 punkt za poprawną. Skuteczność, utrwalone słowa, nauka i rekordy nadal używają rzeczywistej poprawności, nie konfigurowalnej liczby punktów. Runda z limitem słów nie nadpisuje rekordu rundy na czas. Koniec gry zawiera rozwijane **Jak naliczono?**.
+
+Aktualizacja kolejki zatwierdzania, poziomów per kategoria i miernika: [Nowe słowa i builder](batches-and-builder.md).

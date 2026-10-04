@@ -6,6 +6,8 @@ Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt w
 
 Zrzut pokazuje wcześniejszy układ desktopowy. Aktualne dopasowanie oraz trzy iteracje interfejsu telefonu opisuje [Zakres weryfikacji](verification.md). [Instrukcja telefonu](mobile-guide.md) pokazuje pracę przez Wybór, Podgląd i Ustawienia.
 
+**[Nowe słowa, builder i globalne przepisy](batches-and-builder.md)**: 256 propozycji w 13 batchach, cel 100 na kategorię, trzy etapy akceptacji, próby z warstw oraz czytelny miernik.
+
 ## Zacznij od panelu
 
 1. **Komponenty → Według widoku**: wybierz ekran i wskaż element pastylką lub kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.
@@ -30,6 +32,6 @@ Pełna instrukcja bez wiedzy o kodzie: **[Praca wizualna](visual-guide.md)**.
 | [Zapis i rozwój](development.md) | Git, konflikty, pliki, build, porządkowanie, zasady mockupów |
 | [Weryfikacja](verification.md) | Testy, przegląd wizualny, granice symulacji |
 
-Źródłami prawdy są `config.json`, `registry.json`, `assets.json` i `rules.json`. Dokumentacja wyjaśnia kontrakt; nie tworzy drugiej kopii jego wartości.
+Źródłami prawdy są `config.json`, `registry.json`, `assets.json`, `rules.json` i `word-batches.json`. Dokumentacja wyjaśnia kontrakt; nie tworzy drugiej kopii jego wartości.
 
 Pule słów, dziesięć efektów, bańka, rzeczywiste ograniczenia pomiaru wydajności i naliczanie punktów: [przewodnik rozgrywki](gameplay-guide.md).

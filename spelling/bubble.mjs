@@ -1,4 +1,5 @@
 import {DEFAULT_EFFECTS} from './effect-model.mjs';
+import {createBubbleDynamics,polygonRadius,shapeSides} from './bubble-dynamics.mjs';
 let instance = 0;
 const TAU = Math.PI * 2;
 
@@ -55,7 +56,7 @@ function normalizeTuning(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,6.6),
+    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,15),
     points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),24,72)/4)*4,
     random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,5.7),
     smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),.35,2.35),
@@ -85,9 +86,9 @@ function normalizeChaos(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    amplitude:clampValue(numeric(merged.amplitude,BUBBLE_CHAOS_DEFAULTS.amplitude),-2,4),
+    amplitude:clampValue(numeric(merged.amplitude,BUBBLE_CHAOS_DEFAULTS.amplitude),0,12),
     frequency:clampValue(numeric(merged.frequency,BUBBLE_CHAOS_DEFAULTS.frequency),-2,4),
-    orbit:clampValue(numeric(merged.orbit,BUBBLE_CHAOS_DEFAULTS.orbit),-2,4),
+    orbit:clampValue(numeric(merged.orbit,BUBBLE_CHAOS_DEFAULTS.orbit),0,6),
     magnet:clampValue(numeric(merged.magnet,BUBBLE_CHAOS_DEFAULTS.magnet),-3,3),
     jelly:clampValue(numeric(merged.jelly,BUBBLE_CHAOS_DEFAULTS.jelly),0,2),
     squash:clampValue(numeric(merged.squash,BUBBLE_CHAOS_DEFAULTS.squash),-1,1),
@@ -115,7 +116,7 @@ function normalizeTransition(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.12,1.2),
+    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.2,3),
     blur:clampValue(numeric(merged.blur,BUBBLE_TRANSITION_DEFAULTS.blur),0,8),
     zoom:clampValue(numeric(merged.zoom,BUBBLE_TRANSITION_DEFAULTS.zoom),-6,12),
     rotate:clampValue(numeric(merged.rotate,BUBBLE_TRANSITION_DEFAULTS.rotate),-12,12),
@@ -131,6 +132,7 @@ export function createBubble(host, options={}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
   let frameRate=b.frameRate||24;
+  const dynamics=createBubbleDynamics();let bubbleSettings={...DEFAULT_EFFECTS.bubble,...b},reactionConfig=options.effects||globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
   let tuning = normalizeTuning(options.tuning);
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
@@ -361,6 +363,7 @@ export function createBubble(host, options={}) {
   // bottom edge; their motion is spread to neighbouring points before the
   // closed Catmull-Rom spline is converted to cubic Beziers.
   function draw(time) {
+    const response=dynamics.sample(performance.now()),idleSides=shapeSides(bubbleSettings.shape,time/10),sides=response.sides||idleSides,morph=response.sides?response.morph:idleSides?(bubbleSettings.morph??1):0;
     const count=tuning.points;
     const irregularity=tuning.random;
     const spatial=chaos.frequency;
@@ -380,8 +383,9 @@ export function createBubble(host, options={}) {
       const angle=i/count*TAU;
       const c=Math.cos(angle), s=Math.sin(angle);
       const power=2/exponent;
-      const baseX=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
-      const baseY=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
+      const radius=polygonRadius(angle,sides),extraWave=response.wave*Math.sin(angle*5+time)*3;
+      const baseX=(centerX + halfW*sign(c)*Math.pow(Math.abs(c),power))*(1-morph)+(centerX+c*radius)*morph+response.shift+extraWave*c;
+      const baseY=(centerY + halfH*sign(s)*Math.pow(Math.abs(s),power))*(1-morph)+(centerY+s*radius)*morph+extraWave*s;
       let dx=0, dy=0;
 
       // Broad low-frequency breathing around the whole membrane.
@@ -500,7 +504,7 @@ export function createBubble(host, options={}) {
     if (destroyed || options.motion === false || paused || document.hidden || reduced.matches) { last = 0; return; }
     if (!last || now>=nextDraw) {
       const period=1000/frameRate;nextDraw=now+period-(nextDraw?Math.min(period,Math.max(0,now-nextDraw)):0);
-      elapsed += last ? Math.min((now-last)/1000,.1) * tuning.speed : 0;
+      elapsed += last ? Math.min((now-last)/1000,.1) * clampValue(tuning.speed+dynamics.sample(now).speed,.5,20) : 0;
       last = now; draw(elapsed);
     }
     frame = requestAnimationFrame(loop);
@@ -704,7 +708,8 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
-  const designChanged=event=>{const e=event.detail?.effects||DEFAULT_EFFECTS;frameRate=e.bubble.frameRate||24;setTuning({speed:e.bubble.speed});setChaos({amplitude:e.bubble.amplitude,orbit:e.bubble.orbit});setTransition({duration:e.bubble.transitionDuration/1000,blur:e.bubble.transitionBlur,sparks:Math.min(e.bubble.transitionSparks,e.particleBudget)});};
+  function setBubbleConfig(e=DEFAULT_EFFECTS){reactionConfig=e;bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble};frameRate=bubbleSettings.frameRate||24;setTuning({speed:bubbleSettings.speed});setChaos({amplitude:bubbleSettings.amplitude,orbit:bubbleSettings.orbit});setTransition({duration:bubbleSettings.transitionDuration/1000,blur:bubbleSettings.transitionBlur,sparks:Math.min(bubbleSettings.transitionSparks,e.particleBudget)});const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'};for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',colors[bubbleSettings.skin]||`url(#${id}-rainbow)`);if(reduced.matches)draw(elapsed);}
+  const designChanged=event=>setBubbleConfig(event.detail?.effects||DEFAULT_EFFECTS);
   document.addEventListener('mala-nauka:design',designChanged);
   return {
     preloadScene,
@@ -719,6 +724,9 @@ export function createBubble(host, options={}) {
     getHeavy,
     setTransition,
     getTransition,
+    setBubbleConfig,
+    react(event='correct'){if(!reduced.matches)dynamics.push(event,performance.now(),reactionConfig);},
+    clearReactions(){dynamics.clear();},
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());

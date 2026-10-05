@@ -32,6 +32,7 @@ export function validateTokens(tokens,partial=false){
  }
  if(!partial&&Object.keys(FIELDS).some(group=>!tokens[group]))throw Error('Brakuje grupy tokenów.');
 }
+export function tokenBounds(group,key){let min=0,max=400;if(key==='duration')max=5000;if(/Duration|Delay/.test(key))max=1500;if(key==='labelWeight'){min=400;max=950;}if(key==='trackShadowOpacity')max=.5;if(key==='canvasWidth'){min=320;max=480;}if(group==='jelly'&&key==='height'){min=28;max=96;}if(/Percent$/.test(key)){min=50;max=100;}if(key==='threshold'){min=70;max=100;}return[min,max];}
 export function validAssetPath(path){return typeof path==='string'&&/^assets\/[a-zA-Z0-9._/-]+$/.test(path)&&!path.split('/').some(part=>part==='.'||part==='..'||!part);}
 export function validateAssets(value){
  if(value?.schemaVersion!==1||!Array.isArray(value.assets)||!value.words||!value.aliases)throw Error('Nieprawidłowy rejestr assetów.');

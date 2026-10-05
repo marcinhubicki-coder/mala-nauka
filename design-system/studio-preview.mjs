@@ -1,6 +1,7 @@
 import {html,number,componentName,effectiveValue,savedMarker,rangeFor,FIELD_LABELS,MODE_NAMES,STATE_NAMES,relatedViews,compareSelection} from './preview-model.mjs';
 import {CATEGORIES,componentCategories,VISUAL_FIELDS,ICONS,visualValue} from '../shared/element-system.mjs';
 import {dynamicRange} from './dynamic-range.mjs';
+import {tokenBounds} from './validation.mjs';
 
 export class StudioPreview {
   constructor(options) {
@@ -109,7 +110,7 @@ export class StudioPreview {
     this.notifyState();this.renderToolbar();this.renderInspector();this.syncGallery();this.focus();
   }
   control(group,key){
-    const [min,max,step,unit]=rangeFor(group,key),value=effectiveValue(this.config,this.viewId,group,key,this.scope),saved=effectiveValue(this.getBase(),this.viewId,group,key,this.scope);
+    const [min,soft,step,unit]=rangeFor(group,key),value=effectiveValue(this.config,this.viewId,group,key,this.scope),saved=effectiveValue(this.getBase(),this.viewId,group,key,this.scope),[,hard]=tokenBounds(group,key),[,max]=dynamicRange(value,saved,min,soft,hard);
     return `<div class='control ${value!==saved?'changed':''}' data-control='${group}.${key}'><div class=control-top><label for=range-${group}-${key}>${FIELD_LABELS[key]||key}</label><span class=control-value><input aria-label='${FIELD_LABELS[key]||key}' type=number data-token='${group}.${key}' value=${value} min=${min} max=${max} step=${step}><span>${unit}</span></span></div><div class=range-wrap><input id=range-${group}-${key} aria-label='${FIELD_LABELS[key]||key}' type=range data-token='${group}.${key}' min=${min} max=${max} step=${step} value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,min,max)/100}' title='Ostatnio zapisano: ${number(saved)} ${unit}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(saved)} ${unit}</strong></span><button data-reset-field='${group}.${key}' aria-label='Przywróć: ${FIELD_LABELS[key]||key}' ${value===saved?'disabled':''}>Przywróć</button></div></div>`;
   }
   renderInspector(){
@@ -121,14 +122,14 @@ export class StudioPreview {
   renderSelectionPanel(){
     const node=this.workspace.querySelector('#selected-element');if(!node)return;
     const inventory=this.inventories.get(this.viewId),selected=this.activeSelection(),items=inventory?.items.filter(item=>item.visible||item.temporary!=='visible')||[];
-    const options=items.map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<option value='${item.id}' ${selected?.id===item.id?'selected':''}>${html(item.index===-1?'Cały ekran':this.name(component)+(item.label?' · '+item.label:''))}</option>`;}).join('');
+    const options=items.map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<option value='${item.id}' ${selected?.id===item.id?'selected':''}>${html(item.index===-1?'Cały ekran':this.name(component)+(item.label?' · '+item.label:'')+(item.parent&&item.parent!=='layout-root'?' ‹ '+(items.find(r=>r.id===item.parent)?.label||'Kontener'):''))}</option>`;}).join('');
     node.innerHTML=`<section class=selected-element><label>Element lub kontener na ekranie<select id=selected-instance aria-label='Element lub kontener na ekranie'>${options||'<option>Wczytywanie ekranu…</option>'}</select></label>${selected?`<p class=element-measure>${number(selected.metrics.width)} × ${number(selected.metrics.height)} px</p>${selected.parents?.length?'<button class=small-button id=select-parent>Wybierz kontener wyżej</button>':''}<div class=live-states><strong>Sprawdź stan w podglądzie</strong><p>To zmienia tylko przykład na ekranie.</p>${selected.actions?.length?`<div>${selected.actions.map(action=>`<button class='state-pill ${action.selected?'active':''}' data-preview-action='${action.id}' data-action-label='${html(action.label)}'>${html(action.label)}</button>`).join('')}</div>`:'<p class=empty-hint>Ten element nie ma przełączanych opcji. Wybierz kontener lub inny stan ekranu.</p>'}</div>`:'<p class=empty-hint>Wybierz element z listy albo kliknij go na ekranie.</p>'}</section>`;
   }
   renderLayers(){
     const node=this.workspace.querySelector('#preview-layers');if(!node)return;
     const selected=this.activeSelection(),inventory=this.inventories.get(this.viewId),items=inventory?.items||[];
     const hidden=items.filter(item=>item.temporary!=='visible'),oldOpen=node.querySelector('details')?.open;
-    node.innerHTML=`<details class=preview-layers ${oldOpen?'open':''}><summary>Warstwy i widoczność ${hidden.length?'· ukryte: '+hidden.length:''}</summary><p>Zmiany są chwilowe, tylko w tym podglądzie. Nie trafią do zapisu na GitHub.</p>${selected?`<label>Wybrany element<select id=selected-visibility aria-label='Widoczność wybranego elementu'>${this.visibilityOptions(items.find(item=>item.id===selected.id)?.temporary)}</select></label><label><input id=hide-whole-family type=checkbox>Wszystkie elementy tej rodziny w ekranie</label>`:''}<div class=layer-list>${items.filter(item=>item.visible||item.temporary!=='visible').map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<div><button class=layer-name data-layer-select='${item.id}' title='Pokaż na ekranie'>${html(item.index===-1?'Cały ekran':this.name(component))}<small>${html(item.label)}</small></button><select data-layer-visibility='${item.id}' aria-label='Widoczność: ${html(item.label||this.name(component))}'>${this.visibilityOptions(item.temporary)}</select></div>`;}).join('')}</div><button class=small-button id=restore-layers ${hidden.length?'':'disabled'}>Pokaż wszystkie warstwy</button></details>`;
+    node.innerHTML=`<details class=preview-layers ${oldOpen?'open':''}><summary>Warstwy i widoczność ${hidden.length?'· ukryte: '+hidden.length:''}</summary><p>Zmiany są chwilowe, tylko w tym podglądzie. Nie trafią do zapisu na GitHub.</p>${selected?`<label>Wybrany element<select id=selected-visibility aria-label='Widoczność wybranego elementu'>${this.visibilityOptions(items.find(item=>item.id===selected.id)?.temporary)}</select></label><label><input id=hide-whole-family type=checkbox>Wszystkie elementy tej rodziny w ekranie</label>`:''}<div class=layer-list>${items.filter(item=>item.visible||item.temporary!=='visible').map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<div><button class=layer-name style='padding-left:${Math.min(40,(item.depth||0)*8)}px' data-layer-select='${item.id}' title='Pokaż na ekranie'>${html(item.index===-1?'Cały ekran':this.name(component))}<small>${html(item.label)}</small></button><select data-layer-visibility='${item.id}' aria-label='Widoczność: ${html(item.label||this.name(component))}'>${this.visibilityOptions(item.temporary)}</select></div>`;}).join('')}</div><button class=small-button id=restore-layers ${hidden.length?'':'disabled'}>Pokaż wszystkie warstwy</button></details>`;
   }
   visibilityOptions(mode='visible'){return [['visible','Widoczny'],['hidden','Ukryj — zachowaj miejsce'],['removed','Ukryj — przesuń pozostałe']].map(([id,label])=>`<option value=${id} ${mode===id?'selected':''}>${label}</option>`).join('');}
   savedVisual(key){const item=this.activeSelection();if(!item)return 0;return visualValue(this.getBase(),this.viewId,item)[key]??this.metricBase.get(this.viewId+':'+item.id)?.[key]??0;}
@@ -143,7 +144,7 @@ export class StudioPreview {
   }
   updateSavedIndicators(){
     for(const row of this.workspace.querySelectorAll('[data-control]')){
-      const [group,key]=row.dataset.control.split('.'),value=effectiveValue(this.config,this.viewId,group,key,this.scope),saved=effectiveValue(this.getBase(),this.viewId,group,key,this.scope),[min,max,,unit]=rangeFor(group,key);
+      const [group,key]=row.dataset.control.split('.'),value=effectiveValue(this.config,this.viewId,group,key,this.scope),saved=effectiveValue(this.getBase(),this.viewId,group,key,this.scope),[min,soft,,unit]=rangeFor(group,key),[,hard]=tokenBounds(group,key),[,max]=dynamicRange(value,saved,min,soft,hard);for(const input of row.querySelectorAll('input[type=range]')){input.min=min;input.max=max;}
       row.classList.toggle('changed',value!==saved);
       for(const input of row.querySelectorAll('[data-token]'))if(document.activeElement!==input)input.value=value;
       row.querySelector('.saved-mark').style.setProperty('--saved-position',String(savedMarker(saved,min,max)/100));
@@ -161,6 +162,7 @@ export class StudioPreview {
       if(message.selection)this.selections.set(id,message.selection);else this.selections.delete(id);
       if(id===this.viewId){
         const available=this.available();
+        if(!available.has(this.componentId)){this.componentId=message.items.find(item=>item.visible&&item.index>=0)?.component||'layout';this.renderInspector();this.notifyState();}
         if(!message.selection && available.has(this.componentId))this.send(frame,'focus',{component:this.componentId,reveal:false});
         this.renderPills();this.renderSelectionPanel();this.renderLayers();this.renderVisual();
       }
@@ -218,7 +220,7 @@ export class StudioPreview {
     if(target.id==='component-search'){this.search=target.value;this.renderPills();return;}
     if(target.dataset.visualNumber){const key=target.dataset.visualNumber,[min,max]=VISUAL_FIELDS[key],value=Number(target.value);if(Number.isFinite(value)&&value>=min&&value<=max){this.writeVisual(key,value);const [a,b]=dynamicRange(value,this.savedVisual(key),min,key==='width'?390:key==='height'?200:key==='fontSize'?48:max,max);for(const input of this.workspace.querySelectorAll(`[data-visual-number="${key}"]`)){if(input.type==='range'){input.min=a;input.max=b;}if(input!==target)input.value=value;}}else this.notice(`Bezpieczny zakres: ${min}–${max}.`);return;}
     if(!target.dataset.token)return;
-    const [group,key]=target.dataset.token.split('.'),[min,max]=rangeFor(group,key),value=Number(target.value);
+    const [group,key]=target.dataset.token.split('.'),[min,max]=tokenBounds(group,key),value=Number(target.value);
     if(!Number.isFinite(value)||value<min||value>max)return;
     const path=this.scope==='view'?`overrides.${this.viewId}.${group}.${key}`:`tokens.${group}.${key}`;
     this.edit(path,value);this.updateSavedIndicators();

@@ -49,7 +49,7 @@ export async function initDesign() {
     }
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
     applyScreenCopy(app);
-    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&app.dataset.view!=='game'){screenAnimation?.cancel();screenAnimation=animateScreen(app,transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen));}if(screen)previousScreen=screen;
+    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();screenAnimation=animateScreen(app,transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen));}if(screen)previousScreen=screen;
     annotateElements(app,config,document.documentElement.dataset.dsView);
   };
   if (app) new MutationObserver(annotate).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});

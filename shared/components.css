@@ -35,7 +35,7 @@ html{font-family:var(--ds-font-body)}
 #app[data-view="game"][data-mode="english"][data-ds] .question-card,#app[data-view="game"][data-mode="reading"][data-ds] .question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
 #app[data-view="game"][data-mode][data-ds] .spelling-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
 #app[data-ds] :is(.spelling-continue-rail,.result-continue-rail){--ds-handle-size:min(calc(var(--ds-slider-handle-size) * var(--ds-u)),calc(var(--ds-slider-height) * var(--ds-u) - 8px));position:relative}
-#app[data-ds] :is(.spelling-continue-rail,.result-continue-rail) .continue-handle{width:var(--ds-handle-size);height:var(--ds-handle-size);top:50%;margin-top:calc(var(--ds-handle-size) / -2);left:4px;transform-origin:center;aspect-ratio:1}
+#app[data-ds] :is(.spelling-continue-rail,.result-continue-rail) .continue-handle{width:var(--ds-handle-size);height:var(--ds-handle-size);top:50%;translate:0 -50%;margin-top:0;left:4px;transform-origin:center;aspect-ratio:1}
 dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-height:calc(var(--ds-popup-max-height-percent) * 1dvh)}
 #modal{padding:calc(var(--ds-popup-padding) * 1px)}
 #app[data-ds] progress{height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
@@ -85,3 +85,4 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 #app[data-ds] .avatar-choice .player-avatar-art{height:auto;aspect-ratio:1;max-width:100%}
 #app[data-ds] .create-avatar-preview{height:auto;min-height:calc(var(--ds-profile-avatar-size) * var(--ds-u))}
 #app[data-ds] [data-ds-kind=icon]>svg{max-width:100%;max-height:100%;display:block}
+#app[data-ds] :is(.spelling-continue-rail,.result-continue-rail) .continue-handle{max-width:calc(var(--ds-slider-height) * var(--ds-u) - 8px)!important;max-height:calc(var(--ds-slider-height) * var(--ds-u) - 8px)!important;border-radius:50%;aspect-ratio:1}

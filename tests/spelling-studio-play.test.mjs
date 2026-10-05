@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {wordSlots,spellingPool,questionForWord,auditWordPools,canonicalWords} from '../spelling/word-pools.mjs';
+import {wordSlots,practiceCategories,spellingPool,questionForWord,auditWordPools,canonicalWords} from '../spelling/word-pools.mjs';
 import {Session} from '../game.mjs';
 import {createSource,cleanConfig} from '../modes.mjs';
 import {configureSpellingRound} from '../spelling/round.mjs';
@@ -26,13 +26,14 @@ test('brzuch has three real pools, one blank per question, one canonical identit
  const mixed=spellingPool(words,{category:'u/ó,rz/ż,ch/h'},()=>.8);assert.equal(mixed.filter(w=>w.word==='brzuch').length,1);
 });
 test('every generated family question reconstructs the exact word and secondary rules propagate centrally',()=>{
- for(const row of words)for(const category of new Set(wordSlots(row).map(s=>s.category))){
+ for(const row of words)for(const category of practiceCategories(row)){
   const q=questionForWord(row,category,rules);assert.equal(q.masked.replace('_',q.answer),row.word);assert.ok(q.options.includes(q.answer));assert.equal(q.masked.split('_').length,2);
  }
+ for(const row of words)for(const slot of wordSlots(row))if(!practiceCategories(row).includes(slot.category))assert.equal(questionForWord(row,slot.category,rules),null);
  const draft=structuredClone(rules),rule=Object.values(draft.rules).find(r=>r.category==='ch/h'&&r.poolDefault);rule.explanation='Jedna wspólna treść dla dodatkowej puli.';
  assert.equal(questionForWord(words.find(w=>w.word==='brzuch'),'ch/h',draft).learning.explanation,rule.explanation);
- const audit=auditWordPools(words,assets);assert.equal(audit.uniqueWords,455);assert.equal(audit.duplicates.length,0);assert.equal(audit.multipleCategories,162);assert.equal(audit.missingAssets.length,0);
- assert.equal(audit.pools.find(p=>p.category==='ć/ci').total,53);
+ const audit=auditWordPools(words,assets);assert.equal(audit.uniqueWords,455);assert.equal(audit.duplicates.length,0);assert.equal(audit.multipleCategories,158);assert.equal(audit.missingAssets.length,0);
+ assert.equal(audit.pools.find(p=>p.category==='ć/ci').total,52);
 });
 test('duplicate records never become duplicate questions and conflicting levels are rejected',()=>{
  const row=words[0];assert.equal(canonicalWords([row,structuredClone(row)]).length,1);

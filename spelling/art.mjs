@@ -170,6 +170,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
       const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
+      bubble?.react(combo?'combo':correct?'correct':'wrong');
       const {preset}=pickEffect(effects);stopFireworks?.();
       stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo,target:app.querySelector('.soap-svg')});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;

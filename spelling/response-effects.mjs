@@ -1,6 +1,7 @@
 import {DEFAULT_EFFECTS,effectBudget,frameStats} from './effect-model.mjs';
 
 export function applyBubbleSettings(bubble,config=DEFAULT_EFFECTS){
+ if(bubble.setBubbleConfig){bubble.setBubbleConfig(config);return;}
  const b=config.bubble;
  bubble.setTuning({speed:b.speed});bubble.setChaos({amplitude:b.amplitude,orbit:b.orbit});
  bubble.setTransition({duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,config.particleBudget)});

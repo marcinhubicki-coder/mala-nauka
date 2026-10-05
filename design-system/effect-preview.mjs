@@ -13,7 +13,9 @@ async function reset(){stop();document.querySelectorAll('.effect-answers button'
 function play(event='correct',id=selected,comboCount=1,runId=0){
  stop();run=runId;currentEvent=event;selected=id;
  const effects=config.effects||DEFAULT_EFFECTS;
+ if(event==='idle'){bubble.clearReactions();bubble.setPaused(false);const intervals=[];let previous=0,raf;const begin=performance.now();const sample=now=>{if(previous)intervals.push(now-previous);previous=now;if(now-begin<1800)raf=requestAnimationFrame(sample);else send('metrics',{run:runId,metrics:{disabled:false,presetName:'Bańka · spoczynek',particles:0,requested:0,intervals,setupMs:0,duration:1800,memory:performance.memory?{heapMB:Math.round(performance.memory.usedJSHeapSize/1048576),heapLimitMB:Math.round(performance.memory.jsHeapSizeLimit/1048576)}:null}});};raf=requestAnimationFrame(sample);stop=()=>cancelAnimationFrame(raf);return;}
  const combo=event==='combo';streak=event==='wrong'?0:comboCount;
+ bubble.react(combo?'combo':event);
  const preset=effects.presets[id]||pick(effects).preset;
  document.getElementById('answer-slot').textContent='rz';
  document.getElementById('correct-answer').className='is-correct';document.getElementById('wrong-answer').className=event==='wrong'?'is-wrong':'';
@@ -27,6 +29,7 @@ window.addEventListener('message',async event=>{
  const data=event.data;
  if(data.type==='design'){config=data.config;applyDesign(config);if(data.assets)configureAssets(data.assets,new URL('../',import.meta.url).href);previewAssets(data.previewURLs||{});update();const url=wordAsset(currentWord);if(url&&url!==lastUrl){lastUrl=url;await bubble.transitionToScene(url,{key:currentWord},false);}}
  if(data.type==='play')play(data.event,data.id,data.streak,data.run);
+ if(data.type==='react'){bubble.setPaused(false);bubble.react(data.event);}
  if(data.type==='stop'){stop();bubble.setPaused(true);}
  if(data.type==='resume'){bubble.setPaused(false);}
  if(data.type==='picture'){stop();bubble.setPaused(false);const word=currentWord==='przód'?'brzuch':'przód';setWord(word);document.querySelectorAll('.effect-answers button').forEach(b=>b.className='');lastUrl=wordAsset(word);await bubble.transitionToScene(lastUrl,{key:word},false);document.getElementById('effect-copy').textContent='Wybierz właściwy zapis';}

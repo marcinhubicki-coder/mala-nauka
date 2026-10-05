@@ -24,10 +24,10 @@ export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeI
  <svg class="home-ground-bleed" viewBox="0 ${TOP+CONTENT_HEIGHT-1} ${WIDTH} 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">${image()}</svg>
  <section class="home-canvas" aria-label="Mała Nauka">
   <svg class="home-art-backdrop" viewBox="0 ${TOP} ${WIDTH} ${CONTENT_HEIGHT}" aria-hidden="true" focusable="false">
-   <defs><mask id="home-background-mask"><rect x="0" y="0" width="853" height="1844" fill="white"/><rect x="0" y="940" width="853" height="904" fill="black"/></mask></defs><g mask="url(#home-background-mask)">${image()}</g>
+   <defs><mask id="home-background-mask"><rect x="0" y="0" width="853" height="1844" fill="white"/><rect x="26" y="102" width="180" height="140" fill="black"/><rect x="709" y="122" width="103" height="103" fill="black"/><rect x="0" y="940" width="853" height="904" fill="black"/></mask></defs><g mask="url(#home-background-mask)">${image()}</g>
   </svg>
   <header class="home-header">
-   <span class="home-brand-label home-sr-only" role="img" aria-label="Mała Nauka"></span>
+   <span class="home-logo-art" data-ds-kind="image" data-ds-label="Logo Mała Nauka" style="${position([26,102,180,140])}">${slice([26,102,180,140])}</span>
    <button type="button" class="home-settings-button home-art-button" data-action="settings" aria-label="Ustawienia" style="${position(SETTINGS)}">${slice(SETTINGS)}</button>
   </header>
   <div class="home-greeting-live"><span>Hej&nbsp;</span><span class="home-nickname">${escape(nickname)}</span><span>!</span></div>

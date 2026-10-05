@@ -15,7 +15,7 @@ export class StudioMotion {
   get motion(){return transitionMotion(this.getDesign().config.motion,this.from,this.to);}
   get saved(){return transitionMotion(this.getBase().motion,this.from,this.to);}
   get edges(){return motionEdges(this.registry);}
-  pairEdit(key,value){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
+  pairEdit(key,value){const reverse=pairKey(this.to,this.from);if(this.edges.some(e=>e.from===this.to&&e.to===this.from)&&!this.getDesign().config.motion?.transitions?.[reverse])this.edit(`motion.transitions.${reverse}`,{inheritReverse:true});this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
   frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}
   url(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});return url.href;}
   select(id,value){const allowed=new Set(this.edges.filter(e=>id==='motion-from'||e.from===this.from).map(e=>id==='motion-from'?e.from:e.to));return `<select id=${id}>${this.registry.views.filter(v=>allowed.has(v.id)).map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}

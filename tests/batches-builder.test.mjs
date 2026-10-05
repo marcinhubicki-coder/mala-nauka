@@ -23,7 +23,7 @@ test('category recognition precedes review; one brzuch counts in three distinct 
 });
 test('batches allow reviewed category subsets but reject drift, unknown difficulty, paths and repeated words',()=>{
  const reviewed=structuredClone(queue),part=reviewed.batches[1].words.find(r=>r.word==='część');assert.deepEqual(part.categories,['ś/si']);assert.doesNotThrow(()=>validateBatches(reviewed));
- for(const change of [r=>r.categories.reverse(),r=>r.levels['ć/ci']=1,r=>r.levels[r.categories[0]]=3,r=>r.assetPath='assets/../secret',r=>r.word='<img>']){const v=structuredClone(queue);change(v.batches[0].words[0]);assert.throws(()=>validateBatches(v));}
+ for(const change of [r=>r.categories.reverse(),r=>r.levels['u/ó']=1,r=>r.levels[r.categories[0]]=3,r=>r.assetPath='assets/../secret',r=>r.word='<img>']){const v=structuredClone(queue);change(v.batches[0].words[0]);assert.throws(()=>validateBatches(v));}
  const v=structuredClone(queue);v.batches[1].words.push(structuredClone(v.batches[0].words[0]));assert.throws(()=>validateBatches(v));
 });
 test('final group acceptance requires a verified square image and selected words only',()=>{

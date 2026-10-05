@@ -1116,12 +1116,9 @@
     },
     "uczeń": {
       "primary": "rule-9964569033a5",
-      "additional": [
-        "rule-000000000007"
-      ],
+      "additional": [],
       "families": [
-        "u/ó",
-        "ń/ni"
+        "u/ó"
       ]
     },
     "uczennica": {
@@ -1598,12 +1595,9 @@
     },
     "korzeń": {
       "primary": "rule-06771f6a98b1",
-      "additional": [
-        "rule-000000000007"
-      ],
+      "additional": [],
       "families": [
-        "rz/ż",
-        "ń/ni"
+        "rz/ż"
       ]
     },
     "burza": {
@@ -1985,12 +1979,9 @@
     },
     "grzebień": {
       "primary": "rule-80e197379ad3",
-      "additional": [
-        "rule-000000000007"
-      ],
+      "additional": [],
       "families": [
-        "rz/ż",
-        "ń/ni"
+        "rz/ż"
       ]
     },
     "grzech": {
@@ -2770,12 +2761,10 @@
     "możliwość": {
       "primary": "rule-7f9f48cf3be9",
       "additional": [
-        "rule-000000000004",
         "rule-000000000005"
       ],
       "families": [
         "rz/ż",
-        "ć/ci",
         "ś/si"
       ]
     },
@@ -3687,12 +3676,9 @@
     },
     "cień": {
       "primary": "rule-38b408ee320a",
-      "additional": [
-        "rule-000000000007"
-      ],
+      "additional": [],
       "families": [
-        "ć/ci",
-        "ń/ni"
+        "ć/ci"
       ]
     },
     "ciepło": {

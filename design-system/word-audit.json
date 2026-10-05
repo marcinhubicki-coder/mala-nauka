@@ -2,7 +2,7 @@
   "entries": 455,
   "uniqueWords": 455,
   "duplicates": [],
-  "multipleCategories": 162,
+  "multipleCategories": 158,
   "missingAssets": [],
   "pools": [
     {
@@ -26,7 +26,7 @@
     {
       "category": "ć/ci",
       "primary": 10,
-      "total": 53,
+      "total": 52,
       "basic": 29
     },
     {
@@ -44,8 +44,8 @@
     {
       "category": "ń/ni",
       "primary": 10,
-      "total": 41,
-      "basic": 9
+      "total": 37,
+      "basic": 6
     },
     {
       "category": "dź/dzi",

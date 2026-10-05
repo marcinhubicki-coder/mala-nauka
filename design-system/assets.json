@@ -7334,12 +7334,12 @@
       "masked": "b_eg"
     },
     "lektura": {
-      "path": "assets/scenes/gruby.jpg",
+      "path": "assets/scenes/lektura.webp",
       "source": "data/words-03.json",
       "masked": "lekt_ra"
     },
     "ratunek": {
-      "path": "assets/scenes/ratunek.jpg",
+      "path": "assets/scenes/ratunek.webp",
       "source": "data/words-03.json",
       "masked": "rat_nek"
     },
@@ -7359,12 +7359,12 @@
       "masked": "temperat_ra"
     },
     "obrus": {
-      "path": "assets/scenes/obrus.jpg",
+      "path": "assets/scenes/obrus.webp",
       "source": "data/words-03.json",
       "masked": "obr_s"
     },
     "racuch": {
-      "path": "assets/scenes/racuch.jpg",
+      "path": "assets/scenes/racuch.webp",
       "source": "data/words-03.json",
       "masked": "rac_ch"
     },
@@ -8274,7 +8274,7 @@
       "masked": "malu_"
     },
     "okruch": {
-      "path": "assets/scenes/stol.webp",
+      "path": "assets/scenes/okruch.webp",
       "source": "data/words-07.json",
       "masked": "okru_"
     },

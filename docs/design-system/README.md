@@ -8,6 +8,8 @@ Zrzut pokazuje wcześniejszy układ desktopowy. Aktualne dopasowanie oraz trzy i
 
 **[Nowe słowa, builder i globalne przepisy](batches-and-builder.md)**: 256 propozycji w 13 batchach, cel 100 na kategorię, trzy etapy akceptacji, próby z warstw oraz czytelny miernik.
 
+**[Projekt i wydanie](project-guide.md)**: plan, nowe ekrany i flow, lokalne teksty, lab nauki, zamrożone podglądy, recenzje, kontrola wydania i odzyskiwanie szkiców. Gotowa wyspa jest zapisana w panelu.
+
 ## Zacznij od panelu
 
 1. **Komponenty → Według widoku**: wybierz ekran i wskaż element pastylką lub kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.

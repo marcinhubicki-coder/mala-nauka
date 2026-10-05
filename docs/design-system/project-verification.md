@@ -22,6 +22,10 @@ Po przelotach zapisano trzecią zamrożoną wersję „Wyspa — pilot po 3 prze
 
 ## Automatyczne sprawdzenie i granice
 
-`node tools/build-design.mjs` kontroluje zależności importów, katalog i odwołania oraz tworzy metadata wdrożenia. `node --test tests/*.test.mjs`: 97 testów po zapisie końcowego kontraktu — wszystkie przeszły. Testy obejmują brak farmienia punktów, granice combo, utrwalenie, idempotentne zdarzenia, koszt mapy, skórki, DAG, blokady wydania, zamrożenie, niewłaściwe assety, pakiety uwag, odzyskiwanie i status deployu oraz istniejące tryby gry.
+`node tools/build-design.mjs` kontroluje zależności importów, katalog i odwołania oraz tworzy metadata wdrożenia. `node --test tests/*.test.mjs`: 98 testów po zapisie końcowego kontraktu — wszystkie przeszły. Testy obejmują brak farmienia punktów, granice combo, utrwalenie, idempotentne zdarzenia, koszt mapy, skórki, DAG, blokady wydania, zamrożenie, niewłaściwe assety, pakiety uwag, odzyskiwanie i status deployu oraz istniejące tryby gry.
 
 Przegląd UI wykonano przez przeglądarkę Chrome, w desktopie i mobilnej ramce 390 × 844. Nie deklarujemy testu fizycznego iPhone ani Safari. Upload nowego pliku był wcześniej sprawdzony w warstwie transakcji; w tej próbie użyto istniejącego assetu. Kopiowanie pakietów i import sprawdzono realnie, pobierania przez automatyzację przeglądarki nie użyto. Recenzja jest pakietem eksport/import, nie usługą równoczesnego współedytowania.
+
+Końcowy test w UI pokazał dialog starszego szkicu dla rewizji 1 → 2. „Przejrzyj i odzyskaj” zachowało trzy wersje i aktualnego pilota. „Sprawdź wdrożenie” pokazało „Wdrożenie gotowe · 281f9c4 · Deployment has completed”. Przegląd ten ujawnił i usunął błąd receivera natywnego fetch; osobny test regresji go kontroluje. Wszystkie sześć adapterów konsumentów zbudowały się bez lokalnych assetów i paczek słów, z kompletnym grafem importów, a ich deploymenty osiągnęły READY. Produkcyjny main nadal wskazuje f16b7770c6473f692284ecd44f3a282bfa5d3829.
+
+![Końcowy edytor ekranów](studio-project-overview-final.jpg)

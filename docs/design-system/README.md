@@ -2,9 +2,9 @@
 
 Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt wyglądu, komponentów i ilustracji oraz narzędzie do jego edycji.
 
-![Design Studio: wybór po widoku, aktywny stan Kategorie oraz suwaki ze znacznikiem zapisanej wartości](studio-visual-20261004.jpg)
+![Design Studio: projekt wyspy, ekrany i lokalny edytor](studio-project-overview-final.jpg)
 
-Zrzut pokazuje wcześniejszy układ desktopowy. Aktualne dopasowanie oraz trzy iteracje interfejsu telefonu opisuje [Zakres weryfikacji](verification.md). [Instrukcja telefonu](mobile-guide.md) pokazuje pracę przez Wybór, Podgląd i Ustawienia.
+Aktualny scenariusz i trzy dodatkowe przeloty opisuje [Weryfikacja projektu](project-verification.md). Wcześniejsze sprawdzenie komponentów opisuje [Zakres weryfikacji](verification.md). [Instrukcja telefonu](mobile-guide.md) pokazuje pracę przez Wybór, Podgląd i Ustawienia.
 
 **[Nowe słowa, builder i globalne przepisy](batches-and-builder.md)**: 256 propozycji w 13 batchach, cel 100 na kategorię, trzy etapy akceptacji, próby z warstw oraz czytelny miernik.
 

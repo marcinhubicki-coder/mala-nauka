@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 2,
+  "revision": 3,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -3265,24 +3265,6 @@
       ]
     },
     {
-      "path": "assets/scenes/bunny-bubble.webp",
-      "size": 14999,
-      "sha": "d91c422434f291c7d723eb053c0550b214a97b6bf80dc3d561d6c093be32dca8",
-      "id": "d91c422434f291c7",
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/bunny.svg",
-      "size": 2737,
-      "sha": "8c175bfa75d8368a0ac7e3a35e5743dfc131d9a4b6a5ece034721cd2e61e1905",
-      "id": "8c175bfa75d8368a",
-      "type": "svg",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/bunny.webp",
       "size": 136270,
       "sha": "e206d1ada7af48256ff74923af50908cae92799139861265f9f3941160ca9fca",
@@ -3299,17 +3281,6 @@
       "sha": "5fc47c9e243331eedc64b024b35e5b7023bc42d7e1e456e0b71949b3cc3e1fc1",
       "id": "5fc47c9e243331ee",
       "type": "jpg",
-      "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
-    },
-    {
-      "path": "assets/scenes/castle-review.webp",
-      "size": 6114,
-      "sha": "8e0119a63f9c275a623db629352b8207797e87edc745cb1f718edf9f2f08dbb7",
-      "id": "8e0119a63f9c275a",
-      "type": "webp",
       "group": "scenes",
       "references": [
         "spelling/scenes.mjs"
@@ -4749,15 +4720,6 @@
       ]
     },
     {
-      "path": "assets/scenes/mountains.svg",
-      "size": 2011,
-      "sha": "76c59b26a80578ca6feba614a3bce01d171bb70427019fcb05f68e125181a6e7",
-      "id": "76c59b26a80578ca",
-      "type": "svg",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/mountains.webp",
       "size": 188422,
       "sha": "7f89b79e388e7dd5c89a4b35a173ee8c2c7a6b2194978e9189a7587e5fee4a5a",
@@ -5438,15 +5400,6 @@
       ]
     },
     {
-      "path": "assets/scenes/rose.svg",
-      "size": 2906,
-      "sha": "3ea9919c8edd7f14a6c567025ad8b4edd4a31e65bd22f51a25f586736f3f2b6c",
-      "id": "3ea9919c8edd7f14",
-      "type": "svg",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/rose.webp",
       "size": 121276,
       "sha": "3b3c19c23e76e8bbcb6b29d18d3554e55203eab2323d39ff2a680bb7a4719f30",
@@ -5792,15 +5745,6 @@
       "references": [
         "spelling/scenes.mjs"
       ]
-    },
-    {
-      "path": "assets/scenes/spelling-bg.webp",
-      "size": 14999,
-      "sha": "2621c15f74644ae5ad25dc6293c76ae702f587d0d9f8cdfacde9983ff11151a4",
-      "id": "2621c15f74644ae5",
-      "type": "webp",
-      "group": "scenes",
-      "references": []
     },
     {
       "path": "assets/scenes/sposob.jpg",
@@ -8475,11 +8419,6 @@
       "source": "data/words-05.json",
       "masked": "kału_a"
     },
-    "wieża": {
-      "path": "assets/scenes/castle-review.webp",
-      "source": "data/words-05.json",
-      "masked": "wie_a"
-    },
     "wąż": {
       "path": "assets/scenes/waz.jpg",
       "source": "data/words-05.json",
@@ -8610,11 +8549,6 @@
       "source": "data/words-06.json",
       "masked": "u_o"
     },
-    "dach": {
-      "path": "assets/scenes/castle-review.webp",
-      "source": "data/words-06.json",
-      "masked": "da_"
-    },
     "mucha": {
       "path": "assets/scenes/mucha.jpg",
       "source": "data/words-06.json",
@@ -8640,11 +8574,6 @@
       "source": "data/words-06.json",
       "masked": "ws_ód"
     },
-    "chata": {
-      "path": "assets/scenes/castle-review.webp",
-      "source": "data/words-06.json",
-      "masked": "_ata"
-    },
     "chustka": {
       "path": "assets/scenes/chustka.jpg",
       "source": "data/words-06.json",
@@ -8664,11 +8593,6 @@
       "path": "assets/scenes/chrzaszcz.jpg",
       "source": "data/words-06.json",
       "masked": "_rząszcz"
-    },
-    "chrzan": {
-      "path": "assets/scenes/rose.webp",
-      "source": "data/words-06.json",
-      "masked": "_rzan"
     },
     "chwila": {
       "path": "assets/scenes/chwila.jpg",

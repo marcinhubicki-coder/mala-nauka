@@ -4444,6 +4444,15 @@
       "references": []
     },
     {
+      "path": "assets/scenes/lektura.webp",
+      "sha": "7b4f14c43d5cd34efdb3983e7a5960a2a18cb5c91deb102e601219b95ee98866",
+      "id": "7b4f14c43d5cd34e",
+      "size": 133488,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
       "path": "assets/scenes/leniuchujesz.jpg",
       "size": 264614,
       "sha": "7ccd3dbd4d8a8615f203545b9dce046ed6ffabf4999736ed14b009154b9f0650",
@@ -4740,6 +4749,15 @@
       "references": []
     },
     {
+      "path": "assets/scenes/obrus.webp",
+      "sha": "b13e2df6c14f681aca03241fd9a0c1494d96afd6dae8e66db7000e5483a3d4c0",
+      "id": "b13e2df6c14f681a",
+      "size": 207196,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
       "path": "assets/scenes/ogol.jpg",
       "size": 313576,
       "sha": "bf97a323008d7a15d0f9f438c2afe8eda1595010c2583634604a29f686e2fb30",
@@ -4753,6 +4771,15 @@
       "size": 122466,
       "sha": "e9ce8b4eec2e3c36d93f63763a145e3623b929fa923ad785edde53b0a84f00db",
       "id": "e9ce8b4eec2e3c36",
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/okruch.webp",
+      "sha": "053ed096f9eaee5b7f56e87d43da7557515f2622ecc787b289e5272217115f93",
+      "id": "053ed096f9eaee5b",
+      "size": 125812,
       "type": "webp",
       "group": "scenes",
       "references": []
@@ -5139,11 +5166,29 @@
       "references": []
     },
     {
+      "path": "assets/scenes/racuch.webp",
+      "sha": "fa39be8a9e424b7e98b5b10e9c5a4911d8802ae58b0e70e36012442ac7651f88",
+      "id": "fa39be8a9e424b7e",
+      "size": 193942,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
       "path": "assets/scenes/ratunek.jpg",
       "size": 253894,
       "sha": "ec3824138eed9351ae441d094cc30038f781b83a6f9798179f75b38561d8e856",
       "id": "ec3824138eed9351",
       "type": "jpg",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/ratunek.webp",
+      "sha": "fcb0a2626c8cf0a3cb2a17726a8cea7909390d9d337aa6e6cbd074f4c95c1232",
+      "id": "fcb0a2626c8cf0a3",
+      "size": 158150,
+      "type": "webp",
       "group": "scenes",
       "references": []
     },

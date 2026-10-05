@@ -17,7 +17,8 @@ export class GitClient {
   const headers={Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   if(this.#token)headers.Authorization=`Bearer ${this.#token}`;
   if(body)headers['Content-Type']='application/json';
-  const response=await this.fetcher(`https://api.github.com/repos/${REPOSITORY}/${path}`,{method,headers,body:body?JSON.stringify(body):undefined,cache:'no-store'});
+  const endpoint=`https://api.github.com/repos/${REPOSITORY}${path?`/${path}`:''}`;
+  const response=await this.fetcher(endpoint,{method,headers,body:body?JSON.stringify(body):undefined,cache:'no-store'});
   const data=await response.json();
   if(!response.ok){const error=new Error(response.status===401?'GitHub nie przyjął tokenu.':response.status===403?'Token potrzebuje uprawnienia Contents: Read and write dla tego repozytorium.':`GitHub: ${data.message||response.status}`);error.status=response.status;throw error;}
   return data;

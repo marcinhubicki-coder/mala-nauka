@@ -146,8 +146,9 @@ if (studio) {
     if(message.type==='copy-scan'){await designReady;copyScanning=true;emit({type:'copy-list',rows:collectScreenCopy(app())});}
     if(message.type==='design'){
       await designReady;applyDesign(message.config);
-      if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}
+      if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,message.contentOrigin||window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}
       if(message.rules&&JSON.stringify(ruleLibrary())!==JSON.stringify(message.rules)){configureRules(message.rules);document.dispatchEvent(new CustomEvent('mala-nauka:rules'));}
+      if(message.words)document.dispatchEvent(new CustomEvent('mala-nauka:words',{detail:message.words}));
       scheduleReport();
     }
     if(message.type==='inspect'){inspecting=Boolean(message.enabled);showHighlight=Boolean(message.highlight);paintHighlight();}

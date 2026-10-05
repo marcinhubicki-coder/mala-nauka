@@ -603,3 +603,5 @@ async function renderStudioScenario(){
 document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length)void renderStudioScenario();});
 
 document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length){words=validateWords(resolveRules(studioSourceWords));void renderStudioScenario();}});
+
+document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});

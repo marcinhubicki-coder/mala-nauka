@@ -1,7 +1,7 @@
 import {readFile,writeFile,readdir,stat,unlink} from 'node:fs/promises';
 import {resolve,relative,basename} from 'node:path';
 import {createHash} from 'node:crypto';
-import {SCENES,WORD_SCENES,sceneFor} from '../spelling/scenes.mjs';
+import {validateAssets} from '../design-system/validation.mjs';
 const root=resolve(new URL('../',import.meta.url).pathname);
 async function walk(dir){const out=[];for(const item of await readdir(dir,{withFileTypes:true})){if(['.git','dist','node_modules'].includes(item.name))continue;const path=resolve(dir,item.name);out.push(...(item.isDirectory()?await walk(path):[path]));}return out;}
 const all=await walk(root);
@@ -16,12 +16,12 @@ for(const group of groups.values()){
  assets.push({...old,...canonical,id:canonical.sha.slice(0,16),type:canonical.path.split('.').at(-1),group:canonical.path.split('/')[1],references});
  for(const copy of group.slice(1))aliases[copy.path]=canonical.path;
 }
-const words={};
-for(let batch=1;batch<=8;batch++)for(const word of JSON.parse(await readFile(resolve(root,`data/words-0${batch}.json`),'utf8'))){const scene=sceneFor(word.masked,word.word);if(scene?.asset){const path=`assets/scenes/${scene.asset}`;words[word.word]={path:aliases[path]||path,source:`data/words-0${batch}.json`,masked:word.masked};}}
-// Keep manual word assignments after subsequent audits.
-for(const [word,row] of Object.entries(previous?.words||{}))if(row.manual)words[word]=row;
+// The manifest owns assignments. Scanning files must never infer or overwrite them.
+const words=structuredClone(previous?.words||{});
+for(const row of Object.values(words))row.path=aliases[row.path]||row.path;
 const paths=new Set(assets.map(row=>row.path));for(const [from,to]of Object.entries(aliases))if(!paths.has(to))throw Error(`Brak celu aliasu: ${from}`);
 const catalog={schemaVersion:1,revision:(previous?.revision||0)+1,assets:assets.sort((a,b)=>a.path.localeCompare(b.path)),aliases,words};
+validateAssets(catalog);
 await writeFile(resolve(root,'design-system/assets.json'),JSON.stringify(catalog,null,2)+'\n');
 if(process.argv.includes('--deduplicate'))for(const path of Object.keys(aliases))await unlink(resolve(root,path)).catch(()=>{});
 console.log(JSON.stringify({files:assets.length,aliases:Object.keys(aliases).length,words:Object.keys(words).length,savedBytes:Object.keys(aliases).reduce((sum,path)=>sum+(groups.get(assets.find(row=>row.path===aliases[path]).sha)?.[0]?.size||0),0)}));

@@ -1,3 +1,5 @@
+import {discoverImages} from './catalog-refresh.mjs';
+import {validateWords} from '../game.mjs';
 import {validateRules} from '../shared/rules-library.mjs';
 import {validateAssets} from './validation.mjs';
 import {diff,validateConfig} from './model.mjs';
@@ -38,7 +40,16 @@ export class GitClient {
   const ref=await this.request(`git/ref/heads/${BRANCH}`),head=ref.object.sha;
   const [config,assets,rules]=await Promise.all(['config','assets','rules'].map(name=>this.readJSON(`design-system/${name}.json`,head)));
   let batches;try{batches=await this.readJSON('design-system/word-batches.json',head);}catch(error){if(error.status!==404)throw error;batches=structuredClone(EMPTY_BATCHES);}
-  return {head,config,assets,rules,batches};
+  const wordPacks=Object.fromEntries(await Promise.all(Array.from({length:8},async(_,i)=>{const path=`data/words-0${i+1}.json`;return [path,await this.readJSON(path,head)];})));
+  validateConfig(config);validateAssets(assets);validateRules(rules);validateBatches(batches);
+  validateWords(Object.values(wordPacks).flat());
+  const tree=await this.request(`git/trees/${head}?recursive=1`);
+  const catalog=await discoverImages(assets,tree,async path=>{
+   const response=await this.fetcher(`https://raw.githubusercontent.com/${REPOSITORY}/${head}/${path}`,{cache:'no-store'});
+   if(!response.ok)throw Error(`Nie udało się pobrać grafiki: ${path}`);
+   return response.arrayBuffer();
+  });
+  return {head,config,assets,catalog,rules,batches,wordPacks};
  }
  acceptHead(head){if(!/^[0-9a-f]{40}$/.test(head))throw Error('Nieprawidłowy commit.');this.#head=head;}
  async deploymentStatus(sha=this.#head){
@@ -52,6 +63,23 @@ export class GitClient {
    url:`https://github.com/${REPOSITORY}/commit/${sha}/checks`,
    providerUrl:row?.target_url||''
   };
+ }
+ async previewURL(sha=this.#head){
+  if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Brak poprawnego commitu Preview.');
+  const deployments=await this.request(`deployments?sha=${sha}&per_page=100`);
+  for(const deployment of deployments){
+   if(deployment.sha!==sha)continue;
+   const statuses=await this.request(`deployments/${deployment.id}/statuses`);
+   const status=statuses[0];
+   if(status?.state!=='success'||!status.environment_url)continue;
+   const url=new URL(status.environment_url);
+   if(url.protocol!=='https:')continue;
+   // Verify the deployment itself; a moving branch alias is not a saved Preview.
+   const response=await this.fetcher(new URL('design-system/deployment.json',url),{cache:'no-store'});
+   if(!response.ok)continue;
+   if((await response.json()).sha===sha)return url.href;
+  }
+  throw Error('Brak gotowego, zweryfikowanego adresu wdrożenia dla tego commitu. Spróbuj po zakończeniu budowania Preview.');
  }
  async productionSummary(sha=this.#head){
   if(!this.connected)throw Error('Połącz GitHub przed sprawdzeniem publikacji.');

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 5,
+  "revision": 6,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -2718,6 +2718,50 @@
       "references": []
     },
     {
+      "path": "assets/managed/9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903.jpg",
+      "sha": "9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903",
+      "id": "9b8c71a90ebced01",
+      "size": 590364,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854.jpg",
+      "sha": "c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854",
+      "id": "c8a807f7c1ec612e",
+      "size": 696968,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66.jpg",
+      "sha": "cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66",
+      "id": "cb8464fad9cd12b5",
+      "size": 624840,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
+      "sha": "dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f",
+      "id": "dfb2b8ba57b0ee56",
+      "size": 619901,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/maps/africa.svg",
       "size": 9956,
       "sha": "3d850835e5e7180f5e153334b4e4f4eef844f87688ced8e6cca2dce04428af91",
@@ -3170,9 +3214,7 @@
       "id": "253e5dbb58d1a1fc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/autobus.jpg",
@@ -3181,9 +3223,7 @@
       "id": "95a10783170e4a78",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/bagaz.jpg",
@@ -3192,9 +3232,7 @@
       "id": "821c5a93cdef276d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/banka.jpg",
@@ -3203,9 +3241,7 @@
       "id": "4d46e61c32955bbd",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/bol.webp",
@@ -3215,8 +3251,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3226,9 +3261,7 @@
       "id": "4cd7a42fdc950cef",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/brzydki.jpg",
@@ -3237,9 +3270,7 @@
       "id": "0ed2841274e5f2db",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/buda.jpg",
@@ -3248,9 +3279,7 @@
       "id": "c3b5b43a7d789140",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/budzik.webp",
@@ -3260,8 +3289,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3271,9 +3299,7 @@
       "id": "e206d1ada7af4825",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/burza.jpg",
@@ -3282,9 +3308,7 @@
       "id": "5fc47c9e243331ee",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chciec.jpg",
@@ -3293,9 +3317,7 @@
       "id": "6678eecbdabecaea",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chemia.jpg",
@@ -3304,9 +3326,7 @@
       "id": "90d8b873a338fb19",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chlod.jpg",
@@ -3315,9 +3335,7 @@
       "id": "84359b51096caa54",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chlopak.jpg",
@@ -3326,9 +3344,7 @@
       "id": "f08182bdead158b9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chlopiec.jpg",
@@ -3337,9 +3353,7 @@
       "id": "4a35c52a09ea12f4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chociaz.jpg",
@@ -3348,9 +3362,7 @@
       "id": "0dfc48ea8b54fc6e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chodzic.jpg",
@@ -3359,9 +3371,7 @@
       "id": "84e1604dec47e6bd",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/choinka.webp",
@@ -3371,8 +3381,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3383,8 +3392,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3394,9 +3402,7 @@
       "id": "2e99666160ffe7d8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chowac.jpg",
@@ -3405,9 +3411,7 @@
       "id": "ee1b8b2f6b95ef56",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chrapac.jpg",
@@ -3416,9 +3420,7 @@
       "id": "0985413b0bf38fb4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chrupki.jpg",
@@ -3427,9 +3429,7 @@
       "id": "2785b2b0d1362762",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chrzaszcz.jpg",
@@ -3438,9 +3438,7 @@
       "id": "10dfc8d6498f4f9f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chudy.jpg",
@@ -3449,9 +3447,7 @@
       "id": "72c72f5c58d144b4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chustka.jpg",
@@ -3460,9 +3456,7 @@
       "id": "900b77a469490c24",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chwalic.jpg",
@@ -3471,9 +3465,7 @@
       "id": "f3ce054f83ea768b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/chwila.jpg",
@@ -3482,9 +3474,7 @@
       "id": "05775014697a8905",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ciasto.jpg",
@@ -3493,9 +3483,7 @@
       "id": "07d736743bc42497",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cicho.jpg",
@@ -3504,9 +3492,7 @@
       "id": "966da9c031255c99",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cichy.jpg",
@@ -3515,9 +3501,7 @@
       "id": "706c5108f336b110",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ciemno.jpg",
@@ -3526,9 +3510,7 @@
       "id": "61337dd8ae77827b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cien.jpg",
@@ -3537,9 +3519,7 @@
       "id": "82c3d3d2292d6875",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cieplo.jpg",
@@ -3548,9 +3528,7 @@
       "id": "614bf45858fee3c0",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ciezar.jpg",
@@ -3559,9 +3537,7 @@
       "id": "44a2c498db8314e9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ciezarowka.jpg",
@@ -3570,9 +3546,7 @@
       "id": "6e15823ecec17efb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ciocia.jpg",
@@ -3581,9 +3555,7 @@
       "id": "c18afd29c4f3a04e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/clouds-review.webp",
@@ -3592,9 +3564,7 @@
       "id": "38e2d208dc815384",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cma.jpg",
@@ -3603,9 +3573,7 @@
       "id": "82da2efa3587b701",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cmentarz.jpg",
@@ -3614,9 +3582,7 @@
       "id": "6e24ae6113fd3f6d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/comb.avif",
@@ -3625,9 +3591,7 @@
       "id": "3fac49fa4035047a",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/corka.avif",
@@ -3636,9 +3600,7 @@
       "id": "74d76c90fbdee4d6",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/cukier.jpg",
@@ -3647,9 +3609,16 @@
       "id": "6281fc99e12aaf63",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/czesc.jpg",
+      "size": 769871,
+      "sha": "ff49a3a68b0d5d1f27e5204f2f1681dbe414479d866616bdb6c25906b051e113",
+      "id": "ff49a3a68b0d5d1f",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/dol.webp",
@@ -3659,8 +3628,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3670,9 +3638,7 @@
       "id": "77388ead9e966f96",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/druh.jpg",
@@ -3681,9 +3647,7 @@
       "id": "519caedb20c59276",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/druhna.jpg",
@@ -3692,9 +3656,7 @@
       "id": "619a468235fe18ff",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/druzyna.jpg",
@@ -3703,9 +3665,7 @@
       "id": "55ccaada42db331b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/drzemka.webp",
@@ -3715,8 +3675,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3726,9 +3685,7 @@
       "id": "0c8c219e15ae6936",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/drzwi.webp",
@@ -3738,8 +3695,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3749,9 +3705,7 @@
       "id": "325dafa544b8f758",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/duzy.jpg",
@@ -3760,9 +3714,7 @@
       "id": "c1e2b6549ff14cf8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/dziadek.jpg",
@@ -3771,9 +3723,7 @@
       "id": "167ccc378c16f84f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/dziewczyna.jpg",
@@ -3782,9 +3732,7 @@
       "id": "efd09db6be6ba25d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/dzik.jpg",
@@ -3793,9 +3741,16 @@
       "id": "d567b0683edb734b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/dzis.jpg",
+      "size": 569405,
+      "sha": "4d5d57ee907e3cfac6b770ed6cbbfba746412eca76b99dea5f28ddebd6fcbe5d",
+      "id": "4d5d57ee907e3cfa",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/dzwiek.jpg",
@@ -3804,9 +3759,7 @@
       "id": "92c228f968f62a93",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/dzwig.jpg",
@@ -3815,9 +3768,7 @@
       "id": "a2f03e374644abae",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/dzwignia.jpg",
@@ -3826,9 +3777,7 @@
       "id": "e479dc1bd295a96e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/garaz.jpg",
@@ -3837,9 +3786,34 @@
       "id": "a0e907a8c720c171",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/garsc.jpg",
+      "size": 816695,
+      "sha": "fce4f9e694945bc171700900eeb548564777ab0ef65f4a70172bdf7aaecdfa77",
+      "id": "fce4f9e694945bc1",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/gasienica.jpg",
+      "size": 600281,
+      "sha": "71975cbd8bf4c097437e33dd59ad367cccb5816b2fe411cd7154e1d70d814073",
+      "id": "71975cbd8bf4c097",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/gdzies.jpg",
+      "size": 814574,
+      "sha": "c6da455e0d6a880e616952199e60eea74ef0e07ab26f1a621b9e619687b20856",
+      "id": "c6da455e0d6a880e",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/generated-batch-v26.json",
@@ -3848,9 +3822,7 @@
       "id": "34597395e90f5ceb",
       "type": "json",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/glod.webp",
@@ -3860,8 +3832,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3871,9 +3842,7 @@
       "id": "cd526f4609c46b59",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/grozny.jpg",
@@ -3882,9 +3851,7 @@
       "id": "cce1ff33f9dbffe9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/gruby.jpg",
@@ -3893,9 +3860,7 @@
       "id": "b30da9af9117e607",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/grzech.jpg",
@@ -3904,9 +3869,7 @@
       "id": "ce6fe41c9cdb17d3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/grzejnik.webp",
@@ -3916,8 +3879,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3927,9 +3889,7 @@
       "id": "a696116284984ec8",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/gumka.webp",
@@ -3939,8 +3899,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -3950,9 +3909,7 @@
       "id": "bb2a6cc17d1a2ce6",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hala.jpg",
@@ -3961,9 +3918,7 @@
       "id": "585520646bce191a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/halas.jpg",
@@ -3972,9 +3927,7 @@
       "id": "bc9f678e3e43cc12",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hamak.jpg",
@@ -3983,9 +3936,7 @@
       "id": "a8965a25910961a4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hamulec.jpg",
@@ -3994,9 +3945,7 @@
       "id": "78f056e0f465f62a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hanba.jpg",
@@ -4005,9 +3954,7 @@
       "id": "30dfd302d9174245",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/harcerz.jpg",
@@ -4016,9 +3963,7 @@
       "id": "20ab0d8d792d3fcb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/harfa.jpg",
@@ -4027,9 +3972,7 @@
       "id": "649d4bf7e8dc02e5",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/harmonia.jpg",
@@ -4038,9 +3981,7 @@
       "id": "6446644f30bdc28b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hektar.jpg",
@@ -4049,9 +3990,7 @@
       "id": "b58e04d52324fd2c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/helikopter.webp",
@@ -4061,8 +4000,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -4072,9 +4010,7 @@
       "id": "541062a6790fa6c4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hipopotam.jpg",
@@ -4083,9 +4019,7 @@
       "id": "90d5397c75498534",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hobby.jpg",
@@ -4094,9 +4028,7 @@
       "id": "d8b2ca9ac206c41e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hodowac.jpg",
@@ -4105,9 +4037,7 @@
       "id": "8d9a59b28a7cffac",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hodowla.jpg",
@@ -4116,9 +4046,7 @@
       "id": "738d7256f4eb96fb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hokeista.jpg",
@@ -4127,9 +4055,7 @@
       "id": "f8e0f36c96560d13",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/honor.jpg",
@@ -4138,9 +4064,7 @@
       "id": "4864906ee615e217",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hotel.jpg",
@@ -4149,9 +4073,7 @@
       "id": "bb260280b3f199ec",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hulajnoga.jpg",
@@ -4160,9 +4082,7 @@
       "id": "182b48437a6c49af",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/humor.jpg",
@@ -4171,9 +4091,7 @@
       "id": "7a22eb2cc6137603",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/huragan.webp",
@@ -4182,9 +4100,7 @@
       "id": "7c23b1c317c117ef",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hustawka.webp",
@@ -4194,8 +4110,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -4205,9 +4120,7 @@
       "id": "8cb0a9455234b7b4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/hymn.jpg",
@@ -4216,9 +4129,7 @@
       "id": "66746d97467c510e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/jarzebina.jpg",
@@ -4227,9 +4138,7 @@
       "id": "8d5f449fe32af711",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/jez.webp",
@@ -4238,9 +4147,7 @@
       "id": "0dd696b3001fa635",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/jezyna.jpg",
@@ -4249,9 +4156,7 @@
       "id": "a92405fefb1d5fcc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/juz.jpg",
@@ -4260,9 +4165,7 @@
       "id": "e941c67ca54cb7cd",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kalendarz.jpg",
@@ -4271,9 +4174,7 @@
       "id": "da282482b3a31fd4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kaluza.jpg",
@@ -4282,9 +4183,7 @@
       "id": "b36da868bef67473",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kapelusz.jpg",
@@ -4293,9 +4192,7 @@
       "id": "29cac33bf7d3b654",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kazdy.jpg",
@@ -4304,9 +4201,16 @@
       "id": "8a4c292d162aa945",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/kisc.jpg",
+      "size": 775650,
+      "sha": "8c83f897f0ce1c30cb57343deacc2c0329b321c221a51e3667c003f52c82e696",
+      "id": "8c83f897f0ce1c30",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/klawiatura.jpg",
@@ -4315,9 +4219,7 @@
       "id": "7aac2f3e1ba6701f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/klotnia.jpg",
@@ -4326,9 +4228,7 @@
       "id": "01778cc572281f95",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kolejarz.jpg",
@@ -4337,9 +4237,7 @@
       "id": "405115d8c74257b0",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kolezanka.jpg",
@@ -4348,9 +4246,7 @@
       "id": "962dd8f639dbb00a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kolko.webp",
@@ -4360,8 +4256,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -4371,9 +4266,7 @@
       "id": "c4e1ba0e77970125",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/konczyc.jpg",
@@ -4382,9 +4275,7 @@
       "id": "0c08cae4d665a6c0",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/koniec.jpg",
@@ -4393,9 +4284,7 @@
       "id": "e70e8d950e9c4f7a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/korytarz.jpg",
@@ -4404,9 +4293,7 @@
       "id": "55c4fff66efcd8cf",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krakow.jpg",
@@ -4415,9 +4302,7 @@
       "id": "d36747272b30ceff",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krol.avif",
@@ -4426,9 +4311,7 @@
       "id": "1c90c99b7e940d72",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krol.jpg",
@@ -4437,9 +4320,7 @@
       "id": "d5c1094358e7fdae",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krotki.jpg",
@@ -4448,9 +4329,7 @@
       "id": "383ecfcc362dd06d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krotko.jpg",
@@ -4459,9 +4338,7 @@
       "id": "f990522fa5416366",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krzeslo.webp",
@@ -4471,8 +4348,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -4482,9 +4358,7 @@
       "id": "014023544518cc0d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/krzyzowka.jpg",
@@ -4493,9 +4367,7 @@
       "id": "6791c11c4fd24c3c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ksiazka.webp",
@@ -4504,9 +4376,7 @@
       "id": "9beb70d5a92effad",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ktory.jpg",
@@ -4515,9 +4385,7 @@
       "id": "90aea7b175578bfb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kula.jpg",
@@ -4526,9 +4394,7 @@
       "id": "313732f4b3f5c4d4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kupic.jpg",
@@ -4537,9 +4403,7 @@
       "id": "38bafa6844a8d7c8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kupujecie.jpg",
@@ -4548,9 +4412,7 @@
       "id": "343ad897af793d16",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/kura.webp",
@@ -4560,8 +4422,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -4571,9 +4432,7 @@
       "id": "70f2d13aa1029db0",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/lekarz.avif",
@@ -4582,9 +4441,7 @@
       "id": "04f5bc44bc3f64bf",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/leniuchujesz.jpg",
@@ -4593,9 +4450,25 @@
       "id": "7ccd3dbd4d8a8615",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/lesniczy.jpg",
+      "size": 937882,
+      "sha": "a2a7e925f8a456fe7883cf6d426e3c85cf8d2e078c8d70beb2263a2d0a6c3b2b",
+      "id": "a2a7e925f8a456fe",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/lisc.jpg",
+      "size": 761984,
+      "sha": "379c16f9a963dbc98df3969a21c8b9a5f218a9ef8d589215fa326f932099f0d6",
+      "id": "379c16f9a963dbc9",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/lozko.jpg",
@@ -4604,9 +4477,7 @@
       "id": "63432cbaa7a58027",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ludzie.jpg",
@@ -4615,9 +4486,7 @@
       "id": "246e1e4c211033ac",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/lupa.jpg",
@@ -4626,9 +4495,7 @@
       "id": "252eed56cae93300",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/lyzka.jpg",
@@ -4637,9 +4504,7 @@
       "id": "1fd4bc1cf2fb99fc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/lyzwy.webp",
@@ -4649,8 +4514,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -4660,9 +4524,7 @@
       "id": "39b0ddd2dc9d4344",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/marzenie.jpg",
@@ -4671,9 +4533,7 @@
       "id": "2794675e5b74f2d7",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mech.jpg",
@@ -4682,9 +4542,7 @@
       "id": "779371097cda5c9c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mezczyzna.jpg",
@@ -4693,9 +4551,7 @@
       "id": "6c265465443eecd3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/miod.webp",
@@ -4704,9 +4560,7 @@
       "id": "54ba246d5e256bd8",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/moj.jpg",
@@ -4715,9 +4569,7 @@
       "id": "8aa4d380b9c2b9c5",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mountains.webp",
@@ -4726,9 +4578,7 @@
       "id": "7f89b79e388e7dd5",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mowic.jpg",
@@ -4737,9 +4587,7 @@
       "id": "10f63983bf92b85e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mozg.jpg",
@@ -4748,9 +4596,7 @@
       "id": "0f652b1dfa8a319f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mozliwosc.jpg",
@@ -4759,9 +4605,7 @@
       "id": "a928447df135708c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mozliwy.jpg",
@@ -4770,9 +4614,7 @@
       "id": "a1842bc5fbebd14f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/mucha.jpg",
@@ -4781,9 +4623,7 @@
       "id": "caa8d4bfb0f26bc9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/murarz.jpg",
@@ -4792,9 +4632,7 @@
       "id": "eba75c186750a28f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/murawa.jpg",
@@ -4803,9 +4641,7 @@
       "id": "55db431e095b7812",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/muszla.webp",
@@ -4815,8 +4651,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -4827,8 +4662,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -4838,9 +4672,7 @@
       "id": "078552850fd3b722",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/niedziela.jpg",
@@ -4849,9 +4681,7 @@
       "id": "4fe452f80450ec5e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/niedzwiedz.jpg",
@@ -4860,9 +4690,7 @@
       "id": "503754d45e4a6d06",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/nozka.jpg",
@@ -4871,9 +4699,7 @@
       "id": "b678bc8c21213a8d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/nozyczki.webp",
@@ -4883,8 +4709,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -4894,9 +4719,7 @@
       "id": "5f9ff4b4ba098865",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/obrot.jpg",
@@ -4905,9 +4728,7 @@
       "id": "771ac32726f34cdf",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/obrus.jpg",
@@ -4916,9 +4737,7 @@
       "id": "c0014d71acffa970",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ogol.jpg",
@@ -4927,9 +4746,7 @@
       "id": "bf97a323008d7a15",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ogorek.webp",
@@ -4938,9 +4755,7 @@
       "id": "e9ce8b4eec2e3c36",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/orzech.jpg",
@@ -4949,9 +4764,7 @@
       "id": "ea4f0a4824c8d406",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/osemka.avif",
@@ -4960,9 +4773,7 @@
       "id": "1f8ebce19abb4652",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/osmy.jpg",
@@ -4971,9 +4782,16 @@
       "id": "ec7aad2164aa75d5",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/osniezony.jpg",
+      "size": 781445,
+      "sha": "64772e7f7d610cd9a044112e23969f579f4cbb32d20bb03d6d3e96647162afe8",
+      "id": "64772e7f7d610cd9",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/owczesny.jpg",
@@ -4982,9 +4800,16 @@
       "id": "b69cfd1f71b578df",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
+    },
+    {
+      "path": "assets/scenes/pasnik.jpg",
+      "size": 933615,
+      "sha": "cf24246a01e026fcb09e9a957b9bb9d5e00fc7741058c4375ad9bbad4af8a3dd",
+      "id": "cf24246a01e026fc",
+      "type": "jpg",
+      "group": "scenes",
+      "references": []
     },
     {
       "path": "assets/scenes/pech.jpg",
@@ -4993,9 +4818,7 @@
       "id": "2ab5eb32e7852b67",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pilkarz.jpg",
@@ -5004,9 +4827,7 @@
       "id": "4eab96f2b9f6c6ad",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pilnujesz.jpg",
@@ -5015,9 +4836,7 @@
       "id": "1a6d9c8e5eb74739",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pioro.avif",
@@ -5026,9 +4845,7 @@
       "id": "73a477474c44a4d4",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pisarz.jpg",
@@ -5037,9 +4854,7 @@
       "id": "9a0f8b6663508085",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/plaza.jpg",
@@ -5048,9 +4863,7 @@
       "id": "2f65083c9eb27cad",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/podroz.jpg",
@@ -5059,9 +4872,7 @@
       "id": "193d59dbf8127650",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/poludnie.jpg",
@@ -5070,9 +4881,7 @@
       "id": "e26376d14868ecbc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pomyslow.jpg",
@@ -5081,9 +4890,7 @@
       "id": "b565bd0397d605d8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/porzadek.jpg",
@@ -5092,9 +4899,7 @@
       "id": "e0c9aa7f2444abf3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/porzeczka.jpg",
@@ -5103,9 +4908,7 @@
       "id": "85f1abea6eef2370",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pospiech.jpg",
@@ -5114,9 +4917,7 @@
       "id": "81de6d6cc9fc61d3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pozar.jpg",
@@ -5125,9 +4926,7 @@
       "id": "c0bab5c66016e6d4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pozegnac.jpg",
@@ -5136,9 +4935,7 @@
       "id": "e0a13283941234b6",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pozniej.webp",
@@ -5148,8 +4945,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5160,8 +4956,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5171,9 +4966,7 @@
       "id": "353adca296aadfa8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/proba.webp",
@@ -5183,8 +4976,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5195,8 +4987,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5206,9 +4997,7 @@
       "id": "11e1b9b40a5d1ea9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przed.jpg",
@@ -5217,9 +5006,7 @@
       "id": "7e6fc5c0119f8a50",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przedszkole.jpg",
@@ -5228,9 +5015,7 @@
       "id": "95a0678280dee5d1",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przepis.jpg",
@@ -5239,9 +5024,7 @@
       "id": "770744bdb401a71d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przepraszam.jpg",
@@ -5250,9 +5033,7 @@
       "id": "49a85534715fb830",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przerwa.jpg",
@@ -5261,9 +5042,7 @@
       "id": "4f6628681f3836b8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przez.jpg",
@@ -5272,9 +5051,7 @@
       "id": "f0fd16727bdc451f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przygoda.jpg",
@@ -5283,9 +5060,7 @@
       "id": "088d2557e3104c07",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/przyjaciel.jpg",
@@ -5294,9 +5069,7 @@
       "id": "344c8ffa3ad8925e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pszczolka.jpg",
@@ -5305,9 +5078,7 @@
       "id": "d202a8d1393855d8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/puch.jpg",
@@ -5316,9 +5087,7 @@
       "id": "ce2d48c3ef94019c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/puchar.jpg",
@@ -5327,9 +5096,7 @@
       "id": "6442b68a6d3cf569",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pudelko.webp",
@@ -5339,8 +5106,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5350,9 +5116,7 @@
       "id": "04b042018cec5c69",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/pusty.webp",
@@ -5362,8 +5126,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5373,9 +5136,7 @@
       "id": "3228af0fa3121b09",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ratunek.jpg",
@@ -5384,9 +5145,7 @@
       "id": "ec3824138eed9351",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rodzicow.jpg",
@@ -5395,9 +5154,7 @@
       "id": "f7eeb07e0b0a2987",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rose.webp",
@@ -5406,9 +5163,7 @@
       "id": "3b3c19c23e76e8bb",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rownanie.jpg",
@@ -5417,9 +5172,7 @@
       "id": "0aab13f441c5405d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rowno.webp",
@@ -5429,8 +5182,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5441,8 +5193,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5452,9 +5203,7 @@
       "id": "9e25ae3867be66ba",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ruszyc.jpg",
@@ -5463,9 +5212,7 @@
       "id": "e72e39b7e7a5c58f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rysujemy.jpg",
@@ -5474,9 +5221,7 @@
       "id": "779fb95ff49a9060",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rysunek.jpg",
@@ -5485,9 +5230,7 @@
       "id": "5133bdfda571c4ce",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rzad.webp",
@@ -5497,8 +5240,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5508,9 +5250,7 @@
       "id": "ab78879571532297",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rzecz.jpg",
@@ -5519,9 +5259,7 @@
       "id": "0d10ccea01189c3c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rzemioslo.jpg",
@@ -5530,9 +5268,7 @@
       "id": "719ad0e6009b432c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/rzesa.webp",
@@ -5542,8 +5278,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5554,8 +5289,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5565,9 +5299,7 @@
       "id": "19dd076af4956ba9",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/schody.webp",
@@ -5576,9 +5308,7 @@
       "id": "dc66e8b25e7a5bd6",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/siano.jpg",
@@ -5587,9 +5317,7 @@
       "id": "b430e4cb08b2ba6f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/siatkowka.jpg",
@@ -5598,9 +5326,7 @@
       "id": "f95f54110b00dc1a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/siedziec.jpg",
@@ -5609,9 +5335,7 @@
       "id": "15e10320511aa3b9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sierpien.jpg",
@@ -5620,9 +5344,7 @@
       "id": "87167e02e65a034b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/siodemka.jpg",
@@ -5631,9 +5353,7 @@
       "id": "50d5111e6bb8c7c1",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/siostra.jpg",
@@ -5642,9 +5362,7 @@
       "id": "e54787ad6b80a80e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/skora.webp",
@@ -5653,9 +5371,7 @@
       "id": "bfae03229052dba4",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/skrot.jpg",
@@ -5664,9 +5380,7 @@
       "id": "9f9d9bba0d992ef6",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/skuwka.jpg",
@@ -5675,9 +5389,7 @@
       "id": "775b80507b3429ef",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/slad.jpg",
@@ -5686,9 +5398,7 @@
       "id": "dd6398bd97515a16",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/slimak.jpg",
@@ -5697,9 +5407,7 @@
       "id": "9eb0862179f57540",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sokol.webp",
@@ -5708,9 +5416,7 @@
       "id": "4abe309abe9640fd",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sol.webp",
@@ -5720,8 +5426,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5731,9 +5436,7 @@
       "id": "2d93c95bb7a5ac44",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sparrow.avif",
@@ -5742,9 +5445,7 @@
       "id": "a2c96296c6ed7e77",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sposob.jpg",
@@ -5753,9 +5454,7 @@
       "id": "a63a2281c5a20592",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/spozniony.jpg",
@@ -5764,9 +5463,7 @@
       "id": "d6e2dc455fe30432",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sprzatac.jpg",
@@ -5775,9 +5472,7 @@
       "id": "d4da50ef4acf8dcc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sroda.jpg",
@@ -5786,9 +5481,7 @@
       "id": "ef52528774f46a0f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/stol.webp",
@@ -5797,9 +5490,7 @@
       "id": "c7d3c84d236460c7",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/strach.jpg",
@@ -5808,9 +5499,7 @@
       "id": "a2ceb02d66bbe7d3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/straz.jpg",
@@ -5819,9 +5508,7 @@
       "id": "afa3186b309e8111",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/suchy.jpg",
@@ -5830,9 +5517,7 @@
       "id": "8dac6410d7fcd50d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/sufit.webp",
@@ -5842,8 +5527,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5853,9 +5537,7 @@
       "id": "ce34aa66dd9be765",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/swallow.avif",
@@ -5864,9 +5546,7 @@
       "id": "840d452c319db9f7",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/swiat.jpg",
@@ -5875,9 +5555,7 @@
       "id": "17d9f97fe253b26d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/swoj.jpg",
@@ -5886,9 +5564,7 @@
       "id": "357dc3437264eeea",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/szczegol.jpg",
@@ -5897,9 +5573,7 @@
       "id": "70ce76116ab39f2d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/szuflada.webp",
@@ -5909,8 +5583,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -5920,9 +5593,7 @@
       "id": "ac6bb46167439c81",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/talerz.jpg",
@@ -5931,9 +5602,7 @@
       "id": "c3cd52b929c4909e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/tanczyc.jpg",
@@ -5942,9 +5611,7 @@
       "id": "97b7a04771230631",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/temperatura.jpg",
@@ -5953,9 +5620,7 @@
       "id": "84810b1c90011974",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/tlum.jpg",
@@ -5964,9 +5629,7 @@
       "id": "1ad9c9d961221eba",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/trojkat.jpg",
@@ -5975,9 +5638,7 @@
       "id": "c6d386132eae6499",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/trudny.jpg",
@@ -5986,9 +5647,7 @@
       "id": "ea88e50bbaf3b7c4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/trzeci.jpg",
@@ -5997,9 +5656,7 @@
       "id": "ba03856ae7794087",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/trzmiel.webp",
@@ -6009,8 +5666,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6021,8 +5677,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6033,8 +5688,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6044,9 +5698,7 @@
       "id": "bb101351f9ddce21",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/tutaj.jpg",
@@ -6055,9 +5707,7 @@
       "id": "fdc6bc4264827d51",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/twoj.jpg",
@@ -6066,9 +5716,7 @@
       "id": "6151d0c60e3c888c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/tworca.jpg",
@@ -6077,9 +5725,7 @@
       "id": "77e6f5194e44da8b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ucho.jpg",
@@ -6088,9 +5734,7 @@
       "id": "9c1fc17250f6a405",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/udo.jpg",
@@ -6099,9 +5743,7 @@
       "id": "9cd66e9c7a00d9fb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/uklad.jpg",
@@ -6110,9 +5752,7 @@
       "id": "5678c77d95706d9f",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ukryc.jpg",
@@ -6121,9 +5761,7 @@
       "id": "c5fdda8e6c96e53d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ulica.jpg",
@@ -6132,9 +5770,7 @@
       "id": "5bf910384e15e16e",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/umiec.jpg",
@@ -6143,9 +5779,7 @@
       "id": "5ae72fce61e331d3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/umyc.jpg",
@@ -6154,9 +5788,7 @@
       "id": "7bd41696252eff3b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/umysl.jpg",
@@ -6165,9 +5797,7 @@
       "id": "65bdb031ced5496c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/uparty.jpg",
@@ -6176,9 +5806,7 @@
       "id": "b05a547ebb616fcc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/uploaded-batch-v25.json",
@@ -6187,9 +5815,7 @@
       "id": "362c6205b86c26d8",
       "type": "json",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/upominek.webp",
@@ -6199,8 +5825,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6210,9 +5835,7 @@
       "id": "dc51163ae0343e59",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/urzad.jpg",
@@ -6221,9 +5844,7 @@
       "id": "9d700870c606185a",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/usmiech.jpg",
@@ -6232,9 +5853,7 @@
       "id": "34140e86dcf44f46",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wahadlo.jpg",
@@ -6243,9 +5862,7 @@
       "id": "c02a644f8f6a4182",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/waz.jpg",
@@ -6254,9 +5871,7 @@
       "id": "45d252443e1e7822",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wazny.jpg",
@@ -6265,9 +5880,7 @@
       "id": "262f3d12aee37ac7",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wiewiorka.webp",
@@ -6276,9 +5889,7 @@
       "id": "fd04cf7a53507f03",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wlokno.jpg",
@@ -6287,9 +5898,7 @@
       "id": "85df7dbef13d984b",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wojt.jpg",
@@ -6298,9 +5907,7 @@
       "id": "31e677763a91af70",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/woz.jpg",
@@ -6309,9 +5916,7 @@
       "id": "dc4764204511fdd3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wozek.avif",
@@ -6320,9 +5925,7 @@
       "id": "7546e0ba5d116d99",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wozny.jpg",
@@ -6331,9 +5934,7 @@
       "id": "d6966d841ce097aa",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wrocic.webp",
@@ -6343,8 +5944,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6354,9 +5954,7 @@
       "id": "840db2906d3b7d75",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wrzesien.webp",
@@ -6366,8 +5964,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6377,9 +5974,7 @@
       "id": "586eb8d7d1c933d1",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wspolny.jpg",
@@ -6388,9 +5983,7 @@
       "id": "5ebbba68aaecaba4",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wsuwac.jpg",
@@ -6399,9 +5992,7 @@
       "id": "05527cbe885e8709",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wsuwka.jpg",
@@ -6410,9 +6001,7 @@
       "id": "f19ef4e09771fa9c",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wulkan.jpg",
@@ -6421,9 +6010,7 @@
       "id": "dfa25a383794cf82",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wybuch.jpg",
@@ -6432,9 +6019,7 @@
       "id": "5c8fb03d855ce93d",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wydech.jpg",
@@ -6443,9 +6028,7 @@
       "id": "030d14b254a6a076",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wzgorze.jpg",
@@ -6454,9 +6037,7 @@
       "id": "c0e7ecae07217213",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/wzor.webp",
@@ -6466,8 +6047,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/uploaded-batch-v25.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/uploaded-batch-v25.json"
       ]
     },
     {
@@ -6477,9 +6057,7 @@
       "id": "031635fd210a1bf5",
       "type": "avif",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zachod.jpg",
@@ -6488,9 +6066,7 @@
       "id": "45386ebd3d7cda47",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zagiel.webp",
@@ -6500,8 +6076,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -6511,9 +6086,7 @@
       "id": "270314096c0b1eaf",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zakuwac.jpg",
@@ -6522,9 +6095,7 @@
       "id": "202bdbf6b46a23ac",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zapach.jpg",
@@ -6533,9 +6104,7 @@
       "id": "899bdcff283b4d37",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zarowka.jpg",
@@ -6544,9 +6113,7 @@
       "id": "ec6690bce67d6059",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zart.jpg",
@@ -6555,9 +6122,7 @@
       "id": "ed91fc9ef29b6e62",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zartowac.jpg",
@@ -6566,9 +6131,7 @@
       "id": "1b28da556c740877",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zartujesz.jpg",
@@ -6577,9 +6140,7 @@
       "id": "5de4a5ec3ddb35eb",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zasuwac.jpg",
@@ -6588,9 +6149,7 @@
       "id": "1c88a5779b779349",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zasuwka.jpg",
@@ -6599,9 +6158,7 @@
       "id": "d0e0deb1501aa3f3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zbior.jpg",
@@ -6610,9 +6167,7 @@
       "id": "9222737390b1e026",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zbiorka.jpg",
@@ -6621,9 +6176,7 @@
       "id": "db9fcf5e39ac1599",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zegnac.jpg",
@@ -6632,9 +6185,7 @@
       "id": "d33d3a7f220a3662",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zelazo.jpg",
@@ -6643,9 +6194,7 @@
       "id": "630341e6b66c5852",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/ziarno.jpg",
@@ -6654,9 +6203,7 @@
       "id": "4a0187bc05d34ffe",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zima.webp",
@@ -6665,9 +6212,7 @@
       "id": "8827ac28c9ec5611",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zle.jpg",
@@ -6676,9 +6221,7 @@
       "id": "abaaf3451597a843",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zlotowka.jpg",
@@ -6687,9 +6230,7 @@
       "id": "a575b8c39d844890",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zmija.webp",
@@ -6699,8 +6240,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -6710,9 +6250,7 @@
       "id": "6a8746b76d1f3af8",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zoladek.jpg",
@@ -6721,9 +6259,7 @@
       "id": "28abbdabb7969fea",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zolnierz.jpg",
@@ -6732,9 +6268,7 @@
       "id": "f2b54fb1dc1ae583",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zoltko.jpg",
@@ -6743,9 +6277,7 @@
       "id": "0f97e1fb36303f13",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zolty.webp",
@@ -6754,9 +6286,7 @@
       "id": "b03ee45a223e9911",
       "type": "webp",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zona.jpg",
@@ -6765,9 +6295,7 @@
       "id": "9193208f07323fe1",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zrebak.jpg",
@@ -6776,9 +6304,7 @@
       "id": "dc6fce6e8e4a2f32",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zrodlo.jpg",
@@ -6787,9 +6313,7 @@
       "id": "00a5e7bdb30d25d3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zubr.webp",
@@ -6799,8 +6323,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -6811,8 +6334,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -6822,9 +6344,7 @@
       "id": "931421acf7d04540",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zuraw.webp",
@@ -6834,8 +6354,7 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
     },
     {
@@ -6845,9 +6364,7 @@
       "id": "b89cfada67622ca5",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zwierzak.jpg",
@@ -6856,9 +6373,7 @@
       "id": "3993159556906cd9",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zwierzakow.jpg",
@@ -6867,9 +6382,7 @@
       "id": "7d415989afb6c180",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zwierze.jpg",
@@ -6878,9 +6391,7 @@
       "id": "78c9de75bf91cfbc",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zwir.jpg",
@@ -6889,9 +6400,7 @@
       "id": "bf324a620f616709",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zyczenie.jpg",
@@ -6900,9 +6409,7 @@
       "id": "512d864b1bb922e3",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zyczliwy.jpg",
@@ -6911,9 +6418,7 @@
       "id": "19058de91a29bdde",
       "type": "jpg",
       "group": "scenes",
-      "references": [
-        "spelling/scenes.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/scenes/zyrafa.webp",
@@ -6923,53 +6428,8 @@
       "type": "webp",
       "group": "scenes",
       "references": [
-        "assets/scenes/generated-batch-v26.json",
-        "spelling/scenes.mjs"
+        "assets/scenes/generated-batch-v26.json"
       ]
-    },
-    {
-      "path": "assets/managed/9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903.jpg",
-      "sha": "9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903",
-      "id": "9b8c71a90ebced01",
-      "size": 590364,
-      "width": 1254,
-      "height": 1254,
-      "type": "jpg",
-      "group": "managed",
-      "references": []
-    },
-    {
-      "path": "assets/managed/cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66.jpg",
-      "sha": "cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66",
-      "id": "cb8464fad9cd12b5",
-      "size": 624840,
-      "width": 1254,
-      "height": 1254,
-      "type": "jpg",
-      "group": "managed",
-      "references": []
-    },
-    {
-      "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
-      "sha": "dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f",
-      "id": "dfb2b8ba57b0ee56",
-      "size": 619901,
-      "width": 1254,
-      "height": 1254,
-      "type": "jpg",
-      "group": "managed",
-      "references": []
-    },
-    {
-      "path": "assets/managed/c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854.jpg",
-      "sha": "c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854",
-      "id": "c8a807f7c1ec612e",
-      "size": 696968,
-      "width": 1254,
-      "height": 1254,
-      "type": "jpg",
-      "group": "managed",
-      "references": []
     }
   ],
   "aliases": {

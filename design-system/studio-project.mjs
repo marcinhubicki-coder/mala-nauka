@@ -27,7 +27,7 @@ export class StudioProject{
     if(!p.screens.some(s=>s.id===this.screenId))this.screenId=p.entry||p.screens[0]?.id||'';
     const s=p.screens.find(s=>s.id===this.screenId);if(!s?.elements.some(e=>e.id===this.elementId))this.elementId=s?.elements[0]?.id||'';
     const panels={plan:planPanel,screens:screensPanel,copy:copyPanel,learning:learningPanel,test:testPanel,release:releasePanel};
-    this.workspace.innerHTML=`<div class="content-page project-workspace"><header class=project-header><div><span class=project-eyebrow>Projekt w szkicu</span><h2>${html(p.name)}</h2></div>${button('Zmień nazwę','id=project-rename')}${button('Pobierz projekt','id=project-export')}</header><nav class=project-tabs aria-label="Etapy projektu">${Object.entries(PROJECT_TABS).map(([k,n])=>`<button data-project-tab="${k}" aria-current="${this.tab===k?'page':'false'}">${n}</button>`).join('')}</nav><div class=project-panel>${(panels[this.tab]||planPanel)(this)}</div></div>`;
+    this.workspace.innerHTML=`<div class="content-page project-workspace"><header class=project-header><div><span class=project-eyebrow>Projekt w szkicu</span><h2>${html(p.name)}</h2></div>${button('Zmień nazwę','id=project-rename')}${button('Skopiuj projekt','id=project-copy-project')}${button('Pobierz projekt','id=project-export')}</header><nav class=project-tabs aria-label="Etapy projektu">${Object.entries(PROJECT_TABS).map(([k,n])=>`<button data-project-tab="${k}" aria-current="${this.tab===k?'page':'false'}">${n}</button>`).join('')}</nav><div class=project-panel>${(panels[this.tab]||planPanel)(this)}</div></div>`;
     this.frame=this.workspace.querySelector('#project-frame');this.copyFrame=this.workspace.querySelector('#project-copy-frame');
     if(this.frame){this.frame.onload=()=>this.sendPreview();const holder=this.frame.parentElement;this.resize=new ResizeObserver(()=>{const scale=Math.min(1,holder.clientWidth/390);this.frame.style.transform=`scale(${scale})`;holder.style.height=(844*scale)+'px';});this.resize.observe(holder);}
     if(this.copyFrame){const view=this.registry.views.find(v=>v.id===this.copyView),url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});this.copyFrame.src=url.href;this.copyFrame.onload=()=>this.sendCopy();}
@@ -97,6 +97,7 @@ export class StudioProject{
     if(b.dataset.releaseRestore){this.update(p=>{const s=p.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot;p.screens=structuredClone(s.screens);p.rules=structuredClone(s.rules);p.copy=structuredClone(s.copy);p.entry=s.entry;});this.applyDraftDesign(this.project.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot.design);this.render();}
     if(b.dataset.releaseExport)this.download(this.project.releases.find(r=>r.id===b.dataset.releaseExport),'mala-nauka-wersja-testowa.json');
     if(b.dataset.issueScreen){this.screenId=b.dataset.issueScreen;this.tab='screens';this.render();}
+    if(b.id==='project-copy-project'){await navigator.clipboard.writeText(JSON.stringify(this.project));this.notice('Projekt skopiowany. Możesz go wkleić w Importuj projekt.');}
     if(b.id==='project-export')this.download(this.project,'mala-nauka-projekt.json');
     if(b.id==='project-import')this.importDialog('project');
     if(b.id==='project-import-feedback')this.importDialog('feedback');

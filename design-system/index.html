@@ -26,6 +26,9 @@
  <dialog id="studio-modal"></dialog>
  <dialog id="mobile-navigation" aria-label="Sekcje studia"><div class="mobile-menu-heading"><h2>Sekcje studia</h2><button class="quiet-button" id="mobile-menu-close" aria-label="Zamknij sekcje">×</button></div><nav id="mobile-navigation-list" aria-label="Sekcje"></nav><button class="quiet-button" id="mobile-connect-git">Połącz GitHub</button><p>Zmiany wyglądu, zasad i grafik korzystają z tego samego szkicu.</p></dialog>
  <nav class="mobile-editor-dock mobile-only" id="mobile-editor-dock" aria-label="Praca z ekranem" hidden><p id="mobile-editor-context"></p><div><button data-mobile-pane="choose" aria-pressed="true">Wybór</button><button data-mobile-pane="preview" aria-pressed="false">Podgląd</button><button data-mobile-pane="edit" aria-pressed="false">Ustawienia</button></div></nav>
+ <script type="module">
+ if('serviceWorker' in navigator){navigator.serviceWorker.getRegistration(new URL('../',location.href)).then(async registration=>{if(!registration)return;navigator.serviceWorker.addEventListener('controllerchange',()=>{const button=document.createElement('button');button.className='small-button';button.textContent='Nowa wersja Studio · odśwież';button.onclick=()=>location.reload();document.querySelector('.top-actions').prepend(button);});await registration.update();}).catch(()=>{});}
+ </script>
  <script type="module" src="studio.mjs"></script>
  <script type="module" src="studio-mobile.mjs"></script>
 </body>

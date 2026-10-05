@@ -12,7 +12,7 @@ const files=new Map();
 let deploymentSHA=process.env.VERCEL_GIT_COMMIT_SHA;try{deploymentSHA||=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();}catch{}
 async function walk(dir){for(const item of await readdir(dir,{withFileTypes:true})){if(['.git','dist','node_modules','.design-qa','docs','tests','tools'].includes(item.name)||item.name.startsWith('.'))continue;const path=resolve(dir,item.name);if(item.isDirectory()){if(consumer&&relative(root,path)==='assets')continue;await walk(path);}else if(!/\.(md|py)$/.test(path)){files.set(relative(root,path).split('\\').join('/'),await readFile(path));}}}
 await walk(root);
-files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,consumer,contentSource:consumer?source:null})));
+files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,consumer,contentSource:consumer?source:null,deploymentUrl:process.env.VERCEL_URL||null,branchUrl:process.env.VERCEL_BRANCH_URL||null})));
 const localSource=process.env.DS_SOURCE_DIR;
 if(consumer)for(const path of centralFiles){if(localSource){files.set(path,await readFile(resolve(localSource,path)));continue;}const response=await fetch(new URL(path,source),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error(`Brak centralnego kontraktu (${response.status}): ${path}`);files.set(path,Buffer.from(await response.arrayBuffer()));}
 if(consumer){const app=files.get('app.js')?.toString()||'';if(app.includes('data/words-0')&&!/const parts=await Promise/.test(app))throw Error('Zaktualizuj adapter bazy słów dla tego konsumenta.');}

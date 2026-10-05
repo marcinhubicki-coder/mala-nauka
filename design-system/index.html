@@ -29,7 +29,7 @@
  <script type="module">
  if('serviceWorker' in navigator){navigator.serviceWorker.getRegistration(new URL('../',location.href)).then(async registration=>{if(!registration)return;navigator.serviceWorker.addEventListener('controllerchange',()=>{const button=document.createElement('button');button.className='small-button';button.textContent='Nowa wersja Studio · odśwież';button.onclick=()=>location.reload();document.querySelector('.top-actions').prepend(button);});await registration.update();}).catch(()=>{});}
  </script>
- <script type="module" src="studio.mjs"></script>
+ <script src="git-error-help.js"></script>\n <script type="module" src="studio.mjs"></script>
  <script type="module" src="studio-mobile.mjs"></script>
 </body>
 </html>

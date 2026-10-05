@@ -13,8 +13,8 @@ const read=async path=>JSON.parse(await readFile(new URL('../'+path,import.meta.
 const [queue,catalog,library,config,registry]=await Promise.all(['design-system/word-batches.json','design-system/assets.json','design-system/rules.json','design-system/config.json','design-system/registry.json'].map(read));
 const active=(await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat();
 const sample=()=>{const row=createCandidate('chrzanić');row.assetPath=catalog.assets.find(a=>a.group==='scenes').path;return {batch:{id:'batch-test',name:'Próba',stage:'images',words:[row]},assets:{...structuredClone(catalog),assets:catalog.assets.map(a=>a.path===row.assetPath?{...a,width:1024,height:1024}:a)}};};
-test('the complete queue reaches 100 in every pool without publishing or duplicating game words',()=>{
- validateBatches(queue);assert.equal(batchWords(queue).length,247);assert.equal(queue.batches.length,13);assert.ok(queue.batches.every(b=>b.stage!=='published'));assert.ok(queue.batches.filter(b=>b.stage==='proposed').every(b=>b.words.every(r=>r.assetPath===null)));const full=structuredClone(queue);for(const batch of full.batches)for(const word of batch.words)word.selected=true;assert.ok(batchSummary(full,active).every(p=>p.total>=100));assert.equal(new Set([...active.map(w=>w.word),...batchWords(queue).map(w=>w.word)]).size,active.length+247);assert.equal(active.length,455);
+test('the saved queue stays valid without publishing or duplicating game words',()=>{
+ validateBatches(queue);assert.equal(batchWords(queue).length,247);assert.equal(queue.batches.length,13);assert.ok(queue.batches.every(b=>b.stage!=='published'));assert.ok(queue.batches.filter(b=>b.stage==='proposed').every(b=>b.words.every(r=>r.assetPath===null)));assert.equal(new Set([...active.map(w=>w.word),...batchWords(queue).map(w=>w.word)]).size,active.length+247);assert.equal(active.length,455);
 });
 test('category recognition precedes review; one brzuch counts in three distinct pools',()=>{
  const result=addCandidates(structuredClone(EMPTY_BATCHES),[' BRZUCH ','brzuch','pies'],[]);

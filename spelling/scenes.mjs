@@ -696,6 +696,18 @@ export const WORD_SCENES = new Map([
   ['ćwierć', { key:'number-play', asset:'osemka.avif', layouts:['bubble'] }],
   ['wnuk', { key:'family-child', asset:'wozek.avif', layouts:['bubble'] }],
   ['wnuczka', { key:'family-child', asset:'wozek.avif', layouts:['bubble'] }],
+  // Generated narrative illustrations — 2026-10-05.
+  ['część', { key:'czesc', asset:'czesc.jpg', layouts:['bubble'] }],
+  ['dziś', { key:'dzis', asset:'dzis.jpg', layouts:['bubble'] }],
+  ['garść', { key:'garsc', asset:'garsc.jpg', layouts:['bubble'] }],
+  ['gąsienica', { key:'gasienica', asset:'gasienica.jpg', layouts:['bubble'] }],
+  ['gdzieś', { key:'gdzies', asset:'gdzies.jpg', layouts:['bubble'] }],
+  ['kiść', { key:'kisc', asset:'kisc.jpg', layouts:['bubble'] }],
+  ['leśniczy', { key:'lesniczy', asset:'lesniczy.jpg', layouts:['bubble'] }],
+  ['liść', { key:'lisc', asset:'lisc.jpg', layouts:['bubble'] }],
+  ['ośnieżony', { key:'osniezony', asset:'osniezony.jpg', layouts:['bubble'] }],
+  ['paśnik', { key:'pasnik', asset:'pasnik.jpg', layouts:['bubble'] }],
+
 ]);
 
 export function sceneFor(masked, word=''){

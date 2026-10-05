@@ -21,7 +21,7 @@ export const PROJECT_TABS={plan:'Plan',screens:'Ekrany i flow',copy:'Teksty',lea
 export const ELEMENT_TYPES={title:'Tytuł',subtitle:'Podtytuł',hint:'Podpowiedź',numberText:'Numer + tekst',button:'Przycisk jelly',jelly:'Jelly · opcje',image:'Ilustracja',progress:'Postęp',stats:'Wyniki',map:'Mapa odkryć',trophies:'Puchary',blueprint:'Element z buildera'};
 export const ACTIONS={none:'Bez akcji',navigate:'Otwórz ekran',reveal:'Odkryj fragment',skin:'Wybierz skórkę',answer:'Odpowiedz poprawnie',wrong:'Odpowiedz błędnie'};
 export function optionAction(e,i){const a=e.optionActions?.[i];return a&&a.kind!=='inherit'?a:e.action;}
-export function screenActions(s){return s.elements.flatMap(e=>[{...e.action,text:e.text,condition:e.condition},...(e.type==='jelly'?e.options.map((text,i)=>({...optionAction(e,i),text,condition:e.condition})):[])]).filter(a=>a.kind!=='none');}
+export function screenActions(s){return s.elements.flatMap(e=>e.type==='jelly'?e.options.map((text,i)=>({...optionAction(e,i),text,condition:e.condition})):[{...e.action,text:e.text,condition:e.condition}]).filter(a=>a.kind!=='none');}
 const id=v=>typeof v==='string'&&/^[a-z][a-z0-9-]{0,79}$/.test(v);
 const text=(v,max=600)=>typeof v==='string'&&v.length<=max&&!/[<>\u0000-\u001f]/.test(v);
 const int=(v,min,max)=>Number.isInteger(v)&&v>=min&&v<=max;
@@ -77,7 +77,7 @@ export function discoveryProject(){
   setup.id='discovery-start';reward.id='memory-reward';map.id='discovery-map';progress.id='discovery-progress';
   const element=(type,text,kind='none',target='')=>({...newElement(type),text,action:{kind,target,value:''}});
   setup.elements=[element('title','Małe odkrycia'),element('subtitle','Ćwicz w swoim tempie. Każdy powrót pomaga.'),element('jelly','Wybierz świat','skin'),element('button','Zobacz swoje kroki','navigate',progress.id),element('button','Otwórz mapę','navigate',map.id)];
-  reward.elements=[element('title','Mały krok, nowe odkrycie!'),element('subtitle','7 samodzielnych odpowiedzi otwiera kolejny fragment.'),element('stats','Punkt pamięci'),element('button','Odkryj mapę','navigate',map.id),element('button','Ćwiczę dalej','navigate',setup.id)];
+  reward.elements=[element('title','Mały krok, nowe odkrycie!'),element('subtitle','{memoryEvery} samodzielnych odpowiedzi otwiera kolejny fragment.'),element('stats','Punkt pamięci'),element('button','Odkryj mapę','navigate',map.id),element('button','Ćwiczę dalej','navigate',setup.id)];
   map.elements=[element('title','Twoja mapa odkryć'),element('subtitle','Odkrywaj po kawałku. Nic nie znika po pomyłce.'),element('map','Mapa'),element('button','Odkryj fragment','reveal'),element('button','Moje postępy','navigate',progress.id)];map.elements[3].condition='has-memory';
   progress.elements=[element('title','Twoje małe kroki'),element('stats','Postępy'),element('progress','Do kolejnego punktu pamięci'),element('trophies','Twoje puchary'),element('button','Wracam do przygody','navigate',setup.id)];
   p.screens=[setup,reward,map,progress];p.entry=setup.id;
@@ -101,7 +101,7 @@ export function projectIssues(p,assets){
   const known=new Set(assets?.assets?.map(a=>a.path)||[]);
   const referenced=new Set([p.entry]);
   for(const s of p.screens)for(const a of screenActions(s))if(a.kind==='navigate'){referenced.add(a.target);if(!ids.has(a.target))add('error',`${s.name}: „${a.text}” nie ma ekranu docelowego.`,s.id);}
-  for(const s of p.screens){for(const e of s.elements){if(e.action.kind==='navigate'){referenced.add(e.action.target);if(!ids.has(e.action.target))add('error',`${s.name}: „${e.text}” nie ma ekranu docelowego.`,s.id);}if(['button','jelly'].includes(e.type)&&e.action.kind==='none')add('warning',`${s.name}: „${e.text}” nie ma jeszcze funkcji.`,s.id);if(e.asset&&assets&&!known.has(e.asset)&&!assets.aliases?.[e.asset])add('error',`${s.name}: ilustracja nie występuje w katalogu.`,s.id);}if(s.asset&&assets&&!known.has(s.asset)&&!assets.aliases?.[s.asset])add('error',`${s.name}: brak ilustracji tła.`,s.id);}
+  for(const s of p.screens){for(const e of s.elements){if(e.action.kind==='navigate'){referenced.add(e.action.target);if(!ids.has(e.action.target))add('error',`${s.name}: „${e.text}” nie ma ekranu docelowego.`,s.id);}if(['button','jelly'].includes(e.type)&&e.action.kind==='none'&&!e.optionActions?.some(a=>a.kind!=='none'&&a.kind!=='inherit'))add('warning',`${s.name}: „${e.text}” nie ma jeszcze funkcji.`,s.id);if(e.asset&&assets&&!known.has(e.asset)&&!assets.aliases?.[e.asset])add('error',`${s.name}: ilustracja nie występuje w katalogu.`,s.id);}if(s.asset&&assets&&!known.has(s.asset)&&!assets.aliases?.[s.asset])add('error',`${s.name}: brak ilustracji tła.`,s.id);}
   const reachable=new Set([p.entry,'memory-reward']);let changed=true;while(changed){changed=false;for(const s of p.screens.filter(s=>reachable.has(s.id)))for(const a of screenActions(s))if(a.kind==='navigate'&&ids.has(a.target)&&!reachable.has(a.target)){reachable.add(a.target);changed=true;}}
   for(const s of p.screens)if(!reachable.has(s.id))add('warning',`${s.name}: ekran nie jest osiągalny z początku ani nagrody.`,s.id);
   if(p.rules.comboBonus>0)add('info','Combo wpływa na wynik rundy, nigdy na opanowanie materiału.');

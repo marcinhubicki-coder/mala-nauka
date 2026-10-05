@@ -5,14 +5,14 @@ import {assetUrl} from '../shared/asset-loader.mjs';
 import {createJellyV4} from '../shared/jelly-v4.mjs';
 import {optionAction} from './project-model.mjs';
 const jelly=createJellyV4({indicatorSelector:'.jelly-v4-indicator'});
-const text=(value,s)=>String(value).replace(/\{(memory|eligible|remaining|mastered|level|points|revealed)\}/g,(_,k)=>s[k]??'');
+const text=(value,s)=>String(value).replace(/\{(memory|eligible|remaining|mastered|level|points|revealed|memoryEvery|mapCost)\}/g,(_,k)=>s[k]??'');
 function blueprint(node){
   if(node.visibility==='removed')return '';const atom=ATOMS[node.type],tag=node.type==='button'?'button':'div';
   return `<${tag} class="exp-blueprint ${node.type==='button'?'start-button':node.type==='surface'?'exp-surface':''}" style="${node.width?'width:'+node.width+'px;':''}${node.height?'min-height:'+node.height+'px;':''}padding:${node.padding}px;gap:${node.gap}px;${node.visibility==='hidden'?'visibility:hidden;':''}${atom?'font-family:var(--ds-font-'+atom.role+');font-size:'+atom.size+'px;':''}">${node.children.length?node.children.map(blueprint).join(''):html(node.text)}</${tag}>`;
 }
 export function renderExperience(root,snapshot,screenId,state,{select,action,stateOverride='initial',selected='',editing=false}={}){
   const screen=snapshot.screens.find(s=>s.id===screenId)||snapshot.screens[0];if(!screen)return;
-  const summary=discoverySummary(state,snapshot.rules),data={...summary,memory:summary.balance,points:state.points,revealed:state.revealed.length};
+  const summary=discoverySummary(state,snapshot.rules),data={...summary,memory:summary.balance,points:state.points,revealed:state.revealed.length,memoryEvery:snapshot.rules.memoryEvery,mapCost:snapshot.rules.mapCost};
   root.dataset.mode=screen.mode;root.dataset.ds='1';root.dataset.view='wizard';root.classList.add('ds-component-stage','experience-screen');root.style.padding=screen.padding+'px';root.style.gap=screen.gap+'px';
   const skin=snapshot.rules.skins.find(s=>s.id===state.skin);if(skin)root.style.setProperty('--ds-theme-accent',skin.color);
   root.style.backgroundImage=screen.asset?`linear-gradient(#f0f7ffee,#f0f7ffdd),url("${assetUrl(screen.asset)}")`:'';
@@ -36,8 +36,11 @@ export function renderExperience(root,snapshot,screenId,state,{select,action,sta
   root.onclick=event=>{const tile=event.target.closest('[data-exp-tile]'),button=event.target.closest('[data-exp-action]'),el=event.target.closest('[data-exp-element]');if(editing&&el){event.preventDefault();select?.(el.dataset.expElement);return;}if(tile&&!tile.disabled)action?.({kind:'reveal',value:tile.dataset.expTile});if(button&&!button.disabled)action?.(screen.elements.find(e=>e.id===button.dataset.expAction).action);if(!button&&event.target.closest('.exp-blueprint button')&&el)action?.(screen.elements.find(e=>e.id===el.dataset.expElement).action);};
   for(const container of root.querySelectorAll('[data-exp-jelly]')){
     const radios=[...container.querySelectorAll('input')];jelly.ensurePrepared(container,Math.max(0,radios.findIndex(r=>r.checked)));
-    jelly.setupDrag(container,{canDrag:()=>!editing,getActiveIndex:()=>Math.max(0,radios.findIndex(r=>r.checked)),commitIndex:index=>{if(radios[index]?.disabled){jelly.update(container,Math.max(0,radios.findIndex(r=>r.checked)),{animate:true});return;}radios[index].checked=true;radios[index].dispatchEvent(new Event('change',{bubbles:true}));}});
-    container.onchange=event=>{const e=screen.elements.find(e=>e.id===container.dataset.expJelly),index=Number(event.target.value);if(editing){select?.(e.id);return;}jelly.update(container,index,{animate:true});const a=optionAction(e,index);if(a.kind!=='none')action?.({...a,value:a.kind==='skin'?(a.value||snapshot.rules.skins[index]?.id):(a.value||e.options[index])});};
+    const e=screen.elements.find(e=>e.id===container.dataset.expJelly);
+    const choose=index=>{if(editing||radios[index]?.disabled)return;const a=optionAction(e,index);jelly.update(container,index,{animate:true});if(a.kind!=='none')action?.({...a,value:a.kind==='skin'?(a.value||snapshot.rules.skins[index]?.id):(a.value||e.options[index])});};
+    jelly.setupDrag(container,{canDrag:()=>!editing,getActiveIndex:()=>Math.max(0,radios.findIndex(r=>r.checked)),commitIndex:index=>{if(radios[index]?.disabled){jelly.update(container,Math.max(0,radios.findIndex(r=>r.checked)),{animate:true});return;}radios[index].checked=true;choose(index);}});
+    container.onclick=event=>{if(event.target.matches('input')&&optionAction(e,Number(event.target.value)).kind==='navigate')choose(Number(event.target.value));};
+    container.onchange=event=>{if(editing){select?.(e.id);return;}if(optionAction(e,Number(event.target.value)).kind!=='navigate')choose(Number(event.target.value));};
   }
   return {screen,summary};
 }

@@ -56,7 +56,7 @@ export class StudioProject{
     }
     if(m?.channel==='mala-nauka-studio'&&event.source===this.copyFrame?.contentWindow){
       if(m.type==='ready')this.sendCopy();
-      if(m.type==='copy-list'){this.copyRows=m.rows;const fields=this.workspace.querySelector('#project-copy-fields');if(fields)fields.innerHTML=copyFields(this);const status=this.workspace.querySelector('#project-copy-status');if(status)status.textContent=`${m.rows.length} napisów. Zmiany dotyczą tylko wybranego widoku.`;}
+      if(m.type==='copy-list'){const signature=JSON.stringify(m.rows.map(r=>[r.id,r.original,r.ambiguous]));if(signature===this.copySignature)return;this.copySignature=signature;this.copyRows=m.rows;const fields=this.workspace.querySelector('#project-copy-fields');if(fields)fields.innerHTML=copyFields(this);const status=this.workspace.querySelector('#project-copy-status');if(status)status.textContent=`${m.rows.length} napisów. Zmiany dotyczą tylko wybranego widoku.`;}
     }
   }
   drawFlow(){
@@ -118,7 +118,7 @@ export class StudioProject{
     for(const group of ['skin','trophy','challenge'])if(t.dataset[group+'Field']){const key=t.dataset[group+'Field'],index=Number(t.dataset[group+'Index']),list={skin:'skins',trophy:'trophies',challenge:'challenges'}[group];this.update(p=>{p.rules[list][index][key]=t.type==='number'?Number(t.value):t.value;});}
     if(t.id==='project-fixture'){this.trialEvents=null;this.fixture=t.value;this.summary=null;this.trace=[];this.sendPreview();}
     if(t.id==='project-seed'){this.trialEvents=null;this.seed=Math.max(1,Math.min(99999,Number(t.value)||42));this.summary=null;this.sendPreview();}
-    if(t.id==='project-copy-view'){this.copyView=t.value;this.copyRows=[];this.render();}
+    if(t.id==='project-copy-view'){this.copyView=t.value;this.copyRows=[];this.copySignature='';this.render();}
     if(t.dataset.projectCopyElement){this.update(p=>{p.screens.find(s=>s.id===t.dataset.projectCopyScreen).elements.find(e=>e.id===t.dataset.projectCopyElement).text=t.value;});}
     if(t.dataset.nativeCopy){const row=this.copyRows.find(r=>r.id===t.dataset.nativeCopy);this.update(p=>{const old=p.copy.find(r=>r.id===row.id&&r.viewId===this.copyView);if(old)old.text=t.value;else p.copy.push({id:row.id,viewId:this.copyView,tag:row.tag,original:row.original,text:t.value});});this.sendCopy();}
     if(t.dataset.releaseCheck){this.update(p=>{p.releases.find(r=>r.id===t.dataset.releaseId).checks[t.dataset.releaseCheck]=t.checked;});}
@@ -132,9 +132,10 @@ export class StudioProject{
     this.modal.querySelector('#task-remove')?.addEventListener('click',()=>{this.update(p=>{p.tasks=p.tasks.filter(r=>r.id!==t.id);p.tasks.forEach(r=>r.depends=r.depends.filter(d=>d!==t.id));});this.modal.close();this.render();});
   }
   assetDialog(target){
+    const labels=new Map();for(const[word,record]of Object.entries(this.data.assets.words)){const path=this.data.assets.aliases[record.path]||record.path;labels.set(path,[...(labels.get(path)||[]),word]);}
     const all=this.data.assets.assets.filter(a=>/\.(png|jpe?g|webp|avif|svg)$/.test(a.path));
     this.dialog(`<h2>Wspólna ilustracja</h2>${info('Wybierasz istniejący plik. Ekran i słowa mogą korzystać z tego samego assetu.')}${field('Szukaj ilustracji','','id=project-asset-search placeholder="np. mapa, reading, morze"')}<div id=project-asset-options class=project-asset-grid></div><div class=modal-actions>${button('Wgraj nowy asset','id=project-upload-asset')}${button('Zamknij','data-close')}</div>`);
-    const draw=()=>{const q=this.modal.querySelector('#project-asset-search').value.toLocaleLowerCase('pl');this.modal.querySelector('#project-asset-options').innerHTML=all.filter(a=>!q||a.path.toLocaleLowerCase('pl').includes(q)).slice(0,48).map(a=>`<button data-pick-project-asset="${a.path}"><img src="${this.picture(a.path)}" alt=""><span>${html(a.path.split('/').at(-1))}</span></button>`).join('');};draw();this.modal.querySelector('#project-asset-search').oninput=draw;
+    const draw=()=>{const q=this.modal.querySelector('#project-asset-search').value.toLocaleLowerCase('pl');this.modal.querySelector('#project-asset-options').innerHTML=all.filter(a=>!q||(a.path+' '+(labels.get(a.path)||[]).join(' ')).toLocaleLowerCase('pl').includes(q)).slice(0,48).map(a=>`<button data-pick-project-asset="${a.path}"><img src="${this.picture(a.path)}" alt=""><span>${html((labels.get(a.path)||[]).slice(0,3).join(', ')||a.path.split('/').at(-1))}</span></button>`).join('');};draw();this.modal.querySelector('#project-asset-search').oninput=draw;
     this.modal.querySelector('#project-asset-options').onclick=e=>{const b=e.target.closest('[data-pick-project-asset]');if(!b)return;this.update(p=>{const s=p.screens.find(s=>s.id===this.screenId);if(target==='screen')s.asset=b.dataset.pickProjectAsset;else s.elements.find(e=>e.id===this.elementId).asset=b.dataset.pickProjectAsset;});this.modal.close();this.render();};
     this.modal.querySelector('#project-upload-asset').onclick=()=>{this.modal.close();this.upload();};
   }

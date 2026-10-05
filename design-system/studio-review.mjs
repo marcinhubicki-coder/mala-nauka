@@ -6,6 +6,8 @@ import {resolveStudioMerge} from './merge-model.mjs';
 export function changeLabel(row,registry,config,rules,kind='config'){
   const keys=Array.isArray(row.path)?row.path:String(row.path).split('.');
   if(kind==='batches')return 'Kolejka batchy · wybór słów, grafiki i poziomy';
+  if(keys[0]==='project')return `Projekt · ${{screens:'Ekrany i flow',tasks:'Plan i zależności',rules:'Postępy i nagrody',copy:'Teksty widoków',releases:'Wersje testowe',activeRelease:'Wydany pilot',designDraft:'Wygląd w szkicu',name:'Nazwa',startDate:'Początek',targetDate:'Termin'}[keys[1]]||'Plan, ekrany i nauka'}`;
+  if(keys[0]==='copyOverrides')return 'Zatwierdzone teksty widoków';
   if(keys[0]==='recipes')return `Globalny przepis · ${ATOMS[keys[1]]?.name||'Atomy'}`;
   if(keys[0]==='blueprints')return 'Biblioteka próbnych elementów';
   if(kind==='rules'){

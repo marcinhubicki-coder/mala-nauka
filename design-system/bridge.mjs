@@ -1,3 +1,4 @@
+import {collectScreenCopy} from '../shared/screen-copy.mjs';
 import {configureRules,ruleLibrary} from '../shared/rules-library.mjs';
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
 import {configureAssets,rewriteAssetNodes,previewAssets,assetManifest} from '../shared/asset-loader.mjs';
@@ -11,6 +12,7 @@ if (studio) {
   document.documentElement.dataset.studio = 'true';
 }
 
+let copyScanning=false;
 let registry, inspecting = false, showHighlight = true, selection = null;
 let items = new Map(), actions = new Map(), reportTimer, overlay;
 const temporaryVisibility = new Map();
@@ -93,6 +95,7 @@ function paintHighlight() {
 }
 function report() {
   clearTimeout(reportTimer);
+  if(copyScanning)emit({type:'copy-list',rows:collectScreenCopy(app())});
   items = collect();
   applyVisibility();
   paintHighlight();
@@ -132,7 +135,7 @@ if (studio) {
   window.addEventListener('message',async event=>{
     if(event.origin!==location.origin || event.source!==parent || event.data?.channel!=='mala-nauka-studio')return;
     const message=event.data;
-    if(message.type==='copy-scan'){await designReady;const {collectScreenCopy}=await import('../shared/screen-copy.mjs');emit({type:'copy-list',rows:collectScreenCopy(app())});}
+    if(message.type==='copy-scan'){await designReady;copyScanning=true;emit({type:'copy-list',rows:collectScreenCopy(app())});}
     if(message.type==='design'){
       await designReady;applyDesign(message.config);
       if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}

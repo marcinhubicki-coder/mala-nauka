@@ -17,7 +17,9 @@ export function shuffle(items, random = Math.random) {
 export function validateWords(words) {
   if (!Array.isArray(words) || words.length < 455 || new Set(words.map(w => w.word)).size !== words.length) throw Error('Niepełna baza słów.');
   for (const w of words) {
-    if(w.categoryDifficulties){const families=wordSlots(w).map(r=>r.category);if(Object.keys(w.categoryDifficulties).some(c=>!families.includes(c))||families.some(c=>![1,2].includes(w.categoryDifficulties[c]))||w.categoryDifficulties[w.category]!==w.difficulty)throw Error('Nieprawidłowe poziomy kategorii słowa.');}
+    const detected=[...new Set(wordSlots(w).map(r=>r.category))],enabled=w.practiceCategories??detected;
+    if(!Array.isArray(enabled)||!enabled.length||new Set(enabled).size!==enabled.length||enabled.some(c=>!detected.includes(c))||JSON.stringify(enabled)!==JSON.stringify(detected.filter(c=>enabled.includes(c)))||!enabled.includes(w.category))throw Error('Nieprawidłowe dozwolone kategorie słowa.');
+    if(w.categoryDifficulties){const keys=Object.keys(w.categoryDifficulties);if(keys.some(c=>!enabled.includes(c))||enabled.some(c=>![1,2].includes(w.categoryDifficulties[c]))||w.categoryDifficulties[w.category]!==w.difficulty)throw Error('Nieprawidłowe poziomy kategorii słowa.');}
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||

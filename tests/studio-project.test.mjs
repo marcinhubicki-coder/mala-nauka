@@ -103,9 +103,34 @@ test('stale drafts merge unrelated changes and keep conflicts for explicit resol
 });
 
 test('deployment indicator uses the Vercel commit status and exposes unavailable data honestly',async()=>{
- let requested='';const client=new GitClient(async url=>{requested=url;return {ok:true,json:async()=>({statuses:[{context:'Vercel',state:'pending',description:'Building preview'}]})};});
- const result=await client.deploymentStatus('a'.repeat(40));assert.match(requested,/commits\/a{40}\/status$/);assert.equal(result.state,'pending');
+ let requested='';const client=new GitClient(async url=>{requested=url;return {ok:true,json:async()=>({statuses:[{context:'Vercel',state:'pending',description:'Building preview',target_url:'https://vercel.example/deployment'}]})};});
+ const result=await client.deploymentStatus('a'.repeat(40));assert.match(requested,/commits\/a{40}\/status$/);assert.equal(result.state,'pending');assert.equal(result.providerUrl,'https://vercel.example/deployment');
  const missing=new GitClient(async()=>({ok:true,json:async()=>({statuses:[]})}));assert.equal((await missing.deploymentStatus('b'.repeat(40))).state,'unknown');await assert.rejects(()=>client.deploymentStatus('bad'));
+});
+
+test('production promotion merges exactly the green preview SHA and refuses a stale branch',async()=>{
+ const sha='a'.repeat(40),main='b'.repeat(40),mergeSha='c'.repeat(40),calls=[];
+ const makeClient=stale=>new GitClient(async(url,options={})=>{
+  const path=(url.split('/mala-nauka/')[1]||url.split('/mala-nauka')[1]||'').replace(/^\//,''),method=options.method||'GET',body=options.body?JSON.parse(options.body):undefined;calls.push({path,method,body});
+  let value,status=200;
+  if(path==='')value={permissions:{push:true}};
+  else if(path==='git/ref/heads/design/system-v1')value={object:{sha:stale?'d'.repeat(40):sha}};
+  else if(path.startsWith('contents/design-system/config.json'))value={content:Buffer.from(JSON.stringify(config)).toString('base64')};
+  else if(path===`commits/${sha}/status`)value={statuses:[{context:'Vercel',state:'success',description:'Preview ready'}]};
+  else if(path===`compare/main...${sha}`)value={status:'ahead',base_commit:{sha:main}};
+  else if(path===`git/ref/heads/studio/release-${sha.slice(0,12)}`){status=404;value={message:'Not Found'};}
+  else if(path==='git/refs'&&method==='POST')value={};
+  else if(path.startsWith('pulls?'))value=[];
+  else if(path==='pulls'&&method==='POST')value={number:42,html_url:'https://github.example/pull/42'};
+  else if(path==='pulls/42/merge'&&method==='PUT')value={merged:true,sha:mergeSha};
+  else throw Error(path+' '+method);
+  return {ok:status>=200&&status<300,status,json:async()=>value};
+ });
+ const client=makeClient(false);await client.connect('test-token',config);const result=await client.promoteToProduction(sha);
+ assert.equal(result.sha,sha);assert.equal(result.mergeSha,mergeSha);assert.equal(result.prNumber,42);
+ assert.equal(calls.find(row=>row.path==='pulls'&&row.method==='POST').body.head,`studio/release-${sha.slice(0,12)}`);
+ assert.equal(calls.find(row=>row.path==='pulls/42/merge').body.sha,sha);
+ const stale=makeClient(true);await stale.connect('test-token',config);await assert.rejects(()=>stale.promoteToProduction(sha),/nowszy commit/);
 });
 
 test('browser-native fetch keeps its Window receiver in the Git client',async()=>{

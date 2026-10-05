@@ -31,3 +31,5 @@ Końcowy test w UI pokazał dialog starszego szkicu dla rewizji 1 → 2. „Prze
 ![Końcowy edytor ekranów](studio-project-overview-final.jpg)
 
 Ostateczny pilot startuje z etykietą „Nowy gracz” odpowiadającą pustemu stanowi. Jego scenariusze i kolejne odpowiedzi korzystają z tej samej centralnej bazy słów i automatycznych rodzin co Studio. Kontrolki naliczania czekają na gotowy podgląd, aby wczesne kliknięcie nie ginęło podczas ładowania.
+
+Końcowe przejście stanu „Wyłączony” w trybie wykonywania akcji ujawniło, że kafelki mapy omijały blokadę kontenera. Kafelki oraz przyciski blueprintów otrzymują teraz rzeczywistą blokadę, tak samo jak pozostałe kontrolki. Opcje nawigacyjne jelly są grupą przycisków, a opcje wyboru pozostają grupą radiową.

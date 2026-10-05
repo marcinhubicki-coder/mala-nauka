@@ -9,7 +9,7 @@ const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.repl
 export class GitConflict extends Error{constructor(message,paths=[]){super(message);this.name='GitConflict';this.paths=paths;}}
 export class GitClient {
  #token=''; #head='';
- constructor(fetcher=globalThis.fetch){this.fetcher=fetcher;}
+ constructor(fetcher=globalThis.fetch.bind(globalThis)){this.fetcher=fetcher;}
  get connected(){return Boolean(this.#token);}
  get head(){return this.#head;}
  disconnect(){this.#token='';this.#head='';}

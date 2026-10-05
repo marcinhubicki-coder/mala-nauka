@@ -107,3 +107,10 @@ test('deployment indicator uses the Vercel commit status and exposes unavailable
  const result=await client.deploymentStatus('a'.repeat(40));assert.match(requested,/commits\/a{40}\/status$/);assert.equal(result.state,'pending');
  const missing=new GitClient(async()=>({ok:true,json:async()=>({statuses:[]})}));assert.equal((await missing.deploymentStatus('b'.repeat(40))).state,'unknown');await assert.rejects(()=>client.deploymentStatus('bad'));
 });
+
+test('browser-native fetch keeps its Window receiver in the Git client',async()=>{
+ const original=globalThis.fetch;
+ try{globalThis.fetch=function(){assert.equal(this,globalThis);return Promise.resolve({ok:true,json:async()=>({statuses:[{context:'Vercel',state:'success'}]})});};
+ const client=new GitClient();assert.equal((await client.deploymentStatus('c'.repeat(40))).state,'success');
+ }finally{globalThis.fetch=original;}
+});

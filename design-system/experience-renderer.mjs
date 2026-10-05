@@ -38,7 +38,7 @@ export function renderExperience(root,snapshot,screenId,state,{select,action,sta
     const radios=[...container.querySelectorAll('input')];jelly.ensurePrepared(container,Math.max(0,radios.findIndex(r=>r.checked)));
     const e=screen.elements.find(e=>e.id===container.dataset.expJelly);
     const choose=index=>{if(editing||radios[index]?.disabled)return;const a=optionAction(e,index);jelly.update(container,index,{animate:true});if(a.kind!=='none')action?.({...a,value:a.kind==='skin'?(a.value||snapshot.rules.skins[index]?.id):(a.value||e.options[index])});};
-    jelly.setupDrag(container,{canDrag:()=>!editing,getActiveIndex:()=>Math.max(0,radios.findIndex(r=>r.checked)),commitIndex:index=>{if(radios[index]?.disabled){jelly.update(container,Math.max(0,radios.findIndex(r=>r.checked)),{animate:true});return;}radios[index].checked=true;choose(index);}});
+    jelly.setupDrag(container,{captureOnDrag:true,canDrag:()=>!editing,getActiveIndex:()=>Math.max(0,radios.findIndex(r=>r.checked)),commitIndex:index=>{if(radios[index]?.disabled){jelly.update(container,Math.max(0,radios.findIndex(r=>r.checked)),{animate:true});return;}radios[index].checked=true;choose(index);}});
     container.onclick=event=>{const option=event.target.closest('[data-exp-option]');if(option){event.preventDefault();choose(Number(option.dataset.expOption));return;}if(event.target.matches('input')&&optionAction(e,Number(event.target.value)).kind==='navigate')choose(Number(event.target.value));};
     container.onchange=event=>{if(editing){select?.(e.id);return;}if(optionAction(e,Number(event.target.value)).kind!=='navigate')choose(Number(event.target.value));};
   }

@@ -17,12 +17,17 @@ export function wordSlots(record) {
   if(primary>0)slots.unshift(...slots.splice(primary,1));
   return slots;
 }
+export function practiceCategories(record) {
+  const detected=[...new Set(wordSlots(record).map(slot=>slot.category))];
+  if(!record.practiceCategories)return detected;
+  return record.practiceCategories.filter(category=>detected.includes(category));
+}
 export function canonicalWords(rows) {
   const byWord=new Map();
   for(const row of rows){
     const key=wordKey(row.word),existing=byWord.get(key);
     if(existing){
-      if(existing.word!==row.word||existing.difficulty!==row.difficulty||JSON.stringify(existing.categoryDifficulties)!==JSON.stringify(row.categoryDifficulties))throw Error(`Konflikt rekordów słowa „${row.word}”. Sprawdź pisownię i poziom.`);
+      if(existing.word!==row.word||existing.difficulty!==row.difficulty||JSON.stringify(existing.categoryDifficulties)!==JSON.stringify(row.categoryDifficulties)||JSON.stringify(existing.practiceCategories)!==JSON.stringify(row.practiceCategories))throw Error(`Konflikt rekordów słowa „${row.word}”. Sprawdź pisownię, poziom i dozwolone kategorie.`);
       continue;
     }
     byWord.set(key,row);
@@ -30,17 +35,18 @@ export function canonicalWords(rows) {
   return [...byWord.values()];
 }
 export function questionForWord(record,category,library=ruleLibrary()) {
+  if(!practiceCategories(record).includes(category))return null;
   const slot=wordSlots(record).find(slot=>slot.category===category);
   if(!slot)return null;
   const primary=slot.masked===record.masked&&slot.answer===record.answer;
   const rule=Object.values(library?.rules||{}).find(rule=>rule.category===category&&rule.poolDefault);
   const learning=primary?record.learning:rule?{type:rule.type,title:rule.title,explanation:rule.explanation,examples:[],relatedWords:[],forms:[],sources:[]}:{type:'memory',title:`Pisownia ${category}`,explanation:`Zapamiętaj poprawny zapis słowa „${record.word}”. W zaznaczonym miejscu piszemy ${slot.answer}.`,examples:[],relatedWords:[],forms:[],sources:[]};
-  return {...record,...slot,difficulty:categoryLevel(record,category),wordId:wordKey(record.word),families:[...new Set(wordSlots(record).map(row=>row.category))],learning};
+  return {...record,...slot,difficulty:categoryLevel(record,category),wordId:wordKey(record.word),families:practiceCategories(record),learning};
 }
 export function spellingPool(rows,config={},random=Math.random,library=ruleLibrary()) {
   const selected=config.category&&config.category!=='all'?new Set(config.category.split(',')):null;
   return canonicalWords(rows).flatMap(record=>{
-    const families=[...new Set(wordSlots(record).map(slot=>slot.category))].filter(category=>(!selected||selected.has(category))&&(!config.difficulty||categoryLevel(record,category)===config.difficulty));
+    const families=practiceCategories(record).filter(category=>(!selected||selected.has(category))&&(!config.difficulty||categoryLevel(record,category)===config.difficulty));
     if(!families.length)return [];
     const category=selected?families[Math.min(families.length-1,Math.floor(random()*families.length))]:families.includes(record.category)?record.category:families[0];
     return [questionForWord(record,category,library)];
@@ -52,9 +58,9 @@ export function auditWordPools(rows,catalog) {
   return {
     entries:rows.length,uniqueWords:words.length,
     duplicates:[...groups].filter(([,items])=>items.length>1).map(([word,items])=>({word,entries:items.length})),
-    multipleCategories:words.filter(row=>new Set(wordSlots(row).map(slot=>slot.category)).size>1).length,
+    multipleCategories:words.filter(row=>practiceCategories(row).length>1).length,
     missingAssets:catalog?words.filter(row=>!catalog.words[row.word]).map(row=>row.word):[],
-    pools:RULE_CATEGORIES.map(category=>({category,primary:words.filter(row=>row.category===category).length,total:words.filter(row=>wordSlots(row).some(slot=>slot.category===category)).length,basic:words.filter(row=>categoryLevel(row,category)===1&&wordSlots(row).some(slot=>slot.category===category)).length})),
+    pools:RULE_CATEGORIES.map(category=>({category,primary:words.filter(row=>row.category===category).length,total:words.filter(row=>practiceCategories(row).includes(category)).length,basic:words.filter(row=>categoryLevel(row,category)===1&&practiceCategories(row).includes(category)).length})),
     checkedAt:'build'
   };
 }

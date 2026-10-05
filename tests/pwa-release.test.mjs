@@ -16,6 +16,11 @@ test('every offline precache request resolves to an existing file or entry direc
   assert.ok(core.includes('/shared/design-runtime.mjs'));
   assert.ok(core.includes('/design-system/config.json'));
   assert.ok(core.some(request => request.includes('result-motion.mjs')));
+  const deployment=JSON.parse(await readFile(new URL('../dist/design-system/deployment.json',import.meta.url),'utf8'));
+  assert.ok(Object.hasOwn(deployment,'deploymentUrl'));
+  assert.ok(Object.hasOwn(deployment,'branchUrl'));
+  if(process.env.VERCEL_URL)assert.equal(deployment.deploymentUrl,process.env.VERCEL_URL);
+  if(process.env.VERCEL_BRANCH_URL)assert.equal(deployment.branchUrl,process.env.VERCEL_BRANCH_URL);
 });
 
 test('all words retain learning data while only illustrated words enter the game', async () => {

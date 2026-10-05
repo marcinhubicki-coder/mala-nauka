@@ -50,7 +50,7 @@ export class GitClient {
    state:row?.state||'unknown',
    description:row?.description||'GitHub nie podał jeszcze statusu Vercel.',
    url:`https://github.com/${REPOSITORY}/commit/${sha}/checks`,
-   previewUrl:row?.target_url||''
+   providerUrl:row?.target_url||''
   };
  }
  async promoteToProduction(sha=this.#head){
@@ -58,6 +58,8 @@ export class GitClient {
   if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Brak poprawnego commitu Preview.');
   const deployment=await this.deploymentStatus(sha);
   if(deployment.state!=='success')throw Error('Preview musi mieć zakończone, poprawne wdrożenie Vercel przed publikacją.');
+  const previewRef=await this.request(`git/ref/heads/${BRANCH}`);
+  if(previewRef.object?.sha!==sha)throw Error('Branch Preview ma już nowszy commit. Otwórz i zaakceptuj najnowsze Preview przed publikacją.');
   const comparison=await this.request(`compare/${PRODUCTION_BRANCH}...${sha}`);
   if(['identical','behind'].includes(comparison.status))return {sha,mergeSha:comparison.base_commit?.sha||sha,already:true,prNumber:null,prUrl:`https://github.com/${REPOSITORY}/tree/${PRODUCTION_BRANCH}`};
   const branch=`studio/release-${sha.slice(0,12)}`;

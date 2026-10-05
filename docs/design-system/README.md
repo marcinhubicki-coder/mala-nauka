@@ -10,13 +10,15 @@ Aktualny scenariusz i trzy dodatkowe przeloty opisuje [Weryfikacja projektu](pro
 
 **[Projekt i wydanie](project-guide.md)**: plan, nowe ekrany i flow, lokalne teksty, lab nauki, zamrożone podglądy, recenzje, kontrola wydania i odzyskiwanie szkiców. Gotowa wyspa jest zapisana w panelu.
 
+**[Aktualna hierarchia i obsługa Studio](studio-hierarchy-guide.md)**: kategorie, atomy, rodziny globalne i wyjątki, builder, flow, bańka oraz prostsze wydania. [Zakres ostatniej weryfikacji](studio-hierarchy-verification.md) rozdziela ukończone testy od kontroli wizualnej wymagającej dostępu do podglądu.
+
 ## Zacznij od panelu
 
 1. **Komponenty → Według widoku**: wybierz ekran i wskaż element pastylką lub kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.
 2. **Według elementu → Porównaj użycia**: zaznacz ekrany do porównania. Na desktopie telefony mają 390 × 844 bez skalowania i układają się obok siebie, jeśli jest miejsce. Na telefonie podglądy dopasowują się do miejsca i przewijają poziomo.
 3. Zmieniaj suwaki, oglądając znacznik **Ostatnio zapisano**. Wybierz instancję/kontener i przełącz jego stan. **Warstwy i widoczność** pozwalają chwilowo ukryć element z zachowaniem miejsca albo z przesunięciem pozostałych.
 4. **Typografia** pokazuje fonty, role i miejsca użycia. **Baza słów i grafik** pokazuje miniatury, wspólne zasady i powiązania grafik ze słowami; umożliwia ich scalenie.
-5. **Animacje**: wybierz dwa ekrany, ustaw ruch i uruchom Play lub Pętlę z przerwą.
+5. **Animacje**: wybierz połączenie istniejące w flow, ustaw ruch i uruchom Play lub Pętlę z przerwą.
 6. **Cofnij / Ponów** obejmują wygląd, zasady i grafiki. **?** otwiera pomoc z przykładami. Szkic przetrwa odświeżenie w tej przeglądarce.
 7. **Połącz GitHub → Zapisz na GitHub**: przejrzyj zmiany i zapisz jeden commit na tym branchu. Konflikty rozstrzygaj kartami „Twoja wersja” / „Zapisana na GitHub”.
 

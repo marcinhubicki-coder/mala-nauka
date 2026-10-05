@@ -4,7 +4,7 @@ Studio używa spokojnych powierzchni, systemowego fontu, wyraźnych akcji i duż
 
 ## Przejdź gotowy przykład
 
-Otwórz **Projekt i wydanie**. Zapisany przykład „Wyspa małych odkrywców” ma pięć ekranów, sześć zadań i trzy wersje. „Centrum przygody” otwiera mapę, postępy albo wybór przygody trzema opcjami jelly. Mapa korzysta z istniejącej, wspólnej ilustracji żółwia; nie powstaje drugi folder z assetami.
+Otwórz **Projekt i wydanie**. Zacznij od czterech działań w **Mój projekt**; edycja jest w **Projektuj**, a testy i historia w **Sprawdź i pokaż**. Szczegółowy plan oraz techniczne wydanie są opcjami dodatkowymi. Zapisany przykład „Wyspa małych odkrywców” ma pięć ekranów, sześć zadań i trzy wersje. „Centrum przygody” otwiera mapę, postępy albo wybór przygody trzema opcjami jelly. Mapa korzysta z istniejącej, wspólnej ilustracji żółwia; nie powstaje drugi folder z assetami.
 
 1. **Plan**: wybierz zadanie, priorytet, termin, czas i poprzedniki. Czerwone odcinki pokazują najdłuższą pozostałą ścieżkę. Zakończone zadania nie wydłużają planu. To dni kalendarzowe, bez harmonogramowania osób. Zagrożony termin jest ostrzeżeniem; cykl zależności blokuje wersję testową.
 2. **Ekrany i flow**: wybierz ekran, dodaj komponent i ustaw jego własny tekst, geometrię, widoczność, stan i funkcję. Opcje jelly mają osobne cele i wartości. „Wybieraj elementy” zaznacza warstwę; „Testuj kliknięcia” wykonuje akcję. Zdarzenia pamięci, pucharu, combo, odpowiedzi i pomyłki mogą otwierać wybrane ekrany. Nagroda pamięci ma pierwszeństwo.
@@ -28,7 +28,7 @@ Pomyłka nie odbiera zdobytych punktów ani fragmentów. Powtórka tego samego s
 
 ## Telefon i desktop
 
-Na desktopie jest lista elementów, podgląd i inspektor. Na telefonie przełączaj **Elementy / Podgląd / Ustawienia**. Wybór ekranu i trybu pracy jest zwinięty, żeby zostawić miejsce na podgląd. Przełącznik paneli pozostaje pod nagłówkiem. Wskazanie elementu otwiera jego ustawienia. Desktopowy link „Sprawdź Studio na telefonie” uruchamia tę samą aplikację w ramce 390 × 844.
+Na desktopie jest lista elementów, podgląd i inspektor. Na telefonie przełączaj **Elementy / Podgląd / Ustawienia**. Wybór ekranu i trybu pracy jest zwinięty, żeby zostawić miejsce na podgląd. Przełącznik paneli pozostaje pod nagłówkiem. Wskazanie elementu otwiera jego ustawienia. Desktopowy przycisk „Sprawdź Studio na telefonie” uruchamia tę samą aplikację w ramce 390 × 844.
 
 ![Mobilny podgląd Studio](studio-phone-preview-final.jpg)
 

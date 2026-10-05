@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {visualValue,validateElementStyles,elementCSS,componentCategories} from '../shared/element-system.mjs';
+import {playableWords} from '../shared/asset-loader.mjs';
 import {dynamicRange} from '../design-system/dynamic-range.mjs';
 import {flowEdges,motionEdges,userJourney} from '../shared/flow-model.mjs';
 import {transitionMotion,validateMotion,DEFAULT_MOTION} from '../shared/screen-motion.mjs';
@@ -17,3 +18,5 @@ test('connected motion excludes feedback states and contains the complete new-pl
 test('pair settings stay isolated and a return can inherit or become independent',()=>{const config={...DEFAULT_MOTION,transitions:{'home--progress':{...DEFAULT_MOTION,duration:600},'progress--home':{inheritReverse:true}}};validateMotion(config);assert.equal(transitionMotion(config,'progress','home').duration,600);assert.equal(transitionMotion(config,'home','settings').duration,320);config.transitions['progress--home']={...DEFAULT_MOTION,duration:150};assert.equal(transitionMotion(config,'progress','home').duration,150);});
 test('bubble impulses compose on one bounded engine and expire completely',()=>{const d=createBubbleDynamics(),c={reactions:DEFAULT_REACTIONS};for(let i=0;i<50;i++)d.push('combo',0,c);const sample=d.sample(500);assert.equal(sample.active,8);assert.ok(sample.speed<=8&&sample.wave<=8&&Math.abs(sample.shift)<=24);assert.equal(d.sample(5000).active,0);assert.equal(d.sample(5000).morph,0);assert.equal(shapeSides('triangle'),3);for(let i=0;i<100;i++)assert.ok(polygonRadius(i/10,3)<=192.00001);assert.throws(()=>validateReactions({combo:{...DEFAULT_REACTIONS.combo,wave:999}}));});
 test('a phone sketch exports its hierarchy and supports reflow, retained gaps and order',()=>{const b=blueprintTemplate();b.root.width=390;b.root.height=844;b.root.children[0].children[0].visibility='reserve';b.root.children[0].children[1].visibility='reflow';validateBlueprint(b);const md=blueprintMarkdown(b);assert.match(md,/390 × 844/);assert.match(md,/reserve/);assert.match(md,/reflow/);const children=b.root.children[0].children;[children[0],children[1]]=[children[1],children[0]];assert.equal(children[0].visibility,'reflow');});
+
+test('words wait for a canonical illustration and become playable automatically after assignment',()=>{const rows=[{word:'chata'},{word:'brzuch'}],catalog={assets:[{path:'assets/scenes/brzuch.webp'}],words:{brzuch:{path:'assets/scenes/brzuch.webp'}}};assert.deepEqual(playableWords(rows,catalog),[rows[1]]);catalog.words.chata={path:'assets/scenes/brzuch.webp'};assert.deepEqual(playableWords(rows,catalog),rows);delete catalog.words.brzuch;assert.deepEqual(playableWords(rows,catalog),[rows[0]]);});

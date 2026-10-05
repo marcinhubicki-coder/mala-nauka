@@ -81,7 +81,8 @@ function selectedDetails() {
     const match = [...items.values()].find(row=>row.node===node && row.id!==item.id);
     if(match && !parents.includes(match.id))parents.push(match.id);
   }
-  return {id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
+  const nativeVariant=item.recipe==='button-answer'?({math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'})[document.documentElement.dataset.dsView.split('-')[0]]||'':'';
+  return {id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
 function paintHighlight() {
   overlay?.remove();

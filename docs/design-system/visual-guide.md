@@ -1,5 +1,7 @@
 # Praca wizualna w Design Studio
 
+Aktualna instrukcja hierarchii, wyjątków i buildera: [Studio krok po kroku](studio-hierarchy-guide.md).
+
 Panel służy do edycji wspólnych elementów aplikacji. Zmieniasz szkic i oglądasz skutki na rzeczywistych ekranach. Dopiero **Zapisz na GitHub** udostępnia zmianę innym branchom.
 
 Na telefonie używaj dolnych przycisków **Wybór / Podgląd / Ustawienia** oraz menu **☰**. Suwaki mają przyciski **− / +**, a zapis pozostaje u góry. [Instrukcja mobilna](mobile-guide.md) opisuje ten układ.
@@ -64,9 +66,9 @@ Upload obsługuje PNG, JPG, WebP i AVIF do 12 MB. Ilustracja słowa ma proporcj�
 
 ## Chcę obejrzeć animację
 
-**Animacje** pozwalają wybrać dwa rzeczywiste ekrany, styl przejścia, czas, odległość przesunięcia i tempo. **Odtwórz przejście** pokazuje zmianę. **Pętla** powtarza przejścia w obu kierunkach, a **Przerwa między ekranami** daje czas na ich obejrzenie. **Zatrzymaj** i wyjście z zakładki kończą pętlę.
+**Animacje** pozwalają wybrać rzeczywiste połączenie dwóch ekranów, styl przejścia, czas, odległość przesunięcia i tempo. **Odtwórz przejście** pokazuje zmianę. **Pętla** powtarza przejścia w obu kierunkach, a **Przerwa między ekranami** daje czas na ich obejrzenie. **Zatrzymaj** i wyjście z zakładki kończą pętlę.
 
-Styl, czas, odległość i tempo trafiają do wspólnej konfiguracji; pętla, przerwa i wybrana para są ustawieniami podglądu. Systemowe ograniczanie ruchu wyłącza animację także w podglądzie. Animacja przełącznika jelly ma osobne suwaki w Komponentach.
+Styl, czas, odległość i tempo są zapisane osobno dla połączenia; powrót może dziedziczyć lub mieć własne ustawienia. pętla, przerwa i wybrana para są ustawieniami podglądu. Systemowe ograniczanie ruchu wyłącza animację także w podglądzie. Animacja przełącznika jelly ma osobne suwaki w Komponentach.
 
 ## Chcę zapisać bez zgubienia zmian
 

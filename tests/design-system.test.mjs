@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {clone,set,validateConfig,configCSS,changedViews,viewIdFor} from '../design-system/model.mjs';
 import {validateAssets} from '../design-system/validation.mjs';
-import {configureAssets,assetUrl,wordAsset,previewAssets} from '../shared/asset-loader.mjs';
+import {configureAssets,assetUrl,wordAsset,previewAssets,playableWords} from '../shared/asset-loader.mjs';
 import {GitClient,GitConflict,mergeDraft,mergeCatalog,mergeWordPack,BRANCH} from '../design-system/git-client.mjs';
 import {createStudioGame} from '../design-system/scenarios.mjs';
 import {validateWords} from '../game.mjs';
@@ -21,9 +21,10 @@ test('local view exceptions do not leak to other views and impact maps remain ex
  assert.match(css,/html\[data-ds-view="english-settings"\]\{--ds-jelly-height:62;/);
  assert.deepEqual(changedViews([{path:'overrides.english-settings.jelly.height'}],registry).map(v=>v.id),['english-settings']);
 });
-test('all 455 word illustrations and deleted aliases resolve to one existing canonical file',()=>{
- validateAssets(assets);assert.equal(words.length,455);assert.equal(Object.keys(assets.words).length,455);configureAssets(assets,'https://example.test/base/');
- for(const word of words)assert.ok(assets.assets.some(row=>row.path===assets.words[word.word]?.path),word.word);
+test('playable illustrations and deleted aliases resolve to one existing canonical file',()=>{
+ validateAssets(assets);assert.equal(words.length,455);assert.equal(Object.keys(assets.words).length,451);configureAssets(assets,'https://example.test/base/');
+ const ready=playableWords(words,assets);assert.equal(ready.length,451);assert.deepEqual(words.filter(w=>!ready.includes(w)).map(w=>w.word).sort(),['chata','chrzan','dach','wieża']);
+ for(const word of ready)assert.ok(assets.assets.some(row=>row.path===assets.words[word.word]?.path),word.word);
  for(const [alias,target]of Object.entries(assets.aliases))assert.equal(assetUrl(alias),'https://example.test/base/'+target);
  const first=words[0].word,path=assets.words[first].path;previewAssets({[path]:'blob:temporary-image'});assert.equal(wordAsset(first),'blob:temporary-image');previewAssets();
  const invalid=clone(assets);invalid.words[first].path='../../escape.png';assert.throws(()=>validateAssets(invalid));

@@ -44,6 +44,10 @@ export async function preloadAssets(paths) {
     const picture = new Image(); picture.onload = resolve; picture.onerror = reject; picture.src = assetUrl(path);
   })));
 }
+export function playableWords(rows,catalog=manifest){
+  const paths=new Set(catalog.assets.map(asset=>asset.path));
+  return rows.filter(row=>paths.has(catalog.words[row.word]?.path));
+}
 export async function loadWords({raw=false}={}) {
   const base = window.__DS_CONTENT_ORIGIN__ || projectRoot.href;
   const parts = await Promise.all(Array.from({length:8}, async (_, index) => {
@@ -52,7 +56,9 @@ export async function loadWords({raw=false}={}) {
     return response.json();
   }));
   if(!ruleLibrary()){const response=await fetch(new URL('design-system/rules.json',base),{cache:'no-cache'});if(!response.ok)throw Error('Nie udało się wczytać wspólnej biblioteki zasad.');configureRules(await response.json());}
-  return raw?parts.flat():resolveRules(canonicalWords(parts.flat()));
+  if(raw)return parts.flat();
+  if(manifest.revision==='unloaded'){const response=await fetch(new URL('design-system/assets.json',base),{cache:'no-cache'});if(!response.ok)throw Error('Nie udało się wczytać wspólnej bazy ilustracji.');configureAssets(await response.json(),base);}
+  return resolveRules(playableWords(canonicalWords(parts.flat())));
 }
 
 export function previewAssets(urls={}){previewURLs=urls;}

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { validateWords } from '../game.mjs';
 import { sceneFor } from '../spelling/scenes.mjs';
-import {configureAssets} from '../shared/asset-loader.mjs';
+import {configureAssets,playableWords} from '../shared/asset-loader.mjs';
 
 test('every offline precache request resolves to an existing file or entry directory', async () => {
   const sw = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
@@ -18,13 +18,14 @@ test('every offline precache request resolves to an existing file or entry direc
   assert.ok(core.some(request => request.includes('result-motion.mjs')));
 });
 
-test('all 455 spelling words have learning data and an available illustration', async () => {
+test('all words retain learning data while only illustrated words enter the game', async () => {
   const parts = await Promise.all(Array.from({ length: 8 }, (_, i) => readFile(new URL(`../data/words-0${i + 1}.json`, import.meta.url), 'utf8').then(JSON.parse)));
   const words = validateWords(parts.flat());
   configureAssets(JSON.parse(await readFile(new URL('../design-system/assets.json',import.meta.url),'utf8')));
   assert.equal(words.length, 455);
-  for (const word of words) {
-    assert.ok(word.learning, word.word);
+  for(const word of words)assert.ok(word.learning,word.word);
+  const ready=playableWords(words);assert.equal(ready.length,451);
+  for (const word of ready) {
     const scene = sceneFor(word.masked, word.word);
     assert.ok(scene, word.word);
     await access(new URL('../'+(scene.asset.startsWith('assets/')?scene.asset:'assets/scenes/'+scene.asset), import.meta.url));

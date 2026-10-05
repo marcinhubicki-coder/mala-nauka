@@ -4,6 +4,7 @@ import {validateScoring} from '../spelling/scoring.mjs';
 import {validateMotion} from '../shared/screen-motion.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
+import {validateProject,validateCopy} from './project-model.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);
@@ -46,6 +47,12 @@ export function validateConfig(config) {
   if(Object.keys(config.themes).some(mode=>!MODES.includes(mode)))throw Error('Nieznany tryb.');
   safeKeys(config.overrides||{});
   for(const [view,value]of Object.entries(config.overrides||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok.');validateTokens(value,true);}
+  if(config.copyOverrides)validateCopy(config.copyOverrides);
+  if(config.project){
+    validateProject(config.project);
+    if(config.project.designDraft){const candidate={...config,...config.project.designDraft};delete candidate.project;validateConfig(candidate);}
+    for(const release of config.project.releases)validateConfig(release.snapshot.design);
+  }
   return config;
 }
 const kebab = text => text.replace(/[A-Z]/g, char => `-${char.toLowerCase()}`);

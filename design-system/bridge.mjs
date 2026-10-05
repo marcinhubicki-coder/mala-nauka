@@ -132,6 +132,7 @@ if (studio) {
   window.addEventListener('message',async event=>{
     if(event.origin!==location.origin || event.source!==parent || event.data?.channel!=='mala-nauka-studio')return;
     const message=event.data;
+    if(message.type==='copy-scan'){await designReady;const {collectScreenCopy}=await import('../shared/screen-copy.mjs');emit({type:'copy-list',rows:collectScreenCopy(app())});}
     if(message.type==='design'){
       await designReady;applyDesign(message.config);
       if(message.assets){const changed=JSON.stringify(assetManifest().words)!==JSON.stringify(message.assets.words);previewAssets(message.previewURLs);configureAssets(message.assets,window.__DS_ASSET_ORIGIN__||new URL('../',import.meta.url).href);rewriteAssetNodes();if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}

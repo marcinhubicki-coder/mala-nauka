@@ -2,6 +2,7 @@ import {animateScreen,DEFAULT_MOTION} from './screen-motion.mjs';
 import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
+import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 const base = new URL('../', import.meta.url);
 let config;
 export function applyDesign(value) {
@@ -11,6 +12,7 @@ export function applyDesign(value) {
   style.textContent = css; config = value;
   window.__MALA_NAUKA_DESIGN__ = value;
   document.documentElement.dataset.dsRevision = String(value.revision);
+  configureScreenCopy(value.copyOverrides||[]);
   document.dispatchEvent(new CustomEvent('mala-nauka:design', {detail:value}));
 }
 export const currentDesign = () => config;
@@ -45,6 +47,7 @@ export async function initDesign() {
       if(document.documentElement.dataset.dsView!==id)document.documentElement.dataset.dsView=id;
     }
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
+    applyScreenCopy(app);
   };
   if (app) new MutationObserver(annotate).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
   annotate();

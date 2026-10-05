@@ -4,7 +4,7 @@ import {StudioProject} from './studio-project.mjs';
 import {emptyProject,editableProjectConfig,projectContract,designFields} from './project-model.mjs';
 import {DEFAULT_RECIPES} from '../shared/component-recipes.mjs';
 import {StudioBatches} from './studio-batches.mjs';
-import {validateBatches,batchWords,publicationPlan,matchBatchImage} from './batch-model.mjs';
+import {validateBatches,batchWords,publicationPlan,matchBatchImage,autoAssignBatchImages} from './batch-model.mjs';
 import {StudioPlay} from './studio-play.mjs';
 import {DEFAULT_EFFECTS} from '../spelling/effect-model.mjs';
 import {DEFAULT_SCORING} from '../spelling/scoring.mjs';
@@ -217,7 +217,7 @@ async function acceptLatest(latest){
  const packs=[];
  for(const edit of wordEdits.values()){const remote=latest.wordPacks[edit.path];packs.push({...edit,baseValue:clone(remote),value:mergeWordPack(edit.baseValue,edit.value,remote)});}
  const merged=plan.conflicts.length?await reviewConflicts({plan,registry,config,rules,modal,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path)}):resolveStudioMerge(plan);
- undo=[];redo=[];committedConfig=clone(latest.config);base=editableProjectConfig(latest.config);baseAssets=clone(latest.assets);baseRules=clone(latest.rules);baseBatches=clone(latest.batches);config=merged.config;assets=merged.assets;rules=merged.rules;batches=merged.batches;originalWords=Object.values(latest.wordPacks).flat();remoteAssetPaths=(latest.catalog||latest.assets).assets.map(row=>row.path);contentOrigin=`https://raw.githubusercontent.com/${REPOSITORY}/${latest.head}/`;wordEdits=new Map(packs.map(edit=>[edit.path,edit]));syncWords();git.acceptHead(latest.head);savedCommit={sha:latest.head,url:`https://github.com/${REPOSITORY}/commit/${latest.head}`};projectStudio.deployment=null;await persistContent();
+ undo=[];redo=[];committedConfig=clone(latest.config);base=editableProjectConfig(latest.config);baseAssets=clone(latest.assets);baseRules=clone(latest.rules);baseBatches=clone(latest.batches);config=merged.config;assets=merged.assets;rules=merged.rules;batches=autoAssignBatchImages(merged.batches,assets);originalWords=Object.values(latest.wordPacks).flat();remoteAssetPaths=(latest.catalog||latest.assets).assets.map(row=>row.path);contentOrigin=`https://raw.githubusercontent.com/${REPOSITORY}/${latest.head}/`;wordEdits=new Map(packs.map(edit=>[edit.path,edit]));syncWords();git.acceptHead(latest.head);savedCommit={sha:latest.head,url:`https://github.com/${REPOSITORY}/commit/${latest.head}`};projectStudio.deployment=null;await persistContent();
 }
 async function refreshGit(){if(busy)return;busy=true;header();try{await acceptLatest(await git.latest());sendDesign();render();toast('Wczytano GitHub i zachowano Twój szkic.');}catch(error){toast(error.message+(error.paths?.length?' '+error.paths.join(', '):''));}finally{busy=false;header();}}
 document.getElementById('save-git').onclick=()=>{

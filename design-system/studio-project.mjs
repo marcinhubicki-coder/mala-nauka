@@ -6,7 +6,7 @@ import {encodeShare,decodeShare,previewLink,validateFeedback} from './project-sh
 import {overviewPanel,planPanel,screensPanel,learningPanel,testPanel,copyPanel,copyFields,releasePanel,summaryHTML,button,field,select,info} from './project-panels.mjs';
 
 export class StudioProject{
-  constructor(options){Object.assign(this,options);this.tab='overview';this.screenId='';this.elementId='';this.pane='preview';this.editing=true;this.stateOverride='initial';this.fixture='six';this.seed=42;this.copyView='new';this.copyRows=[];this.trace=[];this.active=false;
+  constructor(options){Object.assign(this,options);this.tab='overview';this.screenId='';this.elementId='';this.pane='preview';this.editing=true;this.stateOverride='initial';this.fixture='six';this.seed=42;this.copyView='new';this.copyRows=[];this.trace=[];this.active=false;this.deployment=null;this.promotion=null;
     this.workspace.addEventListener('click',e=>{if(this.active){this.flushInput();void this.click(e).catch(error=>this.notice(error.message));}});
     this.workspace.addEventListener('change',e=>{if(this.active)void this.change(e).catch(error=>this.notice(error.message));});
     this.workspace.addEventListener('input',e=>{if(!this.active)return;if(e.target.matches('input[type=range]'))void this.change(e).catch(error=>this.notice(error.message));else if(e.target.matches('[data-element-field=text],[data-screen-field=name],[data-native-copy],[data-project-copy-element]')){clearTimeout(this.inputTimer);this.pendingInput=e;this.inputTimer=setTimeout(()=>this.flushInput(),350);}});
@@ -106,7 +106,20 @@ export class StudioProject{
     if(b.id==='project-export')this.download(this.project,'mala-nauka-projekt.json');
     if(b.id==='project-import')this.importDialog('project');
     if(b.id==='project-import-feedback')this.importDialog('feedback');
-    if(b.id==='project-check-deployment'){const output=this.workspace.querySelector('#project-deployment-status');output.textContent='Odczytuję status GitHub…';try{const result=await this.checkDeployment();output.dataset.state=result.state;output.innerHTML=html(({success:'Wdrożenie gotowe',pending:'Wdrożenie w toku',failure:'Wdrożenie nie powiodło się',error:'Błąd wdrożenia',unknown:'Status niedostępny'})[result.state]||'Status niedostępny')+' · '+result.sha.slice(0,7)+' · '+html(result.description)+` <a href="${html(result.url)}" target=_blank rel=noopener>Sprawdź commit ↗</a>`;}catch(error){output.textContent=error.message;}}
+    if(b.id==='project-check-deployment'){
+      const output=this.workspace.querySelector('#project-deployment-status');if(output)output.textContent='Odczytuję status Preview…';
+      try{this.deployment=await this.checkDeployment();this.render();}catch(error){if(output)output.textContent=error.message;else this.notice(error.message);}
+    }
+    if(b.id==='project-promote-production'){
+      const deployment=this.deployment||await this.checkDeployment();
+      if(deployment.state!=='success')throw Error('Najpierw poczekaj na poprawne Preview Vercel.');
+      this.dialog(`<h2>Wysłać tę wersję na produkcję?</h2><p>Do <strong>main</strong> trafi dokładnie commit <code>${html(deployment.sha.slice(0,7))}</code>, który ma gotowe Preview. Vercel uruchomi deployment produkcyjny dopiero po połączeniu tego commitu.</p><p class=modal-error id=project-production-error role=alert></p><div class=modal-actions>${button('Anuluj','data-close')}${button('Zatwierdź do produkcji','id=project-confirm-production',true)}</div>`);
+      this.modal.querySelector('#project-confirm-production').onclick=async()=>{
+        const confirm=this.modal.querySelector('#project-confirm-production'),error=this.modal.querySelector('#project-production-error');confirm.disabled=true;error.textContent='Publikuję zaakceptowane Preview…';
+        try{this.promotion=await this.promoteProduction(deployment.sha);this.modal.close();this.render();this.notice(this.promotion.already?'Ta wersja jest już na main.':'Wersja połączona z main. Vercel przygotowuje produkcję.');}
+        catch(reason){error.textContent=reason.message;confirm.disabled=false;}
+      };
+    }
     if(b.id==='project-save-git')document.getElementById('save-git').click();
   }
   async change(event){

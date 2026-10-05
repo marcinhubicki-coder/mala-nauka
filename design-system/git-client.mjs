@@ -4,6 +4,7 @@ import {diff,validateConfig} from './model.mjs';
 import {validateBatches,validatePublication,EMPTY_BATCHES} from './batch-model.mjs';
 export const REPOSITORY='marcinhubicki-coder/mala-nauka';
 export const BRANCH='design/system-v1';
+export const PRODUCTION_BRANCH='main';
 const bytesToBase64 = bytes => {let text='';for(let offset=0;offset<bytes.length;offset+=32768)text+=String.fromCharCode(...bytes.subarray(offset,offset+32768));return btoa(text);};
 const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.replace(/\s/g,'')),char=>char.charCodeAt(0)));
 export class GitConflict extends Error{constructor(message,paths=[]){super(message);this.name='GitConflict';this.paths=paths;}}
@@ -20,7 +21,7 @@ export class GitClient {
   const endpoint=`https://api.github.com/repos/${REPOSITORY}${path?`/${path}`:''}`;
   const response=await this.fetcher(endpoint,{method,headers,body:body?JSON.stringify(body):undefined,cache:'no-store'});
   const data=await response.json();
-  if(!response.ok){const error=new Error(response.status===401?'GitHub nie przyjął tokenu.':response.status===403?'Token potrzebuje uprawnienia Contents: Read and write dla tego repozytorium.':`GitHub: ${data.message||response.status}`);error.status=response.status;throw error;}
+  if(!response.ok){const error=new Error(response.status===401?'GitHub nie przyjął tokenu.':response.status===403?'GitHub odmówił operacji. Sprawdź uprawnienia tokenu: Contents oraz Pull requests — Read and write.':`GitHub: ${data.message||response.status}`);error.status=response.status;throw error;}
   return data;
  }
  async readJSON(path,ref=this.#head){const row=await this.request(`contents/${path}?ref=${encodeURIComponent(ref||BRANCH)}`);return JSON.parse(decode(row.content));}
@@ -44,7 +45,47 @@ export class GitClient {
   if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Najpierw połącz GitHub lub zapisz commit.');
   const result=await this.request(`commits/${sha}/status`);
   const row=result.statuses?.find(s=>/vercel/i.test(s.context));
-  return {sha,state:row?.state||'unknown',description:row?.description||'GitHub nie podał jeszcze statusu Vercel.',url:`https://github.com/${REPOSITORY}/commit/${sha}/checks`};
+  return {
+   sha,
+   state:row?.state||'unknown',
+   description:row?.description||'GitHub nie podał jeszcze statusu Vercel.',
+   url:`https://github.com/${REPOSITORY}/commit/${sha}/checks`,
+   providerUrl:row?.target_url||''
+  };
+ }
+ async promoteToProduction(sha=this.#head){
+  if(!this.connected)throw Error('Połącz GitHub przed publikacją na produkcję.');
+  if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Brak poprawnego commitu Preview.');
+  const deployment=await this.deploymentStatus(sha);
+  if(deployment.state!=='success')throw Error('Preview musi mieć zakończone, poprawne wdrożenie Vercel przed publikacją.');
+  const previewRef=await this.request(`git/ref/heads/${BRANCH}`);
+  if(previewRef.object?.sha!==sha)throw Error('Branch Preview ma już nowszy commit. Otwórz i zaakceptuj najnowsze Preview przed publikacją.');
+  const comparison=await this.request(`compare/${PRODUCTION_BRANCH}...${sha}`);
+  if(['identical','behind'].includes(comparison.status))return {sha,mergeSha:comparison.base_commit?.sha||sha,already:true,prNumber:null,prUrl:`https://github.com/${REPOSITORY}/tree/${PRODUCTION_BRANCH}`};
+  const branch=`studio/release-${sha.slice(0,12)}`;
+  try{
+   const ref=await this.request(`git/ref/heads/${branch}`);
+   if(ref.object?.sha!==sha)throw Error('Branch wydania wskazuje inny commit. Odśwież Preview i spróbuj ponownie.');
+  }catch(error){
+   if(error.status!==404)throw error;
+   await this.request('git/refs','POST',{ref:`refs/heads/${branch}`,sha});
+  }
+  const owner=REPOSITORY.split('/')[0],query=`pulls?state=open&head=${encodeURIComponent(owner+':'+branch)}&base=${PRODUCTION_BRANCH}`;
+  const open=await this.request(query);
+  const pr=open[0]||await this.request('pulls','POST',{
+   title:`Studio: publish ${sha.slice(0,7)}`,
+   head:branch,
+   base:PRODUCTION_BRANCH,
+   body:`Publikacja zaakceptowanego Preview z Design Studio.\n\nPreview SHA: \`${sha}\``
+  });
+  const merge=await this.request(`pulls/${pr.number}/merge`,'PUT',{
+   sha,
+   merge_method:'merge',
+   commit_title:`Studio: publish ${sha.slice(0,7)}`,
+   commit_message:'Promocja zaakceptowanego Preview do produkcji.'
+  });
+  if(!merge.merged)throw Error(merge.message||'GitHub nie połączył wersji z main.');
+  return {sha,mergeSha:merge.sha,already:false,prNumber:pr.number,prUrl:pr.html_url||`https://github.com/${REPOSITORY}/pull/${pr.number}`};
  }
  async save({config,assets,rules,batches,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');

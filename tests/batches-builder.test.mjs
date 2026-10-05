@@ -14,15 +14,16 @@ const [queue,catalog,library,config,registry]=await Promise.all(['design-system/
 const active=(await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat();
 const sample=()=>{const row=createCandidate('chrzanić');row.assetPath=catalog.assets.find(a=>a.group==='scenes').path;return {batch:{id:'batch-test',name:'Próba',stage:'images',words:[row]},assets:{...structuredClone(catalog),assets:catalog.assets.map(a=>a.path===row.assetPath?{...a,width:1024,height:1024}:a)}};};
 test('the complete queue reaches 100 in every pool without publishing or duplicating game words',()=>{
- validateBatches(queue);assert.equal(batchWords(queue).length,256);assert.equal(queue.batches.length,13);assert.ok(queue.batches.every(b=>b.stage==='proposed'&&b.words.every(r=>r.selected&&r.assetPath===null)));assert.ok(batchSummary(queue,active).every(p=>p.total>=100));assert.equal(new Set([...active.map(w=>w.word),...batchWords(queue).map(w=>w.word)]).size,active.length+256);assert.equal(active.length,455);
+ validateBatches(queue);assert.equal(batchWords(queue).length,247);assert.equal(queue.batches.length,13);assert.ok(queue.batches.every(b=>b.stage==='proposed'&&b.words.every(r=>r.selected&&r.assetPath===null)));assert.ok(batchSummary(queue,active).every(p=>p.total>=100));assert.equal(new Set([...active.map(w=>w.word),...batchWords(queue).map(w=>w.word)]).size,active.length+247);assert.equal(active.length,455);
 });
 test('category recognition precedes review; one brzuch counts in three distinct pools',()=>{
  const result=addCandidates(structuredClone(EMPTY_BATCHES),[' BRZUCH ','brzuch','pies'],[]);
  assert.equal(result.added,1);assert.equal(result.rejected.length,2);assert.deepEqual(result.value.batches[0].words[0].categories,['u/ó','rz/ż','ch/h']);assert.equal(batchSummary(result.value,[]).filter(r=>r.proposed===1).length,3);
  result.value.batches[0].words[0].selected=false;assert.equal(batchSummary(result.value,[]).reduce((n,r)=>n+r.proposed,0),0);
 });
-test('batches reject manual category drift, unknown difficulty, paths and repeated words',()=>{
- for(const change of [r=>r.categories.pop(),r=>r.levels['u/ó']=3,r=>r.assetPath='assets/../secret',r=>r.word='<img>']){const v=structuredClone(queue);change(v.batches[0].words[0]);assert.throws(()=>validateBatches(v));}
+test('batches allow reviewed category subsets but reject drift, unknown difficulty, paths and repeated words',()=>{
+ const reviewed=structuredClone(queue),part=reviewed.batches[1].words.find(r=>r.word==='część');assert.deepEqual(part.categories,['ś/si']);assert.doesNotThrow(()=>validateBatches(reviewed));
+ for(const change of [r=>r.categories.reverse(),r=>r.levels['ć/ci']=1,r=>r.levels[r.categories[0]]=3,r=>r.assetPath='assets/../secret',r=>r.word='<img>']){const v=structuredClone(queue);change(v.batches[0].words[0]);assert.throws(()=>validateBatches(v));}
  const v=structuredClone(queue);v.batches[1].words.push(structuredClone(v.batches[0].words[0]));assert.throws(()=>validateBatches(v));
 });
 test('final group acceptance requires a verified square image and selected words only',()=>{
@@ -38,6 +39,16 @@ test('approved records validate in the real game; category difficulty selects th
 test('generic Git save cannot bypass final approval or use a different asset',()=>{
  const {batch,assets}=sample(),plan=publicationPlan(batch,assets,active,library),v={...structuredClone(EMPTY_BATCHES),batches:[batch]},edits=[{baseValue:[],value:plan.records}];
  assets.words.chrzanić={path:batch.words[0].assetPath,source:'data/words-01.json',masked:plan.records[0].masked};assert.throws(()=>validatePublication(v,assets,edits));batch.stage='published';assert.doesNotThrow(()=>validatePublication(v,assets,edits));batch.words[0].selected=false;assert.throws(()=>validatePublication(v,assets,edits));batch.words[0].selected=true;assets.words.chrzanić.path='assets/other.jpg';assert.throws(()=>validatePublication(v,assets,edits));
+});
+test('valid inflections and real alternative words never become wrong-answer distractors',()=>{
+ const queued=new Map(batchWords(queue).map(r=>[r.word,r]));
+ for(const word of ['ryś','gęś','łoś','miś','miedź','więź','krawędź','łabędź','łabędzi'])assert.equal(queued.has(word),false);
+ assert.deepEqual(queued.get('część').categories,['ś/si']);assert.deepEqual(queued.get('pieśń').categories,['ś/si']);assert.deepEqual(queued.get('śledź').categories,['ś/si']);assert.deepEqual(queued.get('gwoźdź').categories,['ź/zi']);
+ const grzebien=active.find(r=>r.word==='grzebień'),mozliwosc=active.find(r=>r.word==='możliwość'),uczen=active.find(r=>r.word==='uczeń'),cien=active.find(r=>r.word==='cień');
+ assert.deepEqual(grzebien.practiceCategories,['rz/ż']);assert.deepEqual(mozliwosc.practiceCategories,['rz/ż','ś/si']);assert.deepEqual(uczen.practiceCategories,['u/ó']);assert.deepEqual(cien.practiceCategories,['ć/ci']);
+ assert.equal(spellingPool(active,{category:'ń/ni'},()=>0).some(q=>q.word==='grzebień'),false);
+ assert.equal(spellingPool(active,{category:'ć/ci'},()=>0).some(q=>q.word==='możliwość'),false);
+ const bear=spellingPool(active,{category:'dź/dzi'},()=>0).find(q=>q.word==='niedźwiedź');assert.equal(bear.masked,'nie_wiedź');assert.equal(bear.answer,'dź');
 });
 test('bulk image names resolve Polish spelling and refuse ambiguous ASCII matches',()=>{
  const batch={words:[createCandidate('śnieg'),createCandidate('łódź'),createCandidate('lódź')]};assert.equal(matchBatchImage('snieg.JPG',batch).word,'śnieg');assert.equal(matchBatchImage('łódź.webp',batch).word,'łódź');assert.throws(()=>matchBatchImage('lodz.png',batch));assert.throws(()=>matchBatchImage('random.png',batch));batch.words[0].selected=false;assert.throws(()=>matchBatchImage('śnieg.jpg',batch));

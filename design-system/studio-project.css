@@ -12,3 +12,5 @@
 
 .project-screen-controls summary{display:none}.project-screen-controls .project-screen-toolbar{margin-top:12px}
 @media(max-width:690px){.project-screen-controls{border:1px solid #dedee5;border-radius:12px;background:#fff;padding:12px;margin-bottom:14px}.project-screen-controls summary{display:list-item;cursor:pointer;min-height:32px;font-weight:550;font-size:14px}.project-screen-controls .project-screen-toolbar{margin-bottom:0}.project-mobile-panes{position:sticky;top:var(--studio-bar-height,132px);z-index:5;scroll-margin-top:var(--studio-bar-height,132px)}.project-range input[type=range]{height:44px}.project-range-track i{top:45px}.project-screen-inspector{scroll-margin-top:calc(var(--studio-bar-height,132px) + 60px)}}
+
+#project-deployment-status[data-state=success]{color:#237d49}#project-deployment-status[data-state=pending]{color:#8b651e}#project-deployment-status[data-state=failure],#project-deployment-status[data-state=error]{color:#a42a39}

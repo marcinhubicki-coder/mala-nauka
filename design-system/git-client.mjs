@@ -39,6 +39,12 @@ export class GitClient {
   return {head,config,assets,rules,batches};
  }
  acceptHead(head){if(!/^[0-9a-f]{40}$/.test(head))throw Error('Nieprawidłowy commit.');this.#head=head;}
+ async deploymentStatus(sha=this.#head){
+  if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Najpierw połącz GitHub lub zapisz commit.');
+  const result=await this.request(`commits/${sha}/status`);
+  const row=result.statuses?.find(s=>/vercel/i.test(s.context));
+  return {sha,state:row?.state||'unknown',description:row?.description||'GitHub nie podał jeszcze statusu Vercel.',url:`https://github.com/${REPOSITORY}/commit/${sha}/checks`};
+ }
  async save({config,assets,rules,batches,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
   validateConfig(config);validateAssets(assets);if(rules)validateRules(rules);

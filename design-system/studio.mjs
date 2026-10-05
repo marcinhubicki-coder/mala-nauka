@@ -17,6 +17,7 @@ import {configureRules,validateRules} from '../shared/rules-library.mjs';
 import {StudioPreview} from './studio-preview.mjs';
 import {componentName,effectiveValue} from './preview-model.mjs';
 import {contentDraft} from './draft-store.mjs';
+import {draftRecovery} from './draft-recovery.mjs';
 import {validateAssets} from './validation.mjs';
 import {clone,get,set,diff,changedViews,validateConfig,FONT_IDS,FONT_NAMES,FONT_FILES} from './model.mjs';
 import {GitClient,mergeDraft,mergeCatalog,mergeWordPack,BRANCH,REPOSITORY} from './git-client.mjs';
@@ -25,7 +26,8 @@ import {configureAssets,assetUrl,loadWords,previewAssets} from '../shared/asset-
 await designReady;
 const read=async path=>{const response=await fetch(new URL(path,import.meta.url));if(!response.ok)throw Error(`Nie udało się wczytać ${path}.`);return response.json();};
 const [initial,registry,initialAssets,audit,words,initialRules,initialBatches]=await Promise.all([read('config.json'),read('registry.json'),read('assets.json'),read('audit.json'),loadWords({raw:true}),read('rules.json'),read('word-batches.json')]);
-const DRAFT_KEY='malaNauka.designStudio.v1';
+const DRAFT_KEY='malaNauka.designStudio.v1',RECOVERY_KEY=DRAFT_KEY+'.recovery';
+let recoveryDraft=null,recoveryContent=null;
 let originalWords=clone(words),baseBatches=clone(initialBatches),batches=clone(initialBatches);
 function syncWords(){const byWord=new Map(originalWords.map(r=>[r.word,clone(r)]));for(const edit of wordEdits.values()){for(const old of edit.baseValue)byWord.delete(old.word);for(const row of edit.value)byWord.set(row.word,clone(row));}words.splice(0,words.length,...byWord.values());}
 let baseRules=clone(initialRules),rules=clone(initialRules);
@@ -43,9 +45,9 @@ const changes=()=>diff(base,config);
 const assetChanges=()=>catalogChanges(baseAssets,assets);
 const ruleChanges=()=>diff(baseRules,rules);
 const stagedCount=()=>diff(baseAssets,assets).filter(row=>row.path!=='revision').length+uploads.length+wordEdits.size+ruleChanges().length+diff(baseBatches,batches).length;
-try{const draft=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(draft?.schemaVersion===1&&draft.baseRevision===initial.revision&&draft.config){validateConfig(draft.config);config=draft.config;if(draft.assets)assets=validateAssets(draft.assets);if(draft.rules)rules=validateRules(draft.rules);if(draft.batches)batches=validateBatches(draft.batches);draftHistory=draft.history||[];}}catch{}
+try{const draft=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(draft?.schemaVersion===1&&draft.baseRevision===initial.revision&&draft.config){validateConfig(draft.config);config=draft.config;if(draft.assets)assets=validateAssets(draft.assets);if(draft.rules)rules=validateRules(draft.rules);if(draft.batches)batches=validateBatches(draft.batches);draftHistory=draft.history||[];}else if(draft?.schemaVersion===1&&draft.config){validateConfig(draft.config);recoveryDraft=draft;}}catch{}
 try{
- const content=await contentDraft();
+ const content=await contentDraft();if(recoveryDraft&&content?.baseRevision===recoveryDraft.baseRevision)recoveryContent=content;
  if(content?.baseRevision===base.revision){uploads=content.uploads||[];wordEdits=new Map(content.wordEdits||[]);for(const upload of uploads){const meta=assets.assets.find(row=>row.path===upload.path);objectURLs.set(upload.path,URL.createObjectURL(new Blob([upload.bytes],{type:`image/${meta?.type==='jpg'?'jpeg':meta?.type||'png'}`})));}syncWords();}
  const known=new Set([...baseAssets.assets.map(row=>row.path),...uploads.map(row=>row.path)]);
  assets.assets=assets.assets.filter(row=>known.has(row.path));
@@ -53,8 +55,8 @@ try{
 }catch{assets=clone(baseAssets);}
 config.effects||=clone(DEFAULT_EFFECTS);config.scoring||=clone(DEFAULT_SCORING);
 for(const [id,rule]of Object.entries(initialRules.rules))if(rule.poolDefault){rules.rules[id]||=clone(rule);for(const row of Object.values(rules.assignments))if(row.families.includes(rule.category)&&rules.rules[row.primary].category!==rule.category&&!row.additional.includes(id))row.additional.push(id);}
-async function persistContent(){await contentDraft({baseRevision:base.revision,uploads,wordEdits:[...wordEdits]});stash();}
-function stash(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({schemaVersion:1,baseRevision:base.revision,config,assets,rules,batches,history:draftHistory.slice(-12)}));}catch{toast('Przeglądarka nie zapisała szkicu. Pobierz JSON przed zamknięciem.');}}
+async function persistContent(){if(recoveryDraft)return;await contentDraft({baseRevision:base.revision,uploads,wordEdits:[...wordEdits]});stash();}
+function stash(){if(recoveryDraft)return;try{localStorage.setItem(DRAFT_KEY,JSON.stringify({schemaVersion:1,baseRevision:base.revision,config,assets,rules,batches,baseState:{config:base,assets:baseAssets,rules:baseRules,batches:baseBatches},history:draftHistory.slice(-3)}));}catch{toast('Przeglądarka nie zapisała szkicu. Pobierz JSON przed zamknięciem.');}}
 let toastTimer;
 function toast(message){const element=document.getElementById('toast');element.textContent=message;element.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>element.classList.remove('visible'),4500);}
 function snapshot(){return {config:clone(config),assets:clone(assets),rules:clone(rules),batches:clone(batches),uploads:[...uploads],wordEdits:clone([...wordEdits])};}
@@ -88,7 +90,7 @@ const play=new StudioPlay({workspace,getDesign:()=>({config,assets,rules,preview
 function changeBatch(fn){const next=clone(batches);fn(next);validateBatches(next);checkpoint();batches=next;stash();header();}
 function downloadText(value,name){const url=URL.createObjectURL(new Blob([value],{type:'text/plain;charset=utf-8'}));Object.assign(document.createElement('a'),{href:url,download:name}).click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 const builder=new StudioBuilder({workspace,registry,getDesign:()=>({config}),getBase:()=>base,notice:toast,applyRecipe:(id,recipe)=>{const next=clone(config);next.recipes||=clone(DEFAULT_RECIPES);next.recipes[id]=recipe;validateConfig(next);checkpoint();config=next;sendDesign();},saveBlueprint:value=>{const next=clone(config);next.blueprints||=[];const index=next.blueprints.findIndex(b=>b.id===value.id);if(index<0)next.blueprints.push(value);else next.blueprints[index]=value;validateConfig(next);checkpoint();config=next;sendDesign();}});
-const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),
+const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),checkDeployment:async()=>git.deploymentStatus(savedCommit?.sha||git.head),
  changeProject:(fn,key='')=>{const next=clone(config);next.project||=emptyProject();const result=fn(next.project);if(result?.schemaVersion===1)next.project=result;validateConfig(next);if(!diff(config,next).length)return;if(!key||lastToken!==key)checkpoint();lastToken=key;config=next;sendDesign();},
  applyDraftDesign:design=>{const next={...clone(config),...designFields(design)};validateConfig(next);checkpoint();config=next;sendDesign();}
 });
@@ -146,7 +148,7 @@ docs.batches=['Nowe słowa · batchy','<p>256 propozycji w 13 grupach pozwala os
 docs.builder=['Builder i przepisy','<p>Buduj element na sucho z płótna, podkładów, sekcji, przycisków i atomów. Dotknij warstwy w drzewie lub podglądzie. Zmieniaj wymiary, padding i odstępy, stan oraz widoczność z zachowaniem miejsca lub z przesunięciem elementów.</p><p>Próbka ma własne Cofnij/Ponów. Zapisz nazwaną próbkę w bibliotece, aby wracać do niej i zachować ją w commicie. Próbka jest projektem i nie zastępuje automatycznie widoku gry.</p><p>Globalne przepisy kontrolują tytuły, podtytuły, numer + tekst, nagłówki, wyróżniki, podpowiedzi i etykiety. Zastosuj przepis, a potem otwórz powiązany widok. Przepis ma pierwszeństwo dla typografii atomu. Przywróć styl komponentów lub Cofnij oddaje poprzedni wygląd.</p><p>Na telefonie: Warstwy → Podgląd → Ustawienia. Podgląd dopasowuje się do dostępnego miejsca.</p>'];
 
 function renderDocs(){const [title,content]=docs[docSection];workspace.innerHTML=`<div class="content-page"><div class="page-intro"><div><h2>Dokumentacja Małej Nauki</h2><p>Zasady dla edycji, przyszłych ekranów i generowania mockupów.</p></div><a class="quiet-button" href="https://github.com/${REPOSITORY}/tree/${BRANCH}/docs/design-system" target="_blank" rel="noopener">Pełna dokumentacja na GitHub ↗</a></div><div class="docs-layout"><nav class="docs-nav" aria-label="Dokumentacja">${Object.entries(docs).map(([id,[label]])=>`<a href="#${id}" data-doc="${id}">${label}</a>`).join('')}</nav><article class="panel doc-body"><h2>${title}</h2>${content}</article></div></div>`;}
-function renderVersions(){workspace.innerHTML=`<div class="content-page"><div class="page-intro"><div><h2>Twoja wersja i szkic</h2><p>Zapisany kontrakt: rewizja ${base.revision}. Szkic: ${changes().length} zmian wyglądu, ${assetChanges().length} zmian grafik i ${ruleChanges().length} zmian zasad.</p></div><button class="quiet-button" id="refresh-git">Wczytaj i scal z GitHub</button></div><section class="panel"><h3>Zmiany w szkicu</h3><div class="change-list">${changes().length+stagedCount()?`<ul>${reviewRows(changes(),registry,config,rules)+reviewRows(ruleChanges(),registry,config,rules,'rules')+reviewRows(assetChanges(),registry,config,rules,'assets')+reviewRows(diff(baseBatches,batches),registry,config,rules,'batches')}</ul>`:'<p style="color:#8392ab">Brak niezapisanych zmian.</p>'}</div><div class="modal-actions"><button class="quiet-button" id="undo-change" ${undo.length?'':'disabled'}>Cofnij</button><button class="quiet-button" id="redo-change" ${redo.length?'':'disabled'}>Ponów</button><button class="quiet-button" id="discard-draft" ${changes().length+stagedCount()?'':'disabled'}>Odrzuć cały szkic</button><button class="quiet-button" id="export-design">Pobierz JSON</button><button class="quiet-button" id="import-design">Importuj JSON</button></div></section><section class="panel"><h3>Zapisane szkice tej przeglądarki</h3><div class="version-list">${draftHistory.length?draftHistory.map((row,index)=>`<div class="version-row"><strong>${escape(row.label)}</strong><small>${new Date(row.date).toLocaleString('pl-PL')}</small><button class="small-button" data-restore-draft="${index}">Przywróć</button></div>`).join(''):'<p style="color:#8392ab;font-size:12px">Historia pojawi się po zapisaniu commitu.</p>'}</div></section><section class="panel"><h3>Historia Git</h3><a class="small-button" href="https://github.com/${REPOSITORY}/commits/${BRANCH}" target="_blank" rel="noopener">Otwórz commity ↗</a>${savedCommit?`<p style="margin-top:15px;font-size:12px"><a href="${savedCommit.url}" target="_blank" rel="noopener">Ostatni commit: ${savedCommit.sha.slice(0,7)}</a></p>`:''}</section></div>`;}
+function renderVersions(){workspace.innerHTML=`<div class="content-page"><div class="page-intro"><div><h2>Twoja wersja i szkic</h2><p>Zapisany kontrakt: rewizja ${base.revision}. Szkic: ${changes().length} zmian wyglądu, ${assetChanges().length} zmian grafik i ${ruleChanges().length} zmian zasad.</p></div><button class="quiet-button" id="refresh-git">Wczytaj i scal z GitHub</button></div><section class="panel"><h3>Zmiany w szkicu</h3><div class="change-list">${changes().length+stagedCount()?`<ul>${reviewRows(changes(),registry,config,rules)+reviewRows(ruleChanges(),registry,config,rules,'rules')+reviewRows(assetChanges(),registry,config,rules,'assets')+reviewRows(diff(baseBatches,batches),registry,config,rules,'batches')}</ul>`:'<p style="color:#8392ab">Brak niezapisanych zmian.</p>'}</div><div class="modal-actions"><button class="quiet-button" id="undo-change" ${undo.length?'':'disabled'}>Cofnij</button><button class="quiet-button" id="redo-change" ${redo.length?'':'disabled'}>Ponów</button><button class="quiet-button" id="discard-draft" ${changes().length+stagedCount()?'':'disabled'}>Odrzuć cały szkic</button><button class="quiet-button" id="export-design">Pobierz JSON</button><button class="quiet-button" id="import-design">Importuj JSON</button></div></section><section class="panel"><h3>Zapisane szkice tej przeglądarki</h3>${localStorage.getItem(RECOVERY_KEY)?'<button class=quiet-button id=recover-browser-draft>Odzyskaj wcześniejszy szkic</button>':''}<div class="version-list">${draftHistory.length?draftHistory.map((row,index)=>`<div class="version-row"><strong>${escape(row.label)}</strong><small>${new Date(row.date).toLocaleString('pl-PL')}</small><button class="small-button" data-restore-draft="${index}">Przywróć</button></div>`).join(''):'<p style="color:#8392ab;font-size:12px">Historia pojawi się po zapisaniu commitu.</p>'}</div></section><section class="panel"><h3>Historia Git</h3><a class="small-button" href="https://github.com/${REPOSITORY}/commits/${BRANCH}" target="_blank" rel="noopener">Otwórz commity ↗</a>${savedCommit?`<p style="margin-top:15px;font-size:12px"><a href="${savedCommit.url}" target="_blank" rel="noopener">Ostatni commit: ${savedCommit.sha.slice(0,7)}</a></p>`:''}</section></div>`;}
 function render(){({project:()=>projectStudio.render(),components:renderComponents,colors:renderColors,fonts:renderFonts,assets:renderAssets,batches:()=>batchStudio.render(),builder:()=>builder.render(),motion:()=>motion.render(),effects:()=>play.render(),scoring:()=>play.renderScoring(),views:renderViews,audit:renderAudit,docs:renderDocs,versions:renderVersions}[page]||renderComponents)();}
 workspace.addEventListener('change',event=>{
  const target=event.target;
@@ -171,6 +173,7 @@ workspace.addEventListener('click',async event=>{
  if(button.dataset.doc){event.preventDefault();docSection=button.dataset.doc;renderDocs();}
  if(button.id==='undo-change')await undoChange();
  if(button.id==='redo-change')await redoChange();
+ if(button.id==='recover-browser-draft'){recoveryDraft=JSON.parse(localStorage.getItem(RECOVERY_KEY)||'null');recoveryContent=await contentDraft(undefined,'recovery');openDraftRecovery();}
  if(button.id==='export-design')downloadJSON(config,'mala-nauka-design-system.json');
  if(button.id==='import-design'){const input=Object.assign(document.createElement('input'),{type:'file',accept:'.json,application/json'});input.onchange=async()=>{try{const value=validateConfig(JSON.parse(await input.files[0].text()));checkpoint();config=value;sendDesign();render();toast('Kontrakt wczytany do szkicu.');}catch(error){toast(error.message);}};input.click();}
  if(button.id==='discard-draft'){checkpoint();await restoreSnapshot({config:base,assets:baseAssets,rules:baseRules,batches:baseBatches,uploads:[],wordEdits:[]});toast('Przywrócono zapisany wygląd i bazę. Możesz cofnąć tę czynność.');}
@@ -223,7 +226,32 @@ function openInventory(){showDialog(`<h2>Rejestr assetów</h2><p>${assets.assets
 window.addEventListener('beforeunload',event=>{if(uploads.length||wordEdits.size){event.preventDefault();event.returnValue='';}});
 const barObserver=new ResizeObserver(entries=>document.documentElement.style.setProperty('--studio-bar-height',entries[0].target.getBoundingClientRect().height+'px'));barObserver.observe(document.querySelector('.studio-topbar'));
 sendDesign();render();
-const feedbackHash=new URLSearchParams(location.hash.slice(1)).get('feedback');if(feedbackHash){projectStudio.importDialog('feedback');modal.querySelector('#project-import-value').value=location.href;}
+if(recoveryDraft)openDraftRecovery();
+const feedbackHash=new URLSearchParams(location.hash.slice(1)).get('feedback');if(feedbackHash&&!recoveryDraft){projectStudio.importDialog('feedback');modal.querySelector('#project-import-value').value=location.href;}
+
+async function openDraftRecovery(){
+ if(!recoveryDraft)return;
+ const draft=recoveryDraft;
+ try{localStorage.setItem(RECOVERY_KEY,JSON.stringify(draft));if(recoveryContent)await contentDraft(recoveryContent,'recovery');}catch{toast('Starszy szkic nadal jest zachowany. Pobierz go przed kontynuacją.');}
+ modal.oncancel=e=>{if(recoveryDraft)e.preventDefault();};
+ showDialog(`<h2>Odzyskaj starszy szkic</h2><p>Preview ma rewizję ${base.revision}, a Twój szkic powstał na rewizji ${draft.baseRevision}. Zmiany pozostają zachowane do sprawdzenia.</p><p>${draft.baseState?'Porównamy trzy wersje. Konflikty rozstrzygniesz przed połączeniem.':'Ten starszy szkic nie ma zapisanej podstawy porównania. Możesz odzyskać jego projekt; pełne ustawienia są dostępne w kopii do pobrania.'}</p><p id=recovery-error class=modal-error role=alert></p><div class=modal-actions><button class=quiet-button id=recovery-export>Pobierz starszy szkic</button><button class=quiet-button id=recovery-current>Użyj bieżącej wersji</button><button class=solid-button id=recovery-restore>Przejrzyj i odzyskaj</button></div>`);
+ modal.querySelector('#recovery-export').onclick=()=>downloadJSON(draft,'mala-nauka-odzyskany-szkic.json');
+ modal.querySelector('#recovery-current').onclick=async()=>{recoveryDraft=null;recoveryContent=null;modal.close();await persistContent();render();};
+ modal.querySelector('#recovery-restore').onclick=async()=>{
+  try{
+   const remote={config:base,assets:baseAssets,rules:baseRules,batches:baseBatches},recovery=draftRecovery(draft,remote);
+   let restored;
+   if(recovery.kind==='merge')restored=recovery.plan.conflicts.length?await reviewConflicts({plan:recovery.plan,registry,config,rules,modal,dialog:showDialog,picture:assetUrl}):resolveStudioMerge(recovery.plan);
+   else if(recovery.kind==='current')restored={config:draft.config,assets:draft.assets||assets,rules:draft.rules||rules,batches:draft.batches||batches};
+   else {if(!draft.config.project)throw Error('Ten starszy szkic nie ma projektu. Pobierz jego kopię i użyj importu ustawień.');restored={...remote,config:{...clone(base),project:clone(draft.config.project)}};}
+   const packs=[];for(const edit of recovery.kind==='legacy'?[]:recoveryContent?.wordEdits||[]){const response=await fetch(new URL('../'+edit[1].path,import.meta.url));if(!response.ok)throw Error('Nie udało się porównać bazy słów. Szkic pozostaje zachowany.');const latest=await response.json();packs.push([edit[0],{...edit[1],baseValue:latest,value:mergeWordPack(edit[1].baseValue,edit[1].value,latest)}]);}
+   const recoveredUploads=recovery.kind==='legacy'?[]:recoveryContent?.uploads||[];
+   validateConfig(restored.config);checkpoint();Object.assign(restored.config,{revision:base.revision});config=restored.config;assets=restored.assets;rules=restored.rules;batches=restored.batches;uploads=recoveredUploads;wordEdits=new Map(packs);syncWords();
+   for(const u of uploads){const meta=assets.assets.find(a=>a.path===u.path);if(meta)objectURLs.set(u.path,URL.createObjectURL(new Blob([u.bytes],{type:'image/'+(meta.type==='jpg'?'jpeg':meta.type)})));}
+   recoveryDraft=null;recoveryContent=null;modal.close();await persistContent();sendDesign();render();toast('Szkic odzyskany. Bieżące zmiany zostały porównane.');
+  }catch(error){if(modal.querySelector('#recovery-error'))modal.querySelector('#recovery-error').textContent=error.message;else{toast(error.message);await openDraftRecovery();}}
+ };
+}
 
 document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'&&!event.target.closest('input,textarea,select,[contenteditable=true]')&&!modal.open){event.preventDefault();void(event.shiftKey?redoChange():undoChange());}});
 

@@ -106,6 +106,7 @@ export class StudioProject{
     if(b.id==='project-export')this.download(this.project,'mala-nauka-projekt.json');
     if(b.id==='project-import')this.importDialog('project');
     if(b.id==='project-import-feedback')this.importDialog('feedback');
+    if(b.id==='project-check-deployment'){const output=this.workspace.querySelector('#project-deployment-status');output.textContent='Odczytuję status GitHub…';try{const result=await this.checkDeployment();output.dataset.state=result.state;output.innerHTML=html(({success:'Wdrożenie gotowe',pending:'Wdrożenie w toku',failure:'Wdrożenie nie powiodło się',error:'Błąd wdrożenia',unknown:'Status niedostępny'})[result.state]||'Status niedostępny')+' · '+result.sha.slice(0,7)+' · '+html(result.description)+` <a href="${html(result.url)}" target=_blank rel=noopener>Sprawdź commit ↗</a>`;}catch(error){output.textContent=error.message;}}
     if(b.id==='project-save-git')document.getElementById('save-git').click();
   }
   async change(event){

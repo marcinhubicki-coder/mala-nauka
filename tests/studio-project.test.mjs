@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {DISCOVERY_RULES,discoveryState,applyDiscoveryEvent,fixtureEvents,replayDiscovery,discoverySummary} from '../shared/discovery-model.mjs';
 import {discoveryProject,newScreen,newElement,planSchedule,projectIssues,makeRelease,approveRelease,publishRelease,projectContract,editableProjectConfig,validateProject,validateScreen,fingerprint,triggerTarget,projectTriggers} from '../design-system/project-model.mjs';
+import {draftRecovery} from '../design-system/draft-recovery.mjs';
+import {resolveStudioMerge} from '../design-system/merge-model.mjs';
+import {GitClient} from '../design-system/git-client.mjs';
 import {validateConfig} from '../design-system/model.mjs';
 import {encodeShare,decodeShare,previewLink,validateEnvelope,validateFeedback} from '../design-system/project-share.mjs';
 const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
@@ -85,4 +88,22 @@ test('editable event routes preserve legacy previews and prioritize memory over 
 test('unknown catalog assets prevent release even if their path is syntactically valid',()=>{
  const p=discoveryProject();p.screens[0].asset='assets/not-in-catalog.png';
  assert.throws(()=>makeRelease(p,config,'Próba',{assets:[],aliases:{}}));
+});
+
+
+test('stale drafts merge unrelated changes and keep conflicts for explicit resolution',async()=>{
+ const state={config:structuredClone(config),assets:JSON.parse(await readFile(new URL('../design-system/assets.json',import.meta.url))),rules:JSON.parse(await readFile(new URL('../design-system/rules.json',import.meta.url))),batches:JSON.parse(await readFile(new URL('../design-system/word-batches.json',import.meta.url)))};
+ const draft={schemaVersion:1,baseRevision:state.config.revision,...structuredClone(state),baseState:structuredClone(state)};
+ draft.config.project=discoveryProject();draft.config.tokens.jelly.height=65;
+ const remote=structuredClone(state);remote.config.revision++;remote.config.tokens.layout.sidePadding=16;
+ const recovered=draftRecovery(draft,remote);assert.equal(recovered.kind,'merge');assert.equal(recovered.plan.conflicts.length,0);
+ const merged=resolveStudioMerge(recovered.plan);assert.equal(merged.config.tokens.jelly.height,65);assert.equal(merged.config.tokens.layout.sidePadding,16);assert.ok(merged.config.project);
+ remote.config.tokens.jelly.height=70;const conflict=draftRecovery(draft,remote);assert.equal(conflict.plan.conflicts.length,1);assert.throws(()=>resolveStudioMerge(conflict.plan));
+ assert.equal(draft.config.tokens.jelly.height,65);delete draft.baseState;assert.equal(draftRecovery(draft,remote).kind,'legacy');
+});
+
+test('deployment indicator uses the Vercel commit status and exposes unavailable data honestly',async()=>{
+ let requested='';const client=new GitClient(async url=>{requested=url;return {ok:true,json:async()=>({statuses:[{context:'Vercel',state:'pending',description:'Building preview'}]})};});
+ const result=await client.deploymentStatus('a'.repeat(40));assert.match(requested,/commits\/a{40}\/status$/);assert.equal(result.state,'pending');
+ const missing=new GitClient(async()=>({ok:true,json:async()=>({statuses:[]})}));assert.equal((await missing.deploymentStatus('b'.repeat(40))).state,'unknown');await assert.rejects(()=>client.deploymentStatus('bad'));
 });

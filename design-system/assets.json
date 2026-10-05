@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 4,
+  "revision": 5,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -6926,6 +6926,50 @@
         "assets/scenes/generated-batch-v26.json",
         "spelling/scenes.mjs"
       ]
+    },
+    {
+      "path": "assets/managed/9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903.jpg",
+      "sha": "9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903",
+      "id": "9b8c71a90ebced01",
+      "size": 590364,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66.jpg",
+      "sha": "cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66",
+      "id": "cb8464fad9cd12b5",
+      "size": 624840,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
+      "sha": "dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f",
+      "id": "dfb2b8ba57b0ee56",
+      "size": 619901,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854.jpg",
+      "sha": "c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854",
+      "id": "c8a807f7c1ec612e",
+      "size": 696968,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
     }
   ],
   "aliases": {

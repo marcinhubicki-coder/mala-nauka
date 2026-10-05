@@ -1,5 +1,6 @@
 import {html,number,savedMarker} from './preview-model.mjs';
-import {DEFAULT_MOTION,animateScreen,PlaybackClock} from '../shared/screen-motion.mjs';
+import {DEFAULT_MOTION,animateScreen,PlaybackClock,transitionMotion} from '../shared/screen-motion.mjs';
+import {motionEdges,pairKey} from '../shared/flow-model.mjs';
 
 export class StudioMotion {
   constructor(options){
@@ -11,18 +12,20 @@ export class StudioMotion {
     window.addEventListener('message',event=>this.receive(event));
   }
   get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace:not(.effect-workspace)'));}
-  get motion(){return this.getDesign().config.motion||DEFAULT_MOTION;}
-  get saved(){return this.getBase().motion||DEFAULT_MOTION;}
+  get motion(){return transitionMotion(this.getDesign().config.motion,this.from,this.to);}
+  get saved(){return transitionMotion(this.getBase().motion,this.from,this.to);}
+  get edges(){return motionEdges(this.registry);}
+  pairEdit(key,value){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
   frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}
   url(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});return url.href;}
-  select(id,value){return `<select id=${id}>${this.registry.views.map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}
+  select(id,value){const allowed=new Set(this.edges.filter(e=>id==='motion-from'||e.from===this.from).map(e=>id==='motion-from'?e.from:e.to));return `<select id=${id}>${this.registry.views.filter(v=>allowed.has(v.id)).map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}
   control(key,label,min,max,unit){
     return `<div class=control data-motion-control=${key}><div class=control-top><label for=motion-${key}>${label}</label><span class=control-value><input type=number aria-label='${label}' data-motion-value=${key} value=${this.motion[key]} min=${min} max=${max} step=${key==='duration'?20:1}><span>${unit}</span></span></div><div class=range-wrap><input id=motion-${key} type=range aria-label='${label}' data-motion-value=${key} min=${min} max=${max} step=${key==='duration'?20:1} value=${this.motion[key]}><span class=saved-mark style='--saved-position:${savedMarker(this.saved[key],min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(this.saved[key])} ${unit}</strong></span><button data-motion-reset=${key}>Przywróć</button></div></div>`;
   }
   render(){
     this.stop();this.ready.clear();this.waiters.clear();this.current=this.from;
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.workspace.innerHTML=`<div class=motion-workspace><section class=motion-preview><div class=page-intro><div><h2>Przejścia między ekranami</h2><p>Odtwórz przejście na prawdziwych ekranach aplikacji. Pętla i przerwa służą do spokojnego oglądania.</p></div></div><div class=motion-route><label>Ekran początkowy${this.select('motion-from',this.from)}</label><span aria-hidden=true>→</span><label>Ekran następny${this.select('motion-to',this.to)}</label></div><div class=motion-shortcuts>${[['home','spelling-settings','Start → Ortografia'],['spelling-settings','spelling-initial','Ustawienia → Gra'],['spelling-initial','spelling-wrong','Gra → Błąd'],['progress','trophies','Wyniki → Puchary']].map(([from,to,label])=>`<button class=small-button data-motion-pair='${from},${to}'>${label}</button>`).join('')}</div><div class=motion-playbar><button class=solid-button id=motion-play>▶ Odtwórz przejście</button><label><input type=checkbox id=motion-loop ${this.loop?'checked':''}>Pętla</label><label>Przerwa między ekranami<input type=number id=motion-delay min=300 max=10000 step=100 value=${this.delay}>ms</label></div>${reduced?'<p class=warning-panel>Przeglądarka ma włączone ograniczanie ruchu. Zobaczysz zmianę ekranu bez animacji.</p>':''}<p class=motion-status id=motion-status role=status>Wczytywanie dwóch ekranów…</p><div class=motion-stage><div class=motion-phone><div class=phone-inner id=motion-screen-stack></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · iPhone 13 Pro</span></div></div><div class=motion-manual><button class=small-button id=motion-first>Pokaż pierwszy ekran</button><button class=small-button id=motion-second>Pokaż następny ekran</button></div></section><aside class=inspector><span class=inspector-kicker>Wspólna animacja ekranów</span><h2>Jak zmienia się ekran?</h2><p class=description>Zapisane ustawienia dotyczą przejść ekranów w aplikacji. Ruch przełącznika jelly ma osobne ustawienia w Komponentach.</p><label class=form-field><span>Styl przejścia</span><select id=motion-style><option value=none ${this.motion.style==='none'?'selected':''}>Bez animacji</option><option value=fade ${this.motion.style==='fade'?'selected':''}>Łagodne pojawienie</option><option value=slide ${this.motion.style==='slide'?'selected':''}>Przesunięcie z prawej</option></select></label>${this.control('duration','Czas przejścia',0,2000,'ms')}${this.control('distance','Odległość przesunięcia',0,120,'px')}<label class=form-field><span>Tempo ruchu</span><select id=motion-easing>${[['ease','Łagodne'],['ease-out','Zwalnia na końcu'],['ease-in-out','Łagodny początek i koniec'],['linear','Stała prędkość']].map(([id,label])=>`<option value=${id} ${this.motion.easing===id?'selected':''}>${label}</option>`).join('')}</select></label><p class=scope-help>Pętla, przerwa i wybrane przykłady pozostają ustawieniami podglądu.</p><button class=small-button id=motion-reset-all>Przywróć zapisane przejście</button></aside></div>`;
+    this.workspace.innerHTML=`<div class=motion-workspace><section class=motion-preview><div class=page-intro><div><h2>Przejścia między ekranami</h2><p>Odtwórz przejście na prawdziwych ekranach aplikacji. Pętla i przerwa służą do spokojnego oglądania.</p></div></div><div class=motion-route><label>Ekran początkowy${this.select('motion-from',this.from)}</label><span aria-hidden=true>→</span><label>Ekran następny${this.select('motion-to',this.to)}</label></div><div class=motion-shortcuts>${[['home','spelling-settings','Start → Ortografia'],['spelling-settings','spelling-initial','Ustawienia → Gra'],['home','progress','Start → Moje wyniki'],['progress','trophies','Wyniki → Puchary']].map(([from,to,label])=>`<button class=small-button data-motion-pair='${from},${to}'>${label}</button>`).join('')}</div><div class=motion-playbar><button class=solid-button id=motion-play>▶ Odtwórz przejście</button><label><input type=checkbox id=motion-loop ${this.loop?'checked':''}>Pętla</label><label>Przerwa między ekranami<input type=number id=motion-delay min=300 max=10000 step=100 value=${this.delay}>ms</label></div>${reduced?'<p class=warning-panel>Przeglądarka ma włączone ograniczanie ruchu. Zobaczysz zmianę ekranu bez animacji.</p>':''}<p class=motion-status id=motion-status role=status>Wczytywanie dwóch ekranów…</p><div class=motion-stage><div class=motion-phone><div class=phone-inner id=motion-screen-stack></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · iPhone 13 Pro</span></div></div><div class=motion-manual><button class=small-button id=motion-first>Pokaż pierwszy ekran</button><button class=small-button id=motion-second>Pokaż następny ekran</button></div></section><aside class=inspector><span class=inspector-kicker>Tylko wybrane połączenie</span><h2>Jak zmienia się ekran?</h2>${this.edges.some(e=>e.from===this.to&&e.to===this.from)?`<label class=play-check><input type=checkbox id=motion-inherit-reverse ${this.getDesign().config.motion?.transitions?.[pairKey(this.from,this.to)]?.inheritReverse?'checked':''}>Dziedzicz z drugiego kierunku</label><button class=small-button id=motion-reverse>Edytuj powrót ↶</button>`:''}<p class=description>Każda para z flow ma własne ustawienia. Lista celów pokazuje wyłącznie istniejące połączenia. Ruch przełącznika jelly ma osobne ustawienia w Komponentach.</p><label class=form-field><span>Styl przejścia</span><select id=motion-style><option value=none ${this.motion.style==='none'?'selected':''}>Bez animacji</option><option value=fade ${this.motion.style==='fade'?'selected':''}>Łagodne pojawienie</option><option value=slide ${this.motion.style==='slide'?'selected':''}>Przesunięcie z prawej</option></select></label>${this.control('duration','Czas przejścia',0,2000,'ms')}${this.control('distance','Odległość przesunięcia',0,120,'px')}<label class=form-field><span>Tempo ruchu</span><select id=motion-easing>${[['ease','Łagodne'],['ease-out','Zwalnia na końcu'],['ease-in-out','Łagodny początek i koniec'],['linear','Stała prędkość']].map(([id,label])=>`<option value=${id} ${this.motion.easing===id?'selected':''}>${label}</option>`).join('')}</select></label><p class=scope-help>Pętla, przerwa i wybrane przykłady pozostają ustawieniami podglądu.</p><button class=small-button id=motion-reset-all>Przywróć zapisane przejście</button></aside></div>`;
     this.syncFrames();this.updateIndicators();
     this.resizeObserver?.disconnect();this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(this.workspace.querySelector('.motion-stage'));this.resize();
   }
@@ -61,7 +64,7 @@ export class StudioMotion {
     const frame=this.frames().find(frame=>frame.dataset.motionView===id);if(!frame)return;
     for(const other of this.frames()){const active=other===frame;other.classList.toggle('active',active);other.setAttribute('aria-hidden',String(!active));other.tabIndex=active?0:-1;}
     this.updateStatus();
-    if(animated){this.animation=animateScreen(frame,this.motion);try{await this.animation?.finished;}catch{}}
+    if(animated){this.animation=animateScreen(frame,transitionMotion(this.getDesign().config.motion,id===this.to?this.from:this.to,id));try{await this.animation?.finished;}catch{}}
   }
   async play(){
     if(this.playing)return;
@@ -90,25 +93,27 @@ export class StudioMotion {
     if(event.data.type==='ready'){this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:false,highlight:false});}
     if(event.data.type==='inventory'&&(event.data.rendered||event.data.items?.some(item=>item.index>=0&&item.visible))){const id=frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}
   }
-  choosePair(from,to){this.stop();this.from=from;this.to=to;this.current=from;this.workspace.querySelector('#motion-from').value=from;this.workspace.querySelector('#motion-to').value=to;this.syncFrames();}
+  choosePair(from,to){this.stop();this.from=from;this.to=this.edges.some(e=>e.from===from&&e.to===to)?to:this.edges.find(e=>e.from===from)?.to;this.render();}
   click(event){
     if(!this.isOpen)return;const button=event.target.closest('button');if(!button)return;
     if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
     if(button.id==='motion-first'||button.id==='motion-second'){this.stop();void this.show(button.id==='motion-first'?this.from:this.to,false);}
     if(button.dataset.motionPair)this.choosePair(...button.dataset.motionPair.split(','));
-    if(button.dataset.motionReset)this.edit('motion.'+button.dataset.motionReset,this.saved[button.dataset.motionReset]);
-    if(button.id==='motion-reset-all'){this.edit('motion',{...this.saved});this.endEdit?.();}
+    if(button.dataset.motionReset)this.pairEdit(button.dataset.motionReset,this.saved[button.dataset.motionReset]);
+    if(button.id==='motion-reset-all'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.saved});this.endEdit?.();}
+    if(button.id==='motion-reverse')this.choosePair(this.to,this.from);
   }
   change(event){
     if(!this.isOpen)return;const target=event.target;
     if(target.id==='motion-from'||target.id==='motion-to')this.choosePair(this.workspace.querySelector('#motion-from').value,this.workspace.querySelector('#motion-to').value);
     if(target.id==='motion-loop')this.loop=target.checked;
     if(target.id==='motion-delay'){this.delay=Math.min(10000,Math.max(300,Number(target.value)||1400));target.value=this.delay;}
-    if(target.id==='motion-style'||target.id==='motion-easing'){this.edit(target.id==='motion-style'?'motion.style':'motion.easing',target.value);this.endEdit?.();}
+    if(target.id==='motion-inherit-reverse'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,target.checked?{inheritReverse:true}:{...this.motion});this.render();}
+    if(target.id==='motion-style'||target.id==='motion-easing'){this.pairEdit(target.id==='motion-style'?'style':'easing',target.value);this.endEdit?.();}
   }
   input(event){
     if(!this.isOpen||!event.target.dataset.motionValue)return;
     const target=event.target,key=target.dataset.motionValue,value=Number(target.value);if(!Number.isFinite(value)||value<0||value>(key==='duration'?2000:120))return;
-    this.edit('motion.'+key,value);
+    this.pairEdit(key,value);
   }
 }

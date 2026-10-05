@@ -1,9 +1,11 @@
 import {html,number,componentName,effectiveValue,savedMarker,rangeFor,FIELD_LABELS,MODE_NAMES,STATE_NAMES,relatedViews,compareSelection} from './preview-model.mjs';
+import {CATEGORIES,componentCategories,VISUAL_FIELDS,ICONS,visualValue} from '../shared/element-system.mjs';
+import {dynamicRange} from './dynamic-range.mjs';
 
 export class StudioPreview {
   constructor(options) {
     Object.assign(this,options);
-    this.viewId='spelling-settings';this.componentId='jelly';this.scope='global';
+    this.viewId='spelling-settings';this.componentId='jelly';this.scope='view';this.metricBase=new Map();
     this.editingMode='view';this.compare=false;this.compareViews=[];
     this.picking=false;this.highlight=true;this.showAbsent=false;this.search='';this.zoom='fit';this.wide=false;
     this.inventories=new Map();this.selections=new Map();
@@ -43,9 +45,9 @@ export class StudioPreview {
   }
   renderToolbar(){
     if(!this.isOpen)return;
-    const common=['players','players-empty','home','player-create','player-pin','settings','progress','collection','trophies','categories','rules','sessions'];
-    const views=this.editingMode==='component'?relatedViews(this.registry,this.componentId):this.registry.views.filter(row=>row.mode===this.view.mode||common.includes(row.id));
-    this.workspace.querySelector('#preview-toolbar').innerHTML=`<div class=editing-path role=group aria-label='Sposób pracy'><button data-editing-mode=view class='${this.editingMode==='view'?'active':''}'>Według widoku</button><button data-editing-mode=component class='${this.editingMode==='component'?'active':''}'>Według elementu</button></div><div class=preview-toolbar><label>Tryb gry<select id=mode-select aria-label='Tryb gry'>${Object.entries(MODE_NAMES).map(([id,name])=>`<option value=${id} ${id===this.view.mode?'selected':''}>${name}</option>`).join('')}</select></label><label>${this.editingMode==='component'?'Gdzie występuje element':'Ekran i stan'}<select id=view-select aria-label='Widok i stan'>${views.map(row=>`<option value=${row.id} ${row.id===this.viewId?'selected':''}>${html(row.name)}</option>`).join('')}</select></label></div><div class=element-search><input id=component-search aria-label='Szukaj elementu' placeholder='Znajdź element po nazwie…' value='${html(this.search)}'>${this.editingMode==='view'?`<label><input type=checkbox id=show-absent ${this.showAbsent?'checked':''}>Pokaż pozostałe</label>`:''}</div>`;
+    const category=componentCategories(this.view);
+    const views=this.editingMode==='component'?relatedViews(this.registry,this.componentId):this.registry.views.filter(row=>componentCategories(row)===category&&(category!=='game'||row.mode===this.view.mode));
+    this.workspace.querySelector('#preview-toolbar').innerHTML=`<div class=editing-path role=group aria-label='Sposób pracy'><button data-editing-mode=view class='${this.editingMode==='view'?'active':''}'>Według widoku</button><button data-editing-mode=component class='${this.editingMode==='component'?'active':''}'>Według elementu</button></div><div class=preview-toolbar><label>Kategoria<select id=category-select aria-label='Kategoria ekranów'>${Object.entries(CATEGORIES).map(([id,name])=>`<option value=${id} ${id===category?'selected':''}>${name}</option>`).join('')}</select></label>${category==='game'?`<label>Tryb gry<select id=mode-select aria-label='Tryb gry'>${Object.entries(MODE_NAMES).map(([id,name])=>`<option value=${id} ${id===this.view.mode?'selected':''}>${name}</option>`).join('')}</select></label>`:''}<label>${this.editingMode==='component'?'Gdzie występuje element':'Ekran i stan'}<select id=view-select aria-label='Widok i stan'>${views.map(row=>`<option value=${row.id} ${row.id===this.viewId?'selected':''}>${html(row.name)}</option>`).join('')}</select></label></div><div class=element-search><input id=component-search aria-label='Szukaj elementu' placeholder='Znajdź element po nazwie…' value='${html(this.search)}'>${this.editingMode==='view'?`<label><input type=checkbox id=show-absent ${this.showAbsent?'checked':''}>Pokaż pozostałe</label>`:''}</div>`;
     this.workspace.querySelector('#preview-guide').textContent=this.editingMode==='view'?'Wybierz ekran, a potem element, który chcesz zmienić. Lista pokazuje to, co występuje w tym widoku.':'Wybierz element, a potem sprawdź jego użycie w kilku ekranach. Jedna zmiana może objąć wszystkie zaznaczone widoki.';
     this.workspace.querySelector('#preview-controls').innerHTML=`<div class=preview-subbar><div class=preview-switches><label><input type=checkbox id=highlight-selection ${this.highlight?'checked':''}>Pokaż wybrany element</label><label><input type=checkbox id=inspect-mode ${this.picking?'checked':''}>Wybierz kliknięciem</label></div><button class=small-button id=wide-preview>${this.wide?'Pokaż ustawienia':'Więcej miejsca na ekrany'}</button></div><div class=preview-options>${this.editingMode==='component'?`<label><input type=checkbox id=compare-views ${this.compare?'checked':''}>Porównaj widoki obok siebie</label>`:''}<label>Powiększenie<select id=preview-zoom ${this.compare?'disabled':''}><option value=fit ${this.zoom==='fit'?'selected':''}>Dopasuj telefon</option><option value=100 ${this.zoom==='100'?'selected':''}>100% — rzeczywisty rozmiar</option></select></label><button class=quiet-button id=reset-preview>Zresetuj stan podglądu</button><a class=preview-open href='${this.viewURL(this.view)}' target=_blank rel=noopener>Otwórz sam ekran ↗</a></div><div id=compare-choices></div>`;
     this.renderPills();this.renderCompareChoices();
@@ -86,7 +88,7 @@ export class StudioPreview {
   }
   prepare(frame){
     this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:this.picking,highlight:this.highlight});
-    this.send(frame,'focus',{component:this.componentId,reveal:false});
+    this.send(frame,'focus',{component:this.componentId,selector:this.pendingSelector,reveal:false});this.pendingSelector='';
   }
   focus(reveal=true){
     for(const frame of this.frames())this.send(frame,'focus',{component:this.componentId,reveal:reveal&&frame===this.activeFrame()});
@@ -113,8 +115,8 @@ export class StudioPreview {
   renderInspector(){
     const inspector=this.workspace.querySelector('#inspector');if(!inspector)return;
     const component=this.component,used=relatedViews(this.registry,component.id),group=component.tokenGroup;
-    inspector.innerHTML=`<div class=inspector-title><div><span class=inspector-kicker>Wybrany element</span><h2>${html(this.name())}</h2></div><button id=rename-component class=icon-button title='Zmień nazwę elementu' aria-label='Zmień nazwę elementu'>✎</button></div><p class=description>${html(component.description)}</p><div id=selected-element></div><label class=scope><span>Gdzie zastosować zmianę?</span><select id=scope-select><option value=global ${this.scope==='global'?'selected':''}>W każdym widoku z tym elementem</option><option value=view ${this.scope==='view'?'selected':''}>Tylko: ${html(this.view.name)}</option></select></label><p class=scope-help>${this.scope==='view'?'To będzie wyjątek dla tego ekranu. Pozostałe widoki zachowają wspólną wartość.':`Zmiana wspólna. Sprawdź ${used.length} powiązanych widoków poniżej.`}</p><div class=inspector-controls>${Object.keys(this.config.tokens[group]).filter(key=>typeof this.config.tokens[group][key]==='number').map(key=>this.control(group,key)).join('')}</div><button class=small-button id=reset-component>Przywróć zapisany wygląd elementu</button><details class=component-conditions><summary>Kiedy i jak działa?</summary><p>${(component.states||[]).map(state=>STATE_NAMES[state]||state).join(' · ')}</p><ul>${(component.conditions||[]).map(value=>`<li>${html(value)}</li>`).join('')}</ul></details><div id=preview-layers></div><div class=related-views><strong>Występuje w ${used.length} widokach</strong><button class=small-button id=start-compare>Porównaj użycia</button><div class=affected-links>${used.map(view=>`<button class=small-button data-open-view=${view.id}>${html(view.name)}</button>`).join('')}</div></div>`;
-    this.renderSelectionPanel();this.renderLayers();
+    inspector.innerHTML=`<div class=inspector-title><div><span class=inspector-kicker>Wybrany element</span><h2>${html(this.name())}</h2></div><button id=rename-component class=icon-button title='Zmień nazwę elementu' aria-label='Zmień nazwę elementu'>✎</button></div><p class=description>${html(component.description)}</p><div id=selected-element></div><label class=scope><span>Gdzie zastosować zmianę?</span><select id=scope-select><option value=global ${this.scope==='global'?'selected':''}>W każdym widoku z tym elementem</option><option value=view ${this.scope==='view'?'selected':''}>Tylko: ${html(this.view.name)}</option></select></label><p class=scope-help>${this.scope==='view'?'To będzie wyjątek dla tego ekranu. Pozostałe widoki zachowają wspólną wartość.':`Zmiana wspólna. Sprawdź ${used.length} powiązanych widoków poniżej.`}</p><div id=visual-editor></div><div class=inspector-controls>${group?`<details class=shared-recipe><summary>Przepis wspólny · ${html(this.name())}</summary><p>Wymiary rodziny elementów. Lokalne wyjątki mają pierwszeństwo.</p>${Object.keys(this.config.tokens[group]).filter(key=>typeof this.config.tokens[group][key]==='number').map(key=>this.control(group,key)).join('')}</details>`:''}</div><button class=small-button id=reset-component>Przywróć zapisany wygląd elementu</button><details class=component-conditions><summary>Kiedy i jak działa?</summary><p>${(component.states||[]).map(state=>STATE_NAMES[state]||state).join(' · ')}</p><ul>${(component.conditions||[]).map(value=>`<li>${html(value)}</li>`).join('')}</ul></details><div id=preview-layers></div><div class=related-views><strong>Występuje w ${used.length} widokach</strong><button class=small-button id=start-compare>Porównaj użycia</button><div class=affected-links>${used.map(view=>`<button class=small-button data-open-view=${view.id}>${html(view.name)}</button>`).join('')}</div></div>`;
+    this.renderSelectionPanel();this.renderLayers();this.renderVisual();
   }
   renderSelectionPanel(){
     const node=this.workspace.querySelector('#selected-element');if(!node)return;
@@ -129,6 +131,16 @@ export class StudioPreview {
     node.innerHTML=`<details class=preview-layers ${oldOpen?'open':''}><summary>Warstwy i widoczność ${hidden.length?'· ukryte: '+hidden.length:''}</summary><p>Zmiany są chwilowe, tylko w tym podglądzie. Nie trafią do zapisu na GitHub.</p>${selected?`<label>Wybrany element<select id=selected-visibility aria-label='Widoczność wybranego elementu'>${this.visibilityOptions(items.find(item=>item.id===selected.id)?.temporary)}</select></label><label><input id=hide-whole-family type=checkbox>Wszystkie elementy tej rodziny w ekranie</label>`:''}<div class=layer-list>${items.filter(item=>item.visible||item.temporary!=='visible').map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<div><button class=layer-name data-layer-select='${item.id}' title='Pokaż na ekranie'>${html(item.index===-1?'Cały ekran':this.name(component))}<small>${html(item.label)}</small></button><select data-layer-visibility='${item.id}' aria-label='Widoczność: ${html(item.label||this.name(component))}'>${this.visibilityOptions(item.temporary)}</select></div>`;}).join('')}</div><button class=small-button id=restore-layers ${hidden.length?'':'disabled'}>Pokaż wszystkie warstwy</button></details>`;
   }
   visibilityOptions(mode='visible'){return [['visible','Widoczny'],['hidden','Ukryj — zachowaj miejsce'],['removed','Ukryj — przesuń pozostałe']].map(([id,label])=>`<option value=${id} ${mode===id?'selected':''}>${label}</option>`).join('');}
+  savedVisual(key){const item=this.activeSelection();if(!item)return 0;return visualValue(this.getBase(),this.viewId,item)[key]??this.metricBase.get(this.viewId+':'+item.id)?.[key]??0;}
+  writeVisual(key,value){const item=this.activeSelection();if(!item)return;this.edit(this.scope==='global'?`elementStyles.${item.kind||'container'}.${key}`:`elementOverrides.${this.viewId}.${item.id}.${key}`,value===''?undefined:value);}
+  renderVisual(){
+    const node=this.workspace.querySelector('#visual-editor'),item=this.activeSelection();if(!node||!item||document.activeElement?.closest('#visual-editor'))return;
+    const baseKey=this.viewId+':'+item.id;if(!this.metricBase.has(baseKey))this.metricBase.set(baseKey,{...item.metrics});
+    const global=this.config.elementStyles?.[item.kind]||{},local=this.config.elementOverrides?.[this.viewId]?.[item.id]||{},style=visualValue(this.config,this.viewId,item);
+    const hex=value=>{if(/^#/.test(value||''))return value.slice(0,7);const rgb=(value||'').match(/\d+/g);return rgb&&rgb.length>=3?'#'+rgb.slice(0,3).map(v=>Number(v).toString(16).padStart(2,'0')).join(''):'#ffffff';};
+    const keys=item.kind==='text'?['fontSize','width','padding']:item.kind==='icon'?['width','height','padding']:['width','height','padding','gap','radius'];
+    node.innerHTML=`<section class=visual-properties><h3>Wygląd tego elementu</h3><p class=scope-help>${this.scope==='view'?'Zmiana tylko tutaj.':'Wspólny przepis: '+html(item.kind||'kontener')}. <span class=source-badge>${Object.keys(local).length?'Ma wyjątki lokalne':'Dziedziczy wspólny wygląd'}</span></p>${keys.map(key=>{const [min,hard,label]=VISUAL_FIELDS[key],saved=Math.min(hard,Math.max(min,this.savedVisual(key))),value=Math.min(hard,Math.max(min,style[key]??this.metricBase.get(baseKey)[key]??0)),[a,b]=dynamicRange(value,saved,min,key==='width'?390:key==='height'?200:key==='fontSize'?48:hard,hard);return `<div class=control><div class=control-top><label>${label}</label><span class=control-value><input type=number aria-label='Element · ${label}' data-visual-number=${key} min=${min} max=${hard} value=${value.toFixed(1)} step=.5></span></div><div class=range-wrap><input type=range aria-label='Element · ${label}' data-visual-number=${key} min=${a} max=${b} step=.5 value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,a,b)/100}'></span></div><div class=saved-value><span>Zapisane: ${number(saved)} · <b>${Object.hasOwn(local,key)?'Lokalne':Object.hasOwn(global,key)?'Globalne':'Styl komponentu'}</b></span><button data-visual-reset=${key}>Dziedzicz</button></div></div>`;}).join('')}<div class=visual-colors>${[['textColor','Kolor tekstu / ikony'],['background','Kolor tła']].map(([key,label])=>`<label>${label}<input type=color aria-label='${label}' data-visual-field=${key} value='${hex(style[key]||item.metrics[key])}'><small>${Object.hasOwn(local,key)?'Lokalne':'Dziedziczone'}</small></label>`).join('')}</div>${item.kind==='icon'?`<label class=form-field><span>Ikona</span><select data-visual-field=icon aria-label='Zamień ikonę'><option value=''>Obecna</option>${Object.entries(ICONS).map(([id,name])=>`<option value=${id} ${style.icon===id?'selected':''}>${name}</option>`).join('')}</select></label>`:''}${['image','background'].includes(item.kind)?`<label class=form-field><span>Grafika z bazy</span><select data-visual-field=asset aria-label='Grafika elementu'><option value=''>Obecna grafika</option>${(this.getDesign().assets?.assets||[]).filter(a=>/\.(webp|png|jpg|svg)$/.test(a.path)).map(a=>`<option value='${html(a.path)}' ${style.asset===a.path?'selected':''}>${html(a.path.replace('assets/',''))}</option>`).join('')}</select></label>${['imageScale','imageX','imageY','opacity'].map(key=>{const [min,max,label]=VISUAL_FIELDS[key];return `<label class=form-field><span>${label}</span><input type=number aria-label='${label}' data-visual-number=${key} min=${min} max=${max} step=.05 value=${style[key]??({imageScale:1,imageX:50,imageY:50,opacity:1})[key]}></label>`;}).join('')}`:''}<details><summary>Wspólny wygląd i zamiana</summary><p>Zamiana przejmuje przepis wizualny. Funkcja przycisku i jego połączenia zostają.</p><select data-visual-field=replacement aria-label='Zastąp przepis elementu'><option value=''>Oryginalny przepis</option>${['container','button','text','icon','image','toggle','key'].map(kind=>`<option value=${kind} ${local.replacement===kind?'selected':''}>${html(this.registry.components.find(c=>c.kind===kind)?.name||kind)}</option>`).join('')}</select><button class=small-button id=visual-reset-local>Scal ze wspólnym · usuń wyjątki</button></details><button class=small-button id=send-to-builder>Otwórz kopię w builderze</button></section>`;
+  }
   updateSavedIndicators(){
     for(const row of this.workspace.querySelectorAll('[data-control]')){
       const [group,key]=row.dataset.control.split('.'),value=effectiveValue(this.config,this.viewId,group,key,this.scope),saved=effectiveValue(this.getBase(),this.viewId,group,key,this.scope),[min,max,,unit]=rangeFor(group,key);
@@ -150,13 +162,14 @@ export class StudioPreview {
       if(id===this.viewId){
         const available=this.available();
         if(!message.selection && available.has(this.componentId))this.send(frame,'focus',{component:this.componentId,reveal:false});
-        this.renderPills();this.renderSelectionPanel();this.renderLayers();
+        this.renderPills();this.renderSelectionPanel();this.renderLayers();this.renderVisual();
       }
     }
     if(message.type==='select'||message.type==='focused'&&message.explicit){
       this.viewId=id;this.componentId=message.component;this.selections.set(id,message);
       this.notifyState();this.updateActiveFrame();this.renderToolbar();this.renderInspector();
     }
+    if(message.type==='blueprint')this.toBuilder?.(message.value);
     if(message.type==='notice')this.notice(message.message);
   }
   click(event){
@@ -167,8 +180,11 @@ export class StudioPreview {
     if(button.dataset.component)this.chooseComponent(button.dataset.component);
     if(button.dataset.openView)this.openView(button.dataset.openView);
     if(button.dataset.activeView)this.openView(button.dataset.activeView);
+    if(button.dataset.visualReset){this.writeVisual(button.dataset.visualReset,undefined);this.renderVisual();}
+    if(button.id==='visual-reset-local'){const selected=this.activeSelection();if(selected){for(const key of Object.keys(this.config.elementOverrides?.[this.viewId]?.[selected.id]||{}))this.edit(`elementOverrides.${this.viewId}.${selected.id}.${key}`,undefined);this.renderVisual();}}
+    if(button.id==='send-to-builder'){this.send(this.activeFrame(),'blueprint',{id:this.activeSelection()?.id});}
     if(button.id==='rename-component')this.rename(this.component);
-    if(button.id==='reset-component'){this.reset(this.component.tokenGroup,null,this.scope,this.viewId);this.updateSavedIndicators();}
+    if(button.id==='reset-component'&&this.component.tokenGroup){this.reset(this.component.tokenGroup,null,this.scope,this.viewId);this.updateSavedIndicators();}
     if(button.dataset.resetField){const [group,key]=button.dataset.resetField.split('.');this.reset(group,key,this.scope,this.viewId);this.updateSavedIndicators();}
     if(button.id==='wide-preview'){this.wide=!this.wide;this.renderToolbar();}
     if(button.dataset.layerSelect)this.send(this.activeFrame(),'focus',{id:button.dataset.layerSelect,reveal:true});
@@ -182,6 +198,7 @@ export class StudioPreview {
   change(event){
     const target=event.target;if(!target.closest('.component-layout'))return;
     event.stopImmediatePropagation();
+    if(target.id==='category-select'){this.scope='view';this.openView(this.registry.views.find(v=>componentCategories(v)===target.value)?.id);}
     if(target.id==='mode-select'){this.openView(target.value+'-settings');}
     if(target.id==='view-select')this.openView(target.value);
     if(target.id==='scope-select'){this.scope=target.value;this.notifyState();this.renderInspector();}
@@ -192,12 +209,14 @@ export class StudioPreview {
     if(target.dataset.compareView){const id=target.dataset.compareView;if(!target.checked&&this.compareViews.length===1){target.checked=true;this.notice('Pozostaw co najmniej jeden ekran do porównania.');return;}this.compareViews=target.checked?[...this.compareViews,id]:this.compareViews.filter(view=>view!==id);if(this.compareViews.length&&!this.compareViews.includes(this.viewId))this.viewId=this.compareViews[0];this.notifyState();this.syncGallery();this.renderToolbar();this.renderInspector();}
     if(target.id==='selected-visibility'){const selected=this.activeSelection();if(selected)this.send(this.activeFrame(),'visibility',this.workspace.querySelector('#hide-whole-family').checked?{component:selected.component,mode:target.value}:{id:selected.id,mode:target.value});}
     if(target.dataset.layerVisibility)this.send(this.activeFrame(),'visibility',{id:target.dataset.layerVisibility,mode:target.value});
+    if(target.dataset.visualField){this.writeVisual(target.dataset.visualField,target.value);}
     if(target.id==='selected-instance')this.send(this.activeFrame(),'focus',{id:target.value,reveal:true});
   }
   input(event){
     const target=event.target;if(!target.closest('.component-layout'))return;
     event.stopImmediatePropagation();
     if(target.id==='component-search'){this.search=target.value;this.renderPills();return;}
+    if(target.dataset.visualNumber){const key=target.dataset.visualNumber,[min,max]=VISUAL_FIELDS[key],value=Number(target.value);if(Number.isFinite(value)&&value>=min&&value<=max){this.writeVisual(key,value);const [a,b]=dynamicRange(value,this.savedVisual(key),min,key==='width'?390:key==='height'?200:key==='fontSize'?48:max,max);for(const input of this.workspace.querySelectorAll(`[data-visual-number="${key}"]`)){if(input.type==='range'){input.min=a;input.max=b;}if(input!==target)input.value=value;}}else this.notice(`Bezpieczny zakres: ${min}–${max}.`);return;}
     if(!target.dataset.token)return;
     const [group,key]=target.dataset.token.split('.'),[min,max]=rangeFor(group,key),value=Number(target.value);
     if(!Number.isFinite(value)||value<min||value>max)return;

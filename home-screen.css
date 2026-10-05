@@ -5,8 +5,8 @@ body:has(#app[data-view="home"]) {
 }
 
 #app[data-view="home"] {
-  --home-safe-top: env(safe-area-inset-top, 0px);
-  --home-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --home-safe-top: var(--app-safe-top,env(safe-area-inset-top, 0px));
+  --home-safe-bottom: var(--app-safe-bottom,env(safe-area-inset-bottom, 0px));
   --home-canvas-width: min(100vw, 480px, calc((var(--app-viewport-height, calc(100 * var(--app-vh, 1dvh))) - var(--home-safe-top) - var(--home-safe-bottom)) * 853 / 1670));
   --home-canvas-height: calc(var(--home-canvas-width) * 1670 / 853);
   --home-center-gap: max(0px, calc((var(--app-viewport-height, calc(100 * var(--app-vh, 1dvh))) - var(--home-safe-top) - var(--home-safe-bottom) - var(--home-canvas-height)) / 2));
@@ -183,3 +183,10 @@ body:has(#app[data-view="home"]) {
     transition: none;
   }
 }
+
+/* Real, individually editable elements over the approved illustration. */
+.home-stats{position:absolute;z-index:2;display:grid;grid-template-columns:1fr 1fr auto;gap:1.5cqw;align-items:center;padding:2.8cqw 3.2cqw;background:linear-gradient(#fff,#fffdf4);border:1cqw solid #fffde7;border-radius:5.5cqw;box-shadow:0 1.5cqw 2.5cqw #70b7d522}
+.home-stat{display:flex;align-items:center;gap:2cqw;min-width:0}.home-stat+.home-stat{border-left:1px solid #d5daf0;padding-left:1.5cqw}.home-stat>div{display:grid;gap:1cqw;min-width:0}.home-stat-value{font:800 5.5cqw/1 var(--ds-font-body)}.home-stat-label{display:block;font:700 2.7cqw/1.2 var(--ds-font-ui);color:#6270a5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home-icon{display:grid;place-items:center;flex:none;width:9cqw;height:9cqw}.home-icon svg{width:100%;height:100%;display:block}.home-progress-arrow{display:grid;place-items:center;width:10cqw;height:10cqw;min-height:0;padding:1cqw;background:linear-gradient(#ffd819,#ffaa00);color:white;border-radius:50%;border:1px solid #fff;box-shadow:0 1cqw 2cqw #ffbd3540}.home-progress-arrow .home-icon{width:7cqw;height:7cqw}
+.home-adventures{position:absolute;display:flex;align-items:center;justify-content:space-between;gap:2cqw;z-index:2}.home-adventures h2{margin:0;font:800 5.4cqw/1.1 var(--ds-font-ui)}.home-adventures p{margin:0;white-space:nowrap;color:#6573a5;font:700 3.4cqw/1 var(--ds-font-ui)}
+.home-canvas .home-game-button{overflow:hidden;background:var(--tile-color);border-radius:11%;box-shadow:0 1cqw 2cqw #337bd41a}.home-tile-art{position:absolute;inset:0;clip-path:inset(0 0 25% 0);pointer-events:none}.home-tile-name{position:absolute;bottom:10%;left:8%;right:5%;font:800 4.5cqw/1.1 var(--ds-font-ui);color:#fff;text-align:left}.home-game-button[data-mode=math] .home-tile-name{font-size:3.8cqw}

@@ -1,4 +1,4 @@
-export const COMPONENT_IDS = ['layout','card','jelly','toggle','button','answer','flashcard','slider','popup','progress','profile','trophy'];
+export const COMPONENT_IDS = ['layout','card','jelly','toggle','button','answer','flashcard','slider','popup','progress','profile','trophy','atom-container','atom-text','atom-icon','atom-image','atom-button','atom-background','game-timer','result-progress','pin-toggle','pin-key'];
 
 export const FIELD_LABELS = {
   canvasWidth:'Szerokość ekranu',sidePadding:'Odstęp od boków ekranu',safeTop:'Miejsce na górny pasek telefonu',safeBottom:'Miejsce na dolny pasek telefonu',
@@ -34,7 +34,7 @@ export function rangeFor(group,key) {
 }
 
 export function relatedViews(registry,componentId) {
-  return registry.views.filter(view=>view.components.includes(componentId));
+    return registry.views.filter(view=>view.components.includes(componentId));
 }
 export function compareSelection(registry,componentId,selected,preferred) {
   const allowed = new Set(relatedViews(registry,componentId).map(view=>view.id));

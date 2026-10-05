@@ -34,7 +34,8 @@ html{font-family:var(--ds-font-body)}
 #app[data-view="game"][data-mode][data-ds] :is(.question-card,.spelling-question-card){border-radius:calc(var(--ds-flashcard-radius) * var(--ds-u))}
 #app[data-view="game"][data-mode="english"][data-ds] .question-card,#app[data-view="game"][data-mode="reading"][data-ds] .question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
 #app[data-view="game"][data-mode][data-ds] .spelling-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
-#app[data-view="game"][data-mode][data-ds] .continue-handle{width:calc(var(--ds-slider-handle-size) * var(--ds-u));height:calc(var(--ds-slider-handle-size) * var(--ds-u))}
+#app[data-ds] :is(.spelling-continue-rail,.result-continue-rail){--ds-handle-size:min(calc(var(--ds-slider-handle-size) * var(--ds-u)),calc(var(--ds-slider-height) * var(--ds-u) - 8px));position:relative}
+#app[data-ds] :is(.spelling-continue-rail,.result-continue-rail) .continue-handle{width:var(--ds-handle-size);height:var(--ds-handle-size);top:50%;margin-top:calc(var(--ds-handle-size) / -2);left:4px;transform-origin:center;aspect-ratio:1}
 dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-height:calc(var(--ds-popup-max-height-percent) * 1dvh)}
 #modal{padding:calc(var(--ds-popup-padding) * 1px)}
 #app[data-ds] progress{height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
@@ -51,18 +52,16 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 @media(prefers-reduced-motion:reduce){#app[data-ds] *{scroll-behavior:auto}}
 /* Bind all instances recorded in the registry, including result and profile views. */
 #app[data-ds] :is(.player-continue,.math-start-button,.math-result-again,.result:not(.spelling-result) .primary){min-height:calc(var(--ds-button-height) * var(--ds-u));height:auto;border-radius:calc(var(--ds-button-radius) * var(--ds-u));padding:calc(var(--ds-space-sm) * var(--ds-u)) calc(var(--ds-button-padding-x) * var(--ds-u));font-size:calc(var(--ds-button-font-size) * var(--ds-u));font-family:var(--ds-font-ui);border-width:calc(var(--ds-button-border-width) * var(--ds-u))}
-#app[data-ds] .pin-mode{width:calc(var(--ds-toggle-width) * var(--ds-u));height:calc(var(--ds-toggle-height) * var(--ds-u));border-radius:calc(var(--ds-toggle-radius) * var(--ds-u))}
-#app[data-ds] .pin-mode label span{font-size:calc(var(--ds-toggle-label-size) * var(--ds-u))}
+/* PIN is its own two-option component, not the compact game toggle. */
 #app[data-view="game"][data-mode][data-ds] .answer-grid{gap:calc(var(--ds-answer-gap) * var(--ds-u));width:calc(var(--ds-answer-width-percent) * 1%);margin-inline:auto}
 #app[data-view="game"][data-mode][data-ds] .question-block{border-radius:calc(var(--ds-flashcard-radius) * var(--ds-u));padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
 #app[data-view="game"][data-mode="spelling"][data-ds] .spelling-question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
 #app[data-view="game"][data-mode="flags"][data-ds] .question-card{padding:calc(var(--ds-flashcard-padding) * var(--ds-u));margin-bottom:calc(var(--ds-flashcard-gap) * var(--ds-u))}
 #app[data-ds] .result-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
-#app[data-ds] .result-continue-rail .continue-handle{width:calc(var(--ds-slider-handle-size) * var(--ds-u));height:calc(var(--ds-slider-handle-size) * var(--ds-u))}
 #app[data-ds] :is(.round-progress,.math-round-progress){height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
 #app[data-ds] :is(.round-progress,.math-round-progress)>span{border-radius:inherit}
 #app[data-ds] :is(.settings-card,.category-card,.result-sheet){border-radius:calc(var(--ds-card-radius) * var(--ds-u));padding:calc(var(--ds-card-padding-top) * var(--ds-u)) calc(var(--ds-card-padding-x) * var(--ds-u)) calc(var(--ds-card-padding-bottom) * var(--ds-u))}
-#app[data-ds] .player-card{display:flex;gap:calc(var(--ds-profile-gap) * var(--ds-u))}
+#app[data-ds] .player-card{gap:calc(var(--ds-profile-gap) * var(--ds-u));grid-template-columns:auto minmax(0,1fr) 43px}
 #app[data-ds] .progress-achievement-list{gap:calc(var(--ds-trophy-gap) * var(--ds-u))}
 #app[data-ds] .spelling-result{--result-canvas:calc(var(--ds-layout-canvas-width) * 1px)}
 #app[data-ds] :is(.game-bar,.progress-header,.player-header){gap:calc(var(--ds-space-sm) * var(--ds-u))}
@@ -79,3 +78,10 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 #app[data-ds] .progress-hero-line{transform:translateX(calc(10 * var(--progress-u)))}
 
 .round-score-audit{font:600 12px/1.6 var(--ds-font-body);color:#4b497a;margin:10px 0;padding:10px 14px;background:#ffffffb0;border-radius:16px}.round-score-audit summary{cursor:pointer;font-weight:800}.round-score-audit p{margin:7px 0 0;font-size:11px}
+
+/* Shared phone safe area; spelling wizard remains the geometry reference. */
+#app[data-ds]:is([data-view="players"],[data-view="player-create"],[data-view="player-pin"],[data-view="settings"]){padding-top:max(calc(var(--ds-layout-safe-top) * var(--ds-u)),var(--app-safe-top,env(safe-area-inset-top,0px)));padding-bottom:max(calc(var(--ds-layout-safe-bottom) * var(--ds-u)),var(--app-safe-bottom,env(safe-area-inset-bottom,0px)));overflow-y:auto;justify-content:flex-start}
+#app[data-ds] .player-avatar-art{aspect-ratio:1;flex-shrink:0;object-fit:contain;align-self:center}
+#app[data-ds] .avatar-choice .player-avatar-art{height:auto;aspect-ratio:1;max-width:100%}
+#app[data-ds] .create-avatar-preview{height:auto;min-height:calc(var(--ds-profile-avatar-size) * var(--ds-u))}
+#app[data-ds] [data-ds-kind=icon]>svg{max-width:100%;max-height:100%;display:block}

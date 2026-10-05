@@ -1,7 +1,7 @@
 import {DISCOVERY_RULES,validateDiscoveryRules} from '../shared/discovery-model.mjs';
 import {validateBlueprint} from '../shared/component-recipes.mjs';
 import {validateTokens} from './validation.mjs';
-const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring'];
+const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides'];
 export const designFields=config=>Object.fromEntries(DESIGN_FIELDS.filter(k=>config[k]!==undefined).map(k=>[k,structuredClone(config[k])]));
 export function editableProjectConfig(config){return {...structuredClone(config),...structuredClone(config.project?.designDraft||{})};}
 export function projectContract(local,committed){

@@ -5,6 +5,7 @@ import {validateMotion} from '../shared/screen-motion.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
 import {validateProject,validateCopy} from './project-model.mjs';
+import {elementCSS,validateElementStyles} from '../shared/element-system.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);
@@ -39,6 +40,7 @@ export function validateConfig(config) {
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
   if(config.motion)validateMotion(config.motion);
+  validateElementStyles(config);
   if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(config.tokens);
@@ -74,13 +76,15 @@ export function configCSS(config) {
     if (!/^[a-z0-9-]+$/.test(view)) throw Error('Nieprawidłowy identyfikator widoku.');
     css += `html[data-ds-view="${view}"]{${variables(overrides)}}`;
   }
-  return css+recipesCSS(config.recipes);
+  return css+recipesCSS(config.recipes)+elementCSS(config);
 }
 export function changedViews(changes, registry) {
   return registry.views.filter(view => changes.some(change => {
     if (change.path.startsWith('overrides.')) return change.path.split('.')[1] === view.id;
     if (change.path.startsWith('themes.')) return change.path.split('.')[1] === view.mode;
     if (change.path.startsWith('motion')) return true;
+    if(change.path.startsWith('elementOverrides.'))return change.path.split('.')[1]===view.id;
+    if(change.path.startsWith('elementStyles.'))return true;
     if(change.path.startsWith('effects.'))return view.mode==='spelling'&&['initial','correct','wrong','rule','hint'].some(state=>view.id.endsWith('-'+state));
     if(change.path.startsWith('scoring.'))return view.id==='spelling-results';
     if(change.path.startsWith('recipes.'))return ATOMS[change.path.split('.')[1]]?.parents.some(p=>view.components.includes(p))||false;

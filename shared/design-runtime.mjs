@@ -1,8 +1,9 @@
-import {animateScreen,DEFAULT_MOTION} from './screen-motion.mjs';
+import {animateScreen,DEFAULT_MOTION,transitionMotion} from './screen-motion.mjs';
 import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
+import {annotateElements} from './element-system.mjs';
 const base = new URL('../', import.meta.url);
 let config;
 export function applyDesign(value) {
@@ -13,6 +14,7 @@ export function applyDesign(value) {
   window.__MALA_NAUKA_DESIGN__ = value;
   document.documentElement.dataset.dsRevision = String(value.revision);
   configureScreenCopy(value.copyOverrides||[]);
+  annotateElements(document.getElementById('app'),value,document.documentElement.dataset.dsView);
   document.dispatchEvent(new CustomEvent('mala-nauka:design', {detail:value}));
 }
 export const currentDesign = () => config;
@@ -33,7 +35,6 @@ export async function initDesign() {
   let previousScreen,screenAnimation;
   const annotate = () => {
     if (!app) return;
-    const screen=app.dataset.view;if(screen&&previousScreen&&screen!==previousScreen){screenAnimation?.cancel();screenAnimation=animateScreen(app,config.motion||DEFAULT_MOTION);}if(screen)previousScreen=screen;
     if(app.dataset.ds!=='1')app.dataset.ds='1';
     if(location.pathname.includes('/matematyka/')){
       if(app.dataset.mode!=='math')app.dataset.mode='math';
@@ -48,6 +49,8 @@ export async function initDesign() {
     }
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
     applyScreenCopy(app);
+    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&app.dataset.view!=='game'){screenAnimation?.cancel();screenAnimation=animateScreen(app,transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen));}if(screen)previousScreen=screen;
+    annotateElements(app,config,document.documentElement.dataset.dsView);
   };
   if (app) new MutationObserver(annotate).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
   annotate();

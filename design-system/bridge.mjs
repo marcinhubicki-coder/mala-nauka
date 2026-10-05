@@ -2,6 +2,8 @@ import {collectScreenCopy} from '../shared/screen-copy.mjs';
 import {configureRules,ruleLibrary} from '../shared/rules-library.mjs';
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
 import {configureAssets,rewriteAssetNodes,previewAssets,assetManifest} from '../shared/asset-loader.mjs';
+import {annotateElements,visualValue} from '../shared/element-system.mjs';
+import {blueprintTemplate,newLayer,validateBlueprint} from '../shared/component-recipes.mjs';
 
 const query = new URLSearchParams(location.search);
 const studio = query.has('studio');
@@ -25,14 +27,19 @@ const caption = node => (node.getAttribute('aria-label') || node.getAttribute('a
 function collect() {
   const result = new Map();
   if (!registry || !app()) return result;
-  result.set('layout:root',{id:'layout:root',component:'layout',index:-1,label:'Cały ekran',node:app()});
-  for (const component of registry.components) {
+  app().dataset.dsElement='layout-root';app().dataset.dsKind='container';
+  result.set('layout-root',{id:'layout-root',component:'layout',index:-1,label:'Cały ekran',node:app()});
+  const mapped=annotateElements(app(),window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView);
+  for(const item of mapped)result.set(item.id,item);
+  for (const component of registry.components.filter(c=>!c.fine)) {
     [...document.querySelectorAll(component.selector)].filter(node => app().contains(node) || node.matches('dialog')).forEach((node,index) => {
-      const id = `${component.id}:${index}`;
-      result.set(id,{id,component:component.id,index,label:caption(node),node});
+      const existing=[...result.values()].find(row=>row.node===node);
+      if(existing){if(!['timer','meter','toggle','key','background','icon','image','text'].includes(existing.kind))existing.component=component.id;existing.index=index;}
+      else {const id=`${component.id}-${index}`;node.dataset.dsElement=id;result.set(id,{id,component:component.id,index,label:caption(node),node,kind:'container',depth:0,parent:'layout-root'});}
     });
   }
-  return result;
+  // Children sit above their containers; decorative backdrops and canvas are last.
+  return new Map([...result].sort(([,a],[,b])=>(a.index===-1?1:b.index===-1?-1:a.kind==='background'?1:b.kind==='background'?-1:(b.depth||0)-(a.depth||0))));
 }
 
 function applyVisibility() {
@@ -74,7 +81,7 @@ function selectedDetails() {
     const match = [...items.values()].find(row=>row.node===node && row.id!==item.id);
     if(match && !parents.includes(match.id))parents.push(match.id);
   }
-  return {id:item.id,component:item.component,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:style.padding,fontSize:style.fontSize}};
+  return {id:item.id,component:item.component,kind:item.kind,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
 function paintHighlight() {
   overlay?.remove();
@@ -107,8 +114,8 @@ function scheduleReport() {
 }
 function focusItem(message) {
   items=collect();
-  let item=message.id?items.get(message.id):[...items.values()].find(row=>row.component===message.component && row.index>=0 && visible(row.node));
-  if(!item && message.component==='layout')item=items.get('layout:root');
+  let item=message.selector?[...items.values()].find(row=>row.node.matches(message.selector)):message.id?items.get(message.id):[...items.values()].find(row=>row.component===message.component && row.index>=0 && visible(row.node));
+  if(!item && message.component==='layout')item=items.get('layout-root');
   if(!item){selection=null;overlay?.remove();emit({type:'missing',component:message.component});return;}
   selection=item.id;
   if(message.reveal && visible(item.node))item.node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
@@ -144,6 +151,12 @@ if (studio) {
     }
     if(message.type==='inspect'){inspecting=Boolean(message.enabled);showHighlight=Boolean(message.highlight);paintHighlight();}
     if(message.type==='focus')focusItem(message);
+    if(message.type==='blueprint'){
+      const source=items.get(message.id);if(!source)return;
+      const value=blueprintTemplate(),rows=[...items.values()];let count=0;
+      const make=(item,depth=0)=>{const type=item.node.matches('button')?'button':item.kind==='icon'?'icon':item.kind==='image'?'image':item.kind==='text'?'subtitle':'group',n=newLayer(type),s=getComputedStyle(item.node);count++;n.text=(item.label||'Element').slice(0,140);n.width=Math.min(390,Math.round(item.node.getBoundingClientRect().width));n.height=0;n.padding=Math.min(120,parseFloat(s.padding)||0);n.gap=Math.min(120,parseFloat(s.gap)||0);n.layout=s.display==='grid'?'grid':s.flexDirection==='row'?'row':'column';if(n.layout==='grid')n.columns=Math.min(5,s.gridTemplateColumns.split(' ').length);const color=(s.color.match(/\d+/g)||[]).slice(0,3);if(color.length===3)n.textColor='#'+color.map(v=>Number(v).toString(16).padStart(2,'0')).join('');if(type==='icon')n.icon=item.node.dataset.dsIcon||'star';const src=item.node.getAttribute('src');if(type==='image'&&src?.startsWith('assets/'))n.asset=src;if(['button','group'].includes(type)&&depth<4&&count<40)n.children=rows.filter(r=>r.parent===item.id).slice(0,8).map(r=>make(r,depth+1));else n.children=[];return n;};
+      value.name=('Szkic · '+source.label).slice(0,60);value.root.children=[make(source)];try{validateBlueprint(value);emit({type:'blueprint',value});}catch(e){emit({type:'notice',message:e.message});}
+    }
     if(message.type==='action'){
       const action=actions.get(message.id);
       if(!action?.node.isConnected || action.label!==message.label){emit({type:'notice',message:'Ekran zmienił się. Wybierz stan ponownie.'});report();return;}

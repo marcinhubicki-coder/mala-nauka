@@ -68,7 +68,7 @@
       "id": "toggle",
       "name": "Mały toggle",
       "tokenGroup": "toggle",
-      "selector": ".spelling-limit-mode,.flag-language-options,.pin-mode",
+      "selector": ".spelling-limit-mode,.flag-language-options",
       "description": "Dwie opcje; ta sama szerokość PL/EN i czasu/liczby słów.",
       "states": [
         "default"
@@ -189,9 +189,9 @@
     },
     {
       "id": "progress",
-      "name": "Postęp i licznik",
+      "name": "Pasek podsumowania",
       "tokenGroup": "progress",
-      "selector": "progress,.round-progress,.math-round-progress",
+      "selector": ".round-progress,.math-round-progress",
       "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie.",
       "states": [
         "running",
@@ -244,6 +244,156 @@
       "variants": [
         "domyślny"
       ]
+    },
+    {
+      "id": "atom-container",
+      "name": "Kontenery i sekcje",
+      "kind": "container",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"container\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-text",
+      "name": "Teksty i etykiety",
+      "kind": "text",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"text\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-icon",
+      "name": "Ikony",
+      "kind": "icon",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"icon\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-image",
+      "name": "Grafiki i avatary",
+      "kind": "image",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"image\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-button",
+      "name": "Przyciski lokalne",
+      "kind": "button",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"button\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-background",
+      "name": "Podkłady i tła",
+      "kind": "background",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"background\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "game-timer",
+      "name": "Zegar gry",
+      "kind": "timer",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"timer\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "result-progress",
+      "name": "Pasek wyniku",
+      "kind": "meter",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"meter\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "pin-toggle",
+      "name": "Przełącznik PIN",
+      "kind": "toggle",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"toggle\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "pin-key",
+      "name": "Klawisz PIN",
+      "kind": "key",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"key\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
     }
   ],
   "views": [
@@ -257,14 +407,21 @@
       "components": [
         "profile",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "login"
     },
     {
       "id": "players-empty",
@@ -275,14 +432,21 @@
       "route": "/",
       "components": [
         "profile",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "login"
     },
     {
       "id": "player-create",
@@ -293,14 +457,21 @@
       "route": "/",
       "components": [
         "profile",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "login"
     },
     {
       "id": "player-pin",
@@ -311,15 +482,23 @@
       "route": "/",
       "components": [
         "profile",
-        "toggle",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "pin-toggle",
+        "pin-key"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "login"
     },
     {
       "id": "home",
@@ -332,14 +511,21 @@
         "layout",
         "card",
         "button",
-        "profile"
+        "profile",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "home"
     },
     {
       "id": "settings",
@@ -351,13 +537,20 @@
       "components": [
         "card",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "home"
     },
     {
       "id": "spelling-settings",
@@ -371,14 +564,21 @@
         "card",
         "jelly",
         "toggle",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-initial",
@@ -390,15 +590,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "slider",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-correct",
@@ -410,15 +617,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "slider",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-wrong",
@@ -430,15 +644,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "slider",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-results",
@@ -452,13 +673,21 @@
         "button",
         "progress",
         "popup",
-        "slider"
+        "slider",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "english-settings",
@@ -471,14 +700,21 @@
         "layout",
         "card",
         "jelly",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "english-initial",
@@ -490,14 +726,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "english-correct",
@@ -509,14 +752,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "english-wrong",
@@ -528,14 +778,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "english-results",
@@ -546,12 +803,20 @@
       "route": "/angielski/",
       "components": [
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "flags-settings",
@@ -565,14 +830,21 @@
         "card",
         "jelly",
         "toggle",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "flags-initial",
@@ -584,15 +856,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "flag"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "flags-correct",
@@ -604,15 +883,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "flag"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "flags-wrong",
@@ -624,15 +910,22 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "flag"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "flags-results",
@@ -643,13 +936,21 @@
       "route": "/flagi/",
       "components": [
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "flag"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "reading-settings",
@@ -662,14 +963,21 @@
         "layout",
         "card",
         "jelly",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "reading-initial",
@@ -681,14 +989,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "reading-correct",
@@ -700,14 +1015,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "reading-wrong",
@@ -719,14 +1041,21 @@
       "components": [
         "flashcard",
         "answer",
-        "progress",
         "button",
-        "popup"
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "reading-results",
@@ -737,12 +1066,20 @@
       "route": "/czytanie/",
       "components": [
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "math-settings",
@@ -754,14 +1091,21 @@
       "components": [
         "layout",
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "ui",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "math-initial",
@@ -773,12 +1117,19 @@
       "components": [
         "answer",
         "flashcard",
-        "progress"
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "math-correct",
@@ -790,12 +1141,19 @@
       "components": [
         "answer",
         "flashcard",
-        "progress"
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "math-wrong",
@@ -807,12 +1165,19 @@
       "components": [
         "answer",
         "flashcard",
-        "progress"
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "math-results",
@@ -823,12 +1188,20 @@
       "route": "/matematyka/",
       "components": [
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-rule",
@@ -840,13 +1213,21 @@
       "components": [
         "popup",
         "card",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-hint",
@@ -857,13 +1238,21 @@
       "route": "/ortografia/",
       "components": [
         "popup",
-        "flashcard"
+        "flashcard",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "spelling-pause",
@@ -874,13 +1263,21 @@
       "route": "/ortografia/",
       "components": [
         "popup",
-        "button"
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "game"
     },
     {
       "id": "progress",
@@ -891,13 +1288,20 @@
       "route": "/",
       "components": [
         "card",
-        "trophy"
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     },
     {
       "id": "collection",
@@ -909,13 +1313,20 @@
       "components": [
         "card",
         "popup",
-        "jelly"
+        "jelly",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     },
     {
       "id": "trophies",
@@ -926,13 +1337,20 @@
       "route": "/",
       "components": [
         "card",
-        "trophy"
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     },
     {
       "id": "categories",
@@ -942,13 +1360,20 @@
       "state": "categories",
       "route": "/",
       "components": [
-        "card"
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     },
     {
       "id": "rules",
@@ -960,13 +1385,20 @@
       "components": [
         "card",
         "popup",
-        "jelly"
+        "jelly",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     },
     {
       "id": "sessions",
@@ -976,99 +1408,468 @@
       "state": "sessions",
       "route": "/",
       "components": [
-        "card"
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
       ],
       "fixture": true,
       "fontRoles": [
         "body",
         "display"
-      ]
+      ],
+      "category": "results"
     }
   ],
   "flows": [
     {
       "from": "players",
-      "action": "Wybierz profil",
-      "condition": "Profil z PIN-em / bez PIN-u",
+      "to": [
+        "player-create"
+      ],
+      "action": "Dodaj gracza",
+      "selector": "[data-action=\"add-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players",
       "to": [
         "player-pin",
         "home"
-      ]
+      ],
+      "action": "Dalej · z PIN-em / bez",
+      "selector": "[data-action=\"continue-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players-empty",
+      "to": [
+        "player-create"
+      ],
+      "action": "Dodaj użytkownika",
+      "selector": "[data-action=\"add-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players-empty",
+      "to": [
+        "home"
+      ],
+      "action": "Później",
+      "selector": "[data-action=\"guest-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-create",
+      "to": [
+        "player-pin"
+      ],
+      "action": "Dalej · poprawny nick",
+      "selector": "#player-create-form",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-create",
+      "to": [
+        "players"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"players\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-pin",
+      "to": [
+        "home"
+      ],
+      "action": "Akceptuj PIN / bez PIN-u",
+      "selector": "[data-action=\"submit-pin\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-pin",
+      "to": [
+        "player-create"
+      ],
+      "action": "Edytuj profil",
+      "selector": "[data-action=\"edit-player\"]",
+      "state": false,
+      "condition": ""
     },
     {
       "from": "home",
-      "action": "Wybierz przygodę",
-      "condition": "Jeden z pięciu trybów",
+      "to": [
+        "settings"
+      ],
+      "action": "Ustawienia",
+      "selector": "[data-action=\"settings\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "settings",
+      "to": [
+        "home"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "settings",
+      "to": [
+        "players"
+      ],
+      "action": "Zmień gracza",
+      "selector": "[data-action=\"players\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "home",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje postępy",
+      "selector": "[data-action=\"history\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "home",
       "to": [
         "spelling-settings",
         "english-settings",
         "flags-settings",
         "reading-settings",
         "math-settings"
-      ]
+      ],
+      "action": "Wybierz przygodę",
+      "selector": "[data-action=\"choose-mode\"]",
+      "state": false,
+      "condition": ""
     },
     {
       "from": "*-settings",
-      "action": "Zaczynamy!",
-      "condition": "Poprawne ustawienia; przynajmniej jedno zadanie",
       "to": [
         "*-initial"
-      ]
+      ],
+      "action": "Zaczynamy!",
+      "selector": "[data-action=\"start\"],.start-button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-settings",
+      "to": [
+        "home"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
     },
     {
       "from": "*-initial",
-      "action": "Wybierz odpowiedź",
-      "condition": "Odpowiedź zgodna / niezgodna z pytaniem",
       "to": [
         "*-correct",
         "*-wrong"
-      ]
+      ],
+      "action": "Wybierz odpowiedź",
+      "selector": ".answer",
+      "state": true,
+      "condition": ""
     },
     {
       "from": "*-correct",
-      "action": "Dalej",
-      "condition": "Automatycznie; flagi po prezentacji",
       "to": [
         "*-initial"
-      ]
+      ],
+      "action": "Następne pytanie",
+      "selector": "",
+      "state": true,
+      "condition": ""
     },
     {
       "from": "*-wrong",
-      "action": "Poznaj odpowiedź i przejdź dalej",
-      "condition": "Czas wstrzymany; ortografia: slider / klawiatura",
       "to": [
         "*-initial"
-      ]
+      ],
+      "action": "Przeciągnij dalej / następne pytanie",
+      "selector": ".spelling-continue-rail",
+      "state": true,
+      "condition": ""
     },
     {
       "from": "*-initial",
-      "action": "Koniec rundy",
-      "condition": "Koniec czasu / liczby słów / wyjście",
       "to": [
         "*-results"
-      ]
+      ],
+      "action": "Koniec rundy / wyjdź",
+      "selector": "[data-action=\"exit\"]",
+      "state": false,
+      "condition": ""
     },
     {
       "from": "*-results",
-      "action": "Sprawdź / powtórz",
-      "condition": "Zapis w aktywnym profilu",
       "to": [
-        "spelling-rule",
-        "progress",
         "*-settings"
-      ]
+      ],
+      "action": "Jeszcze raz",
+      "selector": ".result-continue-rail,[data-action=\"again\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-results",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-results",
+      "to": [
+        "progress"
+      ],
+      "action": "Moja kolekcja",
+      "selector": "[data-action=\"history\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-results",
+      "to": [
+        "spelling-rule"
+      ],
+      "action": "Poznaj zasadę",
+      "selector": "[data-rule-index]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-rule",
+      "to": [
+        "spelling-results"
+      ],
+      "action": "Zamknij zasadę",
+      "selector": ".result-rule-dialog button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-initial",
+      "to": [
+        "spelling-hint"
+      ],
+      "action": "Podpowiedź",
+      "selector": "[data-action=\"hint\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-hint",
+      "to": [
+        "spelling-initial"
+      ],
+      "action": "Rozumiem",
+      "selector": ".spelling-hint-sheet button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-initial",
+      "to": [
+        "spelling-pause"
+      ],
+      "action": "Pauza",
+      "selector": "[data-action=\"pause\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-pause",
+      "to": [
+        "spelling-initial"
+      ],
+      "action": "Wznów",
+      "selector": "[data-action=\"resume\"]",
+      "state": false,
+      "condition": ""
     },
     {
       "from": "progress",
-      "action": "Kolekcja / zasady / puchary",
-      "condition": "Osiągnięcia wynikają z postępów gracza",
       "to": [
-        "collection",
-        "rules",
-        "trophies",
-        "categories",
+        "collection"
+      ],
+      "action": "Kolekcja",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "collection",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "collection",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "rules"
+      ],
+      "action": "Zasady",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "rules",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "rules",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "trophies"
+      ],
+      "action": "Puchary",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "categories"
+      ],
+      "action": "Kategorie",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "categories",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "categories",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
         "sessions"
-      ]
+      ],
+      "action": "Historia rund",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "sessions",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "sessions",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
     }
   ]
 }

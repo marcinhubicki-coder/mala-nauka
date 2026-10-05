@@ -2,9 +2,11 @@ export const DEFAULT_MOTION={style:'fade',duration:320,distance:18,easing:'ease-
 export const MOTION_STYLES=['none','fade','slide'];
 export const MOTION_EASINGS=['ease','ease-out','ease-in-out','linear'];
 export function validateMotion(value){
-  if(!value||Object.keys(value).some(key=>!Object.hasOwn(DEFAULT_MOTION,key))||!MOTION_STYLES.includes(value.style)||!MOTION_EASINGS.includes(value.easing)||!Number.isFinite(value.duration)||value.duration<0||value.duration>2000||!Number.isFinite(value.distance)||value.distance<0||value.distance>120)throw Error('Nieprawidłowe ustawienia przejść ekranów.');
+  if(!value||Object.keys(value).some(key=>!Object.hasOwn(DEFAULT_MOTION,key)&&key!=='transitions')||!MOTION_STYLES.includes(value.style)||!MOTION_EASINGS.includes(value.easing)||!Number.isFinite(value.duration)||value.duration<0||value.duration>2000||!Number.isFinite(value.distance)||value.distance<0||value.distance>120)throw Error('Nieprawidłowe ustawienia przejść ekranów.');
+  if(value.transitions){if(typeof value.transitions!=='object'||Array.isArray(value.transitions)||Object.keys(value.transitions).length>250)throw Error('Nieprawidłowe połączenia animacji.');for(const [key,row]of Object.entries(value.transitions)){if(!/^[a-z0-9-]+--[a-z0-9-]+$/.test(key))throw Error('Nieprawidłowa para ekranów.');if(row.inheritReverse===true){if(Object.keys(row).length!==1)throw Error('Powrót dziedziczy ustawienia drugiego kierunku.');}else validateMotion({...row,transitions:undefined});}}
   return value;
 }
+export function transitionMotion(config,from,to){const base=Object.fromEntries(Object.keys(DEFAULT_MOTION).map(k=>[k,config?.[k]??DEFAULT_MOTION[k]])),key=`${from}--${to}`,row=config?.transitions?.[key],source=row?.inheritReverse?config?.transitions?.[`${to}--${from}`]:row;return Object.fromEntries(Object.keys(DEFAULT_MOTION).map(k=>[k,source?.[k]??base[k]]));}
 export function motionFrames(motion){
   validateMotion(motion);
   if(motion.style==='none'||motion.duration===0)return [];

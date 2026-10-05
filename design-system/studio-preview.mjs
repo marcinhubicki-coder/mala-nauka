@@ -1,3 +1,5 @@
+import {componentTree,screenLabel} from './component-tree.mjs';
+import {jellyChoices,mountJellies} from './studio-jelly.mjs';
 import {html,number,componentName,effectiveValue,savedMarker,rangeFor,FIELD_LABELS,MODE_NAMES,STATE_NAMES,relatedViews,compareSelection} from './preview-model.mjs';
 import {CATEGORIES,componentCategories,VISUAL_FIELDS,ICONS,ELEMENT_FAMILIES,ELEMENT_KINDS,visualValue} from '../shared/element-system.mjs';
 import {dynamicRange} from './dynamic-range.mjs';
@@ -6,13 +8,15 @@ import {tokenBounds} from './validation.mjs';
 export class StudioPreview {
   constructor(options) {
     Object.assign(this,options);
-    this.viewId='spelling-settings';this.componentId='jelly';this.scope='view';this.metricBase=new Map();
+    this.viewId='spelling-settings';this.componentId='layout';this.scope='view';this.metricBase=new Map();
     this.editingMode='view';this.compare=false;this.compareViews=[];
     this.picking=false;this.highlight=true;this.showAbsent=false;this.search='';this.zoom='fit';this.wide=false;
     this.inventories=new Map();this.selections=new Map();
     this.workspace.addEventListener('click',event=>this.click(event));
     this.workspace.addEventListener('change',event=>this.change(event));
     this.workspace.addEventListener('input',event=>this.input(event));
+    this.workspace.addEventListener('keydown',event=>{if(event.target.dataset.studioNav&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))this.keyboardNav=true;else this.returnNavFocus=null;});
+    this.workspace.addEventListener('pointerdown',()=>{this.keyboardNav=false;this.returnNavFocus=null;});
     this.workspace.addEventListener('focusout',()=>this.endEdit?.());
     window.addEventListener('message',event=>this.receive(event));
   }
@@ -48,20 +52,25 @@ export class StudioPreview {
     if(!this.isOpen)return;
     const category=componentCategories(this.view);
     const views=this.editingMode==='component'?relatedViews(this.registry,this.componentId):this.registry.views.filter(row=>componentCategories(row)===category&&(category!=='game'||row.mode===this.view.mode));
-    this.workspace.querySelector('#preview-toolbar').innerHTML=`<div class=editing-path role=group aria-label='Sposób pracy'><button data-editing-mode=view class='${this.editingMode==='view'?'active':''}'>Według widoku</button><button data-editing-mode=component class='${this.editingMode==='component'?'active':''}'>Według elementu</button></div><div class=preview-toolbar><label>Kategoria<select id=category-select aria-label='Kategoria ekranów'>${Object.entries(CATEGORIES).map(([id,name])=>`<option value=${id} ${id===category?'selected':''}>${name}</option>`).join('')}</select></label>${category==='game'?`<label>Tryb gry<select id=mode-select aria-label='Tryb gry'>${Object.entries(MODE_NAMES).map(([id,name])=>`<option value=${id} ${id===this.view.mode?'selected':''}>${name}</option>`).join('')}</select></label>`:''}<label>${this.editingMode==='component'?'Gdzie występuje element':'Ekran i stan'}<select id=view-select aria-label='Widok i stan'>${views.map(row=>`<option value=${row.id} ${row.id===this.viewId?'selected':''}>${html(row.name)}</option>`).join('')}</select></label></div><div class=element-search><input id=component-search aria-label='Szukaj elementu' placeholder='Znajdź element po nazwie…' value='${html(this.search)}'>${this.editingMode==='view'?`<label><input type=checkbox id=show-absent ${this.showAbsent?'checked':''}>Pokaż pozostałe</label>`:''}</div>`;
-    this.workspace.querySelector('#preview-guide').textContent=this.editingMode==='view'?'Wybierz ekran, a potem element, który chcesz zmienić. Lista pokazuje to, co występuje w tym widoku.':'Wybierz element, a potem sprawdź jego użycie w kilku ekranach. Jedna zmiana może objąć wszystkie zaznaczone widoki.';
+    const toolbar=this.workspace.querySelector('#preview-toolbar');
+    const focused=document.activeElement?.matches('[data-studio-nav]')?{group:document.activeElement.dataset.studioNav,value:document.activeElement.value}:null;
+    const previous=new Map([...toolbar.querySelectorAll('[data-jelly-nav]')].map(node=>[node.dataset.jellyNav,node]));
+    toolbar.innerHTML=jellyChoices('editing','Sposób pracy',[['view','Według widoku'],['component','Według elementu']],this.editingMode)+`<div class=preview-toolbar>${jellyChoices('category','Kategoria',Object.entries(CATEGORIES),category)}${category==='game'?jellyChoices('mode','Tryb gry',Object.entries(MODE_NAMES),this.view.mode):''}${jellyChoices('view','Ekran i stan',views.filter(row=>componentCategories(row)===category&&(category!=='game'||row.mode===this.view.mode)).map(row=>[row.id,screenLabel(row)]),this.viewId)}</div><div class=element-search><input id=component-search aria-label='Szukaj elementu' placeholder='Szukaj w gałęziach tego ekranu…' value='${html(this.search)}'></div>`;
+    mountJellies(toolbar,previous);
+    if(focused)[...toolbar.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===focused.group&&input.value===focused.value)?.focus({preventScroll:true});
+    this.workspace.querySelector('#preview-guide').textContent='Od kontenera do szczegółu. Wybór odsłania element; ścieżka pozwala wrócić do dowolnego rodzica.';
     this.workspace.querySelector('#preview-controls').innerHTML=`<div class=preview-subbar><div class=preview-switches><label><input type=checkbox id=highlight-selection ${this.highlight?'checked':''}>Pokaż wybrany element</label><label><input type=checkbox id=inspect-mode ${this.picking?'checked':''}>Wybierz kliknięciem</label></div><button class=small-button id=wide-preview>${this.wide?'Pokaż ustawienia':'Więcej miejsca na ekrany'}</button></div><div class=preview-options>${this.editingMode==='component'?`<label><input type=checkbox id=compare-views ${this.compare?'checked':''}>Porównaj widoki obok siebie</label>`:''}<label>Powiększenie<select id=preview-zoom ${this.compare?'disabled':''}><option value=fit ${this.zoom==='fit'?'selected':''}>Dopasuj telefon</option><option value=100 ${this.zoom==='100'?'selected':''}>100% — rzeczywisty rozmiar</option></select></label><button class=quiet-button id=reset-preview>Zresetuj stan podglądu</button><a class=preview-open href='${this.viewURL(this.view)}' target=_blank rel=noopener>Otwórz sam ekran ↗</a></div><div id=compare-choices></div>`;
     this.renderPills();this.renderCompareChoices();
     this.workspace.querySelector('.component-layout').classList.toggle('wide-preview',this.wide);
   }
   renderPills(){
     const strip=this.workspace.querySelector('#component-strip');if(!strip)return;
-    const available=this.available(),inventory=this.inventories.get(this.viewId);
-    strip.innerHTML=this.registry.components.filter(component=>(this.editingMode==='component'||this.showAbsent||available.has(component.id))&&this.name(component).toLocaleLowerCase('pl').includes(this.search.toLocaleLowerCase('pl'))).map(component=>{
-      const absent=this.editingMode==='view'&&!available.has(component.id);
-      const count=inventory?.items.filter(item=>item.component===component.id&&item.index>=0&&(item.visible||item.temporary!=='visible')).length;
-      return `<button data-component=${component.id} class='${component.id===this.componentId?'selected':''} ${absent?'absent':''}' ${absent?'disabled':''} title='${absent?'Nie występuje w wybranym ekranie':html(component.description)}'>${html(this.name(component))}${count?`<span class=element-count>${count}</span>`:''}</button>`;
-    }).join('')||'<p class=empty-hint>Nie znaleziono elementu. Zmień nazwę w wyszukiwaniu.</p>';
+    const inventory=this.inventories.get(this.viewId),tree=componentTree(inventory?.items),selected=this.activeSelection();
+    const id=tree.byId.has(selected?.id)?selected.id:'layout-root',path=tree.path(id),children=(tree.children.get(id)||[]).filter(tree.available);
+    const parent=tree.byId.get(id)?.parent,branch=children.length?id:parent||'layout-root';
+    const query=this.search.trim().toLocaleLowerCase('pl');
+    const rows=query?(inventory?.items||[]).filter(item=>item.id!=='layout-root'&&tree.available(item)&&item.label.toLocaleLowerCase('pl').includes(query)):(children.length?children:(tree.children.get(branch)||[]).filter(tree.available));
+    strip.innerHTML=(this.editingMode==='component'?`<div class=family-choices aria-label='Rodziny elementów'>${this.registry.components.map(component=>`<button data-component=${component.id} class='${component.id===this.componentId?'selected':''}'>${html(this.name(component))}</button>`).join('')}</div>`:'')+`<section class=component-navigation aria-label='Hierarchia elementów'><nav class=component-crumbs aria-label='Ścieżka elementu'>${path.map((item,i)=>`${i?'<span aria-hidden=true>›</span>':''}<button data-tree-select='${item.id}' ${item.id===id?'aria-current=location':''}>${html(item.label)}</button>`).join('')||'Wczytywanie hierarchii…'}</nav><div class=branch-heading><strong>${query?'Wyniki w całym ekranie':children.length?'Dzieci · '+html(tree.byId.get(id)?.label||'Ekran'):'Ten sam poziom · '+html(tree.byId.get(branch)?.label||'Ekran')}</strong><span>${rows.length} ${query?'wyników':'elementów'}</span></div><div class=branch-children>${rows.map(item=>{const count=(tree.children.get(item.id)||[]).filter(tree.available).length;return `<button class='branch-node ${item.id===id?'selected':''}' data-tree-select='${item.id}' aria-label='Wybierz: ${html(item.label)}'><span class=branch-symbol aria-hidden=true>${item.kind==='background'?'▧':count?'▦':'·'}</span><span><b>${html(item.label)}</b><small>${query?html(tree.path(item.id).slice(0,-1).map(row=>row.label).join(' › ')):html(ELEMENT_FAMILIES[item.recipe]||ELEMENT_KINDS[item.kind]||'Element')}${!item.visible?' · odsłoń w podglądzie':''}</small></span>${count?`<span class=branch-arrow>${count} ›</span>`:''}</button>`;}).join('')||'<p class=branch-empty>Brak dalszych elementów. Wróć ścieżką do rodzica.</p>'}</div></section>`;
   }
   renderCompareChoices(){
     const node=this.workspace.querySelector('#compare-choices');if(!node)return;
@@ -89,18 +98,18 @@ export class StudioPreview {
   }
   prepare(frame){
     this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:this.picking,highlight:this.highlight});
-    this.send(frame,'focus',{component:this.componentId,selector:this.pendingSelector,reveal:false});this.pendingSelector='';
+    this.send(frame,'focus',this.editingMode==='view'&&!this.pendingSelector?{id:this.selections.get(frame.dataset.previewView)?.id||'layout-root',reveal:false}:{component:this.componentId,selector:this.pendingSelector,reveal:true});this.pendingSelector='';
   }
   focus(reveal=true){
     for(const frame of this.frames())this.send(frame,'focus',{component:this.componentId,reveal:reveal&&frame===this.activeFrame()});
   }
   openView(id){
     if(!this.registry.views.some(view=>view.id===id))return;
-    this.viewId=id;
+    this.search='';this.viewId=id;
     if(this.editingMode==='view'&&!this.view.components.includes(this.componentId))this.componentId=this.view.components[0];
     if(this.compare&&!this.compareViews.includes(id))this.compareViews.push(id);
     this.notifyState();
-    if(this.isOpen){this.renderToolbar();this.renderInspector();this.syncGallery();this.focus(false);}
+    if(this.isOpen){this.renderToolbar();this.renderInspector();this.syncGallery();this.send(this.activeFrame(),'focus',{id:'layout-root',reveal:true});}
   }
   chooseComponent(id){
     if(!this.registry.components.some(component=>component.id===id))return;
@@ -121,9 +130,8 @@ export class StudioPreview {
   }
   renderSelectionPanel(){
     const node=this.workspace.querySelector('#selected-element');if(!node)return;
-    const inventory=this.inventories.get(this.viewId),selected=this.activeSelection(),items=inventory?.items.filter(item=>item.visible||item.temporary!=='visible')||[];
-    const options=items.map(item=>{const component=this.registry.components.find(row=>row.id===item.component);return `<option value='${item.id}' ${selected?.id===item.id?'selected':''}>${html(item.index===-1?'Cały ekran':this.name(component)+(item.label?' · '+item.label:'')+(item.parent&&item.parent!=='layout-root'?' ‹ '+(items.find(r=>r.id===item.parent)?.label||'Kontener'):''))}</option>`;}).join('');
-    node.innerHTML=`<section class=selected-element><label>Element lub kontener na ekranie<select id=selected-instance aria-label='Element lub kontener na ekranie'>${options||'<option>Wczytywanie ekranu…</option>'}</select></label>${selected?`<p class=element-measure>${number(selected.metrics.width)} × ${number(selected.metrics.height)} px</p>${selected.parents?.length?'<button class=small-button id=select-parent>Wybierz kontener wyżej</button>':''}<div class=live-states><strong>Sprawdź stan w podglądzie</strong><p>To zmienia tylko przykład na ekranie.</p>${selected.actions?.length?`<div>${selected.actions.map(action=>`<button class='state-pill ${action.selected?'active':''}' data-preview-action='${action.id}' data-action-label='${html(action.label)}'>${html(action.label)}</button>`).join('')}</div>`:'<p class=empty-hint>Ten element nie ma przełączanych opcji. Wybierz kontener lub inny stan ekranu.</p>'}</div>`:'<p class=empty-hint>Wybierz element z listy albo kliknij go na ekranie.</p>'}</section>`;
+    const selected=this.activeSelection();
+    node.innerHTML=selected?`<section class=selected-element><h3>${html(selected.label)}</h3><p class=element-measure>${number(selected.metrics.width)} × ${number(selected.metrics.height)} px</p>${selected.parents?.length?'<button class=small-button id=select-parent>‹ Kontener wyżej</button>':''}<p class=selection-status data-status='${selected.visible===false?'missing':'visible'}'>${selected.visible===false?'Element jest ukryty w tym stanie. Wybierz go ponownie, aby odsłonić.':'Wybrany element w podglądzie'}</p>${selected.actions?.length?`<details class=live-states><summary>Stan tego elementu</summary><p>Zmienia tylko przykład w podglądzie.</p><div>${selected.actions.map(action=>`<button class='state-pill ${action.selected?'active':''}' data-preview-action='${action.id}' data-action-label='${html(action.label)}'>${html(action.label)}</button>`).join('')}</div></details>`:''}</section>`:'<p class=empty-hint>Wybierz kontener, a potem schodź po jego gałęziach.</p>';
   }
   renderLayers(){
     const node=this.workspace.querySelector('#preview-layers');if(!node)return;
@@ -140,7 +148,7 @@ export class StudioPreview {
     const global={...this.config.elementStyles?.[item.kind],...this.config.elementStyles?.[item.recipe]},local=this.config.elementOverrides?.[this.viewId]?.[item.id]||{},style=visualValue(this.config,this.viewId,item);
     const hex=value=>{if(/^#/.test(value||''))return value.slice(0,7);const rgb=(value||'').match(/\d+/g);return rgb&&rgb.length>=3?'#'+rgb.slice(0,3).map(v=>Number(v).toString(16).padStart(2,'0')).join(''):'#ffffff';};
     const keys=item.kind==='text'?['fontSize','width','padding']:item.kind==='icon'?['width','height','padding']:['width','height','padding','gap','radius',...(['button','timer','key','toggle'].includes(item.kind)?['fontSize']:[])];
-    node.innerHTML=`<section class=visual-properties><h3>Wygląd tego elementu</h3><p class=scope-help>${this.scope==='view'?'Zmiana tylko tutaj.':'Wspólny przepis: '+html(ELEMENT_FAMILIES[item.recipe]||item.label||ELEMENT_KINDS[item.kind]||'Kontener')}. <span class=source-badge>${Object.keys(local).length?'Ma wyjątki lokalne':item.nativeVariant?'Wariant lokalny · '+html(item.nativeVariant):'Dziedziczy wspólny wygląd'}</span></p>${keys.map(key=>{const [min,hard,label]=VISUAL_FIELDS[key],saved=Math.min(hard,Math.max(min,this.savedVisual(key))),value=Math.min(hard,Math.max(min,style[key]??this.metricBase.get(baseKey)[key]??0)),[a,b]=dynamicRange(value,saved,min,key==='width'?390:key==='height'?200:key==='fontSize'?48:hard,hard);return `<div class=control><div class=control-top><label>${label}</label><span class=control-value><input type=number aria-label='Element · ${label}' data-visual-number=${key} min=${min} max=${hard} value=${value.toFixed(1)} step=.5></span></div><div class=range-wrap><input type=range aria-label='Element · ${label}' data-visual-number=${key} min=${a} max=${b} step=.5 value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,a,b)/100}'></span></div><div class=saved-value><span>Zapisane: ${number(saved)} · <b>${Object.hasOwn(local,key)?'Lokalne':Object.hasOwn(global,key)?'Globalne':item.nativeVariant?'Wariant trybu · '+html(item.nativeVariant):'Styl komponentu'}</b></span><button data-visual-reset=${key}>Dziedzicz</button></div></div>`;}).join('')}<div class=visual-colors>${[['textColor','Kolor tekstu / ikony'],['background','Kolor tła']].map(([key,label])=>`<label>${label}<input type=color aria-label='${label}' data-visual-field=${key} value='${hex(style[key]||item.metrics[key])}'><small>${Object.hasOwn(local,key)?'Lokalne':'Dziedziczone'}</small></label>`).join('')}</div>${item.kind==='icon'?`<label class=form-field><span>Ikona</span><select data-visual-field=icon aria-label='Zamień ikonę'><option value=''>Obecna</option>${Object.entries(ICONS).map(([id,name])=>`<option value=${id} ${style.icon===id?'selected':''}>${name}</option>`).join('')}</select></label>`:''}${['image','background'].includes(item.kind)?`<label class=form-field><span>Dopasowanie grafiki</span><select data-visual-field=fit aria-label='Dopasowanie grafiki'><option value=cover ${style.fit!=='contain'?'selected':''}>Wypełnij</option><option value=contain ${style.fit==='contain'?'selected':''}>Pokaż całą</option></select></label><label class=form-field><span>Grafika z bazy</span><select data-visual-field=asset aria-label='Grafika elementu'><option value=''>Obecna grafika</option>${(this.getDesign().assets?.assets||[]).filter(a=>/\.(webp|png|jpg|svg)$/.test(a.path)).map(a=>`<option value='${html(a.path)}' ${style.asset===a.path?'selected':''}>${html(a.path.replace('assets/',''))}</option>`).join('')}</select></label>${['imageScale','imageX','imageY','opacity'].map(key=>{const [min,max,label]=VISUAL_FIELDS[key];return `<label class=form-field><span>${label}</span><input type=number aria-label='${label}' data-visual-number=${key} min=${min} max=${max} step=.05 value=${style[key]??({imageScale:1,imageX:50,imageY:50,opacity:1})[key]}></label>`;}).join('')}`:''}<details><summary>Wspólny wygląd i zamiana</summary><p>Zamiana przejmuje przepis wizualny. Funkcja przycisku i jego połączenia zostają.</p><select data-visual-field=replacement aria-label='Zastąp przepis elementu'><option value=''>Oryginalny przepis</option>${[...Object.keys(ELEMENT_FAMILIES),'container','text','icon','image'].map(kind=>`<option value=${kind} ${local.replacement===kind?'selected':''}>${html(ELEMENT_FAMILIES[kind]||ELEMENT_KINDS[kind]||kind)}</option>`).join('')}</select><button class=small-button id=visual-reset-local>Scal ze wspólnym · usuń wyjątki</button></details><button class=small-button id=send-to-builder>Otwórz kopię w builderze</button></section>`;
+    node.innerHTML=`<section class=visual-properties><h3>Wygląd tego elementu</h3><p class=scope-help>${this.scope==='view'?'Zmiana tylko tutaj.':'Wspólny przepis: '+html(ELEMENT_FAMILIES[item.recipe]||item.label||ELEMENT_KINDS[item.kind]||'Kontener')}. <span class=source-badge>${Object.keys(local).length?'Ma wyjątki lokalne':item.nativeVariant?'Wariant lokalny · '+html(item.nativeVariant):'Dziedziczy wspólny wygląd'}</span></p>${keys.map(key=>{const [min,hard,label]=VISUAL_FIELDS[key],saved=Math.min(hard,Math.max(min,this.savedVisual(key))),value=Math.min(hard,Math.max(min,style[key]??this.metricBase.get(baseKey)[key]??0)),[a,b]=dynamicRange(value,saved,min,key==='width'?390:key==='height'?200:key==='fontSize'?48:hard,hard);return `<div class=control><div class=control-top><label>${label}</label><span class=control-value><input type=number aria-label='Element · ${label}' data-visual-number=${key} min=${min} max=${hard} value=${value.toFixed(1)} step=.5></span></div><div class=range-wrap><input type=range aria-label='Element · ${label}' data-visual-number=${key} min=${a} max=${b} step=.5 value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,a,b)/100}'></span></div><div class=saved-value><span>Zapisane: ${number(saved)} · <b>${Object.hasOwn(local,key)?'Lokalne':Object.hasOwn(global,key)?'Globalne':item.nativeVariant?'Wariant trybu · '+html(item.nativeVariant):'Styl komponentu'}</b></span><button data-visual-reset=${key}>Dziedzicz</button></div></div>`;}).join('')}${item.editableText&&this.scope==='view'?`<label class='form-field local-copy'><span>Tekst tylko w tym miejscu</span><textarea data-visual-field=text maxlength=600 aria-label='Tekst elementu'>${html(style.text??item.editableText)}</textarea><button data-visual-reset=text>Przywróć tekst</button></label>`:''}<div class=visual-colors>${[['textColor','Kolor tekstu / ikony'],['background','Kolor tła']].map(([key,label])=>`<label>${label}<input type=color aria-label='${label}' data-visual-field=${key} value='${hex(style[key]||item.metrics[key])}'><small>${Object.hasOwn(local,key)?'Lokalne':'Dziedziczone'}</small></label>`).join('')}</div>${item.kind==='icon'?`<label class=form-field><span>Ikona</span><select data-visual-field=icon aria-label='Zamień ikonę'><option value=''>Obecna</option>${Object.entries(ICONS).map(([id,name])=>`<option value=${id} ${style.icon===id?'selected':''}>${name}</option>`).join('')}</select></label>`:''}${['image','background'].includes(item.kind)?`<label class=form-field><span>Dopasowanie grafiki</span><select data-visual-field=fit aria-label='Dopasowanie grafiki'><option value=cover ${style.fit!=='contain'?'selected':''}>Wypełnij</option><option value=contain ${style.fit==='contain'?'selected':''}>Pokaż całą</option></select></label><label class=form-field><span>Grafika z bazy</span><select data-visual-field=asset aria-label='Grafika elementu'><option value=''>Obecna grafika</option>${(this.getDesign().assets?.assets||[]).filter(a=>/\.(webp|png|jpg|svg)$/.test(a.path)).map(a=>`<option value='${html(a.path)}' ${style.asset===a.path?'selected':''}>${html(a.path.replace('assets/',''))}</option>`).join('')}</select></label>${['imageScale','imageX','imageY','opacity'].map(key=>{const [min,max,label]=VISUAL_FIELDS[key];return `<label class=form-field><span>${label}</span><input type=number aria-label='${label}' data-visual-number=${key} min=${min} max=${max} step=.05 value=${style[key]??({imageScale:1,imageX:50,imageY:50,opacity:1})[key]}></label>`;}).join('')}`:''}<details><summary>Wspólny wygląd i zamiana</summary><p>Zamiana przejmuje przepis wizualny. Funkcja przycisku i jego połączenia zostają.</p><select data-visual-field=replacement aria-label='Zastąp przepis elementu'><option value=''>Oryginalny przepis</option>${[...Object.keys(ELEMENT_FAMILIES),'container','text','icon','image'].map(kind=>`<option value=${kind} ${local.replacement===kind?'selected':''}>${html(ELEMENT_FAMILIES[kind]||ELEMENT_KINDS[kind]||kind)}</option>`).join('')}</select><button class=small-button id=visual-reset-local>Scal ze wspólnym · usuń wyjątki</button></details><button class=small-button id=send-to-builder>Otwórz kopię w builderze</button></section>`;
   }
   updateSavedIndicators(){
     for(const row of this.workspace.querySelectorAll('[data-control]')){
@@ -161,6 +169,8 @@ export class StudioPreview {
       this.inventories.delete(old);this.selections.delete(old);frame.dataset.previewView=next;frame.title='Podgląd: '+view.name;tile.dataset.tileView=next;const heading=tile.querySelector('.preview-tile-heading');heading.dataset.activeView=next;heading.innerHTML=html(view.name)+'<span>Edytuj ten ekran</span>';
       this.compareViews=this.compareViews.map(v=>v===old?next:v);if(this.viewId===old){this.viewId=next;this.renderToolbar();this.renderInspector();this.notifyState();}id=next;this.updateActiveFrame();
     }
+    if(message.type==='preview-interaction')this.returnNavFocus=null;
+    if(message.type==='preview-focus'&&this.returnNavFocus){const pending=this.returnNavFocus;requestAnimationFrame(()=>[...this.workspace.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===pending.group&&input.value===pending.value)?.focus({preventScroll:true}));}
     if(message.type==='ready'){this.prepare(frame);return;}
     if(message.type==='inventory'){
       this.inventories.set(id,{items:message.items||[]});
@@ -170,6 +180,7 @@ export class StudioPreview {
         if(!available.has(this.componentId)){this.componentId=message.items.find(item=>item.visible&&item.index>=0)?.component||'layout';this.renderInspector();this.notifyState();}
         if(!message.selection && available.has(this.componentId))this.send(frame,'focus',{component:this.componentId,reveal:false});
         this.renderPills();this.renderSelectionPanel();this.renderLayers();this.renderVisual();
+        if(message.rendered&&this.returnNavFocus){const pending=this.returnNavFocus;requestAnimationFrame(()=>[...this.workspace.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===pending.group&&input.value===pending.value)?.focus({preventScroll:true}));}
       }
     }
     if(message.type==='select'||message.type==='focused'&&message.explicit){
@@ -177,6 +188,7 @@ export class StudioPreview {
       this.notifyState();this.updateActiveFrame();this.renderToolbar();this.renderInspector();
     }
     if(message.type==='blueprint')this.toBuilder?.(message.value);
+    if(message.type==='missing'){this.selections.delete(id);this.renderInspector();this.notice(message.message||'Ten element nie występuje w bieżącym stanie. Wybierz go w hierarchii właściwego ekranu.');}
     if(message.type==='notice')this.notice(message.message);
   }
   click(event){
@@ -184,6 +196,7 @@ export class StudioPreview {
     const button=event.target.closest('button');if(!button)return;
     event.stopImmediatePropagation();
     if(button.dataset.editingMode){this.editingMode=button.dataset.editingMode;this.compare=false;if(this.editingMode==='view'&&!this.available().has(this.componentId))this.componentId=this.view.components[0];this.renderToolbar();this.renderInspector();this.syncGallery();this.focus(false);}
+    if(button.dataset.treeSelect){this.search='';this.send(this.activeFrame(),'focus',{id:button.dataset.treeSelect,reveal:true});}
     if(button.dataset.component)this.chooseComponent(button.dataset.component);
     if(button.dataset.openView)this.openView(button.dataset.openView);
     if(button.dataset.activeView)this.openView(button.dataset.activeView);
@@ -205,6 +218,7 @@ export class StudioPreview {
   change(event){
     const target=event.target;if(!target.closest('.component-layout'))return;
     event.stopImmediatePropagation();
+    if(target.dataset.studioNav){const kind=target.dataset.studioNav;if(this.keyboardNav){this.returnNavFocus={group:kind,value:target.value};this.keyboardNav=false;}if(kind==='editing'){this.editingMode=target.value;this.compare=false;this.renderToolbar();this.renderPills();this.syncGallery();}if(kind==='category'){this.scope='view';this.openView(this.registry.views.find(v=>componentCategories(v)===target.value)?.id);}if(kind==='mode')this.openView(target.value+'-settings');if(kind==='view')this.openView(target.value);if(event.isTrusted){const value=target.value;requestAnimationFrame(()=>[...this.workspace.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===kind&&input.value===value)?.focus({preventScroll:true}));}return;}
     if(target.id==='category-select'){this.scope='view';this.openView(this.registry.views.find(v=>componentCategories(v)===target.value)?.id);}
     if(target.id==='mode-select'){this.openView(target.value+'-settings');}
     if(target.id==='view-select')this.openView(target.value);

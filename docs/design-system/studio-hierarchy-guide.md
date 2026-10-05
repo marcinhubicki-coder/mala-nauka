@@ -4,9 +4,9 @@ Otwórz **Komponenty → Według widoku**. Najpierw wybierz kategorię: **Ekran 
 
 ## Zmień konkretny element
 
-1. Wybierz ekran. Pastylki i lista instancji wynikają z faktycznie otwartego widoku. Po kliknięciu przycisku wewnątrz podglądu Studio rozpoznaje nowy ekran.
+1. Wybierz ekran. Gałęzie i ich dzieci wynikają z faktycznie otwartego widoku. Po kliknięciu przycisku wewnątrz podglądu Studio rozpoznaje nowy ekran.
 2. Włącz **Pokaż wybrany element**, wskaż pastylkę lub użyj wyboru kliknięciem.
-3. Wybierz instancję. Lista zaczyna się od elementów wewnętrznych; tła i kontenery nadrzędne są na końcu. **Kontener wyżej** pokazuje zależność.
+3. Zacznij od kontenera i schodź po jego dzieciach. Tło jest pierwszą warstwą w grupie; pozostałe elementy zachowują kolejność ekranu. Pełna ścieżka rodziców pozwala wrócić na dowolny poziom. Wybranie dziecka odsłania wymagany stan. [Aktualna nawigacja komponentów i weryfikacja](component-navigation.md).
 4. Zacznij od **Tylko ten widok**. Kolor, rozmiar, ikona i grafika stają się wyjątkiem tego elementu. **Wspólny przepis** zmienia jego rodzinę.
 5. Każde pole pokazuje pochodzenie: globalne, lokalne, styl komponentu albo wariant trybu. **Dziedzicz** usuwa wyjątek. Znacznik **Zapisane** pozwala wrócić do wartości sprzed zabawy.
 

@@ -15,6 +15,8 @@ export function configureScreenCopy(value=[]){overrides=value;applyScreenCopy();
 export function applyScreenCopy(){
   const root=document.getElementById('app');if(!root)return;const viewId=document.documentElement.dataset.dsView,list=nodes(root);
   for(const {el,node}of list){
+    // An explicit per-element text exception takes precedence over screen copy.
+    if(el.dataset.dsOriginalText!==undefined)continue;
     const saved=originals.get(node);let original=saved?.original||node.textContent.trim();
     if(saved&&node.textContent.trim()!==saved.last&&node.textContent.trim()!==original){originals.delete(node);original=node.textContent.trim();}
     const match=overrides.find(r=>r.viewId===viewId&&r.tag===el.tagName.toLowerCase()&&r.original===original);

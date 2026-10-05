@@ -21,7 +21,37 @@ const temporaryVisibility = new Map();
 const originalStyles = new WeakMap();
 const app = () => document.getElementById('app');
 const emit = data => { if (parent !== window) parent.postMessage({channel:'mala-nauka-studio',...data},location.origin); };
-const visible = node => Boolean(node?.getClientRects().length) && getComputedStyle(node).visibility !== 'hidden' && getComputedStyle(node).display !== 'none';
+const visible = node => {
+  if(!node?.getClientRects().length)return false;
+  for(let parent=node;parent&&parent!==document.body;parent=parent.parentElement){
+    const style=getComputedStyle(parent);
+    if(parent.hidden||parent.inert||parent.getAttribute('aria-hidden')==='true'&&!parent.matches('img,svg,.spelling-screen-bg')||style.visibility==='hidden'||style.display==='none'||Number(style.opacity)===0)return false;
+  }
+  const rect=node.getBoundingClientRect();return rect.width>0&&rect.height>0;
+};
+const gates = node => {
+  const requirements=[];
+  if(node.closest('[data-category-panel]'))requirements.push(['[name="spellingScope"][value="categories"], [name="englishScope"][value="categories"]','Kategorie']);
+  if(node.closest('[data-dictation-panel]'))requirements.push(['[name="spellingScope"][value="dictation"]','Dyktando']);
+  if(app()?.dataset.mode==='english'&&node.closest('fieldset')?.querySelector('[name=duration],[name=difficulty]')&&!node.closest('[data-category-panel]'))requirements.push(['[name=englishEditAction][value=cancel]','Zamknij wybór kategorii']);
+  const options=node.closest('[data-round-options]');
+  if(options){requirements.push(['[name="spellingScope"][value="all"]','Wszystko']);requirements.push([`[name="limitMode"][value="${options.dataset.roundOptions}"]`,options.dataset.roundOptions==='time'?'Czas':'Słowa']);}
+  return requirements;
+};
+const revealable = node => gates(node).length>0&&gates(node).every(([selector])=>app()?.querySelector(selector));
+const blockedByDialog = node => [...document.querySelectorAll('dialog[open]')].some(dialog=>!dialog.contains(node)&&node!==app());
+
+const exposed = item => {
+  if(item.id==='layout-root'||item.kind==='background')return true;
+  const r=item.node.getBoundingClientRect();
+  for(const x of [.2,.5,.8])for(const y of [.2,.5,.8]){
+    const px=r.left+r.width*x,py=r.top+r.height*y;
+    if(px<0||py<0||px>=innerWidth||py>=innerHeight)continue;
+    const hit=document.elementFromPoint(px,py);
+    if(hit&&(item.node.contains(hit)||hit.contains(item.node)))return true;
+  }
+  return false;
+};
 const caption = node => (node.getAttribute('aria-label') || node.getAttribute('alt') || node.querySelector('legend,h1,h2,h3,.setup-title')?.textContent || node.textContent || '').replace(/\s+/g,' ').trim().slice(0,55);
 
 function collect() {
@@ -38,8 +68,21 @@ function collect() {
       else {const id=`${component.id}-${index}`;node.dataset.dsElement=id;result.set(id,{id,component:component.id,index,label:caption(node),node,kind:'container',depth:0,parent:'layout-root'});}
     });
   }
-  // Children sit above their containers; decorative backdrops and canvas are last.
-  return new Map([...result].sort(([,a],[,b])=>(a.index===-1?1:b.index===-1?-1:a.kind==='background'?1:b.kind==='background'?-1:(b.depth||0)-(a.depth||0))));
+  // Resolve parents after every family has been mapped, including legacy containers.
+  const byNode=new Map([...result.values()].map(item=>[item.node,item]));
+  let order=0;
+  for(const item of result.values()){
+    item.order=order++;
+    if(item.id==='layout-root'){item.kind='container';item.label='Cały ekran';continue;}
+    let parent=item.node.parentElement;
+    while(parent&&!byNode.has(parent))parent=parent.parentElement;
+    item.parent=byNode.get(parent)?.id||'layout-root';
+  }
+  for(const item of result.values()){
+    item.depth=0;const seen=new Set([item.id]);let parent=result.get(item.parent);
+    while(parent&&!seen.has(parent.id)){seen.add(parent.id);item.depth++;parent=result.get(parent.parent);}
+  }
+  return result;
 }
 
 function applyVisibility() {
@@ -61,9 +104,9 @@ function controls(item) {
   actions = new Map();
   if (!item) return [];
   const result = [];
-  for (const node of item.node.querySelectorAll('button,input[type=radio],input[type=checkbox]')) {
+  for (const node of item.node.querySelectorAll('input[type=radio],input[type=checkbox]')) {
     const target = node.matches('input') ? node.closest('label') || node : node;
-    if (!visible(target) || node.disabled) continue;
+    if (!visible(target) || node.disabled || node.closest('[data-ds-element]')?.parentElement.closest('[data-ds-element]')!==item.node && target!==item.node) continue;
     const label = caption(target);
     if (!label || result.some(row=>row.label===label) || result.length>=30) continue;
     const id = 'action:'+result.length;
@@ -82,16 +125,20 @@ function selectedDetails() {
     if(match && !parents.includes(match.id))parents.push(match.id);
   }
   const nativeVariant=item.recipe==='button-answer'?({math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'})[document.documentElement.dataset.dsView.split('-')[0]]||'':'';
-  return {id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
+  const textNodes=[...item.node.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim());
+  return {visible:visible(item.node),editableText:item.kind==='text'&&textNodes.length===1?(item.node.dataset.dsOriginalText||textNodes[0].textContent.trim()):null,id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
+let dialogOutline;
 function paintHighlight() {
   overlay?.remove();
+  if(dialogOutline){const {node,value,priority}=dialogOutline;node.style.setProperty('outline',value,priority);dialogOutline=null;}
   if (!showHighlight || !selectedItem()) return;
   const chosen = selectedItem();
+  if(chosen.node.closest('dialog[open]')){dialogOutline={node:chosen.node,value:chosen.node.style.getPropertyValue('outline'),priority:chosen.node.style.getPropertyPriority('outline')};chosen.node.style.setProperty('outline','3px solid #315af2','important');return;}
   overlay = Object.assign(document.createElement('div'),{id:'ds-selection-layer'});
   overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2147483647;overflow:hidden';
   for (const item of items.values()) {
-    if (item.component!==chosen.component || !visible(item.node)) continue;
+    if (item.id!==chosen.id || !visible(item.node)) continue;
     const rect=item.node.getBoundingClientRect();
     if(!rect.width || !rect.height)continue;
     const box=document.createElement('div');
@@ -107,24 +154,59 @@ function report() {
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,visible:visible(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);
   reportTimer=setTimeout(report,70);
 }
-function focusItem(message) {
+let focusVersion=0;
+async function focusItem(message) {
+  const version=++focusVersion;
   items=collect();
-  let item=message.selector?[...items.values()].find(row=>row.node.matches(message.selector)):message.id?items.get(message.id):[...items.values()].find(row=>row.component===message.component && row.index>=0 && visible(row.node));
-  if(!item && message.component==='layout')item=items.get('layout-root');
-  if(!item){selection=null;overlay?.remove();emit({type:'missing',component:message.component});return;}
-  selection=item.id;
-  if(message.reveal && visible(item.node))item.node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
-  report();
-  emit({type:'focused',explicit:Boolean(message.id),...selectedDetails()});
+  const find=()=>message.selector?[...items.values()].find(row=>row.node.matches(message.selector)):message.id?items.get(message.id):[...items.values()].find(row=>row.component===message.component&&row.index>=0&&(visible(row.node)||revealable(row.node)));
+  let item=find();
+  if(!item&&message.component==='layout')item=items.get('layout-root');
+  if(!item){if(app()?.querySelector('button,input')&&!app()?.querySelector('.loading'))emit({type:'missing',component:message.component});return;}
+  const id=item.id;
+  if(message.reveal){
+    // Restore the actual ancestors, not unrelated hidden families.
+    for(let node=item.node;node;node=node.parentElement){const row=[...items.values()].find(r=>r.node===node);if(row){temporaryVisibility.delete(row.id);if(temporaryVisibility.has('component:'+row.component))temporaryVisibility.set(row.id,'visible');}}
+    applyVisibility();
+    const click=(input,force=false)=>{if(!input||input.checked&&!force)return;const previous=inspecting;inspecting=false;(input.closest('label')||input).click();inspecting=previous;};
+    if(!item.node.closest('[data-category-panel]')&&app()?.querySelector('[name="englishEditAction"]:enabled'))click(app().querySelector('[name="englishEditAction"][value="cancel"]'),true);
+    for(const [selector]of gates(item.node)){
+      // A selected category scope already permits the time/count controls.
+      if(selector.includes('spellingScope')&&selector.includes('all')&&!app()?.querySelector('[name="spellingScope"][value="dictation"]:checked'))continue;
+      click(app()?.querySelector(selector),!visible(item.node));
+    }
+    for(const details of document.querySelectorAll('details'))if(details.contains(item.node))details.open=true;
+    for(const dialog of document.querySelectorAll('dialog[open]'))if(!dialog.contains(item.node)&&item.node!==app()){
+      const close=dialog.querySelector('[data-action="resume"],[data-action="close"],[data-action="close-modal"],button[aria-label*="Zamknij"]');
+      if(close){const previous=inspecting;inspecting=false;close.click();inspecting=previous;}else dialog.close();
+    }
+    const radio=item.node.matches('label')?item.node.querySelector('input[type=radio]'):item.node.closest('label')?.querySelector('input[type=radio]');
+    if(radio&&!radio.disabled)click(radio);
+    // State adapters may rebuild the DOM; resolve the same stable identity again.
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    if(version!==focusVersion)return;
+    items=collect();item=items.get(id);
+    if(item){
+      const deadline=performance.now()+1200;
+      while((!visible(item.node)||item.node.closest('label')?.querySelector('input')?.disabled)&&performance.now()<deadline){await new Promise(resolve=>requestAnimationFrame(resolve));if(version!==focusVersion)return;}
+      if(visible(item.node))item.node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+    }
+  }
+  if(!item||!visible(item.node)||blockedByDialog(item.node)||message.reveal&&!exposed(item)){
+    emit({type:'missing',component:message.component,message:'Element nie jest dostępny w tym stanie. Wybierz jego kontener lub właściwy ekran.'});return;
+  }
+  selection=item.id;report();
+  emit({type:'focused',explicit:true,...selectedDetails()});
 }
 
 if (studio) {
+  document.addEventListener('pointerdown',()=>emit({type:'preview-interaction'}),true);
+  document.addEventListener('focusin',()=>emit({type:'preview-focus'}));
   document.addEventListener('click',event=>{
     if(!inspecting || !registry || overlay?.contains(event.target))return;
     items=collect();

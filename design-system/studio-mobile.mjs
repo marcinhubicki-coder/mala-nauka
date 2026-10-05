@@ -106,7 +106,7 @@ dock.addEventListener('click',event=>{const button=event.target.closest('[data-m
 workspace.addEventListener('click',event=>{
   if(!mobile.matches)return;
   const button=event.target.closest('button');if(!button)return;
-  if(button.matches('[data-component],[data-open-view],[data-preview-action],[data-layer-select],#start-compare,[data-effect-id]'))requestAnimationFrame(()=>setPane('preview'));
+  if(button.matches('[data-tree-select],[data-component],[data-open-view],[data-preview-action],[data-layer-select],#start-compare,[data-effect-id]'))requestAnimationFrame(()=>setPane('preview'));
   if(button.matches('[data-active-view]'))requestAnimationFrame(()=>setPane('edit'));
 },true);
 window.addEventListener('message',event=>{

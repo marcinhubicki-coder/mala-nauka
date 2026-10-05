@@ -51,7 +51,7 @@ test('catalog merges dotted filenames and new uploads without losing remote assi
 function github({movedBefore=false,movedDuring=false}={}){
  const calls=[],head='1'.repeat(40),newHead='2'.repeat(40);let refReads=0;
  const fetcher=async(url,options)=>{
-  const path=url.split('/mala-nauka/')[1],body=options.body?JSON.parse(options.body):undefined;calls.push({path,method:options.method,body,headers:options.headers});let value,status=200;
+  const path=(url.split('/mala-nauka')[1]||'').replace(/^\//,''),body=options.body?JSON.parse(options.body):undefined;calls.push({path,method:options.method,body,headers:options.headers});let value,status=200;
   if(path==='')value={permissions:{push:true}};
   else if(path.startsWith('git/ref/'))value={object:{sha:movedBefore&&++refReads>1?newHead:head}};
   else if(path.startsWith('contents/'))value={content:Buffer.from(JSON.stringify(config)).toString('base64')};

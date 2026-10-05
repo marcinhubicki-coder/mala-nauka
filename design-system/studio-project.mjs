@@ -14,6 +14,7 @@ export class StudioProject{
     try{this.access=localStorage.getItem('mn-project-preview-access')||'';}catch{}
   }
   flushInput(){clearTimeout(this.inputTimer);const event=this.pendingInput;this.pendingInput=null;if(event&&this.active)void this.change(event).catch(error=>this.notice(error.message));}
+  get narrow(){return matchMedia('(max-width:690px)').matches;}
   get data(){return this.getData();}
   get project(){return this.data.config.project||emptyProject();}
   get events(){return fixtureEvents(this.fixture,this.seed,this.data.words.map(w=>({...w,families:orthographyFamilies(w.word)})));}
@@ -44,7 +45,7 @@ export class StudioProject{
     if(!this.active||event.origin!==location.origin)return;const m=event.data;
     if(m?.channel==='mala-nauka-project'&&event.source===this.frame?.contentWindow){
       if(m.type==='ready')this.sendPreview();
-      if(m.type==='selected'){this.elementId=m.id;this.pane=matchMedia('(max-width:690px)').matches?'edit':this.pane;this.render();}
+      if(m.type==='selected'){this.elementId=m.id;this.pane=this.narrow?'edit':this.pane;this.render();if(this.narrow)this.workspace.querySelector('.project-mobile-panes')?.scrollIntoView({block:'start'});}
       if(m.type==='notice')this.notice(m.message);
       if(m.type==='state'){
         this.summary=m.summary;this.screenId=m.screenId;this.trialEvents=m.trialEvents;this.savedTrialKey=this.trialKey;
@@ -76,8 +77,8 @@ export class StudioProject{
     if(b.id==='project-set-entry'){this.update(p=>{p.entry=this.screenId;});this.render();}
     if(b.id==='project-duplicate-screen'){const s=structuredClone(this.project.screens.find(s=>s.id===this.screenId));s.id=newId('screen');s.name+=' · kopia';s.elements=s.elements.map(e=>({...e,id:newId('element')}));this.update(p=>p.screens.push(s));this.screenId=s.id;this.render();}
     if(b.id==='project-remove-screen'){this.update(p=>{p.screens=p.screens.filter(s=>s.id!==this.screenId);if(p.entry===this.screenId)p.entry=p.screens[0]?.id||'';p.tasks.forEach(t=>{if(t.screen===this.screenId)t.screen='';});});this.render();}
-    if(b.dataset.projectElement){this.elementId=b.dataset.projectElement;this.pane=matchMedia('(max-width:690px)').matches?'edit':this.pane;this.render();}
-    if(b.id==='project-add-element'){const e=newElement(this.workspace.querySelector('#project-component-type').value);this.update(p=>p.screens.find(s=>s.id===this.screenId).elements.push(e));this.elementId=e.id;this.pane=matchMedia('(max-width:690px)').matches?'edit':this.pane;this.render();}
+    if(b.dataset.projectElement){this.elementId=b.dataset.projectElement;this.pane=this.narrow?'edit':this.pane;this.render();if(this.narrow)this.workspace.querySelector('.project-mobile-panes')?.scrollIntoView({block:'start'});}
+    if(b.id==='project-add-element'){const e=newElement(this.workspace.querySelector('#project-component-type').value);this.update(p=>p.screens.find(s=>s.id===this.screenId).elements.push(e));this.elementId=e.id;this.pane=this.narrow?'edit':this.pane;this.render();if(this.narrow)this.workspace.querySelector('.project-mobile-panes')?.scrollIntoView({block:'start'});}
     if(b.id==='project-remove-element'){this.update(p=>{const s=p.screens.find(s=>s.id===this.screenId);s.elements=s.elements.filter(e=>e.id!==this.elementId);});this.render();}
     if(b.dataset.projectMove){this.update(p=>{const s=p.screens.find(s=>s.id===this.screenId),i=s.elements.findIndex(e=>e.id===this.elementId),j=Math.max(0,Math.min(s.elements.length-1,i+Number(b.dataset.projectMove)));[s.elements[i],s.elements[j]]=[s.elements[j],s.elements[i]];});this.render();}
     if(b.dataset.projectPane){this.pane=b.dataset.projectPane;this.workspace.querySelector('.project-screen-grid').dataset.projectPane=this.pane;for(const el of this.workspace.querySelectorAll('[data-project-pane]'))el.setAttribute('aria-pressed',String(el.dataset.projectPane===this.pane));}

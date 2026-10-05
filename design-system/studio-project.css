@@ -9,3 +9,6 @@
 
 .project-range-track{grid-column:1/-1;position:relative}.project-range-track i{position:absolute;left:clamp(9px,var(--saved-position),calc(100% - 9px));top:27px;height:7px;width:2px;background:#4d677f;pointer-events:none}.project-range small{color:#63636b}.project-range button{font-size:12px;min-height:36px;padding:6px}.project-levels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}
 @media(max-width:690px){.project-range-track i{top:35px}.project-range button{min-height:44px}.project-copy-holder{height:auto}.project-copy-holder iframe{transform:none}}
+
+.project-screen-controls summary{display:none}.project-screen-controls .project-screen-toolbar{margin-top:12px}
+@media(max-width:690px){.project-screen-controls{border:1px solid #dedee5;border-radius:12px;background:#fff;padding:12px;margin-bottom:14px}.project-screen-controls summary{display:list-item;cursor:pointer;min-height:32px;font-weight:550;font-size:14px}.project-screen-controls .project-screen-toolbar{margin-bottom:0}.project-mobile-panes{position:sticky;top:var(--studio-bar-height,132px);z-index:5;scroll-margin-top:var(--studio-bar-height,132px)}.project-range input[type=range]{height:44px}.project-range-track i{top:45px}.project-screen-inspector{scroll-margin-top:calc(var(--studio-bar-height,132px) + 60px)}}

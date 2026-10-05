@@ -221,6 +221,7 @@ function openUpload(word=''){
 function sourceFor(word){return audit.wordSources?.[word.word]||'data/words-01.json';}
 function openInventory(){showDialog(`<h2>Rejestr assetów</h2><p>${assets.assets.length} unikalnych plików. Hash i odwołania pozwalają sprawdzić użycie przed usunięciem.</p><div class="change-list" style="max-height:52vh"><table class="table"><thead><tr><th>Plik</th><th>Rozmiar</th><th>Odwołania</th></tr></thead><tbody>${assets.assets.map(asset=>`<tr><td>${escape(asset.path)}</td><td>${(asset.size/1024).toFixed(1)} kB</td><td>${asset.references?.length||0}</td></tr>`).join('')}</tbody></table></div><div class="modal-actions"><button class="quiet-button" data-close>Zamknij</button><button class="solid-button" id="export-assets">Pobierz rejestr JSON</button></div>`);modal.querySelector('#export-assets').onclick=()=>downloadJSON(assets,'mala-nauka-assets.json');}
 window.addEventListener('beforeunload',event=>{if(uploads.length||wordEdits.size){event.preventDefault();event.returnValue='';}});
+const barObserver=new ResizeObserver(entries=>document.documentElement.style.setProperty('--studio-bar-height',entries[0].target.getBoundingClientRect().height+'px'));barObserver.observe(document.querySelector('.studio-topbar'));
 sendDesign();render();
 const feedbackHash=new URLSearchParams(location.hash.slice(1)).get('feedback');if(feedbackHash){projectStudio.importDialog('feedback');modal.querySelector('#project-import-value').value=location.href;}
 

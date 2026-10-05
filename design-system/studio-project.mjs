@@ -1,5 +1,5 @@
 import {html} from './preview-model.mjs';
-import {PROJECT_TABS,emptyProject,discoveryProject,newScreen,newElement,newId,validateProject,projectSnapshot,makeRelease,approveRelease,publishRelease,fingerprint,screenActions,ELEMENT_TYPES} from './project-model.mjs';
+import {PROJECT_TABS,emptyProject,discoveryProject,newScreen,newElement,newId,validateProject,projectSnapshot,makeRelease,approveRelease,publishRelease,fingerprint,screenActions,ELEMENT_TYPES,projectTriggers} from './project-model.mjs';
 import {fixtureEvents,replayDiscovery} from '../shared/discovery-model.mjs';
 import {orthographyFamilies} from '../shared/rules-library.mjs';
 import {encodeShare,decodeShare,previewLink,validateFeedback} from './project-share.mjs';
@@ -7,19 +7,20 @@ import {planPanel,screensPanel,learningPanel,testPanel,copyPanel,copyFields,rele
 
 export class StudioProject{
   constructor(options){Object.assign(this,options);this.tab='plan';this.screenId='';this.elementId='';this.pane='preview';this.editing=true;this.stateOverride='initial';this.fixture='six';this.seed=42;this.copyView='new';this.copyRows=[];this.trace=[];this.active=false;
-    this.workspace.addEventListener('click',e=>{if(this.active)void this.click(e).catch(error=>this.notice(error.message));});
+    this.workspace.addEventListener('click',e=>{if(this.active){this.flushInput();void this.click(e).catch(error=>this.notice(error.message));}});
     this.workspace.addEventListener('change',e=>{if(this.active)void this.change(e).catch(error=>this.notice(error.message));});
-    this.workspace.addEventListener('input',e=>{if(this.active&&e.target.matches('input[type=range]'))void this.change(e).catch(error=>this.notice(error.message));});
+    this.workspace.addEventListener('input',e=>{if(!this.active)return;if(e.target.matches('input[type=range]'))void this.change(e).catch(error=>this.notice(error.message));else if(e.target.matches('[data-element-field=text],[data-screen-field=name],[data-native-copy],[data-project-copy-element]')){clearTimeout(this.inputTimer);this.pendingInput=e;this.inputTimer=setTimeout(()=>this.flushInput(),350);}});
     window.addEventListener('message',e=>this.message(e));
     try{this.access=localStorage.getItem('mn-project-preview-access')||'';}catch{}
   }
+  flushInput(){clearTimeout(this.inputTimer);const event=this.pendingInput;this.pendingInput=null;if(event&&this.active)void this.change(event).catch(error=>this.notice(error.message));}
   get data(){return this.getData();}
   get project(){return this.data.config.project||emptyProject();}
   get events(){return fixtureEvents(this.fixture,this.seed,this.data.words.map(w=>({...w,families:orthographyFamilies(w.word)})));}
   get fixtureState(){return replayDiscovery(this.events,this.project.rules);}
   get trialKey(){return this.fixture+':'+this.seed;}
   update(fn,key=''){this.changeProject(fn,key);}
-  leave(){this.active=false;this.resize?.disconnect();this.flowResize?.disconnect();this.frame=null;this.copyFrame=null;}
+  leave(){this.active=false;this.resize?.disconnect();this.flowResize?.disconnect();this.copyResize?.disconnect();this.frame=null;this.copyFrame=null;}
   render(){
     this.leave();this.active=true;
     const p=this.project;
@@ -30,7 +31,7 @@ export class StudioProject{
     this.workspace.innerHTML=`<div class="content-page project-workspace"><header class=project-header><div><span class=project-eyebrow>Projekt w szkicu</span><h2>${html(p.name)}</h2></div>${button('Zmień nazwę','id=project-rename')}${button('Skopiuj projekt','id=project-copy-project')}${button('Pobierz projekt','id=project-export')}</header><nav class=project-tabs aria-label="Etapy projektu">${Object.entries(PROJECT_TABS).map(([k,n])=>`<button data-project-tab="${k}" aria-current="${this.tab===k?'page':'false'}">${n}</button>`).join('')}</nav><div class=project-panel>${(panels[this.tab]||planPanel)(this)}</div></div>`;
     this.frame=this.workspace.querySelector('#project-frame');this.copyFrame=this.workspace.querySelector('#project-copy-frame');
     if(this.frame){this.frame.onload=()=>this.sendPreview();const holder=this.frame.parentElement;this.resize=new ResizeObserver(()=>{const scale=Math.min(1,holder.clientWidth/390);this.frame.style.transform=`scale(${scale})`;holder.style.height=(844*scale)+'px';});this.resize.observe(holder);}
-    if(this.copyFrame){const view=this.registry.views.find(v=>v.id===this.copyView),url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});this.copyFrame.src=url.href;this.copyFrame.onload=()=>this.sendCopy();}
+    if(this.copyFrame){this.copyResize=new ResizeObserver(()=>{const holder=this.copyFrame.parentElement,scale=Math.min(1,holder.clientWidth/390);this.copyFrame.style.transform=`scale(${scale})`;this.copyFrame.style.transformOrigin='top left';holder.style.height=844*scale+'px';});this.copyResize.observe(this.copyFrame.parentElement);const view=this.registry.views.find(v=>v.id===this.copyView),url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});this.copyFrame.src=url.href;this.copyFrame.onload=()=>this.sendCopy();}
     const flow=this.workspace.querySelector('#project-flow');if(flow){this.flowResize=new ResizeObserver(()=>this.drawFlow());this.flowResize.observe(flow);this.drawFlow();}
   }
   sendPreview(){
@@ -84,6 +85,9 @@ export class StudioProject{
     if(b.id==='project-flow-expand'){this.workspace.querySelector('.project-flow-panel').classList.toggle('expanded');this.drawFlow();}
     if(b.dataset.projectAsset)this.assetDialog(b.dataset.projectAsset);
     if(b.id==='project-remove-background'){this.update(p=>{p.screens.find(s=>s.id===this.screenId).asset='';});this.render();}
+    if(b.id==='project-add-level'){this.update(p=>p.rules.levelThresholds.push(Math.min(500,p.rules.levelThresholds.at(-1)+10)));this.render();}
+    if(b.id==='project-remove-level'){this.update(p=>p.rules.levelThresholds.pop());this.render();}
+    if(b.dataset.ruleReset){this.update(p=>{p.rules[b.dataset.ruleReset]=Number(b.dataset.ruleValue);});this.render();}
     if(b.id==='project-add-challenge'){this.update(p=>p.rules.challenges.push({id:newId('challenge'),name:'Nowe wyzwanie',family:'wszystkie',target:5}));this.render();}
     if(b.id==='project-regenerate'||b.dataset.projectReset!==undefined){this.trialEvents=null;this.summary=null;this.trace=[];this.longCopy=false;this.sendPreview();this.workspace.querySelector('#project-trace').innerHTML='';}
     if(b.dataset.projectTestAction)this.frame?.contentWindow.postMessage({channel:'mala-nauka-project',type:'action',action:{kind:b.dataset.projectTestAction}},location.origin);
@@ -94,7 +98,7 @@ export class StudioProject{
     if(b.dataset.releaseOpen||b.dataset.releaseShare)await this.shareRelease(b.dataset.releaseOpen||b.dataset.releaseShare,Boolean(b.dataset.releaseOpen));
     if(b.dataset.releaseApprove){this.update(p=>{p.releases=p.releases.map(r=>r.id===b.dataset.releaseApprove?approveRelease(r):r);});this.render();}
     if(b.dataset.releasePublish){this.update(p=>Object.assign(p,publishRelease(p,b.dataset.releasePublish)));this.render();this.notice('Pilot ustawiony w szkicu. Zapisz projekt na GitHub, aby go wydać.');}
-    if(b.dataset.releaseRestore){this.update(p=>{const s=p.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot;p.screens=structuredClone(s.screens);p.rules=structuredClone(s.rules);p.copy=structuredClone(s.copy);p.entry=s.entry;});this.applyDraftDesign(this.project.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot.design);this.render();}
+    if(b.dataset.releaseRestore){this.update(p=>{const s=p.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot;p.screens=structuredClone(s.screens);p.rules=structuredClone(s.rules);p.copy=structuredClone(s.copy);p.entry=s.entry;p.triggers=structuredClone(projectTriggers(s));});this.applyDraftDesign(this.project.releases.find(r=>r.id===b.dataset.releaseRestore).snapshot.design);this.render();}
     if(b.dataset.releaseExport)this.download(this.project.releases.find(r=>r.id===b.dataset.releaseExport),'mala-nauka-wersja-testowa.json');
     if(b.dataset.issueScreen){this.screenId=b.dataset.issueScreen;this.tab='screens';this.render();}
     if(b.id==='project-copy-project'){await navigator.clipboard.writeText(JSON.stringify(this.project));this.notice('Projekt skopiowany. Możesz go wkleić w Importuj projekt.');}
@@ -115,7 +119,8 @@ export class StudioProject{
     if(t.dataset.elementAction){const k=t.dataset.elementAction;this.update(p=>{p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId).action[k]=t.value;});this.render();}
     if(t.id==='project-blueprint'){this.update(p=>{const e=p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId);e.blueprint=structuredClone(this.data.config.blueprints.find(b=>b.id===t.value));});this.sendPreview();}
     if(t.dataset.projectRule){const k=t.dataset.projectRule;this.update(p=>{p.rules[k]=Number(t.value);},'discovery-'+k);for(const input of this.workspace.querySelectorAll(`[data-project-rule="${k}"]`))input.value=t.value;this.summary=null;}
-    if(t.id==='project-levels'){this.update(p=>{p.rules.levelThresholds=t.value.split(',').map(v=>Number(v.trim()));});}
+    if(t.dataset.projectLevel!==undefined){this.update(p=>{p.rules.levelThresholds[Number(t.dataset.projectLevel)]=Number(t.value);});this.render();}
+    if(t.dataset.projectTrigger){this.update(p=>{p.triggers={...projectTriggers(p),[t.dataset.projectTrigger]:t.value};});this.drawFlow();}
     for(const group of ['skin','trophy','challenge'])if(t.dataset[group+'Field']){const key=t.dataset[group+'Field'],index=Number(t.dataset[group+'Index']),list={skin:'skins',trophy:'trophies',challenge:'challenges'}[group];this.update(p=>{p.rules[list][index][key]=t.type==='number'?Number(t.value):t.value;});}
     if(t.id==='project-fixture'){this.trialEvents=null;this.fixture=t.value;this.summary=null;this.trace=[];this.sendPreview();}
     if(t.id==='project-seed'){this.trialEvents=null;this.seed=Math.max(1,Math.min(99999,Number(t.value)||42));this.summary=null;this.sendPreview();}
@@ -140,7 +145,7 @@ export class StudioProject{
     this.modal.querySelector('#project-asset-options').onclick=e=>{const b=e.target.closest('[data-pick-project-asset]');if(!b)return;this.update(p=>{const s=p.screens.find(s=>s.id===this.screenId);if(target==='screen')s.asset=b.dataset.pickProjectAsset;else s.elements.find(e=>e.id===this.elementId).asset=b.dataset.pickProjectAsset;});this.modal.close();this.render();};
     this.modal.querySelector('#project-upload-asset').onclick=()=>{this.modal.close();this.upload();};
   }
-  releaseDialog(){this.dialog(`<h2>Zapisz wersję testową</h2><form>${field('Nazwa wersji','Próba '+(this.project.releases.length+1),'id=project-release-name required maxlength=80')}<p>Ta wersja zachowa własne ekrany, teksty, wygląd i zasady. Kolejne zmiany zostają w szkicu.</p><p class=modal-error id=project-release-error role=alert></p><div class=modal-actions>${button('Anuluj','type=button data-close')}${button('Zapisz wersję','type=submit',true)}</div></form>`);this.modal.querySelector('form').onsubmit=e=>{e.preventDefault();try{const r=makeRelease(this.project,this.data.config,this.modal.querySelector('#project-release-name').value.trim());this.update(p=>p.releases.push(r));this.modal.close();this.tab='release';this.render();}catch(e){this.modal.querySelector('#project-release-error').textContent=e.message;}};}
+  releaseDialog(){this.dialog(`<h2>Zapisz wersję testową</h2><form>${field('Nazwa wersji','Próba '+(this.project.releases.length+1),'id=project-release-name required maxlength=80')}<p>Ta wersja zachowa własne ekrany, teksty, wygląd i zasady. Kolejne zmiany zostają w szkicu.</p><p class=modal-error id=project-release-error role=alert></p><div class=modal-actions>${button('Anuluj','type=button data-close')}${button('Zapisz wersję','type=submit',true)}</div></form>`);this.modal.querySelector('form').onsubmit=e=>{e.preventDefault();try{const r=makeRelease(this.project,this.data.config,this.modal.querySelector('#project-release-name').value.trim(),this.data.assets);this.update(p=>p.releases.push(r));this.modal.close();this.tab='release';this.render();}catch(e){this.modal.querySelector('#project-release-error').textContent=e.message;}};}
   async shareRelease(id,open=false){
     const r=this.project.releases.find(r=>r.id===id);
     const pending=new Set(this.getPendingAssets());if(r.snapshot.screens.some(s=>pending.has(s.asset)||s.elements.some(e=>pending.has(e.asset))))throw Error('Zapisz nowe ilustracje na GitHub przed udostępnieniem. Projekt może pozostać szkicem.');

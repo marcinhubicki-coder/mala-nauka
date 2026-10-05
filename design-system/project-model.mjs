@@ -20,6 +20,10 @@ export function projectContract(local,committed){
 export const PROJECT_TABS={plan:'Plan',screens:'Ekrany i flow',copy:'Teksty',learning:'Postępy i nagrody',test:'Test i dane',release:'Wersje i wydanie'};
 export const ELEMENT_TYPES={title:'Tytuł',subtitle:'Podtytuł',hint:'Podpowiedź',numberText:'Numer + tekst',button:'Przycisk jelly',jelly:'Jelly · opcje',image:'Ilustracja',progress:'Postęp',stats:'Wyniki',map:'Mapa odkryć',trophies:'Puchary',blueprint:'Element z buildera'};
 export const ACTIONS={none:'Bez akcji',navigate:'Otwórz ekran',reveal:'Odkryj fragment',skin:'Wybierz skórkę',answer:'Odpowiedz poprawnie',wrong:'Odpowiedz błędnie'};
+export const TRIGGERS={memory:'Punkt pamięci',trophy:'Nowy puchar',combo:'Bonus combo',correct:'Poprawna odpowiedź',wrong:'Pomyłka'};
+export const projectTriggers=p=>p.triggers||{memory:p.screens.some(s=>s.id==='memory-reward')?'memory-reward':''};
+export function triggerTarget(p,events,answerKind){const links=projectTriggers(p),kind=['memory','trophy','combo',answerKind].find(k=>k&&links[k]&&(events.some(e=>e.kind===k)||k===answerKind));return links[kind]||'';}
+function validateTriggers(p){if(p.triggers&&(typeof p.triggers!=='object'||Array.isArray(p.triggers)||Object.entries(p.triggers).some(([k,v])=>!TRIGGERS[k]||(v!==''&&!id(v)))))throw Error('Sprawdź ekrany przypisane do zdarzeń.');}
 export function optionAction(e,i){const a=e.optionActions?.[i];return a&&a.kind!=='inherit'?a:e.action;}
 export function screenActions(s){return s.elements.flatMap(e=>e.type==='jelly'?e.options.map((text,i)=>({...optionAction(e,i),text,condition:e.condition})):[{...e.action,text:e.text,condition:e.condition}]).filter(a=>a.kind!=='none');}
 const id=v=>typeof v==='string'&&/^[a-z][a-z0-9-]{0,79}$/.test(v);
@@ -53,11 +57,11 @@ export function validateCopy(rows){
 export function validateSnapshot(v){
   if(!v||!text(v.name,80)||!Array.isArray(v.screens)||v.screens.length>20||!id(v.entry))throw Error('Sprawdź zestaw ekranów i ekran początkowy.');
   const ids=new Set();for(const s of v.screens){validateScreen(s);if(ids.has(s.id))throw Error('Powtórzony ekran.');ids.add(s.id);}if(!ids.has(v.entry))throw Error('Brak ekranu początkowego.');
-  validateDiscoveryRules(v.rules);validateCopy(v.copy||[]);return v;
+  validateDiscoveryRules(v.rules);validateCopy(v.copy||[]);validateTriggers(v);return v;
 }
 export function validateProject(p){
   safeProject(p);if(p?.schemaVersion!==1||!id(p.id)||!text(p.name,80)||!Array.isArray(p.tasks)||p.tasks.length>60||!Array.isArray(p.screens)||p.screens.length>20||!Array.isArray(p.releases)||p.releases.length>16)throw Error('Nieprawidłowy projekt.');
-  validateDiscoveryRules(p.rules);validateCopy(p.copy);const ids=new Set();for(const s of p.screens){validateScreen(s);if(ids.has(s.id))throw Error('Powtórzony ekran.');ids.add(s.id);}
+  validateDiscoveryRules(p.rules);validateCopy(p.copy);validateTriggers(p);const ids=new Set();for(const s of p.screens){validateScreen(s);if(ids.has(s.id))throw Error('Powtórzony ekran.');ids.add(s.id);}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(p.startDate)||!Number.isFinite(Date.parse(p.startDate))||!(p.targetDate===''||/^\d{4}-\d{2}-\d{2}$/.test(p.targetDate)))throw Error('Wybierz daty projektu.');
   if(p.designDraft){if(Object.keys(p.designDraft).some(k=>!DESIGN_FIELDS.includes(k)))throw Error('Nieprawidłowe pola szkicu wyglądu.');validateTokens(p.designDraft.tokens);}
   const taskIds=new Set();for(const t of p.tasks){if(!id(t.id)||taskIds.has(t.id)||!text(t.title,120)||!t.title.trim()||!['critical','high','normal','later'].includes(t.priority)||!['todo','doing','review','done'].includes(t.status)||!int(t.days,1,30)||!Array.isArray(t.depends)||t.depends.length>20||t.depends.some(v=>!id(v))||t.depends.includes(t.id)||!text(t.screen||'',80)||!(t.deadline===''||/^\d{4}-\d{2}-\d{2}$/.test(t.deadline)))throw Error('Sprawdź zadanie, termin i zależności.');taskIds.add(t.id);}
@@ -85,7 +89,7 @@ export function discoveryProject(){
   p.tasks=tasks.map(([title,days,priority],i)=>({id:'task-'+i,title,days,priority,status:'todo',deadline:'',screen:[progress.id,reward.id,map.id,reward.id,'',setup.id][i],depends:i===0?[]:i===1||i===2?['task-0']:i===3?['task-1','task-2']:['task-'+(i-1)]}));
   return validateProject(p);
 }
-export function projectSnapshot(p,config){return {name:p.name,entry:p.entry,screens:structuredClone(p.screens),rules:structuredClone(p.rules),copy:structuredClone(p.copy),design:{schemaVersion:config.schemaVersion,revision:config.revision,...designFields(config)}};}
+export function projectSnapshot(p,config){return {name:p.name,entry:p.entry,screens:structuredClone(p.screens),triggers:structuredClone(projectTriggers(p)),rules:structuredClone(p.rules),copy:structuredClone(p.copy),design:{schemaVersion:config.schemaVersion,revision:config.revision,...designFields(config)}};}
 export function fingerprint(value){let h=2166136261;const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;for(const c of JSON.stringify(canonical(value))){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return (h>>>0).toString(16).padStart(8,'0');}
 const addDays=(date,n)=>new Date(Date.parse(date+'T12:00:00Z')+n*86400000).toISOString().slice(0,10);
 export function planSchedule(p){
@@ -102,16 +106,17 @@ export function projectIssues(p,assets){
   const referenced=new Set([p.entry]);
   for(const s of p.screens)for(const a of screenActions(s))if(a.kind==='navigate'){referenced.add(a.target);if(!ids.has(a.target))add('error',`${s.name}: „${a.text}” nie ma ekranu docelowego.`,s.id);}
   for(const s of p.screens){for(const e of s.elements){if(e.action.kind==='navigate'){referenced.add(e.action.target);if(!ids.has(e.action.target))add('error',`${s.name}: „${e.text}” nie ma ekranu docelowego.`,s.id);}if(['button','jelly'].includes(e.type)&&e.action.kind==='none'&&!e.optionActions?.some(a=>a.kind!=='none'&&a.kind!=='inherit'))add('warning',`${s.name}: „${e.text}” nie ma jeszcze funkcji.`,s.id);if(e.asset&&assets&&!known.has(e.asset)&&!assets.aliases?.[e.asset])add('error',`${s.name}: ilustracja nie występuje w katalogu.`,s.id);}if(s.asset&&assets&&!known.has(s.asset)&&!assets.aliases?.[s.asset])add('error',`${s.name}: brak ilustracji tła.`,s.id);}
-  const reachable=new Set([p.entry,'memory-reward']);let changed=true;while(changed){changed=false;for(const s of p.screens.filter(s=>reachable.has(s.id)))for(const a of screenActions(s))if(a.kind==='navigate'&&ids.has(a.target)&&!reachable.has(a.target)){reachable.add(a.target);changed=true;}}
+  for(const[k,target]of Object.entries(projectTriggers(p)))if(target&&!ids.has(target))add('error',`${TRIGGERS[k]}: brak ekranu zdarzenia.`);
+  const reachable=new Set([p.entry,...Object.values(projectTriggers(p))]);let changed=true;while(changed){changed=false;for(const s of p.screens.filter(s=>reachable.has(s.id)))for(const a of screenActions(s))if(a.kind==='navigate'&&ids.has(a.target)&&!reachable.has(a.target)){reachable.add(a.target);changed=true;}}
   for(const s of p.screens)if(!reachable.has(s.id))add('warning',`${s.name}: ekran nie jest osiągalny z początku ani nagrody.`,s.id);
   if(p.rules.comboBonus>0)add('info','Combo wpływa na wynik rundy, nigdy na opanowanie materiału.');
   for(const s of planSchedule(p).rows)if(s.late)add('warning',`${s.title}: termin jest krótszy od obecnego planu.`);
   if(p.targetDate&&planSchedule(p).end>p.targetDate)add('warning','Ścieżka krytyczna kończy się po terminie etapu.');
   return issues;
 }
-export function makeRelease(p,config,name='Wersja testowa'){
+export function makeRelease(p,config,name='Wersja testowa',assets){
   const snapshot=projectSnapshot(p,config);validateSnapshot(snapshot);
-  if(projectIssues(p).some(i=>i.level==='error'))throw Error('Najpierw usuń blokujące problemy w walidacji.');
+  if(projectIssues(p,assets).some(i=>i.level==='error'))throw Error('Najpierw usuń blokujące problemy w walidacji.');
   return {id:newId('release'),name,at:new Date().toISOString(),status:'test',fingerprint:fingerprint(snapshot),snapshot,reviews:[],checks:{flow:false,learning:false,content:false,mobile:false}};
 }
 export function approveRelease(release){

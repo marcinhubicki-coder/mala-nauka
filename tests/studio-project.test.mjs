@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {DISCOVERY_RULES,discoveryState,applyDiscoveryEvent,fixtureEvents,replayDiscovery,discoverySummary} from '../shared/discovery-model.mjs';
-import {discoveryProject,newScreen,newElement,planSchedule,projectIssues,makeRelease,approveRelease,publishRelease,projectContract,editableProjectConfig,validateProject,validateScreen,fingerprint} from '../design-system/project-model.mjs';
+import {discoveryProject,newScreen,newElement,planSchedule,projectIssues,makeRelease,approveRelease,publishRelease,projectContract,editableProjectConfig,validateProject,validateScreen,fingerprint,triggerTarget,projectTriggers} from '../design-system/project-model.mjs';
 import {validateConfig} from '../design-system/model.mjs';
 import {encodeShare,decodeShare,previewLink,validateEnvelope,validateFeedback} from '../design-system/project-share.mjs';
 const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
@@ -69,4 +69,20 @@ test('compressed preview round-trips, protects version identity and only accepts
  const altered=structuredClone(envelope);altered.snapshot.name='Zmiana';assert.throws(()=>validateEnvelope(altered));assert.equal(fingerprint(envelope.snapshot),r.fingerprint);
  const base='https://preview.example/design-system/';assert.match(previewLink(encoded,'https://preview.example/?_vercel_share=temporary',base),/\?_vercel_share=temporary#preview=/);assert.throws(()=>previewLink(encoded,'https://other.example/',base));
  assert.throws(()=>validateFeedback({kind:'mala-nauka-feedback',releaseId:r.id,fingerprint:r.fingerprint,comments:[{text:'',screen:p.entry}]}));await assert.rejects(decodeShare('z.'+'a'.repeat(250001)));
+});
+
+
+test('editable event routes preserve legacy previews and prioritize memory over combo',()=>{
+ const p=discoveryProject();assert.equal(triggerTarget(p,[{kind:'memory'}],'correct'),'memory-reward');
+ p.triggers={memory:'discovery-map',combo:'discovery-progress',correct:'discovery-start',wrong:''};
+ assert.equal(triggerTarget(p,[{kind:'combo'},{kind:'memory'}],'correct'),'discovery-map');
+ assert.equal(triggerTarget(p,[],'correct'),'discovery-start');assert.equal(triggerTarget(p,[],'wrong'),'');
+ const r=makeRelease(p,config);p.triggers.memory='missing-screen';assert.equal(r.snapshot.triggers.memory,'discovery-map');
+ assert.ok(projectIssues(p).some(i=>i.level==='error'));assert.throws(()=>makeRelease(p,config));
+ p.triggers={memory:'../bad'};assert.throws(()=>validateProject(p));
+});
+
+test('unknown catalog assets prevent release even if their path is syntactically valid',()=>{
+ const p=discoveryProject();p.screens[0].asset='assets/not-in-catalog.png';
+ assert.throws(()=>makeRelease(p,config,'Próba',{assets:[],aliases:{}}));
 });

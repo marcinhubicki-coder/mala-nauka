@@ -53,6 +53,21 @@ export class GitClient {
    providerUrl:row?.target_url||''
   };
  }
+ async productionSummary(sha=this.#head){
+  if(!this.connected)throw Error('Połącz GitHub przed sprawdzeniem publikacji.');
+  if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Brak poprawnego commitu Preview.');
+  const comparison=await this.request(`compare/${PRODUCTION_BRANCH}...${sha}`);
+  return {
+   sha,
+   status:comparison.status,
+   commits:Number(comparison.ahead_by||0),
+   behind:Number(comparison.behind_by||0),
+   files:Array.isArray(comparison.files)?comparison.files.length:null,
+   truncated:Boolean(comparison.too_large),
+   mainSha:comparison.base_commit?.sha||'',
+   identical:['identical','behind'].includes(comparison.status)
+  };
+ }
  async promoteToProduction(sha=this.#head){
   if(!this.connected)throw Error('Połącz GitHub przed publikacją na produkcję.');
   if(!/^[0-9a-f]{40}$/.test(sha))throw Error('Brak poprawnego commitu Preview.');

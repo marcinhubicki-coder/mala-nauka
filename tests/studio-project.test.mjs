@@ -117,7 +117,7 @@ test('production promotion merges exactly the green preview SHA and refuses a st
   else if(path==='git/ref/heads/design/system-v1')value={object:{sha:stale?'d'.repeat(40):sha}};
   else if(path.startsWith('contents/design-system/config.json'))value={content:Buffer.from(JSON.stringify(config)).toString('base64')};
   else if(path===`commits/${sha}/status`)value={statuses:[{context:'Vercel',state:'success',description:'Preview ready'}]};
-  else if(path===`compare/main...${sha}`)value={status:'ahead',base_commit:{sha:main}};
+  else if(path===`compare/main...${sha}`)value={status:'ahead',ahead_by:95,behind_by:0,files:[{filename:'one'},{filename:'two'}],base_commit:{sha:main}};
   else if(path===`git/ref/heads/studio/release-${sha.slice(0,12)}`){status=404;value={message:'Not Found'};}
   else if(path==='git/refs'&&method==='POST')value={};
   else if(path.startsWith('pulls?'))value=[];
@@ -126,7 +126,8 @@ test('production promotion merges exactly the green preview SHA and refuses a st
   else throw Error(path+' '+method);
   return {ok:status>=200&&status<300,status,json:async()=>value};
  });
- const client=makeClient(false);await client.connect('test-token',config);const result=await client.promoteToProduction(sha);
+ const client=makeClient(false);await client.connect('test-token',config);const summary=await client.productionSummary(sha);assert.equal(summary.commits,95);assert.equal(summary.files,2);assert.equal(summary.mainSha,main);
+ const result=await client.promoteToProduction(sha);
  assert.equal(result.sha,sha);assert.equal(result.mergeSha,mergeSha);assert.equal(result.prNumber,42);
  assert.equal(calls.find(row=>row.path==='pulls'&&row.method==='POST').body.head,`studio/release-${sha.slice(0,12)}`);
  assert.equal(calls.find(row=>row.path==='pulls/42/merge').body.sha,sha);

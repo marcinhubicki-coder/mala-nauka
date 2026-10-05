@@ -29,3 +29,5 @@ Przegląd UI wykonano przez przeglądarkę Chrome, w desktopie i mobilnej ramce 
 Końcowy test w UI pokazał dialog starszego szkicu dla rewizji 1 → 2. „Przejrzyj i odzyskaj” zachowało trzy wersje i aktualnego pilota. „Sprawdź wdrożenie” pokazało „Wdrożenie gotowe · 281f9c4 · Deployment has completed”. Przegląd ten ujawnił i usunął błąd receivera natywnego fetch; osobny test regresji go kontroluje. Wszystkie sześć adapterów konsumentów zbudowały się bez lokalnych assetów i paczek słów, z kompletnym grafem importów, a ich deploymenty osiągnęły READY. Produkcyjny main nadal wskazuje f16b7770c6473f692284ecd44f3a282bfa5d3829.
 
 ![Końcowy edytor ekranów](studio-project-overview-final.jpg)
+
+Ostateczny pilot startuje z etykietą „Nowy gracz” odpowiadającą pustemu stanowi. Jego scenariusze i kolejne odpowiedzi korzystają z tej samej centralnej bazy słów i automatycznych rodzin co Studio. Kontrolki naliczania czekają na gotowy podgląd, aby wczesne kliknięcie nie ginęło podczas ładowania.

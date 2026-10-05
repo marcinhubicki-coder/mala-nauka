@@ -48,7 +48,7 @@ export class StudioProject{
       if(m.type==='selected'){this.elementId=m.id;this.pane=this.narrow?'edit':this.pane;this.render();if(this.narrow)this.workspace.querySelector('.project-mobile-panes')?.scrollIntoView({block:'start'});}
       if(m.type==='notice')this.notice(m.message);
       if(m.type==='state'){
-        this.summary=m.summary;this.screenId=m.screenId;this.trialEvents=m.trialEvents;this.savedTrialKey=this.trialKey;
+        this.workspace.querySelectorAll('[data-project-test-action]').forEach(b=>b.disabled=false);this.summary=m.summary;this.screenId=m.screenId;this.trialEvents=m.trialEvents;this.savedTrialKey=this.trialKey;
         const caption=this.workspace.querySelector('#project-preview-caption');if(caption)caption.textContent=this.project.screens.find(s=>s.id===m.screenId)?.name||'';
         const summary=this.workspace.querySelector('#project-test-summary');if(summary)summary.innerHTML=summaryHTML(m.summary,m.points);
         const live=this.workspace.querySelector('#project-live-summary');if(live)live.textContent=(m.overflow?'Układ wychodzi poza szerokość telefonu. ':'')+(m.events.map(e=>e.text).join(' ')||`Pamięć ${m.summary.balance} · do następnego punktu ${m.summary.remaining} odpowiedzi.`);

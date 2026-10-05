@@ -86,6 +86,22 @@ export function matchBatchImage(filename,batch){
  return matches[0];
 }
 
+export function autoAssignBatchImages(value,catalog){
+ const next=structuredClone(value),fold=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l').toLocaleLowerCase('pl'),stem=path=>fold(path.split('/').at(-1).replace(/\.[^.]+$/,''));
+ const active=catalog.assets.filter(asset=>['scenes','managed'].includes(asset.group)&&!catalog.aliases?.[asset.path]&&asset.width&&asset.height&&Math.abs(asset.width/asset.height-1)<=.04);
+ const byStem=new Map();
+ for(const asset of active){const key=stem(asset.path),rows=byStem.get(key)||[];rows.push(asset);byStem.set(key,rows);}
+ for(const batch of next.batches){
+  if(batch.stage!=='images')continue;
+  for(const row of batch.words){
+   if(!row.selected||row.assetPath)continue;
+   const matches=byStem.get(fold(row.word))||[];
+   if(matches.length===1)row.assetPath=matches[0].path;
+  }
+ }
+ return validateBatches(next);
+}
+
 export function requeueRejected(value,id,newId='batch-'+Date.now()){
  const next=structuredClone(value),batch=next.batches.find(b=>b.id===id);
  if(batch?.stage!=='published')throw Error('Najpierw zaakceptuj gotową część batcha.');

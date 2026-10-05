@@ -1,5 +1,5 @@
 import {html} from './preview-model.mjs';
-import {PROJECT_TABS,emptyProject,discoveryProject,newScreen,newElement,newId,validateProject,projectSnapshot,makeRelease,approveRelease,publishRelease,fingerprint} from './project-model.mjs';
+import {PROJECT_TABS,emptyProject,discoveryProject,newScreen,newElement,newId,validateProject,projectSnapshot,makeRelease,approveRelease,publishRelease,fingerprint,screenActions,ELEMENT_TYPES} from './project-model.mjs';
 import {fixtureEvents,replayDiscovery} from '../shared/discovery-model.mjs';
 import {orthographyFamilies} from '../shared/rules-library.mjs';
 import {encodeShare,decodeShare,previewLink,validateFeedback} from './project-share.mjs';
@@ -61,8 +61,8 @@ export class StudioProject{
   }
   drawFlow(){
     const flow=this.workspace.querySelector('#project-flow');if(!flow)return;const r=flow.getBoundingClientRect(),svg=flow.querySelector('svg');svg.setAttribute('viewBox',`0 0 ${r.width} ${r.height}`);svg.innerHTML='';
-    const ns='http://www.w3.org/2000/svg';for(const s of this.project.screens)for(const e of s.elements.filter(e=>e.action.kind==='navigate')){
-      const from=flow.querySelector(`[data-flow-node="${s.id}"]`),to=flow.querySelector(`[data-flow-node="${e.action.target}"]`);if(!from||!to||from===to)continue;const a=from.getBoundingClientRect(),b=to.getBoundingClientRect(),path=document.createElementNS(ns,'path');const x=a.x+a.width/2-r.x,y=a.bottom-r.y,tx=b.x+b.width/2-r.x,ty=b.top-r.y;path.setAttribute('d',`M${x},${y} C${x},${y+24} ${tx},${ty-24} ${tx},${ty}`);svg.append(path);
+    const ns='http://www.w3.org/2000/svg';for(const s of this.project.screens)for(const e of screenActions(s).filter(e=>e.kind==='navigate')){
+      const from=flow.querySelector(`[data-flow-node="${s.id}"]`),to=flow.querySelector(`[data-flow-node="${e.target}"]`);if(!from||!to||from===to)continue;const a=from.getBoundingClientRect(),b=to.getBoundingClientRect(),path=document.createElementNS(ns,'path');const x=a.x+a.width/2-r.x,y=a.bottom-r.y,tx=b.x+b.width/2-r.x,ty=b.top-r.y;path.setAttribute('d',`M${x},${y} C${x},${y+24} ${tx},${ty-24} ${tx},${ty}`);svg.append(path);
     }
   }
   async click(event){
@@ -109,7 +109,8 @@ export class StudioProject{
     if(t.id==='project-state'){this.stateOverride=t.value;this.sendPreview();}
     if(t.dataset.projectDate){this.update(p=>{p[t.dataset.projectDate]=t.value;});this.render();}
     if(t.dataset.screenField){const k=t.dataset.screenField;this.update(p=>{p.screens.find(s=>s.id===this.screenId)[k]=t.type==='number'?Number(t.value):t.value;},'screen-'+k);this.sendPreview();}
-    if(t.dataset.elementField){const k=t.dataset.elementField;this.update(p=>{p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId)[k]=k==='options'?t.value.split('\n').map(v=>v.trim()).filter(Boolean):t.type==='number'?Number(t.value):t.value;},'element-'+this.elementId+'-'+k);this.sendPreview();if(k==='text')this.updateElementLabels();}
+    if(t.dataset.elementField){const k=t.dataset.elementField;this.update(p=>{p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId)[k]=k==='options'?t.value.split('\n').map(v=>v.trim()).filter(Boolean):t.type==='number'?Number(t.value):t.value;if(k==='options'&&p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId).optionActions){const e=p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId);e.optionActions=e.options.map((_,i)=>e.optionActions[i]||{kind:'inherit',target:'',value:''});}},'element-'+this.elementId+'-'+k);this.sendPreview();if(k==='text')this.updateElementLabels();if(k==='options')this.render();}
+    if(t.dataset.optionField){this.update(p=>{const e=p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId);e.optionActions||=e.options.map(()=>({kind:'inherit',target:'',value:''}));e.optionActions[Number(t.dataset.optionIndex)][t.dataset.optionField]=t.value;});this.render();}
     if(t.dataset.elementAction){const k=t.dataset.elementAction;this.update(p=>{p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId).action[k]=t.value;});this.render();}
     if(t.id==='project-blueprint'){this.update(p=>{const e=p.screens.find(s=>s.id===this.screenId).elements.find(e=>e.id===this.elementId);e.blueprint=structuredClone(this.data.config.blueprints.find(b=>b.id===t.value));});this.sendPreview();}
     if(t.dataset.projectRule){const k=t.dataset.projectRule;this.update(p=>{p.rules[k]=Number(t.value);},'discovery-'+k);for(const input of this.workspace.querySelectorAll(`[data-project-rule="${k}"]`))input.value=t.value;this.summary=null;}
@@ -123,7 +124,7 @@ export class StudioProject{
     if(t.dataset.releaseCheck){this.update(p=>{p.releases.find(r=>r.id===t.dataset.releaseId).checks[t.dataset.releaseCheck]=t.checked;});}
     if(t.dataset.reviewDone){this.update(p=>{p.releases.find(r=>r.id===t.dataset.releaseId).reviews[Number(t.dataset.reviewDone)].status=t.checked?'addressed':'open';});}
   }
-  updateElementLabels(){const s=this.project.screens.find(s=>s.id===this.screenId);for(const b of this.workspace.querySelectorAll('[data-project-element]')){const e=s.elements.find(e=>e.id===b.dataset.projectElement);if(e)b.textContent=e.type+' · '+e.text;}this.drawFlow();}
+  updateElementLabels(){const s=this.project.screens.find(s=>s.id===this.screenId);for(const b of this.workspace.querySelectorAll('[data-project-element]')){const e=s.elements.find(e=>e.id===b.dataset.projectElement);if(e)b.textContent=ELEMENT_TYPES[e.type]+' · '+e.text;}this.drawFlow();}
   taskDialog(id){
     const old=this.project.tasks.find(t=>t.id===id),t=old||{id:newId('task'),title:'',days:1,priority:'normal',status:'todo',deadline:'',screen:'',depends:[]};
     this.dialog(`<h2>${old?'Zadanie':'Nowe zadanie'}</h2><form id=project-task-form>${field('Co jest do zrobienia?',t.title,'id=task-title required maxlength=120')}${select('Priorytet',t.priority,{critical:'Krytyczne',high:'Ważne',normal:'Zwykłe',later:'Później'},'id=task-priority')}${select('Stan',t.status,{todo:'Do zrobienia',doing:'W toku',review:'Do sprawdzenia',done:'Gotowe'},'id=task-status')}${field('Szacowane dni',t.days,'id=task-days min=1 max=30','number')}${field('Deadline',t.deadline,'id=task-deadline','date')}${select('Powiązany ekran',t.screen,{'':'Bez powiązania',...Object.fromEntries(this.project.screens.map(s=>[s.id,s.name]))},'id=task-screen')}<fieldset class=project-dependencies><legend>Najpierw muszą być gotowe</legend>${this.project.tasks.filter(v=>v.id!==t.id).map(v=>`<label><input type=checkbox value="${v.id}" ${t.depends.includes(v.id)?'checked':''}>${html(v.title)}</label>`).join('')||'<p>To pierwsze zadanie.</p>'}</fieldset><p id=project-task-error class=modal-error role=alert></p><div class=modal-actions>${old?button('Usuń zadanie','id=task-remove type=button'):''}${button('Anuluj','data-close type=button')}${button('Zapisz zadanie','type=submit',true)}</div></form>`);

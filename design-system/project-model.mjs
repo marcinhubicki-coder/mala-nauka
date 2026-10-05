@@ -20,6 +20,8 @@ export function projectContract(local,committed){
 export const PROJECT_TABS={plan:'Plan',screens:'Ekrany i flow',copy:'Teksty',learning:'Postępy i nagrody',test:'Test i dane',release:'Wersje i wydanie'};
 export const ELEMENT_TYPES={title:'Tytuł',subtitle:'Podtytuł',hint:'Podpowiedź',numberText:'Numer + tekst',button:'Przycisk jelly',jelly:'Jelly · opcje',image:'Ilustracja',progress:'Postęp',stats:'Wyniki',map:'Mapa odkryć',trophies:'Puchary',blueprint:'Element z buildera'};
 export const ACTIONS={none:'Bez akcji',navigate:'Otwórz ekran',reveal:'Odkryj fragment',skin:'Wybierz skórkę',answer:'Odpowiedz poprawnie',wrong:'Odpowiedz błędnie'};
+export function optionAction(e,i){const a=e.optionActions?.[i];return a&&a.kind!=='inherit'?a:e.action;}
+export function screenActions(s){return s.elements.flatMap(e=>[{...e.action,text:e.text,condition:e.condition},...(e.type==='jelly'?e.options.map((text,i)=>({...optionAction(e,i),text,condition:e.condition})):[])]).filter(a=>a.kind!=='none');}
 const id=v=>typeof v==='string'&&/^[a-z][a-z0-9-]{0,79}$/.test(v);
 const text=(v,max=600)=>typeof v==='string'&&v.length<=max&&!/[<>\u0000-\u001f]/.test(v);
 const int=(v,min,max)=>Number.isInteger(v)&&v>=min&&v<=max;
@@ -37,6 +39,7 @@ export function validateScreen(s){
     if(!id(e.id)||ids.has(e.id)||!ELEMENT_TYPES[e.type]||!text(e.text)||!int(e.height,0,240)||!int(e.width,0,390)||!int(e.padding,0,48)||!int(e.gap,0,40)||!['visible','hidden','removed'].includes(e.visibility)||!['initial','correct','wrong','disabled'].includes(e.state))throw Error('Sprawdź wymiary, stan i treść elementu.');ids.add(e.id);
     if(!ACTIONS[e.action?.kind]||!text(e.action.target||'',80)||!text(e.action.value||'',160)||!['always','has-memory','no-memory','all-map','has-trophy'].includes(e.condition))throw Error('Sprawdź funkcję i warunek elementu.');
     if(e.type==='jelly'&&(!Array.isArray(e.options)||e.options.length<2||e.options.length>4||e.options.some(v=>!text(v,40)||!v.trim())))throw Error('Jelly wymaga od 2 do 4 nazw opcji.');
+    if(e.optionActions&&(!Array.isArray(e.optionActions)||e.type!=='jelly'||e.optionActions.length!==e.options.length||e.optionActions.some(a=>!a||(!ACTIONS[a.kind]&&a.kind!=='inherit')||!text(a.target||'',80)||!text(a.value||'',160))))throw Error('Sprawdź funkcje opcji jelly.');
     if(e.asset&&!asset(e.asset))throw Error('Wybierz asset z katalogu.');
     if(e.blueprint)validateBlueprint(e.blueprint);
   }
@@ -97,8 +100,10 @@ export function projectIssues(p,assets){
   for(const e of planSchedule(p).errors)add('error',e);
   const known=new Set(assets?.assets?.map(a=>a.path)||[]);
   const referenced=new Set([p.entry]);
+  for(const s of p.screens)for(const a of screenActions(s))if(a.kind==='navigate'){referenced.add(a.target);if(!ids.has(a.target))add('error',`${s.name}: „${a.text}” nie ma ekranu docelowego.`,s.id);}
   for(const s of p.screens){for(const e of s.elements){if(e.action.kind==='navigate'){referenced.add(e.action.target);if(!ids.has(e.action.target))add('error',`${s.name}: „${e.text}” nie ma ekranu docelowego.`,s.id);}if(['button','jelly'].includes(e.type)&&e.action.kind==='none')add('warning',`${s.name}: „${e.text}” nie ma jeszcze funkcji.`,s.id);if(e.asset&&assets&&!known.has(e.asset)&&!assets.aliases?.[e.asset])add('error',`${s.name}: ilustracja nie występuje w katalogu.`,s.id);}if(s.asset&&assets&&!known.has(s.asset)&&!assets.aliases?.[s.asset])add('error',`${s.name}: brak ilustracji tła.`,s.id);}
-  for(const s of p.screens)if(!referenced.has(s.id))add('warning',`${s.name}: ekran nie ma wejścia z przycisku.`,s.id);
+  const reachable=new Set([p.entry,'memory-reward']);let changed=true;while(changed){changed=false;for(const s of p.screens.filter(s=>reachable.has(s.id)))for(const a of screenActions(s))if(a.kind==='navigate'&&ids.has(a.target)&&!reachable.has(a.target)){reachable.add(a.target);changed=true;}}
+  for(const s of p.screens)if(!reachable.has(s.id))add('warning',`${s.name}: ekran nie jest osiągalny z początku ani nagrody.`,s.id);
   if(p.rules.comboBonus>0)add('info','Combo wpływa na wynik rundy, nigdy na opanowanie materiału.');
   for(const s of planSchedule(p).rows)if(s.late)add('warning',`${s.title}: termin jest krótszy od obecnego planu.`);
   if(p.targetDate&&planSchedule(p).end>p.targetDate)add('warning','Ścieżka krytyczna kończy się po terminie etapu.');

@@ -94,11 +94,9 @@
           "id": "word-63-7a-119-15b-107",
           "word": "część",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -122,11 +120,9 @@
           "id": "word-67-61-72-15b-107",
           "word": "garść",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -161,26 +157,12 @@
           "assetPath": null
         },
         {
-          "id": "word-67-119-15b",
-          "word": "gęś",
-          "categories": [
-            "ś/si"
-          ],
-          "levels": {
-            "ś/si": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
           "id": "word-6b-69-15b-107",
           "word": "kiść",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -215,32 +197,6 @@
         {
           "id": "word-6c-69-15b-107",
           "word": "liść",
-          "categories": [
-            "ć/ci",
-            "ś/si"
-          ],
-          "levels": {
-            "ć/ci": 1,
-            "ś/si": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
-          "id": "word-142-6f-15b",
-          "word": "łoś",
-          "categories": [
-            "ś/si"
-          ],
-          "levels": {
-            "ś/si": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
-          "id": "word-6d-69-15b",
-          "word": "miś",
           "categories": [
             "ś/si"
           ],
@@ -284,12 +240,10 @@
           "id": "word-70-69-65-15b-144",
           "word": "pieśń",
           "categories": [
-            "ś/si",
-            "ń/ni"
+            "ś/si"
           ],
           "levels": {
-            "ś/si": 1,
-            "ń/ni": 1
+            "ś/si": 1
           },
           "selected": true,
           "assetPath": null
@@ -306,18 +260,6 @@
             "u/ó": 1,
             "ś/si": 1,
             "ń/ni": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
-          "id": "word-72-79-15b",
-          "word": "ryś",
-          "categories": [
-            "ś/si"
-          ],
-          "levels": {
-            "ś/si": 1
           },
           "selected": true,
           "assetPath": null
@@ -340,11 +282,9 @@
           "id": "word-73-69-65-107",
           "word": "sieć",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -573,12 +513,10 @@
           "id": "word-15b-6c-65-64-17a",
           "word": "śledź",
           "categories": [
-            "ś/si",
-            "dź/dzi"
+            "ś/si"
           ],
           "levels": {
-            "ś/si": 1,
-            "dź/dzi": 1
+            "ś/si": 1
           },
           "selected": true,
           "assetPath": null
@@ -836,11 +774,9 @@
           "id": "word-74-72-65-15b-107",
           "word": "treść",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -898,11 +834,9 @@
           "id": "word-77-69-65-15b-107",
           "word": "wieść",
           "categories": [
-            "ć/ci",
             "ś/si"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1
           },
           "selected": true,
@@ -1099,12 +1033,10 @@
           "id": "word-67-77-6f-17a-64-17a",
           "word": "gwoźdź",
           "categories": [
-            "ź/zi",
-            "dź/dzi"
+            "ź/zi"
           ],
           "levels": {
-            "ź/zi": 1,
-            "dź/dzi": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1279,18 +1211,6 @@
           "assetPath": null
         },
         {
-          "id": "word-6d-69-65-64-17a",
-          "word": "miedź",
-          "categories": [
-            "dź/dzi"
-          ],
-          "levels": {
-            "dź/dzi": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
           "id": "word-6f-64-77-69-65-7a-69-65",
           "word": "odwiezie",
           "categories": [
@@ -1445,13 +1365,11 @@
           "word": "przyjaźń",
           "categories": [
             "rz/ż",
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
             "rz/ż": 1,
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1581,18 +1499,6 @@
           },
           "selected": true,
           "assetPath": null
-        },
-        {
-          "id": "word-77-69-119-17a",
-          "word": "więź",
-          "categories": [
-            "ź/zi"
-          ],
-          "levels": {
-            "ź/zi": 1
-          },
-          "selected": true,
-          "assetPath": null
         }
       ]
     },
@@ -1709,13 +1615,11 @@
           "id": "word-7a-69-61-72-6e-69-73-74-6f-15b-107",
           "word": "ziarnistość",
           "categories": [
-            "ć/ci",
             "ś/si",
             "ź/zi",
             "ń/ni"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "ź/zi": 2,
             "ń/ni": 2
@@ -2393,12 +2297,10 @@
           "id": "word-64-7a-69-61-142-61-6c-6e-6f-15b-107",
           "word": "działalność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "dź/dzi": 2
           },
@@ -2541,12 +2443,10 @@
           "id": "word-64-7a-69-65-6c-6e-6f-15b-107",
           "word": "dzielność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1,
             "dź/dzi": 1
           },
@@ -2766,12 +2666,10 @@
           "id": "word-64-7a-69-6b-6f-15b-107",
           "word": "dzikość",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 1,
             "ś/si": 1,
             "dź/dzi": 1
           },
@@ -2890,12 +2788,10 @@
           "id": "word-64-17a-77-69-119-63-7a-6e-6f-15b-107",
           "word": "dźwięczność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "dź/dzi": 2
           },
@@ -2978,42 +2874,6 @@
           "assetPath": null
         },
         {
-          "id": "word-6b-72-61-77-119-64-17a",
-          "word": "krawędź",
-          "categories": [
-            "dź/dzi"
-          ],
-          "levels": {
-            "dź/dzi": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
-          "id": "word-142-61-62-119-64-7a-69",
-          "word": "łabędzi",
-          "categories": [
-            "dź/dzi"
-          ],
-          "levels": {
-            "dź/dzi": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
-          "id": "word-142-61-62-119-64-17a",
-          "word": "łabędź",
-          "categories": [
-            "dź/dzi"
-          ],
-          "levels": {
-            "dź/dzi": 1
-          },
-          "selected": true,
-          "assetPath": null
-        },
-        {
           "id": "word-142-f3-64-17a",
           "word": "łódź",
           "categories": [
@@ -3075,12 +2935,10 @@
           "id": "word-6f-64-70-6f-77-69-65-64-7a-69-61-6c-6e-6f-15b-107",
           "word": "odpowiedzialność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "dź/dzi": 2
           },
@@ -3103,12 +2961,10 @@
           "id": "word-70-6f-64-7a-69-65-6c-6e-6f-15b-107",
           "word": "podzielność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "dź/dzi": 2
           },
@@ -3131,12 +2987,10 @@
           "id": "word-70-72-61-77-64-7a-69-77-6f-15b-107",
           "word": "prawdziwość",
           "categories": [
-            "ć/ci",
             "ś/si",
             "dź/dzi"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "dź/dzi": 2
           },
@@ -3409,12 +3263,10 @@
           "id": "word-63-69-65-72-144",
           "word": "cierń",
           "categories": [
-            "ć/ci",
-            "ń/ni"
+            "ć/ci"
           ],
           "levels": {
-            "ć/ci": 1,
-            "ń/ni": 1
+            "ć/ci": 1
           },
           "selected": true,
           "assetPath": null
@@ -3453,12 +3305,10 @@
           "id": "word-6a-65-73-69-65-144",
           "word": "jesień",
           "categories": [
-            "ś/si",
-            "ń/ni"
+            "ś/si"
           ],
           "levels": {
-            "ś/si": 1,
-            "ń/ni": 1
+            "ś/si": 1
           },
           "selected": true,
           "assetPath": null
@@ -3467,12 +3317,10 @@
           "id": "word-6b-6f-6e-69-65-63-7a-6e-6f-15b-107",
           "word": "konieczność",
           "categories": [
-            "ć/ci",
             "ś/si",
             "ń/ni"
           ],
           "levels": {
-            "ć/ci": 2,
             "ś/si": 2,
             "ń/ni": 2
           },
@@ -3501,11 +3349,9 @@
           "id": "word-6e-69-107",
           "word": "nić",
           "categories": [
-            "ć/ci",
             "ń/ni"
           ],
           "levels": {
-            "ć/ci": 1,
             "ń/ni": 1
           },
           "selected": true,
@@ -3532,13 +3378,11 @@
           "word": "pierścień",
           "categories": [
             "ć/ci",
-            "ś/si",
-            "ń/ni"
+            "ś/si"
           ],
           "levels": {
             "ć/ci": 1,
-            "ś/si": 1,
-            "ń/ni": 1
+            "ś/si": 1
           },
           "selected": true,
           "assetPath": null

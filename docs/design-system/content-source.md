@@ -16,7 +16,7 @@ Po dodaniu plików poza Studio uruchom `npm run assets:audit` i zapisz zmieniony
 
 ## Preview
 
-Link PWA oraz udostępniana próba projektu korzystają z adresu wdrożenia odnalezionego dla konkretnego SHA. Studio sprawdza `design-system/deployment.json` tego wdrożenia. Nie tworzy pozornego zamrożenia przez parametr `?preview=SHA` na zmiennym adresie Studio.
+Link PWA oraz udostępniana próba projektu korzystają z adresu wdrożenia odnalezionego dla konkretnego SHA. Studio sprawdza SHA wpisu wdrożenia w GitHub oraz wybiera unikalny adres Vercel; odrzuca aliasy branchy. Działa to także dla Preview chronionego logowaniem Vercel. Nie tworzy pozornego zamrożenia przez parametr `?preview=SHA` na zmiennym adresie Studio.
 
 Build `design/system-v1` oraz `main` zawiera własne pliki z budowanego commita. Build konsumenta innego brancha rozwiązuje źródło centralne do SHA raz podczas budowania; słowa, grafiki i konfiguracja korzystają później wyłącznie z tego SHA. `DS_SOURCE_SHA` lub `DS_SOURCE_URL` mogą wskazywać wyłącznie pełny commit; zmienny URL brancha jest odrzucany. Odświeżenie Studio nie zmienia już opublikowanego wdrożenia gry.
 

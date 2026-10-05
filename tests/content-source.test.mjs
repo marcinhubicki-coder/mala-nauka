@@ -44,8 +44,10 @@ test('Git refresh reads config, words, manifest and tree from one captured commi
  });
  const latest=await client.latest();assert.equal(latest.head,head);assert.equal(Object.keys(latest.wordPacks).length,8);assert.deepEqual(latest.catalog.words,assets.words);assert.equal(calls.filter(u=>u.includes('git/ref/')).length,1);
 });
-test('saved Preview resolves the deployment for its SHA and rejects an alias serving another commit',async()=>{
- const sha='c'.repeat(40);let served=sha;
- const client=new GitClient(async url=>{const u=String(url);const value=u.includes('deployments?')?[{sha,id:12}]:u.endsWith('/statuses')?[{state:'success',environment_url:'https://immutable.example/'}]:{sha:served};return {ok:true,json:async()=>value};});
- assert.equal(await client.previewURL(sha),'https://immutable.example/');served='d'.repeat(40);await assert.rejects(()=>client.previewURL(sha),/zweryfikowanego/);
+test('saved Preview uses the exact GitHub deployment SHA and refuses moving branch aliases',async()=>{
+ const sha='c'.repeat(40);let deployed=sha,url='https://mala-nauka-abc123456-team-projects.vercel.app/';
+ const client=new GitClient(async endpoint=>{const u=String(endpoint);const value=u.includes('deployments?')?[{sha:deployed,id:12}]:u.endsWith('/statuses')?[{state:'success',environment_url:url}]:assert.fail('Protected Preview must not be fetched across origins');return {ok:true,json:async()=>value};});
+ assert.equal(await client.previewURL(sha),url);deployed='d'.repeat(40);await assert.rejects(()=>client.previewURL(sha),/zweryfikowanego/);
+ deployed=sha;url='https://mala-nauka-git-design-system-v1-team-projects.vercel.app/';await assert.rejects(()=>client.previewURL(sha),/zweryfikowanego/);
+ url='https://mala-nauka-pwa.vercel.app/';await assert.rejects(()=>client.previewURL(sha),/zweryfikowanego/);
 });

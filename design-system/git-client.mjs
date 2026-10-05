@@ -73,11 +73,10 @@ export class GitClient {
    const status=statuses[0];
    if(status?.state!=='success'||!status.environment_url)continue;
    const url=new URL(status.environment_url);
-   if(url.protocol!=='https:')continue;
-   // Verify the deployment itself; a moving branch alias is not a saved Preview.
-   const response=await this.fetcher(new URL('design-system/deployment.json',url),{cache:'no-store'});
-   if(!response.ok)continue;
-   if((await response.json()).sha===sha)return url.href;
+   // Vercel's deployment URL is immutable; branch aliases and custom domains are not.
+   // Do not fetch protected deployment metadata across origins: it requires Vercel login.
+   if(url.protocol!=='https:'||url.username||url.password||url.hostname.includes('-git-')||!/^[-a-z0-9]+-[a-z0-9]{9}-[-a-z0-9]+\.vercel\.app$/.test(url.hostname))continue;
+   return new URL('/',url).href;
   }
   throw Error('Brak gotowego, zweryfikowanego adresu wdrożenia dla tego commitu. Spróbuj po zakończeniu budowania Preview.');
  }

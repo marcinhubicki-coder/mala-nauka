@@ -4,26 +4,26 @@ Panel na `design/system-v1`: **Nowe słowa · batchy**, **Builder i przepisy**, 
 
 ## Minimum 100 słów w kategorii
 
-Przygotowano **256 propozycji w 13 batchach**. Są propozycjami do Twojej oceny, nie zatwierdzonym materiałem. Każde hasło przechodzi kontrolę struktury, powtórzeń i zapisu ćwiczonych grup liter przed umieszczeniem w kolejce. Ta analiza nie zastępuje oceny językowej, przydatności słowa dla dziecka ani zgodności zdjęcia. Początkowa trudność jest sugestią; możesz zmienić ją osobno dla każdej kategorii.
+Przygotowano **247 propozycji w 13 batchach**. Dziewięć haseł usunięto, ponieważ przeciwna odpowiedź tworzyłaby poprawną formę lub poprawne słowo; w kolejnych hasłach wyłączono tylko niejednoznaczną kategorię. Są propozycjami do Twojej oceny, nie zatwierdzonym materiałem. Każde hasło przechodzi kontrolę struktury, powtórzeń i zapisu ćwiczonych grup liter przed umieszczeniem w kolejce. Ta analiza nie zastępuje oceny językowej, przydatności słowa dla dziecka ani zgodności zdjęcia. Początkowa trudność jest sugestią; możesz zmienić ją osobno dla każdej kategorii.
 
 | Kategoria | Opublikowane w grze | Nowe zaznaczone propozycje | Plan po przyjęciu wszystkich |
 | --- | ---: | ---: | ---: |
 | u/ó | 235 | 39 | 274 |
 | rz/ż | 152 | 16 | 168 |
 | ch/h | 102 | 11 | 113 |
-| ć/ci | 53 | 90 | 143 |
-| ś/si | 20 | 92 | 112 |
-| ź/zi | 15 | 97 | 112 |
-| ń/ni | 41 | 71 | 112 |
-| dź/dzi | 17 | 95 | 112 |
+| ć/ci | 52 | 73 | 125 |
+| ś/si | 20 | 88 | 108 |
+| ź/zi | 15 | 96 | 111 |
+| ń/ni | 37 | 66 | 103 |
+| dź/dzi | 17 | 89 | 106 |
 
 W grze nadal jest **455 unikalnych słów**. Minimum 100 dla każdej kategorii będzie osiągnięte po Twoim przyjęciu wystarczającej liczby propozycji, uzupełnieniu zdjęć i zapisaniu commitu. Bufor ponad 100 pozwala odrzucić część propozycji. Liczniki przeliczają się po odznaczeniu hasła. Jeśli odłożysz za dużo słów z danej grupy, panel pokaże, ile jeszcze brakuje.
 
-Kategorie nakładają się. „Brzuch” to jedno hasło i jedna ilustracja: zwiększa pule u/ó, rz/ż i ch/h po jednym. Dla każdej wybranej kategorii gra pokazuje tylko jedną lukę. Nie powtarza hasła w tej samej rundzie.
+Kategorie mogą się nakładać, ale nie każda wykryta para liter musi być ćwiczona. „Brzuch” to jedno hasło i jedna ilustracja: zwiększa pule u/ó, rz/ż i ch/h po jednym. Przy hasłach niejednoznacznych wyłącz kategorię, jeżeli druga odpowiedź tworzy poprawną odmianę lub inne poprawne słowo — np. „grzebień” zostaje w rz/ż, ale nie w ń/ni, bo „grzebieni” jest poprawne. Dla każdej włączonej kategorii gra pokazuje tylko jedną lukę. Nie powtarza hasła w tej samej rundzie.
 
 ## Przyjmij batch w trzech krokach
 
-1. **Lista.** Wszystkie słowa są zaznaczone. Odznacz tylko te, które Ci nie pasują, i wybierz **Zatwierdź listę**. Możesz wcześniej zmienić sugerowane poziomy. Nic jeszcze nie trafia do gry.
+1. **Lista.** Wszystkie słowa są zaznaczone. Odznacz hasła, które w ogóle się nie nadają. Przy każdym słowie możesz też wyłączyć pojedynczą kategorię, gdy alternatywny zapis jest poprawną formą lub innym poprawnym słowem. Musi zostać co najmniej jedna kategoria; w przeciwnym razie odznacz całe hasło. Możesz wcześniej zmienić sugerowane poziomy. Nic jeszcze nie trafia do gry.
 2. **Ilustracje i poziomy.** Wgraj zdjęcie przy haśle lub wybierz istniejącą ilustrację ze wspólnej bazy. Ten sam plik może obsługiwać kilka słów — karta pokaże ich liczbę. Zdjęcie słowa powinno być kwadratowe; kontrola dopuszcza odchylenie proporcji do 4%. Wybór z bazy sprawdza rzeczywiste wymiary pliku, także dla starszych ilustracji bez zapisanych wymiarów.
 3. **Końcowa akceptacja batcha.** Gdy wszystkie zaznaczone słowa mają poprawne przypisania, zdjęcia i poziomy, wybierz **Sprawdź i zaakceptuj batch**. Zobaczysz całą grupę z miniaturami. **Akceptuj cały batch** dodaje ją do szkicu. Dopiero **Zapisz na GitHub** publikuje ją w grze.
 
@@ -31,7 +31,7 @@ Możesz wrócić do listy przed końcową akceptacją. Po akceptacji wybierz **O
 
 **Wgraj grafiki grupą** dopasowuje pliki do zaznaczonych słów po nazwie: `śnieg.jpg` lub `snieg.jpg`. Nazwa musi być jednoznaczna. Przy niejednoznacznym dopasowaniu użyj polskich znaków. Obsługiwane: JPG, PNG, WebP, AVIF; do 12 MB na plik, 48 plików i 64 MB na grupę. Niepasujące pliki i błędne proporcje otrzymują opis błędu. Pliki są sprawdzane kolejno, a identyczne zawartości otrzymują jedno kanoniczne przypisanie. **Eksportuj listę** pobiera zaznaczone hasła jako plik tekstowy, co ułatwia nazwanie ilustracji.
 
-Nowy batch dodasz przez **Dodaj batch**: jedno słowo na wiersz, do 60 słów. Duplikaty bazy i kolejki są odrzucane przed dodaniem. Nie przypisujesz kategorii ręcznie — powstają z pisowni.
+Nowy batch dodasz przez **Dodaj batch**: jedno słowo na wiersz, do 60 słów. Duplikaty bazy i kolejki są odrzucane przed dodaniem. System wykrywa możliwe kategorie z pisowni, a podczas przeglądu możesz wyłączyć te, które dawałyby językowo poprawny „błędny” wariant.
 
 ## Zbuduj element na sucho
 

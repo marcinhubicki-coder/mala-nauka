@@ -20,7 +20,7 @@ export function validateBatches(value){
   ids.add(batch.id);
   for(const row of batch.words){
    const key=wordKey(row.word);
-   if(!validWord(row.word)||key!==row.word||words.has(key)||row.id!==candidateId(row.word)||typeof row.selected!=='boolean'||!validCategorySubset(row)||!row.levels||JSON.stringify(Object.keys(row.levels))!==JSON.stringify(row.categories)||row.categories.some(c=>![1,2].includes(row.levels[c]))||row.assetPath!==null&&!/^assets\/[a-zA-Z0-9._/-]+$/.test(row.assetPath)||row.assetPath?.split('/').some(p=>p==='..'||p==='.'||!p))throw Error(`Nieprawidłowe hasło w batchu: ${row.word}.`);
+   if(!validWord(row.word)||key!==row.word||words.has(key)||row.id!==candidateId(row.word)||typeof row.selected!=='boolean'||!validCategorySubset(row)||!row.levels||Object.keys(row.levels).length!==row.categories.length||row.categories.some(c=>![1,2].includes(row.levels[c]))||row.assetPath!==null&&!/^assets\/[a-zA-Z0-9._/-]+$/.test(row.assetPath)||row.assetPath?.split('/').some(p=>p==='..'||p==='.'||!p))throw Error(`Nieprawidłowe hasło w batchu: ${row.word}.`);
    words.add(key);
   }
  }

@@ -30,6 +30,21 @@ let contentOrigin=window.__DS_CONTENT_ORIGIN__||new URL('../',import.meta.url).h
 const read=async path=>{const response=await fetch(new URL('design-system/'+path,contentOrigin),{cache:'no-cache'});if(!response.ok)throw Error(`Nie udało się wczytać ${path}.`);return response.json();};
 const [initial,registry,initialAssets,audit,words,initialRules,initialBatches]=await Promise.all([read('config.json'),read('registry.json'),read('assets.json'),read('audit.json'),loadWords({raw:true}),read('rules.json'),read('word-batches.json')]);
 const deploymentInfo=await fetch(new URL('deployment.json',import.meta.url),{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
+async function immutablePreviewURL(sha){
+ const branchHost=deploymentInfo?.branchUrl;
+ if(branchHost&&/^[-a-z0-9.]+\.vercel\.app$/i.test(branchHost)){
+  try{
+   const response=await fetch(`https://${branchHost}/design-system/deployment.json?sha=${encodeURIComponent(sha)}`,{cache:'no-store'});
+   const info=response.ok?await response.json():null;
+   if(info?.sha===sha&&/^[-a-z0-9]+-[a-z0-9]{9}-[-a-z0-9]+\.vercel\.app$/i.test(info.deploymentUrl||'')){
+    const url=new URL(`https://${info.deploymentUrl}/`),share=new URLSearchParams(location.search).get('_vercel_share');
+    if(share)url.searchParams.set('_vercel_share',share);
+    return url.href;
+   }
+  }catch{}
+ }
+ return git.previewURL(sha);
+}
 const DRAFT_KEY='malaNauka.designStudio.v1',RECOVERY_KEY=DRAFT_KEY+'.recovery';
 let recoveryDraft=null,recoveryContent=null;
 let originalWords=clone(words),baseBatches=clone(initialBatches),batches=clone(initialBatches);
@@ -95,7 +110,7 @@ const play=new StudioPlay({workspace,getDesign:()=>({config,assets,rules,words,c
 function changeBatch(fn){const next=clone(batches);fn(next);validateBatches(next);checkpoint();batches=next;stash();header();}
 function downloadText(value,name){const url=URL.createObjectURL(new Blob([value],{type:'text/plain;charset=utf-8'}));Object.assign(document.createElement('a'),{href:url,download:name}).click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 const builder=new StudioBuilder({workspace,registry,getDesign:()=>({config}),getBase:()=>base,notice:toast,openScreenBuilder:()=>{projectStudio.tab='screens';navigate('project');},applyRecipe:(id,recipe)=>{const next=clone(config);next.recipes||=clone(DEFAULT_RECIPES);next.recipes[id]=recipe;validateConfig(next);checkpoint();config=next;sendDesign();},saveBlueprint:value=>{const next=clone(config);next.blueprints||=[];const index=next.blueprints.findIndex(b=>b.id===value.id);if(index<0)next.blueprints.push(value);else next.blueprints[index]=value;validateConfig(next);checkpoint();config=next;sendDesign();}});
-const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),checkDeployment:async()=>{const result=await git.deploymentStatus(savedCommit?.sha||git.head||deploymentInfo?.sha);const previewUrl=result.state==='success'?await git.previewURL(result.sha):'';return {...result,previewUrl};},
+const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),checkDeployment:async()=>{const result=await git.deploymentStatus(savedCommit?.sha||git.head||deploymentInfo?.sha);const previewUrl=result.state==='success'?await immutablePreviewURL(result.sha):'';return {...result,previewUrl};},
  productionSummary:sha=>git.productionSummary(sha),
  promoteProduction:async sha=>{if(stagedCount())throw Error('Masz niezapisane zmiany. Najpierw zapisz je na Preview.');return git.promoteToProduction(sha);},
  hasDraftChanges:()=>stagedCount()>0,

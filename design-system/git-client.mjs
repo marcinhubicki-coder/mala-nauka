@@ -48,6 +48,12 @@ export class GitClient {
    const response=await this.fetcher(`https://raw.githubusercontent.com/${REPOSITORY}/${head}/${path}`,{cache:'no-store'});
    if(!response.ok)throw Error(`Nie udało się pobrać grafiki: ${path}`);
    return response.arrayBuffer();
+  },async(path,bytes)=>{
+   if(typeof globalThis.createImageBitmap!=='function')return {};
+   const extension=path.split('.').at(-1).toLowerCase(),type={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',avif:'image/avif'}[extension];
+   if(!type)return {};
+   const bitmap=await globalThis.createImageBitmap(new Blob([bytes],{type}));
+   const dimensions={width:bitmap.width,height:bitmap.height};bitmap.close();return dimensions;
   });
   return {head,config,assets,catalog,rules,batches,wordPacks};
  }

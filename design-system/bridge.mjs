@@ -81,7 +81,7 @@ function selectedDetails() {
     const match = [...items.values()].find(row=>row.node===node && row.id!==item.id);
     if(match && !parents.includes(match.id))parents.push(match.id);
   }
-  return {id:item.id,component:item.component,kind:item.kind,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
+  return {id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
 function paintHighlight() {
   overlay?.remove();
@@ -106,7 +106,7 @@ function report() {
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,visible:visible(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,visible:visible(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);
@@ -154,7 +154,7 @@ if (studio) {
     if(message.type==='blueprint'){
       const source=items.get(message.id);if(!source)return;
       const value=blueprintTemplate(),rows=[...items.values()];let count=0;
-      const make=(item,depth=0)=>{const type=item.node.matches('button')?'button':item.kind==='icon'?'icon':item.kind==='image'?'image':item.kind==='text'?'subtitle':'group',n=newLayer(type),s=getComputedStyle(item.node);count++;n.text=(item.label||'Element').slice(0,140);n.width=Math.min(390,Math.round(item.node.getBoundingClientRect().width));n.height=0;n.padding=Math.min(120,parseFloat(s.padding)||0);n.gap=Math.min(120,parseFloat(s.gap)||0);n.layout=s.display==='grid'?'grid':s.flexDirection==='row'?'row':'column';if(n.layout==='grid')n.columns=Math.min(5,s.gridTemplateColumns.split(' ').length);const color=(s.color.match(/\d+/g)||[]).slice(0,3);if(color.length===3)n.textColor='#'+color.map(v=>Number(v).toString(16).padStart(2,'0')).join('');if(type==='icon')n.icon=item.node.dataset.dsIcon||'star';const src=item.node.getAttribute('src');if(type==='image'&&src?.startsWith('assets/'))n.asset=src;if(['button','group'].includes(type)&&depth<4&&count<40)n.children=rows.filter(r=>r.parent===item.id).slice(0,8).map(r=>make(r,depth+1));else n.children=[];return n;};
+      const make=(item,depth=0)=>{const type=item.node.matches('button')?'button':item.kind==='icon'?'icon':item.kind==='image'?'image':item.kind==='text'?'subtitle':'group',n=newLayer(type),s=getComputedStyle(item.node);count++;n.text=(item.label||'Element').slice(0,140);n.width=Math.min(390,Math.round(item.node.getBoundingClientRect().width));n.height=0;n.padding=Math.min(120,parseFloat(s.padding)||0);n.gap=Math.min(120,parseFloat(s.gap)||0);n.layout=s.display==='grid'?'grid':s.flexDirection==='row'?'row':'column';if(n.layout==='grid')n.columns=Math.min(5,s.gridTemplateColumns.split(' ').length);const color=(s.color.match(/\d+/g)||[]).slice(0,3);if(color.length===3)n.textColor='#'+color.map(v=>Number(v).toString(16).padStart(2,'0')).join('');if(type==='icon')n.icon=item.node.dataset.dsIcon||'star';const src=item.node.getAttribute('src')||item.node.querySelector('image')?.getAttribute('href');if(type==='image'&&src){const path=src.match(/(?:^|\/)assets\/[a-zA-Z0-9._/-]+/)?.[0]?.replace(/^\//,'');if(path&&!path.includes('..'))n.asset=path;}if(['button','group'].includes(type)&&depth<4&&count<40)n.children=rows.filter(r=>r.parent===item.id).slice(0,8).map(r=>make(r,depth+1));else n.children=[];return n;};
       value.name=('Szkic · '+source.label).slice(0,60);value.root.children=[make(source)];try{validateBlueprint(value);emit({type:'blueprint',value});}catch(e){emit({type:'notice',message:e.message});}
     }
     if(message.type==='action'){

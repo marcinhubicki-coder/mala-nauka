@@ -41,7 +41,7 @@ export async function initDesign() {
       const mathView=app.querySelector('.math-result-screen')?'results':app.querySelector('[data-math-quiz],.quiz-screen')?'game':app.querySelector('.category-grid')?'wizard':'';
       if(mathView&&app.dataset.view!==mathView)app.dataset.view=mathView;
     }
-    if(!new URLSearchParams(location.search).has('studio')){
+    if(app.dataset.view){
       const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
       const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
       const id=viewIdFor({view:app.dataset.view,mode:app.dataset.mode||'spelling',state,hasPlayers:Boolean(app.querySelector('.player-card')),historyState:app.dataset.historyState|| (app.querySelector('.progress-achievement-list')?'achievements':app.querySelector('.progress-category-list')?'categories':app.querySelector('.rules-views')?'rules':app.querySelector('.collection-word-grid')?'collection':'dashboard'),popup});

@@ -79,7 +79,7 @@ export class StudioMotion {
       await this.show(this.to,true);if(!this.clock.valid(generation))return;
       if(!this.loop)break;
       if(!await this.clock.pause(this.delay,generation))return;
-      await this.show(this.from,true);if(!this.clock.valid(generation))return;
+      await this.show(this.from,this.edges.some(e=>e.from===this.to&&e.to===this.from));if(!this.clock.valid(generation))return;
       if(!await this.clock.pause(this.delay,generation))return;
     }while(this.loop&&this.clock.valid(generation));
     this.playing=false;this.playButton();this.updateStatus();

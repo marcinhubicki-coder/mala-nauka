@@ -269,3 +269,8 @@ html[data-animations="off"]::view-transition-group(root),html[data-animations="o
 .settings-test-card>p{margin:0;color:#65758f;font-size:11px;line-height:1.45}
 .settings-test-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .settings-test-actions>button{width:100%;height:48px;min-height:48px;padding:8px 10px;border-radius:15px;font-size:12px;line-height:1.15}
+
+/* Keep PIN content in normal flow; only the no-PIN choice gets extra spacing. */
+.pin-fields{display:flex;flex-direction:column;align-items:stretch;min-width:0}
+.pin-card.pin-no-code .pin-fields{padding-top:24px}
+.pin-card.pin-no-code .pin-fields .player-form-next{margin-top:30px}

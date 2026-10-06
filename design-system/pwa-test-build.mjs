@@ -7,17 +7,14 @@ export function optimizedTestConfig(saved){
  const config=structuredClone({...saved,...draft});
  const effects=normalizeEffectsConfig(config.effects||DEFAULT_EFFECTS);
  const original={frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness};
- effects.bubble.frameRate=30;
- effects.bubble.transitionBlur=0;
- effects.bubble.transitionSparks=Math.min(12,effects.bubble.transitionSparks);
- effects.particleBudget=Math.min(24,effects.particleBudget);
- effects.ambient.softness=0;
+ // Keep the full Design Studio effect settings. iOS/WebKit safety is handled
+ // by the HTML/CSS bubble renderer and the non-blurring mobile overlay CSS.
  config.effects=effects;
  validateConfig(config);
  const hidden=[];
  for(const [family,style] of Object.entries(config.elementStyles||{}))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'global',family,mode:style.visibility});
  for(const [view,items] of Object.entries(config.elementOverrides||{}))for(const [id,style] of Object.entries(items))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'view',view,id,mode:style.visibility});
- return {config,report:{kind:'optimized-pwa-test',optimization:'mobile-v1',usesDesignDraft:Boolean(saved.project?.designDraft),original,optimized:{frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness},hidden}};
+ return {config,report:{kind:'optimized-pwa-test',optimization:'mobile-v2-full-effects',usesDesignDraft:Boolean(saved.project?.designDraft),original,optimized:{frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness},hidden}};
 }
 function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Silnik bańki zmienił się — wstrzymano automatyczną optymalizację.');return source.replace(a,b);}
 export function optimizeBubbleSource(source){
@@ -48,12 +45,9 @@ export function optimizeRuntimeSource(source){
  return source.replace(target,replacement);
 }
 export function optimizeIndexHTML(source){if(!source.includes('</head>'))throw Error('Brak nagłówka PWA.');return source.replace('</head>','<link rel="stylesheet" href="pwa-optimized.css">\n<meta name="mn-pwa-build" content="optimized-test">\n</head>');}
-export const OPTIMIZED_CSS=`/* Only the optimized Test PWA branch. */
-.screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-@media(max-width:900px){
- .screen-atmosphere .ambient-lens{animation:none!important;will-change:auto!important}
- .screen-atmosphere i{animation-duration:18s!important;will-change:auto!important}
- .soap-star,.soap-satellite{animation-duration:9s!important}
+export const OPTIMIZED_CSS=`/* Test PWA: full effects, but no full-screen backdrop blur in mobile WebKit. */
+@supports (-webkit-touch-callout: none){
+ .screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }
 `;
 

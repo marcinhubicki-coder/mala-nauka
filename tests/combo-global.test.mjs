@@ -36,3 +36,12 @@ test('fire-inspired combos remain bounded and use composited CSS only',async()=>
  const animations=css.match(/@keyframes [^{]+\{(?:[^{}]*\{[^{}]*\})+\}/g)||[];
  for(const keyframes of animations)assert.doesNotMatch(keyframes,/(?:filter|clip-path|border-radius|box-shadow|background|top|left|width|height)\s*:/);
 });
+
+test('mobile WebKit uses a paint-safe animation fallback for the six full-screen gradients',async()=>{
+ const js=await readFile(new URL('../spelling/combo-global.mjs',import.meta.url),'utf8');
+ const css=await readFile(new URL('../spelling/combo-global.css',import.meta.url),'utf8');
+ assert.match(js,/const webkit=\/AppleWebKit\/i/);
+ assert.match(js,/mn-combo-webkit/);
+ assert.match(css,/\.mn-combo-global\.mn-combo-webkit>i/);
+ assert.match(css,/animation:none!important/);
+});

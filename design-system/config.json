@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 15,
+  "revision": 16,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4174,10 +4174,10 @@
           "skin": "rainbow",
           "shape": "bubble",
           "morph": 0.45,
-          "texture": 0.65,
-          "sparkle": 0.75,
-          "lightning": 0.35,
-          "fizz": 0.55
+          "texture": 0.95,
+          "sparkle": 1.55,
+          "lightning": 0,
+          "fizz": 1.05
         },
         "wrong": {
           "duration": 440,
@@ -4390,6 +4390,11 @@
             "shape": "cycle",
             "morph": 0.6
           }
+        },
+        "ambient": {
+          "style": "dust",
+          "filter": "warm",
+          "intensity": 0.5
         }
       },
       "scoring": {
@@ -4443,10 +4448,74 @@
         "spelling-results": {
           "round-summary-line": {
             "gap": 0,
-            "radius": 0
+            "radius": 0,
+            "offsetY": -3.5
           },
           "round-progress": {
-            "height": 29.5
+            "height": 33,
+            "offsetY": -8.5
+          },
+          "result-points-bubble": {
+            "radius": 73,
+            "offsetX": -15.5,
+            "width": 94.5,
+            "height": 72,
+            "opacity": 0.9
+          },
+          "round-summary": {
+            "offsetY": -23
+          },
+          "result-stat-toggle-result": {
+            "offsetY": -25
+          },
+          "result-stat-toggle-result-1": {
+            "offsetY": -25
+          },
+          "result-details": {
+            "offsetY": -20,
+            "height": 217
+          },
+          "result-actions": {
+            "offsetY": 27
+          },
+          "result-title-wrap": {
+            "offsetY": -6.5
+          },
+          "p": {
+            "offsetY": -9.5
+          },
+          "result-count-2": {},
+          "h1": {
+            "offsetY": -3.5
+          },
+          "result-rays-1": {
+            "offsetY": -16,
+            "offsetX": -10
+          },
+          "result-rays": {
+            "offsetY": -19,
+            "offsetX": 10
+          },
+          "round-mode-pill": {
+            "fontSize": 11
+          },
+          "result-sheet": {},
+          "strong-5": {
+            "fontSize": 15,
+            "offsetY": 3,
+            "offsetX": 5
+          },
+          "p-2": {
+            "fontSize": 11,
+            "offsetY": 1,
+            "offsetX": 5
+          },
+          "result-detail-review": {
+            "height": 217.5,
+            "overflow": "visible"
+          },
+          "primary": {
+            "offsetY": -3
           }
         },
         "spelling-pause": {

@@ -212,6 +212,7 @@ function playersPage(){
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
  const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
+ root.dataset.profileEditor=editing?'edit':'create';
  const title=editing?'Edytuj profil':'Nowy gracz',back=editing?'settings':'players';
  const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
  const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';

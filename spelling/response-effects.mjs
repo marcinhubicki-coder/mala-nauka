@@ -2,6 +2,11 @@ import {DEFAULT_EFFECTS,effectBudget,frameStats,normalizeEffectsConfig} from './
 
 // A decorative top layer: it never receives pointer events, while taps on the
 // real screen may pull a short, bounded group of particles toward that point.
+// iOS WebKit can stop scheduling frames for over a second when touch bursts
+// mutate a large blended overlay. Keep the ambient backdrop, but not the burst.
+export function supportsAmbientTouchBurst(userAgent='',maxTouchPoints=0){
+ return !(/AppleWebKit/i.test(userAgent)&&(/iP(?:hone|ad|od)/i.test(userAgent)||(/Macintosh/i.test(userAgent)&&maxTouchPoints>1)));
+}
 export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),layer=document.createElement('div');
  layer.className='screen-atmosphere';layer.setAttribute('aria-hidden','true');host.append(layer);
@@ -30,6 +35,7 @@ export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
   }
  };
  const react=event=>{
+  if(!supportsAmbientTouchBurst(globalThis.navigator?.userAgent||'',globalThis.navigator?.maxTouchPoints||0))return;
   if(!settings?.responsive||settings.style==='none'||reduced.matches)return;
   const rect=host.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top,count=Math.min(10,4+Math.round(settings.intensity*8));
   for(let i=0;i<count;i++){const dot=document.createElement('b'),angle=i/count*Math.PI*2,radius=(34+(i%3)*18)*(settings.touchStrength||.6);dot.style.left=`${x+Math.cos(angle)*radius}px`;dot.style.top=`${y+Math.sin(angle)*radius}px`;layer.append(dot);const animation=dot.animate([{opacity:0,transform:'translate(-50%,-50%) scale(.35)'},{opacity:.72,offset:.25},{opacity:0,transform:`translate(calc(-50% + ${-Math.cos(angle)*radius}px),calc(-50% + ${-Math.sin(angle)*radius}px)) scale(${.75+(settings.touchStrength||.6)*.5})`}],{duration:520+(i%3)*80,easing:'cubic-bezier(.16,.72,.22,1)'});bursts.push(animation);animation.finished.catch(()=>{}).finally(()=>{dot.remove();bursts=bursts.filter(row=>row!==animation);});}

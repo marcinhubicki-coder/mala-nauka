@@ -115,13 +115,14 @@ export class StudioPlay {
   if(n.dataset.presetChoice==='style'){this.edit(`effects.presets.${this.id}.style`,n.value);this.endEdit();return;}
   if(n.dataset.wrongChoice==='style'){this.edit('effects.wrong.style',n.value);this.endEdit();return;}
   if(n.dataset.ambientChoice){this.edit(`effects.ambient.${n.dataset.ambientChoice}`,n.value);this.endEdit();return;}
+  if(n.dataset.wordChoice){this.edit('effects.wordTransition.'+n.dataset.wordChoice,n.value);this.endEdit();return;}
   if(n.dataset.comboChoice){this.edit(`effects.comboGlobal.${n.dataset.comboChoice}`,n.value);this.endEdit();return;}
   if(n.dataset.playValue){this.endEdit();return;}
   if(n.id==='effect-loop'){this.loop=n.checked;n.closest('.preview-action')?.classList.toggle('active',this.loop);}
   if(n.id==='effect-delay')this.delay=Math.min(5000,Math.max(250,Number(n.value)||1000));
-  const paths={'effect-enabled':`effects.presets.${this.id}.enabled`,'all-effects-enabled':'effects.enabled','effect-name':`effects.presets.${this.id}.name`,'ambient-responsive':'effects.ambient.responsive','combo-global-enabled':'effects.comboGlobal.enabled'};
+  const paths={'effect-enabled':`effects.presets.${this.id}.enabled`,'all-effects-enabled':'effects.enabled','effect-name':`effects.presets.${this.id}.name`,'ambient-responsive':'effects.ambient.responsive','combo-global-enabled':'effects.comboGlobal.enabled','word-particles-interactive':'effects.wordTransition.interactive'};
   if(paths[n.id]){
-   let v=['effect-enabled','all-effects-enabled','ambient-responsive','combo-global-enabled'].includes(n.id)?n.checked:n.value.trim();
+   let v=['effect-enabled','all-effects-enabled','ambient-responsive','combo-global-enabled','word-particles-interactive'].includes(n.id)?n.checked:n.value.trim();
    if(n.id==='effect-name'&&(!v||v.length>50||/[<>\u0000-\u001f]/.test(v))){n.value=this.effects.presets[this.id].name;this.notice('Wpisz nazwę efektu, do 50 znaków.');return;}
    if(n.id==='effect-enabled'&&!v&&Object.values(this.effects.presets).filter(p=>p.enabled).length===1){n.checked=true;this.notice('Zostaw jeden aktywny efekt. Całość możesz wyłączyć głównym przełącznikiem.');return;}
    this.edit(paths[n.id],v);this.endEdit();

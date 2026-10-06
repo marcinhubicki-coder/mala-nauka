@@ -18,8 +18,12 @@ test('Test PWA honors draft visibility in mobile build',()=>{
  assert.match(css,/data-ds-element="demo-element"\]\{visibility:hidden!important;/);
  assert.match(css,/data-ds-element="demo-remove"\]\{display:none!important;/);
  assert.equal(report.hidden.length,3);
- assert.equal(config.effects.bubble.frameRate,30);
- assert.equal(config.effects.bubble.transitionBlur,0);
+ assert.equal(config.effects.bubble.frameRate,base.project.designDraft.effects.bubble.frameRate);
+ assert.equal(config.effects.bubble.transitionBlur,base.project.designDraft.effects.bubble.transitionBlur);
+ assert.equal(config.effects.bubble.transitionSparks,base.project.designDraft.effects.bubble.transitionSparks);
+ assert.equal(config.effects.particleBudget,base.project.designDraft.effects.particleBudget);
+ assert.equal(config.effects.ambient.softness,base.project.designDraft.effects.ambient?.softness??0.12);
+ assert.equal(report.optimization,'mobile-v2-full-effects');
  assert.equal(TEST_PWA_BRANCH,'studio/pwa-test');
 });
 test('Test PWA drops no-op optical filters',async()=>{

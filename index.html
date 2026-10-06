@@ -11,6 +11,7 @@
 <title>Mała Nauka</title>
 
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="assets/brand/player-logo.svg" as="image" type="image/svg+xml">
 <link rel="preload" href="assets/brand/player-logo-3d.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="assets/fonts/nunito-variable.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="assets/home/home-retina.webp" as="image" type="image/webp">
@@ -29,9 +30,11 @@
 <script src="pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="pwa-viewport.css?v=6-keyboard"><link rel="icon" href="assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260930"><link rel="stylesheet" href="shared/components.css?v=1"><script type="module" src="design-system/bridge.mjs"></script><link rel="stylesheet" href="pwa-optimized.css">
 <meta name="mn-pwa-build" content="optimized-test">
 <script type="module" src="animation-diagnostics.mjs"></script>
+<script type="module" src="boot-ui.mjs"></script>
 </head>
 <body>
-<main id="app" tabindex="-1"><div class="mn-boot-screen" role="status" aria-label="Przygotowujemy Małą Naukę"><img class="mn-boot-logo" src="assets/brand/player-logo.svg" alt="Mała Nauka" width="1200" height="320" fetchpriority="high"><div class="mn-boot-dots" aria-hidden="true"><i></i><i></i><i></i></div><span>Przygotowujemy małe przygody…</span></div></main>
+<div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Przygotowujemy Małą Naukę"><img class="mn-boot-logo" src="assets/brand/player-logo.svg" alt="Mała Nauka" width="1200" height="320" fetchpriority="high"><div class="mn-boot-dots" aria-hidden="true"><i></i><i></i><i></i></div><span>Przygotowujemy małe przygody…</span></div>
+<main id="app" tabindex="-1"><p class="loading" role="status">Przygotowujemy małe przygody…</p></main>
 <p id="storage-notice" class="notice" role="status" hidden>Zapisywanie jest niedostępne. Wyniki zostaną tylko do zamknięcia strony.</p>
 <dialog id="modal" aria-labelledby="modal-title"></dialog>
 <noscript>Włącz JavaScript, aby zagrać w Małą Naukę.</noscript>

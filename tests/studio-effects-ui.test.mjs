@@ -34,8 +34,8 @@ test('screen atmosphere is bounded, click-through and validated',()=>{
  assert.match(response,/Math\.min\(10,4\+Math\.round/);
  assert.match(artCss,/\.screen-atmosphere\{[^}]*pointer-events:none/);
  assert.match(artCss,/ambient-bokeh/);
- assert.match(response,/ambient-orbit/);
- assert.match(response,/ambient-aurora/);
+ assert.match(response,/style==='orbit'/);
+ assert.match(response,/style==='aurora'/);
  assert.match(artCss,/backdrop-filter:blur\(var\(--ambient-softness/);
  assert.match(studio,/Ciepły film/);
  assert.match(studio,/effects\.ambient\.flare/);

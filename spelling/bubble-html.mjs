@@ -70,6 +70,7 @@ export function createHTMLBubble(host){
   root.style.setProperty('--mn-soap-texture',String(Math.min(1.2,b.texture??.28)));
   root.dataset.skin=b.skin||'rainbow';
   root.dataset.rim=b.rim||'classic';
+   root.dataset.liquid=b.liquid||'none';
   const shape=silhouette(b.shape);
   shell.style.clipPath=shape;
   shell.style.borderRadius=shape==='none'?'34% 33% 35% 32% / 33% 35% 32% 34%':'0';

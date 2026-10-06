@@ -13,7 +13,18 @@ import { RULES, lightbulbSvg } from './hints.mjs';
 export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pickEffect=createEffectPicker();
-  const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
+  const effectConfig=()=>{
+    const base=globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
+    // Opt-in visual demos only; never alter the production or saved settings.
+    const query=new URLSearchParams(location.search);
+    if(!query.has('studio'))return base;
+    const liquid=query.get('liquid'),particles=query.get('wordParticles')==='1';
+    const demoLiquid=['ripple','silk','jelly'].includes(liquid)?liquid:null;
+    if(!demoLiquid&&!particles)return base;
+    return {...base,
+      bubble:{...base.bubble,...(demoLiquid?{liquid:demoLiquid}:{})},
+      wordTransition:{...base.wordTransition,...(particles?{style:'particles',dots:32,interactive:true}:{})}};
+  };
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
   let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
   const stopComboGlobal=()=>comboGlobal?.stop();

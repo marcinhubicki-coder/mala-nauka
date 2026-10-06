@@ -5,6 +5,7 @@ import {createComboGlobalEffects} from './combo-global.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import {createHTMLBubble} from './bubble-html.mjs';
+import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
@@ -14,7 +15,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   const pickEffect=createEffectPicker();
   const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal;
+  let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
   const stopComboGlobal=()=>comboGlobal?.stop();
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
@@ -28,6 +29,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function reset() {
     generation++;
+    wordParticles?.destroy();wordParticles=null;
     continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;stopComboGlobal();comboGlobal?.destroy();comboGlobal=null;atmosphere?.destroy();atmosphere=null;
     if (hint) { hint.close(); hint.remove(); hint = null; }
     animations.forEach(animation => animation.cancel()); animations = [];
@@ -88,6 +90,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       word: app.querySelector('.question-content'), answers: [...app.querySelectorAll('.answer')],
       hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
     };
+    wordParticles=createWordParticles(nodes.word,effectConfig);
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
@@ -106,6 +109,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
     const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    // Optional dots run beside existing 140/180ms ink motion, without adding delay.
+    void wordParticles?.play(direction);
     animations = flowInk(blocks, direction);
     if (session?.state === 'paused') animations.forEach(animation => animation.pause());
     const active = animations;
@@ -187,7 +192,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
-    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();}
+    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();wordParticles?.clear();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });

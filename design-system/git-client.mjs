@@ -1,5 +1,5 @@
 import {discoverImages} from './catalog-refresh.mjs';
-import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,OPTIMIZED_CSS,TEST_PWA_BRANCH} from './pwa-test-build.mjs';
+import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,OPTIMIZED_CSS,TEST_PWA_BRANCH} from './pwa-test-build.mjs';
 import {validateWords} from '../game.mjs';
 import {validateRules} from '../shared/rules-library.mjs';
 import {validateAssets} from './validation.mjs';
@@ -141,13 +141,14 @@ export class GitClient {
   const sourceSha=(await this.request(`git/ref/heads/${BRANCH}`)).object.sha;
   if(sourceSha!==this.#head)throw new GitConflict('Branch zmienił się. Wczytaj aktualną wersję przed przygotowaniem Test PWA.');
   const readText=async path=>decode((await this.request(`contents/${path}?ref=${sourceSha}`)).content);
-  const [saved,index,bubble,sourceCommit]=await Promise.all([this.readJSON('design-system/config.json',sourceSha),readText('index.html'),readText('spelling/bubble.mjs'),this.request(`git/commits/${sourceSha}`)]);
+  const [saved,index,bubble,runtime,sourceCommit]=await Promise.all([this.readJSON('design-system/config.json',sourceSha),readText('index.html'),readText('spelling/bubble.mjs'),readText('shared/design-runtime.mjs'),this.request(`git/commits/${sourceSha}`)]);
   const {config,report}=optimizedTestConfig(saved);
   report.sourceCommit=sourceSha;
   const files=[
-   {path:'design-system/config.json',mode:'100644',type:'blob',content:JSON.stringify(config,null,2)+String.fromCharCode(10)},
+   {path:'design-system/pwa-runtime-config.json',mode:'100644',type:'blob',content:JSON.stringify(config,null,2)+String.fromCharCode(10)},
    {path:'design-system/pwa-test-report.json',mode:'100644',type:'blob',content:JSON.stringify(report,null,2)+String.fromCharCode(10)},
    {path:'index.html',mode:'100644',type:'blob',content:optimizeIndexHTML(index)},
+   {path:'shared/design-runtime.mjs',mode:'100644',type:'blob',content:optimizeRuntimeSource(runtime)},
    {path:'spelling/bubble.mjs',mode:'100644',type:'blob',content:optimizeBubbleSource(bubble)},
    {path:'pwa-optimized.css',mode:'100644',type:'blob',content:OPTIMIZED_CSS}
   ];

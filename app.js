@@ -211,14 +211,17 @@ function playerCreatePage(){
 }
 function pinFieldsMarkup(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
- const error=pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:'';
- if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${error}${btn('Dalej','submit-pin','primary player-form-next')}`;
+ if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next')}`;
  const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
- return `<h3 class="pin-instruction">${deleting?'Potwierdź':creating||setting?'Ustaw':'Wpisz'} <strong>${deleting?'PIN':'4 cyfry'}</strong></h3><p>${deleting?'Wpisz PIN tego profilu, aby przejść do potwierdzenia usunięcia.':`PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}`}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${error}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${deleting?'Potwierdź PIN':creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`;
+ return `<h3 class="pin-instruction">${deleting?'Potwierdź':creating||setting?'Ustaw':'Wpisz'} <strong>${deleting?'PIN':'4 cyfry'}</strong></h3><p>${deleting?'Wpisz PIN tego profilu, aby przejść do potwierdzenia usunięcia.':`PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}`}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div><div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${deleting?'Potwierdź PIN':creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`;
+}
+function renderPinError(){
+ const node=root.querySelector('.pin-error-outside');if(!node)return;
+ node.textContent=pinError||'';node.classList.toggle('is-visible',Boolean(pinError));
 }
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
- fields.innerHTML=pinFieldsMarkup();
+ fields.innerHTML=pinFieldsMarkup();renderPinError();
  if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
@@ -234,7 +237,7 @@ function playerPinPage(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
  const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
  const name=player?.nickname||'Gracz';
- root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section>`;
+ root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section><p class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
  const container=root.querySelector('.pin-mode');
  void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){

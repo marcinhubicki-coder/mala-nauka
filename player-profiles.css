@@ -87,7 +87,9 @@
 
 #app[data-view="player-create"],#app[data-view="player-pin"]{overflow-y:auto}
 #app[data-view="player-create"] .page-head,#app[data-view="player-pin"] .page-head{margin-bottom:14px;flex:0 0 auto}
-#app[data-view="player-create"] .page-head h1,#app[data-view="player-pin"] .page-head h1{font-family:var(--ds-font-body),ui-rounded,system-ui,sans-serif;color:var(--profile-accent);transition:color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1)}
+#app[data-view="player-create"] .page-head h1,#app[data-view="player-pin"] .page-head h1{font-family:var(--ds-font-body),ui-rounded,system-ui,sans-serif}
+#app[data-view="player-create"] .page-head h1{color:var(--profile-accent);transition:color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1)}
+#app[data-view="player-pin"] .page-head h1{color:var(--player-navy)}
 .player-form-card,.pin-card{width:100%;max-width:390px;margin:auto;text-align:center;padding:20px 20px 22px;border:0;border-radius:30px;background:#ffffff;box-shadow:0 14px 40px #2a64a80d}
 .player-form-card h2,.pin-card h2{margin:9px 0 6px;font-family:var(--ds-font-body),ui-rounded,system-ui,sans-serif;font-size:24px;color:var(--player-navy)}
 .player-form-card>p,.pin-card>p{margin:0;color:#7080a4;font-size:12px;line-height:1.4}
@@ -110,7 +112,9 @@
 .pin-dots{display:flex;justify-content:center;gap:13px;margin:20px 0 16px}
 .pin-dots span{width:14px;height:14px;border:2px solid #a9b8cd;border-radius:50%;background:transparent;transition:transform .12s,background-color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1),border-color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1)}
 .pin-dots span.filled{background-color:var(--profile-accent);border-color:var(--profile-accent);transform:scale(1.08)}
-.pin-error{min-height:18px!important;margin:-6px 0 8px!important;color:#a85045!important;font-weight:750;font-size:11px!important}
+.pin-error{display:none!important}
+.pin-error-outside{width:100%;max-width:390px;min-height:24px;margin:8px auto 0;padding:0 8px;text-align:center;color:#a85045;font:750 12px/1.35 var(--ds-font-body),sans-serif;opacity:0;transition:opacity .18s ease}
+.pin-error-outside.is-visible{opacity:1}
 .pin-keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-width:300px;margin:0 auto}
 .pin-key{aspect-ratio:1.45;min-height:52px;border:0;border-radius:19px;background:#f5f9fd;color:#17336f;font-size:22px;font-weight:800;box-shadow:0 4px 0 #e4eaf3}
 .pin-key:active{transform:translateY(2px);box-shadow:0 2px 0 #e4eaf3}

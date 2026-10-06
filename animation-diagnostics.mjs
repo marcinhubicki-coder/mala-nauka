@@ -26,7 +26,7 @@ if(new URLSearchParams(location.search).has('animationDebug')){
    'CSS: '+animations.length+' aktywnych · czas: '+(cssAdvance===null?'—':cssAdvance+' ms'),
    'document.hidden: '+document.hidden+' · pauza: '+paused+' · soap-still: '+Boolean(soap?.closest('.soap-still')),
    'Timer: '+new URLSearchParams(location.search).has('animationTimer')+' · dotknij ekranu, gdy obraz stanie'
-  ].join('\\n');
+  ].join('\n');
   rafCount=0;maxRafGap=0;largeGaps=0;shapeChanges=0;
  };
  sample();setInterval(sample,1000);

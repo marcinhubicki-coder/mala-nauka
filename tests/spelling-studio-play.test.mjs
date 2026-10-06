@@ -8,6 +8,7 @@ import {configureSpellingRound} from '../spelling/round.mjs';
 import {configureAssets,wordAsset} from '../shared/asset-loader.mjs';
 import {configureRules,RULE_CATEGORIES} from '../shared/rules-library.mjs';
 import {DEFAULT_EFFECTS,validateEffects,createEffectPicker,effectBudget,frameStats} from '../spelling/effect-model.mjs';
+import {playResponseEffect} from '../spelling/response-effects.mjs';
 import {DEFAULT_SCORING,scoreAttempts,scoreResult,validateScoring} from '../spelling/scoring.mjs';
 import {validateConfig,changedViews} from '../design-system/model.mjs';
 import {recordResult,cleanProgress} from '../progress.mjs';
@@ -57,6 +58,7 @@ test('expanded effects validate, new effect types are available and combo cannot
  for(let i=0;i<40;i++){const {id,preset}=pick(DEFAULT_EFFECTS);assert.notEqual(id,previous);previous=id;assert.ok(effectBudget({...DEFAULT_EFFECTS,particleBudget:8},preset,true).particles<=8);}
  for(const mutate of [e=>e.particleBudget=100,e=>e.presets.spark.duration=NaN,e=>e.presets.spark.color='red;',e=>e.bubble.transitionBlur=20,e=>e.comboEvery=0,e=>Object.values(e.presets).forEach(p=>p.enabled=false)]){const value=structuredClone(DEFAULT_EFFECTS);mutate(value);assert.throws(()=>validateEffects(value));const c=structuredClone(config);c.effects=value;assert.throws(()=>validateConfig(c));}
 });
+test('response effects module imports with the expanded effect library',()=>{assert.equal(typeof playResponseEffect,'function');});
 test('performance sample reports measured frames honestly and refuses tiny samples',()=>{
  assert.equal(frameStats([16,17]).ready,false);const good=frameStats(Array(60).fill(16.67));assert.equal(good.fps,60);assert.equal(good.rating,'płynnie');assert.equal(good.longFrames,0);
  const heavy=frameStats(Array(20).fill(40));assert.equal(heavy.fps,25);assert.equal(heavy.rating,'ciężki');assert.equal(heavy.longFrames,20);

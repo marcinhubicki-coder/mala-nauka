@@ -66,13 +66,13 @@ export function playResponseEffect(host,{config=DEFAULT_EFFECTS,preset,event='co
     ],{duration,easing:'cubic-bezier(.18,.72,.2,1)'});
    }else{
     animate(target,[
-     {transform':scale(1) rotate(0deg)'},
-     {transform:`scale(${Math.min(1.3,selected.scale+(combo?.035:0))}) rotate(${(Math.random()-.5)*2.5}deg)`,offset:.24},
+     {transform:'scale(1) rotate(0deg)'},
+     {transform:`scale(${Math.min(1.3,selected.scale+(combo ? .035 : 0))}) rotate(${(Math.random()-.5)*2.5}deg)`,offset:.24},
      {transform:'scale(.99) rotate(0deg)',offset:.7},{transform:'scale(1) rotate(0deg)'}
     ],{duration:Math.min(720,duration),easing:'cubic-bezier(.15,.75,.2,1)'});
    }
   }
-  if(event==='wrong'&effects.wrong.flash>0){
+  if(event==='wrong'&&effects.wrong.flash>0){
    const ring=document.createElement('span');
    Object.assign(ring.style,{position:'absolute',inset:'9%',border:`${Math.max(2,2+effects.wrong.flash)}px solid ${effects.wrong.color}`,borderRadius:'44%',boxShadow:`0 0 ${10+effects.wrong.flash*14}px ${effects.wrong.color}55`});layer.append(ring);
    animate(ring,[{opacity:0,transform:'scale(.94)'},{opacity:Math.min(.9,.35+effects.wrong.flash*.3),offset:.22},{opacity:0,transform:'scale(1.08)'}],{duration});

@@ -6,7 +6,7 @@ import {COMBO_GLOBAL_STYLES,COMBO_GLOBAL_DEFAULTS,nextComboStyle} from '../spell
 test('global combo cycles six distinct looks instead of repeating particle showers',()=>{
  let index=-1;
  const results=[];
- for(let i=0;i<9;i++){const result=nextComboStyle(index);index=result.index;results.push(result.style);}
+ for(let i=0;i<COMBO_GLOBAL_STYLES.length*3;i++){const result=nextComboStyle(index);index=result.index;results.push(result.style);}
  assert.deepEqual(results,[...COMBO_GLOBAL_STYLES,...COMBO_GLOBAL_STYLES,...COMBO_GLOBAL_STYLES]);
  assert.equal(nextComboStyle(index,'tri-wave').style,'tri-wave');
  assert.equal(nextComboStyle(index,'liquid-flame').style,'liquid-flame');

@@ -34,3 +34,36 @@
 @keyframes mn-soap-glint{0%,100%{opacity:.38;transform:rotate(-25deg) scale(.93)}45%{opacity:1;transform:rotate(-25deg) scale(1.14)}}
 @media(prefers-reduced-motion:reduce){.mn-soap-shell,.mn-soap-glint,.mn-soap-spark{animation:none!important}}
 
+
+
+/* Metallic rims: static angular pseudo-gradients. The real picture stays above
+   the edge layer; no animated masks, SVG filters or extra per-frame JS writes. */
+.mn-soap-host[data-rim="silver"] .mn-soap-shell::before,
+.mn-soap-host[data-rim="gold"] .mn-soap-shell::before,
+.mn-soap-host[data-rim="iridescent"] .mn-soap-shell::before{
+ content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:conic-gradient(from 24deg at 50% 50%,#566273 0deg,#eef3fb 34deg,#889cad 63deg,#fff 98deg,#566577 145deg,#e0ecf7 194deg,#536476 238deg,#fff 287deg,#64778d 332deg,#566273 360deg);
+}
+.mn-soap-host[data-rim="silver"] .mn-soap-shell{
+ box-shadow:0 7px 16px #4a577c3d,inset 0 0 2px #fff;
+}
+.mn-soap-host[data-rim="gold"] .mn-soap-shell::before{
+ background:conic-gradient(from 28deg,#aa6d28,#fff5c2 37deg,#dfaa53 70deg,#fffad3 111deg,#91531a 162deg,#fad577 223deg,#a97535 255deg,#fff1ae 313deg,#aa6d28);
+}
+.mn-soap-host[data-rim="gold"] .mn-soap-shell{
+ box-shadow:0 7px 18px #8f602d48,inset 0 0 2px #fff8df;
+}
+.mn-soap-host[data-rim="iridescent"] .mn-soap-shell::before{
+ background:conic-gradient(from 20deg,#91eff6,#f8b6f3 42deg,#e5d7ff 82deg,#fff8d2 135deg,#a1f3d8 175deg,#bec3ff 235deg,#f9c7fa 288deg,#fff3c1 325deg,#91eff6);
+}
+.mn-soap-host[data-rim="iridescent"] .mn-soap-shell{
+ box-shadow:0 7px 18px #795caa38,inset 0 0 2px #fff;
+}
+/* Picture inset exposes only the metallic band rather than painting over the photo. */
+.mn-soap-host[data-rim]:not([data-rim="classic"]) .mn-soap-picture{inset:8px}
+.mn-soap-host[data-rim]:not([data-rim="classic"]) .mn-soap-film{
+ box-shadow:inset 0 0 0 1px #fff9,inset 3px 4px 8px #ffffff6d,inset -3px -5px 9px #776aa84d;
+}
+.mn-soap-host[data-rim]:not([data-rim="classic"]) .mn-soap-shell::after{
+ inset:2px;border:1px solid #fff8;
+}

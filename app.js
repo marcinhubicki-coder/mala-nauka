@@ -73,6 +73,89 @@ function avatarMarkup(player,extra=''){
  if(index>=0)return `<span class="player-avatar-art player-avatar-extra ${extra}" data-avatar="${key}" aria-hidden="true"><svg viewBox="${index%4*320} ${index<4?302:650} 320 320" preserveAspectRatio="xMidYMid slice"><image href="assets/brand/player-avatars-extra-v1.webp" width="1280" height="1280"/></svg></span>`;
  return `<span class="player-avatar-art ${extra}" data-avatar="${key}" aria-hidden="true"></span>`;
 }
+
+const avatarAccentCache=new Map(),avatarImageCache=new Map();
+const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)'};
+function loadAvatarImage(src){
+ if(avatarImageCache.has(src))return avatarImageCache.get(src);
+ const promise=new Promise((resolve,reject)=>{const image=new Image();image.decoding='async';image.onload=()=>resolve(image);image.onerror=reject;image.src=src;});
+ avatarImageCache.set(src,promise);return promise;
+}
+function rgbToHsl(r,g,b){
+ r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min,l=(max+min)/2;
+ if(!d)return [0,0,l];
+ const s=d/(1-Math.abs(2*l-1));let h=max===r?((g-b)/d)%6:max===g?(b-r)/d+2:(r-g)/d+4;
+ h=(h*60+360)%360;return [h,s,l];
+}
+function hslToRgb(h,s,l){
+ const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;
+ let r=0,g=0,b=0;if(h<60){r=c;g=x;}else if(h<120){r=x;g=c;}else if(h<180){g=c;b=x;}else if(h<240){g=x;b=c;}else if(h<300){r=x;b=c;}else{r=c;b=x;}
+ return [r,g,b].map(v=>Math.round((v+m)*255));
+}
+const rgbCss=rgb=>`rgb(${rgb[0]} ${rgb[1]} ${rgb[2]})`;
+function whiteContrast(rgb){
+ const channel=value=>{value/=255;return value<=.03928?value/12.92:((value+.055)/1.055)**2.4;};
+ const lum=.2126*channel(rgb[0])+.7152*channel(rgb[1])+.0722*channel(rgb[2]);
+ return 1.05/(lum+.05);
+}
+function paletteFromSample(r,g,b){
+ const [h,s,l]=rgbToHsl(r,g,b),sat=Math.min(.88,Math.max(.66,s*1.25));
+ let accentL=Math.min(.55,Math.max(.43,l-.24));
+ let accent=hslToRgb(h,sat,accentL);
+ while(whiteContrast(accent)<3.15&&accentL>.34){accentL-=.018;accent=hslToRgb(h,sat,accentL);}
+ const deep=hslToRgb(h,Math.min(.92,sat+.04),Math.max(.3,accentL-.085));
+ const soft=hslToRgb(h,Math.min(.68,Math.max(.32,s)),.93);
+ return {accent:rgbCss(accent),deep:rgbCss(deep),soft:rgbCss(soft),shadow:`rgba(${accent[0]},${accent[1]},${accent[2]},.27)`,shadowDeep:`rgba(${deep[0]},${deep[1]},${deep[2]},.24)`};
+}
+async function sampleAvatarAccent(avatarId){
+ if(avatarAccentCache.has(avatarId))return avatarAccentCache.get(avatarId);
+ const index=AVATARS.indexOf(avatarId);if(index<0)return defaultAvatarAccent;
+ try{
+  const extra=index>=4,src=extra?'assets/brand/player-avatars-extra-v1.webp':'assets/brand/player-avatars-3d.webp',image=await loadAvatarImage(src);
+  let sx,sy,sw,sh;
+  if(extra){
+   const local=index-4;sw=image.naturalWidth*.25;sh=image.naturalHeight*.25;sx=(local%4)*sw;sy=(local<4?302:650)/1280*image.naturalHeight;
+  }else{
+   sw=image.naturalWidth*.5;sh=image.naturalHeight*.5;sx=(index%2)*sw;sy=Math.floor(index/2)*sh;
+  }
+  const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  ctx.drawImage(image,sx,sy,sw,sh,0,0,64,64);
+  const data=ctx.getImageData(0,0,64,64).data,candidates=[];
+  for(let y=5;y<59;y++)for(let x=5;x<59;x++){
+   const corner=(x<19||x>44)&&(y<19||y>44);if(!corner)continue;
+   const i=(y*64+x)*4,a=data[i+3];if(a<180)continue;
+   const r=data[i],g=data[i+1],b=data[i+2],[,sat,light]=rgbToHsl(r,g,b);
+   if(light>.48&&sat>.055)candidates.push([r,g,b]);
+  }
+  if(candidates.length<18)throw new Error('No stable avatar background sample');
+  candidates.sort((a,b)=>(a[0]+a[1]+a[2])-(b[0]+b[1]+b[2]));
+  const trimmed=candidates.slice(Math.floor(candidates.length*.12),Math.ceil(candidates.length*.88));
+  const avg=trimmed.reduce((sum,pixel)=>[sum[0]+pixel[0],sum[1]+pixel[1],sum[2]+pixel[2]],[0,0,0]).map(value=>value/trimmed.length);
+  const palette=paletteFromSample(...avg);avatarAccentCache.set(avatarId,palette);return palette;
+ }catch{
+  const fallback=avatarThemes[avatarId]?.bg;
+  if(fallback){
+   const hex=fallback.replace('#',''),rgb=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)),palette=paletteFromSample(...rgb);avatarAccentCache.set(avatarId,palette);return palette;
+  }
+  return defaultAvatarAccent;
+ }
+}
+let avatarAccentTicket=0;
+function writeAvatarAccent(palette,{animate=true}={}){
+ if(!animate)root.classList.add('profile-accent-snap');
+ root.style.setProperty('--profile-accent',palette.accent);
+ root.style.setProperty('--profile-accent-deep',palette.deep);
+ root.style.setProperty('--profile-accent-soft',palette.soft);
+ root.style.setProperty('--profile-accent-shadow',palette.shadow);
+ root.style.setProperty('--profile-accent-shadow-deep',palette.shadowDeep);
+ if(!animate)requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('profile-accent-snap')));
+}
+async function applyAvatarAccent(avatarId,{animate=true}={}){
+ const ticket=++avatarAccentTicket,palette=await sampleAvatarAccent(avatarId);
+ if(ticket!==avatarAccentTicket)return;
+ root.dataset.profileAccent=avatarId||'default';writeAvatarAccent(palette,{animate});
+}
+for(const avatarId of AVATARS)void sampleAvatarAccent(avatarId);
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
 async function refreshPlayers(){
  players=await playerService.listPlayers();
@@ -113,6 +196,7 @@ function playersPage(){
   :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
  const subtitle=players.length===3?'Wybierz jeden z trzech profili.':hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.';
  root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ const selected=players.find(player=>player.id===selectedPlayerId);if(selected)void applyAvatarAccent(selected.avatarId,{animate:false});else writeAvatarAccent(defaultAvatarAccent,{animate:false});
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
 function playerCreatePage(){
@@ -122,6 +206,7 @@ function playerCreatePage(){
  const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
  const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';
  root.innerHTML=pageHead(title,back)+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>${heading}</h2><p>${copy}</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ void applyAvatarAccent(pendingAvatarId,{animate:false});
  root.scrollTop=0;
 }
 function pinFieldsMarkup(){
@@ -151,6 +236,7 @@ function playerPinPage(){
  const name=player?.nickname||'Gracz';
  root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section>`;
  const container=root.querySelector('.pin-mode');
+ void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){
   pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
   pinJelly.setupDrag(container,{getActiveIndex:()=>pendingPinEnabled?0:1,commitIndex:setPinMode,suppressClick:ms=>{pinSuppressClickUntil=performance.now()+ms;}});
@@ -488,11 +574,12 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
    card.querySelector('.player-select-mark').innerHTML=selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>';
   });
   const next=root.querySelector('[data-action="continue-player"]');if(next)next.disabled=false;
+  const player=players.find(item=>item.id===selectedPlayerId);if(player)void applyAvatarAccent(player.avatarId,{animate:true});
   return;
  }
  if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
  if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
- if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
+ if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
  if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}

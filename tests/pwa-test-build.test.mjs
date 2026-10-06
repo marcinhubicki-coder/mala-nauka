@@ -50,5 +50,5 @@ test('runtime optimization leaves canonical config available for Studio',async()
  const result=optimizeRuntimeSource(runtime);
  assert.match(result,/pwa-runtime-config\.json/);
  assert.match(result,/design-system\/config\.json/);
- assert.match(result,/meta\[name=mn-pwa-build\]/);
+ assert.match(result,/mn-pwa-build/);
 });

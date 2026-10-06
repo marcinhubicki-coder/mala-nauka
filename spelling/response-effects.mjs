@@ -19,6 +19,7 @@ export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
    softness:`${settings.softness}px`,duration:`${Math.max(4,11-settings.speed*3)}s`,warmth:settings.warmth,bloom:settings.bloom,
    flare:settings.flare,grain:settings.grain,vignette:settings.vignette,
    'particle-opacity':settings.intensity*.76,'look-opacity':settings.intensity*(.58+settings.bloom*.42),
+   'orbit-speed':Math.max(.35,settings.speed).toFixed(2),
    'flare-opacity':settings.intensity*settings.flare,'grain-opacity':settings.intensity*settings.grain,
    'vignette-opacity':settings.intensity*settings.vignette,
   };
@@ -26,12 +27,13 @@ export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
   layer.replaceChildren();
   const finish=document.createElement('span'),lens=document.createElement('span');finish.className='ambient-finish';lens.className='ambient-lens';layer.append(finish,lens);
   if(settings.style==='none'||settings.style==='grain')return;
-  const count=Math.min(36,Math.round((8+settings.intensity*18)*settings.density));
+  const count=settings.style==='aurora'?5:settings.style==='orbit'?Math.min(16,Math.round((8+settings.intensity*15)*settings.density)):Math.min(36,Math.round((8+settings.intensity*18)*settings.density));
   for(let i=0;i<count;i++){
    const dot=document.createElement('i'),base=settings.style==='bokeh'?24+(i%6)*11:settings.style==='bubbles'?9+(i%5)*4:settings.style==='sparkles'?7+(i%4)*3:2+(i%3);
    dot.style.setProperty('--ambient-x',`${(i*37+13)%101}%`);dot.style.setProperty('--ambient-y',`${(i*61+7)%103}%`);
    dot.style.setProperty('--ambient-delay',`${-(i%11)*.73}s`);dot.style.setProperty('--ambient-size',`${base*settings.size}px`);
-   dot.style.setProperty('--ambient-dx',`${-9+(i*17)%19}px`);dot.style.setProperty('--ambient-dy',`${-11-(i*13)%18}px`);layer.append(dot);
+   dot.style.setProperty('--ambient-dx',`${-9+(i*17)%19}px`);dot.style.setProperty('--ambient-dy',`${-11-(i*13)%18}px`);if(settings.style==='orbit'){dot.style.setProperty('--ambient-pivot-x',`${((i*43)%81)-40}vw`);dot.style.setProperty('--ambient-pivot-y',`${((i*37)%71)-35}vh`);}
+   layer.append(dot);
   }
  };
  const react=event=>{

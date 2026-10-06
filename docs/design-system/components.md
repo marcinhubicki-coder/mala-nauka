@@ -1,6 +1,6 @@
 # Komponenty, widoki i zachowania
 
-Katalog obejmuje **12 rodzin komponentów** oraz **40 widoków i stanów**. Każdy podgląd korzysta z istniejącego renderera, rzeczywistej Session i jawnego fixture. Nie jest osobną makietą gry.
+Katalog obejmuje **13 rodzin komponentów** oraz **40 widoków i stanów**. Każdy podgląd korzysta z istniejącego renderera, rzeczywistej Session i jawnego fixture. Nie jest osobną makietą gry.
 
 ## Katalog
 
@@ -16,6 +16,7 @@ Katalog obejmuje **12 rodzin komponentów** oraz **40 widoków i stanów**. Każ
 | Przeciągnij dalej | `slider` | następne pytanie; następna runda | idle, dragging, spring-back, complete |
 | Popup / zasada | `popup` | podpowiedź; pauza; zasada; ustawienia pomocnicze | closed, open, scrolling |
 | Postęp i licznik | `progress` | zegar rundy; podsumowanie | running, paused, finished |
+| Bańka punktów | `result-points-bubble` | wynik rundy Ortografii | entering, settled |
 | Profil i avatar | `profile` | wybór; tworzenie; PIN | empty, selected, locked, unlocked |
 | Puchar | `trophy` | domyślny | default |
 
@@ -150,3 +151,9 @@ Rodziny są przechowywane w czterech plikach WOFF. Nie ma osobnych kopii „Resu
 ## Stany podglądu
 
 Czas fixture nie płynie. Ortografia najpierw czeka na prezentację obrazu, potem wprowadza stan poprawny/błędny. Podpowiedź i pauza otwierają rzeczywiste dialogi. Wyniki i puchary używają danych przykładowych. Obsługa profili, PIN-u i zapis postępów są wyłączone w ścieżce fixture.
+
+## Bańka punktów na ekranie wyniku
+
+Ekran końca rundy Ortografii zachowuje produkcyjny układ podsumowania: kafle „Utrwalone” i „Do powtórki” oraz listę „Tu były małe potknięcia”. Punkty są osobnym komponentem **Bańka punktów** na ilustracji przy króliku, więc nie zmieniają wysokości sekcji podsumowania.
+
+W **Komponenty → Tryb gry → Ortografia → Koniec rundy** wybierz bańkę w drzewie zawartości. W panelu po prawej można ustawić jej szerokość, wysokość, pozycję X i Y, przezroczystość oraz punkt skalowania. Ustawienie lokalne zmienia tylko ekran wyniku Ortografii; przepis „Bańka punktów” pozwala utrzymać wspólny wygląd kolejnych wariantów.

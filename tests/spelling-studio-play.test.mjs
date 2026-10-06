@@ -80,3 +80,8 @@ test('finished rounds store scoring rules, restore identical points and do not r
  assert.equal(scoreResult({...result,scoring:undefined}).total,1);
  assert.ok(changedViews([{path:'scoring.correctPoints'}],registry).some(v=>v.id==='spelling-results'));
 });
+test('result points use a movable component and do not replace the production stumble panel',async()=>{
+ const [screen,elements]=await Promise.all([readFile(new URL('../ortografia/result-screen.mjs',import.meta.url),'utf8'),readFile(new URL('../shared/element-system.mjs',import.meta.url),'utf8')]);
+ assert.match(screen,/data-ds-key="result-points-bubble"/);assert.match(screen,/Tu były małe potknięcia/);assert.doesNotMatch(screen,/round-score-audit/);
+ assert.match(elements,/'result-points-bubble':'Bańka punktów'/);assert.match(elements,/\.result-points-bubble/);
+});

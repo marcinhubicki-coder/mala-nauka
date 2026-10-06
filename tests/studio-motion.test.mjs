@@ -80,6 +80,21 @@ test('two complete editing journeys keep saved comparison stable and fine tuning
  assert.equal(design.config.tokens.sliderWrong.springDuration,405);
 });
 
+test('mobile animation choice exposes its child groups instead of leaving an empty pane',async()=>{
+ const [motion,mobile,styles]=await Promise.all([
+  readFile(new URL('../design-system/studio-motion.mjs',import.meta.url),'utf8'),
+  readFile(new URL('../design-system/studio-mobile.mjs',import.meta.url),'utf8'),
+  readFile(new URL('../design-system/studio-motion.css',import.meta.url),'utf8'),
+ ]);
+ assert.match(motion,/class='motion-mobile-choice mobile-only'/);
+ assert.match(motion,/data-control-group=\$\{index\}/);
+ assert.match(motion,/data-mobile-pane-target=preview/);
+ assert.match(mobile,/button\.dataset\.controlGroup!==undefined/);
+ assert.match(mobile,/setPane\('edit'\)/);
+ assert.match(styles,/\.motion-mobile-choice\.mobile-only\{display:grid/);
+ assert.match(styles,/body\.mobile-editor:not\(\[data-mobile-pane=choose\]\) \.motion-mobile-choice\{display:none\}/);
+});
+
 test('the default clock resolves elapsed time and cancellation through its real timer adapter',async()=>{
  const clock=new PlaybackClock(),generation=clock.start();
  assert.equal(await clock.pause(2,generation),true);

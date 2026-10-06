@@ -51,8 +51,8 @@ test('all category pools and mixed timed pools exhaust without any repeated word
   assert.equal(seen.size,source.length);assert.equal(game.poolExhausted,true);assert.equal(game.attempts.length,seen.size);
  }
 });
-test('ten effects validate, random selection avoids consecutive repeats and combo cannot exceed particle budget',()=>{
- validateEffects(DEFAULT_EFFECTS);assert.equal(Object.keys(DEFAULT_EFFECTS.presets).length,10);
+test('expanded effects validate, new effect types are available and combo cannot exceed particle budget',()=>{
+ validateEffects(DEFAULT_EFFECTS);assert.equal(Object.keys(DEFAULT_EFFECTS.presets).length,16);for(const id of ['star5','star9','textConfetti','lightning','glitter','dynamite'])assert.ok(DEFAULT_EFFECTS.presets[id]);
  const pick=createEffectPicker(()=>0);let previous;
  for(let i=0;i<40;i++){const {id,preset}=pick(DEFAULT_EFFECTS);assert.notEqual(id,previous);previous=id;assert.ok(effectBudget({...DEFAULT_EFFECTS,particleBudget:8},preset,true).particles<=8);}
  for(const mutate of [e=>e.particleBudget=100,e=>e.presets.spark.duration=NaN,e=>e.presets.spark.color='red;',e=>e.bubble.transitionBlur=20,e=>e.comboEvery=0,e=>Object.values(e.presets).forEach(p=>p.enabled=false)]){const value=structuredClone(DEFAULT_EFFECTS);mutate(value);assert.throws(()=>validateEffects(value));const c=structuredClone(config);c.effects=value;assert.throws(()=>validateConfig(c));}

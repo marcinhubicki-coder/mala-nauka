@@ -50,5 +50,8 @@ test('component workspace keeps the inspector beside preview and uses one Jelly 
   assert.match(previewSource,/this\.iconChoices\('mode'/);
   assert.match(previewSource,/this\.iconChoices\('view'/);
   assert.doesNotMatch(previewSource,/Warstwy i kolejność|data-layer-move|id=add-spacer/);
+  assert.match(previewSource,/gallery\.classList\.toggle\('native-size',this\.zoom==='100'\)/);
+  assert.doesNotMatch(previewSource,/if\(!gallery\|\|this\.compare\|\|this\.zoom==='100'\)/);
+  assert.doesNotMatch(componentCSS,/layer-navigator|layer-list|layer-order/);
   assert.doesNotMatch(previewSource,/class=['"]icon-toggle/);
 });

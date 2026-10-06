@@ -353,7 +353,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/sierp.webp"
         },
         {
           "id": "word-73-69-65-77",
@@ -365,7 +365,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siew.webp"
         },
         {
           "id": "word-73-69-65-77-6e-69-6b",
@@ -377,7 +377,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siewnik.webp"
         },
         {
           "id": "word-73-69-6c-6e-69-6b",
@@ -391,7 +391,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/silnik.webp"
         },
         {
           "id": "word-73-69-6c-6e-79",

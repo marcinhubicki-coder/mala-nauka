@@ -5475,7 +5475,9 @@
       "size": 140898,
       "type": "webp",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/sierpien.jpg",
@@ -5493,7 +5495,9 @@
       "size": 173204,
       "type": "webp",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/siewnik.webp",
@@ -5502,7 +5506,9 @@
       "size": 158766,
       "type": "webp",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/silnik.webp",
@@ -5511,7 +5517,9 @@
       "size": 139590,
       "type": "webp",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/siodemka.jpg",

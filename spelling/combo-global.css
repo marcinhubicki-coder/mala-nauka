@@ -151,3 +151,6 @@
  0%,100%{transform:translate3d(0,7%,0) rotate(4deg) scale(.95,.74)}
  52%{transform:translate3d(-4%,-8%,0) rotate(-4deg) scale(1.06,1.13)}
 }
+
+/* iPhone/WebKit safety: prepainted full-screen art fades as one composite layer. */
+.mn-combo-global.mn-combo-webkit>i,.mn-combo-global.mn-combo-webkit>b{animation:none!important;will-change:auto!important}

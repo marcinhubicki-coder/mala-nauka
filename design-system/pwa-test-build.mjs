@@ -21,12 +21,24 @@ export function optimizedTestConfig(saved){
 }
 function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Silnik bańki zmienił się — wstrzymano automatyczną optymalizację.');return source.replace(a,b);}
 export function optimizeBubbleSource(source){
- if(source.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;'))return source;
- let result=replaceOnce(source,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
- for(const key of ['incomingFilter','incomingMidFilter','outgoingMidFilter','outgoingFilter'])result=replaceOnce(result,'filter:'+key,'...(opticalFiltersEnabled?{filter:'+key+'}:{})');
- const zero="filter:'blur(0px) hue-rotate(0deg)'";
- if(result.split(zero).length!==3)throw Error('Nieznany format przejścia bez filtrów.');
- return result.replaceAll(zero,"...(opticalFiltersEnabled?{filter:'none'}:{})");
+ let result=source;
+ if(!result.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;')){
+  result=replaceOnce(result,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
+  for(const key of ['incomingFilter','incomingMidFilter','outgoingFilter','outgoingMidFilter'])
+   result=replaceOnce(result,'filter:'+key,'...(opticalFiltersEnabled?{filter:'+key+'}:{})');
+  const zero="filter:'blur(0px) hue-rotate(0deg)'";
+  if(result.split(zero).length!==3)throw Error('Nieznany format przejścia bez filtrów.');
+  result=result.replaceAll(zero,"...(opticalFiltersEnabled?{filter:'none'}:{})");
+ }
+ if(!result.includes('const paintedContours=')){
+  result=replaceOnce(result,'<clipPath id="${id}-clip"><use href="#${id}-shape"/></clipPath>','<clipPath id="${id}-clip"><path class="soap-dynamic-contour"/></clipPath>');
+  const oldUse='<use href="#${id}-shape"';
+  if(result.split(oldUse).length!==12)throw Error('Nieznana liczba odwołań SVG use: przejrzyj zaktualizowany silnik.');
+  result=result.replaceAll(oldUse,'<path data-soap-contour="1"');
+  result=replaceOnce(result,'  const shape = host.querySelector(`#${id}-shape`);','  const shape = host.querySelector(`#${id}-shape`);\\n  const paintedContours=[...host.querySelectorAll(\'.soap-dynamic-contour,[data-soap-contour]\')];');
+  result=replaceOnce(result,"    shape.setAttribute('d',contour+'Z');","    const nextContour=contour+'Z';\\n    shape.setAttribute('d',nextContour);\\n    for(const path of paintedContours)path.setAttribute('d',nextContour);");
+ }
+ return result;
 }
 export function optimizeRuntimeSource(source){
  const target="['design-system/config.json','design-system/assets.json','design-system/rules.json']";

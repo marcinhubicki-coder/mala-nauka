@@ -30,7 +30,7 @@ test('Test PWA drops no-op optical filters',async()=>{
  assert.match(optimizeIndexHTML('<head></head>'),/pwa-optimized\.css/);
  assert.doesNotMatch(optimized,/<use href="#\\$\\{id\\}-shape"/);
  assert.match(optimized,/const paintedContours=/);
- assert.match(optimized,/for\\(const path of paintedContours\\)path\\.setAttribute\\('d',nextContour\\)/);
+ assert.ok(optimized.includes("for(const path of paintedContours)path.setAttribute('d',nextContour);"));
  assert.equal(optimizeBubbleSource(optimized),optimized,'Transformation must be idempotent');
  const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:optimized,encoding:'utf8'});
  assert.equal(check.status,0,check.stderr);

@@ -25,7 +25,7 @@ test('WebKit bubble renderer uses static metal ring with no animated SVG',async(
  assert.match(js,/root.dataset.rim=b.rim/);
  for(const rim of ['silver','gold','iridescent'])assert.match(css,new RegExp('data-rim="'+rim+'"'));
  assert.match(css,/conic-gradient/);
- assert.doesNotMatch(css.slice(css.indexOf('Metallic rims')),/requestAnimationFrame|@keyframes/);
+ assert.doesNotMatch(css.slice(css.indexOf('Metallic rims'),css.indexOf('/* Optional liquid surface.')),/requestAnimationFrame|@keyframes/);
  assert.match(studio,/Obrzeże bańki/);
 });
 

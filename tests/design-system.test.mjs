@@ -22,8 +22,8 @@ test('local view exceptions do not leak to other views and impact maps remain ex
  assert.deepEqual(changedViews([{path:'overrides.english-settings.jelly.height'}],registry).map(v=>v.id),['english-settings']);
 });
 test('playable illustrations and deleted aliases resolve to one existing canonical file',()=>{
- validateAssets(assets);assert.equal(words.length,455);assert.equal(Object.keys(assets.words).length,451);configureAssets(assets,'https://example.test/base/');
- const ready=playableWords(words,assets);assert.equal(ready.length,451);assert.deepEqual(words.filter(w=>!ready.includes(w)).map(w=>w.word).sort(),['chata','chrzan','dach','wieża']);
+ validateAssets(assets);assert.equal(words.length,475);assert.equal(Object.keys(assets.words).length,471);configureAssets(assets,'https://example.test/base/');
+ const ready=playableWords(words,assets);assert.equal(ready.length,471);assert.deepEqual(words.filter(w=>!ready.includes(w)).map(w=>w.word).sort(),['chata','chrzan','dach','wieża']);
  for(const word of ready)assert.ok(assets.assets.some(row=>row.path===assets.words[word.word]?.path),word.word);
  for(const [alias,target]of Object.entries(assets.aliases))assert.equal(assetUrl(alias),'https://example.test/base/'+target);
  const first=words[0].word,path=assets.words[first].path;previewAssets({[path]:'blob:temporary-image'});assert.equal(wordAsset(first),'blob:temporary-image');previewAssets();

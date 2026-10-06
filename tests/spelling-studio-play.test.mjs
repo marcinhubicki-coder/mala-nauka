@@ -32,8 +32,8 @@ test('every generated family question reconstructs the exact word and secondary 
  for(const row of words)for(const slot of wordSlots(row))if(!practiceCategories(row).includes(slot.category))assert.equal(questionForWord(row,slot.category,rules),null);
  const draft=structuredClone(rules),rule=Object.values(draft.rules).find(r=>r.category==='ch/h'&&r.poolDefault);rule.explanation='Jedna wspólna treść dla dodatkowej puli.';
  assert.equal(questionForWord(words.find(w=>w.word==='brzuch'),'ch/h',draft).learning.explanation,rule.explanation);
- const audit=auditWordPools(words,assets);assert.equal(audit.uniqueWords,455);assert.equal(audit.duplicates.length,0);assert.equal(audit.multipleCategories,158);assert.equal(audit.missingAssets.length,4);
- assert.equal(audit.pools.find(p=>p.category==='ć/ci').total,52);
+ const audit=auditWordPools(words,assets);assert.equal(audit.uniqueWords,475);assert.equal(audit.duplicates.length,0);assert.equal(audit.multipleCategories,168);assert.equal(audit.missingAssets.length,4);
+ assert.equal(audit.pools.find(p=>p.category==='ć/ci').total,55);
 });
 test('duplicate records never become duplicate questions and conflicting levels are rejected',()=>{
  const row=words[0];assert.equal(canonicalWords([row,structuredClone(row)]).length,1);

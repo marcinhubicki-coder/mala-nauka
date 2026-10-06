@@ -27,9 +27,9 @@ test('all words retain learning data while only illustrated words enter the game
   const parts = await Promise.all(Array.from({ length: 8 }, (_, i) => readFile(new URL(`../data/words-0${i + 1}.json`, import.meta.url), 'utf8').then(JSON.parse)));
   const words = validateWords(parts.flat());
   configureAssets(JSON.parse(await readFile(new URL('../design-system/assets.json',import.meta.url),'utf8')));
-  assert.equal(words.length, 455);
+  assert.equal(words.length, 475);
   for(const word of words)assert.ok(word.learning,word.word);
-  const ready=playableWords(words);assert.equal(ready.length,451);
+  const ready=playableWords(words);assert.equal(ready.length,471);
   for (const word of ready) {
     const scene = sceneFor(word.masked, word.word);
     assert.ok(scene, word.word);

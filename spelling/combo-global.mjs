@@ -33,7 +33,10 @@ export function createComboGlobalEffects(host){
   const next=nextComboStyle(index,settings.style);
   index=next.index;
   const layer=document.createElement('div');
-  layer.className='mn-combo-global mn-combo-'+next.style;
+  // WebKit loses frames on full-screen moving gradients; crossfade the
+  // prepainted layers instead. Full motion stays enabled in Chromium/Firefox.
+  const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
+  layer.className='mn-combo-global mn-combo-'+next.style+(webkit?' mn-combo-webkit':'');
   layer.setAttribute('aria-hidden','true');
   const duration=Math.max(700,Math.min(3400,Number(settings.duration)||1850));
   layer.style.setProperty('--mn-combo-duration',duration+'ms');

@@ -283,7 +283,7 @@
       "transitionDuration": 1200,
       "transitionBlur": 0,
       "transitionSparks": 12,
-      "frameRate": 15,
+      "frameRate": 30,
       "skin": "rainbow",
       "shape": "bubble",
       "morph": 0.45,

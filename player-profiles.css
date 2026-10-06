@@ -274,3 +274,12 @@ html[data-animations="off"]::view-transition-group(root),html[data-animations="o
 .pin-fields{display:flex;flex-direction:column;align-items:stretch;min-width:0}
 .pin-card.pin-no-code .pin-fields{padding-top:24px}
 .pin-card.pin-no-code .pin-fields .player-form-next{margin-top:30px}
+
+/* DynaPuff has tall overshoots/descenders; keep ellipsis but give profile names a safe glyph box. */
+.player-card strong,
+.pin-profile h2,
+.settings-profile-main strong{
+ line-height:1.16;
+ padding-block:.08em .14em;
+ margin-block:-.08em -.14em;
+}

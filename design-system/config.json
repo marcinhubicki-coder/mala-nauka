@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 12,
+  "revision": 13,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4427,6 +4427,11 @@
             "offsetY": -9
           },
           "player-card-choose-player": {}
+        },
+        "player-pin": {
+          "pin-error-outside": {
+            "offsetY": 17
+          }
         }
       }
     }

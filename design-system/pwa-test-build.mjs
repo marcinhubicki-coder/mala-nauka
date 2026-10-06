@@ -42,3 +42,22 @@ export const OPTIMIZED_CSS=`/* Only the optimized Test PWA branch. */
  .soap-star,.soap-satellite{animation-duration:9s!important}
 }
 `;
+
+// Block promotion of a design revision that would silently discard hidden elements.
+export function assertVisibilityReadyForProduction(config){
+ const draft=config.project?.designDraft;
+ if(!draft)return 0;
+ let checked=0;const stale=[];
+ for(const [family,row] of Object.entries(draft.elementStyles||{})){
+  if(!['visible','hidden','removed'].includes(row.visibility))continue;
+  checked++;
+  if(config.elementStyles?.[family]?.visibility!==row.visibility)stale.push('global: '+family);
+ }
+ for(const [view,rows] of Object.entries(draft.elementOverrides||{}))for(const [id,row] of Object.entries(rows)){
+  if(!['visible','hidden','removed'].includes(row.visibility))continue;
+  checked++;
+  if(config.elementOverrides?.[view]?.[id]?.visibility!==row.visibility)stale.push(view+': '+id);
+ }
+ if(stale.length)throw Error('Publikacja zablokowana: '+stale.length+' ustawień widoczności w Komponentach nie jest zatwierdzonych do produkcji. Zatwierdź projekt i jego aktualny wygląd przed wydaniem. Pierwsze różnice: '+stale.slice(0,3).join(', '));
+ return checked;
+}

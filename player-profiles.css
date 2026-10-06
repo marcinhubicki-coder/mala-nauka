@@ -1,6 +1,6 @@
 #app[data-view="players"], #app[data-view="player-create"], #app[data-view="player-pin"] {
  --player-blue:#0087ff; --player-blue-deep:#0070ef; --player-navy:#101957; --player-muted:#6670a0;
- --profile-accent:#0087ff;--profile-accent-deep:#006bd6;--profile-accent-soft:#e1f5ff;--profile-accent-shadow:rgba(0,135,255,.27);--profile-accent-shadow-deep:rgba(0,94,196,.24);--profile-color-ms:600ms;
+ --profile-accent:#0087ff;--profile-accent-deep:#006bd6;--profile-accent-soft:#e1f5ff;--profile-accent-shadow:rgba(0,135,255,.27);--profile-accent-shadow-deep:rgba(0,94,196,.24);--profile-toggle-accent:#5d91bd;--profile-toggle-soft:#e8f0f6;--profile-toggle-shadow:rgba(93,145,189,.18);--profile-color-ms:600ms;
  width:100%; max-width:430px; height:calc(100 * var(--app-vh, 1dvh)); min-height:0; overflow:hidden;
  background:radial-gradient(ellipse at 88% 40%,#f4fbff80,transparent 55%),#fcfdff;
  padding:max(14px,var(--screen-safe-top)) max(18px,var(--screen-safe-right)) max(14px,var(--screen-safe-bottom)) max(18px,var(--screen-safe-left));
@@ -195,8 +195,8 @@
 .settings-jelly-control{position:relative;display:block;flex:0 0 58px;width:58px;height:32px;border:1px solid #dce5ef;border-radius:15px;background:#f0f4f8;box-shadow:inset 0 1px 2px #28476712;overflow:hidden;transition:background-color .28s ease,border-color .28s ease}
 .settings-jelly-knob{position:absolute;top:4px;left:4px;width:24px;height:22px;border-radius:10px;background:#bdc8d7;box-shadow:0 3px 8px #314b6720,inset 0 1px 0 #ffffffb8;transform:translateX(0);transform-origin:center;will-change:transform,filter,box-shadow,background-color;transition:background-color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1)}
 .settings-jelly-knob::after{content:"";position:absolute;inset:-22% -16%;border-radius:inherit;background:radial-gradient(ellipse at center,#fff 0%,#ffffff8f 28%,#ffffff26 52%,transparent 74%);opacity:0;pointer-events:none}
-.settings-jelly-toggle>input:checked+.settings-jelly-control{background:var(--profile-accent-soft);border-color:var(--profile-accent-soft)}
-.settings-jelly-toggle>input:checked+.settings-jelly-control .settings-jelly-knob{transform:translateX(26px);background-color:var(--profile-accent);box-shadow:0 4px 10px var(--profile-accent-shadow),inset 0 1px 0 #ffffffa8}
+.settings-jelly-toggle>input:checked+.settings-jelly-control{background:var(--profile-toggle-soft);border-color:var(--profile-toggle-soft)}
+.settings-jelly-toggle>input:checked+.settings-jelly-control .settings-jelly-knob{transform:translateX(26px);background-color:var(--profile-toggle-accent);box-shadow:0 4px 10px var(--profile-toggle-shadow),inset 0 1px 0 #ffffffa8}
 .settings-jelly-toggle.is-selecting .settings-jelly-knob{animation:settings-jelly-on .64s linear both}
 .settings-jelly-toggle.is-deselecting .settings-jelly-knob{animation:settings-jelly-off .64s linear both}
 .settings-jelly-toggle:is(.is-selecting,.is-deselecting) .settings-jelly-knob::after{animation:settings-jelly-glow .64s linear both}

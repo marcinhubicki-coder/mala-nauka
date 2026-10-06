@@ -75,7 +75,7 @@ function avatarMarkup(player,extra=''){
 }
 
 const avatarAccentCache=new Map(),avatarImageCache=new Map();
-const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)'};
+const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)',toggleAccent:'#5d91bd',toggleSoft:'#e8f0f6',toggleShadow:'rgba(93,145,189,.18)'};
 function loadAvatarImage(src){
  if(avatarImageCache.has(src))return avatarImageCache.get(src);
  const promise=new Promise((resolve,reject)=>{const image=new Image();image.decoding='async';image.onload=()=>resolve(image);image.onerror=reject;image.src=src;});
@@ -105,7 +105,14 @@ function paletteFromSample(r,g,b){
  while(whiteContrast(accent)<3.15&&accentL>.34){accentL-=.018;accent=hslToRgb(h,sat,accentL);}
  const deep=hslToRgb(h,Math.min(.92,sat+.04),Math.max(.3,accentL-.085));
  const soft=hslToRgb(h,Math.min(.68,Math.max(.32,s)),.93);
- return {accent:rgbCss(accent),deep:rgbCss(deep),soft:rgbCss(soft),shadow:`rgba(${accent[0]},${accent[1]},${accent[2]},.27)`,shadowDeep:`rgba(${deep[0]},${deep[1]},${deep[2]},.24)`};
+ const toggleSat=Math.min(.52,Math.max(.34,sat*.58));
+ const toggleAccent=hslToRgb(h,toggleSat,Math.min(.5,Math.max(.38,accentL+.01)));
+ const toggleSoft=hslToRgb(h,Math.min(.3,Math.max(.18,toggleSat*.52)),.92);
+ return {
+  accent:rgbCss(accent),deep:rgbCss(deep),soft:rgbCss(soft),
+  shadow:`rgba(${accent[0]},${accent[1]},${accent[2]},.27)`,shadowDeep:`rgba(${deep[0]},${deep[1]},${deep[2]},.24)`,
+  toggleAccent:rgbCss(toggleAccent),toggleSoft:rgbCss(toggleSoft),toggleShadow:`rgba(${toggleAccent[0]},${toggleAccent[1]},${toggleAccent[2]},.18)`
+ };
 }
 async function sampleAvatarAccent(avatarId){
  if(avatarAccentCache.has(avatarId))return avatarAccentCache.get(avatarId);
@@ -148,6 +155,9 @@ function writeAvatarAccent(palette,{animate=true}={}){
  root.style.setProperty('--profile-accent-soft',palette.soft);
  root.style.setProperty('--profile-accent-shadow',palette.shadow);
  root.style.setProperty('--profile-accent-shadow-deep',palette.shadowDeep);
+ root.style.setProperty('--profile-toggle-accent',palette.toggleAccent||palette.accent);
+ root.style.setProperty('--profile-toggle-soft',palette.toggleSoft||palette.soft);
+ root.style.setProperty('--profile-toggle-shadow',palette.toggleShadow||palette.shadow);
  if(!animate)requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('profile-accent-snap')));
 }
 async function applyAvatarAccent(avatarId,{animate=true}={}){

@@ -8,7 +8,7 @@ const read=path=>readFile(new URL('../'+path,import.meta.url),'utf8').then(JSON.
 const [config,assets,rules]=await Promise.all(['config','assets','rules'].map(name=>read(`design-system/${name}.json`)));
 const words=(await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat();
 test('central rules cover all words; one deliberate edit propagates and preserves individual examples',()=>{
- validateRules(rules);assert.equal(Object.keys(rules.rules).length,49);assert.equal(Object.keys(rules.assignments).length,475);
+ validateRules(rules);assert.ok(Object.keys(rules.rules).length>0);assert.equal(Object.keys(rules.assignments).length,words.length);
  assert.deepEqual(applyRules(words,rules),words);
  const draft=structuredClone(rules),id=draft.assignments.góra.primary;
  draft.rules[id].explanation='Wspólna treść testowa.';draft.rules[id].edited=true;

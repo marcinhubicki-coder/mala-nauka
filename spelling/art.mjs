@@ -3,6 +3,7 @@ import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
+import {createHTMLBubble} from './bubble-html.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
@@ -86,7 +87,9 @@ export function createSpellingArt(app, { onContinue } = {}) {
     };
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
-    bubble = createBubble(app.querySelector('.spelling-visual'));
+    const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
+    const useHtml=(webkit&&!new URLSearchParams(location.search).has('svgBubble'))||new URLSearchParams(location.search).has('htmlBubble');
+    bubble=(useHtml?createHTMLBubble:createBubble)(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
     document.fonts.ready.then(() => { if (session === game) fitWord(); });

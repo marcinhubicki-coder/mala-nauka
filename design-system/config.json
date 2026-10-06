@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 11,
+  "revision": 12,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4128,6 +4128,12 @@
         "players": {
           "layout": {
             "sectionGap": 18
+          },
+          "profile": {
+            "avatarSize": 96,
+            "padding": 16,
+            "gap": 10,
+            "radius": 26
           }
         },
         "spelling-pause": {
@@ -4310,6 +4316,12 @@
         "comboEvery": 3,
         "comboBonus": 0
       },
+      "elementStyles": {
+        "button-player-card": {
+          "height": 119.5
+        },
+        "text": {}
+      },
       "elementOverrides": {
         "spelling-settings": {
           "h2": {
@@ -4398,11 +4410,23 @@
         },
         "players": {
           "player-grid": {
-            "gap": 14
+            "gap": 0,
+            "overflow": "visible"
           },
           "player-shell": {
             "gap": 10
-          }
+          },
+          "player-card-choose-player-2": {},
+          "player-title": {
+            "gap": 0
+          },
+          "h1": {
+            "offsetY": -9
+          },
+          "p": {
+            "offsetY": -9
+          },
+          "player-card-choose-player": {}
         }
       }
     }

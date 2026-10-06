@@ -7,7 +7,7 @@ export function optimizedTestConfig(saved){
  const config=structuredClone({...saved,...draft});
  const effects=normalizeEffectsConfig(config.effects||DEFAULT_EFFECTS);
  const original={frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness};
- effects.bubble.frameRate=15;
+ effects.bubble.frameRate=30;
  effects.bubble.transitionBlur=0;
  effects.bubble.transitionSparks=Math.min(12,effects.bubble.transitionSparks);
  effects.particleBudget=Math.min(24,effects.particleBudget);

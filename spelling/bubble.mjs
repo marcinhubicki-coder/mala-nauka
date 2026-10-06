@@ -141,7 +141,7 @@ export function createBubble(host, options={}) {
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
-      <clipPath id="${id}-clip"><use href="#${id}-shape"/></clipPath>
+      <clipPath id="${id}-clip"><path class="soap-dynamic-contour"/></clipPath>
       <clipPath id="${id}-frame"><rect x="0" y="0" width="400" height="400"/></clipPath>
       <filter id="${id}-pictureFx" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
         <feTurbulence class="soap-refraction-noise" type="fractalNoise" baseFrequency=".012 .017" numOctaves="2" seed="11" result="noise"/>
@@ -167,9 +167,9 @@ export function createBubble(host, options={}) {
     </defs>
     <g class="soap-frame-guard" clip-path="url(#${id}-frame)">
       <g class="soap-shadow-group" filter="url(#${id}-shadowFx)">
-        <use href="#${id}-shape" class="soap-shadow soap-shadow-main" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
-        <use href="#${id}-shape" class="soap-shadow soap-shadow-soft" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
-        <use href="#${id}-shape" class="soap-shadow-ring" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
+        <path data-soap-contour="1" class="soap-shadow soap-shadow-main" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
+        <path data-soap-contour="1" class="soap-shadow soap-shadow-soft" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
+        <path data-soap-contour="1" class="soap-shadow-ring" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
       </g>
       <g clip-path="url(#${id}-clip)">
         <rect width="400" height="400" fill="url(#${id}-empty)"/>
@@ -182,14 +182,14 @@ export function createBubble(host, options={}) {
         <g class="soap-heavy-particles"></g>
         <g class="soap-transition-particles"></g>
       </g>
-      <use href="#${id}-shape" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
-      <use href="#${id}-shape" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
-      <use href="#${id}-shape" class="soap-rainbow-outer" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
-      <use href="#${id}-shape" class="soap-rainbow-inner" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
-      <use href="#${id}-shape" class="soap-rim-main" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
-      <use href="#${id}-shape" class="soap-rim-soft" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
-      <use href="#${id}-shape" class="soap-rim-inner" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
-      <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
+      <path data-soap-contour="1" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
+      <path data-soap-contour="1" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
+      <path data-soap-contour="1" class="soap-rainbow-outer" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
+      <path data-soap-contour="1" class="soap-rainbow-inner" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
+      <path data-soap-contour="1" class="soap-rim-main" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
+      <path data-soap-contour="1" class="soap-rim-soft" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
+      <path data-soap-contour="1" class="soap-rim-inner" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
+      <path data-soap-contour="1" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
       <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
       <g class="soap-glint"><ellipse rx="15" ry="5" fill="white" opacity=".22"/><ellipse rx="11" ry="3" fill="white" opacity=".91"/></g>
       <g class="soap-atmosphere"></g>
@@ -198,6 +198,8 @@ export function createBubble(host, options={}) {
 
   const documentUrl = location.href.split('#')[0];
   const shape = host.querySelector(`#${id}-shape`);
+  // Repaint actual SVG paths directly; WebKit can cache <use> references until interaction.
+  const paintedContours=[...host.querySelectorAll('.soap-dynamic-contour,[data-soap-contour]')];
   const pictures = [...host.querySelectorAll('.soap-picture')];
   let activePicture = pictures[0], standbyPicture = pictures[1];
   const glints = [...host.querySelectorAll('.soap-glint')];
@@ -492,7 +494,9 @@ export function createBubble(host, options={}) {
       const cp2=[c[0]-(d[0]-b[0])*k,c[1]-(d[1]-b[1])*k];
       contour+=`C${xy(cp1)} ${xy(cp2)} ${xy(c)}`;
     }
-    shape.setAttribute('d',contour+'Z');
+    const nextContour=contour+'Z';
+    shape.setAttribute('d',nextContour);
+    for(const path of paintedContours)path.setAttribute('d',nextContour);
     updateParticles(time);
 
     [10,22].forEach((pointIndex,index)=>{

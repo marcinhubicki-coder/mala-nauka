@@ -9,16 +9,30 @@ export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
  const render=next=>{
   settings={...DEFAULT_EFFECTS.ambient,...(next?.ambient||next||{})};
   layer.className=`screen-atmosphere ambient-${settings.style} ambient-filter-${settings.filter}`;
-  layer.style.setProperty('--ambient-intensity',settings.intensity);
+  const variables={
+   intensity:settings.intensity,density:settings.density,size:settings.size,speed:settings.speed,
+   softness:`${settings.softness}px`,duration:`${Math.max(4,11-settings.speed*3)}s`,warmth:settings.warmth,bloom:settings.bloom,
+   flare:settings.flare,grain:settings.grain,vignette:settings.vignette,
+   'particle-opacity':settings.intensity*.76,'look-opacity':settings.intensity*(.58+settings.bloom*.42),
+   'flare-opacity':settings.intensity*settings.flare,'grain-opacity':settings.intensity*settings.grain,
+   'vignette-opacity':settings.intensity*settings.vignette,
+  };
+  for(const [key,value]of Object.entries(variables))layer.style.setProperty(`--ambient-${key}`,value);
   layer.replaceChildren();
-  if(settings.style==='none')return;
-  const count=settings.style==='grain'?1:Math.round(8+settings.intensity*18);
-  for(let i=0;i<count;i++){const dot=document.createElement('i');dot.style.setProperty('--ambient-x',`${(i*37+13)%101}%`);dot.style.setProperty('--ambient-y',`${(i*61+7)%103}%`);dot.style.setProperty('--ambient-delay',`${-(i%11)*.73}s`);dot.style.setProperty('--ambient-size',`${settings.style==='bubbles'?8+(i%5)*4:2+(i%3)}px`);layer.append(dot);}
+  const finish=document.createElement('span'),lens=document.createElement('span');finish.className='ambient-finish';lens.className='ambient-lens';layer.append(finish,lens);
+  if(settings.style==='none'||settings.style==='grain')return;
+  const count=Math.min(36,Math.round((8+settings.intensity*18)*settings.density));
+  for(let i=0;i<count;i++){
+   const dot=document.createElement('i'),base=settings.style==='bokeh'?24+(i%6)*11:settings.style==='bubbles'?9+(i%5)*4:settings.style==='sparkles'?7+(i%4)*3:2+(i%3);
+   dot.style.setProperty('--ambient-x',`${(i*37+13)%101}%`);dot.style.setProperty('--ambient-y',`${(i*61+7)%103}%`);
+   dot.style.setProperty('--ambient-delay',`${-(i%11)*.73}s`);dot.style.setProperty('--ambient-size',`${base*settings.size}px`);
+   dot.style.setProperty('--ambient-dx',`${-9+(i*17)%19}px`);dot.style.setProperty('--ambient-dy',`${-11-(i*13)%18}px`);layer.append(dot);
+  }
  };
  const react=event=>{
   if(!settings?.responsive||settings.style==='none'||reduced.matches)return;
   const rect=host.getBoundingClientRect(),x=event.clientX-rect.left,y=event.clientY-rect.top,count=Math.min(10,4+Math.round(settings.intensity*8));
-  for(let i=0;i<count;i++){const dot=document.createElement('b'),angle=i/count*Math.PI*2,radius=34+(i%3)*18;dot.style.left=`${x+Math.cos(angle)*radius}px`;dot.style.top=`${y+Math.sin(angle)*radius}px`;layer.append(dot);const animation=dot.animate([{opacity:0,transform:'translate(-50%,-50%) scale(.35)'},{opacity:.72,offset:.25},{opacity:0,transform:`translate(calc(-50% + ${-Math.cos(angle)*radius}px),calc(-50% + ${-Math.sin(angle)*radius}px)) scale(1.15)`}],{duration:520+(i%3)*80,easing:'cubic-bezier(.16,.72,.22,1)'});bursts.push(animation);animation.finished.catch(()=>{}).finally(()=>{dot.remove();bursts=bursts.filter(row=>row!==animation);});}
+  for(let i=0;i<count;i++){const dot=document.createElement('b'),angle=i/count*Math.PI*2,radius=(34+(i%3)*18)*(settings.touchStrength||.6);dot.style.left=`${x+Math.cos(angle)*radius}px`;dot.style.top=`${y+Math.sin(angle)*radius}px`;layer.append(dot);const animation=dot.animate([{opacity:0,transform:'translate(-50%,-50%) scale(.35)'},{opacity:.72,offset:.25},{opacity:0,transform:`translate(calc(-50% + ${-Math.cos(angle)*radius}px),calc(-50% + ${-Math.sin(angle)*radius}px)) scale(${.75+(settings.touchStrength||.6)*.5})`}],{duration:520+(i%3)*80,easing:'cubic-bezier(.16,.72,.22,1)'});bursts.push(animation);animation.finished.catch(()=>{}).finally(()=>{dot.remove();bursts=bursts.filter(row=>row!==animation);});}
  };
  host.addEventListener('pointerdown',react,{capture:true,passive:true});render(initial);
  return {update:render,destroy(){host.removeEventListener('pointerdown',react,{capture:true});bursts.forEach(a=>a.cancel());bursts=[];layer.remove();}};

@@ -94,19 +94,33 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 @keyframes spelling-burst{0%{transform:translate(0,0) scale(.2) rotate(0);opacity:0}12%{opacity:1}75%{opacity:1}100%{transform:translate(var(--burst-x),var(--burst-y)) scale(.5) rotate(var(--burst-turn));opacity:0}}
 @media(prefers-reduced-motion:reduce){.spelling-fireworks{display:none}.continue-copy{transition:none}.continue-handle{will-change:auto}}
 
-/* Global finishing layer. It sits above the scene and never blocks controls. */
-.screen-atmosphere{position:absolute;z-index:30;inset:0;overflow:hidden;pointer-events:none;user-select:none;isolation:isolate;opacity:var(--ambient-intensity,.28)}
-.screen-atmosphere::before,.screen-atmosphere::after{content:"";position:absolute;inset:0;pointer-events:none}
-.screen-atmosphere.ambient-filter-glow::before{background:radial-gradient(ellipse at 24% 14%,#fff8,transparent 42%),radial-gradient(ellipse at 82% 78%,#bdefff45,transparent 46%);mix-blend-mode:screen}
-.screen-atmosphere.ambient-filter-warm::before{background:linear-gradient(145deg,#ffe8b94a,transparent 52%,#ffbee42b);mix-blend-mode:soft-light}
-.screen-atmosphere.ambient-filter-vignette::before{background:radial-gradient(ellipse at center,transparent 54%,#25115b29 100%)}
-.screen-atmosphere.ambient-dust i,.screen-atmosphere.ambient-bubbles i{position:absolute;left:var(--ambient-x);top:var(--ambient-y);width:var(--ambient-size);height:var(--ambient-size);border-radius:50%;animation:ambient-drift 8s ease-in-out var(--ambient-delay) infinite alternate;will-change:transform,opacity}
-.screen-atmosphere.ambient-dust i{background:#fff;box-shadow:0 0 6px 2px #fff7;opacity:.55}
-.screen-atmosphere.ambient-bubbles i{border:1px solid #fff;background:radial-gradient(circle at 30% 25%,#fff9,transparent 30%),linear-gradient(140deg,#bcefff38,#ffbde73d);box-shadow:inset 0 0 4px #fff9,0 0 5px #9edcff4f;opacity:.58}
-.screen-atmosphere.ambient-grain::after{background-image:repeating-radial-gradient(circle at 23% 31%,#fff 0 .45px,transparent .6px 3px);background-size:5px 7px;mix-blend-mode:soft-light;opacity:.45}
-.screen-atmosphere>b{position:absolute;width:9px;height:9px;border:1px solid #fff;border-radius:50%;background:#d8f6ff70;box-shadow:0 0 8px #fff;pointer-events:none}
-@keyframes ambient-drift{0%{transform:translate3d(-3px,7px,0) scale(.85);opacity:.22}52%{opacity:.7}100%{transform:translate3d(8px,-14px,0) scale(1.12);opacity:.38}}
-@media(prefers-reduced-motion:reduce){.screen-atmosphere i{animation:none!important}.screen-atmosphere{opacity:calc(var(--ambient-intensity,.28) * .72)}}
+/* Optical finishing layers: warm light, soft focus, bokeh and film grain. */
+.screen-atmosphere{position:absolute;z-index:30;inset:0;overflow:hidden;pointer-events:none;user-select:none;isolation:isolate;contain:paint}
+.screen-atmosphere::before,.screen-atmosphere::after,.ambient-finish,.ambient-finish::before,.ambient-finish::after,.ambient-lens{content:"";position:absolute;inset:0;pointer-events:none}
+.screen-atmosphere::before{opacity:var(--ambient-look-opacity,.2);mix-blend-mode:screen}
+.screen-atmosphere::after{background:linear-gradient(145deg,#ffd28c25 0%,transparent 50%,#ffb8bf16 100%);opacity:var(--ambient-warmth,.45);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-none::before{opacity:0}
+.screen-atmosphere.ambient-filter-glow::before{background:radial-gradient(ellipse at 22% 12%,#fffbd5c9,transparent 42%),radial-gradient(ellipse at 84% 76%,#bdefff70,transparent 48%)}
+.screen-atmosphere.ambient-filter-warm::before{background:radial-gradient(ellipse at 20% 8%,#fff1b9cf,transparent 48%),linear-gradient(145deg,#ffc26a70,transparent 55%,#ffadc43d);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-film::before{background:radial-gradient(ellipse at 24% 10%,#ffe6adad,transparent 48%),linear-gradient(155deg,#ffc67f4f,transparent 48%,#759ad22e);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-bloom::before{background:radial-gradient(circle at 28% 18%,#fffffff2 0 4%,#fff2c58f 18%,transparent 46%),radial-gradient(circle at 74% 70%,#ffd1e66e,transparent 38%)}
+.screen-atmosphere.ambient-filter-dream::before{background:radial-gradient(circle at 20% 18%,#fff6c9d8,transparent 38%),radial-gradient(circle at 82% 34%,#e5c8ff82,transparent 42%),linear-gradient(165deg,#ffd0b850,transparent 62%)}
+.screen-atmosphere.ambient-filter-vignette::before{background:radial-gradient(ellipse at center,#fff4 0 36%,transparent 64%,#24184138 100%);mix-blend-mode:soft-light}
+.ambient-finish{-webkit-backdrop-filter:blur(var(--ambient-softness,0));backdrop-filter:blur(var(--ambient-softness,0))}
+.ambient-finish::before{background-image:repeating-radial-gradient(circle at 23% 31%,#fff 0 .42px,#34233b2b .56px,transparent .76px 3px);background-size:5px 7px;mix-blend-mode:soft-light;opacity:var(--ambient-grain-opacity,.03)}
+.ambient-grain .ambient-finish::before{background-size:4px 6px;opacity:max(var(--ambient-grain-opacity,.08),.08)}
+.ambient-finish::after{background:radial-gradient(ellipse at center,transparent 50%,#25183e80 100%);opacity:var(--ambient-vignette-opacity,.04)}
+.ambient-lens{background:radial-gradient(circle at 17% 18%,#fff 0 1%,#fff6c9a6 2%,transparent 9%),radial-gradient(circle at 37% 35%,#ffd9c052 0 2%,transparent 8%),radial-gradient(circle at 73% 68%,#bfeaff3d 0 2%,transparent 10%),linear-gradient(118deg,transparent 10%,#fff5cf24 21%,transparent 32%);opacity:var(--ambient-flare-opacity,.04);mix-blend-mode:screen;transform-origin:25% 22%;animation:ambient-lens-breathe 9s ease-in-out infinite alternate;will-change:transform,opacity}
+.screen-atmosphere.ambient-dust i,.screen-atmosphere.ambient-bokeh i,.screen-atmosphere.ambient-bubbles i,.screen-atmosphere.ambient-sparkles i{position:absolute;left:var(--ambient-x);top:var(--ambient-y);width:var(--ambient-size);height:var(--ambient-size);opacity:var(--ambient-particle-opacity,.22);animation:ambient-drift var(--ambient-duration,8s) ease-in-out var(--ambient-delay) infinite alternate;will-change:transform,opacity}
+.screen-atmosphere.ambient-dust i{border-radius:50%;background:#fff;box-shadow:0 0 6px 2px #fff9,0 0 15px #ffe9a866}
+.screen-atmosphere.ambient-bokeh i{border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffffffe6 0 5%,#ffe2b36b 24%,#f5b9df35 56%,transparent 72%);box-shadow:0 0 18px #ffeecb5c;filter:blur(calc(2px + var(--ambient-softness,0px)));mix-blend-mode:screen}
+.screen-atmosphere.ambient-bubbles i{border:1px solid #ffffffd9;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff 0 5%,transparent 28%),linear-gradient(140deg,#bcefff42,#ffbde74a);box-shadow:inset 0 0 5px #fff,0 0 7px #9edcff66}
+.screen-atmosphere.ambient-sparkles i{background:#fff4bf;clip-path:polygon(50% 0,59% 40%,100% 50%,59% 60%,50% 100%,41% 60%,0 50%,41% 40%);filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 7px #ffd887);animation-name:ambient-drift,ambient-twinkle;animation-duration:var(--ambient-duration,8s),2.8s;animation-timing-function:ease-in-out,ease-in-out}
+.screen-atmosphere>b{position:absolute;width:9px;height:9px;border:1px solid #fff;border-radius:50%;background:#fff4d3a8;box-shadow:0 0 8px #fff,0 0 13px #ffd88a;pointer-events:none}
+@keyframes ambient-drift{0%{transform:translate3d(0,7px,0) scale(.84);opacity:.18}52%{opacity:var(--ambient-particle-opacity,.5)}100%{transform:translate3d(var(--ambient-dx,8px),var(--ambient-dy,-14px),0) scale(1.12);opacity:.32}}
+@keyframes ambient-twinkle{0%,100%{scale:.72;rotate:-8deg}45%{scale:1.18;rotate:8deg}60%{scale:.9;rotate:0}}
+@keyframes ambient-lens-breathe{from{transform:translate3d(-1%,0,0) scale(.98)}to{transform:translate3d(2%,1%,0) scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.screen-atmosphere i,.ambient-lens{animation:none!important}.screen-atmosphere i{opacity:.24}}
 
 #app[data-view="game"][data-mode="spelling"] .dictation-count{gap:4px}
 #app[data-view="game"][data-mode="spelling"] .dictation-count .timer{font-size:25px;line-height:.95}

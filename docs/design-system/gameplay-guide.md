@@ -53,7 +53,9 @@ Laboratorium korzysta z tego samego układu co **Komponenty**. Sytuacja, losowan
 
 ### Warstwa całego ekranu
 
-Zwijana grupa **Warstwa całego ekranu** dodaje subtelny efekt końcowy nad całą sceną: świetlny pył, bąbelki albo miękkie ziarno. Osobno wybierasz poświatę, ciepłe światło lub łagodną winietę i ustawiasz intensywność. Warstwa ma `pointer-events: none`, więc pozostaje niezaznaczalna i nie blokuje przycisków, suwaków ani gestów gry.
+Zwijana grupa **Filmowy klimat ekranu** dodaje efekt końcowy nad całą sceną. Pięć punktów startowych — Ciepły film, Poranny blask, Baśniowe bąble, Miękki portret i Ciepłe iskry — ustawia spójny zestaw parametrów, który można później dostroić. Elementami kadru mogą być świetlny pył, miękki bokeh, bąbelki, rozbłyski albo samo ziarno filmu. Charakter światła obejmuje jasną poświatę, ciepłe światło, miękki film, perłowy bloom, baśniowy blask i winietę.
+
+Fine tune rozdziela intensywność całości od ocieplenia, miękkości obrazu, bloom, rozbłysków obiektywu, ziarna i winiety. Druga grupa kontroluje gęstość, wielkość i tempo dryfu oraz siłę reakcji na dotyk. Miękkość korzysta z `backdrop-filter`, dlatego wartości powyżej 1 px należy sprawdzić na docelowym telefonie. Pozostały ruch korzysta głównie z `transform` i `opacity`. Warstwa ma `pointer-events: none`, więc pozostaje niezaznaczalna i nie blokuje przycisków, suwaków ani gestów gry.
 
 Opcja **Reaguj subtelnie na dotknięcie** nasłuchuje dotknięcia na prawdziwym ekranie pod warstwą i uruchamia ograniczoną grupę maksymalnie dziesięciu drobinek zbiegających do punktu kontaktu. Nie tworzy stałych pętli ani kolejnych nakładających się warstw. Przy systemowym ograniczeniu ruchu reakcja na dotknięcie jest wyłączona, a warstwa statyczna staje się słabsza.
 

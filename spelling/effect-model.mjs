@@ -1,8 +1,10 @@
 import {DEFAULT_REACTIONS,BUBBLE_SHAPES,validateReactions} from './bubble-dynamics.mjs';
 export const EFFECT_STYLES={spark:'Iskry',star:'Gwiazdy',star5:'Gwiazdy 5-ramienne',star9:'Gwiazdy 9-ramienne',confetti:'Konfetti',textConfetti:'Konfetti z tekstu',halo:'Aureola',comet:'Komety',petal:'Płatki',orbit:'Orbity',fountain:'Fontanna',diamond:'Diamenty',ripple:'Kręgi',lightning:'Błyskawice',glitter:'Brokat',dynamite:'Iskrzący dynamit'};
-export const AMBIENT_STYLES={none:'Bez warstwy',dust:'Świetlny pył',bokeh:'Miękki bokeh',bubbles:'Bąbelki',sparkles:'Rozbłyski',grain:'Ziarno filmu'};
+export const AMBIENT_STYLES={none:'Bez warstwy',dust:'Świetlny pył',bokeh:'Miękki bokeh',bubbles:'Bąbelki',sparkles:'Rozbłyski',orbit:'Wirujące bokeh',aurora:'Płynący gradient',grain:'Ziarno filmu'};
 export const AMBIENT_FILTERS={none:'Bez filtra',glow:'Jasna poświata',warm:'Ciepłe światło',film:'Miękki film',bloom:'Perłowy bloom',dream:'Baśniowy blask',vignette:'Miękka winieta'};
 export const AMBIENT_PRESETS={
+ orbitLights:{name:'Świetlne orbity',style:'orbit',filter:'dream',intensity:.47,density:.8,size:1.05,speed:.38,softness:.1,warmth:.46,bloom:.45,flare:.2,grain:.04,vignette:.15,touchStrength:.55},
+ pastelFlow:{name:'Płynące pastele',style:'aurora',filter:'dream',intensity:.38,density:.7,size:1.15,speed:.28,softness:.1,warmth:.7,bloom:.45,flare:.2,grain:.03,vignette:.12,touchStrength:.4},
  warmFilm:{name:'Ciepły film',style:'grain',filter:'film',intensity:.34,density:.55,size:1,speed:.28,softness:.38,warmth:.72,bloom:.28,flare:.12,grain:.3,vignette:.2,touchStrength:.35},
  morning:{name:'Poranny blask',style:'dust',filter:'warm',intensity:.38,density:.78,size:.9,speed:.52,softness:.16,warmth:.82,bloom:.42,flare:.28,grain:.08,vignette:.08,touchStrength:.55},
  fairytale:{name:'Baśniowe bąble',style:'bubbles',filter:'dream',intensity:.4,density:.75,size:1.15,speed:.42,softness:.32,warmth:.48,bloom:.55,flare:.3,grain:.06,vignette:.12,touchStrength:.8},

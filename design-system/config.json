@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 10,
+  "revision": 11,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -3925,25 +3925,25 @@
           "trackShadowY": 3,
           "trackShadowBlur": 7,
           "trackShadowOpacity": 0.035,
-          "duration": 760,
-          "stretch": 0.85,
-          "recoil": 0.3,
-          "bounce": 0.35,
-          "inertia": 1.45,
-          "magnet": 1.25,
-          "squish": 9,
-          "tilt": 0.6,
-          "glow": 0.42,
-          "shine": 1.15,
-          "blur": 0,
-          "saturation": 1,
-          "contrast": 1,
-          "inkDelay": 300,
-          "inkDuration": 300,
-          "inkBump": 1.08,
-          "inkGlow": 0.35,
-          "inkFade": 0.85,
-          "inkBlur": 0
+          "duration": 1080,
+          "stretch": 1.9,
+          "recoil": 0.72,
+          "bounce": 0.92,
+          "inertia": 2.85,
+          "magnet": 1.55,
+          "squish": 22,
+          "tilt": 2.6,
+          "glow": 0.85,
+          "shine": 1.75,
+          "blur": 0.35,
+          "saturation": 1.08,
+          "contrast": 1.04,
+          "inkDelay": 500,
+          "inkDuration": 560,
+          "inkBump": 1.38,
+          "inkGlow": 0.82,
+          "inkFade": 1.32,
+          "inkBlur": 0.45
         },
         "toggle": {
           "width": 122,
@@ -3982,20 +3982,20 @@
           "threshold": 96
         },
         "sliderWrong": {
-          "springDuration": 300,
-          "springOvershoot": 1.5,
-          "fillDuration": 260,
-          "completionDelay": 190,
-          "glowBlur": 6,
-          "sparkDuration": 760
+          "springDuration": 560,
+          "springOvershoot": 5,
+          "fillDuration": 460,
+          "completionDelay": 300,
+          "glowBlur": 13,
+          "sparkDuration": 820
         },
         "sliderResult": {
-          "springDuration": 300,
-          "springOvershoot": 1.5,
-          "fillDuration": 260,
-          "completionDelay": 260,
-          "glowBlur": 7,
-          "doneDuration": 220
+          "springDuration": 520,
+          "springOvershoot": 4.5,
+          "fillDuration": 440,
+          "completionDelay": 420,
+          "glowBlur": 14,
+          "doneDuration": 420
         },
         "popup": {
           "radius": 30,
@@ -4005,23 +4005,23 @@
         "progress": {
           "height": 18,
           "radius": 9,
-          "duration": 3000,
-          "easePower": 1.829,
-          "stretch": 0.5,
-          "bounce": 2.1,
-          "wobble": 0.2,
-          "startKick": 0.7,
-          "flash": 0.6,
-          "finishDuration": 620
+          "duration": 3600,
+          "easePower": 2.15,
+          "stretch": 0.85,
+          "bounce": 2.65,
+          "wobble": 0.42,
+          "startKick": 2.8,
+          "flash": 0.52,
+          "finishDuration": 1180
         },
         "resultText": {
-          "settlePercent": 70,
-          "rollDuration": 190,
-          "hundredPause": 60,
-          "hundredStagger": 16,
-          "hundredRevealDelay": 150,
-          "kickDuration": 160,
-          "handoffDelay": 90
+          "settlePercent": 82,
+          "rollDuration": 340,
+          "hundredPause": 130,
+          "hundredStagger": 38,
+          "hundredRevealDelay": 280,
+          "kickDuration": 310,
+          "handoffDelay": 170
         },
         "profile": {
           "radius": 26,
@@ -4049,9 +4049,9 @@
           "wrong": "#dd4161"
         },
         "englishWordFlip": {
-          "duration": 760,
-          "perspective": 760,
-          "depth": 48,
+          "duration": 1375,
+          "perspective": 1450,
+          "depth": 115,
           "rotation": 180,
           "midScale": 0.94,
           "swapPoint": 50,
@@ -4394,6 +4394,14 @@
         "math-settings": {
           "img": {
             "imageScale": 1
+          }
+        },
+        "players": {
+          "player-grid": {
+            "gap": 14
+          },
+          "player-shell": {
+            "gap": 10
           }
         }
       }

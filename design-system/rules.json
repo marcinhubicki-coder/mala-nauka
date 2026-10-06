@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 5,
+  "revision": 6,
   "rules": {
     "rule-7a2b6ca06348": {
       "title": "Zapamiętaj „ó”",
@@ -4424,6 +4424,121 @@
       ],
       "families": [
         "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śnieżyca": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śnieżynka": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śródziemny": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000008"
+      ],
+      "families": [
+        "u/ó",
+        "ś/si",
+        "dź/dzi"
+      ]
+    },
+    "śruba": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "u/ó",
+        "ś/si"
+      ]
+    },
+    "świnia": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "świt": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "treść": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "uśmiechać": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000003",
+        "rule-000000000004",
+        "rule-000000000005"
+      ],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ć/ci",
+        "ś/si"
+      ]
+    },
+    "uśmiechnięty": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000003",
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "wieść": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "wiśnia": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
         "ś/si",
         "ń/ni"
       ]

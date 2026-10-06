@@ -2839,5 +2839,127 @@
       "forms": [],
       "sources": []
     }
+  },
+  {
+    "word": "śródziemny",
+    "category": "u/ó",
+    "answer": "ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "śr_dziemny",
+    "difficulty": 2,
+    "categoryDifficulties": {
+      "u/ó": 2,
+      "ś/si": 2,
+      "dź/dzi": 2
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ś/si",
+      "dź/dzi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śruba",
+    "category": "u/ó",
+    "answer": "u",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "śr_ba",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "u/ó": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "uśmiechać",
+    "category": "u/ó",
+    "answer": "u",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "_śmiechać",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "u/ó": 1,
+      "ch/h": 1,
+      "ć/ci": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ch/h",
+      "ć/ci",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "uśmiechnięty",
+    "category": "u/ó",
+    "answer": "u",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "_śmiechnięty",
+    "difficulty": 2,
+    "categoryDifficulties": {
+      "u/ó": 2,
+      "ch/h": 2,
+      "ś/si": 2,
+      "ń/ni": 2
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ch/h",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
   }
 ]

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 9,
+  "revision": 10,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -2762,6 +2762,39 @@
       "references": []
     },
     {
+      "path": "assets/managed/1a11cd22b644774d2b110c57d5f312a75351727037c48106fda46a1d02b21b6d.jpg",
+      "sha": "1a11cd22b644774d2b110c57d5f312a75351727037c48106fda46a1d02b21b6d",
+      "id": "1a11cd22b644774d",
+      "size": 346097,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/1fa60e3a9bbe259650a0303639e0229b93a56eea2f10f11809e6018cf1c7f3df.jpg",
+      "sha": "1fa60e3a9bbe259650a0303639e0229b93a56eea2f10f11809e6018cf1c7f3df",
+      "id": "1fa60e3a9bbe2596",
+      "size": 347211,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/24892e7830c923d07310d7f253af03453ffd90f2a75dde5e46cf1f165cc1104e.jpg",
+      "sha": "24892e7830c923d07310d7f253af03453ffd90f2a75dde5e46cf1f165cc1104e",
+      "id": "24892e7830c923d0",
+      "size": 345188,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b.webp",
       "sha": "263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b",
       "id": "263afbf04700b2f6",
@@ -2769,6 +2802,28 @@
       "width": 1254,
       "height": 1254,
       "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/295be2820511e922f965963a0265181b2b7f0c40754ebbe20abfa4cda0a17054.jpg",
+      "sha": "295be2820511e922f965963a0265181b2b7f0c40754ebbe20abfa4cda0a17054",
+      "id": "295be2820511e922",
+      "size": 348745,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/3709942daed1140d5145c114a39eb2aee237d48748962c5d92e266264d0dd4fd.jpg",
+      "sha": "3709942daed1140d5145c114a39eb2aee237d48748962c5d92e266264d0dd4fd",
+      "id": "3709942daed1140d",
+      "size": 341222,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
       "group": "managed",
       "references": []
     },
@@ -2817,6 +2872,17 @@
       "references": []
     },
     {
+      "path": "assets/managed/7a7c094785526bd0187011c146f4d49ff3165b81d1892b9ba13b5bfd3d501314.jpg",
+      "sha": "7a7c094785526bd0187011c146f4d49ff3165b81d1892b9ba13b5bfd3d501314",
+      "id": "7a7c094785526bd0",
+      "size": 348713,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21.jpg",
       "sha": "7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21",
       "id": "7ec2820f41033cd0",
@@ -2832,6 +2898,17 @@
       "sha": "83c87a31e6b0758d2e896449b9ff30e83a9d7f00e7b417173947b63cdbf4b086",
       "id": "83c87a31e6b0758d",
       "size": 351068,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/8d1d386e5bf26860690042522714d18498bb26df4aa9adddad89bfbf908933ca.jpg",
+      "sha": "8d1d386e5bf26860690042522714d18498bb26df4aa9adddad89bfbf908933ca",
+      "id": "8d1d386e5bf26860",
+      "size": 349168,
       "width": 1254,
       "height": 1254,
       "type": "jpg",
@@ -2916,10 +2993,32 @@
       "references": []
     },
     {
+      "path": "assets/managed/ca5dcbb997e5eb0f9e4e5d0d5eba708eee7470303078ae3ce457a4f0d9060527.jpg",
+      "sha": "ca5dcbb997e5eb0f9e4e5d0d5eba708eee7470303078ae3ce457a4f0d9060527",
+      "id": "ca5dcbb997e5eb0f",
+      "size": 345614,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66.jpg",
       "sha": "cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66",
       "id": "cb8464fad9cd12b5",
       "size": 624840,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/d77327cfbf40fc37c0ca263d0008b98b045167d3cc1ab893d0fe2582249e04f2.jpg",
+      "sha": "d77327cfbf40fc37c0ca263d0008b98b045167d3cc1ab893d0fe2582249e04f2",
+      "id": "d77327cfbf40fc37",
+      "size": 345202,
       "width": 1254,
       "height": 1254,
       "type": "jpg",
@@ -2949,10 +3048,32 @@
       "references": []
     },
     {
+      "path": "assets/managed/dac598dcd2bf68b603f9fa6f8b4fb528c5dcd77c249b325f7298096d8aca173a.jpg",
+      "sha": "dac598dcd2bf68b603f9fa6f8b4fb528c5dcd77c249b325f7298096d8aca173a",
+      "id": "dac598dcd2bf68b6",
+      "size": 346936,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
       "sha": "dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f",
       "id": "dfb2b8ba57b0ee56",
       "size": 619901,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a.jpg",
+      "sha": "ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a",
+      "id": "ec0aa05dd4e310f9",
+      "size": 346328,
       "width": 1254,
       "height": 1254,
       "type": "jpg",
@@ -5618,6 +5739,28 @@
       "references": []
     },
     {
+      "path": "assets/scenes/scieg.webp",
+      "sha": "cbc8455598349c31e3197199049e6c45e2c581cf8343c9872fc542d7d46527ed",
+      "id": "cbc8455598349c31",
+      "size": 315260,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/scisk.webp",
+      "sha": "870f9da67b55ac6d1cfb4fa8b73a5c27735578da8aa3ccfc1e682b7d96ccedc1",
+      "id": "870f9da67b55ac6d",
+      "size": 326204,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/siac.webp",
       "sha": "4e5a1ac9058d5fcee0306b78cedab7a709d30d09bc0c48221c8414b3fb098983",
       "id": "4e5a1ac9058d5fce",
@@ -5731,10 +5874,54 @@
       "height": 1254
     },
     {
+      "path": "assets/scenes/sila.webp",
+      "sha": "376b9a3b19879cc90aaf3e416766ac022affb5f7bab8ece4fcad4aa81ad6c3d4",
+      "id": "376b9a3b19879cc9",
+      "size": 335102,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/silnik.webp",
       "sha": "1d187bdbcad448774ae3f37e91224aeb0bbcdf20822a117365274d99057f9b3a",
       "id": "1d187bdbcad44877",
       "size": 139590,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/silny.webp",
+      "sha": "5538896a54d0fd2cc5553ba1f06d172c09df73ce45385747f8338406bc2a05d3",
+      "id": "5538896a54d0fd2c",
+      "size": 402380,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/silownia.webp",
+      "sha": "395ac4d8c35a2e113039e025073e96b23bb9a1102dd6789eae0cc7af180dccdf",
+      "id": "395ac4d8c35a2e11",
+      "size": 258010,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/siny.webp",
+      "sha": "c6f36d62bcd9c2c2e276765c09c6444592b7a291570269a5732f5f4f42eb6414",
+      "id": "c6f36d62bcd9c2c2",
+      "size": 370452,
       "type": "webp",
       "group": "scenes",
       "references": [],
@@ -5758,6 +5945,28 @@
       "type": "jpg",
       "group": "scenes",
       "references": []
+    },
+    {
+      "path": "assets/scenes/sitko.webp",
+      "sha": "29c2de03437ec64601d9e227a17418cfa9691d172cc8d63a9e84802b8b1d037e",
+      "id": "29c2de03437ec646",
+      "size": 279152,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/sito.webp",
+      "sha": "568528878974d7ac84234af8859afcfe1121d2838cc447b2d52655e51dcbeb26",
+      "id": "568528878974d7ac",
+      "size": 440528,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/skora.webp",
@@ -5796,6 +6005,17 @@
       "references": []
     },
     {
+      "path": "assets/scenes/sledz.webp",
+      "sha": "471870cae0a9502437e84a9c69c338090d0dd40592a063d36a4dea392cc6654d",
+      "id": "471870cae0a95024",
+      "size": 332714,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/slimak.jpg",
       "size": 299779,
       "sha": "9eb0862179f57540be4c5e7b25b58aaf181391cc4f1ed83a7a771a888195bcfd",
@@ -5803,6 +6023,17 @@
       "type": "jpg",
       "group": "scenes",
       "references": []
+    },
+    {
+      "path": "assets/scenes/slina.webp",
+      "sha": "fba829ed276cea5961f5d23603920063d13ec18dd6da9e085e3541bbc69cd54b",
+      "id": "fba829ed276cea59",
+      "size": 212338,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/sokol.webp",
@@ -9375,6 +9606,72 @@
       "path": "assets/managed/fdad6552b49bffa7c8f6f304bc4cf49acd9c330c528e5ec6a4a77ed75718f476.jpg",
       "source": "data/words-04.json",
       "masked": "śnie_ny",
+      "manual": true
+    },
+    "śnieżyca": {
+      "path": "assets/managed/7a7c094785526bd0187011c146f4d49ff3165b81d1892b9ba13b5bfd3d501314.jpg",
+      "source": "data/words-04.json",
+      "masked": "śnie_yca",
+      "manual": true
+    },
+    "śnieżynka": {
+      "path": "assets/managed/d77327cfbf40fc37c0ca263d0008b98b045167d3cc1ab893d0fe2582249e04f2.jpg",
+      "source": "data/words-04.json",
+      "masked": "śnie_ynka",
+      "manual": true
+    },
+    "śródziemny": {
+      "path": "assets/managed/dac598dcd2bf68b603f9fa6f8b4fb528c5dcd77c249b325f7298096d8aca173a.jpg",
+      "source": "data/words-01.json",
+      "masked": "śr_dziemny",
+      "manual": true
+    },
+    "śruba": {
+      "path": "assets/managed/3709942daed1140d5145c114a39eb2aee237d48748962c5d92e266264d0dd4fd.jpg",
+      "source": "data/words-01.json",
+      "masked": "śr_ba",
+      "manual": true
+    },
+    "świnia": {
+      "path": "assets/managed/295be2820511e922f965963a0265181b2b7f0c40754ebbe20abfa4cda0a17054.jpg",
+      "source": "data/words-08.json",
+      "masked": "_winia",
+      "manual": true
+    },
+    "świt": {
+      "path": "assets/managed/8d1d386e5bf26860690042522714d18498bb26df4aa9adddad89bfbf908933ca.jpg",
+      "source": "data/words-08.json",
+      "masked": "_wit",
+      "manual": true
+    },
+    "treść": {
+      "path": "assets/managed/1a11cd22b644774d2b110c57d5f312a75351727037c48106fda46a1d02b21b6d.jpg",
+      "source": "data/words-08.json",
+      "masked": "tre_ć",
+      "manual": true
+    },
+    "uśmiechać": {
+      "path": "assets/managed/ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a.jpg",
+      "source": "data/words-01.json",
+      "masked": "_śmiechać",
+      "manual": true
+    },
+    "uśmiechnięty": {
+      "path": "assets/managed/24892e7830c923d07310d7f253af03453ffd90f2a75dde5e46cf1f165cc1104e.jpg",
+      "source": "data/words-01.json",
+      "masked": "_śmiechnięty",
+      "manual": true
+    },
+    "wieść": {
+      "path": "assets/managed/1fa60e3a9bbe259650a0303639e0229b93a56eea2f10f11809e6018cf1c7f3df.jpg",
+      "source": "data/words-08.json",
+      "masked": "wie_ć",
+      "manual": true
+    },
+    "wiśnia": {
+      "path": "assets/managed/ca5dcbb997e5eb0f9e4e5d0d5eba708eee7470303078ae3ce457a4f0d9060527.jpg",
+      "source": "data/words-08.json",
+      "masked": "wi_nia",
       "manual": true
     }
   }

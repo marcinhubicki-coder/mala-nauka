@@ -660,7 +660,7 @@
     {
       "id": "batch-20261004-04",
       "name": "Przyroda i małe odkrycia · 3",
-      "stage": "images",
+      "stage": "published",
       "words": [
         {
           "id": "word-15b-6e-69-65-17c-79-63-61",
@@ -676,7 +676,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/7a7c094785526bd0187011c146f4d49ff3165b81d1892b9ba13b5bfd3d501314.jpg"
         },
         {
           "id": "word-15b-6e-69-65-17c-79-6e-6b-61",
@@ -692,7 +692,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/d77327cfbf40fc37c0ca263d0008b98b045167d3cc1ab893d0fe2582249e04f2.jpg"
         },
         {
           "id": "word-15b-72-f3-64-7a-69-65-6d-6e-79",
@@ -708,7 +708,7 @@
             "dź/dzi": 2
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/dac598dcd2bf68b603f9fa6f8b4fb528c5dcd77c249b325f7298096d8aca173a.jpg"
         },
         {
           "id": "word-15b-72-75-62-61",
@@ -722,7 +722,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/3709942daed1140d5145c114a39eb2aee237d48748962c5d92e266264d0dd4fd.jpg"
         },
         {
           "id": "word-15b-77-69-6e-69-61",
@@ -736,7 +736,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/295be2820511e922f965963a0265181b2b7f0c40754ebbe20abfa4cda0a17054.jpg"
         },
         {
           "id": "word-15b-77-69-74",
@@ -748,7 +748,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/8d1d386e5bf26860690042522714d18498bb26df4aa9adddad89bfbf908933ca.jpg"
         },
         {
           "id": "word-74-72-65-15b-107",
@@ -760,7 +760,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/1a11cd22b644774d2b110c57d5f312a75351727037c48106fda46a1d02b21b6d.jpg"
         },
         {
           "id": "word-75-15b-6d-69-65-63-68-61-107",
@@ -778,7 +778,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a.jpg"
         },
         {
           "id": "word-75-15b-6d-69-65-63-68-6e-69-119-74-79",
@@ -796,7 +796,7 @@
             "ń/ni": 2
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/24892e7830c923d07310d7f253af03453ffd90f2a75dde5e46cf1f165cc1104e.jpg"
         },
         {
           "id": "word-77-69-65-15b",
@@ -820,7 +820,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/1fa60e3a9bbe259650a0303639e0229b93a56eea2f10f11809e6018cf1c7f3df.jpg"
         },
         {
           "id": "word-77-69-15b-6e-69-61",
@@ -834,7 +834,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/ca5dcbb997e5eb0f9e4e5d0d5eba708eee7470303078ae3ce457a4f0d9060527.jpg"
         }
       ]
     },

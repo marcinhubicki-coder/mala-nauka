@@ -22,7 +22,12 @@
   .studio-topbar h1{font-size:19px;white-space:normal;margin-top:0}
   .studio-topbar .breadcrumb{display:none}
   #mobile-menu-open{width:44px;height:44px;padding:0;font-size:22px;justify-content:center;flex:none}
-  .top-actions{display:grid;grid-template-columns:44px 1fr 44px 1.35fr;gap:7px}
+  .top-actions{display:grid;grid-template-columns:44px 44px minmax(76px,1fr) 44px minmax(72px,1fr);gap:7px;min-width:0}
+  .top-actions .pwa-preview-link{grid-column:1;grid-row:1}
+  .top-actions #studio-help{grid-column:2;grid-row:1}
+  .top-actions #undo-toolbar{grid-column:3;grid-row:1}
+  .top-actions #redo-toolbar{grid-column:4;grid-row:1}
+  .top-actions #save-git{grid-column:5;grid-row:1}
   .top-actions button{min-height:44px;font-size:14px}
   .top-actions #studio-help{padding:0;font-size:18px}
   .top-actions #undo-toolbar,.top-actions #redo-toolbar{font-size:14px;padding:8px}

@@ -94,6 +94,20 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 @keyframes spelling-burst{0%{transform:translate(0,0) scale(.2) rotate(0);opacity:0}12%{opacity:1}75%{opacity:1}100%{transform:translate(var(--burst-x),var(--burst-y)) scale(.5) rotate(var(--burst-turn));opacity:0}}
 @media(prefers-reduced-motion:reduce){.spelling-fireworks{display:none}.continue-copy{transition:none}.continue-handle{will-change:auto}}
 
+/* Global finishing layer. It sits above the scene and never blocks controls. */
+.screen-atmosphere{position:absolute;z-index:30;inset:0;overflow:hidden;pointer-events:none;user-select:none;isolation:isolate;opacity:var(--ambient-intensity,.28)}
+.screen-atmosphere::before,.screen-atmosphere::after{content:"";position:absolute;inset:0;pointer-events:none}
+.screen-atmosphere.ambient-filter-glow::before{background:radial-gradient(ellipse at 24% 14%,#fff8,transparent 42%),radial-gradient(ellipse at 82% 78%,#bdefff45,transparent 46%);mix-blend-mode:screen}
+.screen-atmosphere.ambient-filter-warm::before{background:linear-gradient(145deg,#ffe8b94a,transparent 52%,#ffbee42b);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-vignette::before{background:radial-gradient(ellipse at center,transparent 54%,#25115b29 100%)}
+.screen-atmosphere.ambient-dust i,.screen-atmosphere.ambient-bubbles i{position:absolute;left:var(--ambient-x);top:var(--ambient-y);width:var(--ambient-size);height:var(--ambient-size);border-radius:50%;animation:ambient-drift 8s ease-in-out var(--ambient-delay) infinite alternate;will-change:transform,opacity}
+.screen-atmosphere.ambient-dust i{background:#fff;box-shadow:0 0 6px 2px #fff7;opacity:.55}
+.screen-atmosphere.ambient-bubbles i{border:1px solid #fff;background:radial-gradient(circle at 30% 25%,#fff9,transparent 30%),linear-gradient(140deg,#bcefff38,#ffbde73d);box-shadow:inset 0 0 4px #fff9,0 0 5px #9edcff4f;opacity:.58}
+.screen-atmosphere.ambient-grain::after{background-image:repeating-radial-gradient(circle at 23% 31%,#fff 0 .45px,transparent .6px 3px);background-size:5px 7px;mix-blend-mode:soft-light;opacity:.45}
+.screen-atmosphere>b{position:absolute;width:9px;height:9px;border:1px solid #fff;border-radius:50%;background:#d8f6ff70;box-shadow:0 0 8px #fff;pointer-events:none}
+@keyframes ambient-drift{0%{transform:translate3d(-3px,7px,0) scale(.85);opacity:.22}52%{opacity:.7}100%{transform:translate3d(8px,-14px,0) scale(1.12);opacity:.38}}
+@media(prefers-reduced-motion:reduce){.screen-atmosphere i{animation:none!important}.screen-atmosphere{opacity:calc(var(--ambient-intensity,.28) * .72)}}
+
 #app[data-view="game"][data-mode="spelling"] .dictation-count{gap:4px}
 #app[data-view="game"][data-mode="spelling"] .dictation-count .timer{font-size:25px;line-height:.95}
 #app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
@@ -122,10 +136,3 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 .spelling-continue-rail .continue-chevrons{left:48px;font-size:25px;letter-spacing:0;opacity:.55}
 .spelling-continue-rail .continue-copy{font-family:var(--ds-font-body),sans-serif;font-size:clamp(11px,3.25vw,14px);font-weight:850;letter-spacing:-.25px}
 .spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 calc(var(--ds-slider-wrong-glow-blur,9) * 1px) #fff4b5,0 2px 6px #8b65bc4d}
-
-/* Optional electric material on the live bubble. */
-.soap-electric-layer{pointer-events:none;mix-blend-mode:screen}
-.soap-electric-layer path{fill:none;stroke:#d9fbff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:8 14;filter:drop-shadow(0 0 4px #75e8ff);animation:soap-electric 520ms steps(2,end) infinite}
-.soap-electric-layer path:nth-child(2){animation-delay:-180ms;stroke:#fff1a6}.soap-electric-layer path:nth-child(3){animation-delay:-330ms}.soap-electric-layer path:nth-child(4){animation-delay:-90ms;stroke:#ffc9f0}
-@keyframes soap-electric{0%,100%{stroke-dashoffset:0;opacity:.18}42%{stroke-dashoffset:22;opacity:1}58%{opacity:.35}74%{stroke-dashoffset:-16;opacity:.9}}
-@media(prefers-reduced-motion:reduce){.soap-electric-layer path{animation:none!important}}

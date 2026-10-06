@@ -41,13 +41,21 @@ Najpierw podstawowe słowa z u/ó, rz/ż i ch/h, następnie istniejące grupy zm
 
 ## Budowanie efektu
 
-1. Otwórz **Efekty i bańka** i wybierz sytuację: poprawna, niepoprawna lub combo.
-2. Przy poprawnej odpowiedzi wybierz jeden z dziesięciu zestawów: Iskry, Gwiazdy, Konfetti, Aureola, Komety, Płatki, Orbity, Fontanna, Diamenty lub Kręgi. Możesz zmienić nazwę, kształt, kolor, liczbę drobinek, czas, zasięg i powiększenie bańki.
-3. Wybierz **Odtwórz**. **Pętla** dodaje ustawianą przerwę. **Przejdź przez 10 efektów** jest skończonym przeglądem biblioteki.
+Laboratorium korzysta z tego samego układu co **Komponenty**. Sytuacja, losowanie i narzędzia są zgrupowane nad podglądem w kontrolkach Jelly. Ekran gry zajmuje dolną część obszaru roboczego, a niezależnie przewijany panel **Żywa bańka** pozostaje po prawej. Strzałka na jego krawędzi chowa ustawienia i oddaje całą szerokość podglądowi. Na telefonie nadal obowiązuje podział **Wybór → Podgląd → Ustawienia**.
+
+1. Otwórz **Efekty i bańka** i wybierz sytuację: bańka, poprawna, błąd lub combo.
+2. Przy poprawnej odpowiedzi wybierz jeden z szesnastu zestawów. Biblioteka obejmuje między innymi iskry, dwa dodatkowe rodzaje gwiazd, konfetti z tekstu, błyskawice, brokat i iskrzący dynamit. Możesz ustawić także rozmiar, fizykę, punkt startu, rytm wybuchów i losowość drobinek.
+3. Wybierz **Odtwórz**. **Pętla** dodaje ustawianą przerwę. Przegląd biblioteki przechodzi kolejno przez wszystkie szesnaście efektów.
 4. Rozwiń **Combo i budżet**: ustaw próg serii, wzmocnienie i limit drobinek. Losowanie w grze uwzględnia aktywne zestawy i unika tego samego efektu bezpośrednio po sobie. Bez losowania używa pierwszego aktywnego zestawu.
 5. Rozwiń **Bańka i zmiana obrazka**: kontrolujesz tempo, falowanie, orbitę, czas przejścia, rozmycie i drobinki przejścia. Zmiana obrazka przełącza rzeczywiste przypisania słów „brzuch” i „przód”. Ustawienia bańki obowiązują także w ekranach zasad i podpowiedzi.
-6. Przy błędzie edytujesz jego własny czas, drgnięcie i kolor. Poprawny zapis i suwak dalszej gry nadal działają.
+6. Przy błędzie edytujesz jego własny czas, drgnięcie i kolor. Reakcja nie rysuje czerwonego pierścienia nad ilustracją; stan odpowiedzi i krótkie drgnięcie wystarczają do przekazania błędu. Poprawny zapis i suwak dalszej gry nadal działają.
 7. Cofnij lub Przywróć wraca do zapisanych wartości. Zmiany wymagające publikacji sprawdzisz w **Wersje i szkice**, potem zapiszesz na GitHub.
+
+### Warstwa całego ekranu
+
+Zwijana grupa **Warstwa całego ekranu** dodaje subtelny efekt końcowy nad całą sceną: świetlny pył, bąbelki albo miękkie ziarno. Osobno wybierasz poświatę, ciepłe światło lub łagodną winietę i ustawiasz intensywność. Warstwa ma `pointer-events: none`, więc pozostaje niezaznaczalna i nie blokuje przycisków, suwaków ani gestów gry.
+
+Opcja **Reaguj subtelnie na dotknięcie** nasłuchuje dotknięcia na prawdziwym ekranie pod warstwą i uruchamia ograniczoną grupę maksymalnie dziesięciu drobinek zbiegających do punktu kontaktu. Nie tworzy stałych pętli ani kolejnych nakładających się warstw. Przy systemowym ograniczeniu ruchu reakcja na dotknięcie jest wyłączona, a warstwa statyczna staje się słabsza.
 
 Podgląd używa tej samej implementacji bańki i efektów odpowiedzi co gra. To uproszczona scena do pracy nad ruchem; pełny ekran gry pozostaje dostępny w Komponentach. Przebieg na osi jest poglądowy, a czas ustala wybrany zestaw. Zestawy mają stabilną tożsamość mimo zmiany nazw.
 
@@ -65,7 +73,7 @@ Na telefonie: **Wybór → Podgląd → Ustawienia**. Wybór zestawu przenosi do
 
 Krótkie próbki pokazują liczbę zebranych klatek. Pętla zbiera do 300 odstępów między klatkami, z pominięciem przerw między efektami. Pomiary nie są zapisywane ani wysyłane do usług zewnętrznych. Przy 95. percentylu ponad 20 ms sugerujemy kontrolę, ponad 33 ms oznaczamy próbkę jako ciężką. To obserwacja, nie certyfikat płynności urządzenia.
 
-Efekt jest skończony, zbudowany z transformacji i przezroczystości. Twardy maksymalny limit to 48 drobinek; domyślny 36. Combo i przejścia obrazka respektują budżet. Nowa odpowiedź, pauza, ukrycie karty i wyjście z edytora usuwają poprzedni efekt. Ustawienie ograniczonego ruchu respektujemy automatycznie. Fizyka bańki zachowuje dotychczasowy limit 24 aktualizacji kształtu na sekundę. Rozmycie występuje tylko w istniejącym przejściu obrazu i można ustawić je na 0.
+Efekt jest skończony, zbudowany z transformacji i przezroczystości. Twardy maksymalny limit to 120 drobinek; domyślny 36. Combo i przejścia obrazka respektują budżet. Nowa odpowiedź, pauza, ukrycie karty i wyjście z edytora usuwają poprzedni efekt. Ustawienie ograniczonego ruchu respektujemy automatycznie. Fizyka bańki zachowuje dotychczasowy limit 24 aktualizacji kształtu na sekundę. Rozmycie występuje tylko w istniejącym przejściu obrazu i można ustawić je na 0.
 
 ## Naliczanie wyniku
 

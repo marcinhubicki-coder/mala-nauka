@@ -2,13 +2,14 @@ import {designReady,applyDesign} from '../shared/design-runtime.mjs';
 import {configureAssets,wordAsset,previewAssets} from '../shared/asset-loader.mjs';
 import {createBubble} from '../spelling/bubble.mjs';
 import {DEFAULT_EFFECTS,createEffectPicker} from '../spelling/effect-model.mjs';
-import {applyBubbleSettings,playResponseEffect} from '../spelling/response-effects.mjs';
+import {applyBubbleSettings,playResponseEffect,createScreenAtmosphere} from '../spelling/response-effects.mjs';
 await designReady;
-const host=document.getElementById('effect-bubble'),bubble=createBubble(host),pick=createEffectPicker();
+const host=document.getElementById('effect-bubble'),scene=document.getElementById('effect-scene'),bubble=createBubble(host),pick=createEffectPicker();
 let config=window.__MALA_NAUKA_DESIGN__,stop=()=>{},streak=0,selected='spark',currentEvent='correct',run=0,currentWord='brzuch',lastUrl='';
+const atmosphere=createScreenAtmosphere(scene,config.effects||DEFAULT_EFFECTS);
 const send=(type,payload={})=>parent.postMessage({channel:'mala-nauka-effects',type,...payload},location.origin);
 function setWord(word){currentWord=word;document.getElementById('word-before').textContent=word==='brzuch'?'b':'p';document.getElementById('word-after').textContent=word==='brzuch'?'uch':'ód';document.getElementById('answer-slot').textContent='?';document.getElementById('effect-word').setAttribute('aria-label','Uzupełnij słowo '+word);}
-function update(){applyBubbleSettings(bubble,config.effects||DEFAULT_EFFECTS);}
+function update(){const effects=config.effects||DEFAULT_EFFECTS;applyBubbleSettings(bubble,effects);atmosphere.update(effects);}
 async function reset(){stop();bubble.clearReactions();streak=0;document.querySelectorAll('.effect-answers button').forEach(b=>b.className='');document.getElementById('answer-slot').textContent='?';document.getElementById('effect-copy').textContent='Wybierz właściwy zapis';setWord(currentWord);const url=wordAsset(currentWord);if(url){lastUrl=url;await bubble.transitionToScene(url,{key:currentWord},true);}}
 function play(event='correct',id=selected,comboCount=1,runId=0){
  stop();run=runId;currentEvent=event;selected=id;

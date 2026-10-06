@@ -1,0 +1,13 @@
+/* One-time glyph dots: little composited particles, no filter repaint. */
+.mn-word-particles{
+ position:absolute;z-index:6;overflow:visible;pointer-events:none;
+ contain:layout style;isolation:isolate;
+}
+.mn-word-particles>i{
+ position:absolute;display:block;width:3px;height:3px;
+ margin:-1.5px 0 0 -1.5px;border-radius:50%;pointer-events:none;
+ opacity:0;will-change:opacity,transform;
+}
+@media(prefers-reduced-motion:reduce){
+ .mn-word-particles{display:none!important}
+}

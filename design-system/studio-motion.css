@@ -161,3 +161,42 @@
  .effect-controls-pane .effect-route{grid-template-columns:1fr}
  .effect-controls-pane .effect-presets{max-height:none}
 }
+
+/* Unified phone centering for Effects and Animations.
+   Keep exactly one centering mechanism so the preview cannot jump sideways after rerender/resize. */
+.motion-stage:not(.is-comparing){
+ display:grid;
+ place-items:center;
+}
+.motion-stage:not(.is-comparing)>.motion-phone{
+ position:relative;
+ inset:auto;
+ top:auto;
+ left:auto;
+ right:auto;
+ bottom:auto;
+ margin:0;
+ transform:scale(var(--motion-scale));
+ transform-origin:center;
+}
+.effect-preview-pane .effect-stage:not(.is-comparing) .effect-phone{
+ top:auto;
+ left:auto;
+ margin:0;
+ transform:scale(var(--motion-scale));
+ transform-origin:center;
+}
+.control-compare-cell{
+ display:grid;
+ grid-template-rows:auto 1fr;
+ justify-items:center;
+ align-items:start;
+}
+.control-compare-cell .motion-phone{
+ position:relative;
+ top:28px;
+ left:auto;
+ margin-left:0;
+ transform:scale(var(--motion-scale));
+ transform-origin:top center;
+}

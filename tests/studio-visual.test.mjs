@@ -44,7 +44,7 @@ test('component workspace keeps the inspector beside preview and uses one Jelly 
   assert.match(componentCSS,/#component-strip\{[\s\S]*?overflow-y:auto;/);
   assert.match(componentCSS,/\.branch-children\{[^}]*max-height:none;overflow:visible/);
   assert.match(componentCSS,/\.tree-row\{[^}]*grid-template-columns:32px minmax\(0,1fr\)/);
-  assert.match(componentCSS,/\.family-choices\{[^}]*flex-wrap:nowrap;[^}]*overflow-x:auto/);
+  assert.match(componentCSS,/\.family-choices\{[^}]*flex-wrap:wrap;[^}]*overflow:visible/);
   assert.match(previewSource,/class=preview-actions-shell/);
   assert.match(previewSource,/this\.iconChoices\('category'/);
   assert.match(previewSource,/this\.iconChoices\('mode'/);

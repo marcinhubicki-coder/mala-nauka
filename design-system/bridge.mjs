@@ -158,7 +158,7 @@ function report() {
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);

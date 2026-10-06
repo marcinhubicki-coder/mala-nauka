@@ -20,7 +20,7 @@
   grid-row:1;
   display:grid;
   grid-template-columns:clamp(190px,29%,300px) minmax(220px,1fr);
-  grid-template-rows:auto auto minmax(0,1fr);
+  grid-template-rows:auto auto auto minmax(0,1fr);
   gap:10px 14px;
   min-width:0;
   min-height:0;
@@ -45,10 +45,11 @@
 .component-layout.wide-preview>.inspector{display:none}
 
 #preview-toolbar{grid-column:1/-1;grid-row:1;min-width:0}
-#preview-controls{grid-column:1/-1;grid-row:2;min-width:0}
+#component-pills{grid-column:1/-1;grid-row:2;min-width:0}
+#preview-controls{grid-column:1/-1;grid-row:3;min-width:0}
 #component-strip{
   grid-column:1;
-  grid-row:3;
+  grid-row:4;
   display:block;
   min-width:0;
   min-height:0;
@@ -60,7 +61,7 @@
 }
 #preview-gallery{
   grid-column:2;
-  grid-row:3;
+  grid-row:4;
   min-width:0;
   min-height:0;
   height:100%;
@@ -78,7 +79,7 @@
   gap:var(--studio-gap) 12px;
   min-width:0;
 }
-.toolbar-primary{margin-bottom:8px;flex-wrap:nowrap;overflow:visible}
+.toolbar-primary{margin-bottom:8px;flex-wrap:wrap;overflow:visible}
 .studio-choice-field{
   display:grid;
   gap:5px;
@@ -254,8 +255,8 @@
 .component-layout>.inspector-edge.tooltip{position:absolute}
 
 /* Hierarchy and layers share the left pane's single scrollbar. */
-.family-choices{display:flex;flex-wrap:nowrap;gap:5px;margin:0 0 8px;padding:1px 1px 5px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#9bb0ca66 transparent}
-.family-choices button{flex:0 0 auto;white-space:nowrap}.family-empty{padding:6px;color:#7387a1;font-size:10px}
+.family-choices{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px;padding:1px;overflow:visible}
+.family-choices button{flex:0 0 auto;max-width:100%;padding:6px 9px;border:1px solid #d9e4f2;border-radius:999px;background:#fff;color:#59708e;font-size:10px;font-weight:750;white-space:nowrap}.family-choices button.selected{border-color:#78aee8;background:#e6f2ff;color:#0e5ca8;box-shadow:inset 0 -2px #c6dcf5}.family-empty{padding:6px;color:#7387a1;font-size:10px}
 .component-navigation{min-height:0;padding:10px;border:1px solid #d8e2ef;border-radius:12px;background:#ffffffde}
 .component-crumbs{display:flex;align-items:center;gap:3px;flex-wrap:wrap;margin-bottom:8px;color:#8b9db3;font-size:10px}
 .component-crumbs button{padding:3px 5px;border:0;border-radius:5px;background:transparent;color:#42678f;font-size:11px}
@@ -315,7 +316,7 @@
   .component-layout>.inspector{display:none;width:100%;height:100%;padding:18px 16px;border:0;overflow-y:auto}
   body[data-mobile-pane=edit] .component-layout>.inspector{display:block}
   body[data-mobile-pane=edit] .component-layout>.preview-column{position:fixed;left:-10000px;visibility:hidden}
-  #preview-toolbar,#preview-controls,#component-strip,#preview-gallery{display:block;min-height:auto;height:auto;overflow:visible}
+  #preview-toolbar,#component-pills,#preview-controls,#component-strip,#preview-gallery{display:block;min-height:auto;height:auto;overflow:visible}
   #component-strip{margin-top:8px;padding:0}
   #preview-gallery{flex:1;min-height:520px}
   .toolbar-primary,.preview-toolbar{align-items:stretch}.toolbar-primary{flex-wrap:wrap}

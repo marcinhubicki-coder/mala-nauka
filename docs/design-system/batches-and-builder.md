@@ -49,11 +49,15 @@ Próbka i szkic przetrwają odświeżenie w tej samej przeglądarce. Na telefoni
 
 ## Globalne przepisy rodzin i atomów
 
-W zakładce **Globalne przepisy** najpierw wybierasz rodzinę: jelly, guziki, kafle, odpowiedzi, slidery akcji, postęp albo przełączniki. Jej suwaki edytują te same tokeny, których używają prawdziwe komponenty. Hierarchia ma kolejność: rodzina → wariant komponentu → widok → pojedynczy element. Przycisk obok próbki otwiera rodzinę w Komponentach.
+W zakładce **Globalne przepisy** biblioteka pokazuje aktualne rodziny i atomy, liczbę widoków, stan aktywacji oraz informację, czy element jest powtarzalny czy unikalny. Rodzina ma wizualną próbkę rzeczywistych stanów i pasek bieżących wartości. Jej suwaki edytują te same tokeny, których używają prawdziwe komponenty. Mapa po prawej pokazuje kolejność: rodzina → warianty i stany → zagnieżdżone atomy → użycia. Każdy widok i atom można otworzyć bez szukania go w innej sekcji.
 
 Niżej są atomy treści: tytuł ekranu, podtytuł, nagłówek sekcji, numer + tekst, wyróżnik, podpowiedź, nagłówek popupu i etykieta przycisku. Przepis atomu określa rozmiar i grubość pisma, interlinię, odstępy, padding oraz rolę fontu.
 
-Początkowo obowiązują dotychczasowe style komponentów. Suwaki pokazują próbkę lokalną. **Zastosuj globalny przepis** włącza go w rzeczywistych ekranach. Obok są rodzice atomu i linki do ich widoków — otwórz ekran i sprawdź konkretną kompozycję. Nie każdy stan rodzica zawiera każdy atom. **Przywróć styl komponentów** wyłącza dany przepis; **Cofnij** przywraca poprzednią konfigurację.
+Początkowo obowiązują dotychczasowe style komponentów. Status **Dziedziczy komponent** odróżnia je od atomów z aktywnym własnym przepisem. **Zastosuj globalny przepis** włącza go w rzeczywistych ekranach. Obok są rodzice atomu i linki do ich widoków — otwórz ekran i sprawdź konkretną kompozycję. Nie każdy stan rodzica zawiera każdy atom. **Dziedzicz styl komponentu** wyłącza dany przepis; **Cofnij** przywraca poprzednią konfigurację.
+
+## Panel testowy PWA
+
+**Testy PWA** są osobną sekcją Studia. Zwijane grupy prowadzą do startu od zera, syntetycznego profilu, wyników, historii rund, postępów, pucharów, kolekcji, poprawnej odpowiedzi i animowanego końca rundy. Wybrany scenariusz otwiera się w osadzonym telefonie albo w nowej karcie. Dane syntetyczne korzystają z prawdziwych rendererów, zatrzymanego zegara i fikcyjnego profilu; nie zapisują wyników dziecka. Skróty do skumulowanego combo i przejść otwierają odpowiednie laboratoria Studia. Stały przycisk **PWA Preview** w nagłówku otwiera bieżące PWA z normalnymi lokalnymi danymi.
 
 Włączony przepis ma pierwszeństwo dla typografii atomu. Podkłady, kolory stanów i mechanika interakcji nadal wynikają z komponentów. Sześć branchy konsumentów pobiera moduł przepisów ze wspólnego źródła.
 

@@ -1,6 +1,6 @@
 # Komponenty: od kontenera do detalu
 
-W sekcji **Komponenty** sposób pracy, kategorie, tryb gry oraz ekran i stan korzystają z jednego niebieskiego Jelly V4. Wszystkie kontrolki i wyszukiwarka mają wysokość 44 px. Grupy zajmują szerokość swojej zawartości i przechodzą do następnego wiersza jako całość, zamiast tworzyć osobne poziome paski przewijania. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą.
+W sekcji **Komponenty** kolejność kontrolek to: sposób pracy, kategoria, tryb gry, ekran i stan, narzędzia, wyszukiwarka. Wszystkie korzystają z niebieskiego Jelly V4 i mają wysokość 44 px. Mieszczą się w jednym wierszu, gdy pozwala na to szerokość, a potem zawijają całymi grupami. Pastylki elementów mają własny pełny rząd pod kontrolkami, zawijają się bez poziomego przewijania i nie zwężają drzewa. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą.
 
 Prawy inspektor pozostaje w swojej kolumnie od górnej do dolnej krawędzi obszaru roboczego. Hierarchia ma jeden pionowy obszar przewijania, a inspektor drugi. Drzewo nie tworzy zagnieżdżonych scrollbarów. Przy węższym ekranie główne menu zwija się do ikon, aby nie ściskać drzewa i podglądu. Uchwyt na granicy panelu chowa i przywraca inspektor bez zmiany kolejności elementów siatki.
 
@@ -8,7 +8,7 @@ Prawy inspektor pozostaje w swojej kolumnie od górnej do dolnej krawędzi obsza
 
 Zamiast płaskiej listy wszystkich atomów widzisz dzieci otwartego kontenera. Pierwsze kliknięcie wiersza zaznacza rodzica i rozwija pod nim jeden poziom dzieci. Drugie kliknięcie tego samego wiersza ustawia go jako korzeń bieżącej gałęzi. Inne rozwinięcie automatycznie się zwija. Ścieżka nad drzewem pokazuje wszystkich rodziców i pozwala wrócić na dowolny poziom.
 
-Oko oraz uchwyt przeciągania są częścią każdego kafelka w **Zawartości**. Oko przechodzi kolejno przez widoczność, ukrycie z zachowaniem miejsca i usunięcie z układu. Kafelek można przeciągnąć przed inne rodzeństwo; nie ma osobnych strzałek ani drugiej listy warstw. Pole **Odstęp** przy tytule gałęzi pokazuje `gap` bieżącego kontenera i zapisuje go w pikselach. Dzięki temu odległość jest regułą rodzica, a nie dodatkowym obiektem Spacer.
+Oko oraz uchwyt przeciągania są częścią każdego kafelka w **Zawartości**. Oko przechodzi kolejno przez widoczność, ukrycie z zachowaniem miejsca i usunięcie z układu. Widoczność zapisuje się jako lokalna właściwość elementu i po zapisie działa również w PWA; ukryty element pozostaje dostępny w drzewie, aby można go było ponownie włączyć. Kafelek można przeciągnąć przed inne rodzeństwo; nie ma osobnych strzałek ani drugiej listy warstw. Pole **Odstęp** przy tytule gałęzi pokazuje `gap` bieżącego kontenera i zapisuje go w pikselach. Dzięki temu odległość jest regułą rodzica, a nie dodatkowym obiektem Spacer.
 
 Wybór bezpośrednio na podglądzie respektuje bieżący poziom. Kliknięcie wewnątrz zaznaczonego kontenera schodzi o jedno pokolenie. Kliknięcie rodzeństwa wybiera je na tym samym poziomie. Kliknięcie poza bieżącą gałęzią najpierw wraca o jednego rodzica, więc podgląd nie wyrzuca od razu na początek ekranu.
 
@@ -16,7 +16,7 @@ Przykład ortografii:
 
 **Cały ekran → Ustawienia trybu → Konfiguracja i start → Kafel ustawień → Grupa 3 · Ustal misję → Czas rundy → 3 min → tekst opcji.**
 
-Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. **Zawartość** pokazuje kolejność od góry do dołu, z pełnoekranowym tłem na spodzie. Widoczność i przeciąganie są chwilową próbą w podglądzie. Wartość **Odstęp** jest lokalnym ustawieniem wyglądu kontenera i trafia do szkicu.
+Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. **Zawartość** pokazuje kolejność od góry do dołu, z pełnoekranowym tłem na spodzie. Widoczność i **Odstęp** trafiają do szkicu. Przeciąganie pozwala sprawdzić kolejność na działającym widoku.
 
 ## Wybór i podgląd
 

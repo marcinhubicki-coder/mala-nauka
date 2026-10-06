@@ -323,7 +323,8 @@ export function createBubble(host, options={}) {
   }
   applyHeavy();
 
-  let frame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, nextDraw=0, paused = false, destroyed = false;
+  let frame = 0, timerFrame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, nextDraw=0, paused = false, destroyed = false;
+  const useTimer = new URLSearchParams(location.search).has('animationTimer');
   let currentUrl = '', loadToken = 0, transitions = [];
 
   const fmt=value=>value.toFixed(2);
@@ -510,12 +511,15 @@ export function createBubble(host, options={}) {
       elapsed += last ? Math.min((now-last)/1000,.1) * clampValue(tuning.speed+dynamics.sample(now).speed,.5,20) : 0;
       last = now; draw(elapsed);
     }
-    frame = requestAnimationFrame(loop);
+    if(!useTimer)frame = requestAnimationFrame(loop);
   }
   function syncMotion() {
-    cancelAnimationFrame(frame); frame=0; last=0; nextDraw=0;
+    cancelAnimationFrame(frame);clearInterval(timerFrame);frame=0;timerFrame=0;last=0;nextDraw=0;
     host.classList.toggle('soap-still', options.motion === false || paused || document.hidden || reduced.matches);
-    if (!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches) frame=requestAnimationFrame(loop);
+    if(!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches){
+      if(useTimer)timerFrame=setInterval(()=>loop(performance.now()),Math.max(33,Math.round(1000/frameRate)));
+      else frame=requestAnimationFrame(loop);
+    }
   }
   draw(elapsed); syncMotion();
   document.addEventListener('visibilitychange',syncMotion);
@@ -736,7 +740,7 @@ export function createBubble(host, options={}) {
       transitions.forEach(animation=>value?animation.pause():animation.play());
     },
     destroy() {
-      destroyed=true; loadToken++; cancelAnimationFrame(frame);
+      destroyed=true; loadToken++; cancelAnimationFrame(frame);clearInterval(timerFrame);
       document.removeEventListener('mala-nauka:design',designChanged);
       transitions.forEach(animation=>animation.cancel()); transitions=[];
       document.removeEventListener('visibilitychange',syncMotion);

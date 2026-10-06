@@ -126,7 +126,11 @@ function selectedDetails() {
   }
   const nativeVariant=item.recipe==='button-answer'?({math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'})[document.documentElement.dataset.dsView.split('-')[0]]||'':'';
   const textNodes=[...item.node.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim());
-  return {visible:visible(item.node),editableText:item.kind==='text'&&textNodes.length===1?(item.node.dataset.dsOriginalText||textNodes[0].textContent.trim()):null,id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
+  const parent=items.get(item.parent),parentStyle=parent?getComputedStyle(parent.node):null,parentGap=parseFloat(parentStyle?.gap)||0;
+  const margins=(parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0)+(parseFloat(style.marginLeft)||0)+(parseFloat(style.marginRight)||0);
+  const siblings=[...items.values()].filter(row=>row.parent===item.parent&&visible(row.node)).sort((a,b)=>(a.order||0)-(b.order||0)),previous=siblings[siblings.findIndex(row=>row.id===item.id)-1],previousRect=previous?.node.getBoundingClientRect(),horizontal=parentStyle?.display==='flex'&&parentStyle.flexDirection.startsWith('row');
+  const before=previousRect?Math.max(0,horizontal?rect.left-previousRect.right:rect.top-previousRect.bottom):0;
+  return {visible:visible(item.node),editableText:item.kind==='text'&&textNodes.length===1?(item.node.dataset.dsOriginalText||textNodes[0].textContent.trim()):null,id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),layoutSpacing:{parentId:item.parent,before,gap:parentGap,source:parentGap?'gap kontenera':margins?'margines elementu':'układ naturalny'},metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
 let dialogOutline;
 function paintHighlight() {
@@ -154,7 +158,7 @@ function report() {
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);
@@ -210,9 +214,12 @@ if (studio) {
   document.addEventListener('click',event=>{
     if(!inspecting || !registry || overlay?.contains(event.target))return;
     items=collect();
-    const candidates=[...items.values()].filter(item=>item.node.contains(event.target)&&item.id!=='layout-root').sort((a,b)=>(a.depth||0)-(b.depth||0)||(a.order||0)-(b.order||0));
-    const current=candidates.findIndex(item=>item.id===selection),item=candidates[Math.min(candidates.length-1,current<0?0:current+1)];
-    if(!item)return;
+    const candidates=[...items.values()].filter(item=>item.node.contains(event.target)&&item.id!=='layout-root'&&visible(item.node)&&!blockedByDialog(item.node)).sort((a,b)=>(a.depth||0)-(b.depth||0)||(a.order||0)-(b.order||0));
+    const current=items.get(selection);let item;
+    if(!current||current.id==='layout-root')item=candidates[0];
+    else if(current.node.contains(event.target))item=candidates.find(candidate=>(candidate.depth||0)>(current.depth||0))||current;
+    else item=candidates.find(candidate=>(candidate.depth||0)===(current.depth||0))||items.get(current.parent)||candidates[0];
+    if(!item||item.id===selection)return;
     event.preventDefault();event.stopImmediatePropagation();
     selection=item.id;
     report();emit({type:'select',...selectedDetails()});

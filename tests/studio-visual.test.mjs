@@ -43,10 +43,12 @@ test('component workspace keeps the inspector beside preview and uses one Jelly 
   assert.match(componentCSS,/\.component-layout>\.inspector-edge\.tooltip\{position:absolute\}/);
   assert.match(componentCSS,/#component-strip\{[\s\S]*?overflow-y:auto;/);
   assert.match(componentCSS,/\.branch-children\{[^}]*max-height:none;overflow:visible/);
-  assert.match(componentCSS,/\.layer-list\{[^}]*max-height:none;[^}]*overflow:visible/);
+  assert.match(componentCSS,/\.tree-row\{[^}]*grid-template-columns:32px minmax\(0,1fr\)/);
+  assert.match(componentCSS,/\.family-choices\{[^}]*flex-wrap:nowrap;[^}]*overflow-x:auto/);
   assert.match(previewSource,/class=preview-actions-shell/);
   assert.match(previewSource,/this\.iconChoices\('category'/);
-  assert.match(previewSource,/jellyChoices\('mode'/);
+  assert.match(previewSource,/this\.iconChoices\('mode'/);
   assert.match(previewSource,/this\.iconChoices\('view'/);
+  assert.doesNotMatch(previewSource,/Warstwy i kolejność|data-layer-move|id=add-spacer/);
   assert.doesNotMatch(previewSource,/class=['"]icon-toggle/);
 });

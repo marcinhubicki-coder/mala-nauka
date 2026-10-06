@@ -15,7 +15,7 @@ W **Sprawdź stan w podglądzie** możesz wybrać np. **Kategorie**. Studio od r
 
 W ustawieniach elementu wybierz **Porównaj użycia**. Przesuwaj ekrany poziomo palcem po nagłówku lub marginesie obok ramki. Nagłówek **Edytuj ten ekran** otwiera jego ustawienia. Listę ekranów zmienisz w **Wybór**.
 
-Każdy ekran aplikacji nadal renderuje się w 390 × 844. Na telefonie jego ramka dopasowuje się do dostępnego miejsca. Na desktopie porównanie zachowuje naturalny rozmiar i pokazuje kilka ekranów obok siebie.
+Każdy ekran aplikacji nadal renderuje się w 390 × 844. **Dopasuj ekran** skaluje ramki porównania do dostępnej wysokości. Ekrany pozostają obok siebie i przewijają się poziomo; tryb 100% zachowuje naturalny rozmiar.
 
 Opcja **100% — rzeczywisty rozmiar** dla pojedynczego podglądu pozwala oglądać detale przez przewijanie. **Dopasuj telefon** przywraca widok całego ekranu.
 

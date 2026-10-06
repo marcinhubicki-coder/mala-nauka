@@ -17,8 +17,8 @@ Aktualny scenariusz i trzy dodatkowe przeloty opisuje [Weryfikacja projektu](pro
 ## Zacznij od panelu
 
 1. **Komponenty → Według widoku**: wybierz ekran i schodź od kontenera do jego dzieci albo wskaż element kliknięciem. Nieobecne elementy są ukryte albo wyszarzone.
-2. **Według elementu → Porównaj użycia**: zaznacz ekrany do porównania. Na desktopie telefony mają 390 × 844 bez skalowania i układają się obok siebie, jeśli jest miejsce. Na telefonie podglądy dopasowują się do miejsca i przewijają poziomo.
-3. Zmieniaj suwaki, oglądając znacznik **Ostatnio zapisano**. Wybierz instancję/kontener i przełącz jego stan. **Warstwy i widoczność** pozwalają chwilowo ukryć element z zachowaniem miejsca albo z przesunięciem pozostałych.
+2. **Według elementu → Porównaj widoki**: zaznacz ekrany do porównania. Telefony układają się poziomo; **Dopasuj ekran** skaluje je do wysokości, a tryb 100% zachowuje naturalne 390 × 844.
+3. Zmieniaj suwaki, oglądając znacznik **Ostatnio zapisano**. **Zawartość** jest drzewem wyboru, widoczności i kolejności; przeciąganie układa rodzeństwo, a pole **Odstęp** zapisuje `gap` kontenera w pikselach.
 4. **Typografia** pokazuje fonty, role i miejsca użycia. **Baza słów i grafik** pokazuje miniatury, wspólne zasady i powiązania grafik ze słowami; umożliwia ich scalenie.
 5. **Animacje**: wybierz połączenie istniejące w flow, ustaw ruch i uruchom Play lub Pętlę z przerwą.
 6. **Cofnij / Ponów** obejmują wygląd, zasady i grafiki. **?** otwiera pomoc z przykładami. Szkic przetrwa odświeżenie w tej przeglądarce.

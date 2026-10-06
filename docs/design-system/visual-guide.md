@@ -21,22 +21,21 @@ Obrys i wybieranie kliknięciem są niezależne. Gdy chcesz normalnie klikać w 
 
 **Według elementu → Porównaj użycia** pokazuje listę powiązanych ekranów. Zaznacz te, które chcesz oglądać. **Ustawienia gier** wybiera zestaw powiązanych ustawień. Strzałka na krawędzi prawego panelu chowa lub przywraca ustawienia.
 
-W porównaniu każdy ekran ma viewport **390 × 844**. Ramki zawsze budują się poziomo; kolejne oglądasz przez przesuwanie paska. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
+W porównaniu każdy ekran ma viewport **390 × 844**. **Dopasuj ekran** skaluje ramki według dostępnej wysokości, a szerokość pozostaje poziomym paskiem ekranów. Tryb 100% pokazuje naturalny rozmiar. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
 
 **Zmień nazwę elementu** zmienia etykietę używaną w studio. Relacje i działanie są zachowane.
 
-## Chcę na chwilę schować element
+## Chcę uporządkować lub schować element
 
-Rozwiń **Warstwy i kolejność** pod drzewem po lewej stronie.
+Użyj kafelków w **Zawartości** po lewej stronie. Pierwsze kliknięcie zaznacza i rozwija jedno pokolenie, drugie otwiera tę gałąź.
 
 | Opcja | Wynik |
 | --- | --- |
 | Oko | Pierwsze kliknięcie ukrywa i zachowuje miejsce, drugie usuwa miejsce, trzecie pokazuje element |
-| Strzałki / przeciąganie | Zmienia kolejność rodzeństwa; tło pełnoekranowe pozostaje na spodzie |
-| Spacer | Dodaje warstwę odstępu po zaznaczonym elemencie |
-| Pokaż wszystko | Przywraca wszystkie ukryte warstwy |
+| Przeciąganie kafelka | Zmienia kolejność rodzeństwa; tło pełnoekranowe pozostaje na spodzie |
+| Odstęp | Ustawia w pikselach odstęp między dziećmi otwartego kontenera |
 
-To ustawienia chwilowe podglądu; nie są zapisywane do wspólnego wyglądu. **Zresetuj stan podglądu** przywraca również początkowy stan przykładowej gry.
+Widoczność i kolejność są próbą w podglądzie. Odstęp jest lokalną regułą wyglądu kontenera i zapisuje się w szkicu. **Zresetuj stan podglądu** przywraca początkowy stan przykładowej gry i widoczność.
 
 ## Chcę zmienić zasadę dla grupy słów
 

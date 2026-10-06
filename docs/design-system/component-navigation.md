@@ -2,17 +2,21 @@
 
 W sekcji **Komponenty** sposób pracy, kategorie, tryb gry oraz ekran i stan korzystają z jednego niebieskiego Jelly V4. Wszystkie kontrolki i wyszukiwarka mają wysokość 44 px. Grupy zajmują szerokość swojej zawartości i przechodzą do następnego wiersza jako całość, zamiast tworzyć osobne poziome paski przewijania. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą.
 
-Prawy inspektor pozostaje w swojej kolumnie od górnej do dolnej krawędzi obszaru roboczego. Hierarchia ma jeden pionowy obszar przewijania, a inspektor drugi. Listy dzieci i warstw nie tworzą zagnieżdżonych scrollbarów. Przy węższym ekranie główne menu zwija się do ikon, aby nie ściskać drzewa i podglądu. Uchwyt na granicy panelu chowa i przywraca inspektor bez zmiany kolejności elementów siatki.
+Prawy inspektor pozostaje w swojej kolumnie od górnej do dolnej krawędzi obszaru roboczego. Hierarchia ma jeden pionowy obszar przewijania, a inspektor drugi. Drzewo nie tworzy zagnieżdżonych scrollbarów. Przy węższym ekranie główne menu zwija się do ikon, aby nie ściskać drzewa i podglądu. Uchwyt na granicy panelu chowa i przywraca inspektor bez zmiany kolejności elementów siatki.
 
 ## Schodzenie po gałęziach
 
-Zamiast płaskiej listy wszystkich atomów widzisz dzieci otwartego kontenera. Pierwsze kliknięcie wiersza tylko zaznacza rodzica. Drugie kliknięcie tego samego wiersza otwiera jego dzieci. Ścieżka nad nimi pokazuje wszystkich rodziców i pozwala wrócić na dowolny poziom. Wybór bezpośrednio na podglądzie działa tak samo: kolejne kliknięcia schodzą od zewnętrznej grupy do elementu szczegółowego.
+Zamiast płaskiej listy wszystkich atomów widzisz dzieci otwartego kontenera. Pierwsze kliknięcie wiersza zaznacza rodzica i rozwija pod nim jeden poziom dzieci. Drugie kliknięcie tego samego wiersza ustawia go jako korzeń bieżącej gałęzi. Inne rozwinięcie automatycznie się zwija. Ścieżka nad drzewem pokazuje wszystkich rodziców i pozwala wrócić na dowolny poziom.
+
+Oko oraz uchwyt przeciągania są częścią każdego kafelka w **Zawartości**. Oko przechodzi kolejno przez widoczność, ukrycie z zachowaniem miejsca i usunięcie z układu. Kafelek można przeciągnąć przed inne rodzeństwo; nie ma osobnych strzałek ani drugiej listy warstw. Pole **Odstęp** przy tytule gałęzi pokazuje `gap` bieżącego kontenera i zapisuje go w pikselach. Dzięki temu odległość jest regułą rodzica, a nie dodatkowym obiektem Spacer.
+
+Wybór bezpośrednio na podglądzie respektuje bieżący poziom. Kliknięcie wewnątrz zaznaczonego kontenera schodzi o jedno pokolenie. Kliknięcie rodzeństwa wybiera je na tym samym poziomie. Kliknięcie poza bieżącą gałęzią najpierw wraca o jednego rodzica, więc podgląd nie wyrzuca od razu na początek ekranu.
 
 Przykład ortografii:
 
 **Cały ekran → Ustawienia trybu → Konfiguracja i start → Kafel ustawień → Grupa 3 · Ustal misję → Czas rundy → 3 min → tekst opcji.**
 
-Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. Panel warstw pokazuje kolejność od góry do dołu, z pełnoekranowym tłem na spodzie. Oko przełącza widoczność, strzałki i przeciąganie zmieniają kolejność, a Spacer dodaje kontrolowany odstęp. Te zmiany układu są próbą w podglądzie; po wysłaniu elementu do Buildera kolejność i Spacer wchodzą do eksportowanego przepisu.
+Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. **Zawartość** pokazuje kolejność od góry do dołu, z pełnoekranowym tłem na spodzie. Widoczność i przeciąganie są chwilową próbą w podglądzie. Wartość **Odstęp** jest lokalnym ustawieniem wyglądu kontenera i trafia do szkicu.
 
 ## Wybór i podgląd
 
@@ -34,6 +38,6 @@ Przeprowadzono trzy przeloty w lokalnym Chrome na prawdziwych rendererach:
 2. Ustawienia pięciu trybów, wyjście z dyktanda, stabilność identyfikatorów po zmianie opcji, lokalny tekst i przywracanie, popup pauzy i jego dzieci. Poprawiono odsłanianie czasu spod edytora kategorii angielskiego oraz obrys elementu w natywnym popupie.
 3. Telefon 390 × 844 i 360 × 800, panele Wybór/Podgląd/Ustawienia, brak poziomego przepełnienia dokumentu. Poprawiono odsłanianie aktywnej opcji po zmianie szerokości. Osobno sprawdzono wspólny kafel, lokalną grafikę oraz odsłonięcie ukrytego rodzica.
 
-Końcowa kontrola układu została powtórzona w Chrome przy 1450 × 1000 oraz 1024 × 900. Inspektor pozostał w prawej kolumnie, wszystkie grupy wyboru miały wysokość 44 px, a `Ekran i stan` zachował szerokość wynikającą z ikon. Kontrola regresji pilnuje stałej kolumny inspektora, absolutnego położenia uchwytu i braku wewnętrznych scrolli w listach dzieci oraz warstw. Pełny pakiet ma **128 testów i 128 zaliczonych**.
+Końcowa kontrola układu została powtórzona w Chrome przy 1450 × 1000 oraz 1024 × 900. Inspektor pozostał w prawej kolumnie, wszystkie grupy wyboru miały wysokość 44 px, a `Ekran i stan` zachował szerokość wynikającą z ikon. Kontrola regresji pilnuje stałej kolumny inspektora, absolutnego położenia uchwytu, jednego drzewa oraz poziomego paska rodzin. Pełny pakiet ma **128 testów i 128 zaliczonych**.
 
 Weryfikacja dotyczy Chrome i symulowanych rozmiarów ekranu. Nie zastępuje próby na fizycznym iPhonie ani Safari. Produkcyjny `main` nie jest celem tych zmian.

@@ -7,17 +7,25 @@ export const FIELDS={
  answer:['height','compactHeight','radius','gap','paddingX','fontSize','compactFontSize','widthPercent'],flashcard:['radius','padding','gap'],slider:['height','radius','handleSize','threshold'],
  sliderWrong:['springDuration','springOvershoot','fillDuration','completionDelay','glowBlur','sparkDuration'],sliderResult:['springDuration','springOvershoot','fillDuration','completionDelay','glowBlur','doneDuration'],
  popup:['radius','padding','maxHeightPercent'],progress:['height','radius','duration','easePower','stretch','bounce','wobble','startKick','flash','finishDuration'],resultText:['settlePercent','rollDuration','hundredPause','hundredStagger','hundredRevealDelay','kickDuration','handoffDelay'],profile:['radius','gap','padding','avatarSize'],trophy:['size','gap'],
+ englishWordFlip:['duration','perspective','depth','rotation','midScale','swapPoint','easingPreset','direction','pauseDuration','settleDuration','motionBlur'],
  space:['xs','sm','md','lg','xl','xxl'],color:['ink','muted','surface','correct','wrong']
 };
 export const THEME_FIELDS=['accent','light','middle','bottom','border','lip','shine','depth','activeInk','idleInk'];
 export const MODES=['spelling','english','flags','reading','math'];
-const OPTIONAL_GROUPS=new Set(['sliderWrong','sliderResult','resultText']);
+const OPTIONAL_GROUPS=new Set(['sliderWrong','sliderResult','resultText','englishWordFlip']);
 const OPTIONAL_FIELDS=new Set([
  ...['stretch','recoil','bounce','inertia','magnet','squish','tilt','glow','shine','blur','saturation','contrast','inkBump','inkGlow','inkFade','inkBlur'].map(key=>'jelly.'+key),
  ...['easePower','stretch','bounce','wobble','startKick','flash','finishDuration'].map(key=>'progress.'+key),
 ]);
 const DECIMAL_EFFECTS=new Set(['stretch','recoil','bounce','inertia','magnet','tilt','glow','shine','saturation','contrast','inkBump','inkGlow','inkFade','easePower','wobble','startKick','flash']);
 export function tokenBounds(group,key){
+ if(group==='englishWordFlip'){
+  const bounds={
+   duration:[250,1600],perspective:[250,1600],depth:[0,180],rotation:[45,360],midScale:[.8,1.1],
+   swapPoint:[30,70],easingPreset:[0,3],direction:[0,2],pauseDuration:[0,400],settleDuration:[0,600],motionBlur:[0,12]
+  };
+  if(bounds[key])return bounds[key];
+ }
  let min=0,max=400;
  if(key==='duration')max=5000;
  if(/Duration|Delay/.test(key))max=1500;

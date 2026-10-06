@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 8,
+  "revision": 9,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -160,6 +160,19 @@
       "surface": "#ffffff",
       "correct": "#239764",
       "wrong": "#dd4161"
+    },
+    "englishWordFlip": {
+      "duration": 760,
+      "perspective": 760,
+      "depth": 48,
+      "rotation": 180,
+      "midScale": 0.94,
+      "swapPoint": 50,
+      "easingPreset": 1,
+      "direction": 0,
+      "pauseDuration": 45,
+      "settleDuration": 180,
+      "motionBlur": 1.5
     }
   },
   "themes": {

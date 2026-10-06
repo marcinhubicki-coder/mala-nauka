@@ -5,7 +5,7 @@ export const FIELD_LABELS = {
   sectionGap:'Odstęp między sekcjami',headerHeight:'Wysokość nagłówka',headerGap:'Odstęp w nagłówku',headerBottom:'Odstęp pod nagłówkiem',missionHeight:'Wysokość misji',missionBottom:'Odstęp pod misją',
   height:'Wysokość',compactHeight:'Wysokość mniejszej odpowiedzi',compactFontSize:'Tekst mniejszej odpowiedzi',radius:'Zaokrąglenie',paddingX:'Wewnętrzny odstęp po bokach',paddingTop:'Wewnętrzny odstęp u góry',paddingBottom:'Wewnętrzny odstęp u dołu',padding:'Wewnętrzny odstęp',borderWidth:'Grubość obrysu',
   inset:'Odstęp od brzegu przełącznika',labelSize:'Wielkość napisu',labelWeight:'Grubość liter',trackShadowY:'Przesunięcie cienia',trackShadowBlur:'Rozmycie cienia',trackShadowOpacity:'Widoczność cienia',duration:'Czas animacji',stretch:'Rozciągnięcie',recoil:'Powrót po przeskoku',bounce:'Sprężystość',inertia:'Bezwładność',magnet:'Przyciąganie do opcji',squish:'Ściśnięcie bryły',tilt:'Przechylenie',glow:'Poświata',shine:'Blask powierzchni',blur:'Rozmycie bryły',saturation:'Nasycenie',contrast:'Kontrast',inkDelay:'Opóźnienie zmiany koloru napisu',inkDuration:'Czas zmiany koloru napisu',inkBump:'Podbicie napisu',inkGlow:'Poświata napisu',inkFade:'Tempo zanikania napisu',inkBlur:'Rozmycie napisu',
-  springDuration:'Czas sprężystego powrotu',springOvershoot:'Wychylenie przy powrocie',fillDuration:'Czas wypełnienia toru',completionDelay:'Pauza przed zmianą ekranu',glowBlur:'Poświata uchwytu',sparkDuration:'Czas iskry',doneDuration:'Czas komunikatu końcowego',easePower:'Łagodność narastania',wobble:'Falowanie paska',startKick:'Impuls na starcie',flash:'Błysk na końcu',finishDuration:'Czas finału paska',settlePercent:'Moment wyhamowania cyfr',rollDuration:'Czas ostatniego obrotu',hundredPause:'Pauza przy 99',hundredStagger:'Odstęp między cyframi',hundredRevealDelay:'Opóźnienie cyfry setek',kickDuration:'Czas wejścia setki',handoffDelay:'Pauza po zakończeniu',
+  springDuration:'Czas sprężystego powrotu',springOvershoot:'Wychylenie przy powrocie',fillDuration:'Czas wypełnienia toru',completionDelay:'Pauza przed zmianą ekranu',glowBlur:'Poświata uchwytu',sparkDuration:'Czas iskry',doneDuration:'Czas komunikatu końcowego',easePower:'Łagodność narastania',wobble:'Falowanie paska',startKick:'Impuls na starcie',flash:'Błysk na końcu',finishDuration:'Czas finału paska',settlePercent:'Moment wyhamowania cyfr',rollDuration:'Czas ostatniego obrotu',hundredPause:'Pauza przy 99',hundredStagger:'Odstęp między cyframi',hundredRevealDelay:'Opóźnienie cyfry setek',kickDuration:'Czas wejścia setki',handoffDelay:'Pauza po zakończeniu',perspective:'Perspektywa 3D',depth:'Głębia 3D',rotation:'Kąt obrotu',midScale:'Skala w połowie',swapPoint:'Moment zmiany słowa',easingPreset:'Tempo ruchu',direction:'Kierunek obrotu',pauseDuration:'Pauza w połowie',settleDuration:'Osiadanie po obrocie',motionBlur:'Rozmycie w ruchu',
   width:'Szerokość',widthPercent:'Szerokość względem miejsca',fontSize:'Wielkość tekstu',shadowY:'Przesunięcie podstawy',shadowBlur:'Rozmycie podstawy',gap:'Odstęp między elementami',handleSize:'Wielkość uchwytu',threshold:'Jak daleko trzeba przeciągnąć',maxHeightPercent:'Maksymalna wysokość okna',avatarSize:'Wielkość avatara',size:'Wielkość',
 };
 
@@ -17,6 +17,13 @@ export const componentName = (component, config) => config.componentNames?.[comp
 export const effectiveValue = (config,viewId,group,key,scope='global') => (scope==='view' ? config.overrides?.[viewId]?.[group]?.[key] : undefined) ?? config.tokens[group][key];
 export const savedMarker = (value,min,max) => Math.max(0,Math.min(100,(value-min)/(max-min)*100));
 export function rangeFor(group,key) {
+  if(group==='englishWordFlip'){
+    const ranges={
+      duration:[250,1600,25,'ms'],perspective:[250,1600,25,'px'],depth:[0,180,5,'px'],rotation:[45,360,5,'°'],midScale:[.8,1.1,.01,'×'],
+      swapPoint:[30,70,1,'%'],easingPreset:[0,3,1,''],direction:[0,2,1,''],pauseDuration:[0,400,10,'ms'],settleDuration:[0,600,10,'ms'],motionBlur:[0,12,.25,'px']
+    };
+    if(ranges[key])return ranges[key];
+  }
   if(key==='canvasWidth')return[320,480,1,'px'];
   if(key==='duration')return[0,5000,50,'ms'];
   if(/Duration|Delay/.test(key))return[0,1500,10,'ms'];

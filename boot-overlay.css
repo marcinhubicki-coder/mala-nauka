@@ -1,0 +1,1 @@
+#mn-preloader{position:fixed;inset:0;z-index:2000;min-height:100dvh;box-sizing:border-box;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);transition:opacity .24s ease,visibility .24s ease}#mn-preloader.mn-boot-complete{opacity:0;visibility:hidden;pointer-events:none}

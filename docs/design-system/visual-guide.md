@@ -8,9 +8,9 @@ Na telefonie używaj dolnych przycisków **Wybór / Podgląd / Ustawienia** oraz
 
 ## Chcę poprawić konkretny ekran
 
-1. Otwórz **Komponenty → Według widoku** i wybierz ekran oraz stan.
-2. Pastylki pokazują elementy obecne w tym ekranie. **Pokaż pozostałe** wyświetla niewystępujące elementy jako nieaktywne.
-3. Kliknij pastylkę. **Pokaż wybrany element** włącza obrys na telefonie. **Wybierz kliknięciem** pozwala wskazać element bezpośrednio na ekranie.
+1. Otwórz **Komponenty → Według widoku** i wybierz ikonę ekranu oraz stanu.
+2. Pierwsze kliknięcie elementu zaznacza go. Drugie otwiera jego dzieci. Ścieżka rodziców pozostaje widoczna nad listą.
+3. Ikona przerwanego prostokąta włącza obrys. Czarna strzałka pozwala wskazać element bezpośrednio na ekranie.
 4. Wybierz konkretną instancję lub **kontener wyżej**. Opcje w **Sprawdź stan w podglądzie** działają na przykładzie — np. Kategorie odsłaniają wybór grup słów.
 5. Zmieniaj suwaki. Pomarańczowy znacznik i **Ostatnio zapisano** pokazują wartość zapisanej wersji. **Przywróć** cofa pojedynczą wartość; **Cofnij / Ponów** są zawsze w górnym pasku.
 6. **Gdzie zastosować zmianę?** wybiera wszystkie użycia albo wyjątek dla jednego ekranu.
@@ -19,23 +19,22 @@ Obrys i wybieranie kliknięciem są niezależne. Gdy chcesz normalnie klikać w 
 
 ## Chcę zobaczyć wpływ w kilku miejscach
 
-**Według elementu → Porównaj użycia** pokazuje listę powiązanych ekranów. Zaznacz te, które chcesz oglądać. **Ustawienia gier** wybiera zestaw powiązanych ustawień. **Więcej miejsca na ekrany** chowa ustawienia z boku; **Pokaż ustawienia** przywraca je.
+**Według elementu → Porównaj użycia** pokazuje listę powiązanych ekranów. Zaznacz te, które chcesz oglądać. **Ustawienia gier** wybiera zestaw powiązanych ustawień. Strzałka na krawędzi prawego panelu chowa lub przywraca ustawienia.
 
-W porównaniu każdy ekran ma viewport **390 × 844**. Na desktopie ramka nie jest skalowana: dwa ekrany mieszczą się obok siebie, jeśli dostępna szerokość pozwala; kolejne przechodzą do następnego rzędu. Na telefonie ramki dopasowują się do miejsca, a kolejne ekrany oglądasz przez przesuwanie poziomo. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
+W porównaniu każdy ekran ma viewport **390 × 844**. Ramki zawsze budują się poziomo; kolejne oglądasz przez przesuwanie paska. Kliknięcie nagłówka telefonu wybiera aktywny ekran, istotny przy zmianie tylko tego widoku. Zmiana wspólna aktualizuje wszystkie otwarte podglądy, zachowując stan przykładu.
 
 **Zmień nazwę elementu** zmienia etykietę używaną w studio. Relacje i działanie są zachowane.
 
 ## Chcę na chwilę schować element
 
-W inspektorze rozwiń **Warstwy i widoczność**.
+Rozwiń **Warstwy i kolejność** pod drzewem po lewej stronie.
 
 | Opcja | Wynik |
 | --- | --- |
-| Widoczny | Przywraca element |
-| Ukryj — zachowaj miejsce | Element znika, jego miejsce pozostaje |
-| Ukryj — przesuń pozostałe | Element znika razem z miejscem; pozostałe reagują na zmianę układu |
-| Wszystkie elementy tej rodziny w ekranie | Działa na całą rodzinę zamiast jednej instancji |
-| Pokaż wszystkie warstwy | Przywraca pełny widok |
+| Oko | Pierwsze kliknięcie ukrywa i zachowuje miejsce, drugie usuwa miejsce, trzecie pokazuje element |
+| Strzałki / przeciąganie | Zmienia kolejność rodzeństwa; tło pełnoekranowe pozostaje na spodzie |
+| Spacer | Dodaje warstwę odstępu po zaznaczonym elemencie |
+| Pokaż wszystko | Przywraca wszystkie ukryte warstwy |
 
 To ustawienia chwilowe podglądu; nie są zapisywane do wspólnego wyglądu. **Zresetuj stan podglądu** przywraca również początkowy stan przykładowej gry.
 

@@ -1,16 +1,16 @@
 # Komponenty: od kontenera do detalu
 
-W sekcji **Komponenty** wybierz niebieskim przełącznikiem sposób pracy, kategorię, tryb gry oraz ekran i stan. To ta sama animacja jelly, której używa gra. Nazwa trybu nie powtarza się w stanach. Długie paski można przewijać; aktywna opcja jest odsłaniana po zmianie rozmiaru. Klawiatura obsługuje natywne grupy radio, a ograniczenie ruchu jest respektowane przez wspólny silnik.
+W sekcji **Komponenty** sposób pracy, kategorie oraz ekran i stan są zwartymi, niebieskimi kontrolkami z ikonami. Tryb gry zachowuje animację jelly z gry. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą. Wyszukiwarka stoi w tym samym rzędzie i ma tę samą wysokość.
 
 ## Schodzenie po gałęziach
 
-Zamiast płaskiej listy wszystkich atomów widzisz dzieci wybranego kontenera. Ścieżka nad nimi pokazuje wszystkich rodziców i pozwala wrócić na dowolny poziom. Na desktopie gałęzie stoją obok podglądu. Na telefonie pozostają panele Wybór, Podgląd i Ustawienia; kliknięcie elementu otwiera Podgląd.
+Zamiast płaskiej listy wszystkich atomów widzisz dzieci otwartego kontenera. Pierwsze kliknięcie wiersza tylko zaznacza rodzica. Drugie kliknięcie tego samego wiersza otwiera jego dzieci. Ścieżka nad nimi pokazuje wszystkich rodziców i pozwala wrócić na dowolny poziom. Wybór bezpośrednio na podglądzie działa tak samo: kolejne kliknięcia schodzą od zewnętrznej grupy do elementu szczegółowego.
 
 Przykład ortografii:
 
 **Cały ekran → Ustawienia trybu → Konfiguracja i start → Kafel ustawień → Grupa 3 · Ustal misję → Czas rundy → 3 min → tekst opcji.**
 
-Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. Warstwy tła są pierwsze w swoim kontenerze, pozostałe elementy zachowują kolejność dokumentu. Techniczne wskaźniki animacji nie pojawiają się jako osobne dzieci. Wyszukiwanie pokazuje całą ścieżkę wyniku; po jego wybraniu znowu pracujesz w tej gałęzi. „Według elementu” zachowuje wybór rodziny i porównywanie jej użyć, a konkretne instancje wybierasz w tej samej hierarchii.
+Hierarchia wynika z rzeczywistych rodziców renderowanego ekranu. Panel warstw pokazuje kolejność od góry do dołu, z pełnoekranowym tłem na spodzie. Oko przełącza widoczność, strzałki i przeciąganie zmieniają kolejność, a Spacer dodaje kontrolowany odstęp. Te zmiany układu są próbą w podglądzie; po wysłaniu elementu do Buildera kolejność i Spacer wchodzą do eksportowanego przepisu.
 
 ## Wybór i podgląd
 

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {componentName,effectiveValue,savedMarker,compareSelection} from '../design-system/preview-model.mjs';
 import {validateConfig,changedViews} from '../design-system/model.mjs';
+import {CATEGORIES,validateElementStyles,elementCSS} from '../shared/element-system.mjs';
 
 const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
@@ -27,4 +28,10 @@ test('renaming preserves component identity and only marks its actual related vi
   assert.deepEqual(changedViews([{path:'componentNames.jelly'}],registry).map(view=>view.id),registry.views.filter(view=>view.components.includes('jelly')).map(view=>view.id));
   draft.componentNames.jelly='<script>';assert.throws(()=>validateConfig(draft));
   draft.componentNames={unknown:'Nazwa'};assert.throws(()=>validateConfig(draft));
+});
+test('compact navigation uses short category names and advanced visual fields remain validated',()=>{
+  assert.equal(CATEGORIES.login,'Logowanie');assert.equal(CATEGORIES.home,'Strona startowa');
+  const draft={elementStyles:{'container-card':{opacity:.7,offsetX:-12,offsetY:8,originX:35,originY:20,overflow:'clip'}}};
+  assert.doesNotThrow(()=>validateElementStyles(draft));assert.match(elementCSS(draft),/overflow:hidden!important/);assert.match(elementCSS(draft),/translate:-12px 8px!important/);
+  draft.elementStyles['container-card'].overflow='mask-everything';assert.throws(()=>validateElementStyles(draft));
 });

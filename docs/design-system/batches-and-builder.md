@@ -35,10 +35,10 @@ Nowy batch dodasz przez **Dodaj batch**: jedno słowo na wiersz, do 60 słów. D
 
 ## Zbuduj element na sucho
 
-W **Builder i przepisy → Buduj element** wybierz kafel, fiszkę, popup lub przycisk, potem **Nowy element**. Drzewo pokazuje płótno, podkład, sekcje i atomy. Przycisk ma własną etykietę. Wybierasz warstwę w drzewie albo przez kliknięcie podglądu.
+W **Builder i przepisy → Buduj element** wybierz kafel, fiszkę, popup, przycisk, ikonę z numerem albo jelly, potem **Nowy element**. Drzewo pokazuje płótno, podkład, sekcje i atomy. Wybierasz warstwę w drzewie albo przez kliknięcie podglądu.
 
 - Zmieniaj szerokość, wysokość, padding i odstępy. Wymiar 0 oznacza automatyczne dopasowanie do treści. Znacznik na suwaku pokazuje zapisaną wartość.
-- Dodawaj warstwy do kontenera, usuwaj je i przesuwaj w górę lub w dół. Limit 24 warstw i pięciu poziomów chroni próbkę przed nadmierną rozbudową.
+- Dodawaj warstwy do kontenera, usuwaj je, przesuwaj strzałkami albo przeciągaj. Upuszczenie na kontener przenosi warstwę do jego dzieci. Spacer jest osobną warstwą i może być przesuwany jak każdy element.
 - Przełącz tryb, aby porównać palety ortografii, angielskiego, flag, czytania i matematyki.
 - Przełącz stan: przed wyborem, poprawny, błędny, wyłączony. To próba wyglądu; nie zapisuje odpowiedzi gracza.
 - **Ukryta · zachowaj miejsce** wyłącza rysowanie warstwy, zachowując jej miejsce. **Ukryta · przesuń elementy** usuwa ją z układu próbki.
@@ -47,9 +47,11 @@ W **Builder i przepisy → Buduj element** wybierz kafel, fiszkę, popup lub prz
 
 Próbka i szkic przetrwają odświeżenie w tej samej przeglądarce. Na telefonie używasz przełączników **Warstwy / Podgląd / Ustawienia**. Podgląd zachowuje płótno 390 px i dopasowuje się do miejsca. Formularze mają dotykowe przyciski oraz pomocnicze − / + przy liczbach.
 
-## Globalne przepisy atomów
+## Globalne przepisy rodzin i atomów
 
-W zakładce **Globalne przepisy** kontrolujesz tytuł ekranu, podtytuł, nagłówek sekcji, numer + tekst, wyróżnik, podpowiedź, nagłówek popupu i etykietę przycisku. Przepis określa rozmiar i grubość pisma, interlinię, odstępy, padding oraz rolę fontu.
+W zakładce **Globalne przepisy** najpierw wybierasz rodzinę: jelly, guziki, kafle, odpowiedzi, slidery akcji, postęp albo przełączniki. Jej suwaki edytują te same tokeny, których używają prawdziwe komponenty. Hierarchia ma kolejność: rodzina → wariant komponentu → widok → pojedynczy element. Przycisk obok próbki otwiera rodzinę w Komponentach.
+
+Niżej są atomy treści: tytuł ekranu, podtytuł, nagłówek sekcji, numer + tekst, wyróżnik, podpowiedź, nagłówek popupu i etykieta przycisku. Przepis atomu określa rozmiar i grubość pisma, interlinię, odstępy, padding oraz rolę fontu.
 
 Początkowo obowiązują dotychczasowe style komponentów. Suwaki pokazują próbkę lokalną. **Zastosuj globalny przepis** włącza go w rzeczywistych ekranach. Obok są rodzice atomu i linki do ich widoków — otwórz ekran i sprawdź konkretną kompozycję. Nie każdy stan rodzica zawiera każdy atom. **Przywróć styl komponentów** wyłącza dany przepis; **Cofnij** przywraca poprzednią konfigurację.
 

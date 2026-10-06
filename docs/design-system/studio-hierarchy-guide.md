@@ -1,12 +1,12 @@
 # Studio: hierarchia, lokalne zmiany i szkice
 
-Otwórz **Komponenty → Według widoku**. Najpierw wybierz kategorię: **Ekran logowania**, **Ekran główny**, **Moje wyniki** lub **Tryb gry**. Dopiero w Trybie gry wybierasz ortografię, angielski, flagi, czytanie albo matematykę. Wybór gracza nie jest stanem ortografii.
+Otwórz **Komponenty → Według widoku**. Najpierw wybierz kategorię: **Logowanie**, **Strona startowa**, **Moje wyniki** lub **Tryb gry**. Sposób pracy, kategorie oraz ekrany i stany są ikonami. Pełny opis pojawia się po sekundzie najechania. Dopiero w Trybie gry wybierasz ortografię, angielski, flagi, czytanie albo matematykę.
 
 ## Zmień konkretny element
 
-1. Wybierz ekran. Gałęzie i ich dzieci wynikają z faktycznie otwartego widoku. Po kliknięciu przycisku wewnątrz podglądu Studio rozpoznaje nowy ekran.
-2. Włącz **Pokaż wybrany element**, wskaż pastylkę lub użyj wyboru kliknięciem.
-3. Zacznij od kontenera i schodź po jego dzieciach. Tło jest pierwszą warstwą w grupie; pozostałe elementy zachowują kolejność ekranu. Pełna ścieżka rodziców pozwala wrócić na dowolny poziom. Wybranie dziecka odsłania wymagany stan. [Aktualna nawigacja komponentów i weryfikacja](component-navigation.md).
+1. Wybierz ekran. Gałęzie i ich dzieci wynikają z faktycznie otwartego widoku. Wyszukiwarka znajduje element w całym ekranie i ustawia panel na jego rodzicu.
+2. Włącz ikonę obrysu lub czarną strzałkę wyboru z podglądu. Aktywna ikona ma ciemne tło.
+3. Pierwsze kliknięcie zaznacza rodzica. Drugie kliknięcie tego samego wiersza otwiera jego dzieci. Pełna ścieżka pozwala wrócić na dowolny poziom, a wybór odsłania wymagany stan ekranu. [Aktualna nawigacja komponentów i weryfikacja](component-navigation.md).
 4. Zacznij od **Tylko ten widok**. Kolor, rozmiar, ikona i grafika stają się wyjątkiem tego elementu. **Wspólny przepis** zmienia jego rodzinę.
 5. Każde pole pokazuje pochodzenie: globalne, lokalne, styl komponentu albo wariant trybu. **Dziedzicz** usuwa wyjątek. Znacznik **Zapisane** pozwala wrócić do wartości sprzed zabawy.
 
@@ -20,7 +20,7 @@ Otwórz **Komponenty → Według widoku**. Najpierw wybierz kategorię: **Ekran 
 
 **Zegar gry** i **pasek wyniku** są oddzielnymi elementami. Zmiana jednego nie steruje drugim. Uchwyt kontynuacji powiększa się wokół środka i pozostaje w wysokości szyny.
 
-Strzałka do postępów i gwiazdka są ikonami. W ich ustawieniach wybierz inną ikonę i kolor. Grafiki i tła mają wybór assetu, dopasowanie, położenie i skalę. Tekst wbudowany w bitmapę można zmienić przez wymianę grafiki; napisy przeniesione do elementów ekranu edytuje się niezależnie.
+Strzałka do postępów i gwiazdka są ikonami. W ich ustawieniach wybierz inną ikonę i kolor. Grafiki i tła mają wybór assetu, upload nowego pliku, crop `cover/contain`, położenie kadru, skalę oraz punkt skalowania. Każdy element ma przezroczystość i przesunięcie X/Y. Kontener może pozwolić grafice wychodzić poza ramkę albo przyciąć ją do obszaru.
 
 ## Globalne i lokalne
 
@@ -37,11 +37,12 @@ Ortografia pozostaje wzorcem ustawień i jelly, a wspólny cień pochodzi z angi
 W bibliotece są szablony produkcyjne i zapisane szkice. Wybrany element rzeczywistego ekranu można skopiować do buildera wraz z dziećmi.
 
 - Wybierz kontener i dodaj do niego warstwę.
-- **Wyżej / Niżej** zmienia kolejność w tym samym kontenerze.
+- **Wyżej / Niżej** zmienia kolejność w tym samym kontenerze. Warstwy można też przeciągać, również do innego kontenera.
+- **Spacer** jest zwykłą warstwą układu. Jego wysokość określa odstęp pionowy, a w kontenerze poziomym szerokość wyznacza odstęp między elementami.
 - Checkbox w drzewie ukrywa warstwę z przesunięciem pozostałych. W ustawieniach można zamiast tego zachować jej miejsce.
 - Ukryta warstwa pozostaje w drzewie i jest wyszarzona.
 - Szerokość, wysokość, padding i odstępy szkicu mają pierwszeństwo przed jego domyślnym przepisem.
-- **Skopiuj opis .md** przygotowuje szkielet, hierarchię i instrukcję do mockupu.
+- **Skopiuj opis .md** przygotowuje szkielet, hierarchię, kolejność, spacery, crop, pozycję i instrukcję do generatora mockupu.
 
 Szkic nowego widoku można przenieść do **Projekt i wydanie**, gdzie ustawiasz teksty, funkcje przycisków, stany i flow prototypu. Builder sam nie zastępuje istniejącego ekranu produkcyjnego.
 

@@ -6,7 +6,7 @@ import {spellingPool} from '../spelling/word-pools.mjs';
 import {mergeWordPack} from '../design-system/git-client.mjs';
 import {planStudioMerge,resolveStudioMerge} from '../design-system/merge-model.mjs';
 import {validateWords} from '../game.mjs';
-import {DEFAULT_RECIPES,validateRecipes,recipesCSS,blueprintTemplate,validateBlueprint,validateBlueprints} from '../shared/component-recipes.mjs';
+import {DEFAULT_RECIPES,validateRecipes,recipesCSS,blueprintTemplate,validateBlueprint,validateBlueprints,newLayer,blueprintMarkdown} from '../shared/component-recipes.mjs';
 import {validateConfig,configCSS,changedViews} from '../design-system/model.mjs';
 import {performanceStatus} from '../spelling/performance-model.mjs';
 const read=async path=>JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
@@ -69,7 +69,10 @@ test('global atom recipes stay inactive until applied, reject CSS injection and 
  const recipes=structuredClone(DEFAULT_RECIPES);validateRecipes(recipes);assert.equal(recipesCSS(recipes),'');recipes.title.enabled=true;recipes.title.size=30;const c={...config,recipes};validateConfig(c);assert.match(configCSS(c),/\.page-head h1/);assert.match(configCSS(c),/font-size:calc\(30/);assert.ok(changedViews([{path:'recipes.title.size'}],registry).length>1);recipes.title.role='body;display:none';assert.throws(()=>validateRecipes(recipes));
 });
 test('blueprint templates validate nested layers and reject invalid hierarchy, excessive depth and duplicate IDs',()=>{
- for(const type of ['card','popup','flashcard','button'])validateBlueprint(blueprintTemplate(type));const b=blueprintTemplate();assert.throws(()=>validateBlueprints([b,b]));b.root.children[0].children[0].children.push(structuredClone(b.root.children[0].children[1]));assert.throws(()=>validateBlueprint(b));const d=blueprintTemplate();d.root.children.push({...structuredClone(d.root.children[0]),id:d.root.id});assert.throws(()=>validateBlueprint(d));
+ for(const type of ['card','popup','flashcard','button','number-icon'])validateBlueprint(blueprintTemplate(type));const b=blueprintTemplate();assert.throws(()=>validateBlueprints([b,b]));b.root.children[0].children[0].children.push(structuredClone(b.root.children[0].children[1]));assert.throws(()=>validateBlueprint(b));const d=blueprintTemplate();d.root.children.push({...structuredClone(d.root.children[0]),id:d.root.id});assert.throws(()=>validateBlueprint(d));
+});
+test('spacers and asset placement survive blueprint validation and generator export',()=>{
+ const value=blueprintTemplate('card'),spacer=newLayer('spacer'),image=newLayer('image');image.asset='assets/example.webp';image.fit='cover';image.opacity=.75;image.offsetX=12;image.originY=20;image.overflow='clip';value.root.children[0].children.splice(1,0,spacer,image);validateBlueprint(value);const markdown=blueprintMarkdown(value);assert.match(markdown,/spacer: Spacer/);assert.match(markdown,/kadr cover/);assert.match(markdown,/pozycja 12, 0/);assert.match(markdown,/overflow clip/);
 });
 test('performance colours distinguish measurable frame and script budgets and hide absent memory',()=>{
  const green=performanceStatus({ready:true,fps:60,p95:16.7,samples:60,setupMs:2});assert.equal(green.overall,'green');assert.equal(green.cards.length,2);assert.equal(performanceStatus({ready:true,fps:45,p95:25,setupMs:10}).overall,'yellow');assert.equal(performanceStatus({ready:true,fps:20,p95:60,setupMs:2}).overall,'red');assert.equal(performanceStatus({setupMs:17}).overall,'red');assert.equal(performanceStatus({}).cards.length,0);assert.equal(performanceStatus({memory:{heapMB:80,heapLimitMB:100}}).cards[0].status,'red');assert.equal(performanceStatus({memory:{heapMB:20}}).cards[0].status,'neutral');

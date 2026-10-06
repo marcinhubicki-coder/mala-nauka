@@ -4,7 +4,7 @@ import {StudioProject} from './studio-project.mjs';
 import {emptyProject,editableProjectConfig,projectContract,designFields} from './project-model.mjs';
 import {DEFAULT_RECIPES} from '../shared/component-recipes.mjs';
 import {StudioBatches} from './studio-batches.mjs';
-import {validateBatches,batchWords,publicationPlan,matchBatchImage,autoAssignBatchImages} from './batch-model.mjs';
+import {validateBatches,batchWords,publicationPlan,matchBatchImage} from './batch-model.mjs';
 import {StudioPlay} from './studio-play.mjs';
 import {DEFAULT_EFFECTS} from '../spelling/effect-model.mjs';
 import {DEFAULT_SCORING} from '../spelling/scoring.mjs';
@@ -30,21 +30,6 @@ let contentOrigin=window.__DS_CONTENT_ORIGIN__||new URL('../',import.meta.url).h
 const read=async path=>{const response=await fetch(new URL('design-system/'+path,contentOrigin),{cache:'no-cache'});if(!response.ok)throw Error(`Nie udało się wczytać ${path}.`);return response.json();};
 const [initial,registry,initialAssets,audit,words,initialRules,initialBatches]=await Promise.all([read('config.json'),read('registry.json'),read('assets.json'),read('audit.json'),loadWords({raw:true}),read('rules.json'),read('word-batches.json')]);
 const deploymentInfo=await fetch(new URL('deployment.json',import.meta.url),{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
-async function immutablePreviewURL(sha){
- const branchHost=deploymentInfo?.branchUrl;
- if(branchHost&&/^[-a-z0-9.]+\.vercel\.app$/i.test(branchHost)){
-  try{
-   const response=await fetch(`https://${branchHost}/design-system/deployment.json?sha=${encodeURIComponent(sha)}`,{cache:'no-store'});
-   const info=response.ok?await response.json():null;
-   if(info?.sha===sha&&/^[-a-z0-9]+-[a-z0-9]{9}-[-a-z0-9]+\.vercel\.app$/i.test(info.deploymentUrl||'')){
-    const url=new URL(`https://${info.deploymentUrl}/`),share=new URLSearchParams(location.search).get('_vercel_share');
-    if(share)url.searchParams.set('_vercel_share',share);
-    return url.href;
-   }
-  }catch{}
- }
- return git.previewURL(sha);
-}
 const DRAFT_KEY='malaNauka.designStudio.v1',RECOVERY_KEY=DRAFT_KEY+'.recovery';
 let recoveryDraft=null,recoveryContent=null;
 let originalWords=clone(words),baseBatches=clone(initialBatches),batches=clone(initialBatches);
@@ -54,7 +39,7 @@ let committedConfig=clone(initial),base=editableProjectConfig(initial),baseAsset
 let undo=[],redo=[],uploads=[],wordEdits=new Map(),objectURLs=new Map(),draftHistory=[],savedCommit=null;
 const git=new GitClient();
 const names={spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};
-const nav=[['project','◈','Projekt i wydanie'],['components','▦','Komponenty'],['colors','◉','Kolory i odstępy'],['fonts','Aa','Typografia'],['assets','▧','Baza słów i grafik'],['batches','✓','Nowe słowa · batchy'],['builder','◇','Builder i przepisy'],['motion','▷','Animacje'],['effects','✦','Efekty i bańka'],['scoring','∑','Naliczanie wyników'],['views','⌘','Widoki i relacje'],['audit','≋','Porządek w kodzie'],['docs','▤','Dokumentacja'],['versions','↺','Wersje i szkice']];
+const nav=[['project','◈','Projekt i wydanie'],['components','▦','Komponenty'],['builder','◇','Builder i przepisy'],['colors','◉','Kolory i odstępy'],['fonts','Aa','Typografia'],['assets','▧','Baza słów i grafik'],['batches','✓','Nowe słowa · batchy'],['motion','▷','Animacje'],['effects','✦','Efekty i bańka'],['scoring','∑','Naliczanie wyników'],['views','⌘','Widoki i relacje'],['audit','≋','Porządek w kodzie'],['docs','▤','Dokumentacja'],['versions','↺','Wersje i szkice']];
 const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const titleFor=id=>nav.find(row=>row[0]===id)?.[2]||'Design system';
 const selectedView=()=>registry.views.find(view=>view.id===viewId)||registry.views[0];
@@ -100,7 +85,7 @@ const preview=new StudioPreview({
     }else config.tokens[group]=key?{...config.tokens[group],...values}:clone(base.tokens[group]);
     sendDesign();
   },
-  rename:component=>openRename(component)
+  rename:component=>openRename(component),upload:()=>openUpload()
 });
 const motion=new StudioMotion({workspace,registry,getDesign:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base,notice:toast,
  edit:(path,value)=>{if(lastToken!==path){checkpoint();lastToken=path;}if(path.startsWith('motion.'))config.motion||={...DEFAULT_MOTION};set(config,path,value);sendDesign();},
@@ -110,8 +95,8 @@ const play=new StudioPlay({workspace,getDesign:()=>({config,assets,rules,words,c
 
 function changeBatch(fn){const next=clone(batches);fn(next);validateBatches(next);checkpoint();batches=next;stash();header();}
 function downloadText(value,name){const url=URL.createObjectURL(new Blob([value],{type:'text/plain;charset=utf-8'}));Object.assign(document.createElement('a'),{href:url,download:name}).click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-const builder=new StudioBuilder({workspace,registry,getDesign:()=>({config}),getBase:()=>base,notice:toast,openScreenBuilder:()=>{projectStudio.tab='screens';navigate('project');},applyRecipe:(id,recipe)=>{const next=clone(config);next.recipes||=clone(DEFAULT_RECIPES);next.recipes[id]=recipe;validateConfig(next);checkpoint();config=next;sendDesign();},saveBlueprint:value=>{const next=clone(config);next.blueprints||=[];const index=next.blueprints.findIndex(b=>b.id===value.id);if(index<0)next.blueprints.push(value);else next.blueprints[index]=value;validateConfig(next);checkpoint();config=next;sendDesign();}});
-const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),checkDeployment:async()=>{const result=await git.deploymentStatus(savedCommit?.sha||git.head||deploymentInfo?.sha);const previewUrl=result.state==='success'?await immutablePreviewURL(result.sha):'';return {...result,previewUrl};},
+const builder=new StudioBuilder({workspace,registry,getDesign:()=>({config,assets}),getBase:()=>base,notice:toast,openScreenBuilder:()=>{projectStudio.tab='screens';navigate('project');},openFamily:id=>{preview.chooseComponent(id);navigate('components');},editFamily:(group,key,value)=>{const path=`tokens.${group}.${key}`,next=clone(config);next.tokens[group][key]=value;validateConfig(next);if(lastToken!==path){checkpoint();lastToken=path;}config=next;sendDesign();},applyRecipe:(id,recipe)=>{const next=clone(config);next.recipes||=clone(DEFAULT_RECIPES);next.recipes[id]=recipe;validateConfig(next);checkpoint();config=next;sendDesign();},saveBlueprint:value=>{const next=clone(config);next.blueprints||=[];const index=next.blueprints.findIndex(b=>b.id===value.id);if(index<0)next.blueprints.push(value);else next.blueprints[index]=value;validateConfig(next);checkpoint();config=next;sendDesign();}});
+const projectStudio=new StudioProject({workspace,modal,registry,getData:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base.project,notice:toast,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path),upload:openUpload,download:downloadJSON,getPendingAssets:()=>uploads.map(u=>u.path),checkDeployment:async()=>{const result=await git.deploymentStatus(savedCommit?.sha||git.head||deploymentInfo?.sha);const previewUrl=result.state==='success'?await git.previewURL(result.sha):'';return {...result,previewUrl};},
  productionSummary:sha=>git.productionSummary(sha),
  promoteProduction:async sha=>{if(stagedCount())throw Error('Masz niezapisane zmiany. Najpierw zapisz je na Preview.');return git.promoteToProduction(sha);},
  hasDraftChanges:()=>stagedCount()>0,
@@ -218,7 +203,7 @@ async function acceptLatest(latest){
  const packs=[];
  for(const edit of wordEdits.values()){const remote=latest.wordPacks[edit.path];packs.push({...edit,baseValue:clone(remote),value:mergeWordPack(edit.baseValue,edit.value,remote)});}
  const merged=plan.conflicts.length?await reviewConflicts({plan,registry,config,rules,modal,dialog:showDialog,picture:path=>objectURLs.get(path)||assetUrl(path)}):resolveStudioMerge(plan);
- undo=[];redo=[];committedConfig=clone(latest.config);base=editableProjectConfig(latest.config);baseAssets=clone(latest.assets);baseRules=clone(latest.rules);baseBatches=clone(latest.batches);config=merged.config;assets=merged.assets;rules=merged.rules;batches=autoAssignBatchImages(merged.batches,assets);originalWords=Object.values(latest.wordPacks).flat();remoteAssetPaths=(latest.catalog||latest.assets).assets.map(row=>row.path);contentOrigin=`https://raw.githubusercontent.com/${REPOSITORY}/${latest.head}/`;wordEdits=new Map(packs.map(edit=>[edit.path,edit]));syncWords();git.acceptHead(latest.head);savedCommit={sha:latest.head,url:`https://github.com/${REPOSITORY}/commit/${latest.head}`};projectStudio.deployment=null;await persistContent();
+ undo=[];redo=[];committedConfig=clone(latest.config);base=editableProjectConfig(latest.config);baseAssets=clone(latest.assets);baseRules=clone(latest.rules);baseBatches=clone(latest.batches);config=merged.config;assets=merged.assets;rules=merged.rules;batches=merged.batches;originalWords=Object.values(latest.wordPacks).flat();remoteAssetPaths=(latest.catalog||latest.assets).assets.map(row=>row.path);contentOrigin=`https://raw.githubusercontent.com/${REPOSITORY}/${latest.head}/`;wordEdits=new Map(packs.map(edit=>[edit.path,edit]));syncWords();git.acceptHead(latest.head);savedCommit={sha:latest.head,url:`https://github.com/${REPOSITORY}/commit/${latest.head}`};projectStudio.deployment=null;await persistContent();
 }
 async function refreshGit(){if(busy)return;busy=true;header();try{await acceptLatest(await git.latest());sendDesign();render();toast('Wczytano GitHub i zachowano Twój szkic.');}catch(error){toast(error.message+(error.paths?.length?' '+error.paths.join(', '):''));}finally{busy=false;header();}}
 document.getElementById('save-git').onclick=()=>{

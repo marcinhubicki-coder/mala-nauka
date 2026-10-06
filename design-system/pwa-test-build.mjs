@@ -41,6 +41,7 @@ export function optimizeBubbleSource(source){
  return result;
 }
 export function optimizeRuntimeSource(source){
+ if(source.includes('design-system/pwa-runtime-config.json'))return source;
  const target="['design-system/config.json','design-system/assets.json','design-system/rules.json']";
  if(source.split(target).length!==2)throw Error('Zmienił się sposób wczytywania konfiguracji. Przerwano budowanie Test PWA.');
  const replacement="[(document.querySelector('meta[name=mn-pwa-build]')?'design-system/pwa-runtime-config.json':'design-system/config.json'),'design-system/assets.json','design-system/rules.json']";

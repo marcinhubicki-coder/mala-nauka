@@ -1,5 +1,5 @@
 import {discoverImages} from './catalog-refresh.mjs';
-import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,OPTIMIZED_CSS,TEST_PWA_BRANCH} from './pwa-test-build.mjs';
+import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,assertVisibilityReadyForProduction,OPTIMIZED_CSS,TEST_PWA_BRANCH} from './pwa-test-build.mjs';
 import {validateWords} from '../game.mjs';
 import {validateRules} from '../shared/rules-library.mjs';
 import {validateAssets} from './validation.mjs';
@@ -109,6 +109,7 @@ export class GitClient {
   if(deployment.state!=='success')throw Error('Preview musi mieć zakończone, poprawne wdrożenie Vercel przed publikacją.');
   const previewRef=await this.request(`git/ref/heads/${BRANCH}`);
   if(previewRef.object?.sha!==sha)throw Error('Branch Preview ma już nowszy commit. Otwórz i zaakceptuj najnowsze Preview przed publikacją.');
+  assertVisibilityReadyForProduction(await this.readJSON('design-system/config.json',sha));
   const comparison=await this.request(`compare/${PRODUCTION_BRANCH}...${sha}`);
   if(['identical','behind'].includes(comparison.status))return {sha,mergeSha:comparison.base_commit?.sha||sha,already:true,prNumber:null,prUrl:`https://github.com/${REPOSITORY}/tree/${PRODUCTION_BRANCH}`};
   const branch=`studio/release-${sha.slice(0,12)}`;

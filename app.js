@@ -40,7 +40,21 @@ let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pend
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let gameTicker = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
-function startGameTicker(){stopGameTicker();gameTicker=setInterval(()=>{if(view!=='game'||!game){stopGameTicker();return;}game.tick();syncGame();},50);}
+function startGameTicker(){
+ stopGameTicker();
+ // Keep the simulation accurate at 50 ms, but avoid repainting the spelling HUD
+ // 20 times/second: that starves WebKit animation frames on iOS.
+ let lastSpellingClockKey='';
+ gameTicker=setInterval(()=>{
+  if(view!=='game'||!game){stopGameTicker();return;}
+  game.tick();
+  const clockKey=game.untimed?'q:'+game.question:'s:'+Math.ceil(game.remaining/1000);
+  if(selectedMode!=='spelling'||clockKey!==lastSpellingClockKey||game.state!==renderedState||game.question!==renderedQuestion){
+   lastSpellingClockKey=clockKey;
+   syncGame();
+  }
+ },50);
+}
 let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 6,
+  "revision": 7,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -3618,7 +3618,9 @@
       "id": "ff49a3a68b0d5d1f",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/dol.webp",
@@ -3750,7 +3752,9 @@
       "id": "4d5d57ee907e3cfa",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/dzwiek.jpg",
@@ -3795,7 +3799,9 @@
       "id": "fce4f9e694945bc1",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/gasienica.jpg",
@@ -3804,7 +3810,9 @@
       "id": "71975cbd8bf4c097",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/gdzies.jpg",
@@ -3813,7 +3821,9 @@
       "id": "c6da455e0d6a880e",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/generated-batch-v26.json",
@@ -4210,7 +4220,9 @@
       "id": "8c83f897f0ce1c30",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/klawiatura.jpg",
@@ -4468,7 +4480,9 @@
       "id": "a2a7e925f8a456fe",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/lisc.jpg",
@@ -4477,7 +4491,9 @@
       "id": "379c16f9a963dbc9",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/lozko.jpg",
@@ -4818,7 +4834,9 @@
       "id": "64772e7f7d610cd9",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/owczesny.jpg",
@@ -4836,7 +4854,9 @@
       "id": "cf24246a01e026fc",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/pech.jpg",
@@ -4846,6 +4866,17 @@
       "type": "jpg",
       "group": "scenes",
       "references": []
+    },
+    {
+      "path": "assets/scenes/piesn.webp",
+      "sha": "9b3fa24ecf98680e81b2e9cbaeb316c2c12654ee1a32ebd2fe71eac123440444",
+      "id": "9b3fa24ecf98680e",
+      "size": 133370,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
     },
     {
       "path": "assets/scenes/pilkarz.jpg",
@@ -5211,6 +5242,17 @@
       "references": []
     },
     {
+      "path": "assets/scenes/rowiesnik.webp",
+      "sha": "5f7122bcd915331d59eeba08a428c4b63671e2109debd61be5ae164739b03072",
+      "id": "5f7122bcd915331d",
+      "size": 129986,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/rownanie.jpg",
       "size": 238714,
       "sha": "0aab13f441c5405d308e62d49075e933e671675cfd7387b5ffe45faeff62dd81",
@@ -5356,6 +5398,17 @@
       "references": []
     },
     {
+      "path": "assets/scenes/siac.webp",
+      "sha": "4e5a1ac9058d5fcee0306b78cedab7a709d30d09bc0c48221c8414b3fb098983",
+      "id": "4e5a1ac9058d5fce",
+      "size": 164646,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/siano.jpg",
       "size": 312032,
       "sha": "b430e4cb08b2ba6ffab6c3423f2d2f1ae675248bb8e741f5a4f9b826113f76dc",
@@ -5374,6 +5427,28 @@
       "references": []
     },
     {
+      "path": "assets/scenes/siec.webp",
+      "sha": "0b6f689f84b90d545ebdafbb8ae506f5915e7ae5808221a02a15494ca9fc36c5",
+      "id": "0b6f689f84b90d54",
+      "size": 231298,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/siedemdziesiat.webp",
+      "sha": "c377914395c6cbe7e55437a204dbc1b0ec58b8508578d83a4e2b275641852591",
+      "id": "c377914395c6cbe7",
+      "size": 189434,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
       "path": "assets/scenes/siedziec.jpg",
       "size": 298703,
       "sha": "15e10320511aa3b9c4955df88f1b4da8dbe9e4d525cc955e809740ba7127abc2",
@@ -5383,11 +5458,58 @@
       "references": []
     },
     {
+      "path": "assets/scenes/siedzisko.webp",
+      "sha": "e8f10e75837d336e0bf7adce6a410063189e6e70c43093a4215d75215ef59780",
+      "id": "e8f10e75837d336e",
+      "size": 125796,
+      "type": "webp",
+      "group": "scenes",
+      "references": [],
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "assets/scenes/sierp.webp",
+      "sha": "acb1e1d81ad6fc2581630fa6fcdc99b67f916dc235196f8ec137acabeba27db8",
+      "id": "acb1e1d81ad6fc25",
+      "size": 140898,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
       "path": "assets/scenes/sierpien.jpg",
       "size": 309955,
       "sha": "87167e02e65a034b86fce2799a9cfba2145258546303747aa30a6eaf536b95ee",
       "id": "87167e02e65a034b",
       "type": "jpg",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/siew.webp",
+      "sha": "9358c34681b1e0ed4dae82f368a252109c9224d31bfe4b1c877aca0e5b53cc8c",
+      "id": "9358c34681b1e0ed",
+      "size": 173204,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/siewnik.webp",
+      "sha": "f30c59ead8e71bd97d6b28483e06938b89bd739f7a9d765ce1bc16d7ab0799ab",
+      "id": "f30c59ead8e71bd9",
+      "size": 158766,
+      "type": "webp",
+      "group": "scenes",
+      "references": []
+    },
+    {
+      "path": "assets/scenes/silnik.webp",
+      "sha": "1d187bdbcad448774ae3f37e91224aeb0bbcdf20822a117365274d99057f9b3a",
+      "id": "1d187bdbcad44877",
+      "size": 139590,
+      "type": "webp",
       "group": "scenes",
       "references": []
     },
@@ -8762,6 +8884,126 @@
       "path": "assets/scenes/niedzwiedz.jpg",
       "source": "data/words-08.json",
       "masked": "nie_wiedź"
+    },
+    "ciśnienie": {
+      "path": "assets/managed/9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903.jpg",
+      "source": "data/words-08.json",
+      "masked": "_śnienie",
+      "manual": true
+    },
+    "ciśnieniomierz": {
+      "path": "assets/managed/cb8464fad9cd12b541205b9b77c8e4da7171283bddd9a87ccf8c26ed64b55d66.jpg",
+      "source": "data/words-04.json",
+      "masked": "ciśnieniomie_",
+      "manual": true
+    },
+    "ciuch": {
+      "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
+      "source": "data/words-01.json",
+      "masked": "ci_ch",
+      "manual": true
+    },
+    "znaleźć": {
+      "path": "assets/managed/c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854.jpg",
+      "source": "data/words-08.json",
+      "masked": "znale_ć",
+      "manual": true
+    },
+    "część": {
+      "path": "assets/scenes/czesc.jpg",
+      "source": "data/words-08.json",
+      "masked": "czę_ć",
+      "manual": true
+    },
+    "dziś": {
+      "path": "assets/scenes/dzis.jpg",
+      "source": "data/words-08.json",
+      "masked": "_ś",
+      "manual": true
+    },
+    "garść": {
+      "path": "assets/scenes/garsc.jpg",
+      "source": "data/words-08.json",
+      "masked": "gar_ć",
+      "manual": true
+    },
+    "gąsienica": {
+      "path": "assets/scenes/gasienica.jpg",
+      "source": "data/words-08.json",
+      "masked": "gą_enica",
+      "manual": true
+    },
+    "gdzieś": {
+      "path": "assets/scenes/gdzies.jpg",
+      "source": "data/words-08.json",
+      "masked": "g_eś",
+      "manual": true
+    },
+    "kiść": {
+      "path": "assets/scenes/kisc.jpg",
+      "source": "data/words-08.json",
+      "masked": "ki_ć",
+      "manual": true
+    },
+    "leśniczy": {
+      "path": "assets/scenes/lesniczy.jpg",
+      "source": "data/words-08.json",
+      "masked": "le_niczy",
+      "manual": true
+    },
+    "liść": {
+      "path": "assets/scenes/lisc.jpg",
+      "source": "data/words-08.json",
+      "masked": "li_ć",
+      "manual": true
+    },
+    "ośnieżony": {
+      "path": "assets/scenes/osniezony.jpg",
+      "source": "data/words-04.json",
+      "masked": "ośnie_ony",
+      "manual": true
+    },
+    "paśnik": {
+      "path": "assets/scenes/pasnik.jpg",
+      "source": "data/words-08.json",
+      "masked": "pa_nik",
+      "manual": true
+    },
+    "pieśń": {
+      "path": "assets/scenes/piesn.webp",
+      "source": "data/words-08.json",
+      "masked": "pie_ń",
+      "manual": true
+    },
+    "rówieśnik": {
+      "path": "assets/scenes/rowiesnik.webp",
+      "source": "data/words-01.json",
+      "masked": "r_wieśnik",
+      "manual": true
+    },
+    "siać": {
+      "path": "assets/scenes/siac.webp",
+      "source": "data/words-08.json",
+      "masked": "_ać",
+      "manual": true
+    },
+    "sieć": {
+      "path": "assets/scenes/siec.webp",
+      "source": "data/words-08.json",
+      "masked": "_eć",
+      "manual": true
+    },
+    "siedemdziesiąt": {
+      "path": "assets/scenes/siedemdziesiat.webp",
+      "source": "data/words-08.json",
+      "masked": "_edemdziesiąt",
+      "manual": true
+    },
+    "siedzisko": {
+      "path": "assets/scenes/siedzisko.webp",
+      "source": "data/words-08.json",
+      "masked": "_edzisko",
+      "manual": true
     }
   }
 }

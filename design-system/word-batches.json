@@ -5,7 +5,7 @@
     {
       "id": "batch-20261004-01",
       "name": "Dom i codzienne czynności · 1",
-      "stage": "images",
+      "stage": "published",
       "words": [
         {
           "id": "word-63-69-15b-6e-69-65-6e-69-65",
@@ -72,7 +72,7 @@
     {
       "id": "batch-20261004-02",
       "name": "Przyroda i małe odkrycia · 1",
-      "stage": "images",
+      "stage": "published",
       "words": [
         {
           "id": "word-63-6f-15b",
@@ -238,7 +238,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/piesn.webp"
         },
         {
           "id": "word-72-f3-77-69-65-15b-6e-69-6b",
@@ -252,7 +252,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/rowiesnik.webp"
         },
         {
           "id": "word-73-69-61-107",
@@ -264,7 +264,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siac.webp"
         },
         {
           "id": "word-73-69-65-107",
@@ -276,7 +276,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siec.webp"
         },
         {
           "id": "word-73-69-65-64-65-6d-64-7a-69-65-73-69-105-74",
@@ -290,7 +290,7 @@
             "dź/dzi": 2
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siedemdziesiat.webp"
         },
         {
           "id": "word-73-69-65-64-7a-69-62-61",
@@ -318,7 +318,7 @@
             "dź/dzi": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/scenes/siedzisko.webp"
         },
         {
           "id": "word-73-69-65-72-6f-63-69-6e-69-65-63",

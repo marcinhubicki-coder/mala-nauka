@@ -2753,5 +2753,63 @@
         }
       ]
     }
+  },
+  {
+    "word": "ciuch",
+    "category": "u/ó",
+    "answer": "u",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "ci_ch",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "u/ó": 1,
+      "ch/h": 1,
+      "ć/ci": 1
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ch/h",
+      "ć/ci"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "rówieśnik",
+    "category": "u/ó",
+    "answer": "ó",
+    "options": [
+      "u",
+      "ó"
+    ],
+    "masked": "r_wieśnik",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "u/ó": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "u/ó",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis u/ó",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
   }
 ]

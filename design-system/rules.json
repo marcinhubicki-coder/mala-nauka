@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 2,
+  "revision": 3,
   "rules": {
     "rule-7a2b6ca06348": {
       "title": "Zapamiętaj „ó”",
@@ -4045,6 +4045,184 @@
       ],
       "families": [
         "ń/ni",
+        "dź/dzi"
+      ]
+    },
+    "ciśnienie": {
+      "primary": "rule-000000000004",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "ć/ci",
+        "ś/si"
+      ]
+    },
+    "ciśnieniomierz": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000004",
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ć/ci",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "ciuch": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000003",
+        "rule-000000000004"
+      ],
+      "families": [
+        "u/ó",
+        "ch/h",
+        "ć/ci"
+      ]
+    },
+    "znaleźć": {
+      "primary": "rule-000000000006",
+      "additional": [],
+      "families": [
+        "ź/zi"
+      ]
+    },
+    "część": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "dziś": {
+      "primary": "rule-000000000008",
+      "additional": [],
+      "families": [
+        "dź/dzi"
+      ]
+    },
+    "garść": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "gąsienica": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "gdzieś": {
+      "primary": "rule-000000000008",
+      "additional": [],
+      "families": [
+        "dź/dzi"
+      ]
+    },
+    "kiść": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "leśniczy": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "liść": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ośnieżony": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "paśnik": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "pieśń": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "rówieśnik": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "u/ó",
+        "ś/si"
+      ]
+    },
+    "siać": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "sieć": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siedemdziesiąt": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000008"
+      ],
+      "families": [
+        "ś/si",
+        "dź/dzi"
+      ]
+    },
+    "siedzisko": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000008"
+      ],
+      "families": [
+        "ś/si",
         "dź/dzi"
       ]
     }

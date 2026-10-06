@@ -627,6 +627,7 @@ export function createBubble(host, options={}) {
     const zoom=transitionTuning.zoom/100;
     const rotation=transitionTuning.rotate;
     const hue=transitionTuning.hue;
+    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;
     const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
     const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
     const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
@@ -639,17 +640,17 @@ export function createBubble(host, options={}) {
 
     const incoming=next.animate(
       [
-        {opacity:0,filter:incomingFilter,transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
-        {opacity:.76,filter:incomingMidFilter,transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
-        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'}
+        {opacity:0,...(opticalFiltersEnabled?{filter:incomingFilter}:{}),transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
+        {opacity:.76,...(opticalFiltersEnabled?{filter:incomingMidFilter}:{}),transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
+        {opacity:1,...(opticalFiltersEnabled?{filter:'none'}:{}),transform:'scale(1) rotate(0deg)'}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
       [
-        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'},
-        {opacity:.52,filter:outgoingMidFilter,transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
-        {opacity:0,filter:outgoingFilter,transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
+        {opacity:1,...(opticalFiltersEnabled?{filter:'none'}:{}),transform:'scale(1) rotate(0deg)'},
+        {opacity:.52,...(opticalFiltersEnabled?{filter:outgoingMidFilter}:{}),transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
+        {opacity:0,...(opticalFiltersEnabled?{filter:outgoingFilter}:{}),transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;

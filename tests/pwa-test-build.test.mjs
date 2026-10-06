@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,TEST_PWA_BRANCH} from '../design-system/pwa-test-build.mjs';
+import {spawnSync} from 'node:child_process';
+import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,assertVisibilityReadyForProduction,TEST_PWA_BRANCH} from '../design-system/pwa-test-build.mjs';
 import {elementCSS} from '../shared/element-system.mjs';
 const fixture=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
 
@@ -27,4 +28,27 @@ test('Test PWA drops no-op optical filters',async()=>{
  assert.match(optimized,/opticalFiltersEnabled/);
  assert.doesNotMatch(optimized,/\{opacity:1,filter:'blur\(0px\) hue-rotate\(0deg\)'/);
  assert.match(optimizeIndexHTML('<head></head>'),/pwa-optimized\.css/);
+ assert.doesNotMatch(optimized,/<use href="#\\$\\{id\\}-shape"/);
+ assert.match(optimized,/const paintedContours=/);
+ assert.match(optimized,/for\\(const path of paintedContours\\)path\\.setAttribute\\('d',nextContour\\)/);
+ assert.equal(optimizeBubbleSource(optimized),optimized,'Transformation must be idempotent');
+ const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:optimized,encoding:'utf8'});
+ assert.equal(check.status,0,check.stderr);
+
+});
+
+test('release refuses to lose visibility edits not approved in active design',()=>{
+ const config=structuredClone(fixture);
+ config.project||={};
+ config.project.designDraft={elementOverrides:{home:{'hidden-in-editor':{visibility:'removed'}}}};
+ assert.throws(()=>assertVisibilityReadyForProduction(config),/Publikacja zablokowana/);
+ config.elementOverrides={home:{'hidden-in-editor':{visibility:'removed'}}};
+ assert.equal(assertVisibilityReadyForProduction(config),1);
+});
+test('runtime optimization leaves canonical config available for Studio',async()=>{
+ const runtime=await readFile(new URL('../shared/design-runtime.mjs',import.meta.url),'utf8');
+ const result=optimizeRuntimeSource(runtime);
+ assert.match(result,/pwa-runtime-config\.json/);
+ assert.match(result,/design-system\/config\.json/);
+ assert.match(result,/meta\[name=mn-pwa-build\]/);
 });

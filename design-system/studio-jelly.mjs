@@ -3,7 +3,7 @@ import {html} from './preview-model.mjs';
 const jelly=createJellyV4({indicatorSelector:'.studio-jelly-ink'});
 const mounted=new WeakSet();
 export function jellyChoices(id,label,choices,value){
- return `<div class="studio-choice-field"><span class="studio-choice-caption">${html(label)}</span><div class="studio-choice-scroll"><div class="studio-jelly" data-jelly-nav="${id}" role="radiogroup" aria-label="${html(label)}"><i class="studio-jelly-ink" aria-hidden="true"></i>${choices.map(([key,name])=>`<label><input type="radio" name="studio-${id}" data-studio-nav="${id}" value="${html(key)}" ${key===value?'checked':''}><span>${html(name)}</span></label>`).join('')}</div></div></div>`;
+ return `<div class="studio-choice-field choice-${id}"><span class="studio-choice-caption">${html(label)}</span><div class="studio-choice-scroll"><div class="studio-jelly" data-jelly-nav="${id}" role="radiogroup" aria-label="${html(label)}"><i class="studio-jelly-ink" aria-hidden="true"></i>${choices.map(([key,name])=>`<label><input type="radio" name="studio-${id}" data-studio-nav="${id}" value="${html(key)}" ${key===value?'checked':''}><span>${html(name)}</span></label>`).join('')}</div></div></div>`;
 }
 export function mountJellies(root,previous=new Map()){
  for(let node of root.querySelectorAll('[data-jelly-nav]')){

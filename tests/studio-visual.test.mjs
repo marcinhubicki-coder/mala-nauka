@@ -7,6 +7,8 @@ import {CATEGORIES,validateElementStyles,elementCSS} from '../shared/element-sys
 
 const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
+const componentCSS=await readFile(new URL('../design-system/studio-hierarchy.css',import.meta.url),'utf8');
+const previewSource=await readFile(new URL('../design-system/studio-preview.mjs',import.meta.url),'utf8');
 
 test('comparison keeps only unique related views and never loses its final screen',()=>{
   assert.deepEqual(compareSelection(registry,'jelly',['spelling-settings','spelling-settings','english-initial'],'spelling-settings'),['spelling-settings']);
@@ -34,4 +36,17 @@ test('compact navigation uses short category names and advanced visual fields re
   const draft={elementStyles:{'container-card':{opacity:.7,offsetX:-12,offsetY:8,originX:35,originY:20,overflow:'clip'}}};
   assert.doesNotThrow(()=>validateElementStyles(draft));assert.match(elementCSS(draft),/overflow:hidden!important/);assert.match(elementCSS(draft),/translate:-12px 8px!important/);
   draft.elementStyles['container-card'].overflow='mask-everything';assert.throws(()=>validateElementStyles(draft));
+});
+test('component workspace keeps the inspector beside preview and uses one Jelly control language',()=>{
+  assert.match(componentCSS,/--studio-control-height:44px/);
+  assert.match(componentCSS,/\.component-layout>\.inspector\{[\s\S]*?grid-column:2;[\s\S]*?grid-row:1;/);
+  assert.match(componentCSS,/\.component-layout>\.inspector-edge\.tooltip\{position:absolute\}/);
+  assert.match(componentCSS,/#component-strip\{[\s\S]*?overflow-y:auto;/);
+  assert.match(componentCSS,/\.branch-children\{[^}]*max-height:none;overflow:visible/);
+  assert.match(componentCSS,/\.layer-list\{[^}]*max-height:none;[^}]*overflow:visible/);
+  assert.match(previewSource,/class=preview-actions-shell/);
+  assert.match(previewSource,/this\.iconChoices\('category'/);
+  assert.match(previewSource,/jellyChoices\('mode'/);
+  assert.match(previewSource,/this\.iconChoices\('view'/);
+  assert.doesNotMatch(previewSource,/class=['"]icon-toggle/);
 });

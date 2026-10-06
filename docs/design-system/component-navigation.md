@@ -1,6 +1,8 @@
 # Komponenty: od kontenera do detalu
 
-W sekcji **Komponenty** sposób pracy, kategorie oraz ekran i stan są zwartymi, niebieskimi kontrolkami z ikonami. Tryb gry zachowuje animację jelly z gry. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą. Wyszukiwarka stoi w tym samym rzędzie i ma tę samą wysokość.
+W sekcji **Komponenty** sposób pracy, kategorie, tryb gry oraz ekran i stan korzystają z jednego niebieskiego Jelly V4. Wszystkie kontrolki i wyszukiwarka mają wysokość 44 px. Grupy zajmują szerokość swojej zawartości i przechodzą do następnego wiersza jako całość, zamiast tworzyć osobne poziome paski przewijania. Nazwa trybu nie powtarza się w stanach. Opis ikony pojawia się po sekundzie najechania; natywne grupy radio nadal działają z klawiaturą.
+
+Prawy inspektor pozostaje w swojej kolumnie od górnej do dolnej krawędzi obszaru roboczego. Hierarchia ma jeden pionowy obszar przewijania, a inspektor drugi. Listy dzieci i warstw nie tworzą zagnieżdżonych scrollbarów. Przy węższym ekranie główne menu zwija się do ikon, aby nie ściskać drzewa i podglądu. Uchwyt na granicy panelu chowa i przywraca inspektor bez zmiany kolejności elementów siatki.
 
 ## Schodzenie po gałęziach
 
@@ -24,7 +26,7 @@ Dzieci z zamkniętych paneli są oferowane tylko wtedy, gdy Studio zna warunek i
 
 Identyfikator tekstu nie zależy od tego, czy znajduje się na nim aktywny wskaźnik jelly. Dzięki temu przeniesienie zaznaczenia nie przenosi lokalnych ustawień na inny napis.
 
-## Weryfikacja 5 października 2026
+## Weryfikacja 6 października 2026
 
 Przeprowadzono trzy przeloty w lokalnym Chrome na prawdziwych rendererach:
 
@@ -32,6 +34,6 @@ Przeprowadzono trzy przeloty w lokalnym Chrome na prawdziwych rendererach:
 2. Ustawienia pięciu trybów, wyjście z dyktanda, stabilność identyfikatorów po zmianie opcji, lokalny tekst i przywracanie, popup pauzy i jego dzieci. Poprawiono odsłanianie czasu spod edytora kategorii angielskiego oraz obrys elementu w natywnym popupie.
 3. Telefon 390 × 844 i 360 × 800, panele Wybór/Podgląd/Ustawienia, brak poziomego przepełnienia dokumentu. Poprawiono odsłanianie aktywnej opcji po zmianie szerokości. Osobno sprawdzono wspólny kafel, lokalną grafikę oraz odsłonięcie ukrytego rodzica.
 
-Końcowa kontrola: **120 testów, 120 zaliczonych**, build kanoniczny poprawny, brak błędów aplikacji w przeglądzie pięciu trybów i telefonu. Testy modelu obejmują pełną ścieżkę, kolejność tła, bezpieczne zakończenie błędnej hierarchii oraz izolację lokalnego tekstu. Próby edycji odbyły się w odrębnych sesjach przeglądarki i nie zmieniły zapisanego `config.json`.
+Końcowa kontrola układu została powtórzona w Chrome przy 1450 × 1000 oraz 1024 × 900. Inspektor pozostał w prawej kolumnie, wszystkie grupy wyboru miały wysokość 44 px, a `Ekran i stan` zachował szerokość wynikającą z ikon. Kontrola regresji pilnuje stałej kolumny inspektora, absolutnego położenia uchwytu i braku wewnętrznych scrolli w listach dzieci oraz warstw. Pełny pakiet ma **128 testów i 128 zaliczonych**.
 
 Weryfikacja dotyczy Chrome i symulowanych rozmiarów ekranu. Nie zastępuje próby na fizycznym iPhonie ani Safari. Produkcyjny `main` nie jest celem tych zmian.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 7,
+  "revision": 8,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4098,7 +4098,27 @@
           "idleInk": "#515c98"
         }
       },
-      "overrides": {},
+      "overrides": {
+        "players": {
+          "layout": {
+            "sectionGap": 18
+          }
+        },
+        "spelling-pause": {
+          "layout": {
+            "canvasWidth": 390,
+            "sidePadding": 14,
+            "safeTop": 47,
+            "safeBottom": 34,
+            "sectionGap": 18,
+            "headerHeight": 43,
+            "headerGap": 13,
+            "headerBottom": 21,
+            "missionHeight": 94,
+            "missionBottom": 17
+          }
+        }
+      },
       "motion": {
         "style": "fade",
         "duration": 320,
@@ -4274,6 +4294,33 @@
           },
           "spelling-wizard-canvas": {
             "gap": 0
+          }
+        },
+        "spelling-results": {
+          "round-summary-line": {
+            "gap": 0,
+            "radius": 0
+          },
+          "round-progress": {
+            "height": 29.5
+          }
+        },
+        "spelling-pause": {
+          "layout-root": {
+            "padding": 47,
+            "gap": 8.44
+          }
+        },
+        "english-settings": {
+          "english-mission-art": {
+            "imageX": 50,
+            "opacity": 1,
+            "fit": "cover"
+          },
+          "english-mission-boy": {
+            "fit": "cover",
+            "imageScale": 1,
+            "imageX": 50
           }
         }
       }

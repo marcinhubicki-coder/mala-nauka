@@ -841,7 +841,7 @@
     {
       "id": "batch-20261004-05",
       "name": "Ziemia, zima i zielony świat · 1",
-      "stage": "proposed",
+      "stage": "images",
       "words": [
         {
           "id": "word-62-75-7a-69-61",
@@ -906,18 +906,16 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
           "id": "word-67-72-6f-7a-69-107",
           "word": "grozić",
           "categories": [
-            "ć/ci",
             "ź/zi"
           ],
           "levels": {
-            "ć/ci": 1,
             "ź/zi": 1
           },
           "selected": true,
@@ -978,7 +976,7 @@
             "ź/zi": 2,
             "dź/dzi": 2
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -992,7 +990,7 @@
             "ź/zi": 1,
             "dź/dzi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1006,7 +1004,7 @@
             "ź/zi": 2,
             "dź/dzi": 2
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1018,7 +1016,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1042,7 +1040,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1090,7 +1088,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1104,7 +1102,7 @@
             "rz/ż": 1,
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1116,7 +1114,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1128,7 +1126,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1140,7 +1138,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1162,7 +1160,7 @@
     {
       "id": "batch-20261004-06",
       "name": "Ziemia, zima i zielony świat · 2",
-      "stage": "proposed",
+      "stage": "images",
       "words": [
         {
           "id": "word-6c-75-17a-6e-79",
@@ -1199,18 +1197,16 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
           "id": "word-6f-64-77-69-65-17a-107",
           "word": "odwieźć",
           "categories": [
-            "ć/ci",
             "ź/zi"
           ],
           "levels": {
-            "ć/ci": 1,
             "ź/zi": 1
           },
           "selected": true,
@@ -1221,15 +1217,11 @@
           "word": "opóźnić",
           "categories": [
             "u/ó",
-            "ć/ci",
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
             "u/ó": 1,
-            "ć/ci": 1,
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1239,13 +1231,11 @@
           "word": "opóźniony",
           "categories": [
             "u/ó",
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
             "u/ó": 1,
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1259,7 +1249,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1271,7 +1261,7 @@
           "levels": {
             "ź/zi": 1
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1327,17 +1317,15 @@
           "word": "przyjaźnić",
           "categories": [
             "rz/ż",
-            "ć/ci",
             "ź/zi",
             "ń/ni"
           ],
           "levels": {
             "rz/ż": 2,
-            "ć/ci": 2,
             "ź/zi": 2,
             "ń/ni": 2
           },
-          "selected": true,
+          "selected": false,
           "assetPath": null
         },
         {
@@ -1359,15 +1347,11 @@
           "word": "rozluźnić",
           "categories": [
             "u/ó",
-            "ć/ci",
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
             "u/ó": 1,
-            "ć/ci": 1,
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1391,12 +1375,10 @@
           "word": "rzeźbić",
           "categories": [
             "rz/ż",
-            "ć/ci",
             "ź/zi"
           ],
           "levels": {
             "rz/ż": 1,
-            "ć/ci": 1,
             "ź/zi": 1
           },
           "selected": true,
@@ -1407,15 +1389,11 @@
           "word": "spóźnić",
           "categories": [
             "u/ó",
-            "ć/ci",
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
             "u/ó": 1,
-            "ć/ci": 1,
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null
@@ -1440,14 +1418,10 @@
           "id": "word-75-7a-69-65-6d-69-107",
           "word": "uziemić",
           "categories": [
-            "u/ó",
-            "ć/ci",
-            "ź/zi"
+            "u/ó"
           ],
           "levels": {
-            "u/ó": 1,
-            "ć/ci": 1,
-            "ź/zi": 1
+            "u/ó": 1
           },
           "selected": true,
           "assetPath": null
@@ -1470,12 +1444,10 @@
           "id": "word-77-69-119-7a-69-65-6e-69-65",
           "word": "więzienie",
           "categories": [
-            "ź/zi",
-            "ń/ni"
+            "ź/zi"
           ],
           "levels": {
-            "ź/zi": 1,
-            "ń/ni": 1
+            "ź/zi": 1
           },
           "selected": true,
           "assetPath": null

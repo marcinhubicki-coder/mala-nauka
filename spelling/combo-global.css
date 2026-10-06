@@ -1,0 +1,52 @@
+/* Full-screen combo art. Three prepainted gradients, compositor-only motion. */
+.mn-combo-global{
+ position:absolute;inset:0;z-index:29;overflow:hidden;pointer-events:none;
+ isolation:isolate;contain:paint;opacity:var(--mn-combo-opacity,.62);
+ animation:mn-combo-fade var(--mn-combo-duration,1850ms) ease-in-out both;
+}
+.mn-combo-global>i{
+ position:absolute;display:block;pointer-events:none;backface-visibility:hidden;
+ will-change:transform,opacity;
+ animation-duration:var(--mn-combo-duration,1850ms);
+ animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.55,.3,1);
+}
+.mn-combo-watercolor>i{
+ width:90%;height:66%;left:-15%;top:3%;border-radius:43% 57% 67% 33% / 39% 64% 36% 61%;
+ background:radial-gradient(ellipse at 42% 45%,#ffc5dff0 4%,#f4c9ffb0 38%,#ffd6e500 78%);
+ animation-name:mn-combo-wash;
+}
+.mn-combo-watercolor>i:nth-child(2){
+ width:102%;height:77%;left:32%;top:27%;
+ background:radial-gradient(ellipse,#a9e5fce5 3%,#b3c6fc83 43%,transparent 76%);
+ animation-direction:reverse;animation-delay:-130ms;
+}
+.mn-combo-watercolor>i:nth-child(3){
+ width:88%;height:65%;left:0%;top:57%;
+ background:radial-gradient(ellipse,#fff1b6dc 0%,#ffcaca99 43%,transparent 77%);
+ animation-delay:-260ms;
+}
+.mn-combo-tri-wave>i{
+ width:142%;height:32%;left:-21%;top:15%;border-radius:48% 52% 50% 50%/83% 75% 25% 17%;
+ background:linear-gradient(120deg,transparent,#9fdaffb3 35%,#b7baffb0 60%,transparent);
+ animation-name:mn-combo-tri-wave;
+}
+.mn-combo-tri-wave>i:nth-child(2){top:41%;background:linear-gradient(100deg,transparent,#fff6b7ab 39%,#ffb9dc94 70%,transparent);animation-delay:-90ms}
+.mn-combo-tri-wave>i:nth-child(3){top:65%;background:linear-gradient(140deg,transparent,#d4bfffd1 41%,#aaf3ed8a 69%,transparent);animation-delay:-180ms}
+.mn-combo-noise>i{
+ width:105%;height:72%;left:-24%;top:-15%;border-radius:50%;
+ background:radial-gradient(ellipse,#cdb1ffe0 3%,#cdb1ff78 35%,transparent 73%);
+ animation-name:mn-combo-heatmap;
+}
+.mn-combo-noise>i:nth-child(2){top:32%;left:17%;background:radial-gradient(ellipse,#a4edf7db 3%,#81dada82 35%,transparent 73%);animation-delay:-130ms}
+.mn-combo-noise>i:nth-child(3){top:59%;left:-9%;background:radial-gradient(ellipse,#ffc1a0cc 3%,#faadc36e 34%,transparent 73%);animation-delay:-190ms}
+/* Static microtexture, never animated or sampled per frame. */
+.mn-combo-noise::after{
+ content:"";position:absolute;inset:0;opacity:.055;pointer-events:none;
+ background-image:repeating-radial-gradient(circle at 24% 43%,#35264f 0 .45px,transparent .75px 3px);
+ background-size:7px 9px;
+}
+@keyframes mn-combo-fade{0%,100%{opacity:0}20%,68%{opacity:var(--mn-combo-opacity,.62)}}
+@keyframes mn-combo-wash{0%{transform:translate3d(-12%,9%,0) scale(.83)}100%{transform:translate3d(18%,-16%,0) scale(1.18)}}
+@keyframes mn-combo-tri-wave{0%{transform:translate3d(-5%,13%,0) rotate(-5deg) scaleX(.86)}100%{transform:translate3d(6%,-21%,0) rotate(6deg) scaleX(1.12)}}
+@keyframes mn-combo-heatmap{0%{transform:translate3d(-14%,-9%,0) scale(.83)}100%{transform:translate3d(17%,9%,0) scale(1.14)}}
+@media(prefers-reduced-motion:reduce){.mn-combo-global{display:none!important;animation:none!important}}

@@ -21,6 +21,7 @@ export function optimizedTestConfig(saved){
 }
 function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Silnik bańki zmienił się — wstrzymano automatyczną optymalizację.');return source.replace(a,b);}
 export function optimizeBubbleSource(source){
+ if(source.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;'))return source;
  let result=replaceOnce(source,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
  for(const key of ['incomingFilter','incomingMidFilter','outgoingMidFilter','outgoingFilter'])result=replaceOnce(result,'filter:'+key,'...(opticalFiltersEnabled?{filter:'+key+'}:{})');
  const zero="filter:'blur(0px) hue-rotate(0deg)'";

@@ -4,7 +4,8 @@ export const FIELD_LABELS = {
   canvasWidth:'Szerokość ekranu',sidePadding:'Odstęp od boków ekranu',safeTop:'Miejsce na górny pasek telefonu',safeBottom:'Miejsce na dolny pasek telefonu',
   sectionGap:'Odstęp między sekcjami',headerHeight:'Wysokość nagłówka',headerGap:'Odstęp w nagłówku',headerBottom:'Odstęp pod nagłówkiem',missionHeight:'Wysokość misji',missionBottom:'Odstęp pod misją',
   height:'Wysokość',compactHeight:'Wysokość mniejszej odpowiedzi',compactFontSize:'Tekst mniejszej odpowiedzi',radius:'Zaokrąglenie',paddingX:'Wewnętrzny odstęp po bokach',paddingTop:'Wewnętrzny odstęp u góry',paddingBottom:'Wewnętrzny odstęp u dołu',padding:'Wewnętrzny odstęp',borderWidth:'Grubość obrysu',
-  inset:'Odstęp od brzegu przełącznika',labelSize:'Wielkość napisu',labelWeight:'Grubość liter',trackShadowY:'Przesunięcie cienia',trackShadowBlur:'Rozmycie cienia',trackShadowOpacity:'Widoczność cienia',duration:'Czas animacji',inkDelay:'Opóźnienie zmiany koloru napisu',inkDuration:'Czas zmiany koloru napisu',
+  inset:'Odstęp od brzegu przełącznika',labelSize:'Wielkość napisu',labelWeight:'Grubość liter',trackShadowY:'Przesunięcie cienia',trackShadowBlur:'Rozmycie cienia',trackShadowOpacity:'Widoczność cienia',duration:'Czas animacji',stretch:'Rozciągnięcie',recoil:'Powrót po przeskoku',bounce:'Sprężystość',inertia:'Bezwładność',magnet:'Przyciąganie do opcji',squish:'Ściśnięcie bryły',tilt:'Przechylenie',glow:'Poświata',shine:'Blask powierzchni',blur:'Rozmycie bryły',saturation:'Nasycenie',contrast:'Kontrast',inkDelay:'Opóźnienie zmiany koloru napisu',inkDuration:'Czas zmiany koloru napisu',inkBump:'Podbicie napisu',inkGlow:'Poświata napisu',inkFade:'Tempo zanikania napisu',inkBlur:'Rozmycie napisu',
+  springDuration:'Czas sprężystego powrotu',springOvershoot:'Wychylenie przy powrocie',fillDuration:'Czas wypełnienia toru',completionDelay:'Pauza przed zmianą ekranu',glowBlur:'Poświata uchwytu',sparkDuration:'Czas iskry',doneDuration:'Czas komunikatu końcowego',easePower:'Łagodność narastania',wobble:'Falowanie paska',startKick:'Impuls na starcie',flash:'Błysk na końcu',finishDuration:'Czas finału paska',settlePercent:'Moment wyhamowania cyfr',rollDuration:'Czas ostatniego obrotu',hundredPause:'Pauza przy 99',hundredStagger:'Odstęp między cyframi',hundredRevealDelay:'Opóźnienie cyfry setek',kickDuration:'Czas wejścia setki',handoffDelay:'Pauza po zakończeniu',
   width:'Szerokość',widthPercent:'Szerokość względem miejsca',fontSize:'Wielkość tekstu',shadowY:'Przesunięcie podstawy',shadowBlur:'Rozmycie podstawy',gap:'Odstęp między elementami',handleSize:'Wielkość uchwytu',threshold:'Jak daleko trzeba przeciągnąć',maxHeightPercent:'Maksymalna wysokość okna',avatarSize:'Wielkość avatara',size:'Wielkość',
 };
 
@@ -19,9 +20,15 @@ export function rangeFor(group,key) {
   if(key==='canvasWidth')return[320,480,1,'px'];
   if(key==='duration')return[0,5000,50,'ms'];
   if(/Duration|Delay/.test(key))return[0,1500,10,'ms'];
+  if(['stretch','recoil','bounce','inertia','magnet','glow','shine','saturation','contrast','inkBump','inkGlow','inkFade','easePower','wobble','startKick','flash'].includes(key))return[0,key==='startKick'?6:4,.05,'×'];
+  if(key==='squish')return[0,40,1,'%'];
+  if(key==='tilt')return[0,8,.1,'°'];
+  if(['blur','inkBlur','glowBlur'].includes(key))return[0,30,.5,'px'];
+  if(key==='springOvershoot')return[0,15,.5,'px'];
   if(key==='labelWeight')return[400,950,50,''];
   if(key==='trackShadowOpacity')return[0,.5,.005,''];
   if(key==='threshold')return[70,100,1,'%'];
+  if(key==='settlePercent')return[50,95,1,'%'];
   if(/Percent$/.test(key))return[50,100,1,'%'];
   if(key==='height'&&group==='jelly')return[28,96,1,'px'];
   if(key==='height')return[16,120,1,'px'];

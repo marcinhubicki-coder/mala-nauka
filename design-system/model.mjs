@@ -87,6 +87,9 @@ export function changedViews(changes, registry) {
     if(change.path.startsWith('elementStyles.'))return true;
     if(change.path.startsWith('effects.'))return view.mode==='spelling'&&['initial','correct','wrong','rule','hint'].some(state=>view.id.endsWith('-'+state));
     if(change.path.startsWith('scoring.'))return view.id==='spelling-results';
+    if(change.path.startsWith('tokens.sliderWrong.'))return view.id==='spelling-wrong';
+    if(change.path.startsWith('tokens.sliderResult.')||change.path.startsWith('tokens.resultText.'))return view.id==='spelling-results';
+    if(/^tokens\.progress\.(duration|easePower|stretch|bounce|wobble|startKick|flash|finishDuration)$/.test(change.path))return view.id==='spelling-results';
     if(change.path.startsWith('recipes.'))return ATOMS[change.path.split('.')[1]]?.parents.some(p=>view.components.includes(p))||false;
     if (change.path.startsWith('typography.')) return true;
     if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);

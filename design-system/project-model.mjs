@@ -3,7 +3,12 @@ import {validateBlueprint} from '../shared/component-recipes.mjs';
 import {validateTokens} from './validation.mjs';
 const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides'];
 export const designFields=config=>Object.fromEntries(DESIGN_FIELDS.filter(k=>config[k]!==undefined).map(k=>[k,structuredClone(config[k])]));
-export function editableProjectConfig(config){return {...structuredClone(config),...structuredClone(config.project?.designDraft||{})};}
+export function editableProjectConfig(config){
+  const result={...structuredClone(config),...structuredClone(config.project?.designDraft||{})};
+  const saved=config.project?.designDraft?.tokens;
+  if(saved)result.tokens=Object.fromEntries(Object.entries(config.tokens).map(([group,defaults])=>[group,{...structuredClone(defaults),...structuredClone(saved[group]||{})}]));
+  return result;
+}
 export function projectContract(local,committed){
   if(!local.project)return structuredClone(local);
   const result=structuredClone(local),p=result.project;p.designDraft=designFields(local);

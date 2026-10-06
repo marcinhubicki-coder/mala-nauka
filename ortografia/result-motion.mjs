@@ -1,20 +1,11 @@
 import {effectiveTokens} from '../design-system/model.mjs';
-// The session counters settle 100 ms before the percentage and score bar.
-const progressDuration = () => Math.max(1,effectiveTokens('progress').duration ?? 3000);
-const PROGRESS_EASE_POWER = 3.2 / 1.75;
-const PROGRESS_STRETCH = .5;
-const PROGRESS_BOUNCE = 2.1;
-const PROGRESS_WOBBLE = .2;
-const PROGRESS_START_KICK = 2;
-const PROGRESS_FLASH = .35;
-const PROGRESS_FINISH_MS = 950;
-const REEL_SETTLE_START = .76;
-const HUNDRED_PAUSE = 90;
-const HUNDRED_ROLL = 250;
-const HUNDRED_STAGGER = 24;
-const HUNDRED_REVEAL_AT = 210;
-const HUNDRED_KICK = 220;
-const HANDOFF = 120;
+// The defaults preserve the approved result motion. Design Studio may tune each
+// phase without changing the geometry of the result screen.
+export function resultMotionSettings(){
+  const progress={duration:3000,easePower:3.2/1.75,stretch:.5,bounce:2.1,wobble:.2,startKick:2,flash:.35,finishDuration:950,...effectiveTokens('progress')};
+  const text={settlePercent:76,rollDuration:250,hundredPause:90,hundredStagger:24,hundredRevealDelay:210,kickDuration:220,handoffDelay:120,...effectiveTokens('resultText')};
+  return {progress:{...progress,duration:Math.max(1,progress.duration)},text:{...text,settleStart:text.settlePercent/100}};
+}
 const presentations = new WeakMap();
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -126,9 +117,9 @@ function hideLeadingZero(job) {
   remaining?.classList.add('is-compacting-neighbor');
 }
 
-function updateReel(job, t, elapsed) {
-  if (t < REEL_SETTLE_START) {
-    const local = t / REEL_SETTLE_START;
+function updateReel(job, t, elapsed, settings) {
+  if (t < settings.settleStart) {
+    const local = t / settings.settleStart;
     job.digits.forEach((span, index) => {
       if (elapsed < job.nextShuffle[index]) return;
       let next = Math.floor(job.rng() * 10);
@@ -142,7 +133,7 @@ function updateReel(job, t, elapsed) {
   }
 
   beginSettle(job);
-  const settleT = clamp((t - REEL_SETTLE_START) / (1 - REEL_SETTLE_START), 0, 1);
+  const settleT = clamp((t - settings.settleStart) / (1 - settings.settleStart), 0, 1);
   const slowed = 1 - Math.pow(1 - settleT, 2.15);
   job.plans.forEach((plan, index) => {
     const step = settleT >= 1 ? plan.total : Math.floor(plan.total * slowed);
@@ -159,18 +150,18 @@ function updateReel(job, t, elapsed) {
   }
 }
 
-function finishHundred(job, timers, animations, onKick) {
+function finishHundred(job, timers, animations, onKick, settings) {
   if (!job?.hundred || job.finalized) return;
   job.finalized = true;
 
   // Hold 99 for a tiny beat, then gently roll both reels to 00.
   timers.push(setTimeout(() => {
-    rollDigitTo(job.digits[0], 0, HUNDRED_ROLL, animations);
-  }, HUNDRED_PAUSE));
+    rollDigitTo(job.digits[0], 0, settings.rollDuration, animations);
+  }, settings.hundredPause));
 
   timers.push(setTimeout(() => {
-    rollDigitTo(job.digits[1], 0, HUNDRED_ROLL, animations);
-  }, HUNDRED_PAUSE + HUNDRED_STAGGER));
+    rollDigitTo(job.digits[1], 0, settings.rollDuration, animations);
+  }, settings.hundredPause + settings.hundredStagger));
 
   // Only now does a third digit exist. It grows into the layout from the left,
   // so 99 becomes 00 and then resolves naturally into 100.
@@ -184,7 +175,7 @@ function finishHundred(job, timers, animations, onKick) {
     job.hundredDigit = hundredDigit;
     requestAnimationFrame(() => hundredDigit.classList.add('is-visible'));
     onKick();
-  }, HUNDRED_PAUSE + HUNDRED_REVEAL_AT));
+  }, settings.hundredPause + settings.hundredRevealDelay));
 }
 
 export function settleResult(root) {
@@ -204,6 +195,7 @@ export function revealResult(root, delay = 1000) {
   const cap = fill.querySelector('.round-progress-cap');
   const target = clamp(Number(fill.dataset.percent) || 0, 0, 100);
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  const settings=resultMotionSettings(),progressSettings=settings.progress,textSettings=settings.text;
 
   fill.style.width = '0%';
   fill.style.transform = '';
@@ -247,22 +239,22 @@ export function revealResult(root, delay = 1000) {
     if (reduced()) return;
 
     if (cap) {
-      const pop = 1 + .025 * PROGRESS_BOUNCE;
-      const peak = pop + .035 * PROGRESS_STRETCH;
-      const recoil = 1 - .018 * PROGRESS_BOUNCE;
+      const pop = 1 + .025 * progressSettings.bounce;
+      const peak = pop + .035 * progressSettings.stretch;
+      const recoil = 1 - .018 * progressSettings.bounce;
       finishAnimations.push(cap.animate([
         {transform:'scaleX(1) scaleY(1)',filter:'brightness(1)'},
-        {transform:`scaleX(${peak.toFixed(3)}) scaleY(1)`,filter:`brightness(${(1 + .18 * PROGRESS_FLASH).toFixed(3)})`,offset:.38},
+        {transform:`scaleX(${peak.toFixed(3)}) scaleY(1)`,filter:`brightness(${(1 + .18 * progressSettings.flash).toFixed(3)})`,offset:.38},
         {transform:`scaleX(${recoil.toFixed(3)}) scaleY(1.015)`,filter:'brightness(1.05)',offset:.72},
         {transform:'scaleX(1) scaleY(1)',filter:'brightness(1)'}
-      ],{duration:Math.round(520 + 160 * PROGRESS_BOUNCE),easing:'cubic-bezier(.16,.78,.2,1)'}));
+      ],{duration:Math.min(progressSettings.finishDuration,Math.round(520 + 160 * progressSettings.bounce)),easing:'cubic-bezier(.16,.78,.2,1)'}));
     }
 
     finishAnimations.push(fill.animate([
       {filter:'brightness(1.15)'},
-      {filter:`brightness(${(1.15 * (1 + .18 * PROGRESS_FLASH)).toFixed(3)})`,offset:.42},
+      {filter:`brightness(${(1.15 * (1 + .18 * progressSettings.flash)).toFixed(3)})`,offset:.42},
       {filter:'brightness(1.15)'}
-    ],{duration:Math.round(560 + 120 * PROGRESS_FLASH),easing:'ease-out'}));
+    ],{duration:Math.min(progressSettings.finishDuration,Math.round(560 + 120 * progressSettings.flash)),easing:'ease-out'}));
   }
 
   function visibility() {if (document.hidden) cleanup();}
@@ -271,20 +263,20 @@ export function revealResult(root, delay = 1000) {
   function tick(now) {
     if (!section.isConnected || reduced()) return cleanup();
     const elapsed = now - started;
-    const progressT = clamp((elapsed - delay - 120) / progressDuration(), 0, 1);
-    const eased = 1 - Math.pow(1 - progressT, PROGRESS_EASE_POWER);
+    const progressT = clamp((elapsed - delay - 120) / progressSettings.duration, 0, 1);
+    const eased = 1 - Math.pow(1 - progressT, progressSettings.easePower);
 
     jobs.forEach(job => {
-      const t=job.mode==='percent'?progressT:clamp((elapsed-delay-120)/(Math.max(1,progressDuration()-100)),0,1);
-      updateReel(job,t,elapsed);
+      const t=job.mode==='percent'?progressT:clamp((elapsed-delay-120)/(Math.max(1,progressSettings.duration-100)),0,1);
+      updateReel(job,t,elapsed,textSettings);
     });
 
-    const kick = target > 0 ? PROGRESS_START_KICK * Math.exp(-progressT * 9) * Math.sin(progressT * Math.PI * 3.2) * 1.2 : 0;
-    const wobble = target > 0 ? PROGRESS_WOBBLE * Math.sin(progressT * Math.PI * 4.3) * Math.pow(1 - progressT, 1.7) : 0;
+    const kick = target > 0 ? progressSettings.startKick * Math.exp(-progressT * 9) * Math.sin(progressT * Math.PI * 3.2) * 1.2 : 0;
+    const wobble = target > 0 ? progressSettings.wobble * Math.sin(progressT * Math.PI * 4.3) * Math.pow(1 - progressT, 1.7) : 0;
     const visual = progressT >= 1 ? target : clamp(target * eased + kick + wobble, 0, target);
     fill.style.width = visual + '%';
 
-    const stretch = 1 + PROGRESS_STRETCH * Math.sin(Math.min(1, progressT * 1.45) * Math.PI) * .035;
+    const stretch = 1 + progressSettings.stretch * Math.sin(Math.min(1, progressT * 1.45) * Math.PI) * .035;
     fill.style.transform = progressT >= 1 ? '' : `scaleX(${stretch.toFixed(4)})`;
 
     if (progressT < 1) {
@@ -297,11 +289,11 @@ export function revealResult(root, delay = 1000) {
 
     if (hundredJob && !hundredStarted) {
       hundredStarted = true;
-      finishHundred(hundredJob, timers, finishAnimations, finishProgress);
-      handoff = setTimeout(() => cleanup(true), HUNDRED_PAUSE + HUNDRED_REVEAL_AT + HUNDRED_KICK + PROGRESS_FINISH_MS + 160);
+      finishHundred(hundredJob, timers, finishAnimations, finishProgress, textSettings);
+      handoff = setTimeout(() => cleanup(true), textSettings.hundredPause + textSettings.hundredRevealDelay + textSettings.kickDuration + progressSettings.finishDuration + 160);
     } else if (!hundredJob) {
       finishProgress();
-      handoff = setTimeout(() => cleanup(true), target > 0 ? PROGRESS_FINISH_MS + 100 : HANDOFF + 24);
+      handoff = setTimeout(() => cleanup(true), target > 0 ? progressSettings.finishDuration + 100 : textSettings.handoffDelay + 24);
     }
   }
 

@@ -9,14 +9,19 @@ export const JELLY_V4_DEFAULTS=Object.freeze({
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 
-export function createJellyV4({indicatorSelector}={}){
+export function createJellyV4({indicatorSelector,getTokens=()=>effectiveTokens('jelly')}={}){
  const params=structuredClone(JELLY_V4_DEFAULTS);
  function syncDesign(){
-  const tokens=effectiveTokens('jelly');
+  const tokens=getTokens()||{};
   if(tokens.height===undefined)return;
   params.motion.duration=tokens.duration/1000;
+  for(const key of ['stretch','recoil','bounce','inertia','magnet'])if(tokens[key]!==undefined)params.motion[key]=tokens[key];
   params.shape.radius=Math.max(8,tokens.radius-3);params.shape.inset=tokens.inset;
+  for(const key of ['squish','tilt'])if(tokens[key]!==undefined)params.shape[key]=tokens[key];
+  for(const key of ['glow','shine','blur','saturation','contrast'])if(tokens[key]!==undefined)params.light[key]=tokens[key];
   params.text.delay=tokens.inkDelay;params.text.duration=tokens.inkDuration;
+  const textKeys={inkBump:'bump',inkGlow:'glow',inkFade:'fade',inkBlur:'blur'};
+  for(const [token,key] of Object.entries(textKeys))if(tokens[token]!==undefined)params.text[key]=tokens[token];
  }
  const motionAnimations=new WeakMap();
  const textAnimations=new WeakMap();

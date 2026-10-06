@@ -1,119 +1,91 @@
-import {html,number,savedMarker} from './preview-model.mjs';
-import {DEFAULT_MOTION,animateScreen,PlaybackClock,transitionMotion} from '../shared/screen-motion.mjs';
+import {FIELD_LABELS,html,number,rangeFor,savedMarker} from './preview-model.mjs';
+import {animateScreen,PlaybackClock,transitionMotion} from '../shared/screen-motion.mjs';
 import {motionEdges,pairKey} from '../shared/flow-model.mjs';
+import {CONTROL_MOTION_PRESETS,activeControlMotionPreset,controlMotionEntries} from './control-motion-presets.mjs';
+
+const CONTROL_PREVIEWS={
+ jelly:{view:'spelling-settings',label:'Jelly',hint:'Kliknij kategorię, tryb albo czas, aby zobaczyć ruch.'},
+ wrong:{view:'spelling-wrong',label:'Po błędzie',hint:'Przeciągnij uchwyt częściowo i puść albo dociągnij go do końca.'},
+ result:{view:'spelling-results',label:'Wynik rundy',hint:'Obserwuj pasek i liczby, a potem przesuń suwak nowej rundy.'},
+};
+const CONTROL_GROUPS=[
+ {preview:'jelly',title:'Jelly · ruch bryły',description:'Tempo, bezwładność i sposób, w jaki galaretka dochodzi do wybranej opcji.',fields:[['jelly','duration'],['jelly','stretch'],['jelly','recoil'],['jelly','bounce'],['jelly','inertia'],['jelly','magnet'],['jelly','squish'],['jelly','tilt']]},
+ {preview:'jelly',title:'Jelly · światło i materiał',description:'Poświata, połysk i optyczna miękkość powierzchni.',fields:[['jelly','glow'],['jelly','shine'],['jelly','blur'],['jelly','saturation'],['jelly','contrast']]},
+ {preview:'jelly',title:'Jelly · animowany tekst',description:'Moment przejęcia koloru oraz ruch napisu w aktywnej opcji.',fields:[['jelly','inkDelay'],['jelly','inkDuration'],['jelly','inkBump'],['jelly','inkGlow'],['jelly','inkFade'],['jelly','inkBlur']]},
+ {preview:'wrong',title:'Slider · następne hasło po błędzie',description:'Powrót uchwytu, wypełnienie toru i iskra pomagają odczytać niedokończony gest.',fields:[['slider','threshold'],['sliderWrong','springDuration'],['sliderWrong','springOvershoot'],['sliderWrong','fillDuration'],['sliderWrong','completionDelay'],['sliderWrong','glowBlur'],['sliderWrong','sparkDuration']]},
+ {preview:'result',title:'Slider · nowa rozgrywka',description:'Ruch uchwytu na ekranie końcowym i komunikat potwierdzający nową rundę.',fields:[['sliderResult','springDuration'],['sliderResult','springOvershoot'],['sliderResult','fillDuration'],['sliderResult','completionDelay'],['sliderResult','glowBlur'],['sliderResult','doneDuration']]},
+ {preview:'result',title:'Pasek postępu · wynik',description:'Narastanie wyniku, lekka fala oraz sprężysty finał paska.',fields:[['progress','duration'],['progress','easePower'],['progress','stretch'],['progress','bounce'],['progress','wobble'],['progress','startKick'],['progress','flash'],['progress','finishDuration']]},
+ {preview:'result',title:'Animowany tekst · liczby wyniku',description:'Wyhamowanie bębnów cyfr i osobna sekwencja przejścia z 99 do 100.',fields:[['resultText','settlePercent'],['resultText','rollDuration'],['resultText','hundredPause'],['resultText','hundredStagger'],['resultText','hundredRevealDelay'],['resultText','kickDuration'],['resultText','handoffDelay']]},
+];
 
 export class StudioMotion {
-  constructor(options){
-    Object.assign(this,options);this.from='home';this.to='spelling-settings';this.current=this.from;this.loop=false;this.delay=1400;this.clock=new PlaybackClock();this.ready=new Set();this.waiters=new Map();this.playing=false;
-    this.workspace.addEventListener('click',event=>this.click(event));
-    this.workspace.addEventListener('change',event=>this.change(event));
-    this.workspace.addEventListener('input',event=>this.input(event));
-    this.workspace.addEventListener('focusout',()=>this.endEdit?.());
-    window.addEventListener('message',event=>this.receive(event));
-  }
-  get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace:not(.effect-workspace)'));}
-  get motion(){return transitionMotion(this.getDesign().config.motion,this.from,this.to);}
-  get saved(){return transitionMotion(this.getBase().motion,this.from,this.to);}
-  get edges(){return motionEdges(this.registry);}
-  pairEdit(key,value){const reverse=pairKey(this.to,this.from);if(this.edges.some(e=>e.from===this.to&&e.to===this.from)&&!this.getDesign().config.motion?.transitions?.[reverse])this.edit(`motion.transitions.${reverse}`,{inheritReverse:true});this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
-  frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}
-  url(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});return url.href;}
-  select(id,value){const allowed=new Set(this.edges.filter(e=>id==='motion-from'||e.from===this.from).map(e=>id==='motion-from'?e.from:e.to));return `<select id=${id}>${this.registry.views.filter(v=>allowed.has(v.id)).map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}
-  control(key,label,min,max,unit){
-    return `<div class=control data-motion-control=${key}><div class=control-top><label for=motion-${key}>${label}</label><span class=control-value><input type=number aria-label='${label}' data-motion-value=${key} value=${this.motion[key]} min=${min} max=${max} step=${key==='duration'?20:1}><span>${unit}</span></span></div><div class=range-wrap><input id=motion-${key} type=range aria-label='${label}' data-motion-value=${key} min=${min} max=${max} step=${key==='duration'?20:1} value=${this.motion[key]}><span class=saved-mark style='--saved-position:${savedMarker(this.saved[key],min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(this.saved[key])} ${unit}</strong></span><button data-motion-reset=${key}>Przywróć</button></div></div>`;
-  }
-  render(){
-    this.stop();this.ready.clear();this.waiters.clear();this.current=this.from;
-    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.workspace.innerHTML=`<div class=motion-workspace><section class=motion-preview><div class=page-intro><div><h2>Przejścia między ekranami</h2><p>Odtwórz przejście na prawdziwych ekranach aplikacji. Pętla i przerwa służą do spokojnego oglądania.</p></div></div><div class=motion-route><label>Ekran początkowy${this.select('motion-from',this.from)}</label><span aria-hidden=true>→</span><label>Ekran następny${this.select('motion-to',this.to)}</label></div><div class=motion-shortcuts>${[['home','spelling-settings','Start → Ortografia'],['spelling-settings','spelling-initial','Ustawienia → Gra'],['home','progress','Start → Moje wyniki'],['progress','trophies','Wyniki → Puchary']].map(([from,to,label])=>`<button class=small-button data-motion-pair='${from},${to}'>${label}</button>`).join('')}</div><div class=motion-playbar><button class=solid-button id=motion-play>▶ Odtwórz przejście</button><label><input type=checkbox id=motion-loop ${this.loop?'checked':''}>Pętla</label><label>Przerwa między ekranami<input type=number id=motion-delay min=300 max=10000 step=100 value=${this.delay}>ms</label></div>${reduced?'<p class=warning-panel>Przeglądarka ma włączone ograniczanie ruchu. Zobaczysz zmianę ekranu bez animacji.</p>':''}<p class=motion-status id=motion-status role=status>Wczytywanie dwóch ekranów…</p><div class=motion-stage><div class=motion-phone><div class=phone-inner id=motion-screen-stack></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · iPhone 13 Pro</span></div></div><div class=motion-manual><button class=small-button id=motion-first>Pokaż pierwszy ekran</button><button class=small-button id=motion-second>Pokaż następny ekran</button></div></section><aside class=inspector><span class=inspector-kicker>Tylko wybrane połączenie</span><h2>Jak zmienia się ekran?</h2>${this.edges.some(e=>e.from===this.to&&e.to===this.from)?`<label class=play-check><input type=checkbox id=motion-inherit-reverse ${this.getDesign().config.motion?.transitions?.[pairKey(this.from,this.to)]?.inheritReverse?'checked':''}>Dziedzicz z drugiego kierunku</label><button class=small-button id=motion-reverse>Edytuj powrót ↶</button>`:''}<p class=description>Każda para z flow ma własne ustawienia. Lista celów pokazuje wyłącznie istniejące połączenia. Ruch przełącznika jelly ma osobne ustawienia w Komponentach.</p><label class=form-field><span>Styl przejścia</span><select id=motion-style><option value=none ${this.motion.style==='none'?'selected':''}>Bez animacji</option><option value=fade ${this.motion.style==='fade'?'selected':''}>Łagodne pojawienie</option><option value=slide ${this.motion.style==='slide'?'selected':''}>Przesunięcie z prawej</option></select></label>${this.control('duration','Czas przejścia',0,2000,'ms')}${this.control('distance','Odległość przesunięcia',0,120,'px')}<label class=form-field><span>Tempo ruchu</span><select id=motion-easing>${[['ease','Łagodne'],['ease-out','Zwalnia na końcu'],['ease-in-out','Łagodny początek i koniec'],['linear','Stała prędkość']].map(([id,label])=>`<option value=${id} ${this.motion.easing===id?'selected':''}>${label}</option>`).join('')}</select></label><p class=scope-help>Pętla, przerwa i wybrane przykłady pozostają ustawieniami podglądu.</p><button class=small-button id=motion-reset-all>Przywróć zapisane przejście</button></aside></div>`;
-    this.syncFrames();this.updateIndicators();
-    this.resizeObserver?.disconnect();this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(this.workspace.querySelector('.motion-stage'));this.resize();
-  }
-  resize(){const stage=this.workspace.querySelector('.motion-stage');if(stage)stage.style.setProperty('--motion-scale',String(Math.min(1,Math.max(.3,Math.min((stage.clientWidth-28)/414,(stage.clientHeight-22)/876)))));}
-  send(frame,type,data={}){frame.contentWindow?.postMessage({channel:'mala-nauka-studio',type,...data},location.origin);}
-  sendDesign(){if(!this.isOpen)return;for(const frame of this.frames())this.send(frame,'design',this.getDesign());this.updateIndicators();}
-  syncFrames(){
-    const stack=this.workspace.querySelector('#motion-screen-stack');if(!stack)return;
-    const ids=[...new Set([this.from,this.to])];
-    for(const frame of this.frames())if(!ids.includes(frame.dataset.motionView)){this.ready.delete(frame.dataset.motionView);frame.remove();}
-    for(const id of ids)if(!this.frames().some(frame=>frame.dataset.motionView===id)){
-      const frame=document.createElement('iframe'),view=this.registry.views.find(row=>row.id===id);
-      frame.dataset.motionView=id;frame.title='Podgląd animacji: '+view.name;frame.src=this.url(view);frame.width='390';frame.height='844';frame.onload=()=>{this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:false,highlight:false});};stack.append(frame);
-    }
-    this.show(this.from,false);this.updateStatus();
-  }
-  updateStatus(message){const status=this.workspace.querySelector('#motion-status');if(!status)return;status.textContent=message||([...new Set([this.from,this.to])].every(id=>this.ready.has(id))?`Gotowe · ${this.registry.views.find(view=>view.id===this.current)?.name}`:'Wczytywanie dwóch ekranów…');}
-  updateIndicators(){
-    if(!this.isOpen)return;
-    for(const row of this.workspace.querySelectorAll('[data-motion-control]')){
-      const key=row.dataset.motionControl,[min,max]=key==='duration'?[0,2000]:[0,120];
-      for(const input of row.querySelectorAll('[data-motion-value]'))if(document.activeElement!==input)input.value=this.motion[key];
-      row.classList.toggle('changed',this.motion[key]!==this.saved[key]);row.querySelector('.saved-mark').style.setProperty('--saved-position',String(savedMarker(this.saved[key],min,max)/100));row.querySelector('[data-motion-reset]').disabled=this.motion[key]===this.saved[key];row.querySelector('.saved-value strong').textContent=number(this.saved[key])+' '+(key==='duration'?'ms':'px');
-    }
-    this.workspace.querySelector('#motion-style').value=this.motion.style;this.workspace.querySelector('#motion-easing').value=this.motion.easing;
-  }
-  waitReady(id){
-    if(this.ready.has(id))return Promise.resolve(true);
-    return new Promise(resolve=>{
-      const done=(success=true)=>{clearTimeout(timer);if(this.waiters.get(id)===done)this.waiters.delete(id);resolve(success);};
-      const timer=setTimeout(()=>done(false),12000);this.waiters.set(id,done);
-    });
-  }
-  async show(id,animated){
-    this.animation?.cancel();this.current=id;
-    const frame=this.frames().find(frame=>frame.dataset.motionView===id);if(!frame)return;
-    for(const other of this.frames()){const active=other===frame;other.classList.toggle('active',active);other.setAttribute('aria-hidden',String(!active));other.tabIndex=active?0:-1;}
-    this.updateStatus();
-    if(animated){this.animation=animateScreen(frame,transitionMotion(this.getDesign().config.motion,id===this.to?this.from:this.to,id));try{await this.animation?.finished;}catch{}}
-  }
-  async play(){
-    if(this.playing)return;
-    if(this.from===this.to){this.notice('Wybierz dwa różne ekrany.');return;}
-    this.playing=true;const generation=this.clock.start();this.playButton();
-    const ready=await Promise.all([this.waitReady(this.from),this.waitReady(this.to)]);
-    if(!this.clock.valid(generation))return;
-    if(ready.some(value=>!value)){this.stop();this.updateStatus('Ekran nie wczytał się. Wybierz inny przykład lub otwórz podgląd ponownie.');return;}
-    await this.show(this.from,false);
-    if(!await this.clock.pause(Math.min(this.delay,1000),generation))return;
-    do{
-      await this.show(this.to,true);if(!this.clock.valid(generation))return;
-      if(!this.loop)break;
-      if(!await this.clock.pause(this.delay,generation))return;
-      await this.show(this.from,this.edges.some(e=>e.from===this.to&&e.to===this.from));if(!this.clock.valid(generation))return;
-      if(!await this.clock.pause(this.delay,generation))return;
-    }while(this.loop&&this.clock.valid(generation));
-    this.playing=false;this.playButton();this.updateStatus();
-  }
-  playButton(){const button=this.workspace.querySelector('#motion-play');if(button)button.textContent=this.playing?'■ Zatrzymaj':'▶ Odtwórz przejście';}
-  stop(){for(const done of [...this.waiters.values()])done(false);this.waiters.clear();this.clock.cancel();this.animation?.cancel();this.playing=false;this.playButton();}
-  leave(){this.stop();this.resizeObserver?.disconnect();for(const done of this.waiters.values())done();this.waiters.clear();}
-  receive(event){
-    if(!this.isOpen||event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio')return;
-    const frame=this.frames().find(row=>row.contentWindow===event.source);if(!frame)return;
-    if(event.data.type==='ready'){this.send(frame,'design',this.getDesign());this.send(frame,'inspect',{enabled:false,highlight:false});}
-    if(event.data.type==='inventory'&&(event.data.rendered||event.data.items?.some(item=>item.index>=0&&item.visible))){const id=frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}
-  }
-  choosePair(from,to){this.stop();this.from=from;this.to=this.edges.some(e=>e.from===from&&e.to===to)?to:this.edges.find(e=>e.from===from)?.to;this.render();}
-  click(event){
-    if(!this.isOpen)return;const button=event.target.closest('button');if(!button)return;
-    if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
-    if(button.id==='motion-first'||button.id==='motion-second'){this.stop();void this.show(button.id==='motion-first'?this.from:this.to,false);}
-    if(button.dataset.motionPair)this.choosePair(...button.dataset.motionPair.split(','));
-    if(button.dataset.motionReset)this.pairEdit(button.dataset.motionReset,this.saved[button.dataset.motionReset]);
-    if(button.id==='motion-reset-all'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.saved});this.endEdit?.();}
-    if(button.id==='motion-reverse')this.choosePair(this.to,this.from);
-  }
-  change(event){
-    if(!this.isOpen)return;const target=event.target;
-    if(target.id==='motion-from'||target.id==='motion-to')this.choosePair(this.workspace.querySelector('#motion-from').value,this.workspace.querySelector('#motion-to').value);
-    if(target.id==='motion-loop')this.loop=target.checked;
-    if(target.id==='motion-delay'){this.delay=Math.min(10000,Math.max(300,Number(target.value)||1400));target.value=this.delay;}
-    if(target.id==='motion-inherit-reverse'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,target.checked?{inheritReverse:true}:{...this.motion});this.render();}
-    if(target.id==='motion-style'||target.id==='motion-easing'){this.pairEdit(target.id==='motion-style'?'style':'easing',target.value);this.endEdit?.();}
-  }
-  input(event){
-    if(!this.isOpen||!event.target.dataset.motionValue)return;
-    const target=event.target,key=target.dataset.motionValue,value=Number(target.value);if(!Number.isFinite(value)||value<0||value>(key==='duration'?2000:120))return;
-    this.pairEdit(key,value);
-  }
+ constructor(options){
+  Object.assign(this,options);this.section='controls';this.controlPreview='jelly';this.compareControls=false;this.from='home';this.to='spelling-settings';this.current=this.from;this.loop=false;this.delay=1400;this.clock=new PlaybackClock();this.ready=new Set();this.waiters=new Map();this.playing=false;
+  this.workspace.addEventListener('click',event=>this.click(event));this.workspace.addEventListener('change',event=>this.change(event));this.workspace.addEventListener('input',event=>this.input(event));this.workspace.addEventListener('focusout',()=>this.endEdit?.());window.addEventListener('message',event=>this.receive(event));
+ }
+ get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace'));}
+ get motion(){return transitionMotion(this.getDesign().config.motion,this.from,this.to);}
+ get saved(){return transitionMotion(this.getBase().motion,this.from,this.to);}
+ get edges(){return motionEdges(this.registry);}
+ applyEntries(entries){const changed=entries.filter(([path,value])=>path.split('.').reduce((node,key)=>node?.[key],this.getDesign().config)!==value);if(changed.length)this.editMany?.(changed);return changed.length;}
+ pairEdit(key,value){const reverse=pairKey(this.to,this.from);if(this.edges.some(e=>e.from===this.to&&e.to===this.from)&&!this.getDesign().config.motion?.transitions?.[reverse])this.edit(`motion.transitions.${reverse}`,{inheritReverse:true});this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
+ frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}
+ url(view,{animate=false}={}){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id,...(animate?{animate:'1'}:{})});return url.href;}
+ sectionNav(){return `<nav class=motion-section-tabs aria-label='Działy animacji'><button type=button data-motion-section=controls aria-pressed=${this.section==='controls'}>Guziki i slidery</button><button type=button data-motion-section=transitions aria-pressed=${this.section==='transitions'}>Przejścia między ekranami</button></nav>`;}
+ select(id,value){const allowed=new Set(this.edges.filter(e=>id==='motion-from'||e.from===this.from).map(e=>id==='motion-from'?e.from:e.to));return `<select id=${id}>${this.registry.views.filter(v=>allowed.has(v.id)).map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}
+ transitionControl(key,label,min,max,unit){return `<div class=control data-motion-control=${key}><div class=control-top><label for=motion-${key}>${label}</label><span class=control-value><input type=number aria-label='${label}' data-motion-value=${key} value=${this.motion[key]} min=${min} max=${max} step=${key==='duration'?20:1}><span>${unit}</span></span></div><div class=range-wrap><input id=motion-${key} type=range aria-label='${label}' data-motion-value=${key} min=${min} max=${max} step=${key==='duration'?20:1} value=${this.motion[key]}><span class=saved-mark style='--saved-position:${savedMarker(this.saved[key],min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(this.saved[key])} ${unit}</strong></span><button data-motion-reset=${key}>Przywróć</button></div></div>`;}
+ tokenControl(group,key){const [min,max,step,unit]=rangeFor(group,key),value=this.getDesign().config.tokens[group][key],saved=this.getBase().tokens[group][key],id=`control-${group}-${key}`;return `<div class=control data-token-control data-token-group=${group} data-token-key=${key}><div class=control-top><label for=${id}>${html(FIELD_LABELS[key]||key)}</label><span class=control-value><input type=number aria-label='${html(FIELD_LABELS[key]||key)}' data-token-value value=${value} min=${min} max=${max} step=${step}><span>${unit}</span></span></div><div class=range-wrap><input id=${id} type=range aria-label='${html(FIELD_LABELS[key]||key)}' data-token-value min=${min} max=${max} step=${step} value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(saved)} ${unit}</strong></span><button type=button data-token-reset>Przywróć</button></div></div>`;}
+ render(){this.stop();this.ready.clear();this.waiters.clear();this.current=this.from;if(this.section==='controls')this.renderControls();else this.renderTransitions();this.observeStage();}
+ renderControls(){
+  const preview=CONTROL_PREVIEWS[this.controlPreview],openIndex=CONTROL_GROUPS.findIndex(group=>group.preview===this.controlPreview),activePreset=activeControlMotionPreset(this.getDesign().config.tokens);
+  const phone=(label,id)=>`<div class=control-compare-cell><strong>${label}</strong><div class=motion-phone><div class=phone-inner id=${id}></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · prawdziwy ekran gry</span></div></div>`;
+  const stage=this.compareControls?`<div class=control-compare-grid>${phone('Zapisane','motion-screen-saved')}${phone('Robocze','motion-screen-draft')}</div>`:`<div class=motion-phone><div class=phone-inner id=motion-screen-draft></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · prawdziwy ekran gry</span></div>`;
+  this.workspace.innerHTML=`<div class='motion-workspace control-motion-workspace'><section class=motion-preview>${this.sectionNav()}<div class=page-intro><div><span class=inspector-kicker>Animacje elementów</span><h2>Guziki i slidery</h2><p>Ustaw ruch na prawdziwym ekranie gry. Każda grupa odpowiada jednemu widocznemu etapowi animacji.</p></div></div><div class=control-preview-tabs>${Object.entries(CONTROL_PREVIEWS).map(([id,item])=>`<button type=button data-control-preview=${id} aria-pressed=${id===this.controlPreview}>${item.label}</button>`).join('')}</div><div class=motion-playbar><button class=solid-button id=control-replay>↻ Odtwórz przykład</button><button class=small-button id=control-compare aria-pressed=${this.compareControls}>${this.compareControls?'Zamknij porównanie':'Porównaj z zapisanym'}</button><span class=control-preview-hint>${preview.hint}</span></div><p class=motion-status id=motion-status role=status>Wczytywanie przykładu…</p><div class='motion-stage ${this.compareControls?'is-comparing':''}'>${stage}</div></section><aside class='inspector control-motion-inspector'><span class=inspector-kicker>Ustawienia globalne</span><h2>Efekty i animacje</h2><p class=description>Presety nadają wszystkim elementom wspólny charakter, lecz zachowują ich unikalne efekty. Nie zmieniają rozmiarów ani kolorów.</p><section class=motion-presets aria-label='Charakter ruchu'><div class=motion-presets-head><strong>Charakter ruchu</strong><span>${activePreset?CONTROL_MOTION_PRESETS[activePreset].label:'Własny'}</span></div>${Object.entries(CONTROL_MOTION_PRESETS).map(([id,item])=>`<button type=button data-motion-preset=${id} aria-pressed=${id===activePreset}><strong>${item.label}</strong><span>${item.description}</span><small>Skórka w przyszłości: ${item.skinCue}</small></button>`).join('')}<button type=button class=small-button id=control-reset-all>Przywróć wszystkie zapisane ustawienia</button></section><div class=motion-control-groups>${CONTROL_GROUPS.map((group,index)=>`<details class='motion-control-group ${group.preview===this.controlPreview?'is-related':''}' ${index===openIndex?'open':''}><summary><span>${group.title}</span><small>${group.fields.length} ustawień</small></summary><div class=motion-control-body><p>${group.description}</p><button type=button class=small-button data-control-preview=${group.preview}>Pokaż na ekranie: ${CONTROL_PREVIEWS[group.preview].label}</button>${group.fields.map(([tokenGroup,key])=>this.tokenControl(tokenGroup,key)).join('')}</div></details>`).join('')}</div></aside></div>`;
+  this.syncControlFrame();this.updateIndicators();
+ }
+ renderTransitions(){
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  this.workspace.innerHTML=`<div class=motion-workspace><section class=motion-preview>${this.sectionNav()}<div class=page-intro><div><h2>Przejścia między ekranami</h2><p>Odtwórz przejście na prawdziwych ekranach aplikacji. Pętla i przerwa służą do spokojnego oglądania.</p></div></div><div class=motion-route><label>Ekran początkowy${this.select('motion-from',this.from)}</label><span aria-hidden=true>→</span><label>Ekran następny${this.select('motion-to',this.to)}</label></div><div class=motion-shortcuts>${[['home','spelling-settings','Start → Ortografia'],['spelling-settings','spelling-initial','Ustawienia → Gra'],['home','progress','Start → Moje wyniki'],['progress','trophies','Wyniki → Puchary']].map(([from,to,label])=>`<button class=small-button data-motion-pair='${from},${to}'>${label}</button>`).join('')}</div><div class=motion-playbar><button class=solid-button id=motion-play>▶ Odtwórz przejście</button><label><input type=checkbox id=motion-loop ${this.loop?'checked':''}>Pętla</label><label>Przerwa między ekranami<input type=number id=motion-delay min=300 max=10000 step=100 value=${this.delay}>ms</label></div>${reduced?'<p class=warning-panel>Przeglądarka ma włączone ograniczanie ruchu. Zobaczysz zmianę ekranu bez animacji.</p>':''}<p class=motion-status id=motion-status role=status>Wczytywanie dwóch ekranów…</p><div class=motion-stage><div class=motion-phone><div class=phone-inner id=motion-screen-stack></div><div class=phone-notch></div><div class=phone-status><span>9:41</span><span>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div><span class=phone-note>390 × 844 · iPhone 13 Pro</span></div></div><div class=motion-manual><button class=small-button id=motion-first>Pokaż pierwszy ekran</button><button class=small-button id=motion-second>Pokaż następny ekran</button></div></section><aside class=inspector><span class=inspector-kicker>Tylko wybrane połączenie</span><h2>Jak zmienia się ekran?</h2>${this.edges.some(e=>e.from===this.to&&e.to===this.from)?`<label class=play-check><input type=checkbox id=motion-inherit-reverse ${this.getDesign().config.motion?.transitions?.[pairKey(this.from,this.to)]?.inheritReverse?'checked':''}>Dziedzicz z drugiego kierunku</label><button class=small-button id=motion-reverse>Edytuj powrót ↶</button>`:''}<p class=description>Każda para z flow ma własne ustawienia. Lista celów pokazuje wyłącznie istniejące połączenia.</p><label class=form-field><span>Styl przejścia</span><select id=motion-style><option value=none ${this.motion.style==='none'?'selected':''}>Bez animacji</option><option value=fade ${this.motion.style==='fade'?'selected':''}>Łagodne pojawienie</option><option value=slide ${this.motion.style==='slide'?'selected':''}>Przesunięcie z prawej</option></select></label>${this.transitionControl('duration','Czas przejścia',0,2000,'ms')}${this.transitionControl('distance','Odległość przesunięcia',0,120,'px')}<label class=form-field><span>Tempo ruchu</span><select id=motion-easing>${[['ease','Łagodne'],['ease-out','Zwalnia na końcu'],['ease-in-out','Łagodny początek i koniec'],['linear','Stała prędkość']].map(([id,label])=>`<option value=${id} ${this.motion.easing===id?'selected':''}>${label}</option>`).join('')}</select></label><p class=scope-help>Pętla, przerwa i wybrane przykłady pozostają ustawieniami podglądu.</p><button class=small-button id=motion-reset-all>Przywróć zapisane przejście</button></aside></div>`;
+  this.syncFrames();this.updateIndicators();
+ }
+ observeStage(){this.resizeObserver?.disconnect();const stage=this.workspace.querySelector('.motion-stage');if(!stage)return;this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(stage);this.resize();}
+ resize(){const stage=this.workspace.querySelector('.motion-stage');if(stage){const mobile=matchMedia('(max-width:690px)').matches,columns=stage.classList.contains('is-comparing')&&!mobile?2:1,width=(stage.clientWidth-28-(columns-1)*18)/columns;stage.style.setProperty('--motion-scale',String(Math.min(1,Math.max(.3,Math.min(width/414,(stage.clientHeight-42)/876)))));}}
+ send(frame,type,data={}){frame.contentWindow?.postMessage({channel:'mala-nauka-studio',type,...data},location.origin);}
+ designFor(frame){const design=this.getDesign();return frame.dataset.designSource==='saved'?{...design,config:this.getBase()}:design;}
+ sendFrameDesign(frame){this.send(frame,'design',this.designFor(frame));}
+ sendDesign(){if(!this.isOpen)return;for(const frame of this.frames())this.sendFrameDesign(frame);this.updateIndicators();}
+ createFrame(id,{animate=false,source=''}={}){const frame=document.createElement('iframe'),view=this.registry.views.find(row=>row.id===id);frame.dataset.motionView=id;frame.dataset.designSource=source;frame.dataset.readyKey=source?`${source}:${id}`:id;frame.title='Podgląd animacji: '+view.name+(source==='saved'?' · zapisane':source==='draft'?' · robocze':'');frame.src=this.url(view,{animate});frame.width='390';frame.height='844';frame.onload=()=>{this.sendFrameDesign(frame);this.send(frame,'inspect',{enabled:false,highlight:false});};return frame;}
+ syncControlFrame(){const id=CONTROL_PREVIEWS[this.controlPreview].view,draft=this.workspace.querySelector('#motion-screen-draft');if(!draft)return;const append=(stack,source)=>{const frame=this.createFrame(id,{animate:this.controlPreview==='result',source});frame.classList.add('active');stack.replaceChildren(frame);};if(this.compareControls)append(this.workspace.querySelector('#motion-screen-saved'),'saved');append(draft,'draft');}
+ syncFrames(){const stack=this.workspace.querySelector('#motion-screen-stack');if(!stack)return;const ids=[...new Set([this.from,this.to])];for(const frame of this.frames())if(!ids.includes(frame.dataset.motionView)){this.ready.delete(frame.dataset.motionView);frame.remove();}for(const id of ids)if(!this.frames().some(frame=>frame.dataset.motionView===id))stack.append(this.createFrame(id));this.show(this.from,false);this.updateStatus();}
+ updateStatus(message){const status=this.workspace.querySelector('#motion-status');if(!status)return;if(message){status.textContent=message;return;}if(this.section==='controls'){status.textContent=this.frames().length&&this.frames().every(frame=>this.ready.has(frame.dataset.readyKey))?`Gotowe · ${CONTROL_PREVIEWS[this.controlPreview].label}${this.compareControls?' · porównanie zapisane/robocze':''}`:'Wczytywanie przykładu…';return;}status.textContent=[...new Set([this.from,this.to])].every(id=>this.ready.has(id))?`Gotowe · ${this.registry.views.find(view=>view.id===this.current)?.name}`:'Wczytywanie dwóch ekranów…';}
+ updateIndicators(){
+  if(!this.isOpen)return;
+  for(const row of this.workspace.querySelectorAll('[data-token-control]')){const group=row.dataset.tokenGroup,key=row.dataset.tokenKey,[min,max,,unit]=rangeFor(group,key),value=this.getDesign().config.tokens[group][key],saved=this.getBase().tokens[group][key];for(const input of row.querySelectorAll('[data-token-value]'))if(document.activeElement!==input)input.value=value;row.classList.toggle('changed',value!==saved);row.querySelector('.saved-mark').style.setProperty('--saved-position',String(savedMarker(saved,min,max)/100));row.querySelector('[data-token-reset]').disabled=value===saved;row.querySelector('.saved-value strong').textContent=number(saved)+' '+unit;}
+  if(this.section!=='transitions')return;
+  for(const row of this.workspace.querySelectorAll('[data-motion-control]')){const key=row.dataset.motionControl,[min,max]=key==='duration'?[0,2000]:[0,120];for(const input of row.querySelectorAll('[data-motion-value]'))if(document.activeElement!==input)input.value=this.motion[key];row.classList.toggle('changed',this.motion[key]!==this.saved[key]);row.querySelector('.saved-mark').style.setProperty('--saved-position',String(savedMarker(this.saved[key],min,max)/100));row.querySelector('[data-motion-reset]').disabled=this.motion[key]===this.saved[key];row.querySelector('.saved-value strong').textContent=number(this.saved[key])+' '+(key==='duration'?'ms':'px');}
+  this.workspace.querySelector('#motion-style').value=this.motion.style;this.workspace.querySelector('#motion-easing').value=this.motion.easing;
+ }
+ waitReady(id){if(this.ready.has(id))return Promise.resolve(true);return new Promise(resolve=>{const done=(success=true)=>{clearTimeout(timer);if(this.waiters.get(id)===done)this.waiters.delete(id);resolve(success);};const timer=setTimeout(()=>done(false),12000);this.waiters.set(id,done);});}
+ async show(id,animated){this.animation?.cancel();this.current=id;const frame=this.frames().find(frame=>frame.dataset.motionView===id);if(!frame)return;for(const other of this.frames()){const active=other===frame;other.classList.toggle('active',active);other.setAttribute('aria-hidden',String(!active));other.tabIndex=active?0:-1;}this.updateStatus();if(animated){this.animation=animateScreen(frame,transitionMotion(this.getDesign().config.motion,id===this.to?this.from:this.to,id));try{await this.animation?.finished;}catch{}}}
+ async play(){if(this.playing)return;if(this.from===this.to){this.notice('Wybierz dwa różne ekrany.');return;}this.playing=true;const generation=this.clock.start();this.playButton();const ready=await Promise.all([this.waitReady(this.from),this.waitReady(this.to)]);if(!this.clock.valid(generation))return;if(ready.some(value=>!value)){this.stop();this.updateStatus('Ekran nie wczytał się. Wybierz inny przykład lub otwórz podgląd ponownie.');return;}await this.show(this.from,false);if(!await this.clock.pause(Math.min(this.delay,1000),generation))return;do{await this.show(this.to,true);if(!this.clock.valid(generation))return;if(!this.loop)break;if(!await this.clock.pause(this.delay,generation))return;await this.show(this.from,this.edges.some(e=>e.from===this.to&&e.to===this.from));if(!this.clock.valid(generation))return;if(!await this.clock.pause(this.delay,generation))return;}while(this.loop&&this.clock.valid(generation));this.playing=false;this.playButton();this.updateStatus();}
+ playButton(){const button=this.workspace.querySelector('#motion-play');if(button)button.textContent=this.playing?'■ Zatrzymaj':'▶ Odtwórz przejście';}
+ stop(){for(const done of [...this.waiters.values()])done(false);this.waiters.clear();this.clock.cancel();this.animation?.cancel();this.playing=false;this.playButton();}
+ leave(){this.stop();this.resizeObserver?.disconnect();for(const done of this.waiters.values())done();this.waiters.clear();}
+ receive(event){if(!this.isOpen||event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio')return;const frame=this.frames().find(row=>row.contentWindow===event.source);if(!frame)return;if(event.data.type==='ready'){this.sendFrameDesign(frame);this.send(frame,'inspect',{enabled:false,highlight:false});}if(event.data.type==='inventory'&&(event.data.rendered||event.data.items?.some(item=>item.index>=0&&item.visible))){const id=frame.dataset.readyKey||frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}}
+ choosePair(from,to){this.stop();this.from=from;this.to=this.edges.some(e=>e.from===from&&e.to===to)?to:this.edges.find(e=>e.from===from)?.to;this.render();}
+ click(event){
+  if(!this.isOpen)return;const button=event.target.closest('button');if(!button)return;
+  if(button.dataset.motionSection){this.section=button.dataset.motionSection;this.render();return;}
+  if(button.dataset.controlPreview){this.controlPreview=button.dataset.controlPreview;this.render();return;}
+  if(button.id==='control-compare'){this.compareControls=!this.compareControls;this.render();return;}
+  if(button.dataset.motionPreset){this.applyEntries(controlMotionEntries(button.dataset.motionPreset));this.endEdit?.();this.render();return;}
+  if(button.id==='control-reset-all'){const entries=controlMotionEntries('spring').map(([path])=>{const [,group,key]=path.split('.');return[path,this.getBase().tokens[group][key]];});this.applyEntries(entries);this.endEdit?.();this.render();return;}
+  if(button.id==='control-replay'){for(const frame of this.frames()){this.ready.delete(frame.dataset.readyKey);frame.src=this.url(this.registry.views.find(view=>view.id===frame.dataset.motionView),{animate:this.controlPreview==='result'});}this.updateStatus();return;}
+  if(button.dataset.tokenReset!==undefined){const row=button.closest('[data-token-control]'),{tokenGroup:group,tokenKey:key}=row.dataset;this.edit(`tokens.${group}.${key}`,this.getBase().tokens[group][key]);this.endEdit?.();return;}
+  if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
+  if(button.id==='motion-first'||button.id==='motion-second'){this.stop();void this.show(button.id==='motion-first'?this.from:this.to,false);}
+  if(button.dataset.motionPair)this.choosePair(...button.dataset.motionPair.split(','));if(button.dataset.motionReset)this.pairEdit(button.dataset.motionReset,this.saved[button.dataset.motionReset]);if(button.id==='motion-reset-all'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.saved});this.endEdit?.();}if(button.id==='motion-reverse')this.choosePair(this.to,this.from);
+ }
+ change(event){if(!this.isOpen)return;const target=event.target;if(target.id==='motion-from'||target.id==='motion-to')this.choosePair(this.workspace.querySelector('#motion-from').value,this.workspace.querySelector('#motion-to').value);if(target.id==='motion-loop')this.loop=target.checked;if(target.id==='motion-delay'){this.delay=Math.min(10000,Math.max(300,Number(target.value)||1400));target.value=this.delay;}if(target.id==='motion-inherit-reverse'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,target.checked?{inheritReverse:true}:{...this.motion});this.render();}if(target.id==='motion-style'||target.id==='motion-easing'){this.pairEdit(target.id==='motion-style'?'style':'easing',target.value);this.endEdit?.();}}
+ input(event){if(!this.isOpen)return;if(event.target.dataset.tokenValue!==undefined){const row=event.target.closest('[data-token-control]'),group=row.dataset.tokenGroup,key=row.dataset.tokenKey,[min,max]=rangeFor(group,key),value=Number(event.target.value);if(Number.isFinite(value)&&value>=min&&value<=max)this.edit(`tokens.${group}.${key}`,value);return;}if(!event.target.dataset.motionValue)return;const target=event.target,key=target.dataset.motionValue,value=Number(target.value);if(!Number.isFinite(value)||value<0||value>(key==='duration'?2000:120))return;this.pairEdit(key,value);}
 }

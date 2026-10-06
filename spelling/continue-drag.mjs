@@ -1,5 +1,4 @@
 import {effectiveTokens} from '../design-system/model.mjs';
-import { JELLY_V4_DEFAULTS } from '../shared/jelly-v4.mjs?v=3';
 
 // Completion depends on movement from the handle. A tap anywhere on the rail
 // cannot advance, and an interrupted or partial gesture always springs home.
@@ -11,12 +10,17 @@ export function completedDrag(fraction, distance) {
   return fraction >= threshold && distance >= 24;
 }
 
-export function createContinueDrag(rail, { canContinue, onComplete, completionDelay=240 }) {
+export function continueMotion(variant='wrong'){
+  const defaults={springDuration:405,springOvershoot:3,fillDuration:350,completionDelay:variant==='result'?350:240,glowBlur:9,...(variant==='result'?{doneDuration:300}:{sparkDuration:600})};
+  return {...defaults,...effectiveTokens(variant==='result'?'sliderResult':'sliderWrong')};
+}
+
+export function createContinueDrag(rail, { canContinue, onComplete, completionDelay, variant='wrong' }) {
   const handle = rail.querySelector('.continue-handle');
-  const params = JELLY_V4_DEFAULTS;
+  const settings=continueMotion(variant);
   let gesture = null, animation = null, completed = false, current = 0;
   let completionTimer;
-  const complete=()=>{completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');completionTimer=setTimeout(()=>{if(rail.isConnected&&canContinue())onComplete();},completionDelay);};
+  const complete=()=>{completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');completionTimer=setTimeout(()=>{if(rail.isConnected&&canContinue())onComplete();},completionDelay??settings.completionDelay);};
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const draw = x => {
     current = x;
@@ -33,9 +37,9 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     if (animate && current !== null && !preference.matches) {
       animation = handle.animate([
         {transform:from},
-        {transform:'translateX(-3px)',offset:.72},
+        {transform:`translateX(-${settings.springOvershoot}px)`,offset:.72},
         {transform:'translateX(0)'}
-      ],{duration:Math.round(450*params.motion.duration),easing:'cubic-bezier(.16,.78,.22,1)'});
+      ],{duration:settings.springDuration,easing:'cubic-bezier(.16,.78,.22,1)'});
     }
   };
   const down = event => {

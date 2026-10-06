@@ -103,7 +103,8 @@ const preview=new StudioPreview({
   rename:component=>openRename(component)
 });
 const motion=new StudioMotion({workspace,registry,getDesign:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base,notice:toast,
- edit:(path,value)=>{if(lastToken!==path){checkpoint();lastToken=path;}if(path.startsWith('motion.'))config.motion||={...DEFAULT_MOTION};set(config,path,value);sendDesign();},endEdit:()=>{lastToken='';}
+ edit:(path,value)=>{if(lastToken!==path){checkpoint();lastToken=path;}if(path.startsWith('motion.'))config.motion||={...DEFAULT_MOTION};set(config,path,value);sendDesign();},
+ editMany:entries=>{checkpoint();for(const [path,value]of entries)set(config,path,value);lastToken='';sendDesign();},endEdit:()=>{lastToken='';}
 });
 const play=new StudioPlay({workspace,getDesign:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base,notice:toast,edit:(path,value)=>{if(lastToken!==path){checkpoint();lastToken=path;}if(path.startsWith('effects.'))config.effects||=clone(DEFAULT_EFFECTS);if(path.startsWith('effects.reactions.'))config.effects.reactions||=clone(DEFAULT_EFFECTS.reactions);if(path.startsWith('scoring.'))config.scoring||=clone(DEFAULT_SCORING);set(config,path,value);sendDesign();},endEdit:()=>{lastToken='';}});
 

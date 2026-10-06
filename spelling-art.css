@@ -98,10 +98,10 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
 /* The drag colors belong to its clipped rail; motion only runs while dragging. */
 .spelling-next.spelling-continue-rail{overflow:hidden}
-.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(38px + (100% - 44px) * var(--drag-progress,0));border-radius:999px;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;opacity:var(--drag-fill-visible,0);transition:width .35s cubic-bezier(.16,.78,.22,1),opacity .2s}
+.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(38px + (100% - 44px) * var(--drag-progress,0));border-radius:999px;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;opacity:var(--drag-fill-visible,0);transition:width calc(var(--ds-slider-wrong-fill-duration,350) * 1ms) cubic-bezier(.16,.78,.22,1),opacity .2s}
 .spelling-continue-rail.is-dragging::before,.spelling-continue-rail.is-complete::before{--drag-fill-visible:1;transition:none}
 .spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 0 13px #fff7ad,0 4px 10px #ba8acb55}
-.spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark .6s ease-out infinite}
+.spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark calc(var(--ds-slider-wrong-spark-duration,600) * 1ms) ease-out infinite}
 .spelling-continue-rail.is-complete .continue-copy{opacity:0}.spelling-continue-rail.is-complete::after{content:'Świetnie! ✓';position:absolute;inset:0;display:grid;place-items:center;color:#612785;font-size:18px;font-weight:850}
 @keyframes drag-spark{from{opacity:1;transform:translateX(0) scale(.5)}to{opacity:0;transform:translateX(-35px) scale(1.2)}}
 /* A small white glow keeps the praise readable over meadow flowers. */
@@ -120,4 +120,4 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 .spelling-continue-rail::before{background:linear-gradient(90deg,#78e6fd 0%,#c297fc 40%,#faa6df 78%,#fff0bf 100%);box-shadow:inset 0 1px 2px #fff9}
 .spelling-continue-rail .continue-chevrons{left:48px;font-size:25px;letter-spacing:0;opacity:.55}
 .spelling-continue-rail .continue-copy{font-family:var(--ds-font-body),sans-serif;font-size:clamp(11px,3.25vw,14px);font-weight:850;letter-spacing:-.25px}
-.spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 9px #fff4b5,0 2px 6px #8b65bc4d}
+.spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 calc(var(--ds-slider-wrong-glow-blur,9) * 1px) #fff4b5,0 2px 6px #8b65bc4d}

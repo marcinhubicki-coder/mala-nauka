@@ -54,6 +54,7 @@ test('saved preview freezes content and rules; draft-only Git save leaves active
  p.screens[0].elements[0].text='Nowa treść';p.rules.memoryEvery=8;local.tokens.jelly.height=60;
  assert.equal(r.snapshot.screens[0].elements[0].text,old);assert.equal(r.snapshot.rules.memoryEvery,7);
  const contract=projectContract(local,config);assert.equal(contract.tokens.jelly.height,config.tokens.jelly.height);assert.equal(contract.project.designDraft.tokens.jelly.height,60);assert.equal(editableProjectConfig(contract).tokens.jelly.height,60);assert.doesNotThrow(()=>validateConfig(contract));
+ const legacy=structuredClone(contract);delete legacy.project.designDraft.tokens.sliderWrong;assert.equal(editableProjectConfig(legacy).tokens.sliderWrong.springDuration,405);
 });
 test('four checks and resolved feedback are required before publishing frozen design',()=>{
  const p=discoveryProject(),local={...structuredClone(config),project:p};local.tokens.jelly.height=60;const r=makeRelease(p,local);p.releases.push(r);

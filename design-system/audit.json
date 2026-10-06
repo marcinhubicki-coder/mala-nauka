@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-04T22:12:15.697Z",
+  "date": "2026-10-06T00:09:26.711Z",
   "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
   "cleanup": {
     "removedAssets": 28,
@@ -791,6 +791,31 @@
       "role": "ui"
     },
     {
+      "file": "home-screen.css",
+      "selector": ".home-stat-value",
+      "role": "body"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-stat-label",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-adventures h2",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-adventures p",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-tile-name",
+      "role": "ui"
+    },
+    {
       "file": "ortografia/wizard-retina.css",
       "selector": "#app[data-mode=\"spelling\"][data-view=\"wizard\"]",
       "role": "body"
@@ -1271,20 +1296,16 @@
       "display"
     ]
   },
-  "cssBytes": 433023,
-  "jsBytes": 717288,
+  "cssBytes": 436291,
+  "jsBytes": 725880,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 66643
+      "bytes": 67007
     },
     {
       "path": "app.css",
-      "bytes": 64367
-    },
-    {
-      "path": "spelling/scenes.mjs",
-      "bytes": 45224
+      "bytes": 64500
     },
     {
       "path": "flagi/adventure.css",
@@ -1292,11 +1313,11 @@
     },
     {
       "path": "spelling/bubble.mjs",
-      "bytes": 37406
+      "bytes": 38728
     },
     {
       "path": "sw.js",
-      "bytes": 27283
+      "bytes": 27105
     },
     {
       "path": "ortografia/wizard-v2.mjs",
@@ -1319,12 +1340,12 @@
       "bytes": 20196
     },
     {
-      "path": "flagi/feedback-transition.js",
-      "bytes": 20063
+      "path": "spelling-art.css",
+      "bytes": 20120
     },
     {
-      "path": "spelling-art.css",
-      "bytes": 19979
+      "path": "flagi/feedback-transition.js",
+      "bytes": 20063
     },
     {
       "path": "modes.mjs",

@@ -587,7 +587,7 @@ async function renderStudioScenario(){
  if(screen==='results'&&selectedMode==='spelling'){
   view='results';root.dataset.view=view;root.dataset.mode=selectedMode;
   lastResult=exampleResult(words,state==='rule'?'mixed':state);
-  renderSpellingResult(root,lastResult,words,null,{animate:false});
+  renderSpellingResult(root,lastResult,words,null,{animate:query.has('animate'),delay:120});
   if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
   return;
  }

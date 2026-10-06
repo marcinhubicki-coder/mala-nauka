@@ -84,7 +84,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
     };
     nodes.hint.addEventListener('click', openHint);
-    continueDrag=createContinueDrag(nodes.next,{canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
+    continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     bubble = createBubble(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);

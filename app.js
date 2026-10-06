@@ -16,7 +16,7 @@ import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './ga
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
 import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
-import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
+import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './player-service.mjs?v=7-profile-settings';
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
@@ -29,12 +29,14 @@ function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key
 function save(key,value) {if(new URLSearchParams(location.search).has('studio'))return;try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
 const oldSettings=cleanSettings(read('maleDyktando.settings.v1',{}));
 let settings=cleanSettings(read(prefix+'settings',oldSettings));
+const applyPreferenceState=()=>{document.documentElement.dataset.animations=settings.animations?'on':'off';};
+applyPreferenceState();
 const savedConfigs=read(prefix+'configs',{});
 let configs=Object.fromEntries(modeIds.map(mode=>[mode,cleanConfig(mode,savedConfigs?.[mode]??{duration:oldSettings.duration})]));
 const legacyProgressRaw=read(prefix+'progress');
 const legacyProgress=legacyProgressRaw===null?migrateProgress(read('maleDyktando.history.v1',[]),read('maleDyktando.best.v1',{})):cleanProgress(legacyProgressRaw);
 let progress=cleanProgress(null);
-let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false;
+let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false,editingProfile=false;
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let gameTicker = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
@@ -101,21 +103,25 @@ const playerProgressIcon='<svg viewBox="0 0 72 72" fill="none" aria-hidden="true
 function setScreenTheme(color){const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=color;}
 function playersPage(){
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
- const hasPlayers=players.length>0;
+ const hasPlayers=players.length>0,atLimit=players.length>=MAX_PLAYERS;
  const list=hasPlayers
-  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
+  ?`<div class="player-grid count-${players.length}" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
   :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
-  ?`<div class="player-actions">${btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
+  ?`<div class="player-actions ${atLimit?'limit-actions':''}">${atLimit?'':btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
   :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
- root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.'}</p></div>${list}${actions}</section>`;
+ const subtitle=players.length===3?'Wybierz jeden z trzech profili.':hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.';
+ root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
-
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
- root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
+ const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
+ const title=editing?'Edytuj profil':'Nowy gracz',back=editing?'settings':'players';
+ const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
+ const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';
+ root.innerHTML=pageHead(title,back)+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>${heading}</h2><p>${copy}</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
  root.scrollTop=0;
 }
 function pinFieldsMarkup(){
@@ -128,7 +134,7 @@ function pinFieldsMarkup(){
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
  fields.innerHTML=pinFieldsMarkup();
- if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
+ if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
  const container=root.querySelector('.pin-mode');if(!container||view!=='player-pin')return;
@@ -172,7 +178,7 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
- editingPin=false;
+ editingPin=false;editingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
@@ -202,8 +208,20 @@ function spellingPoolNote(){
 }
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
- root.innerHTML=pageHead('Ustawienia')+`<section class="card"><label class="setting" for="sound"><span><strong>Dźwięki</strong><small>Krótki dźwięk po odpowiedzi</small></span><input id="sound" type="checkbox" role="switch" ${settings.sound?'checked':''}></label><label class="setting" for="difficulty"><span><strong>Pokazuj poziom</strong><small>Mała etykieta przy pytaniu</small></span><input id="difficulty" type="checkbox" role="switch" ${settings.difficulty?'checked':''}></label></section>
- <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section>${activePlayer?.id!=='guest'?`<section class="card pin-settings"><div><strong>PIN profilu</strong><p>${activePlayer?.hasPin?'Przełączanie tego profilu wymaga kodu.':'Przełączanie tego profilu nie wymaga kodu.'}</p></div>${btn(activePlayer?.hasPin?'Wyłącz PIN':'Ustaw PIN',activePlayer?.hasPin?'disable-pin':'enable-pin','secondary')}</section>`:''}<section class="card backup-card"><h2>Kopia danych</h2><p>Przenieś profile, postępy i ustawienia do innej wersji gry lub na drugie urządzenie.</p><div class="backup-actions">${btn('Eksportuj dane','export-backup','secondary')}${btn('Importuj dane','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><small>Plik JSON zachowuje również PIN-y profili.</small></section><section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
+ const savedProfile=Boolean(activePlayer?.id&&activePlayer.id!=='guest');
+ const toggle=(id,title,copy,checked)=>`<label class="setting" for="${id}"><span><strong>${title}</strong><small>${copy}</small></span><input id="${id}" type="checkbox" role="switch" ${checked?'checked':''}></label>`;
+ const profileActions=savedProfile
+  ?`<div class="settings-profile-actions">${btn('Edytuj profil','edit-profile','secondary')}${btn('Zmień gracza','switch-player','secondary')}</div>`
+  :`<div class="settings-profile-actions">${players.length<MAX_PLAYERS?btn('Utwórz profil','add-player','secondary'):''}${btn('Wybierz profil','switch-player','secondary')}</div>`;
+ const pinRow=savedProfile?`<div class="settings-profile-row"><span><strong>PIN profilu</strong><small>${activePlayer?.hasPin?'Profil jest chroniony 4-cyfrowym PIN-em.':'Profil otwiera się bez PIN-u.'}</small></span><div class="settings-inline-actions">${btn(activePlayer?.hasPin?'Zmień PIN':'Ustaw PIN','enable-pin','secondary')}${activePlayer?.hasPin?btn('Wyłącz','disable-pin','secondary'):''}</div></div>`:'';
+ const removeProfile=savedProfile?`<button type="button" class="settings-danger-link" data-action="delete-profile">Usuń profil i jego wyniki</button>`:'';
+ root.innerHTML=pageHead('Ustawienia')+`<div class="settings-screen">
+  <section class="settings-group"><h2 class="settings-section-title">Profil użytkownika</h2><div class="card settings-card settings-profile-card"><div class="settings-profile-main">${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gość')}</strong><small>${savedProfile?'Profil zapisany na tym urządzeniu.':'Tryb gościa — wyniki nie tworzą osobnego profilu.'}</small></span></div>${profileActions}${pinRow}${removeProfile}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Dźwięki i animacje</h2><div class="card settings-card">${toggle('sound','Dźwięki','Krótki sygnał po odpowiedzi.',settings.sound)}${toggle('animations','Animacje interfejsu','Przejścia, odbicia i ruchome efekty.',settings.animations)}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Informacje podczas gry</h2><div class="card settings-card">${toggle('difficulty','Pokazuj poziom trudności','Mała etykieta przy pytaniu.',settings.difficulty)}${toggle('category','Pokazuj kategorię w ortografii','Np. rz/ż albo ch/h na fiszce.',settings.category)}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Dane i urządzenie</h2><div class="card settings-card settings-data-card"><div class="settings-data-head"><strong>Kopia danych</strong><small>Profile, postępy, ustawienia i PIN-y.</small></div><div class="backup-actions">${btn('Eksportuj','export-backup','secondary')}${btn('Importuj','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><div class="settings-offline-note"><span><strong>Tryb offline</strong><small id="offline-status">${offlineStatus()}</small></span><b aria-hidden="true">✓</b></div>${btn('Wyczyść wyniki tego profilu','clear','settings-clear-results')}</div></section>
+  <p class="caption">Profile i wyniki są zapisane lokalnie na tym urządzeniu.</p>
+ </div>`;
 }
 function backupPreferences(){return {settings,configs,spellingWizard:read(prefix+'spellingWizardV2')};}
 function backupStatus(message){const status=root.querySelector('#backup-status');if(status)status.textContent=message;}
@@ -223,7 +241,9 @@ async function previewBackup(file){
  if(!file||backupBusy)return;backupBusy=true;pendingBackup=null;
  try{
   if(file.size>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
-  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing);
+  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing),merged=new Set(existing.map(player=>player.id));
+  for(const row of backup.players)merged.add(row.profile.id);
+  if(merged.size>MAX_PLAYERS)throw new Error(`Ta kopia dałaby więcej niż ${MAX_PLAYERS} profile. Usuń profil albo wybierz mniejszą kopię.`);
   pendingBackup=backup;
   showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} Przywrócimy też ustawienia gry.</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
  }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
@@ -364,6 +384,8 @@ function renderGame() {
   :readingAction?(exposing?'Przeczytaj':readingAction)
   :escape(MODES[game.mode].name);
  const levelCopy=q.kind==='memory'?`${q.sequence.length} liczb`:levelLabel(game.mode,q.difficulty);
+ const showContextBadge=q.kind!=='spelling'||settings.category;
+ const badgeMarkup=`${showContextBadge?`<span class="badge">${badgeLabel}</span>`:''}${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}`;
  const promptText=q.kind==='memory'
   ?(exposing?'Zapamiętaj kolejność':feedback?'Porównaj sekwencje':'Wpisz liczby w tej samej kolejności')
   :q.kind==='reading-phrase'
@@ -382,7 +404,7 @@ function renderGame() {
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
  root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
- <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
+ <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie">${badgeMarkup?`<div class="badges">${badgeMarkup}</div>`:''}<div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
  <p class="prompt">${promptText}</p>${answersBlock}
  <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?(game.mode==='flags'?'Zapamiętaj kraj i jego stolicę.':'Tak właśnie!'):'Czas czeka na Ciebie.'}</small></div>${correct&&game.mode!=='flags'?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
  if(game.mode==='flags')document.dispatchEvent(new CustomEvent('mala-nauka:flag-prepare',{detail:{countryId:game.current.countryId,nextCountryId:game.prepareNext()?.countryId}}));
@@ -445,15 +467,19 @@ function finish(early=false,goHome=false){
  spellingArt.reset();root.dataset.view=view;
  root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
 }
-function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
+function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
  if(action==='export-backup'){await exportBackup();return;}
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
  if(action==='confirm-import'){await importBackup();return;}
  if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
  if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
- if(action==='edit-player'){editingPin=false;pinInput='';pinError='';playerCreatePage();return;}
- if(action==='add-player'){editingPin=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='edit-player'){editingPin=false;editingProfile=false;pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='edit-profile'){if(!activePlayer||activePlayer.id==='guest')return;editingPin=false;editingProfile=true;pendingNickname=activePlayer.nickname;pendingAvatarId=activePlayer.avatarId||'a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='delete-profile'){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);return;}
+ if(action==='cancel-delete-profile'){modal.close();return;}
+ if(action==='confirm-delete-profile'){const id=activePlayer?.id;if(!id||id==='guest'){modal.close();return;}await playerService.deletePlayer(id);modal.close();activePlayer=null;progress=cleanProgress(null);editingProfile=false;await refreshPlayers();playersPage();return;}
+ if(action==='add-player'){if(players.length>=MAX_PLAYERS){showModal('Limit profili',`<p>Możesz mieć maksymalnie ${MAX_PLAYERS} profile. Usuń jeden z istniejących profili, aby dodać nowy.</p><div class="stack">${btn('OK','cancel-delete-profile','primary')}</div>`);return;}editingPin=false;editingProfile=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
  if(action==='choose-player'){
   selectedPlayerId=button.dataset.player;
   root.querySelectorAll('.player-card').forEach(card=>{
@@ -472,7 +498,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();settingsPage();return;}
- if(action==='switch-player'){playerService.lockSession();activePlayer=null;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(action==='switch-player'){playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
  if(['home','settings'].includes(action))navigate(action);
  if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
  if(action==='return-results'&&collectionReturn){destroyProgressScreen(root);closeResultRule(root,false);const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
@@ -517,7 +543,7 @@ root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastRe
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
 root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const error=root.querySelector('#nickname-error');if(error)error.hidden=true;e.target.removeAttribute('aria-invalid');}});
-root.addEventListener('submit',e=>{
+root.addEventListener('submit',async e=>{
  if(e.target.id==='player-create-form'){
   e.preventDefault();const data=new FormData(e.target);
   const nickname=String(data.get('nickname')||'').normalize('NFC').trim().replace(/\s+/g,' '),length=[...nickname].length;
@@ -526,7 +552,13 @@ root.addEventListener('submit',e=>{
    error.textContent=length<3?'Wpisz nick — co najmniej 3 znaki.':`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`;
    error.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;
   }
-  document.activeElement?.blur();pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
+  document.activeElement?.blur();
+  if(editingProfile&&activePlayer?.id&&activePlayer.id!=='guest'){
+   try{activePlayer=await playerService.updatePlayer(activePlayer.id,{nickname,avatarId:pendingAvatarId});await refreshPlayers();editingProfile=false;pendingNickname='';pinInput='';pinError='';settingsPage();}
+   catch(error){const input=e.target.querySelector('#player-nickname'),message=e.target.querySelector('#nickname-error');message.textContent=error?.message||'Nie udało się zapisać profilu.';message.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});}
+   return;
+  }
+  pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
  }
  if(e.target.id==='setup-form'){e.preventDefault();start();}
 });
@@ -551,7 +583,7 @@ root.addEventListener('change',e=>{
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
   const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wybierz inny zestaw dyktanda.':'';root.querySelector('.start-button').disabled=empty;
  }
- if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
+ if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='animations'){settings.animations=e.target.checked;applyPreferenceState();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;if(e.target.id==='category')settings.category=e.target.checked;save('settings',settings);}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList.add('keyboard');if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||modal.open||view!=='game')return;if(/^[1-6]$/.test(e.key)&&game.state==='playing'){e.preventDefault();root.querySelectorAll('.answer')[Number(e.key)-1]?.click();}if(e.key==='Escape'){e.preventDefault();pause();}});
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
@@ -567,9 +599,9 @@ async function renderStudioScenario(){
  const query=new URLSearchParams(location.search);
  const screen=query.get('screen')||'wizard',state=query.get('state')||'initial';
  selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
- settings.sound=false;
+ settings=cleanSettings({...settings,sound:false,animations:true,difficulty:true,category:true});applyPreferenceState();
  activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
- players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false}];selectedPlayerId=activePlayer.id;
+ players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress=exampleProgress(words);lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
  if(screen==='players'){if(state==='empty')players=[];playersPage();return;}

@@ -2,7 +2,7 @@ import {englishWordFlipConfig,englishWordFlipDirection,englishWordFlipEasing} fr
 
 const app=()=>document.getElementById('app');
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,Math.max(0,ms)));
-const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.animations==='off';
 const DEMO_WORDS=['apple','window','bicycle','garden','cloud'];
 let snapshot=null;
 let running=false;

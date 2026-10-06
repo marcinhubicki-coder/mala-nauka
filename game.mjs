@@ -2,7 +2,7 @@ import { validLearning } from './spelling/learning.mjs?v=1';
 import {spellingPool,wordKey,wordSlots} from './spelling/word-pools.mjs';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
-export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
+export const DEFAULT_SETTINGS = { duration: 180, sound: true, animations: true, difficulty: true, category: true };
 export const accuracy = (correct, wrong) => correct + wrong ? Math.round(100 * correct / (correct + wrong)) : 0;
 export const modeName = category => category === 'all' ? 'Wszystkie słowa' : String(category).split(',').map(value=>value.replace('/', ' / ')).join(', ');
 export const bestKey = (category, duration) => `${category}:${duration}`;
@@ -31,7 +31,9 @@ export function validateWords(words) {
 export function cleanSettings(value) {
   return { duration: DURATIONS.includes(value?.duration) ? value.duration : 180,
     sound: typeof value?.sound === 'boolean' ? value.sound : true,
-    difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true };
+    animations: typeof value?.animations === 'boolean' ? value.animations : true,
+    difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true,
+    category: typeof value?.category === 'boolean' ? value.category : true };
 }
 export function validResult(r) {
  const selected=r?.category==='all'?CATEGORIES:String(r?.category??'').split(',').filter(Boolean);

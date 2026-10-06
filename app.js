@@ -1,7 +1,7 @@
 import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
 import {createStudioGame} from './design-system/scenarios.mjs';
-import {designReady} from './shared/design-runtime.mjs';
+import {designReady,applyDesign} from './shared/design-runtime.mjs';
 import {loadWords} from './shared/asset-loader.mjs';
 import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
@@ -717,9 +717,9 @@ load();registerOffline();
 
 // Studio scenarios use the real renderers and Session, with a stopped clock.
 // No profile, score, backup or offline-cache writes happen in this mode.
-async function renderStudioScenario(){
+async function renderStudioScenario(stateOverride=null){
  const query=new URLSearchParams(location.search);
- const screen=query.get('screen')||'wizard',state=query.get('state')||'initial';
+ const screen=query.get('screen')||'wizard',state=stateOverride||query.get('state')||'initial';
  selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
  settings=cleanSettings({...settings,sound:false,animations:true,difficulty:true,category:true});applyPreferenceState();
  activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
@@ -748,10 +748,39 @@ async function renderStudioScenario(){
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
  view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:metrics=>effectLabSend('metrics',{metrics,run:effectLabPending.run})});}
  if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
  if(state==='pause')pause();
+ if(query.has('effectLab'))installEffectLab();
+}
+
+let effectLabInstalled=false,effectLabPending=null;
+function effectLabSend(type,payload={}){if(parent!==window)parent.postMessage({channel:'mala-nauka-effects',type,...payload},location.origin);}
+function installEffectLab(){
+ if(effectLabInstalled)return;effectLabInstalled=true;
+ window.addEventListener('message',async event=>{
+  if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-effects')return;
+  const data=event.data;
+  if(data.type==='design'&&data.config){applyDesign(data.config);return;}
+  if(data.type==='stop'){spellingArt.stopPreviewEffect?.();spellingArt.setPaused(true);return;}
+  if(data.type==='resume'){spellingArt.setPaused(false);return;}
+  if(data.type==='react'){spellingArt.setPaused(false);spellingArt.previewReact?.(data.event);return;}
+  if(data.type==='reset'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
+  if(data.type==='picture'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
+  if(data.type!=='play')return;
+  const run=Number(data.run)||0,eventType=data.event||'correct';
+  if(eventType==='idle'){
+   effectLabPending=null;await renderStudioScenario('initial');const intervals=[];let previous=0,start=0,raf;
+   const sample=now=>{start||=now;if(previous)intervals.push(now-previous);previous=now;if(now-start<1500)raf=requestAnimationFrame(sample);else effectLabSend('metrics',{run,metrics:{disabled:false,presetName:'Bańka · spoczynek',particles:0,requested:0,intervals,duration:1500}});};
+   raf=requestAnimationFrame(sample);effectLabSend('played',{run,event:eventType,id:data.id});return;
+  }
+  effectLabPending={id:data.id,event:eventType,run};
+  await renderStudioScenario(eventType==='wrong'?'wrong':'correct');
+  effectLabSend('played',{run,event:eventType,id:data.id,streak:game?.streak||0});
+ });
+ requestAnimationFrame(()=>effectLabSend('ready'));
 }
 
 document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length)void renderStudioScenario();});

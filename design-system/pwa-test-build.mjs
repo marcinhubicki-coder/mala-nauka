@@ -27,6 +27,12 @@ export function optimizeBubbleSource(source){
  if(result.split(zero).length!==3)throw Error('Nieznany format przejścia bez filtrów.');
  return result.replaceAll(zero,"...(opticalFiltersEnabled?{filter:'none'}:{})");
 }
+export function optimizeRuntimeSource(source){
+ const target="['design-system/config.json','design-system/assets.json','design-system/rules.json']";
+ if(source.split(target).length!==2)throw Error('Zmienił się sposób wczytywania konfiguracji. Przerwano budowanie Test PWA.');
+ const replacement="[(document.querySelector('meta[name=\\\"mn-pwa-build\\\"]')?'design-system/pwa-runtime-config.json':'design-system/config.json'),'design-system/assets.json','design-system/rules.json']";
+ return source.replace(target,replacement);
+}
 export function optimizeIndexHTML(source){if(!source.includes('</head>'))throw Error('Brak nagłówka PWA.');return source.replace('</head>','<link rel="stylesheet" href="pwa-optimized.css">\n<meta name="mn-pwa-build" content="optimized-test">\n</head>');}
 export const OPTIMIZED_CSS=`/* Only the optimized Test PWA branch. */
 .screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}

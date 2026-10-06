@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 13,
+  "revision": 14,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4171,49 +4171,75 @@
           "transitionBlur": 5.3,
           "transitionSparks": 20,
           "frameRate": 30,
-          "skin": "leaf",
+          "skin": "rainbow",
           "shape": "bubble",
           "morph": 0.45
         },
         "wrong": {
           "duration": 440,
           "shake": 5,
-          "color": "#dd4161"
+          "color": "#dd4161",
+          "style": "dynamite"
         },
         "presets": {
           "spark": {
             "name": "Iskry",
-            "enabled": true,
+            "enabled": false,
             "style": "spark",
             "particles": 24,
-            "duration": 850,
-            "spread": 122,
+            "duration": 1050,
+            "spread": 140,
             "scale": 1.08,
-            "color": "#ffc82f"
+            "color": "#ffc82f",
+            "sizeMin": 23,
+            "sizeMax": 47,
+            "gravity": 0.45,
+            "lifetime": 1.65,
+            "rotation": 330,
+            "speed": 0.7,
+            "bursts": 3,
+            "randomness": 0.8,
+            "delay": 200
           },
           "star": {
             "name": "Gwiazdy",
             "enabled": true,
             "style": "star",
-            "particles": 18,
+            "particles": 27,
             "duration": 1400,
             "spread": 140,
             "scale": 1.05,
-            "color": "#ff4ca0"
+            "color": "#ff4ca0",
+            "sizeMin": 26,
+            "sizeMax": 56,
+            "speed": 0.55,
+            "gravity": 1.35,
+            "lifetime": 1.95,
+            "originY": 20,
+            "delay": 120,
+            "bursts": 2,
+            "randomness": 0.7,
+            "rotation": 330
           },
           "confetti": {
             "name": "Konfetti",
-            "enabled": true,
+            "enabled": false,
             "style": "confetti",
-            "particles": 30,
-            "duration": 1100,
-            "spread": 88,
+            "particles": 38,
+            "duration": 1400,
+            "spread": 140,
             "scale": 1.08,
-            "color": "#52ce9a"
+            "color": "#52ce9a",
+            "sizeMin": 33,
+            "sizeMax": 60,
+            "speed": 0.7,
+            "gravity": -1.2,
+            "lifetime": 2,
+            "drag": 0.7
           },
           "halo": {
             "name": "Aureola",
-            "enabled": true,
+            "enabled": false,
             "style": "halo",
             "particles": 10,
             "duration": 700,
@@ -4223,7 +4249,7 @@
           },
           "comet": {
             "name": "Komety",
-            "enabled": true,
+            "enabled": false,
             "style": "comet",
             "particles": 18,
             "duration": 950,
@@ -4233,7 +4259,7 @@
           },
           "petal": {
             "name": "Płatki",
-            "enabled": true,
+            "enabled": false,
             "style": "petal",
             "particles": 22,
             "duration": 1000,
@@ -4243,7 +4269,7 @@
           },
           "orbit": {
             "name": "Orbity",
-            "enabled": true,
+            "enabled": false,
             "style": "orbit",
             "particles": 16,
             "duration": 1050,
@@ -4253,7 +4279,7 @@
           },
           "fountain": {
             "name": "Fontanna",
-            "enabled": true,
+            "enabled": false,
             "style": "fountain",
             "particles": 28,
             "duration": 900,
@@ -4263,7 +4289,7 @@
           },
           "diamond": {
             "name": "Diamenty",
-            "enabled": true,
+            "enabled": false,
             "style": "diamond",
             "particles": 20,
             "duration": 800,
@@ -4273,7 +4299,7 @@
           },
           "ripple": {
             "name": "Kręgi",
-            "enabled": true,
+            "enabled": false,
             "style": "ripple",
             "particles": 8,
             "duration": 750,

@@ -1,0 +1,7 @@
+/* Optimized standalone PWA; never loaded in Design Studio. */
+.screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+@media(max-width:900px){
+ .screen-atmosphere .ambient-lens{animation:none!important;will-change:auto!important}
+ .screen-atmosphere i{animation-duration:18s!important;will-change:auto!important}
+ .soap-star,.soap-satellite{animation-duration:9s!important}
+}

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
 import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,assertVisibilityReadyForProduction,TEST_PWA_BRANCH} from '../design-system/pwa-test-build.mjs';
 import {elementCSS} from '../shared/element-system.mjs';
 const fixture=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
@@ -27,6 +28,13 @@ test('Test PWA drops no-op optical filters',async()=>{
  assert.match(optimized,/opticalFiltersEnabled/);
  assert.doesNotMatch(optimized,/\{opacity:1,filter:'blur\(0px\) hue-rotate\(0deg\)'/);
  assert.match(optimizeIndexHTML('<head></head>'),/pwa-optimized\.css/);
+ assert.doesNotMatch(optimized,/<use href="#\\$\\{id\\}-shape"/);
+ assert.match(optimized,/const paintedContours=/);
+ assert.match(optimized,/for\\(const path of paintedContours\\)path\\.setAttribute\\('d',nextContour\\)/);
+ assert.equal(optimizeBubbleSource(optimized),optimized,'Transformation must be idempotent');
+ const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:optimized,encoding:'utf8'});
+ assert.equal(check.status,0,check.stderr);
+
 });
 
 test('release refuses to lose visibility edits not approved in active design',()=>{

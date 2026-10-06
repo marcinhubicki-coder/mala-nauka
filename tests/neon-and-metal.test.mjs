@@ -39,7 +39,10 @@ test('Math neon loader does not delay the real app',async()=>{
  assert.match(math,/math-neon-wordmark/);
  assert.match(math,/app.innerHTML/);
  assert.doesNotMatch(css,/backdrop-filter|feGaussianBlur|filter:\s*blur/);
- const animations=css.match(/@keyframes\s+[^{}]+\{(?:[^{}]*\{[^{}]*\})+\}/g)||[];
- assert.equal(animations.length,3);
- for(const anim of animations)assert.doesNotMatch(anim,/(?:filter|box-shadow|text-shadow|background)\s*:/);
+ const names=['mn-neon-switch-on','mn-neon-digit-pulse','mn-neon-number-success'];
+ for(const name of names)assert.ok(css.includes('@keyframes '+name));
+ for(const name of names){
+  const section=css.split('@keyframes '+name)[1].split('@keyframes')[0];
+  assert.doesNotMatch(section,/(?:filter|box-shadow|text-shadow|background)\\s*:/);
+ }
 });

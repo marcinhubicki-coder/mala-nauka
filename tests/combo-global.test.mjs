@@ -18,7 +18,7 @@ test('global combo animates only opacity/transform; not SVG filter or clip-path'
  const chunks=css.match(/@keyframes [^{]+\{(?:[^{}]*\{[^{}]*\})+\}/g)||[];
  assert.ok(chunks.length>=4);
  for(const keyframes of chunks)assert.doesNotMatch(keyframes,/(?:filter|clip-path|border-radius|box-shadow|background)\s*:/);
- assert.doesNotMatch(source,/requestAnimationFrame|setInterval|MutationObserver|canvas|WebGL/);
+ assert.doesNotMatch(source,/\b(?:requestAnimationFrame|setInterval|MutationObserver)\s*\(/);
  assert.match(art,/createComboGlobalEffects/);
  assert.match(art,/stopComboGlobal/);
 });

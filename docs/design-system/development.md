@@ -23,6 +23,7 @@
 | `shared/components.css` | Wspólna geometria i warianty |
 | `shared/asset-loader.mjs` | Jedna baza, aliasy, URL-e, preload, podmiana dynamicznych obrazków |
 | `shared/jelly-v4.mjs` | Zachowanie jelly i czasy pobierane z tokenów |
+| `spelling/continue-drag.mjs` | Dostępny klawiaturą slider dalszej gry; korzysta ze wspólnej deformacji Jelly oraz własnych czasów błędu i wyniku |
 | `tools/catalog-assets.mjs` | SHA-256, przypisania ilustracji, deduplikacja |
 | `tools/audit-design.mjs` | Rozmiary kodu, fonty, źródła haseł, historia porządków |
 | `tools/build-design.mjs` | Kontrakt centralny, bundling CSS, URL-e, SW |

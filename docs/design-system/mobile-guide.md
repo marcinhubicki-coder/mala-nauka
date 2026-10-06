@@ -23,7 +23,7 @@ Opcja **100% — rzeczywisty rozmiar** dla pojedynczego podglądu pozwala ogląd
 
 Przycisk **☰** otwiera **Sekcje studia**. W bazie wybierz **Słowa**, **Grafiki** lub **Zasady**, a następnie użyj wyszukiwania i filtra. Okna mają duże pola, przyciski oraz **×** do zamknięcia. Fonty i ich użycia są dostępne w **Typografia**.
 
-W **Animacje → Wybór** wskaż dwa ekrany. **Podgląd** zawiera odtwarzanie, pętlę i przerwę; **Ustawienia** zmieniają samą animację. Wyjście z podglądu zatrzymuje pętlę.
+W **Animacje → Guziki i slidery** wybierz Jelly, błąd albo wynik. **Podgląd** pozwala przeciągnąć prawdziwy suwak i odtworzyć przykład, a **Ustawienia** zawierają presety oraz zwijane grupy ruchu. Uchwyt ma tę samą deformację Jelly co w Komponentach. W **Przejścia między ekranami → Wybór** wskaż dwa ekrany; **Podgląd** zawiera odtwarzanie, pętlę i przerwę. Wyjście z podglądu zatrzymuje pętlę.
 
 ## Zapis i praca na drugim urządzeniu
 

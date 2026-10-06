@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DEFAULT_MOTION,motionFrames,validateMotion,animateScreen,PlaybackClock} from '../shared/screen-motion.mjs';
 import {changedViews,validateConfig} from '../design-system/model.mjs';
-import {continueMotion} from '../spelling/continue-drag.mjs';
+import {continueMotion,sliderJellyTransform} from '../spelling/continue-drag.mjs';
+import {jellyTransform} from '../shared/jelly-v4.mjs';
 import {resultMotionSettings} from '../ortografia/result-motion.mjs';
 import {CONTROL_MOTION_PRESETS,activeControlMotionPreset,applyControlMotionPreset,controlMotionEntries} from '../design-system/control-motion-presets.mjs';
 import {StudioMotion} from '../design-system/studio-motion.mjs';
@@ -40,6 +41,15 @@ test('control motion tokens reach the two sliders, progress bar and animated res
  assert.deepEqual(changedViews([{path:'tokens.resultText.rollDuration'}],registry).map(view=>view.id),['spelling-results']);
  assert.deepEqual(changedViews([{path:'tokens.progress.finishDuration'}],registry).map(view=>view.id),['spelling-results']);
  delete globalThis.__MALA_NAUKA_DESIGN__;
+});
+
+test('drag sliders use the same jelly deformation as segmented controls',async()=>{
+ const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))),jelly=config.tokens.jelly;
+ const shared=jellyTransform(1,1,jelly),slider=sliderJellyTransform(48,1,1,jelly),reverse=sliderJellyTransform(24,.5,-1,jelly);
+ assert.equal(slider,`translate3d(48px,0,0) ${shared}`);
+ assert.match(slider,/scale\(1\.0675,0\.8500\) rotate\(1\.30deg\)$/);
+ assert.match(reverse,/translate3d\(24px,0,0\).*rotate\(-0\.65deg\)$/);
+ assert.equal(sliderJellyTransform(0,0,1,jelly),'translate3d(0px,0,0) scale(1.0000,1.0000) rotate(0.00deg)');
 });
 
 test('motion presets keep component geometry and preserve the unique slider effects',async()=>{

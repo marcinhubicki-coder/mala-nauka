@@ -27,7 +27,7 @@ Ilustracja wymaga co najmniej trzykrotności wymiaru, w którym jest wyświetlan
 | `button` | CTA: wysokość, tekst, padding, radius, obrys i podstawa |
 | `answer` | Wysokość pełna i kompaktowa, gap, szerokość grupy, tekst, padding |
 | `flashcard` | Radius, padding i odstęp fiszki |
-| `slider` | Wysokość toru, promień, uchwyt i próg zakończenia |
+| `slider` | Wysokość toru, promień, uchwyt i próg zakończenia; deformacja uchwytu korzysta ze wspólnej fizyki `jelly`, a czasy powrotu i ukończenia pozostają w wariantach suwaka |
 | `popup` | Radius, padding i limit wysokości dialogu |
 | `progress` | Wysokość, radius, czas animacji wyników |
 | `profile` | Karta gracza, odstępy, padding, avatar |

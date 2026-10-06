@@ -1,4 +1,4 @@
-import { createContinueDrag } from './continue-drag.mjs?v=3';
+import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
 import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings} from './response-effects.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';

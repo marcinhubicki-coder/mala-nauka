@@ -1,5 +1,5 @@
 import {scoreResult} from '../spelling/scoring.mjs';
-import { createContinueDrag } from '../spelling/continue-drag.mjs?v=3';
+import { createContinueDrag } from '../spelling/continue-drag.mjs?v=4-jelly-motion';
 import { watchScrollEdges } from '../shared/scroll-edges.mjs?v=1';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { closeResultRule, openResultRule, eyeSvg } from './result-rules.mjs?v=6-scroll-edges';

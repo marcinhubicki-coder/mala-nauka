@@ -56,8 +56,11 @@ Katalog obejmuje **12 rodzin komponentów** oraz **40 widoków i stanów**. Każ
 ### Przeciągnij dalej
 
 - Start gestu z uchwytu; klik toru nie kończy kroku.
-- Próg ukończenia i minimalny ruch 24 px; klawiatura Enter/Space/strzałka.
+- Próg ukończenia i minimalny ruch 24 px; klawiatura: strzałki oraz Home. Enter i Space nie kończą gestu.
 - W grze widoczny po błędzie; na wynikach uruchamia następną rundę.
+- Uchwyt korzysta z tego samego modelu deformacji co przełącznik jelly: podczas ruchu rozciąga się, ściska i lekko przechyla, a po puszczeniu wygasa przez odrzut i krótkie odbicie.
+- Geometria i skórka pozostają własnością suwaka. `sliderWrong` zachowuje iskrę, a `sliderResult` komunikat ukończenia; oba dziedziczą `jelly.squish`, `jelly.tilt`, `jelly.inertia` i `jelly.bounce`.
+- Ograniczenie ruchu pozostawia samo przesunięcie uchwytu bez deformacji i sprężynowania.
 
 ### Popup / zasada
 

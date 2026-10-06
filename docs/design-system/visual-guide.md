@@ -66,9 +66,11 @@ Upload obsługuje PNG, JPG, WebP i AVIF do 12 MB. Ilustracja słowa ma proporcj�
 
 ## Chcę obejrzeć animację
 
-**Animacje** pozwalają wybrać rzeczywiste połączenie dwóch ekranów, styl przejścia, czas, odległość przesunięcia i tempo. **Odtwórz przejście** pokazuje zmianę. **Pętla** powtarza przejścia w obu kierunkach, a **Przerwa między ekranami** daje czas na ich obejrzenie. **Zatrzymaj** i wyjście z zakładki kończą pętlę.
+**Animacje → Guziki i slidery** pokazuje prawdziwe ekrany gry dla Jelly, błędnej odpowiedzi i wyniku rundy. **Odtwórz przykład** uruchamia zachowanie, a **Porównaj z zapisanym** zestawia zapisany i roboczy wariant. Presety zmieniają charakter ruchu bez zmiany rozmiaru ani koloru. Zwijane grupy rozdzielają bryłę Jelly, światło, tekst, oba slidery, pasek postępu i animowane liczby.
 
-Styl, czas, odległość i tempo są zapisane osobno dla połączenia; powrót może dziedziczyć lub mieć własne ustawienia. pętla, przerwa i wybrana para są ustawieniami podglądu. Systemowe ograniczanie ruchu wyłącza animację także w podglądzie. Animacja przełącznika jelly ma osobne suwaki w Komponentach.
+Oba slidery używają tej samej deformacji co Jelly w Komponentach. Uchwyt rozciąga się podczas przeciągania, miękko wraca po przerwanym geście i osiada po ukończeniu. Zachowuje przy tym własną skórkę: slider po błędzie ma iskrę, a slider nowej rundy komunikat końcowy. Systemowe ograniczanie ruchu wyłącza deformację i sprężynowanie.
+
+**Animacje → Przejścia między ekranami** pozwala wybrać rzeczywiste połączenie dwóch ekranów, styl przejścia, czas, odległość przesunięcia i tempo. **Odtwórz przejście** pokazuje zmianę. **Pętla** powtarza przejścia w obu kierunkach, a **Przerwa między ekranami** daje czas na ich obejrzenie. **Zatrzymaj** i wyjście z zakładki kończą pętlę. Styl, czas, odległość i tempo są zapisane osobno dla połączenia; powrót może dziedziczyć lub mieć własne ustawienia.
 
 ## Chcę zapisać bez zgubienia zmian
 

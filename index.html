@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="app.css?v=20261002-progress-loop-v12">
 <link rel="stylesheet" href="viewport-lock.css?v=20260930-release"><link rel="stylesheet" href="player-profiles.css?v=20261006-toggle-muted-v4">
 <link rel="stylesheet" href="spelling-art.css?v=20261001-feedback-v7">
+<link rel="stylesheet" href="ambient-orbit.css">
+<link rel="stylesheet" href="boot-loader.css">
 <link rel="stylesheet" href="ui-retina.css?v=2-polish">
 <script type="module" src="module-router.js"></script>
 <script type="module" src="spelling-assets-setting.js"></script>
@@ -29,7 +31,7 @@
 <script type="module" src="animation-diagnostics.mjs"></script>
 </head>
 <body>
-<main id="app" tabindex="-1"><p class="loading" role="status">Przygotowujemy małe przygody…</p></main>
+<main id="app" tabindex="-1"><div class="mn-boot-screen" role="status" aria-label="Przygotowujemy Małą Naukę"><img class="mn-boot-logo" src="assets/brand/player-logo.svg" alt="Mała Nauka" width="1200" height="320" fetchpriority="high"><div class="mn-boot-dots" aria-hidden="true"><i></i><i></i><i></i></div><span>Przygotowujemy małe przygody…</span></div></main>
 <p id="storage-notice" class="notice" role="status" hidden>Zapisywanie jest niedostępne. Wyniki zostaną tylko do zamknięcia strony.</p>
 <dialog id="modal" aria-labelledby="modal-title"></dialog>
 <noscript>Włącz JavaScript, aby zagrać w Małą Naukę.</noscript>

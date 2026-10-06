@@ -23,7 +23,7 @@ function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Siln
 export function optimizeBubbleSource(source){
  let result=source;
  if(!result.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;')){
-  result=replaceOnce(result,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
+  result=replaceOnce(result,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
   for(const key of ['incomingFilter','incomingMidFilter','outgoingFilter','outgoingMidFilter'])
    result=replaceOnce(result,'filter:'+key,'...(opticalFiltersEnabled?{filter:'+key+'}:{})');
   const zero="filter:'blur(0px) hue-rotate(0deg)'";
@@ -35,8 +35,8 @@ export function optimizeBubbleSource(source){
   const oldUse='<use href="#${id}-shape"';
   if(result.split(oldUse).length!==12)throw Error('Nieznana liczba odwołań SVG use: przejrzyj zaktualizowany silnik.');
   result=result.replaceAll(oldUse,'<path data-soap-contour="1"');
-  result=replaceOnce(result,'  const shape = host.querySelector(`#${id}-shape`);','  const shape = host.querySelector(`#${id}-shape`);\\n  const paintedContours=[...host.querySelectorAll(\'.soap-dynamic-contour,[data-soap-contour]\')];');
-  result=replaceOnce(result,"    shape.setAttribute('d',contour+'Z');","    const nextContour=contour+'Z';\\n    shape.setAttribute('d',nextContour);\\n    for(const path of paintedContours)path.setAttribute('d',nextContour);");
+  result=replaceOnce(result,'  const shape = host.querySelector(`#${id}-shape`);','  const shape = host.querySelector(`#${id}-shape`);\n  const paintedContours=[...host.querySelectorAll(\'.soap-dynamic-contour,[data-soap-contour]\')];');
+  result=replaceOnce(result,"    shape.setAttribute('d',contour+'Z');","    const nextContour=contour+'Z';\n    shape.setAttribute('d',nextContour);\n    for(const path of paintedContours)path.setAttribute('d',nextContour);");
  }
  return result;
 }

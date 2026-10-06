@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 4,
+  "revision": 5,
   "rules": {
     "rule-7a2b6ca06348": {
       "title": "Zapamiętaj „ó”",
@@ -4224,6 +4224,208 @@
       "families": [
         "ś/si",
         "dź/dzi"
+      ]
+    },
+    "sierp": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siew": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siewnik": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "silnik": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "silny": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siła": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "siłownia": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "siny": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "sitko": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "sito": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ścieg": {
+      "primary": "rule-000000000004",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "ć/ci",
+        "ś/si"
+      ]
+    },
+    "ścisk": {
+      "primary": "rule-000000000004",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "ć/ci",
+        "ś/si"
+      ]
+    },
+    "śledź": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ślina": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "śliwa": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ślizg": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "ślub": {
+      "primary": "rule-000000000001",
+      "additional": [
+        "rule-000000000005"
+      ],
+      "families": [
+        "u/ó",
+        "ś/si"
+      ]
+    },
+    "śmiać": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "śmietnik": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śniadanie": {
+      "primary": "rule-000000000005",
+      "additional": [],
+      "families": [
+        "ś/si"
+      ]
+    },
+    "śnić": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śniegowy": {
+      "primary": "rule-000000000005",
+      "additional": [
+        "rule-000000000007"
+      ],
+      "families": [
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śnieżka": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
+      ]
+    },
+    "śnieżny": {
+      "primary": "rule-000000000002",
+      "additional": [
+        "rule-000000000005",
+        "rule-000000000007"
+      ],
+      "families": [
+        "rz/ż",
+        "ś/si",
+        "ń/ni"
       ]
     }
   }

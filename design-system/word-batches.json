@@ -341,7 +341,7 @@
     {
       "id": "batch-20261004-03",
       "name": "Przyroda i małe odkrycia · 2",
-      "stage": "images",
+      "stage": "published",
       "words": [
         {
           "id": "word-73-69-65-72-70",
@@ -403,7 +403,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/silny.webp"
+          "assetPath": "assets/managed/5ab86c76a0c54d740f5ba81bd751308e5389814c952f1864ce40698c8d9676fb.webp"
         },
         {
           "id": "word-73-69-142-61",
@@ -415,7 +415,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/sila.webp"
+          "assetPath": "assets/managed/0246e3fb0c671509b51328e419adaf79cf070b59d399e3432302223c50793e4f.webp"
         },
         {
           "id": "word-73-69-142-6f-77-6e-69-61",
@@ -429,7 +429,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/silownia.webp"
+          "assetPath": "assets/managed/0d37bf83a266aba1c57bc2721cd0eff3df72c03e8f517ad4b19ec85a0874fcc4.webp"
         },
         {
           "id": "word-73-69-6e-79",
@@ -441,7 +441,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/siny.webp"
+          "assetPath": "assets/managed/9696af65b95ea4171b441b3cb87377c9ef09bbec815693de881de2fff1d99a43.webp"
         },
         {
           "id": "word-73-69-74-6b-6f",
@@ -453,7 +453,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/sitko.webp"
+          "assetPath": "assets/managed/da915dc1acdf02fe4d18f7c4805fd4a8f9e5bc5bc8dfa31a26ae0eb1b9132a52.webp"
         },
         {
           "id": "word-73-69-74-6f",
@@ -465,7 +465,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/sito.webp"
+          "assetPath": "assets/managed/263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b.webp"
         },
         {
           "id": "word-15b-63-69-65-67",
@@ -479,7 +479,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/scieg.webp"
+          "assetPath": "assets/managed/625daef08456bec56f20061c2f8b53d78ff1deb4440e7c13e90e926279e8713e.webp"
         },
         {
           "id": "word-15b-63-69-73-6b",
@@ -493,7 +493,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/scisk.webp"
+          "assetPath": "assets/managed/77be7c8b2a88911c6e43bbc605ce303bbdeb4b4f1d16c6b919387d4617c1a997.webp"
         },
         {
           "id": "word-15b-6c-65-64-17a",
@@ -505,7 +505,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/sledz.webp"
+          "assetPath": "assets/managed/bc6fc30ef3a0e7a733e764f54a2f0e8466c71bb09332cbb219caccdb1a2954e6.webp"
         },
         {
           "id": "word-15b-6c-69-6e-61",
@@ -517,7 +517,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": "assets/scenes/slina.webp"
+          "assetPath": "assets/managed/9c9f010a0e26ebdf9eb8767efa4261da3c260bed9745d00235bde1ebd43a2d5f.webp"
         },
         {
           "id": "word-15b-6c-69-77-61",
@@ -529,7 +529,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/fd66571fe03dfa72769ae1c80bf49f4f76a17fcba4efcd6fa47351b8975ce417.jpg"
         },
         {
           "id": "word-15b-6c-69-7a-67",
@@ -541,7 +541,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/daa51e48de0dc8223cc71d493e396cb61032d3fea6054535cad5b0fb1231e758.jpg"
         },
         {
           "id": "word-15b-6c-75-62",
@@ -555,7 +555,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/635df570eea48a9357f7d45b6ca1c34cf32a342bab36ab77e69f55c83ee13e47.jpg"
         },
         {
           "id": "word-15b-6d-69-61-107",
@@ -567,7 +567,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/1645b38b64b5d50b21669a8d0204bbe164590be135568673b883f9623a804ff3.jpg"
         },
         {
           "id": "word-15b-6d-69-65-74-6e-69-6b",
@@ -581,7 +581,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21.jpg"
         },
         {
           "id": "word-15b-6e-69-61-64-61-6e-69-65",
@@ -593,7 +593,7 @@
             "ś/si": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/c9c30817d4dc5c20b1c78ab31ee6e1698396bdd399cd291a7f3dccbb54cdad9d.jpg"
         },
         {
           "id": "word-15b-6e-69-107",
@@ -607,7 +607,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/12421856e658e6b716dffa5261d1051139d4bb50934dc63691b036569b5a42ca.jpg"
         },
         {
           "id": "word-15b-6e-69-65-67-6f-77-79",
@@ -621,7 +621,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/ae219c993632be85e26c3bb86383c1069475e52d34c01af76f3058d0a661566e.jpg"
         },
         {
           "id": "word-15b-6e-69-65-17c-6b-61",
@@ -637,7 +637,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/83c87a31e6b0758d2e896449b9ff30e83a9d7f00e7b417173947b63cdbf4b086.jpg"
         },
         {
           "id": "word-15b-6e-69-65-17c-6e-79",
@@ -653,7 +653,7 @@
             "ń/ni": 1
           },
           "selected": true,
-          "assetPath": null
+          "assetPath": "assets/managed/fdad6552b49bffa7c8f6f304bc4cf49acd9c330c528e5ec6a4a77ed75718f476.jpg"
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 8,
+  "revision": 9,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -2718,6 +2718,138 @@
       "references": []
     },
     {
+      "path": "assets/managed/0246e3fb0c671509b51328e419adaf79cf070b59d399e3432302223c50793e4f.webp",
+      "sha": "0246e3fb0c671509b51328e419adaf79cf070b59d399e3432302223c50793e4f",
+      "id": "0246e3fb0c671509",
+      "size": 232864,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/0d37bf83a266aba1c57bc2721cd0eff3df72c03e8f517ad4b19ec85a0874fcc4.webp",
+      "sha": "0d37bf83a266aba1c57bc2721cd0eff3df72c03e8f517ad4b19ec85a0874fcc4",
+      "id": "0d37bf83a266aba1",
+      "size": 172426,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/12421856e658e6b716dffa5261d1051139d4bb50934dc63691b036569b5a42ca.jpg",
+      "sha": "12421856e658e6b716dffa5261d1051139d4bb50934dc63691b036569b5a42ca",
+      "id": "12421856e658e6b7",
+      "size": 338634,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/1645b38b64b5d50b21669a8d0204bbe164590be135568673b883f9623a804ff3.jpg",
+      "sha": "1645b38b64b5d50b21669a8d0204bbe164590be135568673b883f9623a804ff3",
+      "id": "1645b38b64b5d50b",
+      "size": 352023,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b.webp",
+      "sha": "263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b",
+      "id": "263afbf04700b2f6",
+      "size": 313306,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/5ab86c76a0c54d740f5ba81bd751308e5389814c952f1864ce40698c8d9676fb.webp",
+      "sha": "5ab86c76a0c54d740f5ba81bd751308e5389814c952f1864ce40698c8d9676fb",
+      "id": "5ab86c76a0c54d74",
+      "size": 286864,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/625daef08456bec56f20061c2f8b53d78ff1deb4440e7c13e90e926279e8713e.webp",
+      "sha": "625daef08456bec56f20061c2f8b53d78ff1deb4440e7c13e90e926279e8713e",
+      "id": "625daef08456bec5",
+      "size": 218214,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/635df570eea48a9357f7d45b6ca1c34cf32a342bab36ab77e69f55c83ee13e47.jpg",
+      "sha": "635df570eea48a9357f7d45b6ca1c34cf32a342bab36ab77e69f55c83ee13e47",
+      "id": "635df570eea48a93",
+      "size": 347459,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/77be7c8b2a88911c6e43bbc605ce303bbdeb4b4f1d16c6b919387d4617c1a997.webp",
+      "sha": "77be7c8b2a88911c6e43bbc605ce303bbdeb4b4f1d16c6b919387d4617c1a997",
+      "id": "77be7c8b2a88911c",
+      "size": 220224,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21.jpg",
+      "sha": "7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21",
+      "id": "7ec2820f41033cd0",
+      "size": 352787,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/83c87a31e6b0758d2e896449b9ff30e83a9d7f00e7b417173947b63cdbf4b086.jpg",
+      "sha": "83c87a31e6b0758d2e896449b9ff30e83a9d7f00e7b417173947b63cdbf4b086",
+      "id": "83c87a31e6b0758d",
+      "size": 351068,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/9696af65b95ea4171b441b3cb87377c9ef09bbec815693de881de2fff1d99a43.webp",
+      "sha": "9696af65b95ea4171b441b3cb87377c9ef09bbec815693de881de2fff1d99a43",
+      "id": "9696af65b95ea417",
+      "size": 251200,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903.jpg",
       "sha": "9b8c71a90ebced013b44444ff340e7a3250dd4716c22f78d347aa8e36ed71903",
       "id": "9b8c71a90ebced01",
@@ -2729,10 +2861,54 @@
       "references": []
     },
     {
+      "path": "assets/managed/9c9f010a0e26ebdf9eb8767efa4261da3c260bed9745d00235bde1ebd43a2d5f.webp",
+      "sha": "9c9f010a0e26ebdf9eb8767efa4261da3c260bed9745d00235bde1ebd43a2d5f",
+      "id": "9c9f010a0e26ebdf",
+      "size": 138846,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/ae219c993632be85e26c3bb86383c1069475e52d34c01af76f3058d0a661566e.jpg",
+      "sha": "ae219c993632be85e26c3bb86383c1069475e52d34c01af76f3058d0a661566e",
+      "id": "ae219c993632be85",
+      "size": 348624,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/bc6fc30ef3a0e7a733e764f54a2f0e8466c71bb09332cbb219caccdb1a2954e6.webp",
+      "sha": "bc6fc30ef3a0e7a733e764f54a2f0e8466c71bb09332cbb219caccdb1a2954e6",
+      "id": "bc6fc30ef3a0e7a7",
+      "size": 233236,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854.jpg",
       "sha": "c8a807f7c1ec612e824bc7f629cba5821220bb2a8c634dd9b477d7ff13793854",
       "id": "c8a807f7c1ec612e",
       "size": 696968,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/c9c30817d4dc5c20b1c78ab31ee6e1698396bdd399cd291a7f3dccbb54cdad9d.jpg",
+      "sha": "c9c30817d4dc5c20b1c78ab31ee6e1698396bdd399cd291a7f3dccbb54cdad9d",
+      "id": "c9c30817d4dc5c20",
+      "size": 356359,
       "width": 1254,
       "height": 1254,
       "type": "jpg",
@@ -2751,10 +2927,54 @@
       "references": []
     },
     {
+      "path": "assets/managed/da915dc1acdf02fe4d18f7c4805fd4a8f9e5bc5bc8dfa31a26ae0eb1b9132a52.webp",
+      "sha": "da915dc1acdf02fe4d18f7c4805fd4a8f9e5bc5bc8dfa31a26ae0eb1b9132a52",
+      "id": "da915dc1acdf02fe",
+      "size": 198326,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/daa51e48de0dc8223cc71d493e396cb61032d3fea6054535cad5b0fb1231e758.jpg",
+      "sha": "daa51e48de0dc8223cc71d493e396cb61032d3fea6054535cad5b0fb1231e758",
+      "id": "daa51e48de0dc822",
+      "size": 350814,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
       "path": "assets/managed/dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f.jpg",
       "sha": "dfb2b8ba57b0ee561a6a2f28d4cfb96e84be477bf057d430dc5cb19bce1f535f",
       "id": "dfb2b8ba57b0ee56",
       "size": 619901,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/fd66571fe03dfa72769ae1c80bf49f4f76a17fcba4efcd6fa47351b8975ce417.jpg",
+      "sha": "fd66571fe03dfa72769ae1c80bf49f4f76a17fcba4efcd6fa47351b8975ce417",
+      "id": "fd66571fe03dfa72",
+      "size": 345109,
+      "width": 1254,
+      "height": 1254,
+      "type": "jpg",
+      "group": "managed",
+      "references": []
+    },
+    {
+      "path": "assets/managed/fdad6552b49bffa7c8f6f304bc4cf49acd9c330c528e5ec6a4a77ed75718f476.jpg",
+      "sha": "fdad6552b49bffa7c8f6f304bc4cf49acd9c330c528e5ec6a4a77ed75718f476",
+      "id": "fdad6552b49bffa7",
+      "size": 358397,
       "width": 1254,
       "height": 1254,
       "type": "jpg",
@@ -5398,28 +5618,6 @@
       "references": []
     },
     {
-      "path": "assets/scenes/scieg.webp",
-      "sha": "cbc8455598349c31e3197199049e6c45e2c581cf8343c9872fc542d7d46527ed",
-      "id": "cbc8455598349c31",
-      "size": 315260,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/scisk.webp",
-      "sha": "870f9da67b55ac6d1cfb4fa8b73a5c27735578da8aa3ccfc1e682b7d96ccedc1",
-      "id": "870f9da67b55ac6d",
-      "size": 326204,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/siac.webp",
       "sha": "4e5a1ac9058d5fcee0306b78cedab7a709d30d09bc0c48221c8414b3fb098983",
       "id": "4e5a1ac9058d5fce",
@@ -5533,17 +5731,6 @@
       "height": 1254
     },
     {
-      "path": "assets/scenes/sila.webp",
-      "sha": "376b9a3b19879cc90aaf3e416766ac022affb5f7bab8ece4fcad4aa81ad6c3d4",
-      "id": "376b9a3b19879cc9",
-      "size": 335102,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/silnik.webp",
       "sha": "1d187bdbcad448774ae3f37e91224aeb0bbcdf20822a117365274d99057f9b3a",
       "id": "1d187bdbcad44877",
@@ -5553,39 +5740,6 @@
       "references": [],
       "width": 1254,
       "height": 1254
-    },
-    {
-      "path": "assets/scenes/silny.webp",
-      "sha": "5538896a54d0fd2cc5553ba1f06d172c09df73ce45385747f8338406bc2a05d3",
-      "id": "5538896a54d0fd2c",
-      "size": 402380,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/silownia.webp",
-      "sha": "395ac4d8c35a2e113039e025073e96b23bb9a1102dd6789eae0cc7af180dccdf",
-      "id": "395ac4d8c35a2e11",
-      "size": 258010,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/siny.webp",
-      "sha": "c6f36d62bcd9c2c2e276765c09c6444592b7a291570269a5732f5f4f42eb6414",
-      "id": "c6f36d62bcd9c2c2",
-      "size": 370452,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
     },
     {
       "path": "assets/scenes/siodemka.jpg",
@@ -5602,28 +5756,6 @@
       "sha": "e54787ad6b80a80edc0e352ac8afc00d2af493e82d07f71f56bff1e8be8a4797",
       "id": "e54787ad6b80a80e",
       "type": "jpg",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/sitko.webp",
-      "sha": "29c2de03437ec64601d9e227a17418cfa9691d172cc8d63a9e84802b8b1d037e",
-      "id": "29c2de03437ec646",
-      "size": 279152,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/sito.webp",
-      "sha": "568528878974d7ac84234af8859afcfe1121d2838cc447b2d52655e51dcbeb26",
-      "id": "568528878974d7ac",
-      "size": 440528,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
       "group": "scenes",
       "references": []
     },
@@ -5664,33 +5796,11 @@
       "references": []
     },
     {
-      "path": "assets/scenes/sledz.webp",
-      "sha": "471870cae0a9502437e84a9c69c338090d0dd40592a063d36a4dea392cc6654d",
-      "id": "471870cae0a95024",
-      "size": 332714,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
-      "group": "scenes",
-      "references": []
-    },
-    {
       "path": "assets/scenes/slimak.jpg",
       "size": 299779,
       "sha": "9eb0862179f57540be4c5e7b25b58aaf181391cc4f1ed83a7a771a888195bcfd",
       "id": "9eb0862179f57540",
       "type": "jpg",
-      "group": "scenes",
-      "references": []
-    },
-    {
-      "path": "assets/scenes/slina.webp",
-      "sha": "fba829ed276cea5961f5d23603920063d13ec18dd6da9e085e3541bbc69cd54b",
-      "id": "fba829ed276cea59",
-      "size": 212338,
-      "width": 1254,
-      "height": 1254,
-      "type": "webp",
       "group": "scenes",
       "references": []
     },
@@ -9121,6 +9231,150 @@
       "path": "assets/scenes/siedzisko.webp",
       "source": "data/words-08.json",
       "masked": "_edzisko",
+      "manual": true
+    },
+    "sierp": {
+      "path": "assets/scenes/sierp.webp",
+      "source": "data/words-08.json",
+      "masked": "_erp",
+      "manual": true
+    },
+    "siew": {
+      "path": "assets/scenes/siew.webp",
+      "source": "data/words-08.json",
+      "masked": "_ew",
+      "manual": true
+    },
+    "siewnik": {
+      "path": "assets/scenes/siewnik.webp",
+      "source": "data/words-08.json",
+      "masked": "_ewnik",
+      "manual": true
+    },
+    "silnik": {
+      "path": "assets/scenes/silnik.webp",
+      "source": "data/words-08.json",
+      "masked": "_lnik",
+      "manual": true
+    },
+    "silny": {
+      "path": "assets/managed/5ab86c76a0c54d740f5ba81bd751308e5389814c952f1864ce40698c8d9676fb.webp",
+      "source": "data/words-08.json",
+      "masked": "_lny",
+      "manual": true
+    },
+    "siła": {
+      "path": "assets/managed/0246e3fb0c671509b51328e419adaf79cf070b59d399e3432302223c50793e4f.webp",
+      "source": "data/words-08.json",
+      "masked": "_ła",
+      "manual": true
+    },
+    "siłownia": {
+      "path": "assets/managed/0d37bf83a266aba1c57bc2721cd0eff3df72c03e8f517ad4b19ec85a0874fcc4.webp",
+      "source": "data/words-08.json",
+      "masked": "_łownia",
+      "manual": true
+    },
+    "siny": {
+      "path": "assets/managed/9696af65b95ea4171b441b3cb87377c9ef09bbec815693de881de2fff1d99a43.webp",
+      "source": "data/words-08.json",
+      "masked": "_ny",
+      "manual": true
+    },
+    "sitko": {
+      "path": "assets/managed/da915dc1acdf02fe4d18f7c4805fd4a8f9e5bc5bc8dfa31a26ae0eb1b9132a52.webp",
+      "source": "data/words-08.json",
+      "masked": "_tko",
+      "manual": true
+    },
+    "sito": {
+      "path": "assets/managed/263afbf04700b2f6c25876de44d516c40a0111bc333bc348a4ccd973801a449b.webp",
+      "source": "data/words-08.json",
+      "masked": "_to",
+      "manual": true
+    },
+    "ścieg": {
+      "path": "assets/managed/625daef08456bec56f20061c2f8b53d78ff1deb4440e7c13e90e926279e8713e.webp",
+      "source": "data/words-08.json",
+      "masked": "ś_eg",
+      "manual": true
+    },
+    "ścisk": {
+      "path": "assets/managed/77be7c8b2a88911c6e43bbc605ce303bbdeb4b4f1d16c6b919387d4617c1a997.webp",
+      "source": "data/words-08.json",
+      "masked": "ś_sk",
+      "manual": true
+    },
+    "śledź": {
+      "path": "assets/managed/bc6fc30ef3a0e7a733e764f54a2f0e8466c71bb09332cbb219caccdb1a2954e6.webp",
+      "source": "data/words-08.json",
+      "masked": "_ledź",
+      "manual": true
+    },
+    "ślina": {
+      "path": "assets/managed/9c9f010a0e26ebdf9eb8767efa4261da3c260bed9745d00235bde1ebd43a2d5f.webp",
+      "source": "data/words-08.json",
+      "masked": "_lina",
+      "manual": true
+    },
+    "śliwa": {
+      "path": "assets/managed/fd66571fe03dfa72769ae1c80bf49f4f76a17fcba4efcd6fa47351b8975ce417.jpg",
+      "source": "data/words-08.json",
+      "masked": "_liwa",
+      "manual": true
+    },
+    "ślizg": {
+      "path": "assets/managed/daa51e48de0dc8223cc71d493e396cb61032d3fea6054535cad5b0fb1231e758.jpg",
+      "source": "data/words-08.json",
+      "masked": "_lizg",
+      "manual": true
+    },
+    "ślub": {
+      "path": "assets/managed/635df570eea48a9357f7d45b6ca1c34cf32a342bab36ab77e69f55c83ee13e47.jpg",
+      "source": "data/words-01.json",
+      "masked": "śl_b",
+      "manual": true
+    },
+    "śmiać": {
+      "path": "assets/managed/1645b38b64b5d50b21669a8d0204bbe164590be135568673b883f9623a804ff3.jpg",
+      "source": "data/words-08.json",
+      "masked": "_miać",
+      "manual": true
+    },
+    "śmietnik": {
+      "path": "assets/managed/7ec2820f41033cd048b53569af67866597b1cfe3270b0f268b088da99e35ca21.jpg",
+      "source": "data/words-08.json",
+      "masked": "_mietnik",
+      "manual": true
+    },
+    "śniadanie": {
+      "path": "assets/managed/c9c30817d4dc5c20b1c78ab31ee6e1698396bdd399cd291a7f3dccbb54cdad9d.jpg",
+      "source": "data/words-08.json",
+      "masked": "_niadanie",
+      "manual": true
+    },
+    "śnić": {
+      "path": "assets/managed/12421856e658e6b716dffa5261d1051139d4bb50934dc63691b036569b5a42ca.jpg",
+      "source": "data/words-08.json",
+      "masked": "_nić",
+      "manual": true
+    },
+    "śniegowy": {
+      "path": "assets/managed/ae219c993632be85e26c3bb86383c1069475e52d34c01af76f3058d0a661566e.jpg",
+      "source": "data/words-08.json",
+      "masked": "_niegowy",
+      "manual": true
+    },
+    "śnieżka": {
+      "path": "assets/managed/83c87a31e6b0758d2e896449b9ff30e83a9d7f00e7b417173947b63cdbf4b086.jpg",
+      "source": "data/words-04.json",
+      "masked": "śnie_ka",
+      "manual": true
+    },
+    "śnieżny": {
+      "path": "assets/managed/fdad6552b49bffa7c8f6f304bc4cf49acd9c330c528e5ec6a4a77ed75718f476.jpg",
+      "source": "data/words-04.json",
+      "masked": "śnie_ny",
       "manual": true
     }
   }

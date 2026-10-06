@@ -1,5 +1,5 @@
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
-import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
+import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings} from './response-effects.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
@@ -10,8 +10,8 @@ import { RULES, lightbulbSvg } from './hints.mjs';
 export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pickEffect=createEffectPicker();
-  const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
-  let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
+  const effectConfig=()=>normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS);
+  let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0, previewEffect=null;
   let animations = [], resizeObserver, background, continueDrag, stopFireworks;
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
@@ -171,8 +171,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
       app.classList.toggle('spelling-correct-feedback',correct);
       const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
       bubble?.react(combo?'combo':correct?'correct':'wrong');
-      const {preset}=pickEffect(effects);stopFireworks?.();
-      stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo,target:app.querySelector('.soap-svg')});
+      const forced=previewEffect;previewEffect=null;const picked=forced?.id&&effects.presets[forced.id]?{id:forced.id,preset:effects.presets[forced.id]}:pickEffect(effects);stopFireworks?.();
+      stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset:picked.preset,event:correct?'correct':'wrong',combo,target:app.querySelector('.soap-svg'),originTarget:correct?nodes.feedback:nodes.word,onMetrics:forced?.onMetrics||(()=>{})});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
       if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }
@@ -184,5 +184,5 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
   document.addEventListener('mala-nauka:design',()=>{if(bubble)applyBubbleSettings(bubble,effectConfig());});
-  return { render, reset, setPaused, closeHint };
+  return { render, reset, setPaused, closeHint, setEffectPreview(value){previewEffect=value||null;}, previewReact(event='correct'){bubble?.react(event);}, previewClear(){bubble?.clearReactions();}, stopPreviewEffect(){stopFireworks?.();stopFireworks=null;} };
 }

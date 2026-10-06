@@ -1,4 +1,4 @@
-import {DEFAULT_EFFECTS} from './effect-model.mjs';
+import {DEFAULT_EFFECTS,normalizeEffectsConfig} from './effect-model.mjs';
 import {createBubbleDynamics,polygonRadius,shapeSides} from './bubble-dynamics.mjs';
 let instance = 0;
 const TAU = Math.PI * 2;
@@ -126,13 +126,13 @@ function normalizeTransition(input={}){
 }
 
 export function createBubble(host, options={}) {
-  const design=globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS,b=design.bubble;
+  const design=normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS),b=design.bubble;
   options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,design.particleBudget),...options.transition}};
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
   let frameRate=b.frameRate||24;
-  const dynamics=createBubbleDynamics();let bubbleSettings={...DEFAULT_EFFECTS.bubble,...b},reactionConfig=options.effects||globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
+  const dynamics=createBubbleDynamics();let bubbleSettings={...DEFAULT_EFFECTS.bubble,...b},reactionConfig=normalizeEffectsConfig(options.effects||globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS);
   let tuning = normalizeTuning(options.tuning);
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
@@ -178,6 +178,7 @@ export function createBubble(host, options={}) {
         <rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
+        <g class="soap-electric-layer" opacity="0"><path d="M54 112 94 94 78 134 132 108"/><path d="M270 70 309 105 286 118 340 147"/><path d="M70 292 114 260 101 307 158 278"/><path d="M252 311 294 278 277 322 338 297"/></g>
         <g class="soap-heavy-particles"></g>
         <g class="soap-transition-particles"></g>
       </g>
@@ -215,6 +216,8 @@ export function createBubble(host, options={}) {
     rimMain:host.querySelector('.soap-rim-main'),
     rimSoft:host.querySelector('.soap-rim-soft'),
     rimInner:host.querySelector('.soap-rim-inner'),
+    electric:host.querySelector('.soap-electric-layer'),
+    atmosphere,
   };
   const heavyNodes = {
     refraction:host.querySelector('.soap-refraction-node'),
@@ -708,7 +711,7 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
-  function setBubbleConfig(e=DEFAULT_EFFECTS){reactionConfig=e;bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble};frameRate=bubbleSettings.frameRate||24;setTuning({speed:bubbleSettings.speed});setChaos({amplitude:bubbleSettings.amplitude,orbit:bubbleSettings.orbit});setTransition({duration:bubbleSettings.transitionDuration/1000,blur:bubbleSettings.transitionBlur,sparks:Math.min(bubbleSettings.transitionSparks,e.particleBudget)});const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'};for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',colors[bubbleSettings.skin]||`url(#${id}-rainbow)`);if(reduced.matches)draw(elapsed);}
+  function setBubbleConfig(e=DEFAULT_EFFECTS){e=normalizeEffectsConfig(e);reactionConfig=e;bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble};frameRate=bubbleSettings.frameRate||24;setTuning({speed:bubbleSettings.speed});setChaos({amplitude:bubbleSettings.amplitude,orbit:bubbleSettings.orbit});setTransition({duration:bubbleSettings.transitionDuration/1000,blur:bubbleSettings.transitionBlur,sparks:Math.min(bubbleSettings.transitionSparks,e.particleBudget)});setHeavy({refraction:bubbleSettings.texture*14,particles:Math.min(48,Math.round(bubbleSettings.sparkle*26+bubbleSettings.fizz*10)),energy:.7+bubbleSettings.fizz*1.8,bloom:bubbleSettings.sparkle*.9});effectNodes.atmosphere.setAttribute('opacity',Math.min(1,.15+bubbleSettings.sparkle*.7).toFixed(3));effectNodes.electric.setAttribute('opacity',Math.min(1,bubbleSettings.lightning*.78).toFixed(3));effectNodes.electric.style.setProperty('--electric-intensity',String(bubbleSettings.lightning));const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'};for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',colors[bubbleSettings.skin]||`url(#${id}-rainbow)`);if(reduced.matches)draw(elapsed);}
   const designChanged=event=>setBubbleConfig(event.detail?.effects||DEFAULT_EFFECTS);
   document.addEventListener('mala-nauka:design',designChanged);
   return {

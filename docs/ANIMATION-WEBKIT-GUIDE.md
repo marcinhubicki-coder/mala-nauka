@@ -282,3 +282,7 @@ Inspiracja opisuje wygląd i zachowanie. Nie zobowiązuje nas do używania tej s
 ## Aktualizacja 2026-10-07
 
 Efekty scalono do źródeł Design Studio. Lab używa prawdziwego ekranu gry. Mapa liter jest rasteryzowana jednorazowo, a wiele drobnych punktów porusza się w ograniczonej liczbie grup WAAPI. Wyniki drugiej próby i ograniczenia: [weryfikacja wspólnego runtime](design-system/unified-runtime.md).
+
+### Aktualizacja mechaniki liter 2026-10-07
+
+Starszy budżet 32/64 grup wyżej dotyczy poprzedniej nakładki. Obecna mechanika używa fragmentów rasteryzowanych glifów (domyślnie 20 na literę, limit 576 węzłów łącznie), trzech lokalnych pul i skończonych animacji WAAPI. Szczegóły kontraktu, pomiarów i parametrów: [efekty ekranów i elementów](design-system/surface-effects.md#fragmenty-liter-i-stos-efektów-7-października-2026). Nie włączaj pełnej refrakcji zdjęcia bez osobnego porównania A/B w kompletnej scenie.

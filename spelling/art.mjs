@@ -111,7 +111,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
-    const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    const blocks = [...(effectConfig().wordTransition?.style==='particles'?[]:[nodes.word.firstElementChild]), ...app.querySelectorAll('.answer-ink')].filter(Boolean);
     // Optional dots run beside existing 140/180ms ink motion, without adding delay.
     const particleMotion=wordParticles?.play(direction);
     animations = flowInk(blocks, direction);
@@ -174,7 +174,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
-      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game){fitWord();if(correct)void wordParticles?.play('out');} });
+      const reveal=()=>revealWord(nodes.word.firstElementChild,game.current.answer,reduced.matches).then(()=>{if(session===game)fitWord();});
+      if(effectConfig().wordTransition?.style==='particles'){const feedbackGeneration=generation;game.setPresentationHold(true);void wordParticles?.reveal(game.current.answer,reveal).finally(()=>{if(session===game&&generation===feedbackGeneration)game.setPresentationHold(false);});}else void reveal();
       preloadQueuedScene(game);
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
@@ -197,10 +198,11 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
+    if(!paused)wordParticles?.refresh();
     if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();wordParticles?.clear();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
-  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());});
+  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());wordParticles?.refresh();});
   return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();wordParticles?.clear();} };
 }

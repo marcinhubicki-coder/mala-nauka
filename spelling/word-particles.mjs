@@ -1,100 +1,42 @@
-// One-off particle word transitions; no per-frame canvas or DOM updates.
-const W=288,H=70,MAX_DOTS=64;
-export const DEFAULT_WORD_TRANSITION={style:'particles',dots:64,interactive:false,duration:520,spread:70};
-function ensureCss(){
- if(document.querySelector('link[data-mn-word-particles]'))return;
- const link=document.createElement('link');link.rel='stylesheet';
- link.dataset.mnWordParticles='1';
- link.href=new URL('./word-particles.css',import.meta.url).href;document.head.append(link);
+// Persistent, bounded glyph tiles. Only finite WAAPI motion; no JS frame loop.
+export const DEFAULT_WORD_TRANSITION={style:'particles',dots:64,interactive:false,piecesPerLetter:20,duration:900,spread:34,drift:240,jitter:.45,pieceSize:5,chromatic:0,randomness:.75};
+export const MAX_WORD_PIECES=576;
+const cache=new Map();
+function ensureCss(){if(document.querySelector('link[data-mn-word-particles]'))return;const link=document.createElement('link');link.rel='stylesheet';link.dataset.mnWordParticles='1';link.href=new URL('./word-particles.css',import.meta.url).href;document.head.append(link);}
+export function sampleWordPoints(label,dots=20,fontFamily='system-ui',fontSize=46){
+ const key=[label,dots,fontFamily,fontSize].join('|');if(cache.has(key))return cache.get(key);
+ const canvas=document.createElement('canvas');canvas.width=Math.ceil(fontSize*1.5);canvas.height=Math.ceil(fontSize*1.6);const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)return [];
+ ctx.font='800 '+fontSize+'px '+fontFamily;ctx.textBaseline='middle';ctx.fillText(label,2,canvas.height/2);const data=ctx.getImageData(0,0,canvas.width,canvas.height).data,all=[];
+ for(let y=0;y<canvas.height;y+=2)for(let x=0;x<canvas.width;x+=2)if(data[(y*canvas.width+x)*4+3]>100)all.push([x-2,y-canvas.height/2]);
+ const count=Math.min(48,Math.max(12,Math.round(dots))),points=[];
+ // Farthest-point sampling preserves outlines and counters even at low density.
+ if(all.length){points.push(all[Math.floor(all.length/2)]);const distance=all.map(()=>Infinity);for(let i=1;i<count&&i<all.length;i++){let best=0;for(let j=0;j<all.length;j++){const p=all[j],q=points.at(-1);distance[j]=Math.min(distance[j],(p[0]-q[0])**2+(p[1]-q[1])**2);if(distance[j]>distance[best])best=j;}points.push(all[best]);}}
+ if(cache.size>=80)cache.delete(cache.keys().next().value);cache.set(key,points);return points;
 }
-export function sampleWordPoints(label,dots=40,fontFamily='system-ui'){
- const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
- const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)return [];
- const text=String(label||'').replaceAll('_','·').slice(0,22);
- if(!text.trim())return [];
- let size=46;
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';
- const setFont=()=>{ctx.font='800 '+size+'px '+fontFamily;};
- setFont();
- while(size>19&&ctx.measureText(text).width>W-18){size-=2;setFont();}
- ctx.fillText(text,W/2,H/2+3);
- const pixels=ctx.getImageData(0,0,W,H).data,all=[];
- for(let y=4;y<H-3;y+=3)for(let x=4;x<W-3;x+=3){
-  if(pixels[(y*W+x)*4+3]>112)all.push([x/W,y/H]);
- }
- const count=Math.min(MAX_DOTS,Math.max(12,Math.trunc(dots)||40)),cols=Math.ceil(count/4),rows=4,groups=new Map();
- for(const [x,y]of all){const col=Math.min(cols-1,Math.floor(x*cols)),row=Math.min(rows-1,Math.floor(y*rows)),key=row*cols+col;if(!groups.has(key))groups.set(key,{x:(col+.5)/cols,y:(row+.5)/rows,points:[]});groups.get(key).points.push([x,y]);}
- return [...groups.values()].slice(0,count).map(g=>[g.x,g.y,g.points]);
-
-}
-function wordText(node){
- const before=node?.querySelector('.word-before')?.textContent||'';
- const after=node?.querySelector('.word-after')?.textContent||'';
- return before+(node?.querySelector('.revealed-chunk')?.textContent||'·')+after;
-}
+function glyphTiles(letter,count,font,ink){const key=['tiles',letter,count,font.fontWeight,font.fontSize,font.fontFamily,ink].join('|');if(cache.has(key))return cache.get(key);const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),size=parseFloat(font.fontSize);ctx.font=`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;const advance=ctx.measureText(letter).width;canvas.width=Math.ceil(advance+4);canvas.height=Math.ceil(size*1.5);ctx.font=`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;ctx.textBaseline='middle';ctx.fillStyle=ink;ctx.fillText(letter,2,canvas.height/2);const bitmap=canvas.toDataURL();let cols=1;for(let i=1;i<=Math.sqrt(count*canvas.width/canvas.height)+1;i++)if(count%i===0)cols=i;const rows=count/cols,w=canvas.width/cols,h=canvas.height/rows,tiles=Array.from({length:count},(_,i)=>({x:(i%cols+.5)*w-2,y:(Math.floor(i/cols)+.5)*h-canvas.height/2,w,h,bx:-(i%cols)*w,by:-Math.floor(i/cols)*h,bitmap}));const value={tiles,advance};if(cache.size>=80)cache.delete(cache.keys().next().value);cache.set(key,value);return value;}
+export function localPieceRoute(from,to,settings,random=Math.random){const angle=random()*Math.PI*2,reach=settings.spread*(.25+random()*.75)*settings.randomness;return {x:(from.x+to.x)/2+Math.cos(angle)*reach,y:(from.y+to.y)/2+Math.sin(angle)*reach};}
 export function createWordParticles(host,getEffects=()=>null){
- ensureCss();
- const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
- const oldPosition=host.style.position;
- if(getComputedStyle(host).position==='static')host.style.position='relative';
- let destroyed=false,current=null,animations=[],token=0,lastTouch=0;
- const clear=()=>{
-  token++;
-  for(const a of animations){try{a.cancel()}catch{}}
-  animations=[];current?.remove();current=null;
- };
- const enabled=()=>{
-  const settings={...DEFAULT_WORD_TRANSITION,...(getEffects()?.wordTransition||{})};
-  return settings.style==='particles'&&!reduced.matches&&!document.hidden?settings:null;
- };
- const play=(direction='in',pointer)=>{
-  const settings=enabled(),word=host.querySelector('.word');
-  if(!settings||!word||destroyed)return Promise.resolve(false);
-  clear();
-  const own=token,box=word.getBoundingClientRect(),parent=host.getBoundingClientRect();
-  if(box.width<10||box.height<10||parent.width<10)return Promise.resolve(false);
-  const dots=sampleWordPoints(wordText(word),webkit?Math.min(32,settings.dots):settings.dots,getComputedStyle(word).fontFamily);
-  if(!dots.length)return Promise.resolve(false);
-  const layer=document.createElement('div');layer.className='mn-word-particles';layer.setAttribute('aria-hidden','true');
-  layer.style.left=(box.left-parent.left)+'px';layer.style.top=(box.top-parent.top)+'px';
-  layer.style.width=box.width+'px';layer.style.height=box.height+'px';
-  current=layer;
-  const entering=direction==='in',spread=Math.min(160,Math.max(10,settings.spread||70));
-  const px=pointer?(pointer.clientX-box.left)/Math.max(1,box.width):.5;
-  const py=pointer?(pointer.clientY-box.top)/Math.max(1,box.height):.5;
-  const frag=document.createDocumentFragment(),frames=[];
-  for(let i=0;i<dots.length;i++){
-   const [x,y,points]=dots[i],dot=document.createElement('i');
-   dot.style.left=x*100+'%';dot.style.top=y*100+'%';
-   dot.style.background='transparent';dot.style.color=getComputedStyle(word).color;
-   dot.style.boxShadow=points.map(([px,py])=>`${((px-x)*box.width).toFixed(1)}px ${((py-y)*box.height).toFixed(1)}px 0 currentColor`).join(',');
-   frag.append(dot);
-   const angle=i*2.39996;
-   let dx=Math.cos(angle)*(spread+(i%7)*2),dy=Math.sin(angle)*(spread+(i%5)*2);
-   if(direction==='repel'){
-    const vx=x-px,vy=y-py,dist=Math.hypot(vx,vy),power=Math.max(0,1-dist/.75);
-    dx=power*38*vx/Math.max(.08,dist);
-    dy=power*38*vy/Math.max(.08,dist);
-   }
-   const move='translate3d('+dx+'px,'+dy+'px,0) scale(.52)';
-   frames.push({dot,
-    from:{opacity:entering?0:.9,transform:entering?move:'translate3d(0,0,0) scale(1)'},
-    to:{opacity:entering?.85:0,transform:entering?'translate3d(0,0,0) scale(1)':move}});
-  }
-  layer.append(frag);host.append(layer);
-  const real=frames.map(({dot,from,to})=>dot.animate([from,to],{
-   duration:Math.min(1200,Math.max(160,settings.duration||520)),
-   easing:'cubic-bezier(.16,.72,.25,1)',fill:'both',
-  }));
-  animations=real;
-  return Promise.all(real.map(a=>a.finished.catch(()=>{}))).then(()=>{
-   if(!destroyed&&token===own)clear();
-   return true;
-  });
- };
- return {play,clear,destroy(){
-  destroyed=true;clear();
-  host.style.position=oldPosition;
- }};
+ ensureCss();const reduced=matchMedia('(prefers-reduced-motion: reduce)');let layer,rows=[],animations=[],generation=0,destroyed=false;
+ const settings=()=>({...DEFAULT_WORD_TRANSITION,...getEffects()?.wordTransition});
+ const enabled=()=>settings().style==='particles'&&!reduced.matches&&!document.hidden&&!destroyed;
+ const cancel=()=>{generation++;animations.forEach(a=>a.cancel());animations=[];};
+ function restore(){host.querySelector('.word')?.classList.remove('mn-particle-ink');}
+ function clear(){cancel();layer?.remove();layer=null;rows=[];restore();}
+ function ensure(){if(layer)return;layer=document.createElement('div');layer.className='mn-word-particles';layer.dataset.mnDecoration='1';layer.setAttribute('aria-hidden','true');document.body.append(layer);}
+ function targets(){const w=host.querySelector('.word');if(!w)return [];const cfg=settings(),css=getComputedStyle(w),out=[];
+  for(const [side,selector]of [['left','.word-before'],['middle','.revealed-chunk'],['right','.word-after']]){const node=w.querySelector(selector);if(!node)continue;const font=getComputedStyle(node),size=parseFloat(font.fontSize),rect=node.getBoundingClientRect(),text=node.textContent;let x=rect.left;for(const letter of text){const glyph=glyphTiles(letter,Math.round(cfg.piecesPerLetter),font,css.color);for(const tile of glyph.tiles){if(out.length>=MAX_WORD_PIECES)break;out.push({...tile,side,x:x+tile.x,y:rect.top+rect.height/2+tile.y,color:css.color,letter});}x+=glyph.advance;}}
+  return out;
+ }
+ async function assemble(origin){if(!enabled()){clear();return false;}cancel();ensure();const own=generation,cfg=settings(),points=targets(),old=[...rows],next=[];const groups={left:old.filter(r=>r.side==='left'),right:old.filter(r=>r.side==='right'),middle:old.filter(r=>r.side==='middle')};
+  for(let i=0;i<points.length;i++){const point=points[i],pool=groups[point.side];let closest=-1,distance=120**2;for(let j=0;j<pool.length;j++){const d=(pool[j].x-point.x)**2+(pool[j].y-point.y)**2;if(d<distance){distance=d;closest=j;}}let row=closest<0?null:pool.splice(closest,1)[0];if(!row){const dot=document.createElement('i');layer.append(dot);const angle=Math.random()*Math.PI*2,r=cfg.spread*.5;row={dot,side:point.side,x:origin&&point.side==='middle'?origin.x+Math.cos(angle)*origin.radius:point.x+Math.cos(angle)*r,y:origin&&point.side==='middle'?origin.y+Math.sin(angle)*origin.radius:point.y+Math.sin(angle)*r};}const {dot}=row;dot.dataset.side=point.side;dot.style.background=`url("${point.bitmap}") ${point.bx}px ${point.by}px no-repeat`;dot.style.width=point.w+'px';dot.style.height=point.h+'px';dot.style.setProperty('--word-piece-scale',String(Math.min(1.2,Math.max(.7,cfg.pieceSize/5))));dot.style.setProperty('--word-jitter',cfg.jitter+'px');dot.style.setProperty('--word-delay',(-i*.13)+'s');dot.style.setProperty('--word-bitmap',`url("${point.bitmap}")`);dot.style.setProperty('--word-mask-position',point.bx+'px '+point.by+'px');dot.style.setProperty('--word-aberration',cfg.chromatic+'px');dot.style.setProperty('--word-chromatic-opacity',cfg.chromatic?'.35':'0');
+   const middle=localPieceRoute(row,point,cfg),start=`translate(${row.x}px,${row.y}px)`,end=`translate(${point.x}px,${point.y}px)`;dot.style.transform=end;const a=dot.animate([{transform:start,opacity:.7},{transform:`translate(${middle.x}px,${middle.y}px) rotate(${(Math.random()-.5)*70}deg)`,opacity:.6,offset:.35},{transform:end,opacity:1}],{duration:cfg.duration+cfg.drift,delay:Math.random()*80,easing:'cubic-bezier(.2,.65,.25,1)',fill:'none'});animations.push(a);next.push({...point,dot});}
+  const kept=new Set(next.map(r=>r.dot));for(const row of old)if(!kept.has(row.dot)){if(layer.childElementCount>MAX_WORD_PIECES){row.dot.remove();continue;}const a=row.dot.animate([{opacity:.8},{opacity:0,transform:`translate(${row.x}px,${row.y-12}px) scale(.2)`}],{duration:Math.min(450,cfg.duration)});animations.push(a);a.finished.catch(()=>{}).then(()=>{if(!kept.has(row.dot))row.dot.remove();});}
+  rows=next;host.querySelector('.word')?.classList.add('mn-particle-ink');await Promise.all(animations.map(a=>a.finished.catch(()=>{})));if(own===generation)animations=[];return true;
+ }
+ async function disperse(){if(!enabled())return false;cancel();ensure();const cfg=settings(),own=generation;if(!rows.length)await assemble();if(own!==generation&&rows.length===0)return false;cancel();const run=generation;for(const row of rows){const end=localPieceRoute(row,row,cfg);const a=row.dot.animate([{transform:`translate(${row.x}px,${row.y}px)`,opacity:1},{transform:`translate(${end.x}px,${end.y}px) rotate(${(Math.random()-.5)*90}deg)`,opacity:.65}],{duration:cfg.duration*.4+cfg.drift,easing:'ease-out',fill:'none'});animations.push(a);row.x=end.x;row.y=end.y;row.dot.style.transform=`translate(${end.x}px,${end.y}px)`;}
+  await Promise.all(animations.map(a=>a.finished.catch(()=>{})));if(run===generation)animations=[];return true;
+ }
+ async function reveal(answer,change){const gap=host.querySelector('.gap')?.getBoundingClientRect();const origin=gap?{x:gap.left+gap.width/2,y:gap.top+gap.height/2,radius:gap.width*.42}:null;await change();if(destroyed)return;return assemble(origin);}
+ const visibility=()=>{for(const a of animations)document.hidden?a.pause():a.play();layer?.classList.toggle('mn-particle-paused',document.hidden);};document.addEventListener('visibilitychange',visibility);const resize=()=>{if(rows.length)void assemble();};window.addEventListener('resize',resize);const preference=()=>{if(reduced.matches)clear();else void assemble();};reduced.addEventListener('change',preference);
+ return {play:direction=>direction==='out'?disperse():assemble(),reveal,clear,refresh(){if(enabled())void assemble();else clear();},destroy(){destroyed=true;clear();document.removeEventListener('visibilitychange',visibility);window.removeEventListener('resize',resize);reduced.removeEventListener('change',preference);}};
 }

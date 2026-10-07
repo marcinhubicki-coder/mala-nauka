@@ -1,3 +1,4 @@
+import {polygonRadius,shapeSides} from './bubble-dynamics.mjs';
 import {DEFAULT_EFFECTS,normalizeEffectsConfig} from './effect-model.mjs';
 
 function ensureStyles(){
@@ -62,6 +63,8 @@ export function createHTMLBubble(host){
   while(cache.size>CACHE_LIMIT)cache.delete(cache.keys().next().value);
   return promise;
  };
+ let shapeAnimation;
+ const contour=(shape,morph=1)=>'polygon('+Array.from({length:48},(_,i)=>{const a=i/48*Math.PI*2,c=Math.cos(a),s=Math.sin(a),rad=polygonRadius(a,shapeSides(shape),46)/100;const baseX=Math.sign(c)*Math.pow(Math.abs(c),.61)*.48,baseY=Math.sign(s)*Math.pow(Math.abs(s),.61)*.48;return ((.5+baseX*(1-morph)+c*rad*morph)*100).toFixed(2)+'% '+((.5+baseY*(1-morph)+s*rad*morph)*100).toFixed(2)+'%';}).join(',')+')';
  function setBubbleConfig(next){
   config=normalizeEffectsConfig(next||DEFAULT_EFFECTS);if(!config.bubble.transforms)config={...config,reactions:Object.fromEntries(Object.entries(config.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};
   const b=config.bubble;
@@ -71,12 +74,14 @@ export function createHTMLBubble(host){
   root.dataset.skin=b.skin||'rainbow';
   root.dataset.rim=b.rim||'classic';
    root.dataset.liquid=b.liquid||'none';
-  const shape=silhouette(b.transforms?b.shape:'bubble');
+  shapeAnimation?.cancel();shapeAnimation=null;
+  const shape=b.transforms?contour(b.shape==='cycle'?'bubble':b.shape,b.shape==='bubble'?0:b.morph):silhouette('bubble');
+  if(b.transforms&&b.shape==='cycle'&&!reduced.matches){shapeAnimation=shell.animate([0,10,0,5,0].map((n,i)=>({clipPath:contour(n===10?'decagon':n===5?'pentagon':'bubble',n?b.morph:0),offset:i/4})),{duration:6000,iterations:Infinity,easing:'ease-in-out'});}
   shell.style.clipPath=shape;
   shell.style.borderRadius=shape==='none'?'34% 33% 35% 32% / 33% 35% 32% 34%':'0';
   picture.style.borderRadius=shape==='none'?'inherit':'0';
   const quiet=paused||reduced.matches;
-  root.classList.toggle('mn-soap-paused',quiet);
+  root.classList.toggle('mn-soap-paused',quiet);pause(paused);
   return config;
  }
  function clearReactions(){
@@ -91,7 +96,9 @@ export function createHTMLBubble(host){
    [{transform:'translate3d(0,0,0) rotate(0deg)'},{transform:'translate3d(-5px,1px,0) rotate(-2deg)'},{transform:'translate3d(5px,-1px,0) rotate(2deg)'},{transform:'translate3d(0,0,0) rotate(0deg)'}]:
    [{transform:'translate3d(0,0,0) scale(1)'},{transform:'translate3d(0,-5px,0) scale(1.045)'},{transform:'translate3d(0,0,0) scale(1)'}];
   const a=shell.animate(keyframes,{duration:event==='wrong'?550:710,easing:'cubic-bezier(.2,.6,.25,1)'});
-  reactions=[a];a.finished.catch(()=>{}).finally(()=>{if(reactions[0]===a)clearReactions()});
+  reactions=[a];
+  const row=config.reactions[event];if(config.bubble.transforms&&row?.shape!=='bubble'&&row?.morph>0){shapeAnimation?.pause();const frames=[0,.28,.55,.8,1].map(t=>({offset:t,clipPath:contour(row.shape==='cycle'?(t<.5?'decagon':'pentagon'):row.shape,Math.sin(t*Math.PI)*row.morph)}));const m=shell.animate(frames,{duration:row.duration,easing:'ease-in-out'});reactions.push(m);m.finished.catch(()=>{}).finally(()=>{if(!destroyed&&!paused)shapeAnimation?.play();});}
+  Promise.all(reactions.map(a=>a.finished.catch(()=>{}))).then(()=>{if(reactions[0]===a)clearReactions()});
  }
  async function transitionToScene(url,scene,first=false){
   if(destroyed)return false;
@@ -149,7 +156,7 @@ export function createHTMLBubble(host){
   setEffects(){return {};},
   getEffects(){return {};},
   destroy(){
-   destroyed=true;request++;clearReactions();reduced.removeEventListener('change',preference);
+   destroyed=true;request++;shapeAnimation?.cancel();clearReactions();reduced.removeEventListener('change',preference);
    cache.clear();root.remove();
   }
  };

@@ -26,8 +26,8 @@ test('particle word motion preserves the actual text and never animates by a JS 
  const art=await read('spelling/art.mjs');
  const css=await read('spelling/word-particles.css');
  const studio=await read('design-system/studio-play.mjs');
- assert.match(js,/MAX_DOTS=64/);
- assert.match(js,/webkit\?Math\.min\(32,settings.dots\)/);
+ assert.match(js,/MAX_WORD_PIECES=576/);
+ assert.match(js,/piecesPerLetter:20/);
  assert.match(js,/createElement\('canvas'\)/);
  assert.match(js,/getImageData/);
  assert.doesNotMatch(js,/(requestAnimationFrame|setInterval|\.setInterval)\s*\(/);

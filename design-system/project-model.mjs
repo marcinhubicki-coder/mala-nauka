@@ -1,7 +1,8 @@
+import {normalizeEffectsConfig} from '../spelling/effect-model.mjs';
 import {DISCOVERY_RULES,validateDiscoveryRules} from '../shared/discovery-model.mjs';
 import {validateBlueprint} from '../shared/component-recipes.mjs';
 import {validateTokens} from './validation.mjs';
-const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides'];
+const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides','elementOrder','studioPreferences','elementAnimations','logoTransition','screenEffects'];
 export const designFields=config=>Object.fromEntries(DESIGN_FIELDS.filter(k=>config[k]!==undefined).map(k=>[k,structuredClone(config[k])]));
 export function editableProjectConfig(config){
   const result={...structuredClone(config),...structuredClone(config.project?.designDraft||{})};
@@ -11,15 +12,14 @@ export function editableProjectConfig(config){
 }
 export function projectContract(local,committed){
   if(!local.project)return structuredClone(local);
-  const result=structuredClone(local),p=result.project;p.designDraft=designFields(local);
+  const result=structuredClone(local),p=result.project;result.effects=normalizeEffectsConfig(result.effects);p.designDraft=designFields(local);
   const release=p.releases.find(r=>r.id===p.activeRelease);
   const published=release&&p.activeRelease!==committed.project?.activeRelease;
   if(published){if(release.status!=='published')throw Error('Najpierw zatwierdź pilot.');approveRelease(release);if(release.fingerprint!==fingerprint(release.snapshot))throw Error('Wersja testowa zmieniła się. Zapisz nową wersję i powtórz kontrolę.');}
-  const design=published?release.snapshot.design:committed;
-  for(const k of DESIGN_FIELDS){if(design[k]!==undefined)result[k]=structuredClone(design[k]);else delete result[k];}
+  // A Git save publishes the editable design to every preview. Production
+  // promotion is a separate branch operation, never a second design contract.
   if(published)result.copyOverrides=structuredClone(release.snapshot.copy);
-  else if(committed.copyOverrides)result.copyOverrides=structuredClone(committed.copyOverrides);
-  else delete result.copyOverrides;
+  delete p.designDraft;
   return result;
 }
 export const PROJECT_TABS={plan:'Plan',screens:'Ekrany i flow',copy:'Teksty',learning:'Postępy i nagrody',test:'Test i dane',release:'Wersje i wydanie'};

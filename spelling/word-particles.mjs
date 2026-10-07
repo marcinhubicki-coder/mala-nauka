@@ -1,6 +1,6 @@
 // One-off particle word transitions; no per-frame canvas or DOM updates.
 const W=288,H=70,MAX_DOTS=64;
-export const DEFAULT_WORD_TRANSITION={style:'ink',dots:40,interactive:true};
+export const DEFAULT_WORD_TRANSITION={style:'particles',dots:64,interactive:false,duration:520,spread:70};
 function ensureCss(){
  if(document.querySelector('link[data-mn-word-particles]'))return;
  const link=document.createElement('link');link.rel='stylesheet';
@@ -22,14 +22,15 @@ export function sampleWordPoints(label,dots=40,fontFamily='system-ui'){
  for(let y=4;y<H-3;y+=3)for(let x=4;x<W-3;x+=3){
   if(pixels[(y*W+x)*4+3]>112)all.push([x/W,y/H]);
  }
- const count=Math.min(MAX_DOTS,Math.max(12,Math.trunc(dots)||40),all.length);
- if(!count)return [];
- return Array.from({length:count},(_,i)=>all[Math.floor((i+.5)*all.length/count)]);
+ const count=Math.min(MAX_DOTS,Math.max(12,Math.trunc(dots)||40)),cols=Math.ceil(count/4),rows=4,groups=new Map();
+ for(const [x,y]of all){const col=Math.min(cols-1,Math.floor(x*cols)),row=Math.min(rows-1,Math.floor(y*rows)),key=row*cols+col;if(!groups.has(key))groups.set(key,{x:(col+.5)/cols,y:(row+.5)/rows,points:[]});groups.get(key).points.push([x,y]);}
+ return [...groups.values()].slice(0,count).map(g=>[g.x,g.y,g.points]);
+
 }
 function wordText(node){
  const before=node?.querySelector('.word-before')?.textContent||'';
  const after=node?.querySelector('.word-after')?.textContent||'';
- return before+'·'+after;
+ return before+(node?.querySelector('.revealed-chunk')?.textContent||'·')+after;
 }
 export function createWordParticles(host,getEffects=()=>null){
  ensureCss();
@@ -59,14 +60,15 @@ export function createWordParticles(host,getEffects=()=>null){
   layer.style.left=(box.left-parent.left)+'px';layer.style.top=(box.top-parent.top)+'px';
   layer.style.width=box.width+'px';layer.style.height=box.height+'px';
   current=layer;
-  const entering=direction==='in',spread=direction==='repel'?18:14;
+  const entering=direction==='in',spread=Math.min(160,Math.max(10,settings.spread||70));
   const px=pointer?(pointer.clientX-box.left)/Math.max(1,box.width):.5;
   const py=pointer?(pointer.clientY-box.top)/Math.max(1,box.height):.5;
   const frag=document.createDocumentFragment(),frames=[];
   for(let i=0;i<dots.length;i++){
-   const [x,y]=dots[i],dot=document.createElement('i');
+   const [x,y,points]=dots[i],dot=document.createElement('i');
    dot.style.left=x*100+'%';dot.style.top=y*100+'%';
-   dot.style.background=['#fff0c4','#84cff8','#b8a2ff','#ffb5e0'][i%4];
+   dot.style.background='transparent';dot.style.color=getComputedStyle(word).color;
+   dot.style.boxShadow=points.map(([px,py])=>`${((px-x)*box.width).toFixed(1)}px ${((py-y)*box.height).toFixed(1)}px 0 currentColor`).join(',');
    frag.append(dot);
    const angle=i*2.39996;
    let dx=Math.cos(angle)*(spread+(i%7)*2),dy=Math.sin(angle)*(spread+(i%5)*2);
@@ -82,7 +84,7 @@ export function createWordParticles(host,getEffects=()=>null){
   }
   layer.append(frag);host.append(layer);
   const real=frames.map(({dot,from,to})=>dot.animate([from,to],{
-   duration:direction==='repel'?220:entering?170:135,
+   duration:Math.min(1200,Math.max(160,settings.duration||520)),
    easing:'cubic-bezier(.16,.72,.25,1)',fill:'both',
   }));
   animations=real;
@@ -91,14 +93,8 @@ export function createWordParticles(host,getEffects=()=>null){
    return true;
   });
  };
- const touch=e=>{
-  if(!enabled()?.interactive||e.pointerType==='mouse'&&e.button!==0)return;
-  if(performance.now()-lastTouch<260)return;
-  lastTouch=performance.now();void play('repel',e);
- };
- host.addEventListener('pointerdown',touch,{passive:true});
  return {play,clear,destroy(){
-  destroyed=true;clear();host.removeEventListener('pointerdown',touch);
+  destroyed=true;clear();
   host.style.position=oldPosition;
  }};
 }

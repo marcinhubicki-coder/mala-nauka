@@ -1,4 +1,0 @@
-/* Full Design Studio effects enabled in Test PWA; WebKit safety guard. */
-@supports (-webkit-touch-callout: none){
- .screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-}

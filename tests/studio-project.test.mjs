@@ -49,17 +49,17 @@ test('broken navigation is a release blocker; drafts may keep incomplete screens
  const p=discoveryProject();p.screens.push(newScreen());assert.doesNotThrow(()=>validateProject(p));
  p.screens[0].elements[3].action.target='gone';assert.ok(projectIssues(p).some(i=>i.level==='error'));assert.throws(()=>makeRelease(p,config));
 });
-test('saved preview freezes content and rules; draft-only Git save leaves active design untouched',()=>{
+test('saved preview freezes content and rules; Git save shares the active design with previews',()=>{
  const p=discoveryProject(),local={...structuredClone(config),project:p};const r=makeRelease(p,local);p.releases.push(r);const old=r.snapshot.screens[0].elements[0].text;
  p.screens[0].elements[0].text='Nowa treść';p.rules.memoryEvery=8;local.tokens.jelly.height=60;
  assert.equal(r.snapshot.screens[0].elements[0].text,old);assert.equal(r.snapshot.rules.memoryEvery,7);
- const contract=projectContract(local,config);assert.equal(contract.tokens.jelly.height,config.tokens.jelly.height);assert.equal(contract.project.designDraft.tokens.jelly.height,60);assert.equal(editableProjectConfig(contract).tokens.jelly.height,60);assert.doesNotThrow(()=>validateConfig(contract));
- const legacy=structuredClone(contract);delete legacy.project.designDraft.tokens.sliderWrong;assert.equal(editableProjectConfig(legacy).tokens.sliderWrong.springDuration,405);
+ const contract=projectContract(local,config);assert.equal(contract.tokens.jelly.height,60);assert.equal(contract.project.designDraft,undefined);assert.equal(editableProjectConfig(contract).tokens.jelly.height,60);assert.doesNotThrow(()=>validateConfig(contract));
+ const legacy=structuredClone(contract);legacy.project.designDraft={tokens:{jelly:{height:60}}};assert.equal(editableProjectConfig(legacy).tokens.sliderWrong.springDuration,config.tokens.sliderWrong.springDuration);
 });
 test('four checks and resolved feedback are required before publishing frozen design',()=>{
  const p=discoveryProject(),local={...structuredClone(config),project:p};local.tokens.jelly.height=60;const r=makeRelease(p,local);p.releases.push(r);
  assert.throws(()=>approveRelease(r));assert.throws(()=>publishRelease(p,r.id));r.checks={flow:true,learning:true,content:true,mobile:true};r.reviews=[{text:'Popraw napis',screen:p.entry,status:'open'}];assert.throws(()=>approveRelease(r));r.reviews[0].status='addressed';p.releases[0]=approveRelease(r);local.project=publishRelease(p,r.id);
- local.tokens.jelly.height=70;const contract=projectContract(local,config);assert.equal(contract.tokens.jelly.height,60);assert.equal(contract.project.designDraft.tokens.jelly.height,70);
+ local.tokens.jelly.height=70;const contract=projectContract(local,config);assert.equal(contract.tokens.jelly.height,70);assert.equal(contract.project.designDraft,undefined);
  const forged=structuredClone(local);forged.project.releases[0].checks.mobile=false;assert.throws(()=>projectContract(forged,config));
 });
 test('import rejects mutated frozen versions, missing controls, traversal assets and unsafe nested keys',()=>{

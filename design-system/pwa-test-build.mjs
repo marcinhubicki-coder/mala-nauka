@@ -5,10 +5,10 @@ export const TEST_PWA_BRANCH='studio/pwa-test';
 export function optimizedTestConfig(saved){
  const draft=saved.project?.designDraft||{};
  const config=structuredClone({...saved,...draft});
+ if(config.project)delete config.project.designDraft;
  const effects=normalizeEffectsConfig(config.effects||DEFAULT_EFFECTS);
  const original={frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness};
- // Keep the full Design Studio effect settings. iOS/WebKit safety is handled
- // by the HTML/CSS bubble renderer and the non-blurring mobile overlay CSS.
+ // Preserve full design effects. On mobile WebKit use the compositor bubble and restrained overlays.
  config.effects=effects;
  validateConfig(config);
  const hidden=[];
@@ -45,7 +45,7 @@ export function optimizeRuntimeSource(source){
  return source.replace(target,replacement);
 }
 export function optimizeIndexHTML(source){if(!source.includes('</head>'))throw Error('Brak nagłówka PWA.');return source.replace('</head>','<link rel="stylesheet" href="pwa-optimized.css">\n<meta name="mn-pwa-build" content="optimized-test">\n</head>');}
-export const OPTIMIZED_CSS=`/* Test PWA: full effects, but no full-screen backdrop blur in mobile WebKit. */
+export const OPTIMIZED_CSS=`/* Test PWA: full effects, no backdrop blur on mobile WebKit. */
 @supports (-webkit-touch-callout: none){
  .screen-atmosphere .ambient-finish{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }

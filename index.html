@@ -11,7 +11,7 @@
 <title>Mała Nauka</title>
 
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="preload" href="assets/brand/player-logo.svg" as="image" type="image/svg+xml">
+
 <link rel="preload" href="assets/brand/player-logo-3d.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="assets/fonts/nunito-variable.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="assets/home/home-retina.webp" as="image" type="image/webp">
@@ -28,33 +28,13 @@
 <script type="module" src="app.js?v=20261006-toggle-muted-v4"></script>
 <script type="module" src="debug-tools.js?v=8-settings"></script>
 <link rel="stylesheet" href="home-screen.css?v=20260930-release">
-<script src="pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="pwa-viewport.css?v=6-keyboard"><link rel="icon" href="assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260930"><link rel="stylesheet" href="shared/components.css?v=1"><script type="module" src="design-system/bridge.mjs"></script><link rel="stylesheet" href="pwa-optimized.css">
-<meta name="mn-pwa-build" content="optimized-test">
+<script src="pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="pwa-viewport.css?v=6-keyboard"><link rel="icon" href="assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260930"><link rel="stylesheet" href="shared/components.css?v=1"><script type="module" src="design-system/bridge.mjs"></script>
+
 <script type="module" src="animation-diagnostics.mjs"></script>
 <script type="module" src="boot-ui.mjs"></script>
 </head>
 <body>
-<div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Ładowanie Małej Nauki">
-  <div class="mn-boot-orbit" aria-hidden="true">
-    <i class="mn-boot-ball mn-boot-ball-blue" style="--orbit-x:50%;--orbit-y:10%;--burst-x:-30vmin;--burst-y:-60vmin"></i>
-    <i class="mn-boot-ball mn-boot-ball-pink" style="--orbit-x:88%;--orbit-y:37%;--burst-x:58vmin;--burst-y:-32vmin"></i>
-    <i class="mn-boot-ball mn-boot-ball-yellow" style="--orbit-x:74%;--orbit-y:83%;--burst-x:54vmin;--burst-y:55vmin"></i>
-    <i class="mn-boot-ball mn-boot-ball-green" style="--orbit-x:26%;--orbit-y:83%;--burst-x:-52vmin;--burst-y:54vmin"></i>
-    <i class="mn-boot-ball mn-boot-ball-purple" style="--orbit-x:12%;--orbit-y:37%;--burst-x:-60vmin;--burst-y:-31vmin"></i>
-  </div>
-  <div class="mn-boot-rainbow" aria-hidden="true">
-    <i style="--fly-x:-76vmin;--fly-y:-53vmin;--fly-rotate:-32deg;--fly-delay:0ms;--ray-color:#27aaf5"></i>
-    <i style="--fly-x:-23vmin;--fly-y:-98vmin;--fly-rotate:-12deg;--fly-delay:35ms;--ray-color:#61cfe8"></i>
-    <i style="--fly-x:40vmin;--fly-y:-87vmin;--fly-rotate:20deg;--fly-delay:75ms;--ray-color:#8d68e8"></i>
-    <i style="--fly-x:84vmin;--fly-y:-42vmin;--fly-rotate:40deg;--fly-delay:15ms;--ray-color:#ef8cce"></i>
-    <i style="--fly-x:95vmin;--fly-y:15vmin;--fly-rotate:82deg;--fly-delay:65ms;--ray-color:#ffcc45"></i>
-    <i style="--fly-x:61vmin;--fly-y:79vmin;--fly-rotate:120deg;--fly-delay:30ms;--ray-color:#85d473"></i>
-    <i style="--fly-x:1vmin;--fly-y:105vmin;--fly-rotate:170deg;--fly-delay:90ms;--ray-color:#28baf0"></i>
-    <i style="--fly-x:-70vmin;--fly-y:69vmin;--fly-rotate:-135deg;--fly-delay:45ms;--ray-color:#ac83f4"></i>
-    <i style="--fly-x:-93vmin;--fly-y:10vmin;--fly-rotate:-89deg;--fly-delay:80ms;--ray-color:#ffae77"></i>
-  </div>
-  <div class="mn-boot-whiteout" aria-hidden="true"></div>
-</div>
+<div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Ładowanie Małej Nauki"></div>
 <main id="app" tabindex="-1"><p class="loading" role="status">Przygotowujemy małe przygody…</p></main>
 <p id="storage-notice" class="notice" role="status" hidden>Zapisywanie jest niedostępne. Wyniki zostaną tylko do zamknięcia strony.</p>
 <dialog id="modal" aria-labelledby="modal-title"></dialog>

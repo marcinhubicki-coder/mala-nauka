@@ -1,72 +1,26 @@
-import {designReady} from './shared/design-runtime.mjs';
+import {designReady,currentDesign} from './shared/design-runtime.mjs';
 import {preloadAssets} from './shared/asset-loader.mjs';
-
-// Five small CSS balls complete three orbits before the swelling rainbow.
-// The first real screen and its visible images are prepared under the overlay.
-const root=document.querySelector('#app');
-const overlay=document.querySelector('#mn-preloader');
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const started=performance.now();
-const INITIAL_THREE_TURNS_MS=2250;
-const EXIT_MS=reduced?190:1890;
-const preloadLater=()=>{
- const paths=[
-  'assets/ortografia/wizard-mission-retina-v1.webp',
-  'assets/ortografia/game-meadow-v1.webp',
-  'assets/angielski/wizard-mission-retina-v2.webp',
-  'assets/czytanie/wizard-mission-retina-v1.webp',
- ];
- const work=()=>void designReady.then(()=>preloadAssets(paths)).catch(()=>{});
- if('requestIdleCallback'in window)requestIdleCallback(work,{timeout:1200});
- else setTimeout(work,700);
-};
+import {LogoTransition,logoConfig} from './shared/logo-transition.mjs';
+const app=document.querySelector('#app'),studio=new URLSearchParams(location.search).has('studio');
+let player;
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const imgReady=image=>{
- if(image.complete&&image.naturalWidth>0)return Promise.resolve();
- if(typeof image.decode==='function')return image.decode().catch(()=>{});
- return new Promise(resolve=>{
-  image.addEventListener('load',resolve,{once:true});
-  image.addEventListener('error',resolve,{once:true});
- });
-};
-const visibleImages=()=>[...root.querySelectorAll('img')].filter(image=>{
- const rect=image.getBoundingClientRect();
- return rect.width>0&&rect.height>0&&rect.top<innerHeight&&rect.bottom>0;
-}).slice(0,10);
+function stop(){player?.destroy();player=null;}
+function start(config={},time=0,autoplay=true){stop();const overlay=document.createElement('div');overlay.id='mn-preloader';overlay.className='mn-boot-screen';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','Ładowanie Małej Nauki');document.body.append(overlay);player=new LogoTransition({overlay,app,config,onFrame:frame=>{if(studio&&parent!==window)parent.postMessage({channel:'mala-nauka-logo',type:'frame',...frame,shapes:undefined,whiteD:undefined},location.origin);},onFinish:()=>{if(!studio)stop();else parent.postMessage({channel:'mala-nauka-logo',type:'finished'},location.origin);}});player.seek(time);if(autoplay)player.play();}
 async function firstScreenReady(){
- const fontPromise=document.fonts?.ready||Promise.resolve();
- // A slow or offline image must not trap the child behind the loader.
- await Promise.race([
-  Promise.allSettled([fontPromise,...visibleImages().map(imgReady)]),
-  pause(1400),
- ]);
+ await Promise.race([document.fonts?.ready||Promise.resolve(),pause(1400)]);
+ const images=[...app.querySelectorAll('img')].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.height&&r.top<innerHeight;}).slice(0,10);
+ await Promise.race([Promise.allSettled(images.map(i=>i.decode?.().catch(()=>{}))),pause(1400)]);
 }
-if(root&&overlay){
- preloadLater(); // Warm the first game screens during the rainbow startup, without blocking it.
- let released=false;
- const release=async()=>{
-  if(released)return;
-  released=true;
-  observer.disconnect();
-  try{
-   await Promise.all([
-    firstScreenReady(),
-    pause(reduced?0:Math.max(0,INITIAL_THREE_TURNS_MS-(performance.now()-started))),
-   ]);
-  }catch{}
-  // Give Safari one paint of the complete first screen behind the iris.
-  await new Promise(resolve=>requestAnimationFrame(()=>resolve()));
-  overlay.classList.add('mn-boot-exit');
-  setTimeout(()=>{
-   overlay.remove();
-  },EXIT_MS);
- };
- const hasFirstScreen=()=>Boolean(root.querySelector(
-  'button,.player-card,.home-adventures,.wizard-intro,.empty.card'
- ));
- const observer=new MutationObserver(()=>{
-  if(hasFirstScreen())void release();
- });
- observer.observe(root,{childList:true,subtree:true});
- if(hasFirstScreen())void release();
+if(studio){document.getElementById('mn-preloader')?.remove();window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-logo')return;const {type,config,time}=event.data;if(type==='start')start(config,time||0,true);if(type==='seek'){if(!player)start(config,time||0,false);else{player.pause();player.seek(time||0);}}if(type==='pause')player?.pause();if(type==='resume')player?.play();if(type==='stop')stop();});}
+else if(app){
+ const placeholder=document.getElementById('mn-preloader');
+ await designReady.catch(()=>{});
+ const config=logoConfig(currentDesign()?.logoTransition);
+ if(!config.enabled||matchMedia('(prefers-reduced-motion: reduce)').matches){placeholder?.remove();}
+ else{
+  await Promise.race([new Promise(resolve=>{if(app.children.length)return resolve();const observer=new MutationObserver(()=>{if(app.children.length){observer.disconnect();resolve();}});observer.observe(app,{childList:true});setTimeout(()=>{observer.disconnect();resolve();},3000);}),pause(3100)]);
+  await firstScreenReady();placeholder?.remove();start(config);
+ }
+ const warm=()=>void preloadAssets(['assets/ortografia/wizard-mission-retina-v1.webp','assets/ortografia/game-meadow-v1.webp']).catch(()=>{});
+ if('requestIdleCallback'in window)requestIdleCallback(warm,{timeout:1500});else setTimeout(warm,700);
 }

@@ -22,7 +22,7 @@ Kierunek:
 
 Adaptacja Małej Nauki:
 - 5 kolorowych kulek;
-- 3 pełne obroty;
+- 2 pełne obroty (aktualizacja 2026-10-07);
 - pęcznienie;
 - tęczowy rozbłysk;
 - rosnące białe koło;
@@ -166,11 +166,11 @@ Adaptacja:
 - krótka animacja przy zmianie hasła;
 - prawdziwy tekst pozostaje czytelny;
 - efekt nie opóźnia nowego pytania;
-- dotknięcie może subtelnie odpychać punkty.
+- bez reakcji na pointer; trigger pochodzi z odpowiedzi / przejścia do kolejnego hasła.
 
 Budżet:
-- WebKit / iPhone: maks. 32 punkty;
-- pozostałe: maks. 64;
+- WebKit / iPhone: maks. 32 grupy punktów;
+- pozostałe: maks. 64 grupy;
 - bez ciągłej pętli fizyki.
 
 ## 10. Szablon wpisu dla nowej inspiracji
@@ -192,3 +192,4 @@ Przy każdym nowym efekcie dopisać:
 - docs/ANIMATION-WEBKIT-GUIDE.md
 - dokumentacja Design Studio
 - testy efektów w tests/
+Aktualna implementacja, paleta loadera i wyniki pomiarów: [Jeden runtime](design-system/unified-runtime.md).

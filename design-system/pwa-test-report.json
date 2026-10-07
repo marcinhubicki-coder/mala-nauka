@@ -1,0 +1,28 @@
+{
+  "kind": "optimized-pwa-test",
+  "optimization": "mobile-v2-full-effects",
+  "usesDesignDraft": false,
+  "original": {
+    "frameRate": 30,
+    "transitionBlur": 5.3,
+    "transitionSparks": 18,
+    "particleBudget": 55,
+    "ambientSoftness": 0.15
+  },
+  "optimized": {
+    "frameRate": 30,
+    "transitionBlur": 5.3,
+    "transitionSparks": 18,
+    "particleBudget": 55,
+    "ambientSoftness": 0.15
+  },
+  "hidden": [
+    {
+      "scope": "view",
+      "view": "spelling-settings",
+      "id": "wizard-note",
+      "mode": "removed"
+    }
+  ],
+  "sourceCommit": "a98d61c24ed7f89ad1a1518636b916b60b95b906"
+}

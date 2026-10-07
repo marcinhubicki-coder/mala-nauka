@@ -7,7 +7,7 @@ const read=path=>readFile(new URL('../'+path,import.meta.url),'utf8');
 test('liquid bubble variants and particle word transition are optional',()=>{
  const normal=normalizeEffectsConfig(DEFAULT_EFFECTS);
  assert.equal(normal.bubble.liquid,'none');
- assert.equal(normal.wordTransition.style,'ink');
+ assert.equal(normal.wordTransition.style,'particles');
  for(const liquid of ['none','ripple','silk','jelly']){
   const config=normalizeEffectsConfig({...normal,bubble:{...normal.bubble,liquid}});
   assert.doesNotThrow(()=>validateEffects(config));
@@ -32,7 +32,7 @@ test('particle word motion preserves the actual text and never animates by a JS 
  assert.match(js,/getImageData/);
  assert.doesNotMatch(js,/(requestAnimationFrame|setInterval|\.setInterval)\s*\(/);
  assert.match(art,/wordParticles=createWordParticles/);
- assert.match(art,/void wordParticles\?\.play\(direction\)/);
+ assert.match(art,/wordParticles\?\.play\(direction\)/);
  assert.match(art,/wordParticles\?\.destroy/);
  assert.match(studio,/wordPanel\(\)/);
  assert.match(css,/pointer-events:none/);

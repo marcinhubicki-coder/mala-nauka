@@ -263,7 +263,7 @@ if (studio) {
     }
     if(message.type==='reorder'){
       const item=items.get(message.id);if(!item||item.id==='layout-root'||item.kind==='background')return;
-      const before=items.get(message.before);if(before&&before.node.parentElement===item.node.parentElement&&before.kind!=='background'){item.node.parentElement.insertBefore(item.node,before.node);selection=item.id;report();return;}
+      const before=items.get(message.before);if(before&&before.node.parentElement===item.node.parentElement&&before.kind!=='background'){const parent=item.node.parentElement;parent.insertBefore(item.node,before.node);emit({type:'order-change',parent:item.parent,ids:[...parent.children].map(n=>n.dataset.dsElement).filter(Boolean)});selection=item.id;report();return;}
       const siblings=[...item.node.parentElement.children].filter(node=>[...items.values()].some(row=>row.node===node&&row.kind!=='background')),
         index=siblings.indexOf(item.node),target=siblings[index+Number(message.direction)];
       if(!target)return;

@@ -1,15 +1,14 @@
 import {designReady} from './shared/design-runtime.mjs';
 import {preloadAssets} from './shared/asset-loader.mjs';
 
-// The approved logo is an unchanged SVG image; only lightweight CSS shapes move.
-// Startup waits for the actual first view, visible image decode and fonts.
-// No artificial delay is added after those assets become available.
+// Five small CSS balls complete three orbits before the swelling rainbow.
+// The first real screen and its visible images are prepared under the overlay.
 const root=document.querySelector('#app');
 const overlay=document.querySelector('#mn-preloader');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const started=performance.now();
-const INITIAL_MORPH_MS=520;
-const EXIT_MS=reduced?190:1380;
+const INITIAL_THREE_TURNS_MS=2250;
+const EXIT_MS=reduced?190:1890;
 const preloadLater=()=>{
  const paths=[
   'assets/ortografia/wizard-mission-retina-v1.webp',
@@ -52,10 +51,10 @@ if(root&&overlay){
   try{
    await Promise.all([
     firstScreenReady(),
-    pause(Math.max(0,INITIAL_MORPH_MS-(performance.now()-started))),
+    pause(reduced?0:Math.max(0,INITIAL_THREE_TURNS_MS-(performance.now()-started))),
    ]);
   }catch{}
-  // Give Safari one paint with a complete first screen before the rainbow.
+  // Give Safari one paint of the complete first screen behind the iris.
   await new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   overlay.classList.add('mn-boot-exit');
   setTimeout(()=>{

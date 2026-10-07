@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 18,
+  "revision": 19,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -284,32 +284,32 @@
       "intensity": 0.8
     },
     "wordTransition": {
-      "style": "particles",
-      "dots": 48,
+      "style": "ink",
+      "dots": 52,
       "interactive": false,
-      "duration": 720,
-      "spread": 160
+      "duration": 420,
+      "spread": 38
     },
     "ambient": {
-      "style": "none",
-      "filter": "none",
-      "intensity": 0,
-      "density": 1.7,
-      "size": 2,
-      "speed": 1.75,
-      "softness": 0.25,
-      "warmth": 0.6,
-      "bloom": 0.65,
-      "flare": 0.65,
+      "style": "orbit",
+      "filter": "glow",
+      "intensity": 0.25,
+      "density": 2,
+      "size": 1.35,
+      "speed": 0.3,
+      "softness": 0.15,
+      "warmth": 0.68,
+      "bloom": 0.7,
+      "flare": 0.8,
       "grain": 0,
-      "vignette": 0.12,
-      "touchStrength": 0.8,
+      "vignette": 0.1,
+      "touchStrength": 1,
       "responsive": true
     },
     "bubble": {
-      "look": "classic",
+      "look": "custom",
       "renderer": "classic",
-      "transforms": false,
+      "transforms": true,
       "frameRate": 30,
       "speed": 4.7,
       "amplitude": 3.25,
@@ -321,11 +321,11 @@
       "morph": 0.7,
       "skin": "rainbow",
       "rim": "classic",
-      "liquid": "none",
-      "texture": 1.4,
-      "sparkle": 0.9,
+      "liquid": "silk",
+      "texture": 0.25,
+      "sparkle": 0.35,
       "lightning": 0,
-      "fizz": 1.9
+      "fizz": 0.3
     },
     "reactions": {
       "correct": {
@@ -4439,6 +4439,28 @@
     "math-settings": {
       "img": {
         "imageScale": 1
+      },
+      "layout-root": {
+        "effect": "bokeh",
+        "effectSize": 80,
+        "effectColor": "#6a98ff",
+        "effectIntensity": 0.35,
+        "effectDensity": 12,
+        "effectSpeed": 1.1
+      },
+      "h1": {
+        "effect": "particles",
+        "effectColor": "#ffe4a8",
+        "opacity": 1,
+        "textColor": "#ffffff",
+        "effectSize": 36,
+        "animationDistance": 1.5,
+        "effectDensity": 20,
+        "animation": "float",
+        "effectIntensity": 0.85,
+        "effectSpeed": 1.85,
+        "effectBlur": 12,
+        "animationDuration": 3930
       }
     },
     "players": {
@@ -4465,6 +4487,46 @@
       "pin-error-outside": {
         "offsetY": 17
       }
+    },
+    "settings": {
+      "layout-root": {
+        "effect": "none",
+        "effectSize": 71,
+        "effectIntensity": 1,
+        "effectBlur": 8.5,
+        "effectDensity": 22,
+        "effectSpeed": 1.5
+      }
+    },
+    "players-empty": {
+      "layout-root": {
+        "animation": "none"
+      }
+    },
+    "spelling-initial": {
+      "answer-answer": {
+        "effect": "none",
+        "animation": "float",
+        "animationDuration": 3000,
+        "animationDistance": 1
+      },
+      "answer-answer-1": {
+        "animationDuration": 2900,
+        "animationDistance": 1.1
+      },
+      "spelling-hint": {
+        "animation": "pulse",
+        "animationDuration": 2600,
+        "animationDistance": 1
+      },
+      "spelling-question-card": {
+        "animation": "pulse",
+        "animationDuration": 3600,
+        "animationDistance": 3
+      },
+      "question-content": {
+        "effect": "none"
+      }
     }
   },
   "logoTransition": {
@@ -4478,5 +4540,27 @@
     "morph": 1,
     "turnDuration": 1600,
     "turns": 2
+  },
+  "screenEffects": {
+    "players-empty": {
+      "effect": "none",
+      "effectIntensity": 0.3,
+      "effectDensity": 12,
+      "effectSpeed": 0.5,
+      "effectSize": 24,
+      "effectBlur": 3,
+      "effectColor": "#ffd4a3",
+      "effectTrigger": "continuous"
+    },
+    "settings": {
+      "effect": "bokeh",
+      "effectIntensity": 0.15,
+      "effectDensity": 32,
+      "effectSpeed": 2,
+      "effectSize": 80,
+      "effectBlur": 12,
+      "effectColor": "#cce8b5",
+      "effectTrigger": "continuous"
+    }
   }
 }

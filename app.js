@@ -774,7 +774,7 @@ let effectLabInstalled=false,effectLabPending=null,effectLabMeasurement=()=>{};
 function measureEffectLab(run,name){
  effectLabMeasurement();const intervals=[];let previous=0,raf;const began=performance.now();
  const sample=now=>{if(previous)intervals.push(now-previous);previous=now;raf=requestAnimationFrame(sample);};raf=requestAnimationFrame(sample);
- const timer=setTimeout(()=>{cancelAnimationFrame(raf);effectLabSend('metrics',{run,metrics:{disabled:false,presetName:name,particles:document.querySelectorAll('.response-particle,.mn-word-particles i').length,requested:0,intervals,duration:performance.now()-began,stalled:intervals.length<8}});},2200);
+ const timer=setTimeout(()=>{cancelAnimationFrame(raf);effectLabSend('metrics',{run,metrics:{disabled:false,presetName:name,particles:document.querySelectorAll('.response-particle').length+Number(document.querySelector('.mn-word-particles')?.dataset.count||0),requested:0,intervals,duration:performance.now()-began,stalled:intervals.length<8}});},2200);
  effectLabMeasurement=()=>{cancelAnimationFrame(raf);clearTimeout(timer);};
 }
 
@@ -787,6 +787,7 @@ function installEffectLab(){
   if(data.type==='design'&&data.config){applyDesign(data.config);return;}
   if(data.type==='stop'){effectLabMeasurement();spellingArt.stopPreviewEffect?.();spellingArt.setPaused(true);return;}
   if(data.type==='resume'){spellingArt.setPaused(false);return;}
+  if(data.type==='answer'){if(game?.state!=='playing')await renderStudioScenario('initial');if(data.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);game.answer(data.event==='wrong'?game.options.find(o=>o!==game.current.answer):game.current.answer);await renderGame();measureEffectLab(0,data.event);effectLabSend('played',{run:0,event:data.event});return;}
   if(data.type==='react'){spellingArt.setPaused(false);spellingArt.previewReact?.(data.event);return;}
   if(data.type==='reset'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
   if(data.type==='picture'){const url=new URL(location.href);url.searchParams.set('word',url.searchParams.get('word')==='brzuch'?'przód':'brzuch');history.replaceState(null,'',url);effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}

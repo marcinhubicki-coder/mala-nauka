@@ -9,11 +9,13 @@ export function supportsAmbientTouchBurst(userAgent='',maxTouchPoints=0){
 }
 export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),layer=document.createElement('div');
- layer.className='screen-atmosphere';layer.setAttribute('aria-hidden','true');host.append(layer);
+ layer.className='screen-atmosphere';layer.dataset.mnDecoration='1';layer.setAttribute('aria-hidden','true');host.append(layer);
  let settings,bursts=[];
  const render=next=>{
   settings={...DEFAULT_EFFECTS.ambient,...(next?.ambient||next||{})};
   layer.className=`screen-atmosphere ambient-${settings.style} ambient-filter-${settings.filter}`;
+  const inactive=settings.intensity===0||(settings.style==='none'&&settings.filter==='none');
+  layer.hidden=inactive;layer.style.display=inactive?'none':'';if(inactive){layer.replaceChildren();return;}
   const variables={
    intensity:settings.intensity,density:settings.density,size:settings.size,speed:settings.speed,
    softness:`${settings.softness}px`,duration:`${Math.max(4,11-settings.speed*3)}s`,warmth:settings.warmth,bloom:settings.bloom,

@@ -1,8 +1,5 @@
-.mn-word-particles{position:fixed;inset:0;z-index:1100;overflow:visible;pointer-events:none;contain:layout style;user-select:none}
-.mn-word-particles>i{position:absolute;left:0;top:0;display:block;border-radius:.3px;pointer-events:none;translate:-50% -50%;scale:var(--word-piece-scale,1);animation:mn-word-quiver 2.7s ease-in-out var(--word-delay) infinite alternate}
+/* Local canvas stays above the photo, below whole-screen foreground bokeh. */
+.mn-word-particles{position:fixed;z-index:1100;pointer-events:none!important;user-select:none;contain:strict}
 .word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:transparent!important;text-shadow:none!important}
-.mn-particle-paused i{animation-play-state:paused}
-@keyframes mn-word-quiver{from{translate:calc(-50% - var(--word-jitter)) calc(-50% + var(--word-jitter))}to{translate:calc(-50% + var(--word-jitter)) calc(-50% - var(--word-jitter))}}
+.question-content{margin-top:var(--mn-word-breathing,0px)}
 @media(prefers-reduced-motion:reduce){.mn-word-particles{display:none!important}.word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:inherit!important}}
-
-.mn-word-particles>i::before,.mn-word-particles>i::after{content:'';position:absolute;inset:0;pointer-events:none;mask-image:var(--word-bitmap);-webkit-mask-image:var(--word-bitmap);mask-position:var(--word-mask-position);-webkit-mask-position:var(--word-mask-position);mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;opacity:var(--word-chromatic-opacity,0);background:#f12780;transform:translateX(var(--word-aberration))}.mn-word-particles>i::after{background:#168fff;transform:translateX(calc(var(--word-aberration) * -1))}

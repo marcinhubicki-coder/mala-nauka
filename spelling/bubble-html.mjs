@@ -1,4 +1,3 @@
-import {polygonRadius,shapeSides} from './bubble-dynamics.mjs';
 import {DEFAULT_EFFECTS,normalizeEffectsConfig} from './effect-model.mjs';
 
 function ensureStyles(){
@@ -7,29 +6,6 @@ function ensureStyles(){
  link.rel='stylesheet';link.dataset.mnSoapStyle='1';
  link.href=new URL('./bubble-html.css',import.meta.url).href;
  document.head.append(link);
-}
-const clipStars=points=>{
- const p=[];
- for(let i=0;i<points*2;i++){
-  const a=-Math.PI/2+i*Math.PI/points,r=i%2?.54:1;
-  p.push((50+49*r*Math.cos(a)).toFixed(2)+'% '+(50+49*r*Math.sin(a)).toFixed(2)+'%');
- }
- return 'polygon('+p.join(',')+')';
-};
-function regularPolygon(points){
- const p=[];
- for(let i=0;i<points;i++){
-  const a=-Math.PI/2+i*2*Math.PI/points;
-  p.push((50+49*Math.cos(a)).toFixed(2)+'% '+(50+49*Math.sin(a)).toFixed(2)+'%');
- }
- return 'polygon('+p.join(',')+')';
-}
-function silhouette(shape){
- if(shape==='star5')return clipStars(5);
- if(shape==='star9')return clipStars(9);
- const polygon={triangle:3,square:4,pentagon:5,hexagon:6,heptagon:7,octagon:8};
- if(polygon[shape])return regularPolygon(polygon[shape]);
- return 'none';
 }
 function scenePosition(alignment){
  return (alignment||'').includes('xMin')?'left center':(alignment||'').includes('xMax')?'right center':
@@ -64,7 +40,6 @@ export function createHTMLBubble(host){
   return promise;
  };
  let shapeAnimation;
- const contour=(shape,morph=1)=>'polygon('+Array.from({length:48},(_,i)=>{const a=i/48*Math.PI*2,c=Math.cos(a),s=Math.sin(a),rad=polygonRadius(a,shapeSides(shape),46)/100;const baseX=Math.sign(c)*Math.pow(Math.abs(c),.61)*.48,baseY=Math.sign(s)*Math.pow(Math.abs(s),.61)*.48;return ((.5+baseX*(1-morph)+c*rad*morph)*100).toFixed(2)+'% '+((.5+baseY*(1-morph)+s*rad*morph)*100).toFixed(2)+'%';}).join(',')+')';
  function setBubbleConfig(next){
   config=normalizeEffectsConfig(next||DEFAULT_EFFECTS);if(!config.bubble.transforms)config={...config,reactions:Object.fromEntries(Object.entries(config.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};
   const b=config.bubble;
@@ -75,11 +50,24 @@ export function createHTMLBubble(host){
   root.dataset.rim=b.rim||'classic';
    root.dataset.liquid=b.liquid||'none';
   shapeAnimation?.cancel();shapeAnimation=null;
-  const shape=b.transforms?contour(b.shape==='cycle'?'bubble':b.shape,b.shape==='bubble'?0:b.morph):silhouette('bubble');
-  if(b.transforms&&b.shape==='cycle'&&!reduced.matches){shapeAnimation=shell.animate([0,10,0,5,0].map((n,i)=>({clipPath:contour(n===10?'decagon':n===5?'pentagon':'bubble',n?b.morph:0),offset:i/4})),{duration:6000,iterations:Infinity,easing:'ease-in-out'});}
-  shell.style.clipPath=shape;
-  shell.style.borderRadius=shape==='none'?'34% 33% 35% 32% / 33% 35% 32% 34%':'0';
-  picture.style.borderRadius=shape==='none'?'inherit':'0';
+  // Shape deformation and photo share a single composited parent. No polygon
+  // cycling, animated masks, displacement filters or per-frame contour writes.
+  shell.style.clipPath='none';
+  shell.style.borderRadius='34% 33% 35% 32% / 33% 35% 32% 34%';
+  picture.style.borderRadius='inherit';
+  const strength=b.transforms?b.morph:0;
+  root.dataset.photoDeformation=String(b.transforms);
+  root.style.setProperty('--mn-soap-amplitude',String(b.amplitude/3.25));
+  root.style.setProperty('--mn-soap-orbit',String(b.orbit/1.35));
+  if(strength>0&&!reduced.matches){
+   const squash=.095*strength,tilt=5*strength;
+   shapeAnimation=root.animate([
+    {transform:'scale(1,1) skew(0deg,0deg)'},
+    {transform:`scale(${1+squash},${1-squash*.72}) skew(${tilt}deg,${-tilt*.3}deg)`,offset:.28},
+    {transform:`scale(${1-squash*.65},${1+squash*.8}) skew(${-tilt*.7}deg,${tilt*.4}deg)`,offset:.63},
+    {transform:'scale(1,1) skew(0deg,0deg)'}
+   ],{duration:Math.max(2400,10000/b.speed*3),iterations:Infinity,easing:'ease-in-out'});
+  }
   const quiet=paused||reduced.matches;
   root.classList.toggle('mn-soap-paused',quiet);pause(paused);
   return config;
@@ -97,7 +85,12 @@ export function createHTMLBubble(host){
    [{transform:'translate3d(0,0,0) scale(1)'},{transform:'translate3d(0,-5px,0) scale(1.045)'},{transform:'translate3d(0,0,0) scale(1)'}];
   const a=shell.animate(keyframes,{duration:event==='wrong'?550:710,easing:'cubic-bezier(.2,.6,.25,1)'});
   reactions=[a];
-  const row=config.reactions[event];if(config.bubble.transforms&&row?.shape!=='bubble'&&row?.morph>0){shapeAnimation?.pause();const frames=[0,.28,.55,.8,1].map(t=>({offset:t,clipPath:contour(row.shape==='cycle'?(t<.5?'decagon':'pentagon'):row.shape,Math.sin(t*Math.PI)*row.morph)}));const m=shell.animate(frames,{duration:row.duration,easing:'ease-in-out'});reactions.push(m);m.finished.catch(()=>{}).finally(()=>{if(!destroyed&&!paused)shapeAnimation?.play();});}
+  // The impulse stretches the photograph, membrane and highlights together.
+  const row=config.reactions[event];
+  if(config.bubble.transforms){const force=Math.min(.16,.055+config.bubble.morph*.07+(row?.morph||0)*.035);reactions.push(root.animate([
+   {transform:'scale(1,1)'},{transform:`scale(${1+force},${1-force*.7}) rotate(${event==='wrong'?-2:2}deg)`},
+   {transform:`scale(${1-force*.45},${1+force*.4})`},{transform:'scale(1,1)'}
+  ],{duration:row?.duration||900,easing:'ease-in-out'}));}
   Promise.all(reactions.map(a=>a.finished.catch(()=>{}))).then(()=>{if(reactions[0]===a)clearReactions()});
  }
  async function transitionToScene(url,scene,first=false){

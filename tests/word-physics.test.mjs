@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {sampleInkPoints,advancePiece,separatePieces,DEFAULT_WORD_TRANSITION} from '../spelling/word-particles.mjs';
+function random(seed=42){return ()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};}
+test('ink sampling preserves silhouette and holes, without slicing a rectangle into rows',()=>{const pixels=[];for(let y=0;y<30;y++)for(let x=0;x<30;x++)if(x<8||y<8)pixels.push([x,y]);const points=sampleInkPoints(pixels,144,random());assert.equal(points.length,144);assert.ok(points.every(([x,y])=>x<8.3||y<8.3));assert.equal(new Set(points.map(([x,y])=>x+':'+y)).size,144);assert.ok(points.some(([x])=>x%1!==0));});
+test('long particle simulation stays local, finite and readable after drift',()=>{const p={x:0,y:0,tx:25,ty:40,vx:4,vy:-3,seed:1.3,frequency:.91,alpha:0,born:0,side:'left'};for(let t=0;t<120000;t+=33.33)advancePiece(p,DEFAULT_WORD_TRANSITION,t,33.33,{x:50,y:-150});assert.ok(Number.isFinite(p.x)&&Number.isFinite(p.y));assert.ok(Math.hypot(p.x-p.tx,p.y-p.ty)<4);assert.equal(p.alpha,1);});
+test('opposite sides and answer directions give independent currents',()=>{const initial={x:0,y:0,tx:0,ty:0,vx:0,vy:0,seed:1,frequency:1,alpha:1,born:0};const left={...initial,side:'left'},right={...initial,side:'right'};for(let t=0;t<300;t+=33)for(const p of [left,right])advancePiece(p,DEFAULT_WORD_TRANSITION,t,33,{x:0,y:-100});assert.notEqual(left.x,right.x);});
+test('local collisions share impulse between neighbours',()=>{const a={x:0,y:0,vx:0,vy:0},b={x:1,y:0,vx:0,vy:0};separatePieces([a,b],2);assert.ok(a.vx<0&&b.vx>0);assert.equal(a.vx+b.vx,0);});

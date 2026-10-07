@@ -67,3 +67,46 @@ body:has(#mn-preloader.mn-boot-exit) #app{
  #mn-preloader.mn-boot-exit .mn-boot-whiteout{animation:none!important}
  #mn-preloader.mn-boot-exit{animation:mn-boot-final-fade 150ms ease-out both!important}
 }
+
+
+/* Mobile WebKit: one rasterized color cloud + a full-screen white sheet.
+   Avoid the multi-megapixel animated circular whiteout and 5 separate
+   moving gradient blobs that could starve requestAnimationFrame. */
+@supports (-webkit-touch-callout:none){
+ #mn-preloader .mn-boot-color-cloud{
+  animation:mn-boot-color-breathe 2.8s ease-in-out infinite alternate;
+  will-change:transform;
+ }
+ #mn-preloader .mn-boot-blob{animation:none}
+ #mn-preloader.mn-boot-exit .mn-boot-color-cloud{
+  animation:mn-boot-color-exit 390ms ease-in both;
+ }
+ #mn-preloader .mn-boot-whiteout{
+  inset:0;width:100%;height:100%;border-radius:0;transform:none;
+ }
+ #mn-preloader.mn-boot-exit .mn-boot-whiteout{
+  animation:mn-boot-white-webkit 620ms ease-in-out 420ms both;
+ }
+ #mn-preloader.mn-boot-exit .mn-boot-rainbow i{
+  animation-name:mn-boot-rainbow-mobile;
+  animation-duration:660ms;
+ }
+ @keyframes mn-boot-color-breathe{
+  from{transform:translate3d(-50%,-50%,0) scale(.91) rotate(-2deg)}
+  to{transform:translate3d(-50%,-50%,0) scale(1.07) rotate(2deg)}
+ }
+ @keyframes mn-boot-color-exit{
+  to{opacity:0;transform:translate3d(-50%,-50%,0) scale(1.35)}
+ }
+ @keyframes mn-boot-white-webkit{
+  from{opacity:0}to{opacity:1}
+ }
+ @keyframes mn-boot-rainbow-mobile{
+  0%{opacity:0;transform:translate3d(-50%,-50%,0) scale(.2)}
+  22%,54%{opacity:.88}
+  100%{
+   opacity:0;
+   transform:translate3d(-50%,-50%,0) translate3d(var(--fly-x),var(--fly-y),0) rotate(var(--fly-rotate)) scale(1.75)
+  }
+ }
+}

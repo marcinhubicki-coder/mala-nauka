@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 17,
+  "revision": 18,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4462,5 +4462,17 @@
         "offsetY": 17
       }
     }
+  },
+  "logoTransition": {
+    "orbitRadius": 45,
+    "shapeSize": 35,
+    "seed": 834,
+    "randomness": 0.6,
+    "overlap": 0.11,
+    "whiteWobble": 0.11,
+    "revealAt": 0.55,
+    "morph": 1,
+    "turnDuration": 1600,
+    "turns": 2
   }
 }

@@ -18,7 +18,7 @@ const preloadLater=()=>{
   'assets/czytanie/wizard-mission-retina-v1.webp',
  ];
  const work=()=>void designReady.then(()=>preloadAssets(paths)).catch(()=>{});
- if('requestIdleCallback'in window)requestIdleCallback(work,{timeout:2500});
+ if('requestIdleCallback'in window)requestIdleCallback(work,{timeout:1200});
  else setTimeout(work,700);
 };
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -43,6 +43,7 @@ async function firstScreenReady(){
  ]);
 }
 if(root&&overlay){
+ preloadLater(); // Warm the first game screens during the rainbow startup, without blocking it.
  let released=false;
  const release=async()=>{
   if(released)return;
@@ -59,7 +60,6 @@ if(root&&overlay){
   overlay.classList.add('mn-boot-exit');
   setTimeout(()=>{
    overlay.remove();
-   preloadLater();
   },EXIT_MS);
  };
  const hasFirstScreen=()=>Boolean(root.querySelector(

@@ -1,1 +1,69 @@
-#mn-preloader{position:fixed;inset:0;z-index:2000;min-height:100dvh;box-sizing:border-box;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);transition:opacity .24s ease,visibility .24s ease}#mn-preloader.mn-boot-complete{opacity:0;visibility:hidden;pointer-events:none}
+/* Startup rainbow disperses, a white circle takes over, then the first screen emerges. */
+#mn-preloader{
+ position:fixed;inset:0;z-index:2000;min-height:100dvh;
+ box-sizing:border-box;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+ pointer-events:auto;overflow:hidden;opacity:1;
+}
+body:has(#mn-preloader:not(.mn-boot-exit)) #app{opacity:0}
+body:has(#mn-preloader.mn-boot-exit) #app{
+ animation:mn-first-screen-appear 440ms cubic-bezier(.2,.65,.25,1) 900ms both;
+}
+#mn-preloader.mn-boot-exit .mn-boot-blob{
+ animation:mn-boot-cloud-expand 490ms cubic-bezier(.2,.72,.25,1) both;
+}
+#mn-preloader.mn-boot-exit .mn-boot-logo{
+ animation:mn-boot-logo-away 350ms ease-out both;
+}
+#mn-preloader.mn-boot-exit .mn-boot-dots,
+#mn-preloader.mn-boot-exit .mn-boot-caption{
+ animation:mn-boot-caption-away 190ms ease-out both;
+}
+#mn-preloader.mn-boot-exit .mn-boot-rainbow i{
+ animation:mn-boot-rainbow-launch 740ms cubic-bezier(.14,.57,.34,1) var(--fly-delay,0ms) both;
+}
+#mn-preloader.mn-boot-exit .mn-boot-whiteout{
+ animation:mn-boot-white-arrival 780ms cubic-bezier(.15,.67,.27,1) 360ms both;
+}
+#mn-preloader.mn-boot-exit{
+ animation:mn-boot-final-fade 290ms ease-in-out 1040ms both;
+}
+@keyframes mn-boot-cloud-expand{
+ from{opacity:.87;transform:translate3d(0,0,0) scale(1)}
+ to{opacity:0;transform:translate3d(0,0,0) scale(1.54)}
+}
+@keyframes mn-boot-logo-away{
+ from{opacity:1;transform:translate3d(0,0,0) scale(1)}
+ to{opacity:0;transform:translate3d(0,-9px,0) scale(1.09)}
+}
+@keyframes mn-boot-caption-away{to{opacity:0;transform:translate3d(0,8px,0)}}
+@keyframes mn-boot-rainbow-launch{
+ 0%{opacity:0;transform:translate3d(-50%,-50%,0) rotate(0deg) scale(.15)}
+ 16%{opacity:.88}
+ 55%{opacity:.92}
+ 100%{
+  opacity:0;
+  transform:translate3d(-50%,-50%,0) translate3d(var(--fly-x),var(--fly-y),0) rotate(var(--fly-rotate)) scale(2.8)
+ }
+}
+@keyframes mn-boot-white-arrival{
+ 0%{opacity:1;transform:translate3d(-50%,-50%,0) scale(0)}
+ 100%{opacity:1;transform:translate3d(-50%,-50%,0) scale(1)}
+}
+@keyframes mn-first-screen-appear{
+ from{opacity:0}
+ to{opacity:1}
+}
+@keyframes mn-boot-final-fade{
+ from{opacity:1;visibility:visible}
+ to{opacity:0;visibility:hidden;pointer-events:none}
+}
+@media(prefers-reduced-motion:reduce){
+ body:has(#mn-preloader.mn-boot-exit) #app{animation:none!important;opacity:1!important}
+ #mn-preloader.mn-boot-exit .mn-boot-blob,
+ #mn-preloader.mn-boot-exit .mn-boot-logo,
+ #mn-preloader.mn-boot-exit .mn-boot-dots,
+ #mn-preloader.mn-boot-exit .mn-boot-caption,
+ #mn-preloader.mn-boot-exit .mn-boot-rainbow i,
+ #mn-preloader.mn-boot-exit .mn-boot-whiteout{animation:none!important}
+ #mn-preloader.mn-boot-exit{animation:mn-boot-final-fade 150ms ease-out both!important}
+}

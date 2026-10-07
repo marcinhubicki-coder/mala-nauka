@@ -132,7 +132,7 @@ Nie są zakazane, ale wymagają benchmarku w pełnym ekranie:
 
 Przykłady z obecnej implementacji:
 
-- bańka: HTML/CSS;
+- bańka: ruch rodzica na kompozytorze; oprawa HTML/CSS lub statycznie malowane SVG (aktualizacja 2026-10-07);
 - metaliczne obrzeże: statyczny conic-gradient;
 - ciekła powierzchnia: lekkie highlighty CSS;
 - słowo-cząsteczki: jednorazowe próbkowanie glyphów + jeden lokalny canvas, maks. 30 odmalowań/s i 1200 drobinek;
@@ -289,8 +289,8 @@ Starszy budżet 32/64 grup wyżej dotyczy poprzedniej nakładki. Obecna mechanik
 
 ## 12. Ujednolicony podgląd i doprecyzowanie odpowiedzi — 2026-10-07
 
-- `spelling/art.mjs` zawsze tworzy bańkę HTML/CSS. Komponenty, Efekty i bańka oraz zbudowane PWA nie wybierają silnika przez query string, urządzenie ani flagę preview. Stare konfiguracje `renderer: classic` są normalizowane do `composited`.
-- Domyślnie zostaje klasyczna perłowa oprawa i dotychczasowe tempo/falowanie. To stabilna rekonstrukcja wyglądu, nie kopia dynamicznego konturu SVG 1:1. Eksperymentalny plik SVG pozostaje w repo, ale nie jest aktywnym rendererem gry.
+- Stan na 2026-10-06: gra wymuszała HTML/CSS. Od 2026-10-07 fabryka `createConfiguredBubble` respektuje zapisany wybór produkcyjnej oprawy lub wersji lekkiej we wszystkich podglądach; nie wybiera przez urządzenie ani query string. Nie normalizujemy już `classic` do `composited`.
+- Wariant lekki jest rekonstrukcją HTML. Wariant produkcyjny od 2026-10-07 zachowuje oryginalną oprawę SVG, z ruchem rodzica na kompozytorze; dawna dynamiczna pętla konturu nie jest uruchamiana.
 - Przełącznik deformacji rozciąga **wspólnego rodzica zdjęcia, ramki i świateł**. Nie włącza sam cyklu figur. Nie animujemy dużej maski ani `path d`.
 - Próbkowanie tekstu uwzględnia aktualny font gry i otwory liter. Liczba kandydatów rośnie w ograniczony sposób również na desktopie (`stride >= fontSize/35`); jitter losowania jest liczony raz na kandydata. Zapobiega to wielosekundowemu przeliczeniu dużych liter.
 - Jedna lokalna warstwa canvas pracuje do 30 Hz, z DPR do 1.5 i maks. 1200 drobinkami na całe słowo, niezależnie od liczby liter. Nie tworzymy setek animowanych elementów DOM. Pauza, ukryta karta, ukryte słowo, reduced motion i opuszczenie rundy zatrzymują odmalowanie.
@@ -307,3 +307,9 @@ Starszy budżet 32/64 grup wyżej dotyczy poprzedniej nakładki. Obecna mechanik
 Dwa przeloty: automatyczny WebKit i Chrome. WebKit zachował około 60 callbacków rAF/s oraz ok. 30 odmalowań canvas/s przy zdjęciu + drobinkach + bokeh, również po odpowiedziach i pauzie. To dowód z automatycznego silnika na tym komputerze, **nie pomiar fizycznego iPhone’a ani temperatury urządzenia**. Pełnoekranowe efekty nadal mają koszt GPU. Fizyczny iPhone i dłuższa sesja są nadal wymagane przed wydaniem produkcyjnym.
 
 Zbudowany `dist` należy serwować jako root osobnego serwera. Otwieranie `/dist/` pod rootem źródeł ładuje część bezwzględnych ścieżek ze złego katalogu i daje fałszywe różnice podglądu.
+
+### 2026-10-07: oryginalna oprawa bez dawnego pętlenia SVG
+
+`createConfiguredBubble` jest wspólną fabryką gry, Studio i dialogów słów. Wariant `classic` ponownie używa oryginalnego perłowego SVG. Domyślny `createBubble` uruchamia ruch rodzica przez WAAPI i nie uruchamia pętli `draw()`/timera. Ścieżki są aktualizowane tylko podczas inicjalizacji lub zmiany konfiguracji; zdjęcie nie używa animowanych filtrów blur/displacement. Stara dynamiczna ścieżka pozostaje wyłącznie pod jawnym `composited:false`, którego konsument ani Studio nie wybiera. Nie utożsamiać przywrócenia oryginalnej oprawy z przywróceniem starej pętli maski.
+
+Cząstki: lokalna maska fontu, warstwa cząstek ułożonych i trzy wypełnienia stron są buforami poza DOM. Na ekranie pozostaje jeden canvas. Maska jest budowana przy zmianie słowa/ustawień, a malowanie nadal ma limit 30 Hz, 1200 części i DPR ≤ 1,5. Odległość punktów, magnes do osi kreski i wypełnienie fontu są niezależne od rozmiaru cząstki; nie zwiększać liczby części tylko po to, by zamknąć dziury. Paleta ma 16 kolorów na klatkę zamiast obliczeń koloru dla każdej cząstki.

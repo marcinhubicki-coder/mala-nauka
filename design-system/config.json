@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 22,
+  "revision": 23,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -299,7 +299,14 @@
       "attraction": 0.6,
       "breathing": 34,
       "colorVariation": 0.4,
-      "answerHold": 400
+      "answerHold": 400,
+      "letterSpacing": 1,
+      "particleSpacing": 1.2,
+      "strokeMagnet": 0.25,
+      "settleFill": 0.85,
+      "colorSpread": 0.45,
+      "colorDeviation": 0.12,
+      "colorSpeed": 0.4
     },
     "ambient": {
       "style": "none",
@@ -319,7 +326,7 @@
     },
     "bubble": {
       "look": "classic",
-      "renderer": "composited",
+      "renderer": "classic",
       "transforms": false,
       "frameRate": 30,
       "speed": 4.7,

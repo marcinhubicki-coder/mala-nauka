@@ -126,6 +126,9 @@ function normalizeTransition(input={}){
 }
 
 export function createBubble(host, options={}) {
+  // Retain the actual production SVG paint. Its contour is computed only on
+  // configuration changes; the HTML parent moves on the compositor in all uses.
+  const composited=options.composited!==false;
   const design=normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS),b=design.bubble;
   options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,design.particleBudget),...options.transition}};
   const id = `soap-${++instance}`;
@@ -173,9 +176,9 @@ export function createBubble(host, options={}) {
       </g>
       <g clip-path="url(#${id}-clip)">
         <rect width="400" height="400" fill="url(#${id}-empty)"/>
-        <image class="soap-picture soap-picture-a" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
+        <g class="mn-production-photo" data-ds-key="mn-soap-picture"><image class="soap-picture soap-picture-a" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
         <image class="soap-picture soap-picture-b" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
-        <rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
+        </g><rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
         <g class="soap-electric-layer" opacity="0"><path d="M54 112 94 94 78 134 132 108"/><path d="M270 70 309 105 286 118 340 147"/><path d="M70 292 114 260 101 307 158 278"/><path d="M252 311 294 278 277 322 338 297"/></g>
@@ -196,6 +199,11 @@ export function createBubble(host, options={}) {
     </g>
   </svg>`;
 
+  const svg=host.querySelector('.soap-svg');
+  const motionRoot=document.createElement('div');motionRoot.className='mn-production-bubble';
+  Object.assign(motionRoot.style,{width:'100%',height:'100%',transformOrigin:'50% 50%'});svg.before(motionRoot);motionRoot.append(svg);
+  motionRoot.dataset.renderer='production';
+  let motionAnimations=[],motionSignature='';
   const documentUrl = location.href.split('#')[0];
   const shape = host.querySelector(`#${id}-shape`);
   // Repaint actual SVG paths directly; WebKit can cache <use> references until interaction.
@@ -520,7 +528,8 @@ export function createBubble(host, options={}) {
   function syncMotion() {
     cancelAnimationFrame(frame);clearInterval(timerFrame);frame=0;timerFrame=0;last=0;nextDraw=0;
     host.classList.toggle('soap-still', options.motion === false || paused || document.hidden || reduced.matches);
-    if(!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches){
+    for(const animation of motionAnimations) paused||document.hidden||reduced.matches?animation.pause():animation.play();
+    if(!destroyed && !composited && options.motion !== false && !paused && !document.hidden && !reduced.matches){
       if(useTimer)timerFrame=setInterval(()=>loop(performance.now()),Math.max(33,Math.round(1000/frameRate)));
       else frame=requestAnimationFrame(loop);
     }
@@ -635,7 +644,7 @@ export function createBubble(host, options={}) {
     const zoom=transitionTuning.zoom/100;
     const rotation=transitionTuning.rotate;
     const hue=transitionTuning.hue;
-    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;
+    const opticalFiltersEnabled=!composited&&(blur>.01||Math.abs(hue)>.01);
     const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
     const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
     const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
@@ -720,7 +729,37 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
-  function setBubbleConfig(e=DEFAULT_EFFECTS){e=normalizeEffectsConfig(e);reactionConfig=e.bubble.transforms?e:{...e,reactions:Object.fromEntries(Object.entries(e.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble,...(!e.bubble.transforms?{shape:'bubble',morph:0}:{})};frameRate=bubbleSettings.frameRate||24;setTuning({speed:bubbleSettings.speed});setChaos({amplitude:bubbleSettings.amplitude,orbit:bubbleSettings.orbit});setTransition({duration:bubbleSettings.transitionDuration/1000,blur:bubbleSettings.transitionBlur,sparks:Math.min(bubbleSettings.transitionSparks,e.particleBudget)});const classic=bubbleSettings.look==='classic';setHeavy(classic?BUBBLE_HEAVY_DEFAULTS:{refraction:bubbleSettings.texture*14,particles:Math.min(48,Math.round(bubbleSettings.sparkle*26+bubbleSettings.fizz*10)),energy:.7+bubbleSettings.fizz*1.8,bloom:bubbleSettings.sparkle*.9});for(const image of host.querySelectorAll('.soap-picture'))image.setAttribute('filter',classic?'none':`url(#${id}-pictureFx)`);effectNodes.atmosphere.setAttribute('opacity',classic?0:Math.min(1,.15+bubbleSettings.sparkle*.7).toFixed(3));effectNodes.electric.setAttribute('opacity',classic?0:Math.min(1,bubbleSettings.lightning*.78).toFixed(3));effectNodes.electric.style.setProperty('--electric-intensity',String(bubbleSettings.lightning));const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'};for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',colors[bubbleSettings.skin]||`url(#${id}-rainbow)`);if(reduced.matches)draw(elapsed);}
+  function setBubbleConfig(e=DEFAULT_EFFECTS){
+    e=normalizeEffectsConfig(e);bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble};
+    reactionConfig=bubbleSettings.transforms?e:{...e,reactions:Object.fromEntries(Object.entries(e.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};
+    const b=bubbleSettings;
+    if(!b.transforms){b.shape='bubble';b.morph=0;}
+    frameRate=b.frameRate||24;setTuning({speed:b.speed});setChaos({amplitude:b.amplitude,orbit:b.orbit});
+    setEffects({shadow:b.shadow,depth:b.depth,glow:b.glow,sheen:b.sheen,rainbow:b.rainbow,rim:b.rimIntensity});
+    setTransition({duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,e.particleBudget)});
+    // Original pearly rim and satellites, without idle SVG filters or particle writes.
+    setHeavy(composited?{...BUBBLE_HEAVY_DEFAULTS,particles:0}:BUBBLE_HEAVY_DEFAULTS);
+    effectNodes.atmosphere.setAttribute('opacity',Math.min(1,b.sparkle/.55).toFixed(3));
+    effectNodes.electric.setAttribute('opacity','0');
+    const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'},metals={silver:'#d5e5f4',gold:'#e5b958',iridescent:`url(#${id}-rainbow)`};
+    for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',metals[b.rim]||colors[b.skin]||`url(#${id}-rainbow)`);
+    const signature=JSON.stringify([b.speed,b.amplitude,b.orbit,b.transforms,b.morph,options.motion,reduced.matches]);
+    if(composited&&signature!==motionSignature){
+      motionSignature=signature;motionAnimations.forEach(a=>a.cancel());motionAnimations=[];
+      motionRoot.dataset.photoDeformation=String(b.transforms);
+      if(options.motion!==false&&!reduced.matches){
+        const a=b.amplitude/3.25,orbit=b.orbit/1.35,stretch=b.transforms?.095*b.morph:0,tilt=b.transforms?5*b.morph:0;
+        motionAnimations.push(motionRoot.animate([
+          {transform:'translate(0,0) scale(1,1) skew(0deg,0deg)'},
+          {transform:`translate(${1.8*orbit}px,${-2*a}px) scale(${1+stretch},${1-stretch*.72}) skew(${tilt}deg,${-tilt*.3}deg)`,offset:.28},
+          {transform:`translate(${-1.2*orbit}px,${1.4*a}px) scale(${1-stretch*.65},${1+stretch*.8}) skew(${-tilt*.7}deg,${tilt*.4}deg)`,offset:.63},
+          {transform:'translate(0,0) scale(1,1) skew(0deg,0deg)'}
+        ],{duration:Math.max(2400,10000/b.speed*3),iterations:Infinity,easing:'ease-in-out'}));
+      }
+    }
+    syncMotion();
+  }
+  setBubbleConfig(design);
   const designChanged=event=>setBubbleConfig(event.detail?.effects||DEFAULT_EFFECTS);
   document.addEventListener('mala-nauka:design',designChanged);
   return {
@@ -737,7 +776,7 @@ export function createBubble(host, options={}) {
     setTransition,
     getTransition,
     setBubbleConfig,
-    react(event='correct'){if(!reduced.matches)dynamics.push(event,performance.now(),reactionConfig);},
+    react(event='correct'){if(reduced.matches||paused)return;if(!composited){dynamics.push(event,performance.now(),reactionConfig);return;}const stretch=bubbleSettings.transforms?.04+bubbleSettings.morph*.04:.025;const animation=motionRoot.animate([{transform:'scale(1)'},{transform:`scale(${1+stretch},${1-stretch*.4})`,offset:.35},{transform:'scale(1)'}],{duration:700,easing:'ease-out'});transitions.push(animation);animation.finished.catch(()=>{});},
     clearReactions(){dynamics.clear();},
     setPaused(value) {
       paused=value; syncMotion();
@@ -748,7 +787,7 @@ export function createBubble(host, options={}) {
       document.removeEventListener('mala-nauka:design',designChanged);
       transitions.forEach(animation=>animation.cancel()); transitions=[];
       document.removeEventListener('visibilitychange',syncMotion);
-      reduced.removeEventListener('change',motionPreferenceChanged);
+      reduced.removeEventListener('change',motionPreferenceChanged);motionAnimations.forEach(a=>a.cancel());
     },
   };
 }

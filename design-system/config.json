@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 16,
+  "revision": 17,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -124,7 +124,7 @@
       "bounce": 2.65,
       "wobble": 0.42,
       "startKick": 2.8,
-      "flash": 0.52,
+      "flash": 1.5,
       "finishDuration": 1180
     },
     "resultText": {
@@ -278,50 +278,50 @@
     "particleBudget": 55,
     "comboGlobal": {
       "enabled": true,
-      "style": "cycle",
+      "style": "noise",
       "duration": 1850,
-      "intensity": 0.62
+      "intensity": 0.8
     },
     "wordTransition": {
       "style": "particles",
-      "dots": 64,
+      "dots": 48,
       "interactive": false,
-      "duration": 520,
-      "spread": 70
+      "duration": 720,
+      "spread": 160
     },
     "ambient": {
-      "style": "dust",
-      "filter": "warm",
+      "style": "bubbles",
+      "filter": "dream",
       "intensity": 0.5,
-      "density": 0.72,
-      "size": 1,
-      "speed": 0.55,
-      "softness": 0.12,
-      "warmth": 0.45,
-      "bloom": 0.35,
-      "flare": 0.18,
-      "grain": 0.08,
+      "density": 1.7,
+      "size": 2,
+      "speed": 1.75,
+      "softness": 0.25,
+      "warmth": 0.6,
+      "bloom": 0.65,
+      "flare": 0.65,
+      "grain": 0,
       "vignette": 0.12,
-      "touchStrength": 0.6,
+      "touchStrength": 0.8,
       "responsive": true
     },
     "bubble": {
       "frameRate": 30,
-      "speed": 3.7,
-      "amplitude": 3.25,
-      "orbit": 1.35,
+      "speed": 6.2,
+      "amplitude": 5,
+      "orbit": 1.9,
       "transitionDuration": 1200,
       "transitionBlur": 5.3,
-      "transitionSparks": 20,
+      "transitionSparks": 35,
       "shape": "bubble",
-      "morph": 0.45,
+      "morph": 0.7,
       "skin": "rainbow",
       "rim": "classic",
-      "liquid": "none",
-      "texture": 0.95,
-      "sparkle": 1.55,
+      "liquid": "jelly",
+      "texture": 1.4,
+      "sparkle": 0.9,
       "lightning": 0,
-      "fizz": 1.05
+      "fizz": 1.9
     },
     "reactions": {
       "correct": {
@@ -473,7 +473,7 @@
         "style": "confetti",
         "particles": 38,
         "duration": 1400,
-        "spread": 140,
+        "spread": 294,
         "scale": 1.08,
         "color": "#52ce9a",
         "sizeMin": 33,
@@ -4317,6 +4317,9 @@
         "fit": "contain",
         "imageScale": 1.05,
         "offsetY": -6
+      },
+      "wizard-note": {
+        "visibility": "removed"
       }
     },
     "spelling-results": {

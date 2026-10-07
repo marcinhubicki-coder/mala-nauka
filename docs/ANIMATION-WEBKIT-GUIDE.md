@@ -135,7 +135,7 @@ Przykłady z obecnej implementacji:
 - bańka: HTML/CSS;
 - metaliczne obrzeże: statyczny conic-gradient;
 - ciekła powierzchnia: lekkie highlighty CSS;
-- słowo-cząsteczki: jednorazowe próbkowanie tekstu + krótki WAAPI;
+- słowo-cząsteczki: jednorazowe próbkowanie glyphów + jeden lokalny canvas, maks. 30 odmalowań/s i 1200 drobinek;
 - combo: tylko jeden globalny efekt naraz;
 - loader: małe kulki + ograniczona geometria maski.
 
@@ -282,3 +282,28 @@ Inspiracja opisuje wygląd i zachowanie. Nie zobowiązuje nas do używania tej s
 ## Aktualizacja 2026-10-07
 
 Efekty scalono do źródeł Design Studio. Lab używa prawdziwego ekranu gry. Mapa liter jest rasteryzowana jednorazowo, a wiele drobnych punktów porusza się w ograniczonej liczbie grup WAAPI. Wyniki drugiej próby i ograniczenia: [weryfikacja wspólnego runtime](design-system/unified-runtime.md).
+
+### Aktualizacja mechaniki liter 2026-10-07
+
+Starszy budżet 32/64 grup wyżej dotyczy poprzedniej nakładki. Obecna mechanika używa fragmentów rasteryzowanych glifów (domyślnie 20 na literę, limit 576 węzłów łącznie), trzech lokalnych pul i skończonych animacji WAAPI. Szczegóły kontraktu, pomiarów i parametrów: [efekty ekranów i elementów](design-system/surface-effects.md#fragmenty-liter-i-stos-efektów-7-października-2026). Nie włączaj pełnej refrakcji zdjęcia bez osobnego porównania A/B w kompletnej scenie.
+
+## 12. Ujednolicony podgląd i doprecyzowanie odpowiedzi — 2026-10-07
+
+- `spelling/art.mjs` zawsze tworzy bańkę HTML/CSS. Komponenty, Efekty i bańka oraz zbudowane PWA nie wybierają silnika przez query string, urządzenie ani flagę preview. Stare konfiguracje `renderer: classic` są normalizowane do `composited`.
+- Domyślnie zostaje klasyczna perłowa oprawa i dotychczasowe tempo/falowanie. To stabilna rekonstrukcja wyglądu, nie kopia dynamicznego konturu SVG 1:1. Eksperymentalny plik SVG pozostaje w repo, ale nie jest aktywnym rendererem gry.
+- Przełącznik deformacji rozciąga **wspólnego rodzica zdjęcia, ramki i świateł**. Nie włącza sam cyklu figur. Nie animujemy dużej maski ani `path d`.
+- Próbkowanie tekstu uwzględnia aktualny font gry i otwory liter. Liczba kandydatów rośnie w ograniczony sposób również na desktopie (`stride >= fontSize/35`); jitter losowania jest liczony raz na kandydata. Zapobiega to wielosekundowemu przeliczeniu dużych liter.
+- Jedna lokalna warstwa canvas pracuje do 30 Hz, z DPR do 1.5 i maks. 1200 drobinkami na całe słowo, niezależnie od liczby liter. Nie tworzymy setek animowanych elementów DOM. Pauza, ukryta karta, ukryte słowo, reduced motion i opuszczenie rundy zatrzymują odmalowanie.
+- **Odpowiedź:** luka emituje drobinki → odsłonięcie poprawnej litery → złożenie tylko brakującej części → chwila na przeczytanie. Lewa i prawa strona zachowują istniejące cząsteczki i ich fazę ruchu. Dopiero zmiana pytania rozprasza całe słowo. `answerHold` steruje dodatkową przerwą po ułożeniu odpowiedzi.
+- `ambient.style=none` i `ambient.filter=none` albo intensywność 0 oznacza brak DOM warstwy optycznej. Poprzedni kod zostawiał pełnoekranowy backdrop blur nawet przy „bez efektu”; to obniżało FPS także testu kontrolnego.
+- Bokeh używa prepainted sprite 128 × 128. Miękkość jest wypalana podczas przygotowania, nie filtrowana co klatkę. Gradient i zmienne kolory są mieszaniem/przenikaniem dwóch gotowych grafik. Limit to 6 ruchomych obiektów na efekt, niezależnie od odziedziczonego starszego ustawienia gęstości. Więcej efektów w stosie nadal zwiększa koszt: zawsze testuj całą kompozycję.
+- Usunięto pętlę `ResizeObserver` dopasowującą font również po zmianie wysokości, którą samo dopasowanie wywoływało. Obserwujemy zmianę szerokości kontenera, a dopasowanie wykonujemy poza fazą dostarczania observera. WebKit zgłaszał wcześniej `ResizeObserver loop completed with undelivered notifications` po odpowiedzi/pauzie.
+- Grupy ustawień są niezależne; ich otwarcie i scroll są zachowywane po aktualizacji podglądu. Nie przywracać automatycznego zamykania grup po zmianie suwaka.
+
+### Weryfikacja
+
+`tools/verify-spelling-effects.mjs` przechodzi kolejno przez Efekty → Komponenty → rzeczywistą rundę w **zbudowanym** PWA. Porównuje font, grafikę, geometrię słowa i liczbę drobinek, sprawdza deformację zdjęcia, zachowanie bocznych liter podczas odsłonięcia, warstwę bokeh i pauzę. Obserwuje przez co najmniej minutę osobno: callbacki rAF, timer logiki oraz licznik odmalowań canvas. Sam aktywny timer nie dowodzi, że obraz działa.
+
+Dwa przeloty: automatyczny WebKit i Chrome. WebKit zachował około 60 callbacków rAF/s oraz ok. 30 odmalowań canvas/s przy zdjęciu + drobinkach + bokeh, również po odpowiedziach i pauzie. To dowód z automatycznego silnika na tym komputerze, **nie pomiar fizycznego iPhone’a ani temperatury urządzenia**. Pełnoekranowe efekty nadal mają koszt GPU. Fizyczny iPhone i dłuższa sesja są nadal wymagane przed wydaniem produkcyjnym.
+
+Zbudowany `dist` należy serwować jako root osobnego serwera. Otwieranie `/dist/` pod rootem źródeł ładuje część bezwzględnych ścieżek ze złego katalogu i daje fałszywe różnice podglądu.

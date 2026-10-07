@@ -21,16 +21,19 @@ test('liquid bubble variants and particle word transition are optional',()=>{
  assert.throws(()=>validateEffects(normalizeEffectsConfig({...normal,wordTransition:{style:'particles',dots:500,interactive:true}})));
 });
 
-test('particle word motion preserves the actual text and never animates by a JS frame loop',async()=>{
+test('particle words preserve accessible text and use one local bounded canvas',async()=>{
  const js=await read('spelling/word-particles.mjs');
  const art=await read('spelling/art.mjs');
  const css=await read('spelling/word-particles.css');
  const studio=await read('design-system/studio-play.mjs');
- assert.match(js,/MAX_DOTS=64/);
- assert.match(js,/webkit\?Math\.min\(32,settings.dots\)/);
+ assert.match(js,/MAX_WORD_PIECES=1200/);
+ assert.match(js,/piecesPerLetter:144/);
  assert.match(js,/createElement\('canvas'\)/);
  assert.match(js,/getImageData/);
- assert.doesNotMatch(js,/(requestAnimationFrame|setInterval|\.setInterval)\s*\(/);
+ assert.match(js,/t-painted>=32/);
+ assert.match(js,/Math.min\(1.5,devicePixelRatio/);
+ assert.match(js,/cancelAnimationFrame\(frame\)/);
+ assert.doesNotMatch(js,/setInterval\(/);
  assert.match(art,/wordParticles=createWordParticles/);
  assert.match(art,/wordParticles\?\.play\(direction\)/);
  assert.match(art,/wordParticles\?\.destroy/);

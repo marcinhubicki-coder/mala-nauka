@@ -1,10 +1,9 @@
 import {burstFireworks} from './fireworks.mjs';
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
-import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
+import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
 import {createComboGlobalEffects} from './combo-global.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
-import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import {createHTMLBubble} from './bubble-html.mjs';
 import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
@@ -14,10 +13,11 @@ import { RULES, lightbulbSvg } from './hints.mjs';
 export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pickEffect=createEffectPicker();
-  const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
+  let sourceEffects,normalizedEffects;
+  const effectConfig=()=>{const value=globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;if(value!==sourceEffects){sourceEffects=value;normalizedEffects=normalizeEffectsConfig(value);}return normalizedEffects;};
   let effectPreview=null,renderer;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
+  let animations = [], resizeObserver,resizeFrame, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
   const stopComboGlobal=()=>comboGlobal?.stop();
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
@@ -26,7 +26,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     hint.close(); hint.remove(); hint = null;
     if (session?.state === 'paused' && session.resumeState === 'playing') session.resume();
     app.classList.remove('spelling-hint-open');
-    bubble?.setPaused(app.classList.contains('paused'));
+    bubble?.setPaused(app.classList.contains('paused'));wordParticles?.setPaused(app.classList.contains('paused'));
     nodes?.hint.focus({ preventScroll: true });
   }
   function reset() {
@@ -36,7 +36,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (hint) { hint.close(); hint.remove(); hint = null; }
     animations.forEach(animation => animation.cancel()); animations = [];
     bubble?.destroy(); bubble = null;
-    resizeObserver?.disconnect();
+    resizeObserver?.disconnect();cancelAnimationFrame(resizeFrame);
     session?.setPresentationHold(false);
     session = nodes = undefined; shownQuestion = 0; shownState = '';
     app.classList.remove('spelling-art-ready', 'spelling-correct-feedback', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
@@ -47,7 +47,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function openHint() {
     if (!session || session.state !== 'playing' || session.presentationHeld) return;
-    session.hintUsed=true;session.pause(); bubble.setPaused(true);
+    session.hintUsed=true;session.pause(); bubble.setPaused(true);wordParticles?.setPaused(true);
     app.classList.add('spelling-hint-open');
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
@@ -95,13 +95,17 @@ export function createSpellingArt(app, { onContinue } = {}) {
     wordParticles=createWordParticles(nodes.word,effectConfig);
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
-    const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
-    const useHtml=(effectConfig().bubble?.renderer==='composited'&&!new URLSearchParams(location.search).has('svgBubble'))||new URLSearchParams(location.search).has('htmlBubble');
-    renderer=useHtml?'composited':'classic';
-    bubble=(useHtml?createHTMLBubble:createBubble)(app.querySelector('.spelling-visual'));
+    renderer='composited';
+    bubble=createHTMLBubble(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
-    resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
-    document.fonts.ready.then(() => { if (session === game)fitWord(); });
+    let observedWidth=-1;
+    resizeObserver = new ResizeObserver(entries=>{
+      const width=entries[0]?.contentRect.width;if(width===undefined||Math.abs(width-observedWidth)<.5)return;observedWidth=width;
+      // Fit after observer delivery, and only when container width changes.
+      // Fitting on its own height change created a WebKit observer loop.
+      cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{fitWord();wordParticles?.refresh();});
+    });resizeObserver.observe(nodes.word);
+    document.fonts.ready.then(() => { if (session === game){fitWord();wordParticles?.refresh();} });
   }
   function fitWord() {
     const word = nodes?.word.firstElementChild; if (!word) return;
@@ -111,14 +115,14 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
-    const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    const blocks = [...(effectConfig().wordTransition?.style==='particles'?[]:[nodes.word.firstElementChild]), ...app.querySelectorAll('.answer-ink')].filter(Boolean);
     // Optional dots run beside existing 140/180ms ink motion, without adding delay.
     const particleMotion=wordParticles?.play(direction);
     animations = flowInk(blocks, direction);
     if (session?.state === 'paused') animations.forEach(animation => animation.pause());
-    const active = animations;
+    const active = animations,finished=Promise.all(active.map(animation => animation.finished.catch(() => {})));
     if(effectConfig().wordTransition?.style==='particles')await particleMotion;
-    await Promise.all(active.map(animation => animation.finished.catch(() => {})));
+    await finished;
     active.forEach(animation => animation.cancel());
     if (animations === active) animations = [];
   }
@@ -147,6 +151,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (token !== generation || session !== game) return;
 
     app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback','spelling-correct-feedback');
+    nodes.word.dataset.answerLength=String(q.answer.length);
     nodes.word.replaceChildren(createWord(q.masked));
     nodes.word.setAttribute('aria-label', `Uzupełnij: ${q.masked.replace('_', ' — luka — ')}`);
     nodes.answers.forEach((button, index) => {
@@ -174,7 +179,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
-      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game){fitWord();if(correct)void wordParticles?.play('out');} });
+      const reveal=()=>revealWord(nodes.word.firstElementChild,game.current.answer,reduced.matches).then(()=>{if(session===game)fitWord();});
+      if(effectConfig().wordTransition?.style==='particles'){const feedbackGeneration=generation;game.setPresentationHold(true);void wordParticles?.reveal(game.current.answer,reveal,game.options.indexOf(game.selected)===0?-1:1).finally(()=>{if(session===game&&generation===feedbackGeneration)game.setPresentationHold(false);});}else void reveal();
       preloadQueuedScene(game);
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
@@ -197,10 +203,11 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
-    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();wordParticles?.clear();}
+    wordParticles?.setPaused(paused);if(!paused)wordParticles?.refresh();
+    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
-  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());});
-  return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();wordParticles?.clear();} };
+  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());wordParticles?.refresh();});
+  return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();} };
 }

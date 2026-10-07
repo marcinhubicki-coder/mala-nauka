@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 19,
+  "revision": 21,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -284,16 +284,27 @@
       "intensity": 0.8
     },
     "wordTransition": {
-      "style": "ink",
+      "style": "particles",
       "dots": 52,
       "interactive": false,
-      "duration": 420,
-      "spread": 38
+      "piecesPerLetter": 144,
+      "duration": 1100,
+      "spread": 42,
+      "drift": 400,
+      "jitter": 0.8,
+      "pieceSize": 3.8,
+      "chromatic": 1.7,
+      "randomness": 0.85,
+      "particleShape": "square",
+      "attraction": 0.45,
+      "breathing": 12,
+      "colorVariation": 0.22,
+      "answerHold": 500
     },
     "ambient": {
-      "style": "orbit",
-      "filter": "glow",
-      "intensity": 0.25,
+      "style": "none",
+      "filter": "none",
+      "intensity": 0,
       "density": 2,
       "size": 1.35,
       "speed": 0.3,
@@ -307,9 +318,9 @@
       "responsive": true
     },
     "bubble": {
-      "look": "custom",
-      "renderer": "classic",
-      "transforms": true,
+      "look": "classic",
+      "renderer": "composited",
+      "transforms": false,
       "frameRate": 30,
       "speed": 4.7,
       "amplitude": 3.25,
@@ -318,10 +329,10 @@
       "transitionBlur": 5.3,
       "transitionSparks": 18,
       "shape": "bubble",
-      "morph": 0.7,
+      "morph": 1,
       "skin": "rainbow",
       "rim": "classic",
-      "liquid": "silk",
+      "liquid": "none",
       "texture": 0.25,
       "sparkle": 0.35,
       "lightning": 0,

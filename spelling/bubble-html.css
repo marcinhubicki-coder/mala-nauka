@@ -27,8 +27,8 @@
 .mn-soap-paused .mn-soap-shell,.mn-soap-paused .mn-soap-glint,.mn-soap-paused .mn-soap-spark{animation-play-state:paused!important}
 @keyframes mn-soap-sway{
  0%,100%{transform:translate3d(0,0,0) rotate(-.65deg) scale(1,.996)}
- 26%{transform:translate3d(2px,-3px,0) rotate(.4deg) scale(1.018,.994)}
- 56%{transform:translate3d(-2px,2px,0) rotate(.65deg) scale(.991,1.011)}
+ 26%{transform:translate3d(calc(2px * var(--mn-soap-orbit,1)),calc(-3px * var(--mn-soap-orbit,1)),0) rotate(.4deg) scale(calc(1 + .018 * var(--mn-soap-amplitude,1)),calc(1 - .006 * var(--mn-soap-amplitude,1)))}
+ 56%{transform:translate3d(calc(-2px * var(--mn-soap-orbit,1)),calc(2px * var(--mn-soap-orbit,1)),0) rotate(.65deg) scale(calc(1 - .009 * var(--mn-soap-amplitude,1)),calc(1 + .011 * var(--mn-soap-amplitude,1)))}
  82%{transform:translate3d(1px,-1px,0) rotate(-.35deg) scale(1.007,1)}
 }
 @keyframes mn-soap-glint{0%,100%{opacity:.38;transform:rotate(-25deg) scale(.93)}45%{opacity:1;transform:rotate(-25deg) scale(1.14)}}

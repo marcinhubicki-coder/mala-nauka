@@ -6,8 +6,9 @@ import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {annotateElements} from './element-system.mjs';
 const base = new URL('../', import.meta.url);
-let config;
+let config,designSignature;
 export function applyDesign(value) {
+  const nextSignature=JSON.stringify(value);if(nextSignature===designSignature)return;designSignature=nextSignature;
   const css = configCSS(value);
   let style = document.getElementById('ds-tokens');
   if (!style) {style = document.createElement('style'); style.id = 'ds-tokens'; document.head.append(style);}
@@ -55,6 +56,7 @@ export async function initDesign() {
   };
   if (app) new MutationObserver(records=>{
     const meaningful=records.some(record=>{
+      if(record.target.closest?.('[data-mn-decoration]'))return false;
       if(record.type==='childList')return true;
       if(record.attributeName!=='class')return true;
       // Choosing a maths setup option only changes visual selection classes.

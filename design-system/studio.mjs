@@ -38,7 +38,7 @@ let recoveryDraft=null,recoveryContent=null;
 let originalWords=clone(words),baseBatches=clone(initialBatches),batches=clone(initialBatches);
 function syncWords(){const byWord=new Map(originalWords.map(r=>[r.word,clone(r)]));for(const edit of wordEdits.values()){for(const old of edit.baseValue)byWord.delete(old.word);for(const row of edit.value)byWord.set(row.word,clone(row));}words.splice(0,words.length,...byWord.values());}
 let baseRules=clone(initialRules),rules=clone(initialRules);
-let committedConfig=clone(initial),base=editableProjectConfig(initial),baseAssets=clone(initialAssets),config=editableProjectConfig(initial),assets=clone(initialAssets),page='project',viewId='spelling-settings',componentId='jelly',scope='global',docSection='principles',busy=false;
+let committedConfig=clone(initial),base=editableProjectConfig(initial),baseAssets=clone(initialAssets),config=editableProjectConfig(initial),assets=clone(initialAssets),page=new URLSearchParams(location.search).get('lab')==='effects'?'effects':'project',viewId='spelling-settings',componentId='jelly',scope='global',docSection='principles',busy=false;
 let undo=[],redo=[],uploads=[],wordEdits=new Map(),objectURLs=new Map(),draftHistory=[],savedCommit=null;
 const git=new GitClient();
 const names={spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};

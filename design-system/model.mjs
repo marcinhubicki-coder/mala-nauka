@@ -1,3 +1,4 @@
+import {validateLogoTransition} from '../shared/logo-transition.mjs';
 import {validateRecipes,validateBlueprints,recipesCSS,ATOMS} from '../shared/component-recipes.mjs';
 import {validateEffects} from '../spelling/effect-model.mjs';
 import {validateScoring} from '../spelling/scoring.mjs';
@@ -40,6 +41,7 @@ export function validateConfig(config) {
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
   if(config.motion)validateMotion(config.motion);
+  if(config.logoTransition)validateLogoTransition(config.logoTransition);
   validateElementStyles(config);
   if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 

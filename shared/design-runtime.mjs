@@ -53,7 +53,18 @@ export async function initDesign() {
     const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();screenAnimation=animateScreen(app,transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen));}if(screen)previousScreen=screen;
     annotateElements(app,config,document.documentElement.dataset.dsView);
   };
-  if (app) new MutationObserver(annotate).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
+  if (app) new MutationObserver(records=>{
+    const meaningful=records.some(record=>{
+      if(record.type==='childList')return true;
+      if(record.attributeName!=='class')return true;
+      // Choosing a maths setup option only changes visual selection classes.
+      // Re-annotating the whole design tree here causes an unnecessary WebKit
+      // repaint of the hero and makes attached particles appear to jump.
+      if(document.documentElement.dataset.dsView==='math-settings'&&record.target.matches?.('.category-card,.math-duration-choice'))return false;
+      return true;
+    });
+    if(meaningful)annotate();
+  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
   if(app)app.addEventListener('click',event=>{if(event.target.closest('[data-action=answer],.math-answer,.answer'))queueMicrotask(()=>triggerSurfaceEffects(app,'answer'));});
   annotate();
   return settings;

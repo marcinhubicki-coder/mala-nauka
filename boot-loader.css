@@ -1,1 +1,86 @@
-.mn-boot-screen{display:grid;place-content:center;justify-items:center;gap:20px;min-height:100%;background:linear-gradient(#e4f8ff,#fff4f2);text-align:center;color:#46739a}.mn-boot-logo{width:min(84vw,350px);height:auto;animation:mn-load-float 3s ease-in-out infinite}.mn-boot-dots{display:flex;gap:13px}.mn-boot-dots i{width:10px;height:10px;border-radius:50%;background:#76caf0;animation:mn-load-pulse 1.4s ease-in-out infinite}.mn-boot-dots i:nth-child(2){background:#f3a9ca;animation-delay:-.9s}.mn-boot-dots i:nth-child(3){background:#f5ce79;animation-delay:-.45s}@keyframes mn-load-float{50%{transform:translateY(-6px)}}@keyframes mn-load-pulse{50%{transform:scale(1.3);opacity:.5}}@media(prefers-reduced-motion:reduce){.mn-boot-logo,.mn-boot-dots i{animation:none!important}}
+/* Mała Nauka opening. Prepainted pastel shapes only; no dynamic SVG or canvas. */
+.mn-boot-screen{
+ position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:14px;overflow:hidden;min-height:100%;
+ isolation:isolate;text-align:center;color:#42759b;
+ background:#fff;
+}
+.mn-boot-screen::before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(ellipse at 32% 33%,#e5f8ff 0%,transparent 62%),
+  radial-gradient(ellipse at 73% 74%,#fff1f7 0%,transparent 63%),#fff;
+}
+.mn-boot-color-cloud{
+ position:absolute;left:50%;top:47%;width:min(75vw,340px);height:min(75vw,340px);
+ transform:translate(-50%,-50%);pointer-events:none;z-index:1;
+}
+.mn-boot-blob{
+ position:absolute;display:block;width:53%;height:52%;
+ border-radius:49% 51% 63% 37%/41% 64% 36% 59%;
+ opacity:.85;backface-visibility:hidden;will-change:transform,opacity;
+ animation:mn-boot-blob-drift 3.2s ease-in-out infinite alternate;
+}
+.mn-boot-blue{
+ left:3%;top:9%;background:radial-gradient(circle at 42% 43%,#9fe5ff,#63bafa 64%,#93b4f6b0);
+ --drift-x:-11px;--drift-y:-8px;--drift-angle:-12deg;
+}
+.mn-boot-pink{
+ right:3%;top:3%;width:53%;height:55%;
+ background:radial-gradient(circle at 34% 34%,#ffe6fa,#ed96d7 70%,#e3aff2b8);
+ --drift-x:13px;--drift-y:7px;--drift-angle:15deg;animation-delay:-1.2s;
+}
+.mn-boot-yellow{
+ top:35%;left:28%;width:61%;height:56%;
+ background:radial-gradient(circle at 41% 37%,#fff9cc,#ffce77 69%,#ffe2a6a0);
+ --drift-x:8px;--drift-y:-12px;--drift-angle:22deg;animation-delay:-1.8s;
+}
+.mn-boot-green{
+ top:47%;left:4%;width:43%;height:42%;
+ background:radial-gradient(circle at 35% 38%,#d3ffda,#8ad9c0 69%,#91e2ed90);
+ --drift-x:-9px;--drift-y:12px;--drift-angle:-17deg;animation-delay:-2.4s;
+}
+.mn-boot-purple{
+ top:55%;right:4%;width:42%;height:38%;
+ background:radial-gradient(circle at 36% 36%,#e7d8ff,#b6a5fc 68%,#c4bbfb88);
+ --drift-x:10px;--drift-y:9px;--drift-angle:13deg;animation-delay:-.5s;
+}
+.mn-boot-logo{
+ position:relative;z-index:3;width:min(83vw,352px);height:auto;
+ animation:mn-boot-logo-float 2.5s ease-in-out infinite;
+}
+.mn-boot-dots{position:relative;z-index:3;display:flex;gap:11px;align-items:center;justify-content:center}
+.mn-boot-dots i{
+ display:block;width:8px;height:8px;border-radius:50%;background:#49bdf7;
+ animation:mn-boot-dot-pulse 1.15s ease-in-out infinite;
+}
+.mn-boot-dots i:nth-child(2){background:#f0a6db;animation-delay:-.38s}
+.mn-boot-dots i:nth-child(3){background:#ffc753;animation-delay:-.76s}
+.mn-boot-caption{
+ position:relative;z-index:3;font-size:13px;font-weight:700;letter-spacing:.02em;color:#5988a5;
+}
+.mn-boot-rainbow{
+ position:absolute;inset:0;z-index:4;pointer-events:none;
+}
+.mn-boot-rainbow i{
+ position:absolute;left:50%;top:50%;width:clamp(48px,11vmin,95px);
+ height:clamp(120px,23vmin,190px);
+ border-radius:47% 53% 71% 29%/66% 50% 50% 34%;
+ opacity:0;transform:translate(-50%,-50%) scale(.1);
+ background:linear-gradient(155deg,#ffffffda 0%,var(--ray-color) 34%,var(--ray-color) 80%,#ffffffa8 100%);
+ backface-visibility:hidden;will-change:transform,opacity;
+}
+.mn-boot-whiteout{
+ position:absolute;left:50%;top:50%;z-index:5;pointer-events:none;
+ width:210vmax;height:210vmax;border-radius:50%;
+ background:#fff;transform:translate3d(-50%,-50%,0) scale(0);opacity:0;
+}
+@keyframes mn-boot-blob-drift{
+ from{transform:translate3d(0,0,0) rotate(0) scale(.91)}
+ to{transform:translate3d(var(--drift-x),var(--drift-y),0) rotate(var(--drift-angle)) scale(1.08)}
+}
+@keyframes mn-boot-logo-float{50%{transform:translate3d(0,-5px,0)}}
+@keyframes mn-boot-dot-pulse{50%{transform:scale(1.45);opacity:.4}}
+@media(prefers-reduced-motion:reduce){
+ .mn-boot-blob,.mn-boot-logo,.mn-boot-dots i{animation:none!important;will-change:auto!important}
+ .mn-boot-rainbow{display:none!important}
+}

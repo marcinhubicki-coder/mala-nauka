@@ -38,25 +38,25 @@
       "trackShadowY": 3,
       "trackShadowBlur": 7,
       "trackShadowOpacity": 0.035,
-      "duration": 900,
-      "stretch": 1.45,
-      "recoil": 0.55,
-      "bounce": 0.75,
-      "inertia": 2.4,
-      "magnet": 1.8,
-      "squish": 15,
-      "tilt": 1.3,
-      "glow": 0.65,
-      "shine": 1.5,
-      "blur": 0,
-      "saturation": 1,
-      "contrast": 1,
-      "inkDelay": 440,
-      "inkDuration": 430,
-      "inkBump": 1.25,
-      "inkGlow": 0.65,
-      "inkFade": 1.1,
-      "inkBlur": 0
+      "duration": 1080,
+      "stretch": 1.9,
+      "recoil": 0.72,
+      "bounce": 0.92,
+      "inertia": 2.85,
+      "magnet": 1.55,
+      "squish": 22,
+      "tilt": 2.6,
+      "glow": 0.85,
+      "shine": 1.75,
+      "blur": 0.35,
+      "saturation": 1.08,
+      "contrast": 1.04,
+      "inkDelay": 500,
+      "inkDuration": 560,
+      "inkBump": 1.38,
+      "inkGlow": 0.82,
+      "inkFade": 1.32,
+      "inkBlur": 0.45
     },
     "toggle": {
       "width": 122,
@@ -95,20 +95,20 @@
       "threshold": 96
     },
     "sliderWrong": {
-      "springDuration": 405,
-      "springOvershoot": 3,
-      "fillDuration": 350,
-      "completionDelay": 240,
-      "glowBlur": 9,
-      "sparkDuration": 600
+      "springDuration": 560,
+      "springOvershoot": 5,
+      "fillDuration": 460,
+      "completionDelay": 300,
+      "glowBlur": 13,
+      "sparkDuration": 820
     },
     "sliderResult": {
-      "springDuration": 405,
-      "springOvershoot": 3,
-      "fillDuration": 350,
-      "completionDelay": 350,
-      "glowBlur": 9,
-      "doneDuration": 300
+      "springDuration": 520,
+      "springOvershoot": 4.5,
+      "fillDuration": 440,
+      "completionDelay": 420,
+      "glowBlur": 14,
+      "doneDuration": 420
     },
     "popup": {
       "radius": 30,
@@ -118,23 +118,23 @@
     "progress": {
       "height": 18,
       "radius": 9,
-      "duration": 3000,
-      "easePower": 1.829,
-      "stretch": 0.5,
-      "bounce": 2.1,
-      "wobble": 0.2,
-      "startKick": 2,
-      "flash": 0.35,
-      "finishDuration": 950
+      "duration": 3600,
+      "easePower": 2.15,
+      "stretch": 0.85,
+      "bounce": 2.65,
+      "wobble": 0.42,
+      "startKick": 2.8,
+      "flash": 0.52,
+      "finishDuration": 1180
     },
     "resultText": {
-      "settlePercent": 76,
-      "rollDuration": 250,
-      "hundredPause": 90,
-      "hundredStagger": 24,
-      "hundredRevealDelay": 210,
-      "kickDuration": 220,
-      "handoffDelay": 120
+      "settlePercent": 82,
+      "rollDuration": 340,
+      "hundredPause": 130,
+      "hundredStagger": 38,
+      "hundredRevealDelay": 280,
+      "kickDuration": 310,
+      "handoffDelay": 170
     },
     "profile": {
       "radius": 26,
@@ -162,9 +162,9 @@
       "wrong": "#dd4161"
     },
     "englishWordFlip": {
-      "duration": 760,
-      "perspective": 760,
-      "depth": 48,
+      "duration": 1375,
+      "perspective": 1450,
+      "depth": 115,
       "rotation": 180,
       "midScale": 0.94,
       "swapPoint": 50,
@@ -237,7 +237,33 @@
       "idleInk": "#515c98"
     }
   },
-  "overrides": {},
+  "overrides": {
+    "players": {
+      "layout": {
+        "sectionGap": 18
+      },
+      "profile": {
+        "avatarSize": 96,
+        "padding": 16,
+        "gap": 10,
+        "radius": 26
+      }
+    },
+    "spelling-pause": {
+      "layout": {
+        "canvasWidth": 390,
+        "sidePadding": 14,
+        "safeTop": 47,
+        "safeBottom": 34,
+        "sectionGap": 18,
+        "headerHeight": 43,
+        "headerGap": 13,
+        "headerBottom": 21,
+        "missionHeight": 94,
+        "missionBottom": 17
+      }
+    }
+  },
   "motion": {
     "style": "fade",
     "duration": 320,
@@ -249,19 +275,104 @@
     "randomize": true,
     "comboEvery": 3,
     "comboBoost": 1.35,
-    "particleBudget": 36,
+    "particleBudget": 55,
+    "comboGlobal": {
+      "enabled": true,
+      "style": "cycle",
+      "duration": 1850,
+      "intensity": 0.62
+    },
+    "wordTransition": {
+      "style": "particles",
+      "dots": 64,
+      "interactive": false,
+      "duration": 520,
+      "spread": 70
+    },
+    "ambient": {
+      "style": "dust",
+      "filter": "warm",
+      "intensity": 0.5,
+      "density": 0.72,
+      "size": 1,
+      "speed": 0.55,
+      "softness": 0.12,
+      "warmth": 0.45,
+      "bloom": 0.35,
+      "flare": 0.18,
+      "grain": 0.08,
+      "vignette": 0.12,
+      "touchStrength": 0.6,
+      "responsive": true
+    },
     "bubble": {
-      "speed": 4.7,
+      "frameRate": 30,
+      "speed": 3.7,
       "amplitude": 3.25,
       "orbit": 1.35,
       "transitionDuration": 1200,
       "transitionBlur": 5.3,
-      "transitionSparks": 18
+      "transitionSparks": 20,
+      "shape": "bubble",
+      "morph": 0.45,
+      "skin": "rainbow",
+      "rim": "classic",
+      "liquid": "none",
+      "texture": 0.95,
+      "sparkle": 1.55,
+      "lightning": 0,
+      "fizz": 1.05
+    },
+    "reactions": {
+      "correct": {
+        "speed": 5.2,
+        "wave": 1.8,
+        "shift": 0,
+        "duration": 1600,
+        "shape": "bubble",
+        "morph": 0.35
+      },
+      "wrong": {
+        "speed": -1.5,
+        "wave": 0.2,
+        "shift": -2,
+        "duration": 800,
+        "shape": "triangle",
+        "morph": 0.7
+      },
+      "combo": {
+        "speed": 7.3,
+        "wave": 4.2,
+        "shift": 6,
+        "duration": 2500,
+        "shape": "cycle",
+        "morph": 0.6
+      }
     },
     "wrong": {
       "duration": 440,
       "shake": 5,
-      "color": "#dd4161"
+      "color": "#dd4161",
+      "style": "dynamite",
+      "particles": 16,
+      "spread": 76,
+      "sizeMin": 8,
+      "sizeMax": 24,
+      "speed": 1.05,
+      "gravity": 0.12,
+      "drag": 0.08,
+      "lifetime": 0.8,
+      "opacity": 0.9,
+      "rotation": 120,
+      "originX": 50,
+      "originY": 50,
+      "delay": 0,
+      "bursts": 1,
+      "randomness": 0.55,
+      "intensity": 0.8,
+      "wobble": 0.65,
+      "randomHit": 0.7,
+      "flash": 0.55
     },
     "presets": {
       "spark": {
@@ -269,30 +380,138 @@
         "enabled": true,
         "style": "spark",
         "particles": 24,
-        "duration": 850,
-        "spread": 82,
+        "duration": 1050,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#ffc82f"
+        "color": "#ffc82f",
+        "sizeMin": 23,
+        "sizeMax": 47,
+        "speed": 0.7,
+        "gravity": 0.45,
+        "drag": 0.12,
+        "lifetime": 1.65,
+        "opacity": 1,
+        "rotation": 330,
+        "originX": 50,
+        "originY": 50,
+        "delay": 200,
+        "bursts": 3,
+        "randomness": 0.8
       },
       "star": {
         "name": "Gwiazdy",
         "enabled": true,
         "style": "star",
+        "particles": 27,
+        "duration": 1400,
+        "spread": 140,
+        "scale": 1.05,
+        "color": "#ff4ca0",
+        "sizeMin": 34,
+        "sizeMax": 56,
+        "speed": 0.55,
+        "gravity": 1.35,
+        "drag": 0.12,
+        "lifetime": 1.95,
+        "opacity": 1,
+        "rotation": 330,
+        "originX": 50,
+        "originY": 20,
+        "delay": 120,
+        "bursts": 2,
+        "randomness": 0.7
+      },
+      "star5": {
+        "name": "Gwiazdy 5-ramienne",
+        "enabled": true,
+        "style": "star5",
         "particles": 18,
-        "duration": 1050,
-        "spread": 92,
+        "duration": 1400,
+        "spread": 104,
         "scale": 1.08,
-        "color": "#ff4ca0"
+        "color": "#ffd64b",
+        "sizeMin": 27,
+        "sizeMax": 59,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 560,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
+      },
+      "star9": {
+        "name": "Gwiazdy 9-ramienne",
+        "enabled": true,
+        "style": "star9",
+        "particles": 18,
+        "duration": 1400,
+        "spread": 112,
+        "scale": 1.08,
+        "color": "#b88cff",
+        "sizeMin": 19,
+        "sizeMax": 48,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 560,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "confetti": {
         "name": "Konfetti",
         "enabled": true,
         "style": "confetti",
-        "particles": 30,
-        "duration": 1100,
-        "spread": 88,
+        "particles": 38,
+        "duration": 1400,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#52ce9a"
+        "color": "#52ce9a",
+        "sizeMin": 33,
+        "sizeMax": 60,
+        "speed": 0.7,
+        "gravity": -1.2,
+        "drag": 0.7,
+        "lifetime": 2,
+        "opacity": 1,
+        "rotation": 560,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
+      },
+      "textConfetti": {
+        "name": "Konfetti z tekstu",
+        "enabled": true,
+        "style": "textConfetti",
+        "particles": 34,
+        "duration": 1400,
+        "spread": 118,
+        "scale": 1.08,
+        "color": "#ff5aa5",
+        "sizeMin": 25,
+        "sizeMax": 51,
+        "speed": 0.85,
+        "gravity": 0.75,
+        "drag": 0.25,
+        "lifetime": 1.65,
+        "opacity": 1,
+        "rotation": 560,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 2,
+        "randomness": 0.85
       },
       "halo": {
         "name": "Aureola",
@@ -300,9 +519,22 @@
         "style": "halo",
         "particles": 10,
         "duration": 700,
-        "spread": 66,
+        "spread": 128,
         "scale": 1.08,
-        "color": "#934dff"
+        "color": "#934dff",
+        "sizeMin": 14,
+        "sizeMax": 46,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1.75,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "comet": {
         "name": "Komety",
@@ -310,9 +542,22 @@
         "style": "comet",
         "particles": 18,
         "duration": 950,
-        "spread": 98,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#4cafff"
+        "color": "#4cafff",
+        "sizeMin": 15,
+        "sizeMax": 63,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "petal": {
         "name": "Płatki",
@@ -320,9 +565,22 @@
         "style": "petal",
         "particles": 22,
         "duration": 1000,
-        "spread": 74,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#ff8bbd"
+        "color": "#ff8bbd",
+        "sizeMin": 22,
+        "sizeMax": 62,
+        "speed": 1,
+        "gravity": 0.45,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "orbit": {
         "name": "Orbity",
@@ -330,9 +588,22 @@
         "style": "orbit",
         "particles": 16,
         "duration": 1050,
-        "spread": 85,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#b49bff"
+        "color": "#b49bff",
+        "sizeMin": 21,
+        "sizeMax": 56,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "fountain": {
         "name": "Fontanna",
@@ -340,9 +611,22 @@
         "style": "fountain",
         "particles": 28,
         "duration": 900,
-        "spread": 90,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#69d9dc"
+        "color": "#69d9dc",
+        "sizeMin": 24,
+        "sizeMax": 60,
+        "speed": 1,
+        "gravity": 0.75,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "diamond": {
         "name": "Diamenty",
@@ -350,9 +634,22 @@
         "style": "diamond",
         "particles": 20,
         "duration": 800,
-        "spread": 76,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#ffc82f"
+        "color": "#ffc82f",
+        "sizeMin": 35,
+        "sizeMax": 57,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
       },
       "ripple": {
         "name": "Kręgi",
@@ -360,9 +657,91 @@
         "style": "ripple",
         "particles": 8,
         "duration": 750,
-        "spread": 60,
+        "spread": 140,
         "scale": 1.08,
-        "color": "#52ce9a"
+        "color": "#52ce9a",
+        "sizeMin": 17,
+        "sizeMax": 53,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
+      },
+      "lightning": {
+        "name": "Błyskawice",
+        "enabled": true,
+        "style": "lightning",
+        "particles": 16,
+        "duration": 720,
+        "spread": 140,
+        "scale": 1.08,
+        "color": "#8ee9ff",
+        "sizeMin": 22,
+        "sizeMax": 51,
+        "speed": 1.35,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 1,
+        "randomness": 0.5
+      },
+      "glitter": {
+        "name": "Brokat",
+        "enabled": true,
+        "style": "glitter",
+        "particles": 42,
+        "duration": 1250,
+        "spread": 140,
+        "scale": 1.08,
+        "color": "#fff1a8",
+        "sizeMin": 18,
+        "sizeMax": 57,
+        "speed": 1,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 2,
+        "randomness": 0.85
+      },
+      "dynamite": {
+        "name": "Iskrzący dynamit",
+        "enabled": true,
+        "style": "dynamite",
+        "particles": 36,
+        "duration": 900,
+        "spread": 140,
+        "scale": 1.08,
+        "color": "#ff9b35",
+        "sizeMin": 23,
+        "sizeMax": 61,
+        "speed": 1.4,
+        "gravity": 0.18,
+        "drag": 0.12,
+        "lifetime": 1,
+        "opacity": 1,
+        "rotation": 220,
+        "originX": 50,
+        "originY": 50,
+        "delay": 0,
+        "bursts": 3,
+        "randomness": 0.85
       }
     }
   },
@@ -3888,704 +4267,6 @@
     "activeRelease": "release-muumm28i-i7xzv",
     "triggers": {
       "memory": "memory-reward"
-    },
-    "designDraft": {
-      "typography": {
-        "body": "nunito",
-        "ui": "dosis",
-        "display": "dynapuff",
-        "flag": "fredoka"
-      },
-      "tokens": {
-        "layout": {
-          "canvasWidth": 390,
-          "sidePadding": 14,
-          "safeTop": 47,
-          "safeBottom": 34,
-          "sectionGap": 18,
-          "headerHeight": 43,
-          "headerGap": 13,
-          "headerBottom": 21,
-          "missionHeight": 94,
-          "missionBottom": 17
-        },
-        "card": {
-          "radius": 27,
-          "paddingX": 18,
-          "paddingTop": 13,
-          "paddingBottom": 20,
-          "borderWidth": 2
-        },
-        "jelly": {
-          "height": 54,
-          "radius": 21,
-          "inset": 4,
-          "labelSize": 16.8,
-          "labelWeight": 800,
-          "trackShadowY": 3,
-          "trackShadowBlur": 7,
-          "trackShadowOpacity": 0.035,
-          "duration": 1080,
-          "stretch": 1.9,
-          "recoil": 0.72,
-          "bounce": 0.92,
-          "inertia": 2.85,
-          "magnet": 1.55,
-          "squish": 22,
-          "tilt": 2.6,
-          "glow": 0.85,
-          "shine": 1.75,
-          "blur": 0.35,
-          "saturation": 1.08,
-          "contrast": 1.04,
-          "inkDelay": 500,
-          "inkDuration": 560,
-          "inkBump": 1.38,
-          "inkGlow": 0.82,
-          "inkFade": 1.32,
-          "inkBlur": 0.45
-        },
-        "toggle": {
-          "width": 122,
-          "height": 31,
-          "radius": 14,
-          "labelSize": 11.5
-        },
-        "button": {
-          "height": 71,
-          "radius": 34,
-          "fontSize": 30,
-          "paddingX": 25,
-          "shadowY": 4,
-          "shadowBlur": 7,
-          "borderWidth": 2
-        },
-        "answer": {
-          "height": 95,
-          "radius": 24,
-          "gap": 12,
-          "paddingX": 10,
-          "fontSize": 34,
-          "widthPercent": 100,
-          "compactHeight": 69,
-          "compactFontSize": 23
-        },
-        "flashcard": {
-          "radius": 27,
-          "padding": 20,
-          "gap": 14
-        },
-        "slider": {
-          "height": 54,
-          "radius": 27,
-          "handleSize": 48,
-          "threshold": 96
-        },
-        "sliderWrong": {
-          "springDuration": 560,
-          "springOvershoot": 5,
-          "fillDuration": 460,
-          "completionDelay": 300,
-          "glowBlur": 13,
-          "sparkDuration": 820
-        },
-        "sliderResult": {
-          "springDuration": 520,
-          "springOvershoot": 4.5,
-          "fillDuration": 440,
-          "completionDelay": 420,
-          "glowBlur": 14,
-          "doneDuration": 420
-        },
-        "popup": {
-          "radius": 30,
-          "padding": 22,
-          "maxHeightPercent": 88
-        },
-        "progress": {
-          "height": 18,
-          "radius": 9,
-          "duration": 3600,
-          "easePower": 2.15,
-          "stretch": 0.85,
-          "bounce": 2.65,
-          "wobble": 0.42,
-          "startKick": 2.8,
-          "flash": 0.52,
-          "finishDuration": 1180
-        },
-        "resultText": {
-          "settlePercent": 82,
-          "rollDuration": 340,
-          "hundredPause": 130,
-          "hundredStagger": 38,
-          "hundredRevealDelay": 280,
-          "kickDuration": 310,
-          "handoffDelay": 170
-        },
-        "profile": {
-          "radius": 26,
-          "gap": 14,
-          "padding": 16,
-          "avatarSize": 96
-        },
-        "trophy": {
-          "size": 96,
-          "gap": 16
-        },
-        "space": {
-          "xs": 4,
-          "sm": 8,
-          "md": 12,
-          "lg": 16,
-          "xl": 24,
-          "xxl": 32
-        },
-        "color": {
-          "ink": "#09043f",
-          "muted": "#515c98",
-          "surface": "#ffffff",
-          "correct": "#239764",
-          "wrong": "#dd4161"
-        },
-        "englishWordFlip": {
-          "duration": 1375,
-          "perspective": 1450,
-          "depth": 115,
-          "rotation": 180,
-          "midScale": 0.94,
-          "swapPoint": 50,
-          "easingPreset": 1,
-          "direction": 0,
-          "pauseDuration": 45,
-          "settleDuration": 180,
-          "motionBlur": 1.5
-        }
-      },
-      "themes": {
-        "spelling": {
-          "accent": "#ff168b",
-          "light": "#ff8ec2",
-          "middle": "#ff52a3",
-          "bottom": "#f72390",
-          "border": "#ffa6cf",
-          "lip": "#be287d",
-          "shine": "#ffedf7",
-          "depth": "#b6006338",
-          "activeInk": "#ffffff",
-          "idleInk": "#515c98"
-        },
-        "english": {
-          "accent": "#ffc219",
-          "light": "#fff47b",
-          "middle": "#ffe34b",
-          "bottom": "#ffc119",
-          "border": "#ffe996",
-          "lip": "#c18a09",
-          "shine": "#ffffe2",
-          "depth": "#be680029",
-          "activeInk": "#ffffff",
-          "idleInk": "#515c98"
-        },
-        "flags": {
-          "accent": "#00b96b",
-          "light": "#86efc2",
-          "middle": "#3bd694",
-          "bottom": "#05af68",
-          "border": "#a5f3ce",
-          "lip": "#138656",
-          "shine": "#e6fff1",
-          "depth": "#00754438",
-          "activeInk": "#ffffff",
-          "idleInk": "#515c98"
-        },
-        "reading": {
-          "accent": "#a72ae7",
-          "light": "#df9aff",
-          "middle": "#c66bf5",
-          "bottom": "#9206d5",
-          "border": "#e599ff",
-          "lip": "#6e00b0",
-          "shine": "#ffe7ff",
-          "depth": "#6b00b638",
-          "activeInk": "#ffffff",
-          "idleInk": "#515c98"
-        },
-        "math": {
-          "accent": "#168cf0",
-          "light": "#87d3ff",
-          "middle": "#46b5ff",
-          "bottom": "#0876df",
-          "border": "#aadfff",
-          "lip": "#1461ae",
-          "shine": "#ecfaff",
-          "depth": "#126dc938",
-          "activeInk": "#ffffff",
-          "idleInk": "#515c98"
-        }
-      },
-      "overrides": {
-        "players": {
-          "layout": {
-            "sectionGap": 18
-          },
-          "profile": {
-            "avatarSize": 96,
-            "padding": 16,
-            "gap": 10,
-            "radius": 26
-          }
-        },
-        "spelling-pause": {
-          "layout": {
-            "canvasWidth": 390,
-            "sidePadding": 14,
-            "safeTop": 47,
-            "safeBottom": 34,
-            "sectionGap": 18,
-            "headerHeight": 43,
-            "headerGap": 13,
-            "headerBottom": 21,
-            "missionHeight": 94,
-            "missionBottom": 17
-          }
-        }
-      },
-      "motion": {
-        "style": "fade",
-        "duration": 320,
-        "distance": 18,
-        "easing": "ease-out"
-      },
-      "effects": {
-        "enabled": true,
-        "randomize": true,
-        "comboEvery": 3,
-        "comboBoost": 1.35,
-        "particleBudget": 55,
-        "bubble": {
-          "speed": 3.7,
-          "amplitude": 3.25,
-          "orbit": 1.35,
-          "transitionDuration": 1200,
-          "transitionBlur": 5.3,
-          "transitionSparks": 20,
-          "frameRate": 30,
-          "skin": "rainbow",
-          "shape": "bubble",
-          "morph": 0.45,
-          "texture": 0.95,
-          "sparkle": 1.55,
-          "lightning": 0,
-          "fizz": 1.05
-        },
-        "wrong": {
-          "duration": 440,
-          "shake": 5,
-          "color": "#dd4161",
-          "style": "dynamite"
-        },
-        "presets": {
-          "spark": {
-            "name": "Iskry",
-            "enabled": true,
-            "style": "spark",
-            "particles": 24,
-            "duration": 1050,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#ffc82f",
-            "sizeMin": 23,
-            "sizeMax": 47,
-            "gravity": 0.45,
-            "lifetime": 1.65,
-            "rotation": 330,
-            "speed": 0.7,
-            "bursts": 3,
-            "randomness": 0.8,
-            "delay": 200
-          },
-          "star": {
-            "name": "Gwiazdy",
-            "enabled": true,
-            "style": "star",
-            "particles": 27,
-            "duration": 1400,
-            "spread": 140,
-            "scale": 1.05,
-            "color": "#ff4ca0",
-            "sizeMin": 34,
-            "sizeMax": 56,
-            "speed": 0.55,
-            "gravity": 1.35,
-            "lifetime": 1.95,
-            "originY": 20,
-            "delay": 120,
-            "bursts": 2,
-            "randomness": 0.7,
-            "rotation": 330
-          },
-          "confetti": {
-            "name": "Konfetti",
-            "enabled": true,
-            "style": "confetti",
-            "particles": 38,
-            "duration": 1400,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#52ce9a",
-            "sizeMin": 33,
-            "sizeMax": 60,
-            "speed": 0.7,
-            "gravity": -1.2,
-            "lifetime": 2,
-            "drag": 0.7
-          },
-          "halo": {
-            "name": "Aureola",
-            "enabled": true,
-            "style": "halo",
-            "particles": 10,
-            "duration": 700,
-            "spread": 128,
-            "scale": 1.08,
-            "color": "#934dff",
-            "lifetime": 1.75,
-            "sizeMin": 14
-          },
-          "comet": {
-            "name": "Komety",
-            "enabled": true,
-            "style": "comet",
-            "particles": 18,
-            "duration": 950,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#4cafff",
-            "sizeMax": 63,
-            "sizeMin": 15
-          },
-          "petal": {
-            "name": "Płatki",
-            "enabled": true,
-            "style": "petal",
-            "particles": 22,
-            "duration": 1000,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#ff8bbd",
-            "sizeMin": 22,
-            "sizeMax": 62
-          },
-          "orbit": {
-            "name": "Orbity",
-            "enabled": true,
-            "style": "orbit",
-            "particles": 16,
-            "duration": 1050,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#b49bff",
-            "sizeMin": 21,
-            "sizeMax": 56
-          },
-          "fountain": {
-            "name": "Fontanna",
-            "enabled": true,
-            "style": "fountain",
-            "particles": 28,
-            "duration": 900,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#69d9dc",
-            "sizeMin": 24,
-            "sizeMax": 60
-          },
-          "diamond": {
-            "name": "Diamenty",
-            "enabled": true,
-            "style": "diamond",
-            "particles": 20,
-            "duration": 800,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#ffc82f",
-            "sizeMin": 35,
-            "sizeMax": 57
-          },
-          "ripple": {
-            "name": "Kręgi",
-            "enabled": true,
-            "style": "ripple",
-            "particles": 8,
-            "duration": 750,
-            "spread": 140,
-            "scale": 1.08,
-            "color": "#52ce9a",
-            "sizeMin": 17,
-            "sizeMax": 53
-          },
-          "star5": {
-            "enabled": true,
-            "duration": 1400,
-            "sizeMin": 27,
-            "sizeMax": 59
-          },
-          "star9": {
-            "enabled": true,
-            "duration": 1400,
-            "sizeMin": 19,
-            "sizeMax": 48
-          },
-          "textConfetti": {
-            "enabled": true,
-            "duration": 1400,
-            "sizeMin": 25,
-            "sizeMax": 51,
-            "speed": 0.85,
-            "drag": 0.25,
-            "lifetime": 1.65
-          },
-          "lightning": {
-            "enabled": true,
-            "spread": 140,
-            "sizeMin": 22,
-            "sizeMax": 51
-          },
-          "glitter": {
-            "enabled": true,
-            "spread": 140,
-            "sizeMin": 18,
-            "sizeMax": 57
-          },
-          "dynamite": {
-            "enabled": true,
-            "spread": 140,
-            "sizeMin": 23,
-            "sizeMax": 61
-          }
-        },
-        "reactions": {
-          "correct": {
-            "speed": 5.2,
-            "wave": 1.8,
-            "shift": 0,
-            "duration": 1600,
-            "shape": "bubble",
-            "morph": 0.35
-          },
-          "wrong": {
-            "speed": -1.5,
-            "wave": 0.2,
-            "shift": -2,
-            "duration": 800,
-            "shape": "triangle",
-            "morph": 0.7
-          },
-          "combo": {
-            "speed": 7.3,
-            "wave": 4.2,
-            "shift": 6,
-            "duration": 2500,
-            "shape": "cycle",
-            "morph": 0.6
-          }
-        },
-        "ambient": {
-          "style": "dust",
-          "filter": "warm",
-          "intensity": 0.5
-        }
-      },
-      "scoring": {
-        "correctPoints": 1,
-        "wrongPenalty": 0,
-        "hintPercent": 100,
-        "comboEvery": 3,
-        "comboBonus": 0
-      },
-      "elementStyles": {
-        "button-player-card": {
-          "height": 119.5
-        },
-        "text": {}
-      },
-      "elementOverrides": {
-        "spelling-settings": {
-          "h2": {
-            "text": "Twoja przygoda"
-          },
-          "setup-form": {
-            "gap": 0
-          },
-          "spelling-wizard-canvas": {
-            "gap": 0
-          },
-          "spacer-muwfhj4u": {
-            "width": 215,
-            "height": 75,
-            "offsetX": -92,
-            "offsetY": 366.5
-          },
-          "primary": {
-            "gap": 0,
-            "offsetY": 18
-          },
-          "wizard-intro": {
-            "overflow": "visible",
-            "offsetY": -3
-          },
-          "icon-home": {},
-          "card": {
-            "gap": 0
-          },
-          "spelling-mission-art": {
-            "fit": "contain",
-            "imageScale": 1.05,
-            "offsetY": -6
-          }
-        },
-        "spelling-results": {
-          "round-summary-line": {
-            "gap": 0,
-            "radius": 0,
-            "offsetY": -3.5
-          },
-          "round-progress": {
-            "height": 33,
-            "offsetY": -8.5
-          },
-          "result-points-bubble": {
-            "radius": 73,
-            "offsetX": -15.5,
-            "width": 94.5,
-            "height": 72,
-            "opacity": 0.9
-          },
-          "round-summary": {
-            "offsetY": -23
-          },
-          "result-stat-toggle-result": {
-            "offsetY": -25
-          },
-          "result-stat-toggle-result-1": {
-            "offsetY": -25
-          },
-          "result-details": {
-            "offsetY": -20,
-            "height": 217
-          },
-          "result-actions": {
-            "offsetY": 27
-          },
-          "result-title-wrap": {
-            "offsetY": -6.5
-          },
-          "p": {
-            "offsetY": -9.5
-          },
-          "result-count-2": {},
-          "h1": {
-            "offsetY": -3.5
-          },
-          "result-rays-1": {
-            "offsetY": -16,
-            "offsetX": -10
-          },
-          "result-rays": {
-            "offsetY": -19,
-            "offsetX": 10
-          },
-          "round-mode-pill": {
-            "fontSize": 11
-          },
-          "result-sheet": {},
-          "strong-5": {
-            "fontSize": 15,
-            "offsetY": 3,
-            "offsetX": 5
-          },
-          "p-2": {
-            "fontSize": 11,
-            "offsetY": 1,
-            "offsetX": 5
-          },
-          "result-detail-review": {
-            "height": 217.5,
-            "overflow": "visible"
-          },
-          "primary": {
-            "offsetY": -3
-          }
-        },
-        "spelling-pause": {
-          "layout-root": {
-            "padding": 47,
-            "gap": 8.44
-          }
-        },
-        "english-settings": {
-          "english-mission-art": {
-            "imageX": 50,
-            "opacity": 1,
-            "fit": "cover"
-          },
-          "english-mission-boy": {
-            "fit": "cover",
-            "imageScale": 1,
-            "imageX": 50
-          },
-          "primary": {
-            "offsetY": 18
-          }
-        },
-        "flags-settings": {
-          "primary": {
-            "offsetY": 18
-          },
-          "p": {
-            "text": "Podróż dookoła świata."
-          }
-        },
-        "reading-settings": {
-          "primary": {
-            "offsetY": 18
-          },
-          "p": {
-            "text": "Przeczytaj i  pamiętaj."
-          }
-        },
-        "math-settings": {
-          "img": {
-            "imageScale": 1
-          }
-        },
-        "players": {
-          "player-grid": {
-            "gap": 0,
-            "overflow": "visible"
-          },
-          "player-shell": {
-            "gap": 10
-          },
-          "player-card-choose-player-2": {},
-          "player-title": {
-            "gap": 0
-          },
-          "h1": {
-            "offsetY": -9
-          },
-          "p": {
-            "offsetY": -9
-          },
-          "player-card-choose-player": {}
-        },
-        "player-pin": {
-          "pin-error-outside": {
-            "offsetY": 17
-          }
-        }
-      }
     }
   },
   "copyOverrides": [
@@ -4596,5 +4277,187 @@
       "original": "Twoja mała misja",
       "text": "Twoja spokojna przygoda"
     }
-  ]
+  ],
+  "elementStyles": {
+    "button-player-card": {
+      "height": 119.5
+    },
+    "text": {}
+  },
+  "elementOverrides": {
+    "spelling-settings": {
+      "h2": {
+        "text": "Twoja przygoda"
+      },
+      "setup-form": {
+        "gap": 0
+      },
+      "spelling-wizard-canvas": {
+        "gap": 0
+      },
+      "spacer-muwfhj4u": {
+        "width": 215,
+        "height": 75,
+        "offsetX": -92,
+        "offsetY": 366.5
+      },
+      "primary": {
+        "gap": 0,
+        "offsetY": 18
+      },
+      "wizard-intro": {
+        "overflow": "visible",
+        "offsetY": -3
+      },
+      "icon-home": {},
+      "card": {
+        "gap": 0
+      },
+      "spelling-mission-art": {
+        "fit": "contain",
+        "imageScale": 1.05,
+        "offsetY": -6
+      }
+    },
+    "spelling-results": {
+      "round-summary-line": {
+        "gap": 0,
+        "radius": 0,
+        "offsetY": -3.5
+      },
+      "round-progress": {
+        "height": 33,
+        "offsetY": -8.5
+      },
+      "result-points-bubble": {
+        "radius": 73,
+        "offsetX": -15.5,
+        "width": 94.5,
+        "height": 72,
+        "opacity": 0.9
+      },
+      "round-summary": {
+        "offsetY": -23
+      },
+      "result-stat-toggle-result": {
+        "offsetY": -25
+      },
+      "result-stat-toggle-result-1": {
+        "offsetY": -25
+      },
+      "result-details": {
+        "offsetY": -20,
+        "height": 217
+      },
+      "result-actions": {
+        "offsetY": 27
+      },
+      "result-title-wrap": {
+        "offsetY": -6.5
+      },
+      "p": {
+        "offsetY": -9.5
+      },
+      "result-count-2": {},
+      "h1": {
+        "offsetY": -3.5
+      },
+      "result-rays-1": {
+        "offsetY": -16,
+        "offsetX": -10
+      },
+      "result-rays": {
+        "offsetY": -19,
+        "offsetX": 10
+      },
+      "round-mode-pill": {
+        "fontSize": 11
+      },
+      "result-sheet": {},
+      "strong-5": {
+        "fontSize": 15,
+        "offsetY": 3,
+        "offsetX": 5
+      },
+      "p-2": {
+        "fontSize": 11,
+        "offsetY": 1,
+        "offsetX": 5
+      },
+      "result-detail-review": {
+        "height": 217.5,
+        "overflow": "visible"
+      },
+      "primary": {
+        "offsetY": -3
+      }
+    },
+    "spelling-pause": {
+      "layout-root": {
+        "padding": 47,
+        "gap": 8.44
+      }
+    },
+    "english-settings": {
+      "english-mission-art": {
+        "imageX": 50,
+        "opacity": 1,
+        "fit": "cover"
+      },
+      "english-mission-boy": {
+        "fit": "cover",
+        "imageScale": 1,
+        "imageX": 50
+      },
+      "primary": {
+        "offsetY": 18
+      }
+    },
+    "flags-settings": {
+      "primary": {
+        "offsetY": 18
+      },
+      "p": {
+        "text": "Podróż dookoła świata."
+      }
+    },
+    "reading-settings": {
+      "primary": {
+        "offsetY": 18
+      },
+      "p": {
+        "text": "Przeczytaj i  pamiętaj."
+      }
+    },
+    "math-settings": {
+      "img": {
+        "imageScale": 1
+      }
+    },
+    "players": {
+      "player-grid": {
+        "gap": 0,
+        "overflow": "visible"
+      },
+      "player-shell": {
+        "gap": 10
+      },
+      "player-card-choose-player-2": {},
+      "player-title": {
+        "gap": 0
+      },
+      "h1": {
+        "offsetY": -9
+      },
+      "p": {
+        "offsetY": -9
+      },
+      "player-card-choose-player": {}
+    },
+    "player-pin": {
+      "pin-error-outside": {
+        "offsetY": 17
+      }
+    }
+  }
 }

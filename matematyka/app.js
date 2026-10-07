@@ -164,7 +164,7 @@ function renderCategories() {
     ${setupTopbar()}
     <section class="screen math-setup-screen">
       <div class="hero">
-        <p class="eyebrow">Matematyka</p>
+        <p class="eyebrow"><span class="math-neon-wordmark">Matematyka</span></p>
         <h1>Co dziś ćwiczymy?</h1>
       </div>
 

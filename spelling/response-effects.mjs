@@ -2,8 +2,8 @@ import {DEFAULT_EFFECTS,effectBudget,frameStats,normalizeEffectsConfig} from './
 
 // A decorative top layer: it never receives pointer events, while taps on the
 // real screen may pull a short, bounded group of particles toward that point.
-// iOS WebKit can stop scheduling frames for over a second when touch bursts
-// mutate a large blended overlay. Keep the ambient backdrop, but not the burst.
+// Mobile WebKit can suspend frame paints when a blended full-screen overlay
+// creates animated particles on each pointerdown. Keep ambient rendering.
 export function supportsAmbientTouchBurst(userAgent='',maxTouchPoints=0){
  return !(/AppleWebKit/i.test(userAgent)&&(/iP(?:hone|ad|od)/i.test(userAgent)||(/Macintosh/i.test(userAgent)&&maxTouchPoints>1)));
 }
@@ -32,7 +32,8 @@ export function createScreenAtmosphere(host,initial=DEFAULT_EFFECTS){
    const dot=document.createElement('i'),base=settings.style==='bokeh'?24+(i%6)*11:settings.style==='bubbles'?9+(i%5)*4:settings.style==='sparkles'?7+(i%4)*3:2+(i%3);
    dot.style.setProperty('--ambient-x',`${(i*37+13)%101}%`);dot.style.setProperty('--ambient-y',`${(i*61+7)%103}%`);
    dot.style.setProperty('--ambient-delay',`${-(i%11)*.73}s`);dot.style.setProperty('--ambient-size',`${base*settings.size}px`);
-   dot.style.setProperty('--ambient-dx',`${-9+(i*17)%19}px`);dot.style.setProperty('--ambient-dy',`${-11-(i*13)%18}px`);if(settings.style==='orbit'){dot.style.setProperty('--ambient-pivot-x',`${((i*43)%81)-40}vw`);dot.style.setProperty('--ambient-pivot-y',`${((i*37)%71)-35}vh`);}
+   dot.style.setProperty('--ambient-dx',`${-9+(i*17)%19}px`);dot.style.setProperty('--ambient-dy',`${-11-(i*13)%18}px`);
+   if(settings.style==='orbit'){dot.style.setProperty('--ambient-pivot-x',`${((i*43)%81)-40}vw`);dot.style.setProperty('--ambient-pivot-y',`${((i*37)%71)-35}vh`);}
    layer.append(dot);
   }
  };

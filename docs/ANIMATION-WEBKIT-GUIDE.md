@@ -143,8 +143,8 @@ Przykłady z obecnej implementacji:
 
 ### Słowo z cząsteczek
 
-- WebKit / iPhone: maks. 32 punkty;
-- pozostałe: maks. 64;
+- WebKit / iPhone: maks. 32 grupy punktów;
+- pozostałe: maks. 64 grupy;
 - bez stałej pętli fizyki.
 
 ### Żar / iskry combo
@@ -279,3 +279,6 @@ Jeżeli efekt jest spektakularny, ale w pełnej kompozycji Safari zaczyna zatrzy
 **Płynność i brak zatrzymań > wierność techniczna wobec inspiracji.**
 
 Inspiracja opisuje wygląd i zachowanie. Nie zobowiązuje nas do używania tej samej technologii.
+## Aktualizacja 2026-10-07
+
+Efekty scalono do źródeł Design Studio. Lab używa prawdziwego ekranu gry. Mapa liter jest rasteryzowana jednorazowo, a wiele drobnych punktów porusza się w ograniczonej liczbie grup WAAPI. Wyniki drugiej próby i ograniczenia: [weryfikacja wspólnego runtime](design-system/unified-runtime.md).

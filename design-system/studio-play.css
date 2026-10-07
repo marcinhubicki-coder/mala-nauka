@@ -62,3 +62,11 @@
  body[data-mobile-pane=preview] .effect-intro,body[data-mobile-pane=preview] .effect-toolbar,body[data-mobile-pane=preview] .effect-library,body[data-mobile-pane=preview] .bubble-live-actions{display:none}
  .effect-settings-body .form-field select,.effect-settings-body .form-field input{font-size:16px;min-height:44px}
 }
+
+.play-control .saved-tick{pointer-events:none}
+.play-control input[type=range]{touch-action:pan-y;cursor:ew-resize;min-height:32px}
+/* Scale inside the available stage; the unscaled phone must not size a grid row. */
+.effect-workspace .effect-stage:not(.is-comparing)>.effect-phone{
+ position:absolute;left:50%;top:50%;right:auto;bottom:auto;margin:0;
+ transform:translate(-50%,-50%) scale(var(--motion-scale));transform-origin:center;
+}

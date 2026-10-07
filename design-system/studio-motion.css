@@ -200,3 +200,5 @@
  transform:scale(var(--motion-scale));
  transform-origin:top center;
 }
+
+#workspace>.motion-section-tabs{margin:0;padding:8px 16px;min-height:54px;box-sizing:border-box}#workspace>.motion-elements-layout{height:calc(100% - 54px)}

@@ -1,5 +1,7 @@
 # Mała Nauka · Design System v1
 
+Aktualny kontrakt i sposób publikacji: [Jeden wygląd: Studio → testy → produkcja](unified-runtime.md).
+
 Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt wyglądu, komponentów i ilustracji oraz narzędzie do jego edycji.
 
 ![Design Studio: projekt wyspy, ekrany i lokalny edytor](studio-project-overview-final.jpg)

@@ -26,7 +26,7 @@ export class StudioMotion {
   Object.assign(this,options);this.section='controls';this.controlPreview='jelly';this.openControlGroup=0;this.compareControls=false;this.controlLoop=false;this.from='home';this.to='spelling-settings';this.current=this.from;this.loop=false;this.delay=1400;this.clock=new PlaybackClock();this.ready=new Set();this.waiters=new Map();this.playing=false;
   this.workspace.addEventListener('click',event=>this.click(event));this.workspace.addEventListener('change',event=>this.change(event));this.workspace.addEventListener('input',event=>this.input(event));this.workspace.addEventListener('focusout',()=>this.endEdit?.());window.addEventListener('message',event=>this.receive(event));
  }
- get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace'));}
+ get isOpen(){return Boolean(this.workspace.querySelector('.motion-workspace:not(.effect-workspace)'));}
  get motion(){return transitionMotion(this.getDesign().config.motion,this.from,this.to);}
  get saved(){return transitionMotion(this.getBase().motion,this.from,this.to);}
  get edges(){return motionEdges(this.registry);}
@@ -34,7 +34,8 @@ export class StudioMotion {
  pairEdit(key,value){const reverse=pairKey(this.to,this.from);if(this.edges.some(e=>e.from===this.to&&e.to===this.from)&&!this.getDesign().config.motion?.transitions?.[reverse])this.edit(`motion.transitions.${reverse}`,{inheritReverse:true});this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.motion,[key]:value});}
  frames(){return [...this.workspace.querySelectorAll('[data-motion-view]')];}
  url(view,{animate=false}={}){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id,...(animate?{animate:'1'}:{})});return url.href;}
- sectionNav(){return `<nav class=motion-section-tabs aria-label='Działy animacji'><button type=button data-motion-section=controls aria-pressed=${this.section==='controls'}>Elementy i zmiana słowa</button><button type=button data-motion-section=transitions aria-pressed=${this.section==='transitions'}>Przejścia między ekranami</button></nav>`;}
+ sectionNav(){return `<nav class=motion-section-tabs aria-label="Działy animacji">${[['global','Globalne'],['controls','Animacje w grze'],['elements','Animowane elementy'],['transitions','Przejścia ekranów']].map(([id,name])=>`<button type=button data-motion-section=${id} aria-pressed=${this.section===id}>${name}</button>`).join('')}</nav>`;}
+
  select(id,value){const allowed=new Set(this.edges.filter(e=>id==='motion-from'||e.from===this.from).map(e=>id==='motion-from'?e.from:e.to));return `<select id=${id}>${this.registry.views.filter(v=>allowed.has(v.id)).map(view=>`<option value=${view.id} ${view.id===value?'selected':''}>${html(view.name)}</option>`).join('')}</select>`;}
  transitionControl(key,label,min,max,unit){return `<div class=control data-motion-control=${key}><div class=control-top><label for=motion-${key}>${label}</label><span class=control-value><input type=number aria-label='${label}' data-motion-value=${key} value=${this.motion[key]} min=${min} max=${max} step=${key==='duration'?20:1}><span>${unit}</span></span></div><div class=range-wrap><input id=motion-${key} type=range aria-label='${label}' data-motion-value=${key} min=${min} max=${max} step=${key==='duration'?20:1} value=${this.motion[key]}><span class=saved-mark style='--saved-position:${savedMarker(this.saved[key],min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(this.saved[key])} ${unit}</strong></span><button data-motion-reset=${key}>Przywróć</button></div></div>`;}
  tokenSourceValue(source,group,key){
@@ -48,7 +49,7 @@ export class StudioMotion {
   const [min,max,step,unit]=rangeFor(group,key);
   return `<div class=control data-token-control data-token-group=${group} data-token-key=${key}><div class=control-top><label for=${id}>${label}</label><span class=control-value><input type=number aria-label='${label}' data-token-value value=${value} min=${min} max=${max} step=${step}><span>${unit}</span></span></div><div class=range-wrap><input id=${id} type=range aria-label='${label}' data-token-value min=${min} max=${max} step=${step} value=${value}><span class=saved-mark style='--saved-position:${savedMarker(saved,min,max)/100}'></span></div><div class=saved-value><span>Ostatnio zapisano: <strong>${number(saved)} ${unit}</strong></span><button type=button data-token-reset>Przywróć</button></div></div>`;
  }
- render(){this.stop();this.ready.clear();this.waiters.clear();this.current=this.from;if(this.section==='controls')this.renderControls();else this.renderTransitions();this.observeStage();}
+ render(){if(this.section==='elements'||this.section==='global'){this.leave();this.openSection?.(this.section);return;}this.stop();this.ready.clear();this.waiters.clear();this.current=this.from;if(this.section==='controls')this.renderControls();else this.renderTransitions();this.observeStage();}
  renderControls(){
   const preview=CONTROL_PREVIEWS[this.controlPreview],fallbackOpenIndex=CONTROL_GROUPS.findIndex(group=>group.preview===this.controlPreview),openIndex=CONTROL_GROUPS[this.openControlGroup]?.preview===this.controlPreview?this.openControlGroup:fallbackOpenIndex,activePreset=activeControlMotionPreset(this.getDesign().config.tokens);
   const choiceGroups=CONTROL_GROUPS.map((group,index)=>({group,index})).filter(({group})=>group.preview===this.controlPreview);
@@ -101,7 +102,7 @@ export class StudioMotion {
  receive(event){if(!this.isOpen||event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio')return;const frame=this.frames().find(row=>row.contentWindow===event.source);if(!frame)return;if(event.data.type==='ready'){this.sendFrameDesign(frame);this.send(frame,'inspect',{enabled:false,highlight:false});if(this.controlPreview==='englishFlip')setTimeout(()=>this.send(frame,'word-flip-demo',{loop:this.controlLoop}),80);}if(event.data.type==='inventory'&&(event.data.rendered||event.data.items?.some(item=>item.index>=0&&item.visible))){const id=frame.dataset.readyKey||frame.dataset.motionView;this.ready.add(id);this.waiters.get(id)?.();this.updateStatus();}}
  choosePair(from,to){this.stop();this.from=from;this.to=this.edges.some(e=>e.from===from&&e.to===to)?to:this.edges.find(e=>e.from===from)?.to;this.render();}
  click(event){
-  if(!this.isOpen)return;const button=event.target.closest('button');if(!button)return;
+  const button=event.target.closest('button');if(!button)return;if(!this.isOpen&&!button.dataset.motionSection)return;
   if(button.dataset.motionSection){this.section=button.dataset.motionSection;this.render();return;}
   if(button.dataset.controlGroup!==undefined){const index=Number(button.dataset.controlGroup);if(CONTROL_GROUPS[index]){this.openControlGroup=index;this.controlPreview=CONTROL_GROUPS[index].preview;this.render();}return;}
   if(button.dataset.controlPreview){this.controlPreview=button.dataset.controlPreview;this.openControlGroup=CONTROL_GROUPS.findIndex(group=>group.preview===this.controlPreview);this.render();return;}

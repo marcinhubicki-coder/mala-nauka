@@ -19,6 +19,7 @@ export function mountJellies(root,previous=new Map()){
   revealSelection();
   if(!mounted.has(node)){
    mounted.add(node);let suppress=0;
+   node.addEventListener('change',()=>jelly.update(node,active(),{animate:true}));
    jelly.setupDrag(node,{getActiveIndex:active,captureOnDrag:true,suppressClick:ms=>suppress=performance.now()+ms,commitIndex:index=>{const input=node.querySelectorAll('input')[index];if(input&&!input.checked){input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}}});
    node.addEventListener('click',e=>{if(performance.now()<suppress){e.preventDefault();e.stopPropagation();}},true);
    const observer=new ResizeObserver(()=>{if(node.isConnected){jelly.update(node,active(),{animate:false});revealSelection();}else observer.disconnect();});observer.observe(node);observer.observe(node.closest('.studio-choice-scroll'));

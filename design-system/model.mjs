@@ -41,6 +41,8 @@ export function validateConfig(config) {
   }
   if(config.motion)validateMotion(config.motion);
   validateElementStyles(config);
+  if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
+
   if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(config.tokens);

@@ -1,9 +1,11 @@
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
 import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
+import {createComboGlobalEffects} from './combo-global.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
 import { createBubble } from './bubble.mjs?v=39-transition-preset';
 import {createHTMLBubble} from './bubble-html.mjs';
+import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
@@ -12,8 +14,10 @@ export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pickEffect=createEffectPicker();
   const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
+  let effectPreview=null;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere;
+  let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
+  const stopComboGlobal=()=>comboGlobal?.stop();
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
   function closeHint() {
@@ -26,7 +30,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function reset() {
     generation++;
-    continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;atmosphere?.destroy();atmosphere=null;
+    wordParticles?.destroy();wordParticles=null;
+    continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;stopComboGlobal();comboGlobal?.destroy();comboGlobal=null;atmosphere?.destroy();atmosphere=null;
     if (hint) { hint.close(); hint.remove(); hint = null; }
     animations.forEach(animation => animation.cancel()); animations = [];
     bubble?.destroy(); bubble = null;
@@ -81,10 +86,12 @@ export function createSpellingArt(app, { onContinue } = {}) {
       <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
       <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
     atmosphere=createScreenAtmosphere(app,effectConfig());
+    comboGlobal=createComboGlobalEffects(app);
     nodes = {
       word: app.querySelector('.question-content'), answers: [...app.querySelectorAll('.answer')],
       hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
     };
+    wordParticles=createWordParticles(nodes.word,effectConfig);
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
@@ -92,7 +99,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     bubble=(useHtml?createHTMLBubble:createBubble)(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
-    document.fonts.ready.then(() => { if (session === game) fitWord(); });
+    document.fonts.ready.then(() => { if (session === game)fitWord(); });
   }
   function fitWord() {
     const word = nodes?.word.firstElementChild; if (!word) return;
@@ -103,9 +110,12 @@ export function createSpellingArt(app, { onContinue } = {}) {
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
     const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    // Optional dots run beside existing 140/180ms ink motion, without adding delay.
+    const particleMotion=wordParticles?.play(direction);
     animations = flowInk(blocks, direction);
     if (session?.state === 'paused') animations.forEach(animation => animation.pause());
     const active = animations;
+    if(effectConfig().wordTransition?.style==='particles')await particleMotion;
     await Promise.all(active.map(animation => animation.finished.catch(() => {})));
     active.forEach(animation => animation.cancel());
     if (animations === active) animations = [];
@@ -119,7 +129,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
 
   async function present(game, first) {
     const token = ++generation;
-    stopFireworks?.();stopFireworks=null;continueDrag?.reset();
+    stopFireworks?.();stopFireworks=null;stopComboGlobal();continueDrag?.reset();
     game.setPresentationHold(true); app.classList.add('ink-changing');
     nodes.answers.forEach(button => { button.disabled = true; });
     nodes.hint.disabled = true; nodes.next.hidden = true;
@@ -162,7 +172,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
-      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game) fitWord(); });
+      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game){fitWord();if(correct)void wordParticles?.play('out');} });
       preloadQueuedScene(game);
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
@@ -175,18 +185,19 @@ export function createSpellingArt(app, { onContinue } = {}) {
       app.classList.toggle('spelling-correct-feedback',correct);
       const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
       bubble?.react(combo?'combo':correct?'correct':'wrong');
-      const {preset}=pickEffect(effects);stopFireworks?.();
-      stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo,target:app.querySelector('.soap-svg')});
+      const preset=effects.presets[effectPreview?.id]||pickEffect(effects).preset;stopFireworks?.();stopFireworks=null;stopComboGlobal();
+      if(combo&&effects.comboGlobal?.enabled!==false){comboGlobal?.play(effects);}
+      else stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo:false,target:app.querySelector('.soap-svg')||app.querySelector('.mn-soap-shell'),onMetrics:effectPreview?.onMetrics});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
       if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
-    if(paused){continueDrag?.reset();stopFireworks?.();}
+    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();wordParticles?.clear();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
   document.addEventListener('mala-nauka:design',()=>{if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());});
-  return { render, reset, setPaused, closeHint };
+  return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();wordParticles?.clear();} };
 }

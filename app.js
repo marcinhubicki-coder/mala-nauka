@@ -762,7 +762,7 @@ async function renderStudioScenario(stateOverride=null){
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
  view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
- if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:metrics=>effectLabSend('metrics',{metrics,run:effectLabPending.run})});}
+ if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:undefined});}
  if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
@@ -770,7 +770,14 @@ async function renderStudioScenario(stateOverride=null){
  if(query.has('effectLab'))installEffectLab();
 }
 
-let effectLabInstalled=false,effectLabPending=null;
+let effectLabInstalled=false,effectLabPending=null,effectLabMeasurement=()=>{};
+function measureEffectLab(run,name){
+ effectLabMeasurement();const intervals=[];let previous=0,raf;const began=performance.now();
+ const sample=now=>{if(previous)intervals.push(now-previous);previous=now;raf=requestAnimationFrame(sample);};raf=requestAnimationFrame(sample);
+ const timer=setTimeout(()=>{cancelAnimationFrame(raf);effectLabSend('metrics',{run,metrics:{disabled:false,presetName:name,particles:document.querySelectorAll('.response-particle,.mn-word-particles i').length,requested:0,intervals,duration:performance.now()-began,stalled:intervals.length<8}});},2200);
+ effectLabMeasurement=()=>{cancelAnimationFrame(raf);clearTimeout(timer);};
+}
+
 function effectLabSend(type,payload={}){if(parent!==window)parent.postMessage({channel:'mala-nauka-effects',type,...payload},location.origin);}
 function installEffectLab(){
  if(effectLabInstalled)return;effectLabInstalled=true;
@@ -778,20 +785,19 @@ function installEffectLab(){
   if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-effects')return;
   const data=event.data;
   if(data.type==='design'&&data.config){applyDesign(data.config);return;}
-  if(data.type==='stop'){spellingArt.stopPreviewEffect?.();spellingArt.setPaused(true);return;}
+  if(data.type==='stop'){effectLabMeasurement();spellingArt.stopPreviewEffect?.();spellingArt.setPaused(true);return;}
   if(data.type==='resume'){spellingArt.setPaused(false);return;}
   if(data.type==='react'){spellingArt.setPaused(false);spellingArt.previewReact?.(data.event);return;}
   if(data.type==='reset'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
-  if(data.type==='picture'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
+  if(data.type==='picture'){const url=new URL(location.href);url.searchParams.set('word',url.searchParams.get('word')==='brzuch'?'przód':'brzuch');history.replaceState(null,'',url);effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
   if(data.type!=='play')return;
   const run=Number(data.run)||0,eventType=data.event||'correct';
   if(eventType==='idle'){
-   effectLabPending=null;await renderStudioScenario('initial');const intervals=[];let previous=0,start=0,raf;
-   const sample=now=>{start||=now;if(previous)intervals.push(now-previous);previous=now;if(now-start<1500)raf=requestAnimationFrame(sample);else effectLabSend('metrics',{run,metrics:{disabled:false,presetName:'Bańka · spoczynek',particles:0,requested:0,intervals,duration:1500}});};
-   raf=requestAnimationFrame(sample);effectLabSend('played',{run,event:eventType,id:data.id});return;
+   effectLabPending=null;await renderStudioScenario('initial');measureEffectLab(run,'Bańka · spoczynek');effectLabSend('played',{run,event:eventType,id:data.id});return;
   }
   effectLabPending={id:data.id,event:eventType,run};
   await renderStudioScenario(eventType==='wrong'?'wrong':'correct');
+  measureEffectLab(run,eventType==='combo'?'Globalne combo':eventType==='wrong'?'Błędna odpowiedź':'Poprawna odpowiedź');
   effectLabSend('played',{run,event:eventType,id:data.id,streak:game?.streak||0});
  });
  requestAnimationFrame(()=>effectLabSend('ready'));

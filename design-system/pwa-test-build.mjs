@@ -5,6 +5,7 @@ export const TEST_PWA_BRANCH='studio/pwa-test';
 export function optimizedTestConfig(saved){
  const draft=saved.project?.designDraft||{};
  const config=structuredClone({...saved,...draft});
+ if(config.project)delete config.project.designDraft;
  const effects=normalizeEffectsConfig(config.effects||DEFAULT_EFFECTS);
  const original={frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness};
  // Preserve full design effects. On mobile WebKit use the compositor bubble and restrained overlays.

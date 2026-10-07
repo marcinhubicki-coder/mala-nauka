@@ -24,7 +24,7 @@ test('white ring opens from its center 600ms after the outer disk begins',async(
  assert.ok(inner,'inner hole begins 780ms into burst, exactly 600ms later');
  assert.match(css,/@keyframes mn-boot-center-reveal/);
  assert.match(css, /clip-path:circle\(0px at 50% 50%\)/);
- assert.match(css, /clip-path:circle\(150vmax at 50% 50%\)/);
+ assert.match(css, /clip-path:circle\(80vmax at 50% 50%\)/);
  assert.match(css, /#app\{\s*position:relative;z-index:2001/);
  assert.match(js,/INITIAL_THREE_TURNS_MS=2250/);
  assert.match(js,/EXIT_MS=reduced\?190:1890/);

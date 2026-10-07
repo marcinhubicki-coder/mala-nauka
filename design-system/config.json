@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 21,
+  "revision": 23,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -287,19 +287,26 @@
       "style": "particles",
       "dots": 52,
       "interactive": false,
-      "piecesPerLetter": 144,
-      "duration": 1100,
-      "spread": 42,
-      "drift": 400,
-      "jitter": 0.8,
-      "pieceSize": 3.8,
-      "chromatic": 1.7,
-      "randomness": 0.85,
-      "particleShape": "square",
-      "attraction": 0.45,
-      "breathing": 12,
-      "colorVariation": 0.22,
-      "answerHold": 500
+      "piecesPerLetter": 180,
+      "duration": 300,
+      "spread": 64,
+      "drift": 140,
+      "jitter": 0,
+      "pieceSize": 3.4,
+      "chromatic": 1.3,
+      "randomness": 0.55,
+      "particleShape": "circle",
+      "attraction": 0.6,
+      "breathing": 34,
+      "colorVariation": 0.4,
+      "answerHold": 400,
+      "letterSpacing": 1,
+      "particleSpacing": 1.2,
+      "strokeMagnet": 0.25,
+      "settleFill": 0.85,
+      "colorSpread": 0.45,
+      "colorDeviation": 0.12,
+      "colorSpeed": 0.4
     },
     "ambient": {
       "style": "none",
@@ -319,7 +326,7 @@
     },
     "bubble": {
       "look": "classic",
-      "renderer": "composited",
+      "renderer": "classic",
       "transforms": false,
       "frameRate": 30,
       "speed": 4.7,
@@ -336,7 +343,13 @@
       "texture": 0.25,
       "sparkle": 0.35,
       "lightning": 0,
-      "fizz": 0.3
+      "fizz": 0.3,
+      "shadow": 1.8,
+      "depth": 1.2,
+      "glow": 2,
+      "sheen": 1.55,
+      "rainbow": 1.25,
+      "rimIntensity": 1.1
     },
     "reactions": {
       "correct": {
@@ -4572,6 +4585,9 @@
       "effectBlur": 12,
       "effectColor": "#cce8b5",
       "effectTrigger": "continuous"
+    },
+    "spelling-initial": {
+      "surfaceEffects": []
     }
   }
 }

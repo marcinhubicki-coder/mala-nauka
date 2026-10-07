@@ -3,3 +3,5 @@
 .word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:transparent!important;text-shadow:none!important}
 .question-content{margin-top:var(--mn-word-breathing,0px)}
 @media(prefers-reduced-motion:reduce){.mn-word-particles{display:none!important}.word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:inherit!important}}
+
+.question-content .word-side,.question-content .revealed-chunk{letter-spacing:var(--mn-letter-spacing,1px)}

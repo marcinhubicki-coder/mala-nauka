@@ -19,7 +19,7 @@ export function optimizedTestConfig(saved){
 function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Silnik bańki zmienił się — wstrzymano automatyczną optymalizację.');return source.replace(a,b);}
 export function optimizeBubbleSource(source){
  let result=source;
- if(!result.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;')){
+ if(!result.includes('const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;')&&!result.includes('const opticalFiltersEnabled=!composited&&(blur>.01||Math.abs(hue)>.01);')){
   result=replaceOnce(result,'const hue=transitionTuning.hue;','const hue=transitionTuning.hue;\n    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;');
   for(const key of ['incomingFilter','incomingMidFilter','outgoingFilter','outgoingMidFilter'])
    result=replaceOnce(result,'filter:'+key,'...(opticalFiltersEnabled?{filter:'+key+'}:{})');

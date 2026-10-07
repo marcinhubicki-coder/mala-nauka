@@ -4,7 +4,7 @@ import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effec
 import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
 import {createComboGlobalEffects} from './combo-global.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
-import {createHTMLBubble} from './bubble-html.mjs';
+import {createConfiguredBubble} from './bubble-renderer.mjs';
 import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
@@ -95,8 +95,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
     wordParticles=createWordParticles(nodes.word,effectConfig);
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
-    renderer='composited';
-    bubble=createHTMLBubble(app.querySelector('.spelling-visual'));
+    renderer=effectConfig().bubble.renderer;
+    bubble=createConfiguredBubble(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
     let observedWidth=-1;
     resizeObserver = new ResizeObserver(entries=>{
@@ -109,6 +109,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function fitWord() {
     const word = nodes?.word.firstElementChild; if (!word) return;
+    nodes.word.style.setProperty('--mn-letter-spacing',(effectConfig().wordTransition.letterSpacing??1)+'px');
     word.style.removeProperty('font-size');
     const width = word.getBoundingClientRect().width, available = nodes.word.clientWidth - 8;
     if (width > available) word.style.fontSize = `${parseFloat(getComputedStyle(word).fontSize) * available / width}px`;
@@ -208,6 +209,6 @@ export function createSpellingArt(app, { onContinue } = {}) {
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
-  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());wordParticles?.refresh();});
+  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());fitWord();wordParticles?.refresh();});
   return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();} };
 }

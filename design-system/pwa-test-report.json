@@ -24,10 +24,7 @@
       "mode": "removed"
     }
   ],
-  "sourceCommit": "0bd30c38973b2a991a2b34968b1e05cd91945da3",
-  "mergedFromTestCommit": "a6bf2ed0317b50f56234d1a4b33dfbe404ffb9ce",
-  "preservedFixes": [
-    "Math hero stability on setup selection; identical in shared/design-runtime.mjs of Studio",
-    "Effects tests assert DEFAULT_EFFECTS rather than mutable saved configuration"
-  ]
+  "sourceCommit": "ec608f7aeadd730c12f479fae068f83ec2a9492c",
+  "generatedAt": "2026-10-07T14:23:05.569Z",
+  "mergedFromTestCommit": "80fcf22ab1a73338382700d4483531dacb737136"
 }

@@ -16,7 +16,7 @@ test('surface effects reject invalid triggers, unlimited counts and injected col
  const c=structuredClone(base);c.elementOverrides={'spelling-settings':{'setup-form':{effectDensity:1.5}}};assert.throws(()=>validateConfig(c));
 });
 test('production bubble and confetti defaults stay classic, with optional geometry transformation',()=>{
- assert.equal(DEFAULT_EFFECTS.bubble.renderer,'composited');assert.equal(DEFAULT_EFFECTS.bubble.look,'classic');assert.equal(DEFAULT_EFFECTS.bubble.transforms,false);assert.equal(DEFAULT_EFFECTS.correctStyle,'production');assert.equal(DEFAULT_EFFECTS.comboGlobal.enabled,false);assert.deepEqual(Object.entries(DEFAULT_EFFECTS.presets).filter(([,p])=>p.enabled).map(([id])=>id),['confetti']);
+ assert.equal(DEFAULT_EFFECTS.bubble.renderer,'classic');assert.equal(DEFAULT_EFFECTS.bubble.look,'classic');assert.equal(DEFAULT_EFFECTS.bubble.transforms,false);assert.equal(DEFAULT_EFFECTS.correctStyle,'production');assert.equal(DEFAULT_EFFECTS.comboGlobal.enabled,false);assert.deepEqual(Object.entries(DEFAULT_EFFECTS.presets).filter(([,p])=>p.enabled).map(([id])=>id),['confetti']);
  const c=structuredClone(base);c.effects.bubble={...c.effects.bubble,look:'custom',transforms:true};validateConfig(c);assert.equal(c.effects.bubble.look,'custom');assert.equal(c.effects.bubble.transforms,true);
 });
 

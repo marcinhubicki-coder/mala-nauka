@@ -1,3 +1,4 @@
+import {burstFireworks} from './fireworks.mjs';
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
 import {DEFAULT_EFFECTS,createEffectPicker} from './effect-model.mjs';
 import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
@@ -14,7 +15,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pickEffect=createEffectPicker();
   const effectConfig=()=>globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;
-  let effectPreview=null;
+  let effectPreview=null,renderer;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
   let animations = [], resizeObserver, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
   const stopComboGlobal=()=>comboGlobal?.stop();
@@ -95,7 +96,8 @@ export function createSpellingArt(app, { onContinue } = {}) {
     nodes.hint.addEventListener('click', openHint);
     continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
     const webkit=/AppleWebKit/i.test(navigator.userAgent)&&!/Chrome|Chromium|CriOS|Edg/i.test(navigator.userAgent);
-    const useHtml=(webkit&&!new URLSearchParams(location.search).has('svgBubble'))||new URLSearchParams(location.search).has('htmlBubble');
+    const useHtml=(effectConfig().bubble?.renderer==='composited'&&!new URLSearchParams(location.search).has('svgBubble'))||new URLSearchParams(location.search).has('htmlBubble');
+    renderer=useHtml?'composited':'classic';
     bubble=(useHtml?createHTMLBubble:createBubble)(app.querySelector('.spelling-visual'));
     applyBubbleSettings(bubble,effectConfig());
     resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
@@ -187,6 +189,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       bubble?.react(combo?'combo':correct?'correct':'wrong');
       const preset=effects.presets[effectPreview?.id]||pickEffect(effects).preset;stopFireworks?.();stopFireworks=null;stopComboGlobal();
       if(combo&&effects.comboGlobal?.enabled!==false){comboGlobal?.play(effects);}
+      else if(correct&&effects.enabled&&effects.correctStyle==='production'&&(!effectPreview?.id||effectPreview.id==='confetti'))stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));
       else stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo:false,target:app.querySelector('.soap-svg')||app.querySelector('.mn-soap-shell'),onMetrics:effectPreview?.onMetrics});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
       if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
@@ -198,6 +201,6 @@ export function createSpellingArt(app, { onContinue } = {}) {
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
-  document.addEventListener('mala-nauka:design',()=>{if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());});
+  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());});
   return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();wordParticles?.clear();} };
 }

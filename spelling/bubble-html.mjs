@@ -63,7 +63,7 @@ export function createHTMLBubble(host){
   return promise;
  };
  function setBubbleConfig(next){
-  config=normalizeEffectsConfig(next||DEFAULT_EFFECTS);
+  config=normalizeEffectsConfig(next||DEFAULT_EFFECTS);if(!config.bubble.transforms)config={...config,reactions:Object.fromEntries(Object.entries(config.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};
   const b=config.bubble;
   root.style.setProperty('--mn-soap-duration',Math.max(4.5,12.5-(b.speed||4.7)*.67).toFixed(2)+'s');
   root.style.setProperty('--mn-soap-sparkle',String(Math.min(1.8,b.sparkle??.55)));
@@ -71,7 +71,7 @@ export function createHTMLBubble(host){
   root.dataset.skin=b.skin||'rainbow';
   root.dataset.rim=b.rim||'classic';
    root.dataset.liquid=b.liquid||'none';
-  const shape=silhouette(b.shape);
+  const shape=silhouette(b.transforms?b.shape:'bubble');
   shell.style.clipPath=shape;
   shell.style.borderRadius=shape==='none'?'34% 33% 35% 32% / 33% 35% 32% 34%':'0';
   picture.style.borderRadius=shape==='none'?'inherit':'0';

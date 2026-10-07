@@ -271,13 +271,14 @@
     "easing": "ease-out"
   },
   "effects": {
+    "correctStyle": "production",
     "enabled": true,
-    "randomize": true,
+    "randomize": false,
     "comboEvery": 3,
     "comboBoost": 1.35,
     "particleBudget": 55,
     "comboGlobal": {
-      "enabled": true,
+      "enabled": false,
       "style": "noise",
       "duration": 1850,
       "intensity": 0.8
@@ -290,9 +291,9 @@
       "spread": 160
     },
     "ambient": {
-      "style": "bubbles",
-      "filter": "dream",
-      "intensity": 0.5,
+      "style": "none",
+      "filter": "none",
+      "intensity": 0,
       "density": 1.7,
       "size": 2,
       "speed": 1.75,
@@ -306,18 +307,21 @@
       "responsive": true
     },
     "bubble": {
+      "look": "classic",
+      "renderer": "classic",
+      "transforms": false,
       "frameRate": 30,
-      "speed": 6.2,
-      "amplitude": 5,
-      "orbit": 1.9,
+      "speed": 4.7,
+      "amplitude": 3.25,
+      "orbit": 1.35,
       "transitionDuration": 1200,
       "transitionBlur": 5.3,
-      "transitionSparks": 35,
+      "transitionSparks": 18,
       "shape": "bubble",
       "morph": 0.7,
       "skin": "rainbow",
       "rim": "classic",
-      "liquid": "jelly",
+      "liquid": "none",
       "texture": 1.4,
       "sparkle": 0.9,
       "lightning": 0,
@@ -377,7 +381,7 @@
     "presets": {
       "spark": {
         "name": "Iskry",
-        "enabled": true,
+        "enabled": false,
         "style": "spark",
         "particles": 24,
         "duration": 1050,
@@ -400,7 +404,7 @@
       },
       "star": {
         "name": "Gwiazdy",
-        "enabled": true,
+        "enabled": false,
         "style": "star",
         "particles": 27,
         "duration": 1400,
@@ -423,7 +427,7 @@
       },
       "star5": {
         "name": "Gwiazdy 5-ramienne",
-        "enabled": true,
+        "enabled": false,
         "style": "star5",
         "particles": 18,
         "duration": 1400,
@@ -446,7 +450,7 @@
       },
       "star9": {
         "name": "Gwiazdy 9-ramienne",
-        "enabled": true,
+        "enabled": false,
         "style": "star9",
         "particles": 18,
         "duration": 1400,
@@ -492,7 +496,7 @@
       },
       "textConfetti": {
         "name": "Konfetti z tekstu",
-        "enabled": true,
+        "enabled": false,
         "style": "textConfetti",
         "particles": 34,
         "duration": 1400,
@@ -515,7 +519,7 @@
       },
       "halo": {
         "name": "Aureola",
-        "enabled": true,
+        "enabled": false,
         "style": "halo",
         "particles": 10,
         "duration": 700,
@@ -538,7 +542,7 @@
       },
       "comet": {
         "name": "Komety",
-        "enabled": true,
+        "enabled": false,
         "style": "comet",
         "particles": 18,
         "duration": 950,
@@ -561,7 +565,7 @@
       },
       "petal": {
         "name": "Płatki",
-        "enabled": true,
+        "enabled": false,
         "style": "petal",
         "particles": 22,
         "duration": 1000,
@@ -584,7 +588,7 @@
       },
       "orbit": {
         "name": "Orbity",
-        "enabled": true,
+        "enabled": false,
         "style": "orbit",
         "particles": 16,
         "duration": 1050,
@@ -607,7 +611,7 @@
       },
       "fountain": {
         "name": "Fontanna",
-        "enabled": true,
+        "enabled": false,
         "style": "fountain",
         "particles": 28,
         "duration": 900,
@@ -630,7 +634,7 @@
       },
       "diamond": {
         "name": "Diamenty",
-        "enabled": true,
+        "enabled": false,
         "style": "diamond",
         "particles": 20,
         "duration": 800,
@@ -653,7 +657,7 @@
       },
       "ripple": {
         "name": "Kręgi",
-        "enabled": true,
+        "enabled": false,
         "style": "ripple",
         "particles": 8,
         "duration": 750,
@@ -676,7 +680,7 @@
       },
       "lightning": {
         "name": "Błyskawice",
-        "enabled": true,
+        "enabled": false,
         "style": "lightning",
         "particles": 16,
         "duration": 720,
@@ -699,7 +703,7 @@
       },
       "glitter": {
         "name": "Brokat",
-        "enabled": true,
+        "enabled": false,
         "style": "glitter",
         "particles": 42,
         "duration": 1250,
@@ -722,7 +726,7 @@
       },
       "dynamite": {
         "name": "Iskrzący dynamit",
-        "enabled": true,
+        "enabled": false,
         "style": "dynamite",
         "particles": 36,
         "duration": 900,

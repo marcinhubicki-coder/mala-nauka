@@ -24,7 +24,7 @@ test('effects lab shares Jelly controls and keeps preview below its compact tool
 
 test('screen atmosphere is bounded, click-through and validated',()=>{
  validateEffects(DEFAULT_EFFECTS);
- assert.equal(DEFAULT_EFFECTS.ambient.style,'dust');
+ assert.equal(DEFAULT_EFFECTS.ambient.style,'none');
  assert.equal(Object.keys(AMBIENT_PRESETS).length,7);
  for(const preset of Object.values(AMBIENT_PRESETS))validateEffects({...structuredClone(DEFAULT_EFFECTS),ambient:{...DEFAULT_EFFECTS.ambient,...preset}});
  for(const mutate of [a=>a.style='storm',a=>a.filter='blur-all',a=>a.intensity=2,a=>a.softness=3,a=>a.density=-1,a=>a.bloom=2,a=>a.touchStrength=2,a=>a.responsive='yes']){

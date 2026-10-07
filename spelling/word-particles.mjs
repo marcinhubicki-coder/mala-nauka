@@ -23,7 +23,7 @@ export function sampleWordPoints(label,dots=40,fontFamily='system-ui'){
   if(pixels[(y*W+x)*4+3]>112)all.push([x/W,y/H]);
  }
  const count=Math.min(MAX_DOTS,Math.max(12,Math.trunc(dots)||40)),cols=Math.ceil(count/4),rows=4,groups=new Map();
- for(const [x,y]of all){const col=Math.min(cols-1,Math.floor(x/W*cols)),row=Math.min(rows-1,Math.floor(y/H*rows)),key=row*cols+col;if(!groups.has(key))groups.set(key,{x:(col+.5)/cols,y:(row+.5)/rows,points:[]});groups.get(key).points.push([x/W,y/H]);}
+ for(const [x,y]of all){const col=Math.min(cols-1,Math.floor(x*cols)),row=Math.min(rows-1,Math.floor(y*rows)),key=row*cols+col;if(!groups.has(key))groups.set(key,{x:(col+.5)/cols,y:(row+.5)/rows,points:[]});groups.get(key).points.push([x,y]);}
  return [...groups.values()].slice(0,count).map(g=>[g.x,g.y,g.points]);
 
 }

@@ -6,9 +6,9 @@ const css=await readFile(new URL('../spelling/bubble-html.css',import.meta.url),
 const art=await readFile(new URL('../spelling/art.mjs',import.meta.url),'utf8');
 const build=await readFile(new URL('../tools/build-design.mjs',import.meta.url),'utf8');
 
-test('WebKit gets the compositor-only bubble; other browsers keep the SVG engine',()=>{
+test('classic production bubble is the default and composited renderer remains selectable',()=>{
  assert.match(art,/createHTMLBubble/);
- assert.match(art,/webkit=.*AppleWebKit/);
+ assert.match(art,/bubble\?\.renderer==='composited'/);
  assert.match(art,/bubble=\(useHtml\?createHTMLBubble:createBubble\)/);
 });
 test('ambient soap motion never repaints border or clip-path each frame',()=>{

@@ -1,3 +1,4 @@
+import {validateSurface} from '../shared/surface-effects.mjs';
 import {validateLogoTransition} from '../shared/logo-transition.mjs';
 import {validateRecipes,validateBlueprints,recipesCSS,ATOMS} from '../shared/component-recipes.mjs';
 import {validateEffects} from '../spelling/effect-model.mjs';
@@ -42,8 +43,9 @@ export function validateConfig(config) {
   }
   if(config.motion)validateMotion(config.motion);
   if(config.logoTransition)validateLogoTransition(config.logoTransition);
+  for(const [view,row]of Object.entries(config.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
   validateElementStyles(config);
-  if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
+  if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(p.hiddenInspectorGroups&&(!Array.isArray(p.hiddenInspectorGroups)||p.hiddenInspectorGroups.some(id=>!['geometry','animation','surface','text','colors','image','clip','shared','advanced','scope'].includes(id))))throw Error('Nieprawidłowa grupa panelu.');if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 
   if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);

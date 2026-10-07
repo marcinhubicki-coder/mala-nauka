@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 19,
+  "revision": 20,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -284,11 +284,17 @@
       "intensity": 0.8
     },
     "wordTransition": {
-      "style": "ink",
+      "style": "particles",
       "dots": 52,
       "interactive": false,
+      "piecesPerLetter": 48,
       "duration": 420,
-      "spread": 38
+      "spread": 105,
+      "drift": 680,
+      "jitter": 1.2,
+      "pieceSize": 5,
+      "chromatic": 1.7,
+      "randomness": 1
     },
     "ambient": {
       "style": "orbit",
@@ -309,7 +315,7 @@
     "bubble": {
       "look": "custom",
       "renderer": "classic",
-      "transforms": true,
+      "transforms": false,
       "frameRate": 30,
       "speed": 4.7,
       "amplitude": 3.25,
@@ -317,8 +323,8 @@
       "transitionDuration": 1200,
       "transitionBlur": 5.3,
       "transitionSparks": 18,
-      "shape": "bubble",
-      "morph": 0.7,
+      "shape": "cycle",
+      "morph": 1,
       "skin": "rainbow",
       "rim": "classic",
       "liquid": "silk",

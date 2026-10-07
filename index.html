@@ -34,7 +34,28 @@
 <script type="module" src="boot-ui.mjs"></script>
 </head>
 <body>
-<div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Przygotowujemy Małą Naukę"><img class="mn-boot-logo" src="assets/brand/player-logo.svg" alt="Mała Nauka" width="1200" height="320" fetchpriority="high"><div class="mn-boot-dots" aria-hidden="true"><i></i><i></i><i></i></div><span>Przygotowujemy małe przygody…</span></div>
+<div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Przygotowujemy Małą Naukę">
+  <div class="mn-boot-color-cloud" aria-hidden="true">
+    <i class="mn-boot-blob mn-boot-blue"></i><i class="mn-boot-blob mn-boot-pink"></i>
+    <i class="mn-boot-blob mn-boot-yellow"></i><i class="mn-boot-blob mn-boot-green"></i>
+    <i class="mn-boot-blob mn-boot-purple"></i>
+  </div>
+  <img class="mn-boot-logo" src="assets/brand/player-logo.svg" alt="Mała Nauka" width="1200" height="320" fetchpriority="high">
+  <div class="mn-boot-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+  <span class="mn-boot-caption">Przygotowujemy małe przygody…</span>
+  <div class="mn-boot-rainbow" aria-hidden="true">
+    <i style="--fly-x:-76vmin;--fly-y:-53vmin;--fly-rotate:-32deg;--fly-delay:0ms;--ray-color:#27aaf5"></i>
+    <i style="--fly-x:-23vmin;--fly-y:-98vmin;--fly-rotate:-12deg;--fly-delay:35ms;--ray-color:#61cfe8"></i>
+    <i style="--fly-x:40vmin;--fly-y:-87vmin;--fly-rotate:20deg;--fly-delay:75ms;--ray-color:#8d68e8"></i>
+    <i style="--fly-x:84vmin;--fly-y:-42vmin;--fly-rotate:40deg;--fly-delay:15ms;--ray-color:#ef8cce"></i>
+    <i style="--fly-x:95vmin;--fly-y:15vmin;--fly-rotate:82deg;--fly-delay:65ms;--ray-color:#ffcc45"></i>
+    <i style="--fly-x:61vmin;--fly-y:79vmin;--fly-rotate:120deg;--fly-delay:30ms;--ray-color:#85d473"></i>
+    <i style="--fly-x:1vmin;--fly-y:105vmin;--fly-rotate:170deg;--fly-delay:90ms;--ray-color:#28baf0"></i>
+    <i style="--fly-x:-70vmin;--fly-y:69vmin;--fly-rotate:-135deg;--fly-delay:45ms;--ray-color:#ac83f4"></i>
+    <i style="--fly-x:-93vmin;--fly-y:10vmin;--fly-rotate:-89deg;--fly-delay:80ms;--ray-color:#ffae77"></i>
+  </div>
+  <div class="mn-boot-whiteout" aria-hidden="true"></div>
+</div>
 <main id="app" tabindex="-1"><p class="loading" role="status">Przygotowujemy małe przygody…</p></main>
 <p id="storage-notice" class="notice" role="status" hidden>Zapisywanie jest niedostępne. Wyniki zostaną tylko do zamknięcia strony.</p>
 <dialog id="modal" aria-labelledby="modal-title"></dialog>

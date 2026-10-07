@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 21,
+  "revision": 22,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -287,18 +287,19 @@
       "style": "particles",
       "dots": 52,
       "interactive": false,
-      "piecesPerLetter": 144,
-      "duration": 1100,
-      "spread": 42,
-      "drift": 400,
-      "jitter": 0.8,
-      "pieceSize": 3.8,
-      "chromatic": 1.7,
-      "randomness": 0.85,
-      "particleShape": "square",
-      "attraction": 0.45,
-      "breathing": 12,
-      "colorVariation": 0.22
+      "piecesPerLetter": 180,
+      "duration": 300,
+      "spread": 64,
+      "drift": 140,
+      "jitter": 0,
+      "pieceSize": 3.4,
+      "chromatic": 1.3,
+      "randomness": 0.55,
+      "particleShape": "circle",
+      "attraction": 0.6,
+      "breathing": 34,
+      "colorVariation": 0.4,
+      "answerHold": 400
     },
     "ambient": {
       "style": "none",
@@ -4571,6 +4572,9 @@
       "effectBlur": 12,
       "effectColor": "#cce8b5",
       "effectTrigger": "continuous"
+    },
+    "spelling-initial": {
+      "surfaceEffects": []
     }
   }
 }

@@ -2,7 +2,7 @@
    Each ball is a prepainted small CSS gradient. No SVG path morphing. */
 .mn-boot-screen{
  position:relative;display:block;overflow:hidden;min-height:100%;
- isolation:isolate;background:#fff;
+ isolation:isolate;background:radial-gradient(ellipse at 46% 40%,#f7faff 0%,#e9f4ff 59%,#fbeffa 100%);
 }
 .mn-boot-orbit{
  position:absolute;left:50%;top:50%;width:clamp(122px,34vmin,162px);

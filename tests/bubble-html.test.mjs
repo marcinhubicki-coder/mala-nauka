@@ -30,7 +30,7 @@ test('consumer builds copy both the module and its CSS from the canonical design
 });
 
 
-test('production optics keep original SVG paint without an idle contour loop',async()=>{const svg=await readFile(new URL('../spelling/bubble.mjs',import.meta.url),'utf8');assert.match(svg,/!composited && options.motion/);assert.match(svg,/motionRoot.animate/);assert.match(svg,/soap-rainbow-inner/);assert.match(svg,/soap-satellite/);assert.match(svg,/opticalFiltersEnabled=!composited/);});
+test('production restores original membrane, satellites and photo crossfade',async()=>{const svg=await readFile(new URL('../spelling/bubble.mjs',import.meta.url),'utf8');assert.match(svg,/frame=requestAnimationFrame\(loop\)/);assert.match(svg,/soap-rainbow-inner/);assert.match(svg,/soap-satellite/);assert.doesNotMatch(svg,/composited|polygonRadius|shapeSides/);assert.match(svg,/incomingFilter/);});
 
 test('game and word dialogs share the saved bubble selection',async()=>{const factory=await readFile(new URL('../spelling/bubble-renderer.mjs',import.meta.url),'utf8'),dialog=await readFile(new URL('../ortografia/result-rules.mjs',import.meta.url),'utf8');assert.match(factory,/renderer==='classic'\?createBubble/);assert.match(dialog,/active.bubble = createConfiguredBubble/);assert.match(build,/'spelling\/bubble-renderer\.mjs'/);assert.match(build,/'ortografia\/result-rules\.mjs'/);});
 

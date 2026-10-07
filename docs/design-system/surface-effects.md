@@ -36,3 +36,8 @@ Suwaki: części na literę (12–48), czas składania, czas dryfu, lokalny zasi
 SVG używa tej samej dynamicznej ścieżki dla zdjęcia i obrzeża. Kompozytowy renderer animuje 48-punktowy kontur `clip-path` dla całej powłoki ze zdjęciem, zarówno w cyklu, jak w reakcjach. Przełącznik transformacji uruchamia cykl, jeśli dotąd wybrana była neutralna bańka. Wyłączenie zachowuje ustawienia, ale przywraca neutralny kontur.
 
 Dwa przeglądy Chromium i WebKit: bokeh pod treścią + ziarno nad nią, dwa efekty komponentu, zapis i reload, `ma` = 40 / `enie` = 80 fragmentów, odpowiedź `rz` = 40 dodatkowych, kolejny wyraz `b_uch` = 20 / 60, transformacje zdjęcia w obu silnikach, brak błędów. Profil iPhone w desktopowym WebKit: pełna kompozycja klasycznego SVG + cykl + duży bokeh + fragmenty + konfetti, poprawna/błąd/pauza/wznowienie/zmiana zdjęcia; końcowa próba z aberracją około 47–61 FPS (przeważnie 55–61), najdłuższa przerwa 123 ms podczas zmiany sceny. Fizyczny iPhone i temperatura wymagają osobnej próby. Kosztowny własny filtr refrakcji trzeba mierzyć osobno od klasycznej bańki.
+
+
+## Ostatnia korekta: produkcyjna membrana i miękki blur
+
+Aktualne ustawienia maski, obrysu, symetrycznych odstępów, natywnego fontu, reakcji bańki i bokeh są opisane w [kontrakcie produkcyjnej bańki](production-bubble-restoration.md). Eksport zachowuje ten sam renderer i ruch co podglądy Studio.

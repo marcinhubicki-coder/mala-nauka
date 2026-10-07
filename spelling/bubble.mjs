@@ -1,5 +1,4 @@
 import {DEFAULT_EFFECTS,normalizeEffectsConfig} from './effect-model.mjs';
-import {createBubbleDynamics,polygonRadius,shapeSides} from './bubble-dynamics.mjs';
 let instance = 0;
 const TAU = Math.PI * 2;
 
@@ -116,7 +115,7 @@ function normalizeTransition(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.2,3),
+    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.2,5),
     blur:clampValue(numeric(merged.blur,BUBBLE_TRANSITION_DEFAULTS.blur),0,8),
     zoom:clampValue(numeric(merged.zoom,BUBBLE_TRANSITION_DEFAULTS.zoom),-6,12),
     rotate:clampValue(numeric(merged.rotate,BUBBLE_TRANSITION_DEFAULTS.rotate),-12,12),
@@ -126,16 +125,12 @@ function normalizeTransition(input={}){
 }
 
 export function createBubble(host, options={}) {
-  // Retain the actual production SVG paint. Its contour is computed only on
-  // configuration changes; the HTML parent moves on the compositor in all uses.
-  const composited=options.composited!==false;
-  const design=normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS),b=design.bubble;
-  options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,design.particleBudget),...options.transition}};
+  let bubbleSettings=normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS).bubble;
+  const b=bubbleSettings;
+  options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,zoom:b.transitionZoom,rotate:b.transitionRotate,hue:b.transitionHue,sparks:b.transitionSparks,...options.transition}};
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
-  let frameRate=b.frameRate||24;
-  const dynamics=createBubbleDynamics();let bubbleSettings={...DEFAULT_EFFECTS.bubble,...b},reactionConfig=normalizeEffectsConfig(options.effects||globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS);
   let tuning = normalizeTuning(options.tuning);
   let effects = normalizeEffects(options.effects);
   let chaos = normalizeChaos(options.chaos);
@@ -144,7 +139,7 @@ export function createBubble(host, options={}) {
   host.innerHTML = `<svg class="soap-svg" viewBox="0 0 400 400" focusable="false" aria-hidden="true">
     <defs>
       <path id="${id}-shape" pathLength="100"/>
-      <clipPath id="${id}-clip"><path class="soap-dynamic-contour"/></clipPath>
+      <clipPath id="${id}-clip"><use href="#${id}-shape"/></clipPath>
       <clipPath id="${id}-frame"><rect x="0" y="0" width="400" height="400"/></clipPath>
       <filter id="${id}-pictureFx" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
         <feTurbulence class="soap-refraction-noise" type="fractalNoise" baseFrequency=".012 .017" numOctaves="2" seed="11" result="noise"/>
@@ -170,9 +165,9 @@ export function createBubble(host, options={}) {
     </defs>
     <g class="soap-frame-guard" clip-path="url(#${id}-frame)">
       <g class="soap-shadow-group" filter="url(#${id}-shadowFx)">
-        <path data-soap-contour="1" class="soap-shadow soap-shadow-main" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
-        <path data-soap-contour="1" class="soap-shadow soap-shadow-soft" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
-        <path data-soap-contour="1" class="soap-shadow-ring" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
+        <use href="#${id}-shape" class="soap-shadow soap-shadow-main" fill="#4b3f69" opacity=".085" transform="translate(0 9)"/>
+        <use href="#${id}-shape" class="soap-shadow soap-shadow-soft" fill="#6a5a8f" opacity=".035" transform="translate(200 200) scale(.995) translate(-199 -195)"/>
+        <use href="#${id}-shape" class="soap-shadow-ring" fill="none" stroke="#a295d5" stroke-width="20" opacity=".06" transform="translate(0 4)"/>
       </g>
       <g clip-path="url(#${id}-clip)">
         <rect width="400" height="400" fill="url(#${id}-empty)"/>
@@ -181,33 +176,29 @@ export function createBubble(host, options={}) {
         </g><rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
-        <g class="soap-electric-layer" opacity="0"><path d="M54 112 94 94 78 134 132 108"/><path d="M270 70 309 105 286 118 340 147"/><path d="M70 292 114 260 101 307 158 278"/><path d="M252 311 294 278 277 322 338 297"/></g>
         <g class="soap-heavy-particles"></g>
         <g class="soap-transition-particles"></g>
       </g>
-      <path data-soap-contour="1" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
-      <path data-soap-contour="1" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
-      <path data-soap-contour="1" class="soap-rainbow-outer" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
-      <path data-soap-contour="1" class="soap-rainbow-inner" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
-      <path data-soap-contour="1" class="soap-rim-main" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
-      <path data-soap-contour="1" class="soap-rim-soft" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
-      <path data-soap-contour="1" class="soap-rim-inner" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
-      <path data-soap-contour="1" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
+      <use href="#${id}-shape" class="soap-heavy-bloom" fill="none" stroke="white" stroke-width="5.5" opacity="0" filter="url(#${id}-bloomFx)"/>
+      <use href="#${id}-shape" class="soap-rim-dark" fill="none" stroke="#756b9c" stroke-width="3.2" opacity=".12" transform="translate(0 1.8)"/>
+      <use href="#${id}-shape" class="soap-rainbow-outer" fill="none" stroke="url(#${id}-rainbow)" stroke-width="17" opacity=".38"/>
+      <use href="#${id}-shape" class="soap-rainbow-inner" fill="none" stroke="url(#${id}-rainbow)" stroke-width="8.5" opacity=".82"/>
+      <use href="#${id}-shape" class="soap-rim-main" fill="none" stroke="white" stroke-width="1.7" opacity=".96"/>
+      <use href="#${id}-shape" class="soap-rim-soft" fill="none" stroke="#fff7ff" stroke-width="3.4" opacity=".14" transform="translate(200 200) scale(1.004) translate(-200 -200)"/>
+      <use href="#${id}-shape" class="soap-rim-inner" fill="none" stroke="#fff" stroke-width="2.1" opacity=".52" transform="translate(200 200) scale(.970) translate(-200 -200)"/>
+      <use href="#${id}-shape" class="soap-arc" pathLength="100" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="8 20 4 26 5 37" opacity=".82"/>
       <g class="soap-glint"><ellipse rx="19" ry="5" fill="white" opacity=".2"/><ellipse rx="14" ry="3.5" fill="white" opacity=".94"/></g>
       <g class="soap-glint"><ellipse rx="15" ry="5" fill="white" opacity=".22"/><ellipse rx="11" ry="3" fill="white" opacity=".91"/></g>
       <g class="soap-atmosphere"></g>
     </g>
   </svg>`;
 
-  const svg=host.querySelector('.soap-svg');
-  const motionRoot=document.createElement('div');motionRoot.className='mn-production-bubble';
-  Object.assign(motionRoot.style,{width:'100%',height:'100%',transformOrigin:'50% 50%'});svg.before(motionRoot);motionRoot.append(svg);
-  motionRoot.dataset.renderer='production';
-  let motionAnimations=[],motionSignature='';
+  const svg=host.querySelector('.soap-svg'),motionRoot=document.createElement('div');
+  motionRoot.className='mn-production-bubble';motionRoot.dataset.renderer='production';
+  Object.assign(motionRoot.style,{width:'100%',height:'100%',transformOrigin:'50% 50%'});
+  svg.before(motionRoot);motionRoot.append(svg);
   const documentUrl = location.href.split('#')[0];
   const shape = host.querySelector(`#${id}-shape`);
-  // Repaint actual SVG paths directly; WebKit can cache <use> references until interaction.
-  const paintedContours=[...host.querySelectorAll('.soap-dynamic-contour,[data-soap-contour]')];
   const pictures = [...host.querySelectorAll('.soap-picture')];
   let activePicture = pictures[0], standbyPicture = pictures[1];
   const glints = [...host.querySelectorAll('.soap-glint')];
@@ -226,8 +217,6 @@ export function createBubble(host, options={}) {
     rimMain:host.querySelector('.soap-rim-main'),
     rimSoft:host.querySelector('.soap-rim-soft'),
     rimInner:host.querySelector('.soap-rim-inner'),
-    electric:host.querySelector('.soap-electric-layer'),
-    atmosphere,
   };
   const heavyNodes = {
     refraction:host.querySelector('.soap-refraction-node'),
@@ -333,8 +322,7 @@ export function createBubble(host, options={}) {
   }
   applyHeavy();
 
-  let frame = 0, timerFrame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, nextDraw=0, paused = false, destroyed = false;
-  const useTimer = new URLSearchParams(location.search).has('animationTimer');
+  let frame = 0, elapsed = options.startAtZero ? 0 : Math.random() * 50, last = 0, paused = false, destroyed = false;
   let currentUrl = '', loadToken = 0, transitions = [];
 
   const fmt=value=>value.toFixed(2);
@@ -376,10 +364,12 @@ export function createBubble(host, options={}) {
   // animated rounded rectangle. Three control waves live on both the top and
   // bottom edge; their motion is spread to neighbouring points before the
   // closed Catmull-Rom spline is converted to cubic Beziers.
+  let comboImpulse;
+  const comboEnvelope=now=>comboImpulse?Math.max(0,1-(now-comboImpulse.start)/bubbleSettings.comboDuration)**2:0;
   function draw(time) {
-    const response=dynamics.sample(performance.now()),idleSides=shapeSides(bubbleSettings.shape,time/10),sides=response.sides||idleSides,morph=response.sides?response.morph:idleSides?(bubbleSettings.morph??1):0;
+    const comboWave=comboEnvelope(performance.now())*bubbleSettings.comboWave;
     const count=tuning.points;
-    const irregularity=tuning.random;
+    const irregularity=tuning.random*(1+comboWave);
     const spatial=chaos.frequency;
     const squashWave=.14*chaos.squash*Math.sin(time*.21+seed[1]);
     const exponent=3.28 + .14*irregularity*Math.sin(time*.15+seed[4]);
@@ -397,9 +387,8 @@ export function createBubble(host, options={}) {
       const angle=i/count*TAU;
       const c=Math.cos(angle), s=Math.sin(angle);
       const power=2/exponent;
-      const radius=polygonRadius(angle,sides),extraWave=response.wave*Math.sin(angle*5+time)*3;
-      const baseX=(centerX + halfW*sign(c)*Math.pow(Math.abs(c),power))*(1-morph)+(centerX+c*radius)*morph+response.shift+extraWave*c;
-      const baseY=(centerY + halfH*sign(s)*Math.pow(Math.abs(s),power))*(1-morph)+(centerY+s*radius)*morph+extraWave*s;
+      const baseX=centerX + halfW*sign(c)*Math.pow(Math.abs(c),power);
+      const baseY=centerY + halfH*sign(s)*Math.pow(Math.abs(s),power);
       let dx=0, dy=0;
 
       // Broad low-frequency breathing around the whole membrane.
@@ -502,9 +491,7 @@ export function createBubble(host, options={}) {
       const cp2=[c[0]-(d[0]-b[0])*k,c[1]-(d[1]-b[1])*k];
       contour+=`C${xy(cp1)} ${xy(cp2)} ${xy(c)}`;
     }
-    const nextContour=contour+'Z';
-    shape.setAttribute('d',nextContour);
-    for(const path of paintedContours)path.setAttribute('d',nextContour);
+    shape.setAttribute('d',contour+'Z');
     updateParticles(time);
 
     [10,22].forEach((pointIndex,index)=>{
@@ -518,21 +505,16 @@ export function createBubble(host, options={}) {
   function loop(now) {
     frame = 0;
     if (destroyed || options.motion === false || paused || document.hidden || reduced.matches) { last = 0; return; }
-    if (!last || now>=nextDraw) {
-      const period=1000/frameRate;nextDraw=now+period-(nextDraw?Math.min(period,Math.max(0,now-nextDraw)):0);
-      elapsed += last ? Math.min((now-last)/1000,.1) * clampValue(tuning.speed+dynamics.sample(now).speed,.5,20) : 0;
+    if (!last || now-last >= 1000/24) {
+      elapsed += last ? Math.min((now-last)/1000,.1) * tuning.speed : 0;
       last = now; draw(elapsed);
     }
-    if(!useTimer)frame = requestAnimationFrame(loop);
+    frame = requestAnimationFrame(loop);
   }
   function syncMotion() {
-    cancelAnimationFrame(frame);clearInterval(timerFrame);frame=0;timerFrame=0;last=0;nextDraw=0;
+    cancelAnimationFrame(frame); frame=0; last=0;
     host.classList.toggle('soap-still', options.motion === false || paused || document.hidden || reduced.matches);
-    for(const animation of motionAnimations) paused||document.hidden||reduced.matches?animation.pause():animation.play();
-    if(!destroyed && !composited && options.motion !== false && !paused && !document.hidden && !reduced.matches){
-      if(useTimer)timerFrame=setInterval(()=>loop(performance.now()),Math.max(33,Math.round(1000/frameRate)));
-      else frame=requestAnimationFrame(loop);
-    }
+    if (!destroyed && options.motion !== false && !paused && !document.hidden && !reduced.matches) frame=requestAnimationFrame(loop);
   }
   draw(elapsed); syncMotion();
   document.addEventListener('visibilitychange',syncMotion);
@@ -644,7 +626,7 @@ export function createBubble(host, options={}) {
     const zoom=transitionTuning.zoom/100;
     const rotation=transitionTuning.rotate;
     const hue=transitionTuning.hue;
-    const opticalFiltersEnabled=!composited&&(blur>.01||Math.abs(hue)>.01);
+    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;
     const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
     const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
     const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
@@ -730,39 +712,29 @@ export function createBubble(host, options={}) {
   function getTransition(){ return {...transitionTuning}; }
 
   function setBubbleConfig(e=DEFAULT_EFFECTS){
-    e=normalizeEffectsConfig(e);bubbleSettings={...DEFAULT_EFFECTS.bubble,...e.bubble};
-    reactionConfig=bubbleSettings.transforms?e:{...e,reactions:Object.fromEntries(Object.entries(e.reactions).map(([id,r])=>[id,{...r,shape:'bubble',morph:0}]))};
-    const b=bubbleSettings;
-    if(!b.transforms){b.shape='bubble';b.morph=0;}
-    frameRate=b.frameRate||24;setTuning({speed:b.speed});setChaos({amplitude:b.amplitude,orbit:b.orbit});
+    const b=normalizeEffectsConfig(e).bubble;bubbleSettings=b;
+    setTuning({speed:b.speed});setChaos({amplitude:b.amplitude,orbit:b.orbit});
     setEffects({shadow:b.shadow,depth:b.depth,glow:b.glow,sheen:b.sheen,rainbow:b.rainbow,rim:b.rimIntensity});
-    setTransition({duration:b.transitionDuration/1000,blur:b.transitionBlur,sparks:Math.min(b.transitionSparks,e.particleBudget)});
-    // Original pearly rim and satellites, without idle SVG filters or particle writes.
-    setHeavy(composited?{...BUBBLE_HEAVY_DEFAULTS,particles:0}:BUBBLE_HEAVY_DEFAULTS);
-    effectNodes.atmosphere.setAttribute('opacity',Math.min(1,b.sparkle/.55).toFixed(3));
-    effectNodes.electric.setAttribute('opacity','0');
-    const colors={ocean:'#36bce6',sunset:'#ffa262',leaf:'#70c991'},metals={silver:'#d5e5f4',gold:'#e5b958',iridescent:`url(#${id}-rainbow)`};
-    for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',metals[b.rim]||colors[b.skin]||`url(#${id}-rainbow)`);
-    const signature=JSON.stringify([b.speed,b.amplitude,b.orbit,b.transforms,b.morph,options.motion,reduced.matches]);
-    if(composited&&signature!==motionSignature){
-      motionSignature=signature;motionAnimations.forEach(a=>a.cancel());motionAnimations=[];
-      motionRoot.dataset.photoDeformation=String(b.transforms);
-      if(options.motion!==false&&!reduced.matches){
-        const a=b.amplitude/3.25,orbit=b.orbit/1.35,stretch=b.transforms?.095*b.morph:0,tilt=b.transforms?5*b.morph:0;
-        motionAnimations.push(motionRoot.animate([
-          {transform:'translate(0,0) scale(1,1) skew(0deg,0deg)'},
-          {transform:`translate(${1.8*orbit}px,${-2*a}px) scale(${1+stretch},${1-stretch*.72}) skew(${tilt}deg,${-tilt*.3}deg)`,offset:.28},
-          {transform:`translate(${-1.2*orbit}px,${1.4*a}px) scale(${1-stretch*.65},${1+stretch*.8}) skew(${-tilt*.7}deg,${tilt*.4}deg)`,offset:.63},
-          {transform:'translate(0,0) scale(1,1) skew(0deg,0deg)'}
-        ],{duration:Math.max(2400,10000/b.speed*3),iterations:Infinity,easing:'ease-in-out'}));
-      }
-    }
-    syncMotion();
+    setTransition({duration:b.transitionDuration/1000,blur:b.transitionBlur,zoom:b.transitionZoom,rotate:b.transitionRotate,hue:b.transitionHue,sparks:b.transitionSparks});
+    atmosphere.setAttribute('opacity',Math.min(1,b.sparkle/.55).toFixed(3));
+    const metals={silver:'#d5e5f4',gold:'#e5b958'},stroke=metals[b.rim]||`url("${documentUrl}#${id}-rainbow")`;
+    for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',stroke);
   }
-  setBubbleConfig(design);
+  setBubbleConfig({bubble:bubbleSettings});
   const designChanged=event=>setBubbleConfig(event.detail?.effects||DEFAULT_EFFECTS);
   document.addEventListener('mala-nauka:design',designChanged);
   return {
+    setBubbleConfig,
+    react(event='correct'){
+      if(reduced.matches||paused)return;
+      if(event==='combo')comboImpulse={start:performance.now()};
+      if(event!=='correct'&&event!=='combo')return;
+      const growth=bubbleSettings.correctGrowth;
+      if(!growth)return;
+      const animation=motionRoot.animate([{transform:'scale(1)'},{transform:`scale(${1+growth})`,offset:.32},{transform:'scale(1)'}],{duration:bubbleSettings.correctGrowthDuration,easing:'cubic-bezier(.22,.61,.36,1)'});
+      transitions.push(animation);animation.finished.catch(()=>{}).finally(()=>{transitions=transitions.filter(a=>a!==animation);animation.cancel();});
+    },
+    clearReactions(){comboImpulse=undefined;},
     preloadScene,
     transitionToScene,
     setTuning,
@@ -775,19 +747,16 @@ export function createBubble(host, options={}) {
     getHeavy,
     setTransition,
     getTransition,
-    setBubbleConfig,
-    react(event='correct'){if(reduced.matches||paused)return;if(!composited){dynamics.push(event,performance.now(),reactionConfig);return;}const stretch=bubbleSettings.transforms?.04+bubbleSettings.morph*.04:.025;const animation=motionRoot.animate([{transform:'scale(1)'},{transform:`scale(${1+stretch},${1-stretch*.4})`,offset:.35},{transform:'scale(1)'}],{duration:700,easing:'ease-out'});transitions.push(animation);animation.finished.catch(()=>{});},
-    clearReactions(){dynamics.clear();},
     setPaused(value) {
       paused=value; syncMotion();
       transitions.forEach(animation=>value?animation.pause():animation.play());
     },
     destroy() {
-      destroyed=true; loadToken++; cancelAnimationFrame(frame);clearInterval(timerFrame);
-      document.removeEventListener('mala-nauka:design',designChanged);
+      destroyed=true; loadToken++; cancelAnimationFrame(frame);
+      document.removeEventListener("mala-nauka:design",designChanged);
       transitions.forEach(animation=>animation.cancel()); transitions=[];
       document.removeEventListener('visibilitychange',syncMotion);
-      reduced.removeEventListener('change',motionPreferenceChanged);motionAnimations.forEach(a=>a.cancel());
+      reduced.removeEventListener('change',motionPreferenceChanged);
     },
   };
 }

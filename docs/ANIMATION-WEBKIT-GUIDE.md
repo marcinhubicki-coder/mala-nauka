@@ -1,5 +1,7 @@
 # Animacje na iOS/WebKit — post-mortem i zasady bezpieczeństwa
 
+**Aktualny stan (2026-10-07, ostatnia korekta):** na prośbę użytkownika przywrócono oryginalną dynamiczną membranę produkcyjną. Poniższe starsze decyzje o statycznym konturze są historią diagnozy. Aktualny kontrakt i weryfikacja: [przywrócenie produkcyjnej bańki](design-system/production-bubble-restoration.md). Nowe próby pełnej kompozycji są wymagane; nie przenosić dawnych wniosków na inne zestawy efektów.
+
 **Projekt:** Mała Nauka  
 **Incydent:** 2026-10-06 → 2026-10-07  
 **Zakres:** iPhone / Safari / PWA / WebKit, głównie Ortografia i efekty pełnoekranowe  

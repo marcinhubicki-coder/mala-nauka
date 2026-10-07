@@ -8,7 +8,7 @@ export function optimizedTestConfig(saved){
  if(config.project)delete config.project.designDraft;
  const effects=normalizeEffectsConfig(config.effects||DEFAULT_EFFECTS);
  const original={frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness};
- // Preserve full design effects. On mobile WebKit use the compositor bubble and restrained overlays.
+ // Preserve the selected production renderer and its complete motion/photo settings.
  config.effects=effects;
  validateConfig(config);
  const hidden=[];
@@ -26,14 +26,6 @@ export function optimizeBubbleSource(source){
   const zero="filter:'blur(0px) hue-rotate(0deg)'";
   if(result.split(zero).length!==3)throw Error('Nieznany format przejścia bez filtrów.');
   result=result.replaceAll(zero,"...(opticalFiltersEnabled?{filter:'none'}:{})");
- }
- if(!result.includes('const paintedContours=')){
-  result=replaceOnce(result,'<clipPath id="${id}-clip"><use href="#${id}-shape"/></clipPath>','<clipPath id="${id}-clip"><path class="soap-dynamic-contour"/></clipPath>');
-  const oldUse='<use href="#${id}-shape"';
-  if(result.split(oldUse).length!==12)throw Error('Nieznana liczba odwołań SVG use: przejrzyj zaktualizowany silnik.');
-  result=result.replaceAll(oldUse,'<path data-soap-contour="1"');
-  result=replaceOnce(result,'  const shape = host.querySelector(`#${id}-shape`);','  const shape = host.querySelector(`#${id}-shape`);\n  const paintedContours=[...host.querySelectorAll(\'.soap-dynamic-contour,[data-soap-contour]\')];');
-  result=replaceOnce(result,"    shape.setAttribute('d',contour+'Z');","    const nextContour=contour+'Z';\n    shape.setAttribute('d',nextContour);\n    for(const path of paintedContours)path.setAttribute('d',nextContour);");
  }
  return result;
 }

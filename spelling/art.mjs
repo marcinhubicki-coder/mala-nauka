@@ -108,11 +108,29 @@ export function createSpellingArt(app, { onContinue } = {}) {
     document.fonts.ready.then(() => { if (session === game){fitWord();wordParticles?.refresh();} });
   }
   function fitWord() {
-    const word = nodes?.word.firstElementChild; if (!word) return;
-    nodes.word.style.setProperty('--mn-letter-spacing',(effectConfig().wordTransition.letterSpacing??1)+'px');
+    const word=nodes?.word.firstElementChild;if(!word)return;
+    const cfg=effectConfig().wordTransition,available=Math.max(1,nodes.word.clientWidth-12);
+    nodes.word.style.setProperty('--mn-letter-spacing',(cfg.letterSpacing??1)+'px');
     word.style.removeProperty('font-size');
-    const width = word.getBoundingClientRect().width, available = nodes.word.clientWidth - 8;
-    if (width > available) word.style.fontSize = `${parseFloat(getComputedStyle(word).fontSize) * available / width}px`;
+    const base=parseFloat(getComputedStyle(word).fontSize),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+    const gap=word.querySelector('.gap'),answer=word.querySelector('.revealed-chunk'),gapTransition=gap.style.transition;gap.style.transition='none';gap.style.marginInline='0';
+    function geometry(size){
+      word.style.fontSize=size+'px';nodes.word.style.setProperty('--mn-letter-spacing',((cfg.letterSpacing??1)*size/base)+'px');const css=getComputedStyle(word);ctx.font=`${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;ctx.fontKerning='none';
+      const spacing=(cfg.letterSpacing??1)*size/base,padding=cfg.bubbleGap??3;
+      const before=word.querySelector('.word-before'),after=word.querySelector('.word-after');
+      for(const [node,side] of [[before,'right'],[after,'left']]){
+        const letters=[...node.textContent];let advance=0,last;
+        for(const letter of letters){last=ctx.measureText(letter);advance+=last.width+spacing;}
+        const edge=!letters.length?0:side==='right'?last.width+spacing-last.actualBoundingBoxRight:-ctx.measureText(letters[0]).actualBoundingBoxLeft;
+        node.style[side==='right'?'marginRight':'marginLeft']=(letters.length?padding-edge:0)+'px';
+      }
+      if(answer){const width=[...answer.textContent].reduce((n,l)=>n+ctx.measureText(l).width+spacing,0);gap.style.width=gap.style.flexBasis=Math.max(1,width)+'px';}
+      return word.offsetWidth;
+    }
+    // Child spans never shrink. Fit the actual ink row, including constant pixel
+    // tracking and the gap, rather than moving or resizing surrounding rows.
+    let lo=2,hi=base;if(geometry(hi)>available){for(let i=0;i<12;i++){const mid=(lo+hi)/2;if(geometry(mid)>available)hi=mid;else lo=mid;}geometry(lo);}
+    word.dataset.fittedSize=String(parseFloat(word.style.fontSize));void gap.offsetWidth;gap.style.transition=gapTransition;
   }
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;

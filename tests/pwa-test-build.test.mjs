@@ -30,9 +30,7 @@ test('Test PWA drops no-op optical filters',async()=>{
  assert.match(optimized,/opticalFiltersEnabled/);
  assert.doesNotMatch(optimized,/\{opacity:1,filter:'blur\(0px\) hue-rotate\(0deg\)'/);
  assert.match(optimizeIndexHTML('<head></head>'),/pwa-optimized\.css/);
- assert.doesNotMatch(optimized,/<use href="#\\$\\{id\\}-shape"/);
- assert.match(optimized,/const paintedContours=/);
- assert.ok(optimized.includes("for(const path of paintedContours)path.setAttribute('d',nextContour);"));
+ assert.equal(optimized,source,'Studio and exported PWA must share the production renderer');
  assert.equal(optimizeBubbleSource(optimized),optimized,'Transformation must be idempotent');
  const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:optimized,encoding:'utf8'});
  assert.equal(check.status,0,check.stderr);

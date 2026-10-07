@@ -3,11 +3,14 @@
 .mn-surface-background{position:absolute;z-index:-1;inset:0}.mn-surface-layer[data-layer=background]:not(.mn-surface-screen){z-index:-1}.mn-surface-layer i{--dot-color:var(--surface-color);margin:0}
 
 /* Prepainted soft sprites; opacity crossfades between two static colours. */
-.mn-surface-bokeh i{background-size:100% 100%;background-repeat:no-repeat;box-shadow:none;filter:none;animation:mn-bokeh-float var(--bokeh-duration,22s) linear var(--bokeh-start,0s) infinite;will-change:transform}
+.mn-surface-bokeh i{background-size:100% 100%;background-repeat:no-repeat;box-shadow:none;filter:none;animation:mn-bokeh-float var(--bokeh-duration,22s) var(--bokeh-easing,ease-in-out) var(--bokeh-start,0s) infinite;will-change:transform}
 .mn-surface-bokeh i::after{content:'';position:absolute;inset:0;background-image:var(--bokeh-second);background-size:100% 100%;opacity:0;pointer-events:none}
 .mn-surface-bokeh[data-color-mode=gradient] i::after{opacity:.55}
 .mn-surface-bokeh[data-color-mode=cycle] i::after{animation:mn-bokeh-palette 9.7s ease-in-out var(--bokeh-start,0s) infinite alternate}
 .mn-surface-bokeh[data-paused=true] i::after{animation-play-state:paused}
-@keyframes mn-bokeh-float{0%,100%{transform:translate3d(calc(var(--surface-travel) * -.7),calc(var(--surface-travel) * .45),0) scale(.8);opacity:.55}29%{transform:translate3d(calc(var(--surface-travel) * .8),calc(var(--surface-travel) * .2),0) scale(1.1);opacity:1}61%{transform:translate3d(calc(var(--surface-travel) * .3),calc(var(--surface-travel) * -.8),0) scale(1.2);opacity:.75}84%{transform:translate3d(calc(var(--surface-travel) * -.5),calc(var(--surface-travel) * -.2),0) scale(.95);opacity:.85}}
+@keyframes mn-bokeh-float{0%,100%{transform:translate3d(calc(var(--surface-travel) * -.7),calc(var(--surface-travel) * .45),0) scale(.8);opacity:.55}29%{transform:translate3d(calc(var(--surface-travel) * .8),calc(var(--surface-travel) * .2),0) scale(var(--bokeh-wide,1.1),var(--bokeh-tall,1.1));opacity:1}61%{transform:translate3d(calc(var(--surface-travel) * .3),calc(var(--surface-travel) * -.8),0) scale(var(--bokeh-tall,1.2),var(--bokeh-wide,1.2));opacity:.75}84%{transform:translate3d(calc(var(--surface-travel) * -.5),calc(var(--surface-travel) * -.2),0) scale(.95);opacity:.85}}
 @keyframes mn-bokeh-palette{from{opacity:.05}to{opacity:.9}}
 @media(prefers-reduced-motion:reduce){.mn-surface-bokeh i::after{animation:none!important}}
+
+.mn-surface-bokeh::before{content:'';position:absolute;inset:0;background:var(--surface-backdrop);opacity:var(--surface-backdrop-opacity,0);pointer-events:none}
+.mn-surface-bokeh i::after{transform:scale(var(--bokeh-wide,1),var(--bokeh-tall,1));transform-origin:center}

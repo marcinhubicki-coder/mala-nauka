@@ -1,6 +1,6 @@
 // One small canvas owns every word fragment. Physics paints at 30 Hz, never
 // writes animated DOM attributes and stops on pause, hidden tabs and teardown.
-export const DEFAULT_WORD_TRANSITION={style:'particles',dots:64,interactive:false,piecesPerLetter:144,duration:1100,spread:42,drift:400,jitter:.8,pieceSize:3.8,chromatic:0,randomness:.85,particleShape:'square',attraction:.45,breathing:12,colorVariation:.22,answerHold:500,letterSpacing:1,particleSpacing:1.2,strokeMagnet:.25,settleFill:.85,colorSpread:.45,colorDeviation:.12,colorSpeed:.4};
+export const DEFAULT_WORD_TRANSITION={style:'particles',dots:64,interactive:false,piecesPerLetter:144,duration:1100,spread:42,drift:400,jitter:.8,pieceSize:3.8,chromatic:0,randomness:.85,particleShape:'square',attraction:.45,breathing:12,colorVariation:.22,answerHold:500,letterSpacing:1,particleSpacing:1.2,strokeMagnet:.25,settleFill:.85,colorSpread:.45,colorDeviation:.12,colorSpeed:.4,clipToFont:true,contourDeparture:0,bubbleGap:3};
 export const MAX_WORD_PIECES=1200;
 const cache=new Map(),TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -35,12 +35,12 @@ function glyphPoints(letter,count,font,magnet=0,spacing=0){
  const key=[letter,count,font.fontWeight,font.fontSize,font.fontFamily,document.fonts.check(`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`),magnet,spacing].join('|');if(cache.has(key))return cache.get(key);
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)return {points:[],advance:0};
  const size=parseFloat(font.fontSize);ctx.font=`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;const advance=ctx.measureText(letter).width;
- canvas.width=Math.ceil(advance+8);canvas.height=Math.ceil(size*1.6);ctx.font=`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;ctx.textBaseline='middle';ctx.fillStyle='white';ctx.fillText(letter,4,canvas.height/2);
- const data=ctx.getImageData(0,0,canvas.width,canvas.height).data,pixels=[],stride=Math.max(1.5,size/35),gw=Math.ceil(canvas.width/stride),gh=Math.ceil(canvas.height/stride),mask=new Uint8Array(gw*gh);
- for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){const ink=data[(Math.floor(y*stride)*canvas.width+Math.floor(x*stride))*4+3]>150;mask[y*gw+x]=ink?1:0;if(ink)pixels.push([x*stride,y*stride]);}
- const field=strokeDistanceField(mask,gw,gh),points=sampleInkPoints(pixels,count,glyphRandom(key)).map(([x,y])=>{const [rx,ry]=strokeRidge(x/stride,y/stride,field);return [x+(rx*stride-x)*magnet-4,y+(ry*stride-y)*magnet-canvas.height/2];});
+ const logicalWidth=Math.ceil(advance+8),logicalHeight=Math.ceil(size*1.6),rasterScale=2;canvas.width=logicalWidth*rasterScale;canvas.height=logicalHeight*rasterScale;ctx.scale(rasterScale,rasterScale);ctx.font=`${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;ctx.textBaseline='middle';ctx.fillStyle='white';ctx.fillText(letter,4,logicalHeight/2);
+ const data=ctx.getImageData(0,0,canvas.width,canvas.height).data,pixels=[],stride=Math.max(1.5,size/35),gw=Math.ceil(logicalWidth/stride),gh=Math.ceil(logicalHeight/stride),mask=new Uint8Array(gw*gh);
+ for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){const ink=data[(Math.floor(y*stride*rasterScale)*canvas.width+Math.floor(x*stride*rasterScale))*4+3]>150;mask[y*gw+x]=ink?1:0;if(ink)pixels.push([x*stride,y*stride]);}
+ const field=strokeDistanceField(mask,gw,gh),points=sampleInkPoints(pixels,count,glyphRandom(key)).map(([x,y])=>{const [rx,ry]=strokeRidge(x/stride,y/stride,field);return [x+(rx*stride-x)*magnet-4,y+(ry*stride-y)*magnet-logicalHeight/2];});
  const spaced=spaceInkPoints(points,spacing);
- const result={points:spaced,advance,mask:canvas};if(cache.size>=80)cache.delete(cache.keys().next().value);cache.set(key,result);return result;
+ const result={points:spaced,advance,mask:canvas,maskWidth:logicalWidth,maskHeight:logicalHeight};if(cache.size>=80)cache.delete(cache.keys().next().value);cache.set(key,result);return result;
 }
 export function sampleWordPoints(label,dots=96,fontFamily='system-ui',fontSize=46){return glyphPoints(label,clamp(Math.round(dots),12,180),{fontWeight:800,fontSize:fontSize+'px',fontFamily}).points;}
 export function localPieceRoute(from,to,settings,random=Math.random){const angle=random()*TAU,reach=settings.spread*(.25+random()*.75)*settings.randomness;return {x:(from.x+to.x)/2+Math.cos(angle)*reach,y:(from.y+to.y)/2+Math.sin(angle)*reach};}
@@ -79,20 +79,20 @@ export function createWordParticles(host,getEffects=()=>null){
  const settings=()=>({...DEFAULT_WORD_TRANSITION,...getEffects()?.wordTransition});
  const enabled=()=>settings().style==='particles'&&!reduced.matches&&!destroyed;
  function settle(){for(const resolve of settlers)resolve(false);settlers.clear();}
- function clear(){serial++;settle();cancelAnimationFrame(frame);frame=undefined;previous=0;layer?.remove();layer=null;ctx=null;rows=[];lastSignature='';inkMask=stableCanvas=stableCtx=null;fillLayers=[];host.querySelector('.word')?.classList.remove('mn-particle-ink');}
+ function clear(){serial++;settle();cancelAnimationFrame(frame);frame=undefined;previous=0;layer?.remove();layer=null;ctx=null;rows=[];lastSignature='';inkMask=stableCanvas=stableCtx=null;fillLayers=[];host.querySelector('.word')?.classList.remove('mn-particle-ink');host.querySelectorAll('.word-side,.revealed-chunk').forEach(n=>n.style.removeProperty('--mn-solid-ink'));}
  function ensure(){if(layer)return;layer=document.createElement('canvas');layer.className='mn-word-particles';layer.dataset.mnDecoration='1';layer.setAttribute('aria-hidden','true');document.body.append(layer);ctx=layer.getContext('2d',{alpha:true});}
  function measure(){if(!layer)return;const rect=host.getBoundingClientRect(),cfg=settings(),pad=Math.max(36,cfg.spread*2.5+cfg.pieceSize);bounds={left:rect.left-pad,top:rect.top-pad,width:rect.width+pad*2,height:rect.height+pad*2};const dpr=Math.min(1.5,devicePixelRatio||1);Object.assign(layer.style,{left:bounds.left+'px',top:bounds.top+'px',width:bounds.width+'px',height:bounds.height+'px'});layer.width=Math.ceil(bounds.width*dpr);layer.height=Math.ceil(bounds.height*dpr);ctx?.setTransform(dpr,0,0,dpr,0,0);const br=host.closest('#app')?.querySelector('.spelling-visual')?.getBoundingClientRect();bubble=br?{x:br.left+br.width/2,y:br.bottom}:{x:rect.left+rect.width/2,y:rect.top-100};}
  function targets(){const word=host.querySelector('.word');if(!word)return [];const cfg=settings(),css=getComputedStyle(word),colors=particlePalette(css.color,cfg),out=[],glyphs=[];ink=css.color;
   const nodes=[['left','.word-before'],['middle','.revealed-chunk'],['right','.word-after']],length=nodes.reduce((n,[,s])=>n+(word.querySelector(s)?.textContent.length||0),0)+(word.querySelector('.revealed-chunk')?0:Number(host.dataset.answerLength||2)),count=Math.min(Math.round(cfg.piecesPerLetter),Math.floor(MAX_WORD_PIECES/Math.max(1,length)));
-  for(const [side,selector]of nodes){const node=word.querySelector(selector);if(!node||!node.getClientRects().length||getComputedStyle(node).visibility==='hidden')continue;const font=getComputedStyle(node),rect=node.getBoundingClientRect(),spacing=parseFloat(font.letterSpacing)||0;let x=rect.left;
-   for(const letter of node.textContent){const glyph=glyphPoints(letter,count,font,cfg.strokeMagnet,cfg.particleSpacing),y=rect.top+rect.height/2;glyphs.push({side,mask:glyph.mask,x:x-4,y:y-glyph.mask.height/2});for(const [dx,dy]of glyph.points)out.push({side,tx:x+dx,ty:y+dy,color:colors[Math.floor(Math.random()*colors.length)],size:cfg.pieceSize*(.88+Math.random()*.24),letter});x+=glyph.advance+spacing;}
+  for(const [side,selector]of nodes){const node=word.querySelector(selector);if(!node||!node.getClientRects().length||getComputedStyle(node).visibility==='hidden')continue;const font=getComputedStyle(node),rect=node.getBoundingClientRect(),spacing=parseFloat(font.letterSpacing)||0,sx=rect.width/(parseFloat(font.width)||rect.width||1),sy=rect.height/((parseFloat(font.height)||0)+(parseFloat(font.paddingTop)||0)+(parseFloat(font.paddingBottom)||0)||rect.height||1);let x=rect.left;
+   for(const letter of node.textContent){const glyph=glyphPoints(letter,count,font,cfg.strokeMagnet,cfg.particleSpacing),y=rect.top+rect.height/2;glyphs.push({side,mask:glyph.mask,width:glyph.maskWidth*sx,height:glyph.maskHeight*sy,x:x-4*sx,y:y-glyph.maskHeight*sy/2});for(const [dx,dy]of glyph.points)out.push({side,tx:x+dx*sx+(Math.random()-.5)*cfg.contourDeparture*2,ty:y+dy*sy+(Math.random()-.5)*cfg.contourDeparture*2,color:colors[Math.floor(Math.random()*colors.length)],size:cfg.pieceSize*(.88+Math.random()*.24),letter});x+=(glyph.advance+spacing)*sx;}
   }
   // One exact native-font alpha mask cuts settled pieces to the original glyph
   // weight/counters. Cached fills restore missing ink independently of dot size.
   inkMask=document.createElement('canvas');stableCanvas=document.createElement('canvas');
   for(const canvas of [inkMask,stableCanvas]){canvas.width=layer.width;canvas.height=layer.height;}
   const scale=layer.width/bounds.width,maskCtx=inkMask.getContext('2d');maskCtx.setTransform(scale,0,0,scale,0,0);stableCtx=stableCanvas.getContext('2d');stableCtx.setTransform(scale,0,0,scale,0,0);
-  fillLayers=nodes.map(([side])=>{const canvas=document.createElement('canvas');canvas.width=layer.width;canvas.height=layer.height;const fill=canvas.getContext('2d');fill.setTransform(scale,0,0,scale,0,0);for(const glyph of glyphs.filter(g=>g.side===side)){const x=glyph.x-bounds.left,y=glyph.y-bounds.top;fill.drawImage(glyph.mask,x,y);maskCtx.drawImage(glyph.mask,x,y);}fill.globalCompositeOperation='source-in';fill.fillStyle=ink;fill.fillRect(0,0,bounds.width,bounds.height);return {side,canvas};});
+  fillLayers=nodes.map(([side])=>{const canvas=document.createElement('canvas');canvas.width=layer.width;canvas.height=layer.height;const fill=canvas.getContext('2d');fill.setTransform(scale,0,0,scale,0,0);for(const glyph of glyphs.filter(g=>g.side===side)){const x=glyph.x-bounds.left,y=glyph.y-bounds.top;fill.drawImage(glyph.mask,x,y,glyph.width,glyph.height);maskCtx.drawImage(glyph.mask,x,y,glyph.width,glyph.height);}fill.globalCompositeOperation='source-in';fill.fillStyle=ink;fill.fillRect(0,0,bounds.width,bounds.height);return {side,canvas};});
   return out;
  }
  function wait(ms,own){return new Promise(resolve=>{settlers.add(resolve);setTimeout(()=>{settlers.delete(resolve);resolve(own===serial&&!destroyed);},ms);});}
@@ -108,9 +108,9 @@ export function createWordParticles(host,getEffects=()=>null){
     paint(ctx,p.alpha*(p.dying?1:loose),true);
     if(!p.dying)paint(stableCtx,p.alpha*(1-loose)*(1-cfg.settleFill),false);
    }
-   stableCtx.globalAlpha=1;stableCtx.globalCompositeOperation='destination-in';stableCtx.drawImage(inkMask,0,0,bounds.width,bounds.height);ctx.globalAlpha=1;ctx.drawImage(stableCanvas,0,0,bounds.width,bounds.height);
-   for(const {side,canvas} of fillLayers){ctx.globalAlpha=cfg.settleFill*(progress[side]/Math.max(1,counts[side]));ctx.drawImage(canvas,0,0,bounds.width,bounds.height);}
-   ctx.globalAlpha=1;layer.dataset.solidFill=String(cfg.settleFill);layer.dataset.letterSpacing=String(cfg.letterSpacing);layer.dataset.sampleColor=colors[0];
+   stableCtx.globalAlpha=1;if(cfg.clipToFont){stableCtx.globalCompositeOperation='destination-in';stableCtx.drawImage(inkMask,0,0,bounds.width,bounds.height);}ctx.globalAlpha=1;ctx.drawImage(stableCanvas,0,0,bounds.width,bounds.height);
+   for(const [side,selector] of [['left','.word-before'],['middle','.revealed-chunk'],['right','.word-after']]){const node=word.querySelector(selector);if(node){const alpha=cfg.settleFill*(progress[side]/Math.max(1,counts[side])),rgb=(ink.match(/[\d.]+/g)||['18','15','70']).slice(0,3);node.style.setProperty('--mn-solid-ink',`rgba(${rgb.join(',')},${alpha})`);}}
+   ctx.globalAlpha=1;layer.dataset.solidFill=String(cfg.settleFill);layer.dataset.clipToFont=String(cfg.clipToFont);layer.dataset.contourDeparture=String(cfg.contourDeparture);layer.dataset.letterSpacing=String(cfg.letterSpacing);layer.dataset.sampleColor=colors[0];
    layer.dataset.count=String(rows.length);layer.dataset.paintCount=String(++paintCount);
   }frame=requestAnimationFrame(tick);
  }
@@ -133,7 +133,7 @@ export function createWordParticles(host,getEffects=()=>null){
   if(enabled()&&origin){ensure();measure();const colors=particlePalette(getComputedStyle(host.querySelector('.word')).color,cfg),count=Math.min(MAX_WORD_PIECES-rows.length,answer.length*cfg.piecesPerLetter);for(let i=0;i<count;i++){const a=Math.random()*TAU,r=origin.radius*(.7+Math.random()*.3);rows.push({side:'middle',x:origin.x+Math.cos(a)*r,y:origin.y+Math.sin(a)*r,tx:origin.x,ty:origin.y,born:t,scatterUntil:t+cfg.drift,seed:Math.random()*TAU,frequency:.5+Math.random()*1.5,vx:Math.cos(a)*3+direction*2,vy:Math.sin(a)*3,size:cfg.pieceSize*(.8+Math.random()*.4),color:colors[i%colors.length],alpha:.75,direction});}start();}
   const own=serial;if(!await wait(Math.min(180,cfg.drift),own)||destroyed)return false;await change();if(destroyed||own!==serial)return false;if(!await assemble(origin,direction,true))return false;return wait(cfg.answerHold??500,serial);
  }
- function signature(){const w=host.querySelector('.word');return JSON.stringify([w?.textContent,w&&getComputedStyle(w).fontSize,w&&document.fonts.check(getComputedStyle(w).font),settings(),['.word-before','.revealed-chunk','.word-after'].map(s=>{const n=w?.querySelector(s);if(!n)return null;return [getComputedStyle(n).visibility,Boolean(n.getClientRects().length)];})]);}
+ function signature(){const w=host.querySelector('.word');return JSON.stringify([w?.textContent,w&&getComputedStyle(w).fontSize,w&&document.fonts.check(`${getComputedStyle(w).fontWeight} ${getComputedStyle(w).fontSize} ${getComputedStyle(w).fontFamily}`),settings(),['.word-before','.revealed-chunk','.word-after'].map(s=>{const n=w?.querySelector(s);if(!n)return null;return [getComputedStyle(n).visibility,Boolean(n.getClientRects().length)];})]);}
  function setPaused(value){paused=Boolean(value);if(paused){cancelAnimationFrame(frame);frame=undefined;}else {previous=0;start();}}
  const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=undefined;}else{previous=0;start();}};document.addEventListener('visibilitychange',visibility);
  const resize=()=>{if(rows.length)void assemble();};window.addEventListener('resize',resize);const preference=()=>{if(reduced.matches)clear();else void assemble();};reduced.addEventListener('change',preference);

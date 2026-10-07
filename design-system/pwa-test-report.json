@@ -3,14 +3,14 @@
   "optimization": "mobile-v2-full-effects",
   "usesDesignDraft": false,
   "original": {
-    "frameRate": 30,
+    "frameRate": 24,
     "transitionBlur": 5.3,
     "transitionSparks": 18,
     "particleBudget": 55,
     "ambientSoftness": 0.15
   },
   "optimized": {
-    "frameRate": 30,
+    "frameRate": 24,
     "transitionBlur": 5.3,
     "transitionSparks": 18,
     "particleBudget": 55,
@@ -24,5 +24,7 @@
       "mode": "removed"
     }
   ],
-  "sourceCommit": "a82b7380170f3c005e79bb4a9375814f5ed2fc8c"
+  "sourceCommit": "915882bb172ed6e5ab869338a7ab909cf1327cc9",
+  "mergedFromTestCommit": "d18bf541b33eb76cba48aa321727ee887a1654f5",
+  "generatedAt": "2026-10-07T22:12:37.624Z"
 }

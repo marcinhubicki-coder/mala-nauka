@@ -1,7 +1,14 @@
 /* Local canvas stays above the photo, below whole-screen foreground bokeh. */
 .mn-word-particles{position:fixed;z-index:1100;pointer-events:none!important;user-select:none;contain:strict}
-.word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:transparent!important;text-shadow:none!important}
+.word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:var(--mn-solid-ink,transparent)!important;text-shadow:none!important}
 .question-content{margin-top:var(--mn-word-breathing,0px)}
 @media(prefers-reduced-motion:reduce){.mn-word-particles{display:none!important}.word.mn-particle-ink .word-side,.word.mn-particle-ink .revealed-chunk{color:inherit!important}}
 
 .question-content .word-side,.question-content .revealed-chunk{letter-spacing:var(--mn-letter-spacing,1px)}
+
+.question-content .word{font-kerning:none;flex:none;max-width:none}
+.question-content .word-side{flex:none}
+.question-content .gap{margin-inline:0}
+
+.spelling-question-card{min-width:0;max-width:100%;width:100%}
+.spelling-question-card .question-content{max-width:100%}

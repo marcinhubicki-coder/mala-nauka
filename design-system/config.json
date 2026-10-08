@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 25,
+  "revision": 26,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -302,13 +302,13 @@
       "answerHold": 220,
       "letterSpacing": 1.75,
       "particleSpacing": 2,
-      "strokeMagnet": 0.15,
-      "settleFill": 0.9,
+      "strokeMagnet": 0,
+      "settleFill": 1,
       "colorSpread": 1,
       "colorDeviation": 0.8,
       "colorSpeed": 2.4,
       "clipToFont": true,
-      "contourDeparture": 0,
+      "contourDeparture": 0.5,
       "bubbleGap": 3
     },
     "ambient": {
@@ -338,6 +338,13 @@
       "transitionDuration": 1200,
       "transitionBlur": 5.3,
       "transitionSparks": 18,
+      "transitionZoom": 12,
+      "transitionRotate": 4,
+      "transitionHue": 180,
+      "correctGrowth": 0.07,
+      "correctGrowthDuration": 700,
+      "comboWave": 0,
+      "comboDuration": 1600,
       "shape": "bubble",
       "morph": 0,
       "skin": "rainbow",
@@ -352,14 +359,7 @@
       "glow": 2,
       "sheen": 1.55,
       "rainbow": 1.25,
-      "rimIntensity": 1.1,
-      "transitionZoom": 12,
-      "transitionRotate": 4,
-      "transitionHue": 180,
-      "correctGrowth": 0,
-      "correctGrowthDuration": 700,
-      "comboWave": 0,
-      "comboDuration": 1600
+      "rimIntensity": 1.1
     },
     "reactions": {
       "correct": {
@@ -4556,8 +4556,8 @@
       },
       "spelling-question-card": {
         "animation": "pulse",
-        "animationDuration": 3102,
-        "animationDistance": 13.5
+        "animationDuration": 5272.5,
+        "animationDistance": 2
       },
       "question-content": {
         "effect": "none",
@@ -4616,7 +4616,11 @@
           "effectColor2": "#a8b9ff",
           "effectColorMode": "gradient",
           "effectTrigger": "continuous",
-          "effectLayer": "foreground"
+          "effectLayer": "foreground",
+          "effectBackdropColor": "#40216a",
+          "effectBackdropOpacity": 0,
+          "effectBounce": 0.7,
+          "effectWave": 0.2
         }
       ]
     },

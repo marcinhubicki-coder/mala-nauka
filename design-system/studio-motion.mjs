@@ -1,3 +1,4 @@
+import {previewScale} from './studio-ui.mjs';
 import {FIELD_LABELS,html,number,rangeFor,savedMarker} from './preview-model.mjs';
 import {animateScreen,PlaybackClock,transitionMotion} from '../shared/screen-motion.mjs';
 import {motionEdges,pairKey} from '../shared/flow-model.mjs';
@@ -65,7 +66,7 @@ export class StudioMotion {
   this.syncFrames();this.updateIndicators();
  }
  observeStage(){this.resizeObserver?.disconnect();const stage=this.workspace.querySelector('.motion-stage');if(!stage)return;this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(stage);this.resize();}
- resize(){const stage=this.workspace.querySelector('.motion-stage');if(stage){const mobile=matchMedia('(max-width:690px)').matches,columns=stage.classList.contains('is-comparing')&&!mobile?2:1,width=(stage.clientWidth-28-(columns-1)*18)/columns;stage.style.setProperty('--motion-scale',String(Math.min(1,Math.max(.3,Math.min(width/414,(stage.clientHeight-42)/876)))));}}
+ resize(){const stage=this.workspace.querySelector('.motion-stage');if(stage){const mobile=matchMedia('(max-width:690px)').matches,columns=stage.classList.contains('is-comparing')&&!mobile?2:1;stage.style.setProperty('--motion-scale',String(previewScale(stage.clientWidth,stage.clientHeight,{columns,paddingX:28,paddingY:42})));}}
  send(frame,type,data={}){frame.contentWindow?.postMessage({channel:'mala-nauka-studio',type,...data},location.origin);}
  designFor(frame){const design=this.getDesign();return frame.dataset.designSource==='saved'?{...design,config:this.getBase()}:design;}
  sendFrameDesign(frame){this.send(frame,'design',this.designFor(frame));}

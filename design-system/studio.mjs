@@ -28,7 +28,7 @@ import {validateAssets} from './validation.mjs';
 import {clone,get,set,diff,changedViews,validateConfig,FONT_IDS,FONT_NAMES,FONT_FILES} from './model.mjs';
 import {GitClient,mergeDraft,mergeCatalog,mergeWordPack,BRANCH,REPOSITORY} from './git-client.mjs';
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
-import {iconSVG} from '../shared/element-system.mjs';
+import {studioIcon as iconSVG,NAV_ICONS} from './studio-ui.mjs';
 import {configureAssets,assetUrl,loadWords,previewAssets} from '../shared/asset-loader.mjs';
 await designReady;
 let contentOrigin=window.__DS_CONTENT_ORIGIN__||new URL('../',import.meta.url).href,remoteAssetPaths=[];
@@ -74,7 +74,7 @@ async function restoreSnapshot(value){config=clone(value.config);assets=clone(va
 function header(){const count=changes().length+stagedCount();document.getElementById('page-title').textContent=titleFor(page);document.getElementById('draft-status').textContent=count?`${count} ${count===1?'zmiana':'zmian'} w szkicu`:'Zapisana wersja';document.getElementById('change-count').textContent=count||'';document.getElementById('connect-git').textContent=git.connected?'GitHub połączony':'Połącz GitHub';document.getElementById('save-git').disabled=busy||!count;document.getElementById('discard-toolbar').disabled=busy||!count;document.getElementById('undo-toolbar').disabled=busy||!undo.length;document.getElementById('redo-toolbar').disabled=busy||!redo.length;}
 function sendDesign(){soundLab.sendDesign();applyStudioPreferences();configureRules(rules);previewAssets(Object.fromEntries(objectURLs));applyDesign(config);configureAssets(assets,contentOrigin);preview.sendDesign();motion.sendDesign();play.sendDesign();logo.sendDesign();globalLab.sendDesign();builder.liveRecipes.sendDesign();header();stash();}
 function navigate(next){soundLab.leave();globalLab.leave();logo.leave();motion.leave();play.leave();builder.leave();testing?.leave();projectStudio.leave();page=next;document.querySelectorAll('#navigation button').forEach(button=>button.classList.toggle('active',button.dataset.page===page));header();render();}
-document.getElementById('navigation').innerHTML=nav.map(([id,icon,label])=>`<button type="button" data-page="${id}" class="${id===page?'active':''}" title="${label}"><span class="nav-icon" aria-hidden="true">${iconSVG(({project:'target',components:'gear',testing:'screen',colors:'spark',fonts:'check',assets:'star',batches:'check',builder:'gear',motion:'arrow',effects:'spark',sound:'spark',scoring:'target',views:'arrow',audit:'check',docs:'star',versions:'back'})[id])}</span><span class="nav-text">${label}</span></button>`).join('');
+document.getElementById('navigation').innerHTML=nav.map(([id,icon,label])=>`<button type="button" data-page="${id}" class="${id===page?'active':''}" title="${label}"><span class="nav-icon" aria-hidden="true">${iconSVG(NAV_ICONS[id])}</span><span class="nav-text">${label}</span></button>`).join('');
 document.getElementById('navigation').addEventListener('click',event=>{const button=event.target.closest('[data-page]');if(button)navigate(button.dataset.page);});
 const preview=new StudioPreview({
   workspace,registry,getDesign:()=>({config,assets,rules,words,contentOrigin,previewURLs:Object.fromEntries(objectURLs)}),getBase:()=>base,

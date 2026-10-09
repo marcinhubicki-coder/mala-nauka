@@ -1,9 +1,10 @@
 import {createJellyV4} from '../shared/jelly-v4.mjs';
 import {html} from './preview-model.mjs';
+import {studioIcon} from './studio-ui.mjs';
 const jelly=createJellyV4({indicatorSelector:'.studio-jelly-ink'});
 const mounted=new WeakSet();
-export function jellyChoices(id,label,choices,value){
- return `<div class="studio-choice-field choice-${id}"><span class="studio-choice-caption">${html(label)}</span><div class="studio-choice-scroll"><div class="studio-jelly" data-jelly-nav="${id}" role="radiogroup" aria-label="${html(label)}"><i class="studio-jelly-ink" aria-hidden="true"></i>${choices.map(([key,name])=>`<label><input type="radio" name="studio-${id}" data-studio-nav="${id}" value="${html(key)}" ${key===value?'checked':''}><span>${html(name)}</span></label>`).join('')}</div></div></div>`;
+export function jellyChoices(id,label,choices,value,{icons=false,iconOnly=false}={}){
+ return `<div class="studio-choice-field ${icons?'icon-jelly':''} ${iconOnly?'icons-only':'labeled-jelly'} choice-${id}"><span class="studio-choice-caption">${html(label)}</span><div class="studio-choice-scroll"><div class="studio-jelly" data-jelly-nav="${id}" role="radiogroup" aria-label="${html(label)}"><i class="studio-jelly-ink" aria-hidden="true"></i>${choices.map(([key,name,icon])=>`<label class="${iconOnly?'tooltip':''}" ${iconOnly?`title="${html(name)}" data-tooltip="${html(name)}"`:''}><input type="radio" name="studio-${id}" data-studio-nav="${id}" value="${html(key)}" aria-label="${html(name)}" ${key===value?'checked':''}><span>${icons?studioIcon(icon||'screen'):''}<b>${html(name)}</b></span></label>`).join('')}</div></div></div>`;
 }
 export function mountJellies(root,previous=new Map()){
  for(let node of root.querySelectorAll('[data-jelly-nav]')){

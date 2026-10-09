@@ -159,7 +159,7 @@ export class SoundPreviewEngine{
  async start(settings){
   await this.ready();this.stop();const ctx=this.ctx,s=normalizeSoundSettings(settings);
   for(let i=0;i<SOUND_LAYERS.length;i++){
-   const data=generateLayer(SOUND_LAYERS[i][0],6,ctx.sampleRate),buf=ctx.createBuffer(1,data.length,ctx.sampleRate);buf.copyToChannel(data,0);
+   const data=generateLayer(SOUND_LAYERS[i][0],6,16000),buf=ctx.createBuffer(1,data.length,16000);buf.copyToChannel(data,0);
    const source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=buf;source.loop=true;
    source.connect(gain).connect(this.master);source.start();this.channels.push({source,gain});
   }
@@ -167,7 +167,8 @@ export class SoundPreviewEngine{
  }
  adjust(settings){
   if(!this.playing||!this.ctx)return;const s=normalizeSoundSettings(settings);
-  this.channels.forEach(({gain},i)=>{const level=Math.pow(s.mix[i]/100,1.5)*(s.ambientVolume/100)*(s.volume/100)*.4;gain.gain.setTargetAtTime(level,this.ctx.currentTime,.07);});
+  const sum=s.mix.reduce((n,v)=>n+Math.sqrt(v/100),0),balance=Math.min(1,3/Math.max(1,sum));
+  this.channels.forEach(({gain},i)=>{const level=Math.sqrt(s.mix[i]/100)*(s.ambientVolume/100)*(s.volume/100)*.65*balance;gain.gain.setTargetAtTime(level,this.ctx.currentTime,.07);});
  }
  stop(){
   for(const {source,gain}of this.channels){try{source.stop();source.disconnect();gain.disconnect();}catch{}}

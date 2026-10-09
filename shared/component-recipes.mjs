@@ -1,15 +1,7 @@
 // Atoms own text rhythm. Existing component families keep surfaces and interaction.
 import {ICONS} from './element-system.mjs';
-export const ATOMS={
- title:{name:'Tytuł ekranu',selector:'.page-head h1,.player-title h1',parents:['layout','profile','card'],role:'display',size:25,weight:700},
- subtitle:{name:'Podtytuł',selector:'.wizard-intro p,.result-subtitle,.player-title p',parents:['layout','card','profile'],role:'body',size:16,weight:600},
- section:{name:'Nagłówek sekcji',selector:'.rule-explanation h3,.progress-section-title',parents:['card','popup'],role:'ui',size:20,weight:800},
- numberText:{name:'Numer + tekst',selector:'fieldset legend,.field-title',parents:['card'],role:'ui',size:20,weight:800},
- emphasis:{name:'Wyróżnik',selector:'.result-word,.collection-word-name',parents:['flashcard','card'],role:'display',size:24,weight:700},
- hint:{name:'Podpowiedź / treść zasady',selector:'.rule-explanation>p,.spelling-hint-description',parents:['popup','flashcard'],role:'body',size:17,weight:600},
- popupHeading:{name:'Nagłówek popupu',selector:'.result-rule-dialog h2,.spelling-hint-sheet h2,.pause-dialog h2',parents:['popup'],role:'display',size:24,weight:700},
- buttonLabel:{name:'Etykieta przycisku',selector:'.start-button,.player-continue,.result .primary,.math-start-button,.math-result-again',parents:['button'],role:'ui',size:24,weight:800}
-};
+import {ATOMS} from './structure-model.mjs';
+export {ATOMS};
 export const DEFAULT_RECIPES=Object.fromEntries(Object.entries(ATOMS).map(([id,a])=>[id,{enabled:false,size:a.size,weight:a.weight,lineHeight:1.2,gap:8,padding:0,role:a.role}]));
 const number=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max;
 export function validateRecipes(value){

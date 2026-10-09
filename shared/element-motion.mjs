@@ -1,5 +1,5 @@
 // Per-element motion uses the same saved style contract as geometry and visibility.
-export const ELEMENT_MOTIONS={none:'Bez animacji',float:'Spokojne unoszenie',pulse:'Miękki puls',sway:'Kołysanie',enter:'Wejście'};
+export const ELEMENT_MOTIONS={none:'Bez animacji',float:'Spokojne unoszenie',pulse:'Miękki puls',sway:'Kołysanie',enter:'Wejście z przesunięciem',fade:'Płynne pojawienie'};
 const active=new Map();
 export function syncElementMotion(node,style={}){
  for(const [old,row]of active)if(!old.isConnected){row.animation.cancel();active.delete(old);}
@@ -8,8 +8,8 @@ export function syncElementMotion(node,style={}){
  active.get(node)?.animation.cancel();active.delete(node);
  if(kind==='none'||!ELEMENT_MOTIONS[kind]||!node.animate||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches||active.size>=16)return;
  const d=style.animationDistance??6,duration=style.animationDuration??1600;
- const frames=kind==='float'?[{transform:'translateY(0)'},{transform:`translateY(${-d}px)`},{transform:'translateY(0)'}]:kind==='pulse'?[{transform:'scale(1)'},{transform:`scale(${1+d/200})`},{transform:'scale(1)'}]:kind==='sway'?[{transform:`rotate(${-d/3}deg)`},{transform:`rotate(${d/3}deg)`},{transform:`rotate(${-d/3}deg)`}]:[{transform:`translateY(${d}px)`,opacity:0},{transform:'translateY(0)',opacity:1}];
- const animation=node.animate(frames,{duration,iterations:kind==='enter'?1:Infinity,easing:'ease-in-out',composite:kind==='enter'?'replace':'add'});
+ const frames=kind==='fade'?[{opacity:0},{opacity:1}]:kind==='float'?[{transform:'translateY(0)'},{transform:`translateY(${-d}px)`},{transform:'translateY(0)'}]:kind==='pulse'?[{transform:'scale(1)'},{transform:`scale(${1+d/200})`},{transform:'scale(1)'}]:kind==='sway'?[{transform:`rotate(${-d/3}deg)`},{transform:`rotate(${d/3}deg)`},{transform:`rotate(${-d/3}deg)`}]:[{transform:`translateY(${d}px)`,opacity:0},{transform:'translateY(0)',opacity:1}];
+ const animation=node.animate(frames,{duration,iterations:['enter','fade'].includes(kind)?1:Infinity,easing:'ease-in-out',composite:['enter','fade'].includes(kind)?'replace':'add'});
  if(document.hidden||node.closest('.paused'))animation.pause();
  active.set(node,{signature,animation});
 }

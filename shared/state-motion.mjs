@@ -13,6 +13,7 @@ export function animateStateChange(node,oldHeight){
 }
 function presenceFrames(style,exit=false){
  const d=style.stateDistance??6,kind=exit?style.exitAnimation:style.enterAnimation;
+ if(kind==='fade')return exit?[{opacity:1},{opacity:0}]:[{opacity:0},{opacity:1}];
  const away=kind==='pulse'?{opacity:0,scale:'.9'}:kind==='sway'?{opacity:0,rotate:`${d/3}deg`}: {opacity:0,translate:`0 ${d}px`};
  const rest=kind==='pulse'?{opacity:1,scale:'1'}:kind==='sway'?{opacity:1,rotate:'0deg'}:{opacity:1,translate:'0 0'};return exit?[rest,away]:[away,rest];
 }
@@ -26,7 +27,7 @@ function exitGhost(node,style,box){
 }
 export function rememberPresence(node,style){
  const conditional=node.matches('.spelling-category-panel,.english-category-panel,[data-dictation-panel]');
- if(conditional)style={enterAnimation:'enter',exitAnimation:'enter',...style};
+ if(conditional)style={enterAnimation:'fade',exitAnimation:'fade',...style};
  if(!style.enterAnimation&&!style.exitAnimation)return;
  const rect=node.getBoundingClientRect(),visible=Boolean(rect.width&&rect.height),before=visibility.get(node);
  if(before!==undefined&&before!==visible&&!matchMedia('(prefers-reduced-motion:reduce)').matches){

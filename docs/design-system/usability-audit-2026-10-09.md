@@ -78,3 +78,7 @@ Zastosowano hierarchię (grupy i zadania), stopniowe ujawnianie (zwijanie), spó
 Po umożliwieniu dostępu do Preview wykonać wszystkie scenariusze w tabeli na desktopie oraz menu/edycję/PWA na iPhonie 13 Pro. Użyć dwóch osób średnio zaawansowanych, które nie budowały Studio. Dla każdego zadania zanotować: ukończenie bez podpowiedzi, czas, błędne przejścia, cofnięcia oraz zdolność wyjaśnienia zakresu zmiany przed zapisem. Zmierzyć bazę i wersję poprawioną na tych samych zadaniach, zmieniając kolejność między osobami.
 
 Priorytet P1: jednoznaczne statusy szkic/commit/deploy, pokazanie konkretnych użyć przed zmianą globalną, pełna migracja szablonów, sprawdzenie audio i serii efektów na iOS. P2: uproszczenie toolbara, kontekstowa mapa zamiast dodatkowej ścieżki, prosty/zaawansowany panel efektów. Decyzje o usunięciu modułów dopiero po dowodach z użycia — obecne duplikacje są głównie duplikacją wejść, nie danych.
+
+## Dodatkowa kontrola Preview PR
+
+Pierwszy build PR na Vercelu wykonał 236 testów; 235 przeszło. Starszy test offline-precache traktował zewnętrzny URL assetu konsumenckiego jak ścieżkę na dysku (dist/https://raw.githubusercontent.com/…). Naprawa rozróżnia lokalne pliki od zasobów przypiętych do źródłowego SHA. Lokalne pliki nadal muszą istnieć; zewnętrzne muszą należeć do dokładnego źródła buildu i jego katalogu assetów lub paczek słów. To weryfikacja manifestu, nie dostępności HTTP każdego assetu.

@@ -86,5 +86,38 @@ export function installGameSounds(app){
  observer.observe(app,{attributes:true,attributeFilter:['data-view','data-mode','data-state','data-history-state','class']});
  // Dialogs can pause a game without changing its root state (e.g. a hint).
  new MutationObserver(records=>{if(records.some(row=>row.target.matches?.('dialog')||[...row.addedNodes,...row.removedNodes].some(node=>node.matches?.('dialog'))))syncSoundScene(app);}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});
+ 
+ // Diagnostic mode is opt-in and never modifies persisted player preferences.
+ // Open Test PWA with ?audio-debug=1 on a real iPhone.
+ if(new URLSearchParams(location.search).get('audio-debug')==='1'){
+  const panel=document.createElement('section');
+  panel.setAttribute('aria-label','Diagnostyka dźwięku PWA');
+  panel.style.cssText='position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:min(350px,calc(100vw - 20px));z-index:2147483000;padding:12px 14px;border-radius:15px;background:#102448ee;color:white;box-shadow:0 8px 26px #0006;font:12px/1.6 system-ui,sans-serif;text-align:left';
+  panel.innerHTML='<strong style="display:block;font-size:14px">Audio QA · Test PWA</strong><div data-audio-qa-state style="white-space:pre-wrap;font-variant-numeric:tabular-nums">Sprawdzam audio…</div><div style="display:flex;gap:8px;margin-top:8px"><button type="button" data-audio-qa-tone style="padding:7px 10px;background:#eff5ff;color:#12264b;border:0;border-radius:9px;cursor:pointer">▶ Test tonu</button><button type="button" data-audio-qa-hide style="padding:7px 10px;background:#354f78;color:white;border:0;border-radius:9px;cursor:pointer">Ukryj</button></div>';
+  document.body.append(panel);
+  const state=panel.querySelector('[data-audio-qa-state]');
+  const draw=()=>{
+   const s=gameSound.settings,e=gameSound.engine,ctx=e.ctx;
+   state.textContent=[
+    'Dźwięki w miksie: '+(s.enabled?'włączone':'WYŁĄCZONE'),
+    'Dźwięki użytkownika: '+(gameSound.preference?'włączone':'WYŁĄCZONE — sprawdź Ustawienia'),
+    'Tło w miksie: '+(s.ambientEnabled?'włączone':'WYŁĄCZONE'),
+    'Głośność tła: '+s.ambientVolume+'% · główna: '+s.volume+'%',
+    'Stan gry: '+(gameSound.scene.playing?'rozgrywka':'poza grą')+(gameSound.scene.paused?' (pauza)':''),
+    'AudioContext: '+(ctx?.state||'nieutworzony')+' · odblokowano: '+(gameSound.unlocked?'tak':'nie'),
+    'Silnik tła: '+(e.playing?'aktywny':'nieaktywny')+' · kanały: '+(e.channels?.size||0),
+    gameSound.lastError?'Błąd: '+gameSound.lastError:'Błąd: brak'
+   ].join('\n');
+  };
+  panel.querySelector('[data-audio-qa-tone]').addEventListener('click',async()=>{
+   try{
+    await gameSound.engine.cue('correct',normalizeSoundSettings({...gameSound.settings,enabled:true,volume:75,cueVolume:85,quietMode:false}));
+    state.textContent='Odtworzono testowy ton (pomija zapisaną preferencję wyciszenia).\n'+state.textContent;
+   }catch(error){gameSound.report(error);}draw();
+  });
+  const timer=setInterval(draw,800);draw();
+  panel.querySelector('[data-audio-qa-hide]').addEventListener('click',()=>{clearInterval(timer);panel.remove();});
+  window.addEventListener('pagehide',()=>clearInterval(timer),{once:true});
+ }
  syncSoundScene(app);
 }

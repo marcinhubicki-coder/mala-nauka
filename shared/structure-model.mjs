@@ -32,10 +32,10 @@ export const PARTS=[
  atom('input-player-name','Pole imienia','input','.player-name-input',{sample:'input'}),
  atom('button-main','Przycisk główny','button','.primary,.start-button,.player-continue,.math-start-button',{block:'button'}),
  atom('button-answer','Odpowiedź','button','.answer,.math-answer',{block:'answer'}),
- group('button-avatar-choice','Wybór avatara','.avatar-choice',['container-card','image-player-avatar-art'],{kind:'button',inherits:'button-main'}),
- group('button-player-card','Karta wyboru gracza','.player-card',['container-card','image-player-avatar-art','text-nickname','icon-player-select'],{kind:'button',sample:'player'}),
+ atom('button-avatar-choice','Wybór avatara','button','.avatar-choice', {children:['container-card','image-player-avatar-art'],inherits:'button-main'}),
+ atom('button-player-card','Karta wyboru gracza','button','.player-card', {children:['container-card','image-player-avatar-art','text-nickname','icon-player-select'],sample:'player'}),
  atom('icon-player-select','Znacznik wybranego gracza','icon','.player-select-mark'),
- group('button-home-card','Kafel trybu gry','[data-action=choose-mode]',['container-card','image-mission','text-mode-name'],{kind:'button'}),
+ atom('button-home-card','Kafel trybu gry','button','[data-action=choose-mode]', {children:['container-card','image-mission','text-mode-name']}),
  atom('text-mode-name','Nazwa trybu gry','text','.home-tile-name'),
  atom('button-home-progress','Przycisk wyników','button','.home-progress-arrow',{inherits:'button-main'}),
  atom('button-back','Powrót','button','[data-action=players],[data-action=edit-player],[data-action=home]'),
@@ -70,7 +70,7 @@ export function recipeLineage(id){const chain=[],seen=new Set();while(id&&!seen.
 export const LEVEL_NAMES={atom:'Atom',group:'Grupa',family:'Rodzina · widok'};
 const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','container-player-actions'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home-art-backdrop','image-home-logo-art','button-home-progress','button-home-card'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','control-toggle','button-main'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','image-mission','result-points-bubble','container-card','container-round-progress','container-result-continue-rail','button-home-progress','button-back'],progress:['button-back','container-card','container-round-progress']};
 export function viewType(view){const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
-export function partLevel(item,items=[]){return PART_BY_ID[item.recipe]?.level||(items.some(n=>n.parent===item.id)?'group':'atom');}
+export function partLevel(item,items=[]){return PART_BY_ID[item.recipe]?.level||(['button','key','input','toggle','text','icon','image','background','timer','meter'].includes(item.kind)?'atom':items.some(n=>n.parent===item.id)?'group':'atom');}
 export function viewParts(view,inventory){
  const items=inventory?.items||[];
  if(items.length){const ids=new Set(items.map(n=>n.id));return items.filter(n=>n.id!=='layout-root'&&(!n.parent||n.parent==='layout-root'||!ids.has(n.parent))).map(n=>inventoryPart(n,items));}

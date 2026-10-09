@@ -1,4 +1,5 @@
 // This adapter changes presentation only. Existing editor handlers own every edit.
+import {previewScale} from './studio-ui.mjs';
 const mobile=matchMedia('(max-width: 690px)'),workspace=document.getElementById('workspace');
 const menu=document.getElementById('mobile-navigation'),dock=document.getElementById('mobile-editor-dock');
 const topbar=document.querySelector('.studio-topbar'),root=document.documentElement;
@@ -12,8 +13,8 @@ function dimensions(){
   root.style.setProperty('--mobile-dock-height',dock.hidden?'0px':dock.getBoundingClientRect().height+'px');
   const gallery=workspace.querySelector('.preview-gallery.comparison');
   if(gallery?.clientWidth&&gallery.clientHeight){
-    const scale=Math.min(1,(gallery.clientWidth-20)/414,(gallery.clientHeight-100)/876);
-    gallery.style.setProperty('--mobile-preview-scale',String(Math.max(.2,scale)));
+    const scale=previewScale(gallery.clientWidth,gallery.clientHeight,{paddingX:20,paddingY:100});
+    gallery.style.setProperty('--mobile-preview-scale',String(scale));
   }
 }
 function setPane(next){

@@ -24,5 +24,6 @@
       "mode": "removed"
     }
   ],
-  "sourceCommit": "a55d5386035c2430a5f5c834673b8622d7fbb8c3"
+  "sourceCommit": "736dc80d79076fe9a2b63e883d8f4cb175a7bd8f",
+  "audioDiagnostics": true
 }

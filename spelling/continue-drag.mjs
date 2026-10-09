@@ -40,6 +40,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     handle.style.transform = transform(x,amount,direction);
   };
   const complete=(travel=gesture?.travel??current)=>{
+    rail.dispatchEvent(new CustomEvent('mala-nauka:continue-sound',{bubbles:true}));
     const from=handle.style.transform||transform(current),duration=Math.max(120,Math.min(settings.fillDuration,settings.springDuration));
     completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');
     current=travel;handle.style.transform=transform(travel);

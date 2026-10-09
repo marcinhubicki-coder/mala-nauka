@@ -1,3 +1,4 @@
+import {gameSound} from './shared/sound-runtime.mjs';
 import {designReady,currentDesign} from './shared/design-runtime.mjs';
 import {preloadAssets} from './shared/asset-loader.mjs';
 import {screenReady} from './shared/screen-readiness.mjs';
@@ -6,7 +7,7 @@ const app=document.querySelector('#app'),studio=new URLSearchParams(location.sea
 let player;
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function stop(){player?.destroy();player=null;}
-function start(config={},time=0,autoplay=true){stop();const overlay=document.createElement('div');overlay.id='mn-preloader';overlay.className='mn-boot-screen';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','Ładowanie Małej Nauki');document.body.append(overlay);player=new LogoTransition({overlay,app,config,onFrame:frame=>{if(studio&&parent!==window)parent.postMessage({channel:'mala-nauka-logo',type:'frame',...frame,shapes:undefined,whiteD:undefined},location.origin);},onFinish:()=>{if(!studio)stop();else parent.postMessage({channel:'mala-nauka-logo',type:'finished'},location.origin);}});player.seek(time);if(autoplay)player.play();}
+function start(config={},time=0,autoplay=true){stop();const overlay=document.createElement('div');overlay.id='mn-preloader';overlay.className='mn-boot-screen';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','Ładowanie Małej Nauki');document.body.append(overlay);player=new LogoTransition({overlay,app,config,onFrame:frame=>{if(studio&&parent!==window)parent.postMessage({channel:'mala-nauka-logo',type:'frame',...frame,shapes:undefined,whiteD:undefined},location.origin);},onFinish:()=>{if(!studio)stop();else parent.postMessage({channel:'mala-nauka-logo',type:'finished'},location.origin);}});player.seek(time);if(autoplay)player.play();if(!studio&&gameSound.settings.logoEnabled&&gameSound.enabled&&!gameSound.unlocked&&!config.neutral){const soundButton=document.createElement('button');soundButton.type='button';soundButton.className='mn-loader-sound';soundButton.textContent='♫ Włącz dźwięk';soundButton.onclick=()=>{void gameSound.unlock();soundButton.remove();};overlay.append(soundButton);}}
 let pending=0,waiting=false,waitRaf;
 async function firstScreenReady(){await Promise.race([screenReady(app),pause(8000)]);}
 async function prepare(full=false){

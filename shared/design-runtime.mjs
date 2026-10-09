@@ -1,3 +1,4 @@
+import {gameSound,installGameSounds} from './sound-runtime.mjs';
 import {animatePresence} from './state-motion.mjs';
 import {triggerSurfaceEffects} from './surface-effects.mjs';
 import {animateScreen,DEFAULT_MOTION,transitionMotion} from './screen-motion.mjs';
@@ -15,6 +16,7 @@ export function applyDesign(value) {
   let style = document.getElementById('ds-tokens');
   if (!style) {style = document.createElement('style'); style.id = 'ds-tokens'; document.head.append(style);}
   style.textContent = css; config = value;
+  gameSound.configure(value.sound);
   window.__MALA_NAUKA_DESIGN__ = value;
   document.documentElement.dataset.dsRevision = String(value.revision);
   configureScreenCopy(value.copyOverrides||[]);
@@ -36,6 +38,7 @@ export async function initDesign() {
   fonts.textContent = faces.map(([name,file,weight]) => `@font-face{font-family:"${name}";src:url("${assetUrl('assets/fonts/'+file)}") format("woff");font-style:normal;font-weight:${weight};font-display:swap}`).join('');
   applyDesign(settings); observeAssets();
   const app = document.getElementById('app');
+  installGameSounds(app);
   let previousScreen,screenAnimation;
   const annotate = () => {
     if (!app) return;

@@ -6,6 +6,7 @@ import {validateRecipes,validateBlueprints,recipesCSS,ATOMS} from '../shared/com
 import {validateEffects} from '../spelling/effect-model.mjs';
 import {validateScoring} from '../spelling/scoring.mjs';
 import {validateMotion} from '../shared/screen-motion.mjs';
+import {validateSoundSettings} from '../shared/sound-library.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
 import {validateProject,validateCopy} from './project-model.mjs';
@@ -45,6 +46,7 @@ export function validateConfig(config) {
   }
   if(config.navigation)validateNavigation(config.navigation);
   if(config.motion)validateMotion(config.motion);
+   if(config.sound)validateSoundSettings(config.sound);
   if(config.logoTransition)validateLogoTransition(config.logoTransition);
   for(const [view,row]of Object.entries(config.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
   validateElementStyles(config);

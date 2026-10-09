@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 26,
+  "revision": 27,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4320,7 +4320,11 @@
     "button-player-card": {
       "height": 119.5
     },
-    "text": {}
+    "text": {},
+    "input-player-name": {
+      "fontRole": "display",
+      "fontSize": 23
+    }
   },
   "elementOverrides": {
     "spelling-settings": {
@@ -4670,5 +4674,33 @@
     "panelWidth": 320,
     "compact": true,
     "hiddenSections": []
+  },
+  "sound": {
+    "enabled": true,
+    "volume": 48,
+    "cueVolume": 68,
+    "ambientVolume": 12,
+    "ambientEnabled": true,
+    "quietMode": true,
+    "ambientPreset": "custom",
+    "mix": [
+      7,
+      24,
+      8,
+      8,
+      16,
+      0,
+      22,
+      8,
+      67,
+      28
+    ],
+    "energy": 65,
+    "tempo": 84,
+    "variation": 70,
+    "warmth": 65,
+    "ducking": 60,
+    "logoEnabled": true,
+    "logoVolume": 72
   }
 }

@@ -1,4 +1,3 @@
-@font-face{font-family:Spelling;src:url('assets/fonts/dynapuff-polish-700.woff') format('woff');font-style:normal;font-weight:700;font-display:swap}
 /* One scene, one stylesheet. All geometry is independent of the current word. */
 #app[data-view="game"][data-mode="spelling"]{
   --ink:#101866;--purple:#662bb7;--answer-space:clamp(16px,calc(2.5 * var(--app-vh, 1dvh)),22px);
@@ -23,7 +22,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 #app[data-view="game"][data-mode="spelling"] progress::-webkit-progress-bar{background:linear-gradient(#d4c1f0,#e3d6fc);border-radius:20px}
 #app[data-view="game"][data-mode="spelling"] progress::-webkit-progress-value{background:linear-gradient(90deg,#b969fa,#9c50f2,#8242df);border-radius:20px;box-shadow:inset 0 1px 2px #ffffff7a}
 #app[data-view="game"][data-mode="spelling"] progress::-moz-progress-bar{background:linear-gradient(90deg,#b969fa,#8242df);border-radius:20px}
-.spelling-title{grid-row:2;display:flex;align-items:center;justify-content:center;align-self:stretch;margin:0;white-space:nowrap;text-align:center;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(26px,8.1vw,38px);letter-spacing:-1.35px;line-height:1.3;color:var(--ink);text-shadow:0 2px 0 #ffffff48}
+.spelling-title{grid-row:2;display:flex;align-items:center;justify-content:center;align-self:stretch;margin:0;white-space:nowrap;text-align:center;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-weight:700;font-size:clamp(26px,8.1vw,38px);letter-spacing:-1.35px;line-height:1.3;color:var(--ink);text-shadow:0 2px 0 #ffffff48}
 .spelling-visual{grid-row:3;position:relative;min-height:0;height:100%;width:calc(100% + 36px);justify-self:center;pointer-events:none}
 .soap-svg{display:block;width:100%;height:100%;overflow:visible}
 .soap-picture{opacity:0}
@@ -34,7 +33,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 @keyframes soap-drift{0%,100%{translate:0 0}48%{translate:2px -5px}}
 #app[data-view="game"][data-mode="spelling"] .spelling-question-card{grid-row:4;margin:0;padding:0;min-height:0;border:0;background:none;box-shadow:none;display:flex;align-items:center;justify-content:center}
 .spelling-question-card .question-content{height:100%;width:100%;padding:0;min-width:0;display:flex;align-items:center;justify-content:center;overflow:visible}
-#app[data-view="game"][data-mode="spelling"] .word{display:inline-flex;align-items:center;justify-content:center;max-width:none;white-space:nowrap;font-family:Spelling,ui-rounded,sans-serif;font-weight:700;font-size:clamp(42px,14.5vw,65px);line-height:1.2;letter-spacing:-1.7px;color:var(--ink);text-shadow:0 2px 0 #ffffff5c;padding:.12em .04em .08em;overflow:visible}
+#app[data-view="game"][data-mode="spelling"] .word{display:inline-flex;align-items:center;justify-content:center;max-width:none;white-space:nowrap;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-weight:700;font-size:clamp(42px,14.5vw,65px);line-height:1.2;letter-spacing:-1.7px;color:var(--ink);text-shadow:0 2px 0 #ffffff5c;padding:.12em .04em .08em;overflow:visible}
 .word-side{display:inline-block;line-height:1.2;overflow:visible;padding:.08em 0 .12em;margin:-.08em 0 -.12em}.answer-ink,.revealed-chunk{display:inline-block;line-height:1.2;overflow:visible}
 #app[data-view="game"][data-mode="spelling"] .gap{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 1.04em;width:1.04em;height:1.04em;min-width:0;margin:0 .025em;border:0;color:inherit;line-height:1;overflow:visible}
 .bubble-glass{position:absolute;inset:.01em;border-radius:50%;border:1px solid #fff;background:
@@ -56,7 +55,7 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
  position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:0;padding:0 6px;border-radius:36px;border:1.2px solid #c09beeb0;
  background:radial-gradient(ellipse at 82% 18%,#e4fbffdd,transparent 58%),radial-gradient(ellipse at 12% 20%,#ffd9fbe0,transparent 60%),radial-gradient(ellipse at 83% 96%,#c2c7fbba,transparent 62%),linear-gradient(120deg,#f8eafaba,#e7f6ffb8 55%,#f6eafcc4);
  box-shadow:inset 0 1px 2px 1px white,inset 1px 4px 8px #fff9,inset -3px -4px 6px #c49bf057,inset 2px -2px 3px #f9d8fe,inset 0 -7px 10px #ffffff8c,0 0 0 1px #fff9,0 7px 13px #866eb02b,0 2px 2px #856cb734;
- color:var(--ink);font-family:Spelling,ui-rounded,sans-serif;font-size:clamp(43px,14.5vw,62px);font-weight:700;line-height:1.2;text-shadow:0 1px 0 #ffffff7d;letter-spacing:-1.5px;overflow:visible;backdrop-filter:blur(4px);transition:transform .3s,box-shadow .5s,color .5s;
+ color:var(--ink);font-family:var(--ds-font-display),ui-rounded,sans-serif;font-size:clamp(43px,14.5vw,62px);font-weight:700;line-height:1.2;text-shadow:0 1px 0 #ffffff7d;letter-spacing:-1.5px;overflow:visible;backdrop-filter:blur(4px);transition:transform .3s,box-shadow .5s,color .5s;
 }
 #app[data-view="game"][data-mode="spelling"] .answer::before{content:"";position:absolute;z-index:-1;inset:3px;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse 15% 13% at 14% 23%,#fff 20%,#ffffffd6 49%,transparent 80%),radial-gradient(ellipse 12% 12% at 88% 24%,#fff 20%,#ffffff99 49%,transparent 80%),radial-gradient(ellipse 45% 9% at 50% 5%,#ffffffc9,transparent 92%),radial-gradient(ellipse 21% 11% at 88% 84%,#ffffffb0,transparent 90%)}
 #app[data-view="game"][data-mode="spelling"] .answer::after{content:"";position:absolute;inset:3px;border-radius:inherit;border:1px solid #ffffffab;border-top-color:#fceaffb3;border-left-color:#fbe2ffb8;pointer-events:none}
@@ -80,33 +79,62 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 .spelling-visual{contain:layout style;overflow:visible}
 #app.paused[data-mode="spelling"] .bubble-glass,#app.paused[data-mode="spelling"] .word-spark{animation-play-state:paused}
 
-/* The handle keeps its circular shape throughout the slide and recoil. */
+/* Geometry and colour belong to this skin; deformation comes from the same
+   Jelly model as segmented controls. */
 .spelling-next.spelling-continue-rail{position:relative;isolation:isolate;display:flex;justify-content:flex-end;padding:0 18px 0 58px;height:46px;border:1.5px solid #ddc5fb;background:linear-gradient(115deg,#f8f1ffed,#ffffffe8);box-shadow:inset 0 2px 3px white,0 0 0 2px #ffffffab,0 5px 12px #7133a124;color:#6518a7;cursor:default;touch-action:pan-y;user-select:none;overflow:visible}
 .spelling-action-row .spelling-next[hidden]{display:none}
-.continue-handle{position:absolute;z-index:2;left:4px;top:3px;width:38px;height:38px;margin:0!important;border:1px solid #fff;border-radius:50%;background:radial-gradient(ellipse at 30% 20%,#fff 3%,#ffffff9c 13%,transparent 36%),conic-gradient(from 110deg,#ebcdff,#b9efff,#dec7ff,#ffcaeb,#ebcdff);box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 4px 10px #ba8acb55;transform-origin:center;touch-action:none;cursor:grab}
+.continue-handle{position:absolute;z-index:2;left:4px;top:3px;width:38px;height:38px;margin:0!important;border:1px solid #fff;border-radius:50%;background:radial-gradient(ellipse at 30% 20%,#fff 3%,#ffffff9c 13%,transparent 36%),conic-gradient(from 110deg,#ebcdff,#b9efff,#dec7ff,#ffcaeb,#ebcdff);box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 4px 10px #ba8acb55;transform:translate3d(0,0,0);transform-origin:center;will-change:transform;touch-action:none;cursor:grab}
 .is-dragging .continue-handle{cursor:grabbing}
-.continue-copy{margin:0!important;font-family:"Home Rounded",sans-serif;font-size:clamp(12px,3.3vw,14px);font-weight:800;transition:opacity .15s}
+.continue-copy{margin:0!important;font-family:var(--ds-font-ui),sans-serif;font-size:clamp(12px,3.3vw,14px);font-weight:800;transition:opacity .15s}
 .continue-chevrons{position:absolute;left:54px;letter-spacing:1px;font-size:25px;color:#c5a5f3;margin:0!important;opacity:.8}
 .is-dragging .continue-copy,.is-dragging .continue-chevrons{opacity:calc(1 - var(--drag-progress,0))}
 .spelling-fireworks{position:absolute;z-index:10;inset:0;pointer-events:none;overflow:visible}
 .spelling-fireworks i{position:absolute;left:var(--burst-left);top:var(--burst-top);width:7px;height:11px;background:var(--burst-color);border-radius:3px;opacity:0;animation:spelling-burst 850ms cubic-bezier(.12,.64,.25,1) var(--burst-delay) both}
 .spelling-fireworks .firework-star{width:14px;height:14px;clip-path:polygon(50% 0,64% 32%,99% 36%,74% 62%,81% 98%,50% 79%,19% 98%,26% 62%,1% 36%,36% 32%);background:#ffd342}
 @keyframes spelling-burst{0%{transform:translate(0,0) scale(.2) rotate(0);opacity:0}12%{opacity:1}75%{opacity:1}100%{transform:translate(var(--burst-x),var(--burst-y)) scale(.5) rotate(var(--burst-turn));opacity:0}}
-@media(prefers-reduced-motion:reduce){.spelling-fireworks{display:none}.continue-copy{transition:none}}
+@media(prefers-reduced-motion:reduce){.spelling-fireworks{display:none}.continue-copy{transition:none}.continue-handle{will-change:auto}}
+
+/* Optical finishing layers: warm light, soft focus, bokeh and film grain. */
+.screen-atmosphere{position:absolute;z-index:30;inset:0;overflow:hidden;pointer-events:none;user-select:none;isolation:isolate;contain:paint}
+.screen-atmosphere::before,.screen-atmosphere::after,.ambient-finish,.ambient-finish::before,.ambient-finish::after,.ambient-lens{content:"";position:absolute;inset:0;pointer-events:none}
+.screen-atmosphere::before{opacity:var(--ambient-look-opacity,.2);mix-blend-mode:screen}
+.screen-atmosphere::after{background:linear-gradient(145deg,#ffd28c25 0%,transparent 50%,#ffb8bf16 100%);opacity:var(--ambient-warmth,.45);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-none::before{opacity:0}
+.screen-atmosphere.ambient-filter-glow::before{background:radial-gradient(ellipse at 22% 12%,#fffbd5c9,transparent 42%),radial-gradient(ellipse at 84% 76%,#bdefff70,transparent 48%)}
+.screen-atmosphere.ambient-filter-warm::before{background:radial-gradient(ellipse at 20% 8%,#fff1b9cf,transparent 48%),linear-gradient(145deg,#ffc26a70,transparent 55%,#ffadc43d);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-film::before{background:radial-gradient(ellipse at 24% 10%,#ffe6adad,transparent 48%),linear-gradient(155deg,#ffc67f4f,transparent 48%,#759ad22e);mix-blend-mode:soft-light}
+.screen-atmosphere.ambient-filter-bloom::before{background:radial-gradient(circle at 28% 18%,#fffffff2 0 4%,#fff2c58f 18%,transparent 46%),radial-gradient(circle at 74% 70%,#ffd1e66e,transparent 38%)}
+.screen-atmosphere.ambient-filter-dream::before{background:radial-gradient(circle at 20% 18%,#fff6c9d8,transparent 38%),radial-gradient(circle at 82% 34%,#e5c8ff82,transparent 42%),linear-gradient(165deg,#ffd0b850,transparent 62%)}
+.screen-atmosphere.ambient-filter-vignette::before{background:radial-gradient(ellipse at center,#fff4 0 36%,transparent 64%,#24184138 100%);mix-blend-mode:soft-light}
+.ambient-finish{-webkit-backdrop-filter:blur(var(--ambient-softness,0));backdrop-filter:blur(var(--ambient-softness,0))}
+.ambient-finish::before{background-image:repeating-radial-gradient(circle at 23% 31%,#fff 0 .42px,#34233b2b .56px,transparent .76px 3px);background-size:5px 7px;mix-blend-mode:soft-light;opacity:var(--ambient-grain-opacity,.03)}
+.ambient-grain .ambient-finish::before{background-size:4px 6px;opacity:max(var(--ambient-grain-opacity,.08),.08)}
+.ambient-finish::after{background:radial-gradient(ellipse at center,transparent 50%,#25183e80 100%);opacity:var(--ambient-vignette-opacity,.04)}
+.ambient-lens{background:radial-gradient(circle at 17% 18%,#fff 0 1%,#fff6c9a6 2%,transparent 9%),radial-gradient(circle at 37% 35%,#ffd9c052 0 2%,transparent 8%),radial-gradient(circle at 73% 68%,#bfeaff3d 0 2%,transparent 10%),linear-gradient(118deg,transparent 10%,#fff5cf24 21%,transparent 32%);opacity:var(--ambient-flare-opacity,.04);mix-blend-mode:screen;transform-origin:25% 22%;animation:ambient-lens-breathe 9s ease-in-out infinite alternate;will-change:transform,opacity}
+.screen-atmosphere.ambient-dust i,.screen-atmosphere.ambient-bokeh i,.screen-atmosphere.ambient-bubbles i,.screen-atmosphere.ambient-sparkles i{position:absolute;left:var(--ambient-x);top:var(--ambient-y);width:var(--ambient-size);height:var(--ambient-size);opacity:var(--ambient-particle-opacity,.22);animation:ambient-drift var(--ambient-duration,8s) ease-in-out var(--ambient-delay) infinite alternate;will-change:transform,opacity}
+.screen-atmosphere.ambient-dust i{border-radius:50%;background:#fff;box-shadow:0 0 6px 2px #fff9,0 0 15px #ffe9a866}
+.screen-atmosphere.ambient-bokeh i{border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffffffe6 0 5%,#ffe2b36b 24%,#f5b9df35 56%,transparent 72%);box-shadow:0 0 18px #ffeecb5c;filter:blur(calc(2px + var(--ambient-softness,0px)));mix-blend-mode:screen}
+.screen-atmosphere.ambient-bubbles i{border:1px solid #ffffffd9;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff 0 5%,transparent 28%),linear-gradient(140deg,#bcefff42,#ffbde74a);box-shadow:inset 0 0 5px #fff,0 0 7px #9edcff66}
+.screen-atmosphere.ambient-sparkles i{background:#fff4bf;clip-path:polygon(50% 0,59% 40%,100% 50%,59% 60%,50% 100%,41% 60%,0 50%,41% 40%);filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 7px #ffd887);animation-name:ambient-drift,ambient-twinkle;animation-duration:var(--ambient-duration,8s),2.8s;animation-timing-function:ease-in-out,ease-in-out}
+.screen-atmosphere>b{position:absolute;width:9px;height:9px;border:1px solid #fff;border-radius:50%;background:#fff4d3a8;box-shadow:0 0 8px #fff,0 0 13px #ffd88a;pointer-events:none}
+@keyframes ambient-drift{0%{transform:translate3d(0,7px,0) scale(.84);opacity:.18}52%{opacity:var(--ambient-particle-opacity,.5)}100%{transform:translate3d(var(--ambient-dx,8px),var(--ambient-dy,-14px),0) scale(1.12);opacity:.32}}
+@keyframes ambient-twinkle{0%,100%{scale:.72;rotate:-8deg}45%{scale:1.18;rotate:8deg}60%{scale:.9;rotate:0}}
+@keyframes ambient-lens-breathe{from{transform:translate3d(-1%,0,0) scale(.98)}to{transform:translate3d(2%,1%,0) scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.screen-atmosphere i,.ambient-lens{animation:none!important}.screen-atmosphere i{opacity:.24}}
 
 #app[data-view="game"][data-mode="spelling"] .dictation-count{gap:4px}
 #app[data-view="game"][data-mode="spelling"] .dictation-count .timer{font-size:25px;line-height:.95}
 #app[data-view="game"][data-mode="spelling"] .dictation-count small{margin-top:-1px;color:#6f6791;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.09em;font-weight:800}
 /* The drag colors belong to its clipped rail; motion only runs while dragging. */
 .spelling-next.spelling-continue-rail{overflow:hidden}
-.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(38px + (100% - 44px) * var(--drag-progress,0));border-radius:999px;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;opacity:var(--drag-fill-visible,0);transition:width .35s cubic-bezier(.16,.78,.22,1),opacity .2s}
+.spelling-continue-rail::before{content:"";position:absolute;z-index:-1;left:3px;top:3px;bottom:3px;width:calc(38px + (100% - 44px) * var(--drag-progress,0));border-radius:999px;background:linear-gradient(90deg,#7de5fd,#bf8bfb 42%,#fda3df 74%,#ffe7a4);box-shadow:inset 0 1px 3px #fff,0 0 7px #eba3ff9c;opacity:var(--drag-fill-visible,0);transition:width calc(var(--ds-slider-wrong-fill-duration,350) * 1ms) cubic-bezier(.16,.78,.22,1),opacity .2s}
 .spelling-continue-rail.is-dragging::before,.spelling-continue-rail.is-complete::before{--drag-fill-visible:1;transition:none}
 .spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 5px white,0 0 0 2px #eacffe,0 0 13px #fff7ad,0 4px 10px #ba8acb55}
-.spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark .6s ease-out infinite}
+.spelling-continue-rail.is-dragging .continue-handle::after{content:'✦';position:absolute;right:100%;top:4px;font-size:20px;color:#fff4af;animation:drag-spark calc(var(--ds-slider-wrong-spark-duration,600) * 1ms) ease-out infinite}
 .spelling-continue-rail.is-complete .continue-copy{opacity:0}.spelling-continue-rail.is-complete::after{content:'Świetnie! ✓';position:absolute;inset:0;display:grid;place-items:center;color:#612785;font-size:18px;font-weight:850}
 @keyframes drag-spark{from{opacity:1;transform:translateX(0) scale(.5)}to{opacity:0;transform:translateX(-35px) scale(1.2)}}
 /* A small white glow keeps the praise readable over meadow flowers. */
-#app.spelling-correct-feedback[data-mode="spelling"] .feedback{position:relative;isolation:isolate;justify-self:center;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;font-family:Spelling,sans-serif;font-size:clamp(24px,7.4vw,30px);line-height:1.1;color:#277956;white-space:nowrap;overflow:visible;transform-origin:center;animation:feedback-punch 1.25s cubic-bezier(.2,.7,.2,1) both}
+#app.spelling-correct-feedback[data-mode="spelling"] .feedback{position:relative;isolation:isolate;justify-self:center;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px;font-family:var(--ds-font-display),sans-serif;font-size:clamp(24px,7.4vw,30px);line-height:1.1;color:#277956;white-space:nowrap;overflow:visible;transform-origin:center;animation:feedback-punch 1.25s cubic-bezier(.2,.7,.2,1) both}
 #app.spelling-correct-feedback .feedback::before{content:"";position:absolute;z-index:-1;inset:-9px -12px;border-radius:50%;background:radial-gradient(ellipse,#fffffff5 0%,#ffffffdd 40%,#ffffff65 70%,transparent 100%);filter:blur(5px);pointer-events:none}
 .feedback-copy{-webkit-text-stroke:1.5px #fff;paint-order:stroke fill;text-shadow:0 1px 4px #fff}
 .feedback-rays{flex:none;width:25px;height:35px;overflow:visible;filter:drop-shadow(0 1px 0 #fff9)}
@@ -120,5 +148,5 @@ body>.spelling-screen-bg{position:fixed;inset:0;z-index:-1;width:100%;height:100
 .spelling-continue-rail .continue-handle{left:3px;top:3px;width:38px;height:38px;aspect-ratio:1;background:radial-gradient(ellipse 21% 15% at 29% 18%,#fff 15%,#ffffffb5 45%,transparent 90%),radial-gradient(ellipse at 24% 70%,#7fe6ffe8,transparent 62%),radial-gradient(ellipse at 76% 58%,#ffa3dbd9,transparent 65%),conic-gradient(from 135deg,#e9d9ff,#adf1ff,#ffd2f2,#d8bdff,#e9d9ff);box-shadow:inset 0 0 0 2px #ffffffb0,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 2px 6px #8b65bc4d}
 .spelling-continue-rail::before{background:linear-gradient(90deg,#78e6fd 0%,#c297fc 40%,#faa6df 78%,#fff0bf 100%);box-shadow:inset 0 1px 2px #fff9}
 .spelling-continue-rail .continue-chevrons{left:48px;font-size:25px;letter-spacing:0;opacity:.55}
-.spelling-continue-rail .continue-copy{font-family:ResultBody,sans-serif;font-size:clamp(11px,3.25vw,14px);font-weight:850;letter-spacing:-.25px}
-.spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 9px #fff4b5,0 2px 6px #8b65bc4d}
+.spelling-continue-rail .continue-copy{font-family:var(--ds-font-body),sans-serif;font-size:clamp(11px,3.25vw,14px);font-weight:850;letter-spacing:-.25px}
+.spelling-continue-rail.is-dragging .continue-handle{box-shadow:inset 0 0 0 2px #fff,inset 0 0 6px #fff,0 0 0 1px #cba4f0,0 0 calc(var(--ds-slider-wrong-glow-blur,9) * 1px) #fff4b5,0 2px 6px #8b65bc4d}

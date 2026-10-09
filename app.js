@@ -1,7 +1,16 @@
+import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
+import {gameSound} from './shared/sound-runtime.mjs';
+import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
+import {animateStateChange} from './shared/state-motion.mjs';
+import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
+import {resolveRules} from './shared/rules-library.mjs';
+import {createStudioGame} from './design-system/scenarios.mjs';
+import {designReady,applyDesign} from './shared/design-runtime.mjs';
+import {loadWords} from './shared/asset-loader.mjs';
 import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
-import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=19-pearl-slide';
+import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=20-points-bubble';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
@@ -10,29 +19,46 @@ import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';
-import { createSpellingArt } from './spelling/art.mjs?v=20261001-profile-v6';
-import { playerService, AVATARS, NICKNAME_MAX_LENGTH } from './player-service.mjs?v=6-backup';
+import { createSpellingArt } from './spelling/art.mjs?v=20261006-cinematic-v1';
+import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './player-service.mjs?v=7-profile-settings';
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
 let pinSuppressClickUntil=0;
+let studioSourceWords;
 const prefix='malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
-function save(key,value) {try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
+function save(key,value) {if(new URLSearchParams(location.search).has('studio'))return;try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
 const oldSettings=cleanSettings(read('maleDyktando.settings.v1',{}));
 let settings=cleanSettings(read(prefix+'settings',oldSettings));
+const applyPreferenceState=()=>{document.documentElement.dataset.animations=settings.animations?'on':'off';gameSound.setPreference(new URLSearchParams(location.search).has('studio')||settings.sound);};
+applyPreferenceState();
 const savedConfigs=read(prefix+'configs',{});
 let configs=Object.fromEntries(modeIds.map(mode=>[mode,cleanConfig(mode,savedConfigs?.[mode]??{duration:oldSettings.duration})]));
 const legacyProgressRaw=read(prefix+'progress');
 const legacyProgress=legacyProgressRaw===null?migrateProgress(read('maleDyktando.history.v1',[]),read('maleDyktando.best.v1',{})):cleanProgress(legacyProgressRaw);
 let progress=cleanProgress(null);
-let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false;
-let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
+let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false,editingProfile=false,deletingProfile=false;
+let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let gameTicker = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
-function startGameTicker(){stopGameTicker();gameTicker=setInterval(()=>{if(view!=='game'||!game){stopGameTicker();return;}game.tick();syncGame();},50);}
+function startGameTicker(){
+ stopGameTicker();
+ // Keep the simulation accurate at 50 ms, but avoid repainting the spelling HUD
+ // 20 times/second: that starves WebKit animation frames on iOS.
+ let lastSpellingClockKey='';
+ gameTicker=setInterval(()=>{
+  if(view!=='game'||!game){stopGameTicker();return;}
+  game.tick();
+  const clockKey=game.untimed?'q:'+game.question:'s:'+Math.ceil(game.remaining/1000);
+  if(selectedMode!=='spelling'||clockKey!==lastSpellingClockKey||game.state!==renderedState||game.question!==renderedQuestion){
+   lastSpellingClockKey=clockKey;
+   syncGame();
+  }
+ },50);
+}
 let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
@@ -59,14 +85,103 @@ const fallbackAvatarId=player=>{
  for(let i=0;i<source.length;i++)sum+=source.charCodeAt(i);
  return ['a','b','c','d'][sum%4];
 };
-function avatarMarkup(player,extra=''){
- const key=AVATARS.includes(player?.avatarId)?player.avatarId:fallbackAvatarId(player);
- const index=AVATARS.indexOf(key)-4;
- if(index>=0)return `<span class="player-avatar-art player-avatar-extra ${extra}" data-avatar="${key}" aria-hidden="true"><svg viewBox="${index%4*320} ${index<4?302:650} 320 320" preserveAspectRatio="xMidYMid slice"><image href="assets/brand/player-avatars-extra-v1.webp" width="1280" height="1280"/></svg></span>`;
- return `<span class="player-avatar-art ${extra}" data-avatar="${key}" aria-hidden="true"></span>`;
+function avatarMarkup(player,extra=''){return profileAvatar(player,extra);}
+
+const avatarAccentCache=new Map(),avatarImageCache=new Map();
+const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)',toggleAccent:'#5d91bd',toggleSoft:'#e8f0f6',toggleShadow:'rgba(93,145,189,.18)'};
+function loadAvatarImage(src){
+ if(avatarImageCache.has(src))return avatarImageCache.get(src);
+ const promise=new Promise((resolve,reject)=>{const image=new Image();image.decoding='async';image.onload=()=>resolve(image);image.onerror=reject;image.src=src;});
+ avatarImageCache.set(src,promise);return promise;
 }
+function rgbToHsl(r,g,b){
+ r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min,l=(max+min)/2;
+ if(!d)return [0,0,l];
+ const s=d/(1-Math.abs(2*l-1));let h=max===r?((g-b)/d)%6:max===g?(b-r)/d+2:(r-g)/d+4;
+ h=(h*60+360)%360;return [h,s,l];
+}
+function hslToRgb(h,s,l){
+ const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;
+ let r=0,g=0,b=0;if(h<60){r=c;g=x;}else if(h<120){r=x;g=c;}else if(h<180){g=c;b=x;}else if(h<240){g=x;b=c;}else if(h<300){r=x;b=c;}else{r=c;b=x;}
+ return [r,g,b].map(v=>Math.round((v+m)*255));
+}
+const rgbCss=rgb=>`rgb(${rgb[0]} ${rgb[1]} ${rgb[2]})`;
+function whiteContrast(rgb){
+ const channel=value=>{value/=255;return value<=.03928?value/12.92:((value+.055)/1.055)**2.4;};
+ const lum=.2126*channel(rgb[0])+.7152*channel(rgb[1])+.0722*channel(rgb[2]);
+ return 1.05/(lum+.05);
+}
+function paletteFromSample(r,g,b){
+ const [h,s,l]=rgbToHsl(r,g,b),sat=Math.min(.88,Math.max(.66,s*1.25));
+ let accentL=Math.min(.55,Math.max(.43,l-.24));
+ let accent=hslToRgb(h,sat,accentL);
+ while(whiteContrast(accent)<3.15&&accentL>.34){accentL-=.018;accent=hslToRgb(h,sat,accentL);}
+ const deep=hslToRgb(h,Math.min(.92,sat+.04),Math.max(.3,accentL-.085));
+ const soft=hslToRgb(h,Math.min(.68,Math.max(.32,s)),.93);
+ const toggleSat=Math.min(.52,Math.max(.34,sat*.58));
+ const toggleAccent=hslToRgb(h,toggleSat,Math.min(.5,Math.max(.38,accentL+.01)));
+ const toggleSoft=hslToRgb(h,Math.min(.3,Math.max(.18,toggleSat*.52)),.92);
+ return {
+  accent:rgbCss(accent),deep:rgbCss(deep),soft:rgbCss(soft),
+  shadow:`rgba(${accent[0]},${accent[1]},${accent[2]},.27)`,shadowDeep:`rgba(${deep[0]},${deep[1]},${deep[2]},.24)`,
+  toggleAccent:rgbCss(toggleAccent),toggleSoft:rgbCss(toggleSoft),toggleShadow:`rgba(${toggleAccent[0]},${toggleAccent[1]},${toggleAccent[2]},.18)`
+ };
+}
+async function sampleAvatarAccent(avatarId){
+ if(avatarAccentCache.has(avatarId))return avatarAccentCache.get(avatarId);
+ const index=AVATARS.indexOf(avatarId);if(index<0)return defaultAvatarAccent;
+ try{
+  const extra=index>=4,src=extra?'assets/brand/player-avatars-extra-v1.webp':'assets/brand/player-avatars-3d.webp',image=await loadAvatarImage(src);
+  let sx,sy,sw,sh;
+  if(extra){
+   const local=index-4;sw=image.naturalWidth*.25;sh=image.naturalHeight*.25;sx=(local%4)*sw;sy=(local<4?302:650)/1280*image.naturalHeight;
+  }else{
+   sw=image.naturalWidth*.5;sh=image.naturalHeight*.5;sx=(index%2)*sw;sy=Math.floor(index/2)*sh;
+  }
+  const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  ctx.drawImage(image,sx,sy,sw,sh,0,0,64,64);
+  const data=ctx.getImageData(0,0,64,64).data,candidates=[];
+  for(let y=5;y<59;y++)for(let x=5;x<59;x++){
+   const corner=(x<19||x>44)&&(y<19||y>44);if(!corner)continue;
+   const i=(y*64+x)*4,a=data[i+3];if(a<180)continue;
+   const r=data[i],g=data[i+1],b=data[i+2],[,sat,light]=rgbToHsl(r,g,b);
+   if(light>.48&&sat>.055)candidates.push([r,g,b]);
+  }
+  if(candidates.length<18)throw new Error('No stable avatar background sample');
+  candidates.sort((a,b)=>(a[0]+a[1]+a[2])-(b[0]+b[1]+b[2]));
+  const trimmed=candidates.slice(Math.floor(candidates.length*.12),Math.ceil(candidates.length*.88));
+  const avg=trimmed.reduce((sum,pixel)=>[sum[0]+pixel[0],sum[1]+pixel[1],sum[2]+pixel[2]],[0,0,0]).map(value=>value/trimmed.length);
+  const palette=paletteFromSample(...avg);avatarAccentCache.set(avatarId,palette);return palette;
+ }catch{
+  const fallback=avatarThemes[avatarId]?.bg;
+  if(fallback){
+   const hex=fallback.replace('#',''),rgb=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)),palette=paletteFromSample(...rgb);avatarAccentCache.set(avatarId,palette);return palette;
+  }
+  return defaultAvatarAccent;
+ }
+}
+let avatarAccentTicket=0;
+function writeAvatarAccent(palette,{animate=true}={}){
+ if(!animate)root.classList.add('profile-accent-snap');
+ root.style.setProperty('--profile-accent',palette.accent);
+ root.style.setProperty('--profile-accent-deep',palette.deep);
+ root.style.setProperty('--profile-accent-soft',palette.soft);
+ root.style.setProperty('--profile-accent-shadow',palette.shadow);
+ root.style.setProperty('--profile-accent-shadow-deep',palette.shadowDeep);
+ root.style.setProperty('--profile-toggle-accent',palette.toggleAccent||palette.accent);
+ root.style.setProperty('--profile-toggle-soft',palette.toggleSoft||palette.soft);
+ root.style.setProperty('--profile-toggle-shadow',palette.toggleShadow||palette.shadow);
+ if(!animate)requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('profile-accent-snap')));
+}
+async function applyAvatarAccent(avatarId,{animate=true}={}){
+ const ticket=++avatarAccentTicket,palette=await sampleAvatarAccent(avatarId);
+ if(ticket!==avatarAccentTicket)return;
+ root.dataset.profileAccent=avatarId||'default';writeAvatarAccent(palette,{animate});
+}
+for(const avatarId of AVATARS)void sampleAvatarAccent(avatarId);
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
 async function refreshPlayers(){
+ if(studioProfiles())return players;
  players=await playerService.listPlayers();
  const remembered=await playerService.getMeta('lastPlayerId');
  if(!players.some(player=>player.id===selectedPlayerId)){
@@ -75,53 +190,78 @@ async function refreshPlayers(){
  return players;
 }
 async function persistProgress({strict=false}={}){
+ if(new URLSearchParams(location.search).has('studio'))return;
  if(!activePlayer?.id)return;
  const playerId=activePlayer.id;
  const snapshot=globalThis.structuredClone?structuredClone(progress):JSON.parse(JSON.stringify(progress));
  try{await playerService.saveProgress(playerId,snapshot);}
  catch(error){const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;if(strict)throw error;}
 }
-async function activatePlayer(player){
+const studioProfiles=()=>new URLSearchParams(location.search).has('studio');
+let playerSelectionEpoch=0,enterPlayerBusy=false;
+async function activatePlayer(player,from='',action=''){
  if(!player)return;
  activePlayer=player;selectedPlayerId=player.id;
- progress=cleanProgress(await playerService.getProgress(player.id));
+ if(!studioProfiles())progress=cleanProgress(await playerService.getProgress(player.id));
  pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';
- navigate('home');
+ routeTo(from?resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode):'home');
+ const duration=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__).fadeDuration;if(duration&&!matchMedia('(prefers-reduced-motion:reduce)').matches)root.animate([{opacity:0},{opacity:1}],{duration,easing:'ease-out'});
+}
+async function enterSelectedPlayer(){
+ if(enterPlayerBusy||view!=='players'||!selectedPlayerId)return;
+ enterPlayerBusy=true;const id=selectedPlayerId;
+ try{
+  editingPin=false;pendingPlayerId=id;pendingNickname='';pinInput='';pinError='';
+  const player=players.find(p=>p.id===id);if(!player)return;
+  if(player.hasPin===false){const unlocked=studioProfiles()?player:await playerService.unlockPlayer(id,'');if(view==='players'&&selectedPlayerId===id)await activatePlayer(unlocked,'players','enter-player');}
+  else playerPinPage();
+ }finally{enterPlayerBusy=false;}
 }
 const playerCheckIcon='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m7 16 6 6L26 9" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const playerPlusIcon='<svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 5v18M5 14h18" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>';
 const playerProgressIcon='<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><defs><linearGradient id="player-bars" x1="17" y1="25" x2="53" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#46c2ff"/><stop offset="1" stop-color="#0588ff"/></linearGradient><linearGradient id="player-star" x1="40" y1="7" x2="57" y2="27" gradientUnits="userSpaceOnUse"><stop stop-color="#ffe35a"/><stop offset="1" stop-color="#ffb300"/></linearGradient></defs><path d="M14 32c16 0 23-7 31-19m-10 0 12-2-1 12" stroke="#0f9bff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="15" y="45" width="11" height="17" rx="4" fill="url(#player-bars)"/><rect x="31" y="36" width="11" height="26" rx="4" fill="url(#player-bars)"/><rect x="47" y="27" width="11" height="35" rx="4" fill="url(#player-bars)"/><path d="m52 6 4 8 9 1-6.5 6 1.5 9-8-4.2-8 4.2 1.5-9-6.5-6 9-1 4-8Z" fill="url(#player-star)" stroke="#fff3ad" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 function setScreenTheme(color){const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=color;}
 function playersPage(){
+ playerSelectionEpoch++;enterPlayerBusy=false;delete root.dataset.pinPurpose;
+ const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);root.style.setProperty('--player-unselected-opacity',selection.otherOpacity);root.style.setProperty('--player-selection-duration',selection.fadeDuration+'ms');
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
- const hasPlayers=players.length>0;
+ const hasPlayers=players.length>0,atLimit=players.length>=MAX_PLAYERS;
  const list=hasPlayers
-  ?`<div class="player-grid" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
+  ?`<div class="player-grid count-${players.length}" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
   :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
-  ?`<div class="player-actions">${btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
+  ?`<div class="player-actions ${atLimit?'limit-actions':''}">${atLimit?'':btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
   :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
- root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.'}</p></div>${list}${actions}</section>`;
+ const subtitle=players.length===3?'Wybierz jeden z trzech profili.':hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.';
+ root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ const selected=players.find(player=>player.id===selectedPlayerId);if(selected)void applyAvatarAccent(selected.avatarId,{animate:false});else writeAvatarAccent(defaultAvatarAccent,{animate:false});
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
-
 function playerCreatePage(){
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
- root.innerHTML=pageHead('Nowy gracz','players')+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>Jak mamy Cię nazywać?</h2><p>Wystarczy nick. Dane zostają na tym urządzeniu.</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help nickname-error" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><p id="nickname-error" class="nickname-error" role="alert" hidden></p><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">Dalej <span aria-hidden="true">›</span></button></form></section>`;
+ const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
+ root.dataset.profileEditor=editing?'edit':'create';
+ const title=editing?'Edytuj profil':'Nowy gracz',back=editing?'settings':'players';
+ const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
+ const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';
+ root.innerHTML=pageHead(title,back)+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>${heading}</h2><p>${copy}</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help" role="status" aria-live="polite">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ void applyAvatarAccent(pendingAvatarId,{animate:false});
  root.scrollTop=0;
 }
 function pinFieldsMarkup(){
- const creating=Boolean(pendingNickname),setting=editingPin;
- const error=pinError?`<p class="pin-error" role="status">${escape(pinError)}</p>`:'';
- if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${error}${btn('Dalej','submit-pin','primary player-form-next')}`;
- const dots=Array.from({length:4},(_,i)=>`<span class="${i<pinInput.length?'filled':''}"></span>`).join('');
- return `<h3 class="pin-instruction">${creating||setting?'Ustaw':'Wpisz'} <strong>4 cyfry</strong></h3><p>PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}</p><div class="pin-dots" aria-label="Wpisano ${pinInput.length} z 4 cyfr">${dots}</div>${error}<div class="pin-keypad" aria-label="Klawiatura PIN">${[1,2,3,4,5,6,7,8,9].map(n=>btn(String(n),'pin-digit','pin-key',`data-digit="${n}" aria-label="Cyfra ${n}"`)).join('')}${btn('⌫','pin-backspace','pin-key pin-back','aria-label="Usuń ostatnią cyfrę"')}${btn('0','pin-digit','pin-key','data-digit="0" aria-label="Cyfra 0"')}${btn('✓','submit-pin','pin-key pin-submit',`${pinInput.length===4?'':'disabled'} aria-label="${creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu'}"`)}</div>`;
+ const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
+ if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next')}`;
+ return `<h3 class="pin-instruction">${deleting?'Potwierdź':creating||setting?'Ustaw':'Wpisz'} <strong>${deleting?'PIN':'4 cyfry'}</strong></h3><p>${deleting?'Wpisz PIN tego profilu, aby przejść do potwierdzenia usunięcia.':`PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}`}</p>${pinDotsMarkup(pinInput.length)}${pinKeypadMarkup(pinInput.length,deleting?'Potwierdź PIN':creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu')}`;
+}
+function renderPinError(){
+ const node=root.querySelector('.pin-error-outside');if(!node)return;
+ node.textContent=pinError||'';node.classList.toggle('is-visible',Boolean(pinError));
 }
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
- fields.innerHTML=pinFieldsMarkup();
- if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
+ const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();renderPinError();if(animate)animateStateChange(card,oldHeight);
+ if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
  const container=root.querySelector('.pin-mode');if(!container||view!=='player-pin')return;
@@ -133,11 +273,14 @@ function setPinMode(index){
 }
 function playerPinPage(){
  spellingArt.reset();view='player-pin';root.dataset.view=view;delete root.dataset.mode;
- const creating=Boolean(pendingNickname),setting=editingPin;
- const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting?activePlayer:players.find(item=>item.id===pendingPlayerId);
+ const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
+ const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
  const name=player?.nickname||'Gracz';
- root.innerHTML=pageHead(creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',creating?'edit-player':setting?'settings':'players')+`<section class="pin-card"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section>`;
+ root.dataset.pinPurpose=creating?'create':setting?'edit':'unlock';
+ const noPin=creating&&!pendingPinEnabled;
+ root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card ${noPin?'pin-no-code':''}"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div class="pin-fields">${pinFieldsMarkup()}</div></section><p class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
  const container=root.querySelector('.pin-mode');
+ void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){
   pinJelly.update(container,pendingPinEnabled?0:1,{animate:false});
   pinJelly.setupDrag(container,{getActiveIndex:()=>pendingPinEnabled?0:1,commitIndex:setPinMode,suppressClick:ms=>{pinSuppressClickUntil=performance.now()+ms;}});
@@ -145,27 +288,33 @@ function playerPinPage(){
 }
 async function submitPlayerPin(){
  if((!pendingNickname||pendingPinEnabled)&&pinInput.length!==4)return;
- if(editingPin){try{activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:true,pin:pinInput});editingPin=false;await refreshPlayers();navigate('settings');}catch(error){pinError=error.message;playerPinPage();}return;}
+ if(deletingProfile){
+  const valid=studioProfiles()?pinInput==='1234':await playerService.verifyPin(activePlayer?.id,pinInput);
+  if(!valid){pinError='Nieprawidłowy PIN. Spróbuj jeszcze raz.';pinInput='';playerPinPage();return;}
+  deletingProfile=false;pinInput='';pinError='';showDeleteProfilePrompt();return;
+ }
+ if(editingPin){try{activePlayer=studioProfiles()?{...activePlayer,hasPin:true}:await playerService.setPinProtection(activePlayer.id,{enabled:true,pin:pinInput});editingPin=false;await refreshPlayers();navigate('settings');}catch(error){pinError=error.message;playerPinPage();}return;}
  if(pendingNickname){
+  if(studioProfiles()){const player={id:'studio-new',nickname:pendingNickname,avatarId:pendingAvatarId,hasPin:pendingPinEnabled};players.push(player);await activatePlayer(player,'player-pin','submit-pin');return;}
   try{
    const firstProfile=players.length===0;
    const player=await playerService.createPlayer({nickname:pendingNickname,pin:pinInput,avatarId:pendingAvatarId,pinEnabled:pendingPinEnabled});
    if(firstProfile)await playerService.migrateLegacyProgress(player.id,legacyProgress);
    await playerService.useCreatedPlayer(player.id);
    await refreshPlayers();
-   await activatePlayer(player);
+   await activatePlayer(player,'player-pin','submit-pin');
   }catch(error){pinError=error?.message||'Nie udało się utworzyć profilu.';pinInput='';playerPinPage();}
   return;
  }
- const player=await playerService.unlockPlayer(pendingPlayerId,pinInput);
+ const player=studioProfiles()?(pinInput==='1234'?players.find(p=>p.id===pendingPlayerId):null):await playerService.unlockPlayer(pendingPlayerId,pinInput);
  if(!player){pinError='Nieprawidłowy PIN. Spróbuj jeszcze raz.';pinInput='';playerPinPage();return;}
- await activatePlayer(player);
+ await activatePlayer(player,'player-unlock','unlock-player');
 }
 
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
- editingPin=false;
+ editingPin=false;editingProfile=false;deletingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
  if(next!=='history')collectionReturn=null;
@@ -187,12 +336,30 @@ function wizard() {
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
  <fieldset><legend><span class="step-dot">2</span>${selectedMode==='reading'?'Co czytamy?':'Wybierz poziom'}</legend><div class="choices levels ${selectedMode==='spelling'?'four':''}">${mode.levels.map((label,index)=>{const value=selectedMode==='spelling'?index:index+1;return `<label class="choice"><input type="radio" name="difficulty" value="${value}" ${config.difficulty===value?'checked':''}><span>${label}</span></label>`;}).join('')}</div></fieldset>
  <fieldset><legend><span class="step-dot">3</span>Ile mamy czasu?</legend><div class="choices four">${DURATIONS.map(d=>`<label class="choice"><input type="radio" name="duration" value="${d}" ${config.duration===d?'checked':''}><span>${minutes(d)}</span></label>`).join('')}</div></fieldset></section>
- <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;
+ <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
+}
+function spellingPoolNote(){
+ if(selectedMode!=='spelling'||view!=='wizard')return;const note=root.querySelector('.wizard-note');if(!note)return;const c=configs.spelling,size=createSource('spelling',c,words).length;
+ note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`:'Każde słowo raz w rundzie. Po pomyłce czas czeka.';
 }
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
- root.innerHTML=pageHead('Ustawienia')+`<section class="card"><label class="setting" for="sound"><span><strong>Dźwięki</strong><small>Krótki dźwięk po odpowiedzi</small></span><input id="sound" type="checkbox" role="switch" ${settings.sound?'checked':''}></label><label class="setting" for="difficulty"><span><strong>Pokazuj poziom</strong><small>Mała etykieta przy pytaniu</small></span><input id="difficulty" type="checkbox" role="switch" ${settings.difficulty?'checked':''}></label></section>
- <section class="card player-settings-card"><div>${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gracz')}</strong><small>Aktywny gracz na tym urządzeniu</small></span></div>${btn('Zmień gracza','switch-player','secondary')}</section>${activePlayer?.id!=='guest'?`<section class="card pin-settings"><div><strong>PIN profilu</strong><p>${activePlayer?.hasPin?'Przełączanie tego profilu wymaga kodu.':'Przełączanie tego profilu nie wymaga kodu.'}</p></div>${btn(activePlayer?.hasPin?'Wyłącz PIN':'Ustaw PIN',activePlayer?.hasPin?'disable-pin':'enable-pin','secondary')}</section>`:''}<section class="card backup-card"><h2>Kopia danych</h2><p>Przenieś profile, postępy i ustawienia do innej wersji gry lub na drugie urządzenie.</p><div class="backup-actions">${btn('Eksportuj dane','export-backup','secondary')}${btn('Importuj dane','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><small>Plik JSON zachowuje również PIN-y profili.</small></section><section class="card installation"><h2>Mała Nauka zawsze pod ręką</h2><p>Na iPhonie otwórz menu udostępniania w Safari i wybierz „Do ekranu początkowego”.</p><p id="offline-status" role="status">${offlineStatus()}</p></section><div class="stack">${btn('Moje wyniki','history')}${btn('Wyczyść wyniki','clear','danger')}</div><p class="caption">Profil i wyniki są zapisane lokalnie na tym urządzeniu.</p>`;
+ view='settings';root.dataset.view='settings';root.dataset.mode=selectedMode;setScreenTheme('#f5f8ff');
+ const savedProfile=Boolean(activePlayer?.id&&activePlayer.id!=='guest');
+ const toggle=(id,title,copy,checked)=>`<label class="setting settings-jelly-toggle" for="${id}"><span class="settings-toggle-copy"><strong>${title}</strong><small>${copy}</small></span><input id="${id}" type="checkbox" role="switch" ${checked?'checked':''}><span class="settings-jelly-control" aria-hidden="true"><span class="settings-jelly-knob"></span></span></label>`;
+ const profileActions=savedProfile
+  ?`<div class="settings-profile-actions">${btn('Edytuj profil','edit-profile','secondary')}${btn('Zmień gracza','switch-player','secondary')}</div>`
+  :`<div class="settings-profile-actions">${players.length<MAX_PLAYERS?btn('Utwórz profil','add-player','secondary'):''}${btn('Wybierz profil','switch-player','secondary')}</div>`;
+ const pinRow=savedProfile?`<div class="settings-profile-row"><span><strong>PIN profilu</strong><small>${activePlayer?.hasPin?'Profil jest chroniony 4-cyfrowym PIN-em.':'Profil otwiera się bez PIN-u.'}</small></span><div class="settings-inline-actions">${btn(activePlayer?.hasPin?'Zmień PIN':'Ustaw PIN','enable-pin','secondary')}${activePlayer?.hasPin?btn('Wyłącz','disable-pin','secondary'):''}</div></div>`:'';
+ const removeProfile=savedProfile?btn('Usuń profil i jego wyniki','delete-profile','settings-clear-results'):'';
+ root.innerHTML=pageHead('Ustawienia')+`<div class="settings-screen">
+  <section class="settings-group"><h2 class="settings-section-title">Profil użytkownika</h2><div class="card settings-card settings-profile-card"><div class="settings-profile-main">${avatarMarkup(activePlayer,'settings-avatar')}<span><strong>${escape(activePlayer?.nickname||'Gość')}</strong><small>${savedProfile?'Profil zapisany na tym urządzeniu.':'Tryb gościa — wyniki nie tworzą osobnego profilu.'}</small></span></div>${profileActions}${pinRow}${removeProfile}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Dźwięki i animacje</h2><div class="card settings-card">${toggle('sound','Dźwięki','Krótki sygnał po odpowiedzi.',settings.sound)}${toggle('animations','Animacje interfejsu','Przejścia, odbicia i ruchome efekty.',settings.animations)}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Informacje podczas gry</h2><div class="card settings-card">${toggle('difficulty','Pokazuj poziom trudności','Mała etykieta przy pytaniu.',settings.difficulty)}${toggle('category','Pokazuj kategorię w ortografii','Np. rz/ż albo ch/h na fiszce.',settings.category)}</div></section>
+  <section class="settings-group"><h2 class="settings-section-title">Dane i urządzenie</h2><div class="card settings-card settings-data-card"><div class="settings-data-head"><strong>Kopia danych</strong><small>Profile, postępy, ustawienia i PIN-y.</small></div><div class="backup-actions">${btn('Eksportuj','export-backup','secondary')}${btn('Importuj','import-backup','secondary')}</div><input id="backup-file" type="file" accept=".json,application/json" hidden><p class="backup-status" id="backup-status" role="status" aria-live="polite"></p><div class="settings-offline-note"><span><strong>Tryb offline</strong><small id="offline-status">${offlineStatus()}</small></span><b aria-hidden="true">✓</b></div>${btn('Wyczyść wyniki tego profilu','clear','settings-clear-results')}</div></section>
+  <p class="caption">Profile i wyniki są zapisane lokalnie na tym urządzeniu.</p>
+ </div>`;
+ if(activePlayer?.avatarId)void applyAvatarAccent(activePlayer.avatarId,{animate:false});
 }
 function backupPreferences(){return {settings,configs,spellingWizard:read(prefix+'spellingWizardV2')};}
 function backupStatus(message){const status=root.querySelector('#backup-status');if(status)status.textContent=message;}
@@ -212,7 +379,9 @@ async function previewBackup(file){
  if(!file||backupBusy)return;backupBusy=true;pendingBackup=null;
  try{
   if(file.size>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
-  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing);
+  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing),merged=new Set(existing.map(player=>player.id));
+  for(const row of backup.players)merged.add(row.profile.id);
+  if(merged.size>MAX_PLAYERS)throw new Error(`Ta kopia dałaby więcej niż ${MAX_PLAYERS} profile. Usuń profil albo wybierz mniejszą kopię.`);
   pendingBackup=backup;
   showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} Przywrócimy też ustawienia gry.</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
  }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
@@ -240,18 +409,18 @@ function historyPage() {
  renderProgressScreen(root,{progress,words,backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
   onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});
 }
-function unlockAudio(){if(!settings.sound)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audio||=new Audio();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{/* Optional sound. */}}
-function beep(correct){if(!settings.sound)return;try{unlockAudio();if(!audio||audio.state!=='running')return;const tone=audio.createOscillator(),gain=audio.createGain(),t=audio.currentTime;tone.type='sine';tone.frequency.setValueAtTime(correct?660:220,t);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.045,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.14);tone.connect(gain);gain.connect(audio.destination);tone.start(t);tone.stop(t+.15);tone.onended=()=>{tone.disconnect();gain.disconnect();};}catch{/* Keep playing without audio. */}}
+function unlockAudio(){void gameSound.unlock();}
+function beep(correct){gameSound.cue(correct?'correct':'incorrect');if(correct&&game?.streak>1&&game.streak%3===0)gameSound.cue('star');}
 async function start() {
  settleResult(root);
  const config=configs[selectedMode];
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
- game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
+ game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();gameSound.cue('roundStart');lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
- const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
+ const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;return renderGame();};
  if(selectedMode==='spelling'){
   game.pause();
-  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);}
+  try{await render();await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
   catch{render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
   if(document.hidden){pause();return;}
@@ -339,8 +508,9 @@ document.addEventListener('mala-nauka:flag-presentation',event=>{
  if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
 });
 function renderGame() {
+ if(game)root.dataset.state=game.state;
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
- if(game.mode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return;}
+ if(game.mode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}
  const feedback=game.state.startsWith('feedback'),correct=game.state==='feedback-correct',exposing=game.state==='exposing',q=game.current;
  if(q.kind==='memory'&&renderedQuestion!==game.question)memoryInput=[];
  if(q.kind==='reading-phrase'&&renderedQuestion!==game.question)phraseInput=[];
@@ -352,6 +522,8 @@ function renderGame() {
   :readingAction?(exposing?'Przeczytaj':readingAction)
   :escape(MODES[game.mode].name);
  const levelCopy=q.kind==='memory'?`${q.sequence.length} liczb`:levelLabel(game.mode,q.difficulty);
+ const showContextBadge=q.kind!=='spelling'||settings.category;
+ const badgeMarkup=`${showContextBadge?`<span class="badge">${badgeLabel}</span>`:''}${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}`;
  const promptText=q.kind==='memory'
   ?(exposing?'Zapamiętaj kolejność':feedback?'Porównaj sekwencje':'Wpisz liczby w tej samej kolejności')
   :q.kind==='reading-phrase'
@@ -370,7 +542,7 @@ function renderGame() {
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
  root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
- <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie"><div class="badges"><span class="badge">${badgeLabel}</span>${settings.difficulty?`<span class="badge level">${escape(levelCopy)}</span>`:''}</div><div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
+ <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie">${badgeMarkup?`<div class="badges">${badgeMarkup}</div>`:''}<div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
  <p class="prompt">${promptText}</p>${answersBlock}
  <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?(game.mode==='flags'?'Zapamiętaj kraj i jego stolicę.':'Tak właśnie!'):'Czas czeka na Ciebie.'}</small></div>${correct&&game.mode!=='flags'?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
  if(game.mode==='flags')document.dispatchEvent(new CustomEvent('mala-nauka:flag-prepare',{detail:{countryId:game.current.countryId,nextCountryId:game.prepareNext()?.countryId}}));
@@ -417,55 +589,74 @@ function updateClock(){
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
-function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
+function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i wrócimy do ustawień tego trybu.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Wyjdź do ustawień':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
+function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
- if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
+ if(!game||lastResult)return;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
  const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
+ if(game.mode==='spelling'){result.scoring=game.scoring||structuredClone(DEFAULT_SCORING);result.score=scoreAttempts(result.attempts,result.scoring).total;result.poolExhausted=game.poolExhausted===true;}
  const record=recordResult(progress,result);void persistProgress();lastResult=result;
- if(goHome&&result.mode!=='spelling'){navigate('home');return;}view='results';
- if(result.mode==='spelling'){
-  const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
-  void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});return;
- }
- spellingArt.reset();root.dataset.view=view;
- root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
+ if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
+ view='results';
+ const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
+ if(result.mode==='spelling'){void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});return;}
+ render(true,200);
 }
-function clearPrompt(){showModal('Wyczyścić wyniki?',`<p>Usuniesz historię i rekordy. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
+function routeTo(target){
+ if(target==='player-create'){playerCreatePage();return;}
+ if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
+ if(target==='progress'){navigate('history');return;}
+ if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(selectedMode==='math'&&!new URLSearchParams(location.search).has('studio')){location.href=new URL('./matematyka/',import.meta.url).href;return;}navigate('wizard');return;}
+ if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
+ navigate(target==='settings'?'settings':'home');
+}
+
+function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
+function showDeleteProfilePrompt(){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz wszystkie jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
  if(action==='export-backup'){await exportBackup();return;}
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
  if(action==='confirm-import'){await importBackup();return;}
  if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
- if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
- if(action==='edit-player'){editingPin=false;pinInput='';pinError='';playerCreatePage();return;}
- if(action==='add-player'){editingPin=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='players'){const from=view==='player-pin'&&root.dataset.pinPurpose==='unlock'?'player-unlock':view;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode)||'players');return;}
+ if(action==='edit-player'){editingPin=false;editingProfile=false;pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,'player-pin',action,selectedMode));return;}
+ if(action==='edit-profile'){if(!activePlayer||activePlayer.id==='guest')return;editingPin=false;editingProfile=true;pendingNickname=activePlayer.nickname;pendingAvatarId=activePlayer.avatarId||'a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='delete-profile'){if(!activePlayer||activePlayer.id==='guest')return;if(activePlayer.hasPin){deletingProfile=true;editingPin=false;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}showDeleteProfilePrompt();return;}
+ if(action==='cancel-delete-profile'){deletingProfile=false;pinInput='';pinError='';modal.close();return;}
+ if(action==='confirm-delete-profile'){const id=activePlayer?.id;if(!id||id==='guest'){modal.close();return;}if(studioProfiles())players=players.filter(p=>p.id!==id);else await playerService.deletePlayer(id);modal.close();activePlayer=null;progress=cleanProgress(null);editingProfile=false;deletingProfile=false;await refreshPlayers();playersPage();return;}
+ if(action==='add-player'){if(players.length>=MAX_PLAYERS){showModal('Limit profili',`<p>Możesz mieć maksymalnie ${MAX_PLAYERS} profile. Usuń jeden z istniejących profili, aby dodać nowy.</p><div class="stack">${btn('OK','cancel-delete-profile','primary')}</div>`);return;}editingPin=false;editingProfile=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,'players','add-player',selectedMode));return;}
  if(action==='choose-player'){
-  selectedPlayerId=button.dataset.player;
+  selectedPlayerId=button.dataset.player;const selectionEpoch=++playerSelectionEpoch;
+  root.querySelector('.player-grid')?.classList.add('has-selection');
   root.querySelectorAll('.player-card').forEach(card=>{
    const selected=card.dataset.player===selectedPlayerId;
    card.classList.toggle('is-selected',selected);card.setAttribute('aria-pressed',String(selected));
    card.querySelector('.player-select-mark').innerHTML=selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>';
   });
   const next=root.querySelector('[data-action="continue-player"]');if(next)next.disabled=false;
+  const player=players.find(item=>item.id===selectedPlayerId);if(player)void applyAvatarAccent(player.avatarId,{animate:true});
+  const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);if(selection.autoContinue){await new Promise(resolve=>setTimeout(resolve,matchMedia('(prefers-reduced-motion:reduce)').matches?0:selection.delay));if(selectionEpoch===playerSelectionEpoch&&view==='players')await enterSelectedPlayer();}
   return;
  }
- if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
- if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
- if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');return;}
+ if(action==='guest-player'){await activatePlayer(studioProfiles()?{id:'studio-guest',nickname:'Gość',avatarId:'a',hasPin:false}:playerService.beginGuestSession(),'players','guest-player');return;}
+ if(action==='continue-player'){playerSelectionEpoch++;await enterSelectedPlayer();return;}
+ if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
  if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
- if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();settingsPage();return;}
- if(action==='switch-player'){playerService.lockSession();activePlayer=null;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
- if(['home','settings'].includes(action))navigate(action);
- if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
- if(action==='return-results'&&collectionReturn){destroyProgressScreen(root);closeResultRule(root,false);const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
+ if(action==='switch-player'){const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){routeTo(target);return;}if(!studioProfiles())playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(['home','settings','history','return-results','result-back','choose-mode'].includes(action)){
+  const from=document.documentElement.dataset.dsView||view,context=action==='return-results'?collectionReturn?.result.mode+'-results':action==='choose-mode'?button.dataset.mode:'';
+  if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
+  const mode=action==='choose-mode'?button.dataset.mode:selectedMode;
+  const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,mode,context);
+  routeTo(target);return;
+ }
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
- if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
  if(action==='phrase-word'&&view==='game'&&!modal.open&&game?.current?.kind==='reading-phrase'&&game.state==='playing'){
   if(phraseInput.length<game.current.phraseWords.length&&!phraseInput.includes(button.dataset.value))phraseInput.push(button.dataset.value);
@@ -496,24 +687,30 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
- if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
+ if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='exit-confirm')finish(true,true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }
 root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastResult){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);void start();}});
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
-root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const error=root.querySelector('#nickname-error');if(error)error.hidden=true;e.target.removeAttribute('aria-invalid');}});
-root.addEventListener('submit',e=>{
+root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const help=root.querySelector('#nickname-help');if(help){help.textContent=`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.remove('is-invalid');}e.target.removeAttribute('aria-invalid');}});
+root.addEventListener('submit',async e=>{
  if(e.target.id==='player-create-form'){
   e.preventDefault();const data=new FormData(e.target);
   const nickname=String(data.get('nickname')||'').normalize('NFC').trim().replace(/\s+/g,' '),length=[...nickname].length;
   if(length<3||length>NICKNAME_MAX_LENGTH){
-   const input=e.target.querySelector('#player-nickname'),error=e.target.querySelector('#nickname-error');
-   error.textContent=length<3?'Wpisz nick — co najmniej 3 znaki.':`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`;
-   error.hidden=false;input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;
+   const input=e.target.querySelector('#player-nickname'),help=e.target.querySelector('#nickname-help');
+   if(help){help.textContent=`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.add('is-invalid');}
+   input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});return;
   }
-  document.activeElement?.blur();pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
+  document.activeElement?.blur();
+  if(editingProfile&&activePlayer?.id&&activePlayer.id!=='guest'){
+   try{activePlayer=studioProfiles()?{...activePlayer,nickname,avatarId:pendingAvatarId}:await playerService.updatePlayer(activePlayer.id,{nickname,avatarId:pendingAvatarId});await refreshPlayers();editingProfile=false;pendingNickname='';pinInput='';pinError='';settingsPage();}
+   catch(error){const input=e.target.querySelector('#player-nickname'),help=e.target.querySelector('#nickname-help');if(help){help.textContent=error?.message||`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.add('is-invalid');}input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});}
+   return;
+  }
+  pendingNickname=nickname;pendingPlayerId=null;pinInput='';pinError='';playerPinPage();return;
  }
  if(e.target.id==='setup-form'){e.preventDefault();start();}
 });
@@ -533,17 +730,111 @@ root.addEventListener('change',e=>{
  if(view==='settings'&&e.target.id==='backup-file'){void previewBackup(e.target.files?.[0]);e.target.value='';return;}
  if(view==='player-pin'&&e.target.name==='profilePinMode'){setPinMode(e.target.value==='pin'?0:1);return;}
  if(view==='wizard'){
-  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);
+  const data=new FormData(root.querySelector('#setup-form'));configs[selectedMode]=cleanConfig(selectedMode,{category:data.get('category'),difficulty:Number(data.get('difficulty')),duration:Number(data.get('duration')),dyktando:selectedMode==='spelling'&&data.get('dyktando')==='1',dictationTag:data.get('selectedDictationTag'),limitMode:data.get('limitMode'),wordLimit:Number(data.get('wordLimit'))});save('configs',configs);spellingPoolNote();
   // Some approved spelling categories have no records at a given difficulty.
   const empty=selectedMode==='spelling'&&!createSource(selectedMode,configs[selectedMode],words).length;
   const message=root.querySelector('#setup-error');message.hidden=!empty;message.textContent=empty?'W tym wyborze nie ma słów. Zmień kategorię, poziom albo wybierz inny zestaw dyktanda.':'';root.querySelector('.start-button').disabled=empty;
  }
- if(view==='settings'){if(e.target.id==='sound'){settings.sound=e.target.checked;unlockAudio();}if(e.target.id==='difficulty')settings.difficulty=e.target.checked;save('settings',settings);}
+ if(view==='settings'){
+  const jelly=e.target.closest?.('.settings-jelly-toggle');
+  if(jelly&&e.target.matches('input[type="checkbox"]')){
+   jelly.classList.remove('is-selecting','is-deselecting');void jelly.offsetWidth;
+   jelly.classList.add(e.target.checked?'is-selecting':'is-deselecting');
+   setTimeout(()=>jelly.classList.remove('is-selecting','is-deselecting'),680);
+  }
+  if(e.target.id==='sound'){settings.sound=e.target.checked;applyPreferenceState();unlockAudio();}
+  if(e.target.id==='animations'){settings.animations=e.target.checked;applyPreferenceState();}
+  if(e.target.id==='difficulty')settings.difficulty=e.target.checked;
+  if(e.target.id==='category')settings.category=e.target.checked;
+  save('settings',settings);
+ }
 });
 document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList.add('keyboard');if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||modal.open||view!=='game')return;if(/^[1-6]$/.test(e.key)&&game.state==='playing'){e.preventDefault();root.querySelectorAll('.answer')[Number(e.key)-1]?.click();}if(e.key==='Escape'){e.preventDefault();pause();}});
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
+document.addEventListener('mala-nauka:orientation',e=>{if(e.detail?.blocked&&view==='game')pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{const parts=await Promise.all(Array.from({length:8},async(_,i)=>{const response=await fetch(`data/words-0${i+1}.json`);if(!response.ok)throw Error('Brak słów');return response.json();}));words=validateWords(parts.flat());if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch{root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
-async function registerOffline(){if(!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
+
+// Studio scenarios use the real renderers and Session, with a stopped clock.
+// No profile, score, backup or offline-cache writes happen in this mode.
+async function renderStudioScenario(stateOverride=null){
+ const query=new URLSearchParams(location.search);
+ const screen=query.get('screen')||'wizard',state=stateOverride||query.get('state')||'initial';
+ selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
+ settings=cleanSettings({...settings,sound:true,animations:true,difficulty:true,category:true});applyPreferenceState();
+ activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
+ players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
+ progress=exampleProgress(words);lastResult=null;
+ for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
+ if(screen==='players'){if(state==='empty')players=[];else if(['one','two'].includes(state))players=players.slice(0,state==='one'?1:2);playersPage();return;}
+ if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
+ if(screen==='player-pin'){editingPin=false;deletingProfile=false;pendingNickname=state==='unlock'?'':'Ania';pendingPlayerId=state==='unlock'?activePlayer.id:null;pendingAvatarId='c';pendingPinEnabled=state!=='no-pin';pinInput='';playerPinPage();return;}
+ if(['home','settings','wizard','history'].includes(screen)){
+  navigate(screen);
+  if(screen==='history'&&state!=='dashboard'){
+   await new Promise(requestAnimationFrame);
+   if(state==='sessions'){root.querySelector('[data-progress="mode"][data-mode="english"]')?.click();root.querySelector('[data-progress="collection"]')?.click();}
+   else root.querySelector(`[data-progress="${state}"]`)?.click();
+  }
+  return;
+ }
+ if(screen==='results'&&selectedMode==='spelling'){
+  view='results';root.dataset.view=view;root.dataset.mode=selectedMode;
+  lastResult=exampleResult(words,state==='rule'?'mixed':state);
+  renderSpellingResult(root,lastResult,words,null,{animate:query.has('animate'),delay:120});
+  if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
+  return;
+ }
+ game=createStudioGame(selectedMode,configs[selectedMode],words);
+ if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
+ view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:undefined});}
+ if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
+ if(screen==='results'){game.correct=8;game.wrong=2;finish();}
+ if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
+ if(state==='pause')pause();
+ if(query.has('effectLab'))installEffectLab();
+}
+
+let effectLabInstalled=false,effectLabPending=null,effectLabMeasurement=()=>{};
+function measureEffectLab(run,name){
+ effectLabMeasurement();const intervals=[];let previous=0,raf;const began=performance.now();
+ const sample=now=>{if(previous)intervals.push(now-previous);previous=now;raf=requestAnimationFrame(sample);};raf=requestAnimationFrame(sample);
+ const timer=setTimeout(()=>{cancelAnimationFrame(raf);effectLabSend('metrics',{run,metrics:{disabled:false,presetName:name,particles:document.querySelectorAll('.response-particle').length+Number(document.querySelector('.mn-word-particles')?.dataset.count||0),requested:0,intervals,duration:performance.now()-began,stalled:intervals.length<8}});},2200);
+ effectLabMeasurement=()=>{cancelAnimationFrame(raf);clearTimeout(timer);};
+}
+
+function effectLabSend(type,payload={}){if(parent!==window)parent.postMessage({channel:'mala-nauka-effects',type,...payload},location.origin);}
+function installEffectLab(){
+ if(effectLabInstalled)return;effectLabInstalled=true;
+ window.addEventListener('message',async event=>{
+  if(event.origin!==location.origin||event.source!==parent||event.data?.channel!=='mala-nauka-effects')return;
+  const data=event.data;
+  if(data.type==='design'&&data.config){applyDesign(data.config);return;}
+  if(data.type==='stop'){effectLabMeasurement();spellingArt.stopPreviewEffect?.();spellingArt.setPaused(true);return;}
+  if(data.type==='resume'){spellingArt.setPaused(false);return;}
+  if(data.type==='answer'){if(game?.state!=='playing')await renderStudioScenario('initial');if(data.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);game.answer(data.event==='wrong'?game.options.find(o=>o!==game.current.answer):game.current.answer);await renderGame();measureEffectLab(0,data.event);effectLabSend('played',{run:0,event:data.event});return;}
+  if(data.type==='react'){spellingArt.setPaused(false);spellingArt.previewReact?.(data.event);return;}
+  if(data.type==='reset'){effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
+  if(data.type==='picture'){const url=new URL(location.href);url.searchParams.set('word',url.searchParams.get('word')==='brzuch'?'przód':'brzuch');history.replaceState(null,'',url);effectLabPending=null;spellingArt.stopPreviewEffect?.();await renderStudioScenario('initial');return;}
+  if(data.type!=='play')return;
+  const run=Number(data.run)||0,eventType=data.event||'correct';
+  if(eventType==='idle'){
+   effectLabPending=null;await renderStudioScenario('initial');measureEffectLab(run,'Bańka · spoczynek');effectLabSend('played',{run,event:eventType,id:data.id});return;
+  }
+  effectLabPending={id:data.id,event:eventType,run};
+  await renderStudioScenario(eventType==='wrong'?'wrong':'correct');
+  measureEffectLab(run,eventType==='combo'?'Globalne combo':eventType==='wrong'?'Błędna odpowiedź':'Poprawna odpowiedź');
+  effectLabSend('played',{run,event:eventType,id:data.id,streak:game?.streak||0});
+ });
+ requestAnimationFrame(()=>effectLabSend('ready'));
+}
+
+document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length)void renderStudioScenario();});
+
+document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length){words=validateWords(resolveRules(studioSourceWords));void renderStudioScenario();}});
+
+document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});

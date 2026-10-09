@@ -1,3 +1,5 @@
+import {resolveRoute} from './shared/navigation.mjs';
+const studioMode=new URLSearchParams(location.search).has('studio');
 const MODULE_PATHS={
   spelling:'ortografia',
   math:'matematyka',
@@ -12,10 +14,12 @@ let booted=false;
 // Na ekranie głównym każdy kafel prowadzi do stałego adresu swojego modułu.
 document.addEventListener('click',event=>{
   const button=event.target.closest('button[data-action="choose-mode"][data-mode]');
-  if(!button)return;
+  if(!button||studioMode)return;
   const mode=button.dataset.mode;
   if(lockedMode===mode)return;
-  const folder=MODULE_PATHS[mode];
+  const target=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'home','choose-mode',mode,mode);
+  if(!target.endsWith('-settings'))return;
+  const folder=MODULE_PATHS[target.slice(0,-9)];
   if(!folder)return;
   event.preventDefault();
   event.stopPropagation();
@@ -23,12 +27,12 @@ document.addEventListener('click',event=>{
 },true);
 
 // Strony modułów używają tej samej powłoki i po załadowaniu od razu otwierają swój tryb.
-if(lockedMode){
+if(lockedMode&&!studioMode){
   const root=document.querySelector('#app');
   const boot=()=>{
     if(booted)return;
     const button=root?.querySelector(`button[data-action="choose-mode"][data-mode="${lockedMode}"]`);
-    if(!button)return;
+    if(!button||studioMode)return;
     booted=true;
     button.click();
   };

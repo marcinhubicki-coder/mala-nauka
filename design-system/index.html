@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pl">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="theme-color" content="#f5f5f7"><meta name="robots" content="noindex">
+ <title>Mała Nauka · Design Studio</title>
+ <link rel="icon" href="../assets/icon-192.png"><link rel="stylesheet" href="studio.css"><link rel="stylesheet" href="studio-preview.css"><link rel="stylesheet" href="studio-content.css"><link rel="stylesheet" href="studio-motion.css">
+ <link rel="stylesheet" href="../player-profiles.css"><link rel="stylesheet" href="../shared/jelly-v4.css"><link rel="stylesheet" href="../shared/components.css">
+ <link rel="stylesheet" href="studio-mobile.css"><link rel="stylesheet" href="studio-play.css"><link rel="stylesheet" href="studio-batches.css"><link rel="stylesheet" href="studio-builder.css">
+ <link rel="stylesheet" href="studio-apple.css"><link rel="stylesheet" href="studio-project.css"><link rel="stylesheet" href="studio-testing.css">
+<link rel="stylesheet" href="studio-flow.css"><link rel="stylesheet" href="studio-sound.css"><link rel="stylesheet" href="studio-hierarchy.css"><link rel="stylesheet" href="studio-parts.css"><link rel="stylesheet" href="../shared/round-result.css">
+  <link rel="stylesheet" href="studio-ui.css"></head>
+<body>
+ <div class="studio-shell">
+  <aside class="sidebar">
+   <a class="studio-brand" href="./"><img src="../assets/icon-192.png" alt=""><span>Mała Nauka<small>design studio</small></span></a>
+   <div class="branch-tag"><span></span>design/system-v1</div>
+   <nav aria-label="Design system" id="navigation"></nav>
+   <div class="sidebar-bottom"><p>Wzorzec</p><strong>Ortografia + jelly</strong><small>Cień całego kontrolera: angielski</small><div class="device-label">iPhone 13 Pro · 3× Retina</div><button type="button" id="phone-studio-open" class="quiet-button">Sprawdź Studio na telefonie</button><a href="https://github.com/marcinhubicki-coder/mala-nauka/tree/design/system-v1" target="_blank" rel="noopener">Otwórz branch na GitHub ↗</a></div>
+  </aside>
+  <div class="studio-main">
+   <header class="studio-topbar"><div class="topbar-title"><button class="quiet-button mobile-only" id="mobile-menu-open" aria-label="Otwórz sekcje studia" aria-haspopup="dialog">☰</button><div><span class="breadcrumb">Design system</span><h1 id="page-title">Komponenty</h1></div></div><div class="top-actions"><a class="quiet-button pwa-preview-link" href="../" target="_blank" rel="noopener" title="Otwórz czyste PWA"><span aria-hidden="true">▶</span><span class="pwa-preview-label">PWA Preview</span></a><button class="quiet-button" id="studio-help" aria-label="Jak korzystać ze studia?" title="Jak korzystać ze studia?">?</button><button class="quiet-button" id="customize-toolbar" aria-label="Dostosuj panel" title="Dostosuj panel">⚙</button><button class="quiet-button" id="discard-toolbar" aria-label="Odrzuć cały szkic" title="Odrzuć cały szkic — można cofnąć" disabled>⌫</button><button class="quiet-button" id="undo-toolbar" title="Cofnij ostatnią zmianę" aria-label="Cofnij ostatnią zmianę" disabled>↶ Cofnij</button><button class="quiet-button" id="redo-toolbar" title="Ponów zmianę" aria-label="Ponów zmianę" disabled>↷</button><span id="draft-status" role="status">Zapisana wersja</span><button class="quiet-button" id="connect-git">Połącz GitHub</button><button class="solid-button" id="save-git"><span class="desktop-save-label">Zapisz na GitHub</span><span class="mobile-only">Zapisz</span> <span id="change-count"></span></button></div></header>
+   <main id="workspace" class="workspace"></main>
+  </div>
+ </div>
+ <div id="toast" role="status" aria-live="polite"></div>
+ <dialog id="studio-modal"></dialog><dialog id="phone-studio-dialog" aria-label="Studio na telefonie"><header><strong>Studio · iPhone 13 Pro</strong><button type="button" class="quiet-button" id="phone-studio-close" aria-label="Zamknij podgląd telefonu">×</button></header><iframe id="phone-studio-frame" title="Studio w pionowym ekranie iPhone 13 Pro" width="390" height="844"></iframe><footer><span>390 × 844 · ten sam szkic</span><button class="quiet-button" id="phone-studio-sync">Wróć i wczytaj zmiany</button></footer></dialog>
+ <dialog id="mobile-navigation" aria-label="Sekcje studia"><div class="mobile-menu-heading"><h2>Sekcje studia</h2><button class="quiet-button" id="mobile-menu-close" aria-label="Zamknij sekcje">×</button></div><nav id="mobile-navigation-list" aria-label="Sekcje"></nav><button class="quiet-button" id="mobile-connect-git">Połącz GitHub</button><p>Zmiany wyglądu, zasad i grafik korzystają z tego samego szkicu.</p></dialog>
+ <nav class="mobile-editor-dock mobile-only" id="mobile-editor-dock" aria-label="Praca z ekranem" hidden><p id="mobile-editor-context"></p><div><button data-mobile-pane="choose" aria-pressed="true">Wybór</button><button data-mobile-pane="preview" aria-pressed="false">Podgląd</button><button data-mobile-pane="edit" aria-pressed="false">Ustawienia</button></div></nav>
+ <script type="module">
+ if('serviceWorker' in navigator){navigator.serviceWorker.getRegistration(new URL('../',location.href)).then(async registration=>{if(!registration)return;navigator.serviceWorker.addEventListener('controllerchange',()=>{const button=document.createElement('button');button.className='small-button';button.textContent='Nowa wersja Studio · odśwież';button.onclick=()=>location.reload();document.querySelector('.top-actions').prepend(button);});await registration.update();}).catch(()=>{});}
+ </script>
+ <script src="git-error-help.js"></script>
+ <script type="module" src="git-diagnostics.mjs"></script>
+ <script type="module" src="studio.mjs"></script>
+ <script type="module" src="studio-mobile.mjs"></script>
+</body>
+</html>

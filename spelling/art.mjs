@@ -1,15 +1,24 @@
-import { createContinueDrag } from './continue-drag.mjs?v=3';
-import { burstFireworks } from './fireworks.mjs?v=1';
+import {burstFireworks} from './fireworks.mjs';
+import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
+import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effect-model.mjs';
+import {playResponseEffect,applyBubbleSettings,createScreenAtmosphere} from './response-effects.mjs';
+import {createComboGlobalEffects} from './combo-global.mjs';
 import { sceneFor, sceneUrl } from './scenes.mjs?v=27-final-assets';
-import { createBubble } from './bubble.mjs?v=39-transition-preset';
+import {createConfiguredBubble} from './bubble-renderer.mjs';
+import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
 export function createSpellingArt(app, { onContinue } = {}) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const pickEffect=createEffectPicker();
+  let sourceEffects,normalizedEffects;
+  const effectConfig=()=>{const value=globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS;if(value!==sourceEffects){sourceEffects=value;normalizedEffects=normalizeEffectsConfig(value);}return normalizedEffects;};
+  let effectPreview=null,renderer;
   let session, shownQuestion = 0, shownState = '', bubble, nodes, hint, generation = 0;
-  let animations = [], resizeObserver, background, continueDrag, stopFireworks;
+  let animations = [], resizeObserver,resizeFrame, background, continueDrag, stopFireworks, atmosphere, comboGlobal, wordParticles;
+  const stopComboGlobal=()=>comboGlobal?.stop();
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   const originalTheme = themeMeta?.getAttribute('content');
   function closeHint() {
@@ -17,16 +26,17 @@ export function createSpellingArt(app, { onContinue } = {}) {
     hint.close(); hint.remove(); hint = null;
     if (session?.state === 'paused' && session.resumeState === 'playing') session.resume();
     app.classList.remove('spelling-hint-open');
-    bubble?.setPaused(app.classList.contains('paused'));
+    bubble?.setPaused(app.classList.contains('paused'));wordParticles?.setPaused(app.classList.contains('paused'));
     nodes?.hint.focus({ preventScroll: true });
   }
   function reset() {
     generation++;
-    continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;
+    wordParticles?.destroy();wordParticles=null;
+    continueDrag?.destroy();continueDrag=null;stopFireworks?.();stopFireworks=null;stopComboGlobal();comboGlobal?.destroy();comboGlobal=null;atmosphere?.destroy();atmosphere=null;
     if (hint) { hint.close(); hint.remove(); hint = null; }
     animations.forEach(animation => animation.cancel()); animations = [];
     bubble?.destroy(); bubble = null;
-    resizeObserver?.disconnect();
+    resizeObserver?.disconnect();cancelAnimationFrame(resizeFrame);
     session?.setPresentationHold(false);
     session = nodes = undefined; shownQuestion = 0; shownState = '';
     app.classList.remove('spelling-art-ready', 'spelling-correct-feedback', 'spelling-has-feedback', 'spelling-hint-open', 'ink-changing');
@@ -37,7 +47,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
   }
   function openHint() {
     if (!session || session.state !== 'playing' || session.presentationHeld) return;
-    session.hintUsed=true;session.pause(); bubble.setPaused(true);
+    session.hintUsed=true;session.pause(); bubble.setPaused(true);wordParticles?.setPaused(true);
     app.classList.add('spelling-hint-open');
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
@@ -76,29 +86,62 @@ export function createSpellingArt(app, { onContinue } = {}) {
       </div>
       <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
       <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
+    atmosphere=createScreenAtmosphere(app,effectConfig());
+    comboGlobal=createComboGlobalEffects(app);
     nodes = {
       word: app.querySelector('.question-content'), answers: [...app.querySelectorAll('.answer')],
       hint: app.querySelector('.spelling-hint'), next: app.querySelector('.spelling-next'), feedback: app.querySelector('.feedback'),
     };
+    wordParticles=createWordParticles(nodes.word,effectConfig);
     nodes.hint.addEventListener('click', openHint);
-    continueDrag=createContinueDrag(nodes.next,{canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
-    bubble = createBubble(app.querySelector('.spelling-visual'));
-    resizeObserver = new ResizeObserver(fitWord); resizeObserver.observe(nodes.word);
-    document.fonts.ready.then(() => { if (session === game) fitWord(); });
+    continueDrag=createContinueDrag(nodes.next,{variant:'wrong',canContinue:()=>session===game&&game.state==='feedback-wrong'&&!app.classList.contains('paused'),onComplete:()=>{game.skipFeedback();onContinue?.();}});
+    renderer=effectConfig().bubble.renderer;
+    bubble=createConfiguredBubble(app.querySelector('.spelling-visual'));
+    applyBubbleSettings(bubble,effectConfig());
+    let observedWidth=-1;
+    resizeObserver = new ResizeObserver(entries=>{
+      const width=entries[0]?.contentRect.width;if(width===undefined||Math.abs(width-observedWidth)<.5)return;observedWidth=width;
+      // Fit after observer delivery, and only when container width changes.
+      // Fitting on its own height change created a WebKit observer loop.
+      cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{fitWord();wordParticles?.refresh();});
+    });resizeObserver.observe(nodes.word);
+    document.fonts.ready.then(() => { if (session === game){fitWord();wordParticles?.refresh();} });
   }
   function fitWord() {
-    const word = nodes?.word.firstElementChild; if (!word) return;
+    const word=nodes?.word.firstElementChild;if(!word)return;
+    const cfg=effectConfig().wordTransition,available=Math.max(1,nodes.word.clientWidth-12);
+    nodes.word.style.setProperty('--mn-letter-spacing',(cfg.letterSpacing??1)+'px');
     word.style.removeProperty('font-size');
-    const width = word.getBoundingClientRect().width, available = nodes.word.clientWidth - 8;
-    if (width > available) word.style.fontSize = `${parseFloat(getComputedStyle(word).fontSize) * available / width}px`;
+    const base=parseFloat(getComputedStyle(word).fontSize),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+    const gap=word.querySelector('.gap'),answer=word.querySelector('.revealed-chunk'),gapTransition=gap.style.transition;gap.style.transition='none';gap.style.marginInline='0';
+    function geometry(size){
+      word.style.fontSize=size+'px';nodes.word.style.setProperty('--mn-letter-spacing',((cfg.letterSpacing??1)*size/base)+'px');const css=getComputedStyle(word);ctx.font=`${css.fontWeight} ${css.fontSize} ${css.fontFamily}`;ctx.fontKerning='none';
+      const spacing=(cfg.letterSpacing??1)*size/base,padding=cfg.bubbleGap??3;
+      const before=word.querySelector('.word-before'),after=word.querySelector('.word-after');
+      for(const [node,side] of [[before,'right'],[after,'left']]){
+        const letters=[...node.textContent];let advance=0,last;
+        for(const letter of letters){last=ctx.measureText(letter);advance+=last.width+spacing;}
+        const edge=!letters.length?0:side==='right'?last.width+spacing-last.actualBoundingBoxRight:-ctx.measureText(letters[0]).actualBoundingBoxLeft;
+        node.style[side==='right'?'marginRight':'marginLeft']=(letters.length?padding-edge:0)+'px';
+      }
+      if(answer){const width=[...answer.textContent].reduce((n,l)=>n+ctx.measureText(l).width+spacing,0);gap.style.width=gap.style.flexBasis=Math.max(1,width)+'px';}
+      return word.offsetWidth;
+    }
+    // Child spans never shrink. Fit the actual ink row, including constant pixel
+    // tracking and the gap, rather than moving or resizing surrounding rows.
+    let lo=2,hi=base;if(geometry(hi)>available){for(let i=0;i<12;i++){const mid=(lo+hi)/2;if(geometry(mid)>available)hi=mid;else lo=mid;}geometry(lo);}
+    word.dataset.fittedSize=String(parseFloat(word.style.fontSize));void gap.offsetWidth;gap.style.transition=gapTransition;
   }
   async function animateInk(direction) {
     if (reduced.matches || !nodes) return;
-    const blocks = [nodes.word.firstElementChild, ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    const blocks = [...(effectConfig().wordTransition?.style==='particles'?[]:[nodes.word.firstElementChild]), ...app.querySelectorAll('.answer-ink')].filter(Boolean);
+    // Optional dots run beside existing 140/180ms ink motion, without adding delay.
+    const particleMotion=wordParticles?.play(direction);
     animations = flowInk(blocks, direction);
     if (session?.state === 'paused') animations.forEach(animation => animation.pause());
-    const active = animations;
-    await Promise.all(active.map(animation => animation.finished.catch(() => {})));
+    const active = animations,finished=Promise.all(active.map(animation => animation.finished.catch(() => {})));
+    if(effectConfig().wordTransition?.style==='particles')await particleMotion;
+    await finished;
     active.forEach(animation => animation.cancel());
     if (animations === active) animations = [];
   }
@@ -111,7 +154,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
 
   async function present(game, first) {
     const token = ++generation;
-    stopFireworks?.();stopFireworks=null;continueDrag?.reset();
+    stopFireworks?.();stopFireworks=null;stopComboGlobal();continueDrag?.reset();
     game.setPresentationHold(true); app.classList.add('ink-changing');
     nodes.answers.forEach(button => { button.disabled = true; });
     nodes.hint.disabled = true; nodes.next.hidden = true;
@@ -127,6 +170,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (token !== generation || session !== game) return;
 
     app.dataset.artScene = scene?.key || 'calm'; app.classList.remove('spelling-has-feedback','spelling-correct-feedback');
+    nodes.word.dataset.answerLength=String(q.answer.length);
     nodes.word.replaceChildren(createWord(q.masked));
     nodes.word.setAttribute('aria-label', `Uzupełnij: ${q.masked.replace('_', ' — luka — ')}`);
     nodes.answers.forEach((button, index) => {
@@ -146,14 +190,16 @@ export function createSpellingArt(app, { onContinue } = {}) {
     if (document.body.classList.contains('keyboard')) nodes.answers[0].focus({ preventScroll: true });
   }
   function render(game) {
+    app.dataset.state=game.state;
     if (session !== game || !nodes?.word.isConnected) mount(game);
     if (shownQuestion !== game.question) {
-      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; present(game, first);
+      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; const ready=present(game, first);app.mnScreenReady=ready;return ready;
     } else if (shownState !== game.state && game.state.startsWith('feedback')) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');
       nodes.word.setAttribute('aria-label', `Poprawnie: ${game.current.word}`);
-      revealWord(nodes.word.firstElementChild, game.current.answer, reduced.matches).then(() => { if (session === game) fitWord(); });
+      const reveal=()=>revealWord(nodes.word.firstElementChild,game.current.answer,reduced.matches).then(()=>{if(session===game)fitWord();});
+      if(effectConfig().wordTransition?.style==='particles'){const feedbackGeneration=generation;game.setPresentationHold(true);void wordParticles?.reveal(game.current.answer,reveal,game.options.indexOf(game.selected)===0?-1:1).finally(()=>{if(session===game&&generation===feedbackGeneration)game.setPresentationHold(false);});}else void reveal();
       preloadQueuedScene(game);
       nodes.answers.forEach((button, index) => {
         button.disabled = true;
@@ -164,15 +210,23 @@ export function createSpellingArt(app, { onContinue } = {}) {
       const rays='<svg class="feedback-rays" viewBox="0 0 30 42" fill="none" aria-hidden="true"><path d="m24 11-10-6M19 21H7m17 10-10 6" stroke="#ffd43b" stroke-width="5.5" stroke-linecap="round"/><path d="m24 10-9-5M18 20H7m16 10-9 6" stroke="#ffe879" stroke-width="1.2" stroke-linecap="round"/></svg>';
       nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
-      if(correct){stopFireworks?.();stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));}
-      else{continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
+      const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
+      bubble?.react(combo?'combo':correct?'correct':'wrong');
+      const preset=effects.presets[effectPreview?.id]||pickEffect(effects).preset;stopFireworks?.();stopFireworks=null;stopComboGlobal();
+      if(combo&&effects.comboGlobal?.enabled!==false){comboGlobal?.play(effects);}
+      else if(correct&&effects.enabled&&effects.correctStyle==='production'&&(!effectPreview?.id||effectPreview.id==='confetti'))stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));
+      else stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo:false,target:app.querySelector('.soap-svg')||app.querySelector('.mn-soap-shell'),onMetrics:effectPreview?.onMetrics});
+      if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
+      if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
     }
   }
   function setPaused(paused) {
     bubble?.setPaused(paused || Boolean(hint));
-    if(paused)continueDrag?.reset();
+    wordParticles?.setPaused(paused);if(!paused)wordParticles?.refresh();
+    if(paused){continueDrag?.reset();stopFireworks?.();stopComboGlobal();}
     animations.forEach(animation => paused ? animation.pause() : animation.play());
   }
   reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(animation => animation.finish()); });
-  return { render, reset, setPaused, closeHint };
+  document.addEventListener('mala-nauka:design',()=>{if(bubble&&session&&renderer!==(effectConfig().bubble?.renderer||'classic')){const game=session;mount(game);render(game);}if(bubble)applyBubbleSettings(bubble,effectConfig());atmosphere?.update(effectConfig());fitWord();wordParticles?.refresh();});
+  return { render, reset, setPaused, closeHint, setEffectPreview(value){effectPreview=value;},previewReact(event){bubble?.react(event);},stopPreviewEffect(){stopFireworks?.();stopComboGlobal();} };
 }

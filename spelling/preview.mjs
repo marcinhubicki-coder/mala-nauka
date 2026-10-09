@@ -1,4 +1,5 @@
-import { SCENES, sceneFor } from './scenes.mjs?v=26-generated-scenes';
+import {assetManifest} from '../shared/asset-loader.mjs';
+import { sceneFor } from './scenes.mjs?v=26-generated-scenes';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const normalize = value => String(value || '').trim().toLocaleLowerCase('pl-PL');
@@ -23,12 +24,6 @@ export const SPELLING_PREVIEW = Object.freeze({
   scene: normalize(params.get('scene')),
   layout: 'bubble',
 });
-
-const availableMasks = new Set(
-  [...SCENES.entries()]
-    .filter(([,scene]) => Boolean(scene?.asset))
-    .map(([masked]) => masked)
-);
 
 export function filterSpellingPreview(words){
   let pool = Array.isArray(words) ? words : [];
@@ -55,7 +50,7 @@ export function previewSummary(){
     word:SPELLING_PREVIEW.word,
     scene:SPELLING_PREVIEW.scene,
     layout:SPELLING_PREVIEW.layout,
-    availableScenes:[...availableMasks],
+    availableScenes:[...new Set(Object.values(assetManifest().words).map(row=>row.masked).filter(Boolean))],
     active:true,
   };
 }

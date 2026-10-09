@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="round-timer.css">
   <link rel="stylesheet" href="correct-transition.css">
   <link rel="stylesheet" href="math-modes.css">
+  <link rel="stylesheet" href="neon-effects.css">
   <link rel="stylesheet" href="division-polish.css">
   <link rel="stylesheet" href="explainer-polish.css">
   <link rel="stylesheet" href="layout-v26.css">
@@ -34,7 +35,6 @@
   <script src="pointer-polish.js"></script>
   <script src="difference-feedback.js"></script>
   <script src="difference-order-v2.js"></script>
-  <script type="module" src="round-timer.js?v=1-local-profiles"></script>
   <script src="division-polish.js"></script>
   <script src="explainer-polish.js"></script>
   <script src="layout-v26.js"></script>
@@ -46,8 +46,15 @@
   <script defer src="wrong-sequence-v46.js"></script>
   <script defer src="division-grid-v51.js"></script>
   <script type="module" src="app.js?v=20261002-flags-adventure-v2"></script>
-<script src="../pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="../pwa-viewport.css?v=6-keyboard"><link rel="icon" href="../assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260930"></head>
-<body>
-  <main id="app" class="app-shell" tabindex="-1" aria-live="polite"></main>
+<script src="../pwa-viewport.js?v=2-keyboard"></script><link rel="stylesheet" href="../pwa-viewport.css?v=6-keyboard"><link rel="icon" href="../assets/icon-192.png?v=20260930" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260930"><link rel="stylesheet" href="../shared/components.css?v=1"><script type="module" src="../design-system/bridge.mjs"></script><link rel="stylesheet" href="../boot-loader.css"><link rel="stylesheet" href="../boot-overlay.css"><script type="module" src="../boot-ui.mjs"></script><link rel="stylesheet" href="../shared/round-result.css"><link rel="stylesheet" href="../progress-screen.css"></head>
+<body><div id="mn-preloader" class="mn-boot-screen" role="status" aria-label="Ładowanie Małej Nauki"></div>
+<main id="app" class="app-shell" tabindex="-1" aria-live="polite"><div class="math-neon-loading" role="status" aria-label="Ładowanie Matematyki">
+    <div class="math-neon-grid" aria-hidden="true">
+      <span style="--digit-index:0">1</span><span style="--digit-index:1">2</span><span style="--digit-index:2">3</span>
+      <span style="--digit-index:3">4</span><span style="--digit-index:4">5</span><span style="--digit-index:5">6</span>
+      <span style="--digit-index:6">7</span><span style="--digit-index:7">8</span><span style="--digit-index:8">9</span>
+    </div>
+    <span>Przygotowujemy matematykę…</span>
+  </div></main>
 </body>
 </html>

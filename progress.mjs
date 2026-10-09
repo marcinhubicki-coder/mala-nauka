@@ -1,3 +1,4 @@
+import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import { cleanLearning, addLearningSession } from './shared/mastery.mjs?v=2';
 import { DURATIONS, validResult } from './game.mjs?v=20261001-adventure';
 import { modeIds, cleanConfig } from './modes.mjs?v=32-dictation-packs';
@@ -23,6 +24,8 @@ export function migrateProgress(history,best) {
  return migrated;
 }
 export function recordResult(progress,result) {
+ if(result.mode==='spelling'&&!result.scoring){result.scoring=structuredClone(globalThis.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);result.score=Array.isArray(result.attempts)?scoreAttempts(result.attempts,result.scoring).total:result.correct;
+  if(!Array.isArray(result.attempts))delete result.scoring;}
  const key=`${result.mode}:${result.duration}`,timed=!result.dyktando&&result.limitMode!=='count',record=timed&&result.correct>(progress.best[key]??0);
  if(timed)progress.best[key]=Math.max(progress.best[key]??0,result.correct);
  progress.learning=addLearningSession(progress.learning,result);

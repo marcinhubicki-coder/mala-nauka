@@ -1,3 +1,4 @@
+import {effectiveTokens} from '../design-system/model.mjs';
 export const JELLY_V4_DEFAULTS=Object.freeze({
  motion:Object.freeze({duration:.90,stretch:1.45,recoil:.55,bounce:.75,inertia:2.40,magnet:1.80}),
  shape:Object.freeze({radius:18,inset:4,squish:15,tilt:1.3,border:1,depth:1}),
@@ -8,8 +9,31 @@ export const JELLY_V4_DEFAULTS=Object.freeze({
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 
-export function createJellyV4({indicatorSelector}={}){
- const params=JELLY_V4_DEFAULTS;
+// One deformation model serves segmented Jelly controls and continuous drag
+// handles. Skins keep their own colour and geometry; motion stays coherent.
+export function jellyTransform(amount,direction=1,shape=JELLY_V4_DEFAULTS.shape){
+ const strength=clamp(Number(amount)||0,0,1),dir=direction<0?-1:1;
+ const shapeSquish=Number(shape?.squish),shapeTilt=Number(shape?.tilt);
+ const squish=(Number.isFinite(shapeSquish)?shapeSquish:JELLY_V4_DEFAULTS.shape.squish)/100;
+ const tilt=(Number.isFinite(shapeTilt)?shapeTilt:JELLY_V4_DEFAULTS.shape.tilt)*dir;
+ const sx=1+strength*squish*.45,sy=1-strength*squish;
+ return 'scale('+sx.toFixed(4)+','+sy.toFixed(4)+') rotate('+(tilt*strength).toFixed(2)+'deg)';
+}
+
+export function createJellyV4({indicatorSelector,getTokens=()=>effectiveTokens('jelly')}={}){
+ const params=structuredClone(JELLY_V4_DEFAULTS);
+ function syncDesign(){
+  const tokens=getTokens()||{};
+  if(tokens.height===undefined)return;
+  params.motion.duration=tokens.duration/1000;
+  for(const key of ['stretch','recoil','bounce','inertia','magnet'])if(tokens[key]!==undefined)params.motion[key]=tokens[key];
+  params.shape.radius=Math.max(8,tokens.radius-3);params.shape.inset=tokens.inset;
+  for(const key of ['squish','tilt'])if(tokens[key]!==undefined)params.shape[key]=tokens[key];
+  for(const key of ['glow','shine','blur','saturation','contrast'])if(tokens[key]!==undefined)params.light[key]=tokens[key];
+  params.text.delay=tokens.inkDelay;params.text.duration=tokens.inkDuration;
+  const textKeys={inkBump:'bump',inkGlow:'glow',inkFade:'fade',inkBlur:'blur'};
+  for(const [token,key] of Object.entries(textKeys))if(tokens[token]!==undefined)params.text[key]=tokens[token];
+ }
  const motionAnimations=new WeakMap();
  const textAnimations=new WeakMap();
  const dragStates=new WeakMap();
@@ -19,6 +43,7 @@ export function createJellyV4({indicatorSelector}={}){
  function spanFor(label){return label?.querySelector('span')||null;}
 
  function ensurePrepared(container,index=0){
+  syncDesign();
   if(!container)return null;
   container.classList.add('jelly-v4-container');
   container.style.setProperty('--jelly-radius',params.shape.radius+'px');
@@ -75,9 +100,7 @@ export function createJellyV4({indicatorSelector}={}){
   return {left:lerp(a.left,b.left,mix),right:lerp(a.right,b.right,mix),center:lerp(a.center,b.center,mix)};
  }
  function transformAt(amount,dir=1){
-  const squish=params.shape.squish/100,tilt=params.shape.tilt*dir;
-  const sx=1+amount*squish*.45,sy=1-amount*squish;
-  return 'scale('+sx.toFixed(4)+','+sy.toFixed(4)+') rotate('+(tilt*amount).toFixed(2)+'deg)';
+  return jellyTransform(amount,dir,params.shape);
  }
  function timing(current,target){
   const distance=Math.abs(target.center-current.center);

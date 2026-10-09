@@ -1,0 +1,63 @@
+{
+  "entries": 510,
+  "uniqueWords": 510,
+  "duplicates": [],
+  "multipleCategories": 186,
+  "missingAssets": [
+    "wieża",
+    "dach",
+    "chata",
+    "chrzan"
+  ],
+  "pools": [
+    {
+      "category": "u/ó",
+      "primary": 191,
+      "total": 242,
+      "basic": 151
+    },
+    {
+      "category": "rz/ż",
+      "primary": 136,
+      "total": 158,
+      "basic": 83
+    },
+    {
+      "category": "ch/h",
+      "primary": 91,
+      "total": 105,
+      "basic": 50
+    },
+    {
+      "category": "ć/ci",
+      "primary": 13,
+      "total": 58,
+      "basic": 34
+    },
+    {
+      "category": "ś/si",
+      "primary": 46,
+      "total": 71,
+      "basic": 56
+    },
+    {
+      "category": "ź/zi",
+      "primary": 11,
+      "total": 16,
+      "basic": 11
+    },
+    {
+      "category": "ń/ni",
+      "primary": 10,
+      "total": 54,
+      "basic": 21
+    },
+    {
+      "category": "dź/dzi",
+      "primary": 12,
+      "total": 22,
+      "basic": 9
+    }
+  ],
+  "checkedAt": "build"
+}

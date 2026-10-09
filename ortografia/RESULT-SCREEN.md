@@ -8,6 +8,7 @@ Wzór: zatwierdzony „Pastel Bunny Learning App Screen(1).png”. Ekran obejmuj
 - WebP 96 do wyświetlania; bezstratny PNG królika jako zapasowy format. Żadnych filtrów rozmycia ani dodatkowego panelu pod całą treścią.
 - Zaokrąglony Nunito w wagach 600–950 na ekranie wyniku, z polskimi znakami; DynaPuff pozostaje fontem rozgrywki.
 - Liczba poprawnych odpowiedzi, procent, pastylka trybu i pasek postępu nad dwoma kaflami.
+- Punkty pojawiają się w animowanej, perłowej bańce przy króliku. Bańka jest osobnym komponentem Design Studio z lokalną szerokością, wysokością i pozycją X/Y; nie zajmuje miejsca w siatce podsumowania.
 - Zielone „Utrwalone”, różowe „Do powtórki”. Kliknięcie kafla pokazuje odpowiednią listę. Kafel „Opanowane” pozostaje ukryty.
 - Poprawny zapis jest wyróżniony zielenią również na liście powtórek. Nagłówek: „Tu były małe potknięcia”, opis: „Zapamiętaj poprawną formę.”
 - Trzy pełne wiersze; dalsze słowa przewijają się wewnątrz listy. Przyciski pozostają na ekranie.

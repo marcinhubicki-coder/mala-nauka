@@ -1,3 +1,4 @@
+import {DEFAULT_EFFECTS,normalizeEffectsConfig} from './effect-model.mjs';
 let instance = 0;
 const TAU = Math.PI * 2;
 
@@ -54,7 +55,7 @@ function normalizeTuning(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,6.6),
+    speed:clampValue(numeric(merged.speed,BUBBLE_TUNING_DEFAULTS.speed),2.2,15),
     points:Math.round(clampValue(numeric(merged.points,BUBBLE_TUNING_DEFAULTS.points),24,72)/4)*4,
     random:clampValue(numeric(merged.random,BUBBLE_TUNING_DEFAULTS.random),0,5.7),
     smoothing:clampValue(numeric(merged.smoothing,BUBBLE_TUNING_DEFAULTS.smoothing),.35,2.35),
@@ -84,9 +85,9 @@ function normalizeChaos(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    amplitude:clampValue(numeric(merged.amplitude,BUBBLE_CHAOS_DEFAULTS.amplitude),-2,4),
+    amplitude:clampValue(numeric(merged.amplitude,BUBBLE_CHAOS_DEFAULTS.amplitude),0,12),
     frequency:clampValue(numeric(merged.frequency,BUBBLE_CHAOS_DEFAULTS.frequency),-2,4),
-    orbit:clampValue(numeric(merged.orbit,BUBBLE_CHAOS_DEFAULTS.orbit),-2,4),
+    orbit:clampValue(numeric(merged.orbit,BUBBLE_CHAOS_DEFAULTS.orbit),0,6),
     magnet:clampValue(numeric(merged.magnet,BUBBLE_CHAOS_DEFAULTS.magnet),-3,3),
     jelly:clampValue(numeric(merged.jelly,BUBBLE_CHAOS_DEFAULTS.jelly),0,2),
     squash:clampValue(numeric(merged.squash,BUBBLE_CHAOS_DEFAULTS.squash),-1,1),
@@ -114,7 +115,7 @@ function normalizeTransition(input={}){
     return Number.isFinite(parsed)?parsed:fallback;
   };
   return {
-    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.12,1.2),
+    duration:clampValue(numeric(merged.duration,BUBBLE_TRANSITION_DEFAULTS.duration),.2,5),
     blur:clampValue(numeric(merged.blur,BUBBLE_TRANSITION_DEFAULTS.blur),0,8),
     zoom:clampValue(numeric(merged.zoom,BUBBLE_TRANSITION_DEFAULTS.zoom),-6,12),
     rotate:clampValue(numeric(merged.rotate,BUBBLE_TRANSITION_DEFAULTS.rotate),-12,12),
@@ -124,6 +125,9 @@ function normalizeTransition(input={}){
 }
 
 export function createBubble(host, options={}) {
+  let bubbleSettings=normalizeEffectsConfig(globalThis.__MALA_NAUKA_DESIGN__?.effects||DEFAULT_EFFECTS).bubble;
+  const b=bubbleSettings;
+  options={...options,tuning:{speed:b.speed,...options.tuning},chaos:{amplitude:b.amplitude,orbit:b.orbit,...options.chaos},transition:{duration:b.transitionDuration/1000,blur:b.transitionBlur,zoom:b.transitionZoom,rotate:b.transitionRotate,hue:b.transitionHue,sparks:b.transitionSparks,...options.transition}};
   const id = `soap-${++instance}`;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const seed = Array.from({ length: 6 }, () => Math.random() * TAU);
@@ -167,9 +171,9 @@ export function createBubble(host, options={}) {
       </g>
       <g clip-path="url(#${id}-clip)">
         <rect width="400" height="400" fill="url(#${id}-empty)"/>
-        <image class="soap-picture soap-picture-a" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
+        <g class="mn-production-photo" data-ds-key="mn-soap-picture"><image class="soap-picture soap-picture-a" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
         <image class="soap-picture soap-picture-b" filter="url(#${id}-pictureFx)" x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid slice"/>
-        <rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
+        </g><rect class="soap-film-overlay" width="400" height="400" fill="url(#${id}-film)"/>
         <rect class="soap-sheen-overlay" width="400" height="400" fill="url(#${id}-sheen)" opacity=".78"/>
         <rect class="soap-inner-lift" width="400" height="400" fill="url(#${id}-innerLift)" opacity=".92"/>
         <g class="soap-heavy-particles"></g>
@@ -189,6 +193,10 @@ export function createBubble(host, options={}) {
     </g>
   </svg>`;
 
+  const svg=host.querySelector('.soap-svg'),motionRoot=document.createElement('div');
+  motionRoot.className='mn-production-bubble';motionRoot.dataset.renderer='production';
+  Object.assign(motionRoot.style,{width:'100%',height:'100%',transformOrigin:'50% 50%'});
+  svg.before(motionRoot);motionRoot.append(svg);
   const documentUrl = location.href.split('#')[0];
   const shape = host.querySelector(`#${id}-shape`);
   const pictures = [...host.querySelectorAll('.soap-picture')];
@@ -356,9 +364,12 @@ export function createBubble(host, options={}) {
   // animated rounded rectangle. Three control waves live on both the top and
   // bottom edge; their motion is spread to neighbouring points before the
   // closed Catmull-Rom spline is converted to cubic Beziers.
+  let comboImpulse;
+  const comboEnvelope=now=>comboImpulse?Math.max(0,1-(now-comboImpulse.start)/bubbleSettings.comboDuration)**2:0;
   function draw(time) {
+    const comboWave=comboEnvelope(performance.now())*bubbleSettings.comboWave;
     const count=tuning.points;
-    const irregularity=tuning.random;
+    const irregularity=tuning.random*(1+comboWave);
     const spatial=chaos.frequency;
     const squashWave=.14*chaos.squash*Math.sin(time*.21+seed[1]);
     const exponent=3.28 + .14*irregularity*Math.sin(time*.15+seed[4]);
@@ -615,6 +626,7 @@ export function createBubble(host, options={}) {
     const zoom=transitionTuning.zoom/100;
     const rotation=transitionTuning.rotate;
     const hue=transitionTuning.hue;
+    const opticalFiltersEnabled=blur>.01||Math.abs(hue)>.01;
     const incomingFilter=`blur(${blur.toFixed(2)}px) hue-rotate(${hue.toFixed(1)}deg)`;
     const incomingMidFilter=`blur(${(blur*.36).toFixed(2)}px) hue-rotate(${(hue*.34).toFixed(1)}deg)`;
     const outgoingMidFilter=`blur(${(blur*.58).toFixed(2)}px) hue-rotate(${(-hue*.26).toFixed(1)}deg)`;
@@ -627,17 +639,17 @@ export function createBubble(host, options={}) {
 
     const incoming=next.animate(
       [
-        {opacity:0,filter:incomingFilter,transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
-        {opacity:.76,filter:incomingMidFilter,transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
-        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'}
+        {opacity:0,...(opticalFiltersEnabled?{filter:incomingFilter}:{}),transform:`scale(${(1+zoom).toFixed(4)}) rotate(${rotation.toFixed(2)}deg)`},
+        {opacity:.76,...(opticalFiltersEnabled?{filter:incomingMidFilter}:{}),transform:`scale(${(1+zoom*.3).toFixed(4)}) rotate(${(rotation*.28).toFixed(2)}deg)`,offset:.54},
+        {opacity:1,...(opticalFiltersEnabled?{filter:'none'}:{}),transform:'scale(1) rotate(0deg)'}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     );
     const outgoing=hasOld ? old.animate(
       [
-        {opacity:1,filter:'blur(0px) hue-rotate(0deg)',transform:'scale(1) rotate(0deg)'},
-        {opacity:.52,filter:outgoingMidFilter,transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
-        {opacity:0,filter:outgoingFilter,transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
+        {opacity:1,...(opticalFiltersEnabled?{filter:'none'}:{}),transform:'scale(1) rotate(0deg)'},
+        {opacity:.52,...(opticalFiltersEnabled?{filter:outgoingMidFilter}:{}),transform:`scale(${(1-zoom*.18).toFixed(4)}) rotate(${(-rotation*.18).toFixed(2)}deg)`,offset:.48},
+        {opacity:0,...(opticalFiltersEnabled?{filter:outgoingFilter}:{}),transform:`scale(${(1-zoom*.5).toFixed(4)}) rotate(${(-rotation*.5).toFixed(2)}deg)`}
       ],
       {duration,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'}
     ) : null;
@@ -699,7 +711,30 @@ export function createBubble(host, options={}) {
   }
   function getTransition(){ return {...transitionTuning}; }
 
+  function setBubbleConfig(e=DEFAULT_EFFECTS){
+    const b=normalizeEffectsConfig(e).bubble;bubbleSettings=b;
+    setTuning({speed:b.speed});setChaos({amplitude:b.amplitude,orbit:b.orbit});
+    setEffects({shadow:b.shadow,depth:b.depth,glow:b.glow,sheen:b.sheen,rainbow:b.rainbow,rim:b.rimIntensity});
+    setTransition({duration:b.transitionDuration/1000,blur:b.transitionBlur,zoom:b.transitionZoom,rotate:b.transitionRotate,hue:b.transitionHue,sparks:b.transitionSparks});
+    atmosphere.setAttribute('opacity',Math.min(1,b.sparkle/.55).toFixed(3));
+    const metals={silver:'#d5e5f4',gold:'#e5b958'},stroke=metals[b.rim]||`url("${documentUrl}#${id}-rainbow")`;
+    for(const node of host.querySelectorAll('.soap-rainbow-outer,.soap-rainbow-inner'))node.setAttribute('stroke',stroke);
+  }
+  setBubbleConfig({bubble:bubbleSettings});
+  const designChanged=event=>setBubbleConfig(event.detail?.effects||DEFAULT_EFFECTS);
+  document.addEventListener('mala-nauka:design',designChanged);
   return {
+    setBubbleConfig,
+    react(event='correct'){
+      if(reduced.matches||paused)return;
+      if(event==='combo')comboImpulse={start:performance.now()};
+      if(event!=='correct'&&event!=='combo')return;
+      const growth=bubbleSettings.correctGrowth;
+      if(!growth)return;
+      const animation=motionRoot.animate([{transform:'scale(1)'},{transform:`scale(${1+growth})`,offset:.32},{transform:'scale(1)'}],{duration:bubbleSettings.correctGrowthDuration,easing:'cubic-bezier(.22,.61,.36,1)'});
+      transitions.push(animation);animation.finished.catch(()=>{}).finally(()=>{transitions=transitions.filter(a=>a!==animation);animation.cancel();});
+    },
+    clearReactions(){comboImpulse=undefined;},
     preloadScene,
     transitionToScene,
     setTuning,
@@ -718,6 +753,7 @@ export function createBubble(host, options={}) {
     },
     destroy() {
       destroyed=true; loadToken++; cancelAnimationFrame(frame);
+      document.removeEventListener("mala-nauka:design",designChanged);
       transitions.forEach(animation=>animation.cancel()); transitions=[];
       document.removeEventListener('visibilitychange',syncMotion);
       reduced.removeEventListener('change',motionPreferenceChanged);

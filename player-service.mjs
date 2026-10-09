@@ -9,6 +9,7 @@ const guestPlayer=()=>({id:'guest',nickname:'odkrywco',avatarId:'b'});
 const now=()=>new Date().toISOString();
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`player-${Date.now()}-${Math.random().toString(36).slice(2,10)}`;
 export const NICKNAME_MAX_LENGTH=8;
+export const MAX_PLAYERS=3;
 const cleanNickname=value=>String(value||'').normalize('NFC').trim().replace(/\s+/g,' ');
 const validPin=pin=>/^\d{4}$/.test(String(pin||''));
 export const AVATARS=Object.freeze(['a','b','c','d','e','f','g','h','i','j','k','l']);
@@ -119,6 +120,7 @@ export class LocalPlayerService{
  }
  async createPlayer({nickname,pin,avatarId,pinEnabled=true}){
   await this.init();
+  if((await this.listPlayers()).length>=MAX_PLAYERS)throw new Error(`Możesz mieć maksymalnie ${MAX_PLAYERS} profile.`);
   const safeName=cleanNickname(nickname);
   if([...safeName].length<3)throw new Error('Wpisz nick — co najmniej 3 znaki.');
   if([...safeName].length>NICKNAME_MAX_LENGTH)throw new Error(`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`);
@@ -135,6 +137,42 @@ export class LocalPlayerService{
    tx.objectStore('players').add(player);await txDone(tx);
   }
   return publicPlayer(player);
+ }
+ async updatePlayer(id,{nickname,avatarId}){
+  const session=await this.getSessionPlayer();
+  if(!session||session.id!==id||id==='guest')throw new Error('Najpierw wejdź do swojego profilu.');
+  const player=await this.getPrivatePlayer(id);
+  if(!player)throw new Error('Nie znaleziono profilu.');
+  const safeName=cleanNickname(nickname);
+  if([...safeName].length<3)throw new Error('Wpisz nick — co najmniej 3 znaki.');
+  if([...safeName].length>NICKNAME_MAX_LENGTH)throw new Error(`Nick może mieć maksymalnie ${NICKNAME_MAX_LENGTH} znaków.`);
+  Object.assign(player,{nickname:safeName,avatarId:cleanAvatar(avatarId)||fallbackAvatar({...player,nickname:safeName}),updatedAt:now()});
+  if(this.fallback){
+   const data=readFallback();data.players=data.players.map(p=>p.id===id?player:p);
+   if(!writeFallback(data))throw new Error('Nie udało się zapisać zmian profilu.');
+  }else{
+   const tx=this.db.transaction('players','readwrite');tx.objectStore('players').put(player);await txDone(tx);
+  }
+  return publicPlayer(player);
+ }
+ async deletePlayer(id){
+  const session=await this.getSessionPlayer();
+  if(!session||session.id!==id||id==='guest')throw new Error('Najpierw wejdź do profilu, który chcesz usunąć.');
+  if(this.fallback){
+   const data=readFallback();
+   data.players=data.players.filter(player=>player.id!==id);
+   delete data.progress[id];
+   if(data.meta.lastPlayerId===id)delete data.meta.lastPlayerId;
+   if(!writeFallback(data))throw new Error('Nie udało się usunąć profilu.');
+  }else{
+   const tx=this.db.transaction(['players','progress','meta'],'readwrite'),done=txDone(tx);
+   tx.objectStore('players').delete(id);
+   tx.objectStore('progress').delete(id);
+   tx.objectStore('meta').delete('lastPlayerId');
+   await done;
+  }
+  this.lockSession();
+  return true;
  }
  async verifyPin(id,pin){
   const player=await this.getPrivatePlayer(id);
@@ -227,6 +265,9 @@ export class LocalPlayerService{
  async importBackup(value){
   const backup=validateBackup(value); // Validate every profile before opening a write transaction.
   await this.init();
+  const current=await this.listPlayers(),mergedIds=new Set(current.map(player=>player.id));
+  for(const row of backup.players)mergedIds.add(row.profile.id);
+  if(mergedIds.size>MAX_PLAYERS)throw new Error(`Po imporcie byłoby więcej niż ${MAX_PLAYERS} profile. Usuń profil albo wybierz mniejszą kopię.`);
   if(this.fallback){
    const data=readFallback(),byId=new Map(data.players.map(player=>[player.id,player]));
    for(const row of backup.players){byId.set(row.profile.id,row.profile);if(row.progress===null)delete data.progress[row.profile.id];else data.progress[row.profile.id]=row.progress;}

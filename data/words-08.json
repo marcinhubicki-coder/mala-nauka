@@ -96,7 +96,10 @@
           "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
         }
       ]
-    }
+    },
+    "practiceCategories": [
+      "ć/ci"
+    ]
   },
   {
     "word": "ciepło",
@@ -1637,6 +1640,1128 @@
           "url": "https://zpe.gov.pl/a/wprowadzenie/DzB9XwFnM"
         }
       ]
+    }
+  },
+  {
+    "word": "ciśnienie",
+    "category": "ć/ci",
+    "answer": "ci",
+    "options": [
+      "ć",
+      "ci"
+    ],
+    "masked": "_śnienie",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ć/ci": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ć/ci",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ć/ci",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "znaleźć",
+    "category": "ź/zi",
+    "answer": "ź",
+    "options": [
+      "ź",
+      "zi"
+    ],
+    "masked": "znale_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ź/zi": 1
+    },
+    "practiceCategories": [
+      "ź/zi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ź/zi",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ź lub zi. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "część",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "czę_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "dziś",
+    "category": "dź/dzi",
+    "answer": "dzi",
+    "options": [
+      "dź",
+      "dzi"
+    ],
+    "masked": "_ś",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "dź/dzi": 1
+    },
+    "practiceCategories": [
+      "dź/dzi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis dź/dzi",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "garść",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "gar_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "gąsienica",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "gą_enica",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "gdzieś",
+    "category": "dź/dzi",
+    "answer": "dzi",
+    "options": [
+      "dź",
+      "dzi"
+    ],
+    "masked": "g_eś",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "dź/dzi": 1
+    },
+    "practiceCategories": [
+      "dź/dzi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis dź/dzi",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "kiść",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "ki_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "leśniczy",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "le_niczy",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "liść",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "li_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "paśnik",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "pa_nik",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "pieśń",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "pie_ń",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siać",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ać",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "sieć",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_eć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siedemdziesiąt",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_edemdziesiąt",
+    "difficulty": 2,
+    "categoryDifficulties": {
+      "ś/si": 2,
+      "dź/dzi": 2
+    },
+    "practiceCategories": [
+      "ś/si",
+      "dź/dzi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siedzisko",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_edzisko",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "dź/dzi": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "dź/dzi"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "sierp",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_erp",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siew",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ew",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siewnik",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ewnik",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "silnik",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_lnik",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "silny",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_lny",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siła",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ła",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siłownia",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_łownia",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "siny",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ny",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "sitko",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_tko",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "sito",
+    "category": "ś/si",
+    "answer": "si",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_to",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "ścieg",
+    "category": "ć/ci",
+    "answer": "ci",
+    "options": [
+      "ć",
+      "ci"
+    ],
+    "masked": "ś_eg",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ć/ci": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ć/ci",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ć/ci",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "ścisk",
+    "category": "ć/ci",
+    "answer": "ci",
+    "options": [
+      "ć",
+      "ci"
+    ],
+    "masked": "ś_sk",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ć/ci": 1,
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ć/ci",
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ć/ci",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śledź",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_ledź",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "ślina",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_lina",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śliwa",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_liwa",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "ślizg",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_lizg",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śmiać",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_miać",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śmietnik",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_mietnik",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śniadanie",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_niadanie",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śnić",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_nić",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śniegowy",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_niegowy",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "świnia",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_winia",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "świt",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "_wit",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "treść",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "tre_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "wieść",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "wie_ć",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1
+    },
+    "practiceCategories": [
+      "ś/si"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "wiśnia",
+    "category": "ś/si",
+    "answer": "ś",
+    "options": [
+      "ś",
+      "si"
+    ],
+    "masked": "wi_nia",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis ś/si",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
     }
   }
 ]

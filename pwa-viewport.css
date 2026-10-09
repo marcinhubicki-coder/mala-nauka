@@ -48,3 +48,6 @@ html:has(#app[data-view="results"][data-mode="spelling"]) {
 .row-expression:focus-visible:not(:hover):not(.is-active):not([aria-pressed="true"]) { background: transparent !important; color: var(--muted); transform: none !important; }
 body{top:var(--app-viewport-offset,0px);bottom:auto}
 .keyboard-open #app[data-view="player-create"]{padding-top:max(8px,var(--app-safe-top));max-width:none}
+
+#app{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}#app input:not([type=radio]):not([type=checkbox]),#app textarea,#app [contenteditable=true]{-webkit-user-select:text;user-select:text}
+#portrait-notice{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#e9f5ff;color:#123864;text-align:center;font-family:var(--ds-font-body),sans-serif}#portrait-notice[hidden]{display:none}#portrait-notice>span{font-size:64px}#portrait-notice strong{font-size:24px}.landscape-blocked #app{visibility:hidden}

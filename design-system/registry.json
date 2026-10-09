@@ -1,0 +1,1915 @@
+{
+  "schemaVersion": 1,
+  "device": {
+    "name": "iPhone 13 Pro",
+    "width": 390,
+    "height": 844,
+    "dpr": 3,
+    "retinaWidth": 1170,
+    "retinaHeight": 2532,
+    "safeTop": 47,
+    "safeBottom": 34
+  },
+  "components": [
+    {
+      "id": "layout",
+      "name": "Płótno i odstępy",
+      "tokenGroup": "layout",
+      "selector": "[class$=\"wizard-canvas\"],.page-head",
+      "description": "Wspólna geometria ustawień; pionowy iPhone 13 Pro.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "card",
+      "name": "Kafel ustawień",
+      "tokenGroup": "card",
+      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
+      "description": "Jedna geometria i powierzchnia dla czterech trybów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "jelly",
+      "name": "Przełącznik jelly",
+      "tokenGroup": "jelly",
+      "selector": ".jelly-v4-container,.rules-views",
+      "description": "Przeciąganie lub wybór; kolor tekstu przełącza się z opóźnieniem.",
+      "states": [
+        "idle",
+        "selected",
+        "dragging",
+        "disabled"
+      ],
+      "conditions": [
+        "Kliknięcie, drag i klawiatura wybierają dokładnie jedną opcję.",
+        "Natywny click obsługuje tap; drag tłumi późniejszy click."
+      ],
+      "variants": [
+        "pełny: ustawienia",
+        "mały: czas/słowa i PL/EN"
+      ]
+    },
+    {
+      "id": "toggle",
+      "name": "Mały toggle",
+      "tokenGroup": "toggle",
+      "selector": ".spelling-limit-mode,.flag-language-options",
+      "description": "Dwie opcje; ta sama szerokość PL/EN i czasu/liczby słów.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "button",
+      "name": "Przycisk główny",
+      "tokenGroup": "button",
+      "selector": ".start-button,.player-continue,.math-start-button,.math-result-again,.result .primary,.spelling-result .result-collection",
+      "description": "Przed wyborem, wciśnięty, wyłączony i ukończony.",
+      "states": [
+        "idle",
+        "pressed",
+        "disabled"
+      ],
+      "conditions": [
+        "CTA ustawień wymaga poprawnej konfiguracji.",
+        "Tworzenie gracza wymaga prawidłowej nazwy; PIN czterech cyfr, jeśli jest włączony."
+      ],
+      "variants": [
+        "jelly CTA",
+        "kontynuacja profilu",
+        "wyniki"
+      ]
+    },
+    {
+      "id": "answer",
+      "name": "Odpowiedź",
+      "tokenGroup": "answer",
+      "selector": ".answer,.answer-button",
+      "description": "Stan początkowy, poprawny, błędny i wyłączony.",
+      "states": [
+        "initial",
+        "correct",
+        "wrong",
+        "disabled"
+      ],
+      "conditions": [
+        "Wybór dostępny dopiero po prezentacji pytania.",
+        "Po odpowiedzi przyciski są zablokowane; poprawne oznaczenie nie jest stanem hover."
+      ],
+      "variants": [
+        "pełny: litery ortografii",
+        "kompaktowy: słowa, kraje i liczby"
+      ]
+    },
+    {
+      "id": "flashcard",
+      "name": "Fiszka",
+      "tokenGroup": "flashcard",
+      "selector": ".question-card,.spelling-question-card,.question-block",
+      "description": "Wersja płaska: angielski/czytanie; wzbogacona: ortografia/flagi.",
+      "states": [
+        "prompt",
+        "reveal",
+        "feedback"
+      ],
+      "conditions": [
+        "Pytanie i odpowiedź mają wspólną tożsamość.",
+        "Płaska fiszka pozostaje czytelna dla dłuższej treści; wzbogacona dodaje ilustrację."
+      ],
+      "variants": [
+        "płaska: angielski i czytanie",
+        "wzbogacona: ortografia i flagi"
+      ]
+    },
+    {
+      "id": "slider",
+      "name": "Przeciągnij dalej",
+      "tokenGroup": "slider",
+      "selector": ".spelling-continue-rail,.result-continue-rail",
+      "description": "Po błędzie zatrzymany czas; dalszy krok po osiągnięciu progu.",
+      "states": [
+        "idle",
+        "dragging",
+        "spring-back",
+        "complete"
+      ],
+      "conditions": [
+        "Start gestu z uchwytu; klik toru nie kończy kroku.",
+        "Próg ukończenia i minimalny ruch 24 px; klawiatura Enter/Space/strzałka.",
+        "W grze widoczny po błędzie; na wynikach uruchamia następną rundę."
+      ],
+      "variants": [
+        "następne pytanie",
+        "następna runda"
+      ]
+    },
+    {
+      "id": "popup",
+      "name": "Popup / zasada",
+      "tokenGroup": "popup",
+      "selector": "dialog,.result-rule-dialog",
+      "description": "Zamykany popup; przewijanie dolnej części reguły.",
+      "states": [
+        "closed",
+        "open",
+        "scrolling"
+      ],
+      "conditions": [
+        "Podpowiedź jest dostępna przed odpowiedzią.",
+        "Pauza zatrzymuje czas; wznowienie przywraca wcześniejszy stan.",
+        "Zasada dotyczy wybranego hasła i własnej ilustracji."
+      ],
+      "variants": [
+        "podpowiedź",
+        "pauza",
+        "zasada",
+        "ustawienia pomocnicze"
+      ]
+    },
+    {
+      "id": "progress",
+      "name": "Pasek podsumowania",
+      "tokenGroup": "progress",
+      "selector": ".round-progress,.math-round-progress",
+      "description": "Animacja liczb i paska; czas zatrzymuje się po błędzie.",
+      "states": [
+        "running",
+        "paused",
+        "finished"
+      ],
+      "conditions": [
+        "Błąd zatrzymuje czas.",
+        "Flagi wstrzymują zegar na czas prezentacji kraju i stolicy."
+      ],
+      "variants": [
+        "zegar rundy",
+        "podsumowanie"
+      ]
+    },
+    {
+      "id": "profile",
+      "name": "Profil i avatar",
+      "tokenGroup": "profile",
+      "selector": ".player-card,.player-avatar-large",
+      "description": "Wybór profilu, tworzenie, PIN i lokalne postępy.",
+      "states": [
+        "empty",
+        "selected",
+        "locked",
+        "unlocked"
+      ],
+      "conditions": [
+        "PIN określa warunek wejścia do profilu.",
+        "Studio używa wyłącznie fikcyjnych profili i nie zapisuje wyników."
+      ],
+      "variants": [
+        "wybór",
+        "tworzenie",
+        "PIN"
+      ]
+    },
+    {
+      "id": "trophy",
+      "name": "Puchar",
+      "tokenGroup": "trophy",
+      "selector": ".progress-trophy",
+      "description": "Kolekcja i lista osiągnięć. Grafikę skalujemy proporcjonalnie.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Wspólny token; zmiana obejmuje wskazane użycia."
+      ],
+      "variants": [
+        "domyślny"
+      ]
+    },
+    {
+      "id": "atom-container",
+      "name": "Kontenery i sekcje",
+      "kind": "container",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"container\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-text",
+      "name": "Teksty i etykiety",
+      "kind": "text",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"text\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-icon",
+      "name": "Ikony",
+      "kind": "icon",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"icon\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-image",
+      "name": "Grafiki i avatary",
+      "kind": "image",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"image\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-button",
+      "name": "Przyciski lokalne",
+      "kind": "button",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"button\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "atom-background",
+      "name": "Podkłady i tła",
+      "kind": "background",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"background\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "game-timer",
+      "name": "Zegar gry",
+      "kind": "timer",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"timer\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "result-progress",
+      "name": "Pasek wyniku",
+      "kind": "meter",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"meter\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "pin-toggle",
+      "name": "Przełącznik PIN",
+      "kind": "toggle",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"toggle\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    },
+    {
+      "id": "pin-key",
+      "name": "Klawisz PIN",
+      "kind": "key",
+      "fine": true,
+      "tokenGroup": null,
+      "selector": "[data-ds-kind=\"key\"]",
+      "description": "Elementy mają wspólny przepis i widoczne wyjątki lokalne.",
+      "states": [
+        "default"
+      ],
+      "conditions": [
+        "Zmiana lokalna dotyczy wyłącznie wybranej instancji."
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "players",
+      "name": "Wybór gracza",
+      "mode": "spelling",
+      "screen": "players",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
+      "id": "players-empty",
+      "name": "Pierwszy gracz",
+      "mode": "spelling",
+      "screen": "players",
+      "state": "empty",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
+      "id": "player-create",
+      "name": "Nowy gracz",
+      "mode": "spelling",
+      "screen": "player-create",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
+      "id": "player-pin",
+      "name": "PIN gracza",
+      "mode": "spelling",
+      "screen": "player-pin",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "pin-toggle",
+        "pin-key"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
+      "id": "player-unlock",
+      "name": "Odblokowanie gracza · PIN",
+      "mode": "spelling",
+      "screen": "player-pin",
+      "state": "unlock",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "pin-toggle",
+        "pin-key"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
+      "id": "home",
+      "name": "Ekran startowy",
+      "mode": "spelling",
+      "screen": "home",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "button",
+        "profile",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "home"
+    },
+    {
+      "id": "settings",
+      "name": "Ustawienia aplikacji",
+      "mode": "spelling",
+      "screen": "settings",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "card",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "home"
+    },
+    {
+      "id": "spelling-settings",
+      "name": "Ortografia · ustawienia",
+      "mode": "spelling",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/ortografia/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "toggle",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-initial",
+      "name": "Ortografia · przed odpowiedzią",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "initial",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "slider",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-correct",
+      "name": "Ortografia · poprawna odpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "correct",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "slider",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-wrong",
+      "name": "Ortografia · błędna odpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/ortografia/",
+      "components": [
+        "flashcard",
+        "answer",
+        "slider",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-results",
+      "name": "Ortografia · koniec rundy",
+      "mode": "spelling",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/ortografia/",
+      "components": [
+        "card",
+        "button",
+        "progress",
+        "popup",
+        "slider",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "english-settings",
+      "name": "Angielski · ustawienia",
+      "mode": "english",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/angielski/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "english-initial",
+      "name": "Angielski · przed odpowiedzią",
+      "mode": "english",
+      "screen": "game",
+      "state": "initial",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "english-correct",
+      "name": "Angielski · poprawna odpowiedź",
+      "mode": "english",
+      "screen": "game",
+      "state": "correct",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "english-wrong",
+      "name": "Angielski · błędna odpowiedź",
+      "mode": "english",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/angielski/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "english-results",
+      "name": "Angielski · koniec rundy",
+      "mode": "english",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/angielski/",
+      "components": [
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress",
+        "progress",
+        "slider"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "flags-settings",
+      "name": "Flagi · ustawienia",
+      "mode": "flags",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/flagi/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "toggle",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "flags-initial",
+      "name": "Flagi · przed odpowiedzią",
+      "mode": "flags",
+      "screen": "game",
+      "state": "initial",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "flags-correct",
+      "name": "Flagi · poprawna odpowiedź",
+      "mode": "flags",
+      "screen": "game",
+      "state": "correct",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "flags-wrong",
+      "name": "Flagi · błędna odpowiedź",
+      "mode": "flags",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/flagi/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "flags-results",
+      "name": "Flagi · koniec rundy",
+      "mode": "flags",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/flagi/",
+      "components": [
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress",
+        "progress",
+        "slider"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "flag"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "reading-settings",
+      "name": "Czytanie · ustawienia",
+      "mode": "reading",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/czytanie/",
+      "components": [
+        "layout",
+        "card",
+        "jelly",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "reading-initial",
+      "name": "Czytanie · przed odpowiedzią",
+      "mode": "reading",
+      "screen": "game",
+      "state": "initial",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "reading-correct",
+      "name": "Czytanie · poprawna odpowiedź",
+      "mode": "reading",
+      "screen": "game",
+      "state": "correct",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "reading-wrong",
+      "name": "Czytanie · błędna odpowiedź",
+      "mode": "reading",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/czytanie/",
+      "components": [
+        "flashcard",
+        "answer",
+        "button",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "reading-results",
+      "name": "Czytanie · koniec rundy",
+      "mode": "reading",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/czytanie/",
+      "components": [
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress",
+        "progress",
+        "slider"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "math-settings",
+      "name": "Matematyka · ustawienia",
+      "mode": "math",
+      "screen": "wizard",
+      "state": "initial",
+      "route": "/matematyka/",
+      "components": [
+        "layout",
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "math-initial",
+      "name": "Matematyka · przed odpowiedzią",
+      "mode": "math",
+      "screen": "game",
+      "state": "initial",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "math-correct",
+      "name": "Matematyka · poprawna odpowiedź",
+      "mode": "math",
+      "screen": "game",
+      "state": "correct",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "math-wrong",
+      "name": "Matematyka · błędna odpowiedź",
+      "mode": "math",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/matematyka/",
+      "components": [
+        "answer",
+        "flashcard",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "math-results",
+      "name": "Matematyka · koniec rundy",
+      "mode": "math",
+      "screen": "results",
+      "state": "mixed",
+      "route": "/matematyka/",
+      "components": [
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress",
+        "progress",
+        "slider"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-rule",
+      "name": "Ortografia · zasada",
+      "mode": "spelling",
+      "screen": "results",
+      "state": "rule",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "card",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "result-progress"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-hint",
+      "name": "Ortografia · podpowiedź",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "hint",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "flashcard",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "spelling-pause",
+      "name": "Ortografia · pauza",
+      "mode": "spelling",
+      "screen": "game",
+      "state": "pause",
+      "route": "/ortografia/",
+      "components": [
+        "popup",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "game-timer"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "progress",
+      "name": "Moje wyniki",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "dashboard",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "collection",
+      "name": "Moja kolekcja słów",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "collection",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "jelly",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "trophies",
+      "name": "Moje puchary",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "achievements",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "categories",
+      "name": "Kategorie do poćwiczenia",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "categories",
+      "route": "/",
+      "components": [
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "rules",
+      "name": "Wyjaśnienia i zasady",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "rules",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "jelly",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "sessions",
+      "name": "Historia rund",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "sessions",
+      "route": "/",
+      "components": [
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    }
+  ],
+  "flows": [
+    {
+      "from": "players",
+      "to": [
+        "player-create"
+      ],
+      "action": "Dodaj gracza",
+      "selector": "[data-action=\"add-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players",
+      "to": [
+        "player-pin",
+        "home"
+      ],
+      "action": "Dalej · z PIN-em / bez",
+      "selector": "[data-action=\"continue-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players-empty",
+      "to": [
+        "player-create"
+      ],
+      "action": "Dodaj użytkownika",
+      "selector": "[data-action=\"add-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "players-empty",
+      "to": [
+        "home"
+      ],
+      "action": "Później",
+      "selector": "[data-action=\"guest-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-create",
+      "to": [
+        "player-pin"
+      ],
+      "action": "Dalej · poprawny nick",
+      "selector": "#player-create-form",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-create",
+      "to": [
+        "players"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"players\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-pin",
+      "to": [
+        "home"
+      ],
+      "action": "Akceptuj PIN / bez PIN-u",
+      "selector": "[data-action=\"submit-pin\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "player-pin",
+      "to": [
+        "player-create"
+      ],
+      "action": "Edytuj profil",
+      "selector": "[data-action=\"edit-player\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "home",
+      "to": [
+        "settings"
+      ],
+      "action": "Ustawienia",
+      "selector": "[data-action=\"settings\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "settings",
+      "to": [
+        "home"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "settings",
+      "to": [
+        "players"
+      ],
+      "action": "Zmień gracza",
+      "selector": "[data-action=\"players\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "home",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje postępy",
+      "selector": "[data-action=\"history\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "home",
+      "to": [
+        "spelling-settings",
+        "english-settings",
+        "flags-settings",
+        "reading-settings",
+        "math-settings"
+      ],
+      "action": "Wybierz przygodę",
+      "selector": "[data-action=\"choose-mode\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-settings",
+      "to": [
+        "*-initial"
+      ],
+      "action": "Zaczynamy!",
+      "selector": "[data-action=\"start\"],.start-button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-settings",
+      "to": [
+        "home"
+      ],
+      "action": "Powrót",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-initial",
+      "to": [
+        "*-correct",
+        "*-wrong"
+      ],
+      "action": "Wybierz odpowiedź",
+      "selector": ".answer",
+      "state": true,
+      "condition": ""
+    },
+    {
+      "from": "*-correct",
+      "to": [
+        "*-initial"
+      ],
+      "action": "Następne pytanie",
+      "selector": "",
+      "state": true,
+      "condition": ""
+    },
+    {
+      "from": "*-wrong",
+      "to": [
+        "*-initial"
+      ],
+      "action": "Przeciągnij dalej / następne pytanie",
+      "selector": ".spelling-continue-rail",
+      "state": true,
+      "condition": ""
+    },
+    {
+      "from": "*-initial",
+      "to": [
+        "*-results"
+      ],
+      "action": "Koniec rundy / wyjdź",
+      "selector": "[data-action=\"exit\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-results",
+      "to": "*-initial",
+      "action": "Nowa runda",
+      "selector": ".result-continue-rail,[data-action=\"again\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-results",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-results",
+      "to": [
+        "progress"
+      ],
+      "action": "Moja kolekcja",
+      "selector": "[data-action=\"history\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-results",
+      "to": [
+        "spelling-rule"
+      ],
+      "action": "Poznaj zasadę",
+      "selector": "[data-rule-index]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-rule",
+      "to": [
+        "spelling-results"
+      ],
+      "action": "Zamknij zasadę",
+      "selector": ".result-rule-dialog button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-initial",
+      "to": [
+        "spelling-hint"
+      ],
+      "action": "Podpowiedź",
+      "selector": "[data-action=\"hint\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-hint",
+      "to": [
+        "spelling-initial"
+      ],
+      "action": "Rozumiem",
+      "selector": ".spelling-hint-sheet button",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-initial",
+      "to": [
+        "spelling-pause"
+      ],
+      "action": "Pauza",
+      "selector": "[data-action=\"pause\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "spelling-pause",
+      "to": [
+        "spelling-initial"
+      ],
+      "action": "Wznów",
+      "selector": "[data-action=\"resume\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "collection"
+      ],
+      "action": "Kolekcja",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "collection",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "collection",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "rules"
+      ],
+      "action": "Zasady",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "rules",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "rules",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "trophies"
+      ],
+      "action": "Puchary",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "categories"
+      ],
+      "action": "Kategorie",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "categories",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "categories",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "sessions"
+      ],
+      "action": "Historia rund",
+      "selector": "[data-progress]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "sessions",
+      "to": [
+        "progress"
+      ],
+      "action": "Moje wyniki",
+      "selector": "[data-progress=\"dashboard\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "sessions",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "progress",
+      "to": [
+        "home"
+      ],
+      "action": "Ekran główny",
+      "selector": "[data-action=\"home\"]",
+      "state": false,
+      "condition": ""
+    },
+    {
+      "from": "*-initial",
+      "to": "*-settings",
+      "action": "Wyjdź po potwierdzeniu",
+      "selector": "[data-action=\"exit-confirm\"]",
+      "condition": "Zapis wyniku przerwanej rundy"
+    }
+  ]
+}

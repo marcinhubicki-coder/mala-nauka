@@ -1,9 +1,9 @@
 import {effectiveTokens} from '../design-system/model.mjs';
 // The defaults preserve the approved result motion. Design Studio may tune each
 // phase without changing the geometry of the result screen.
-export function resultMotionSettings(){
-  const progress={duration:3000,easePower:3.2/1.75,stretch:.5,bounce:2.1,wobble:.2,startKick:2,flash:.35,finishDuration:950,...effectiveTokens('progress')};
-  const text={settlePercent:76,rollDuration:250,hundredPause:90,hundredStagger:24,hundredRevealDelay:210,kickDuration:220,handoffDelay:120,...effectiveTokens('resultText')};
+export function resultMotionSettings(override={}){
+  const progress={duration:3000,easePower:3.2/1.75,stretch:.5,bounce:2.1,wobble:.2,startKick:2,flash:.35,finishDuration:950,...effectiveTokens('progress'),...override.progress};
+  const text={settlePercent:76,rollDuration:250,hundredPause:90,hundredStagger:24,hundredRevealDelay:210,kickDuration:220,handoffDelay:120,...effectiveTokens('resultText'),...override.resultText};
   return {progress:{...progress,duration:Math.max(1,progress.duration)},text:{...text,settleStart:text.settlePercent/100}};
 }
 const presentations = new WeakMap();
@@ -182,7 +182,7 @@ export function settleResult(root) {
   presentations.get(root)?.();
 }
 
-export function revealResult(root, delay = 1000) {
+export function revealResult(root, delay = 1000, override={}) {
   settleResult(root);
   if (reduced() || document.hidden) return;
   const section = root.querySelector('.result-v4');
@@ -195,7 +195,7 @@ export function revealResult(root, delay = 1000) {
   const cap = fill.querySelector('.round-progress-cap');
   const target = clamp(Number(fill.dataset.percent) || 0, 0, 100);
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const settings=resultMotionSettings(),progressSettings=settings.progress,textSettings=settings.text;
+  const settings=resultMotionSettings(override),progressSettings=settings.progress,textSettings=settings.text;
 
   fill.style.width = '0%';
   fill.style.transform = '';

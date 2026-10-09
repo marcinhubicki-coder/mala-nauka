@@ -1,3 +1,5 @@
+import {resolveRoute} from './shared/navigation.mjs';
+import {animateStateChange} from './shared/state-motion.mjs';
 import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
 import {createStudioGame} from './design-system/scenarios.mjs';
@@ -246,7 +248,7 @@ function renderPinError(){
 }
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
- fields.innerHTML=pinFieldsMarkup();renderPinError();
+ const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();renderPinError();if(animate)animateStateChange(card,oldHeight);
  if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
@@ -401,10 +403,10 @@ async function start() {
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
- const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
+ const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;return renderGame();};
  if(selectedMode==='spelling'){
   game.pause();
-  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);}
+  try{await render();await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
   catch{render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
   if(document.hidden){pause();return;}
@@ -573,22 +575,28 @@ function updateClock(){
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
-function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
+function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i wrócimy do ustawień tego trybu.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Wyjdź do ustawień':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
+function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
  const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
  if(game.mode==='spelling'){result.scoring=game.scoring||structuredClone(DEFAULT_SCORING);result.score=scoreAttempts(result.attempts,result.scoring).total;result.poolExhausted=game.poolExhausted===true;}
  const record=recordResult(progress,result);void persistProgress();lastResult=result;
- if(goHome&&result.mode!=='spelling'){navigate('home');return;}view='results';
- if(result.mode==='spelling'){
-  const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
-  void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});return;
- }
- spellingArt.reset();root.dataset.view=view;
- root.innerHTML=`<section class="result"><div class="result-star" aria-hidden="true">✦</div><span class="eyebrow">Przygoda ukończona</span><h1 tabindex="-1">Dobra robota!</h1><p>Mały trening, kolejny krok do przodu.</p><span class="badge">${MODES[result.mode].name} · ${result.dyktando?'Dyktando':minutes(result.duration)}</span><div class="stats">${[['Poprawne',result.correct],['Do powtórki',result.wrong],['Razem',result.correct+result.wrong]].map(([label,n])=>`<div class="stat"><b>${n}</b><span>${label}</span></div>`).join('')}</div><p class="accuracy"><strong>${accuracy(result.correct,result.wrong)}%</strong> poprawnych odpowiedzi</p><p class="record">${record?'✦ Twój nowy rekord!':'Każda runda pomaga zapamiętać więcej.'}</p><div class="stack">${btn('Jeszcze jedna runda →','again','primary')}${btn('Wybierz inną przygodę','home')}</div></section>`;root.querySelector('h1').focus({preventScroll:true});
+ if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
+ view='results';
+ const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
+ if(result.mode==='spelling'){void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});return;}
+ render(true,200);
 }
+function routeTo(target){
+ if(target==='players'){void playerService.lockSession();activePlayer=null;playersPage();return;}
+ if(target==='progress'){navigate('history');return;}
+ if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(selectedMode==='math'&&!new URLSearchParams(location.search).has('studio')){location.href=new URL('./matematyka/',import.meta.url).href;return;}navigate('wizard');return;}
+ if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
+ navigate(target==='settings'?'settings':'home');
+}
+
 function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function showDeleteProfilePrompt(){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz wszystkie jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
@@ -622,13 +630,16 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
- if(action==='switch-player'){playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
- if(['home','settings'].includes(action))navigate(action);
- if(action==='history'){collectionReturn=view==='results'&&lastResult?.mode==='spelling'?{result:lastResult,ui:getResultViewState(root)}:null;navigate('history');}
- if(action==='return-results'&&collectionReturn){destroyProgressScreen(root);closeResultRule(root,false);const back=collectionReturn;collectionReturn=null;view='results';selectedMode=back.result.mode;setScreenTheme('#dfddfc');renderSpellingResult(root,back.result,words,back.ui);}
+ if(action==='switch-player'){const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){routeTo(target);return;}playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(['home','settings','history','return-results','result-back','choose-mode'].includes(action)){
+  const from=document.documentElement.dataset.dsView||view,context=action==='return-results'?collectionReturn?.result.mode+'-results':action==='choose-mode'?button.dataset.mode:'';
+  if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
+  const mode=action==='choose-mode'?button.dataset.mode:selectedMode;
+  const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,mode,context);
+  routeTo(target);return;
+ }
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
- if(action==='choose-mode'){selectedMode=button.dataset.mode;navigate('wizard');}
  if(action==='again'){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);start();}
  if(action==='phrase-word'&&view==='game'&&!modal.open&&game?.current?.kind==='reading-phrase'&&game.state==='playing'){
   if(phraseInput.length<game.current.phraseWords.length&&!phraseInput.includes(button.dataset.value))phraseInput.push(button.dataset.value);
@@ -659,7 +670,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
- if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
+ if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='exit-confirm')finish(true,true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }
@@ -723,9 +734,10 @@ root.addEventListener('change',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Tab')document.body.classList.add('keyboard');if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||modal.open||view!=='game')return;if(/^[1-6]$/.test(e.key)&&game.state==='playing'){e.preventDefault();root.querySelectorAll('.answer')[Number(e.key)-1]?.click();}if(e.key==='Escape'){e.preventDefault();pause();}});
 document.addEventListener('pointerdown',()=>document.body.classList.remove('keyboard'));
+document.addEventListener('mala-nauka:orientation',e=>{if(e.detail?.blocked&&view==='game')pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(globalThis.__MALA_NAUKA_MODE__&&sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
 

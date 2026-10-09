@@ -1,3 +1,8 @@
+import {renderSpellingResult,toggleResultDetail,stopResultScroll} from '../ortografia/result-screen.mjs';
+import {renderProgressScreen,destroyProgressScreen} from '../progress-screen.mjs';
+import {exampleProgress} from '../progress-example.mjs';
+import {resolveRoute} from '../shared/navigation.mjs';
+import {loadWords} from '../shared/asset-loader.mjs';
 import { Session } from '../game.mjs?v=20261001-adventure';
 import { cleanProgress, recordResult } from '../progress.mjs?v=3-local-profiles';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
@@ -11,6 +16,8 @@ let currentDuration = 180;
 let correct = 0;
 let wrong = 0;
 let cancelled = false;
+let lastResult;
+let historyOrigin='';
 
 function formatRemaining(milliseconds) {
   const total = Math.max(0, Math.ceil(milliseconds / 1000));
@@ -86,7 +93,7 @@ function accuracy() {
   return correct + wrong ? Math.round(correct * 100 / (correct + wrong)) : 0;
 }
 
-async function saveMathProgress() {
+async function saveMathProgress(early=false) {
   if (new URLSearchParams(location.search).has('studio')) return;
   const snapshot = {
     category: currentMode,
@@ -110,7 +117,7 @@ async function saveMathProgress() {
       correct: snapshot.correct,
       wrong: snapshot.wrong,
       date: snapshot.date,
-      early: false,
+      early,
     };
     recordResult(progress, result);
     await playerService.saveProgress(player.id, progress);
@@ -120,7 +127,7 @@ async function saveMathProgress() {
 }
 
 function endRound() {
-  if (!clock || cancelled || document.querySelector('.math-result-screen')) return;
+  if (!clock || cancelled || document.querySelector('.math-round-summary')) return;
   if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
 
   clock.end();
@@ -132,34 +139,37 @@ function endRound() {
 }
 
 function renderRoundSummary() {
-  const app = document.querySelector('#app');
-  if (!app) return;
-  app.dataset.mode = 'math';
-  app.dataset.view = 'results';
-  const total = correct + wrong;
-  app.innerHTML = `
-    <section class="math-result-screen" aria-label="Podsumowanie rundy">
-      <div class="math-result-star" aria-hidden="true">✦</div>
-      <p class="math-result-eyebrow">Przygoda ukończona</p>
-      <h1>Dobra robota!</h1>
-      <p class="math-result-subtitle">Mały trening, kolejny krok do przodu.</p>
-      <div class="math-result-badge">${labels[currentMode]} · ${currentDuration / 60} min</div>
-
-      <div class="math-result-stats">
-        <div class="math-result-stat"><strong>${correct}</strong><span>Poprawne</span></div>
-        <div class="math-result-stat"><strong>${wrong}</strong><span>Do powtórki</span></div>
-        <div class="math-result-stat"><strong>${total}</strong><span>Razem</span></div>
-      </div>
-
-      <p class="math-result-accuracy"><strong>${accuracy()}%</strong> poprawnych odpowiedzi</p>
-
-      <div class="math-result-actions">
-        <button type="button" class="math-result-again" data-math-result-again>Jeszcze jedna runda →</button>
-        <button type="button" class="math-result-back" data-math-result-back>Wybierz inne działanie</button>
-      </div>
-    </section>
-  `;
+ const app=document.querySelector('#app');if(!app)return;
+ lastResult={mode:'math',category:currentMode,duration:currentDuration,correct,wrong};
+ renderSpellingResult(app,lastResult,[],null,{animate:true,delay:200});
+ app.querySelector('.result-v4').classList.add('math-round-summary');
 }
+function goRoute(action){
+ const app=document.querySelector('#app'),from=document.documentElement.dataset.dsView||'math-results';
+ const to=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,action==='exit-confirm'?'math-initial':from,action,'math',action==='return-results'?historyOrigin:'');
+ stopResultScroll(app);destroyProgressScreen(app);
+ if(to==='math-settings'){window.dispatchEvent(new CustomEvent('math-back-to-setup'));return;}
+ if(to==='math-results'&&lastResult){renderRoundSummary();return;}
+ if(to==='progress'){historyOrigin=from==='math-results'?'math-results':'home';void showHistory();return;}
+ const target=to==='settings'?'?open=settings':to==='players'?'?open=players':to.endsWith('-settings')?to.slice(0,-9)+'/':'';
+ const folder={spelling:'ortografia',english:'angielski',reading:'czytanie',flags:'flagi'}[to.slice(0,-9)];
+ location.href=new URL(folder?'../'+folder+'/':'../'+target,import.meta.url).href;
+}
+async function showHistory(){
+ const app=document.querySelector('#app');const words=await loadWords();
+ const studio=new URLSearchParams(location.search).has('studio');
+ let progress=exampleProgress(words);
+ if(!studio){await playerService.init();const profile=await playerService.getSessionPlayer();progress=cleanProgress(profile?await playerService.getProgress(profile.id):null);}
+ app.dataset.view='history';app.dataset.mode='math';
+ renderProgressScreen(app,{progress,words,initialMode:'math',backAction:historyOrigin==='math-results'?'return-results':'home',onPractice:mode=>{if(mode==='math'){goRoute('result-back');return;}const folder={spelling:'ortografia',english:'angielski',reading:'czytanie',flags:'flagi'}[mode];if(folder)location.href=new URL('../'+folder+'/',import.meta.url).href;}});
+}
+window.addEventListener('math-request-exit',()=>{
+ if(document.querySelector('.math-exit-dialog[open]'))return;
+ clock?.pause();const dialog=document.createElement('dialog');dialog.className='math-exit-dialog';
+ dialog.innerHTML='<h2>Zakończyć tę rundę?</h2><p>Zapiszemy wynik i wrócimy do ustawień Matematyki.</p><button data-math-resume>Graj dalej</button><button data-math-exit>Wyjdź do ustawień</button>';document.body.append(dialog);dialog.showModal();
+ const close=()=>{dialog.remove();clock?.resume();};dialog.addEventListener('cancel',close);dialog.querySelector('[data-math-resume]').onclick=close;
+ dialog.querySelector('[data-math-exit]').onclick=()=>{void saveMathProgress(true);clock?.end();cancelled=true;clock=null;dialog.remove();goRoute('exit-confirm');};
+});
 
 export function renderMathStudioResult(fixture) {
   if (!new URLSearchParams(location.search).has('studio')) return;
@@ -168,6 +178,7 @@ export function renderMathStudioResult(fixture) {
   clock = null; syncTimerSnapshot(); renderRoundSummary();
 }
 
+document.querySelector('#app').addEventListener('spelling-repeat-request',()=>{stopResultScroll(document.querySelector('#app'));window.dispatchEvent(new CustomEvent('math-restart',{detail:{mode:currentMode,duration:currentDuration}}));});
 window.addEventListener('math-round-start', event => {
   startClock(event.detail?.mode || 'multiply', Number(event.detail?.duration) || 180);
 });
@@ -191,20 +202,16 @@ document.addEventListener('click', event => {
     return;
   }
 
-  if (event.target.closest?.('[data-math-result-again]')) {
-    window.dispatchEvent(new CustomEvent('math-restart', { detail: { mode: currentMode, duration: currentDuration } }));
-    return;
-  }
+  const action=event.target.closest?.('[data-action]')?.dataset.action;
+  if(action==='toggle-result'){toggleResultDetail(document.querySelector('#app'),event.target.closest('[data-action]'));return;}
+  if(['result-back','history','return-results','home','settings'].includes(action)){event.preventDefault();goRoute(action);}
 
-  if (event.target.closest?.('[data-math-result-back]')) {
-    window.dispatchEvent(new CustomEvent('math-back-to-setup'));
-  }
 }, true);
 
 document.addEventListener('visibilitychange', () => {
   if (!clock) return;
   if (document.hidden && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
-  if (!document.hidden && clock.state === 'paused' && !document.querySelector('.quiz-stage.has-explainer')) clock.resume();
+  if (!document.hidden && !document.documentElement.classList.contains('landscape-blocked') && clock.state === 'paused' && !document.querySelector('.quiz-stage.has-explainer')) clock.resume();
   syncTimerSnapshot();
 });
 
@@ -215,7 +222,7 @@ setInterval(() => {
 
   ensureTimerUi();
   const hasExplainer = Boolean(document.querySelector('.quiz-stage.has-explainer'));
-  const shouldPause = hasExplainer || document.hidden;
+  const shouldPause = hasExplainer || document.hidden || document.documentElement.classList.contains('landscape-blocked') || Boolean(document.querySelector('.math-exit-dialog[open]'));
 
   if (shouldPause && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
   if (!shouldPause && clock.state === 'paused') clock.resume();

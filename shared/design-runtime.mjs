@@ -1,10 +1,12 @@
+import {animatePresence} from './state-motion.mjs';
 import {triggerSurfaceEffects} from './surface-effects.mjs';
 import {animateScreen,DEFAULT_MOTION,transitionMotion} from './screen-motion.mjs';
 import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
-import {annotateElements} from './element-system.mjs';
+import {syncElementMotion} from './element-motion.mjs';
+import {annotateElements,visualValue} from './element-system.mjs';
 const base = new URL('../', import.meta.url);
 let config,designSignature;
 export function applyDesign(value) {
@@ -40,7 +42,7 @@ export async function initDesign() {
     if(app.dataset.ds!=='1')app.dataset.ds='1';
     if(location.pathname.includes('/matematyka/')){
       if(app.dataset.mode!=='math')app.dataset.mode='math';
-      const mathView=app.querySelector('.math-result-screen')?'results':app.querySelector('[data-math-quiz],.quiz-screen')?'game':app.querySelector('.category-grid')?'wizard':'';
+      const mathView=app.querySelector('.math-round-summary,.math-result-screen')?'results':app.querySelector('[data-math-quiz],.quiz-screen')?'game':app.querySelector('.category-grid')?'wizard':'';
       if(mathView&&app.dataset.view!==mathView)app.dataset.view=mathView;
     }
     if(app.dataset.view){
@@ -62,11 +64,14 @@ export async function initDesign() {
       // Choosing a maths setup option only changes visual selection classes.
       // Re-annotating the whole design tree here causes an unnecessary WebKit
       // repaint of the hero and makes attached particles appear to jump.
-      if(document.documentElement.dataset.dsView==='math-settings'&&record.target.matches?.('.category-card,.math-duration-choice'))return false;
+      if(record.target.matches?.('.category-card,.math-duration-choice')){
+        const node=record.target;syncElementMotion(node,visualValue(config,document.documentElement.dataset.dsView,{id:node.dataset.dsElement,recipe:node.dataset.dsRecipe,kind:node.dataset.dsKind}));return false;
+      }
       return true;
     });
-    if(meaningful)annotate();
+    if(meaningful){annotate();animatePresence(records);}
   }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
+  if(app)app.addEventListener('change',event=>{const label=event.target.closest?.('label');if(!label)return;for(const node of label.parentElement.children)if(node.dataset.dsElement)syncElementMotion(node,visualValue(config,document.documentElement.dataset.dsView,{id:node.dataset.dsElement,recipe:node.dataset.dsRecipe,kind:node.dataset.dsKind}));});
   if(app)app.addEventListener('click',event=>{if(event.target.closest('[data-action=answer],.math-answer,.answer'))queueMicrotask(()=>triggerSurfaceEffects(app,'answer'));});
   annotate();
   return settings;

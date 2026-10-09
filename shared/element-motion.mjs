@@ -3,7 +3,7 @@ export const ELEMENT_MOTIONS={none:'Bez animacji',float:'Spokojne unoszenie',pul
 const active=new Map();
 export function syncElementMotion(node,style={}){
  for(const [old,row]of active)if(!old.isConnected){row.animation.cancel();active.delete(old);}
- const kind=style.animation||'none',signature=JSON.stringify([kind,style.animationDuration,style.animationDistance]);
+ const selected=node.matches?.(':is(.selected,.active,.is-active,.is-selected,[aria-pressed=true],label:has(input:checked))'),kind=(selected?style.activeAnimation:style.idleAnimation)||style.animation||'none',signature=JSON.stringify([kind,style.animationDuration,style.animationDistance]);
  if(active.get(node)?.signature===signature){const a=active.get(node).animation;if(document.hidden||node.closest('.paused')||style.visibility==='hidden'||style.visibility==='removed')a.pause();else if(a.playState==='paused')a.play();return;}
  active.get(node)?.animation.cancel();active.delete(node);
  if(kind==='none'||!ELEMENT_MOTIONS[kind]||!node.animate||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches||active.size>=16)return;

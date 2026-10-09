@@ -5,7 +5,7 @@ import {SURFACE_EFFECTS,SURFACE_FIELDS,validateSurface,syncElementSurface,syncSc
 import {ELEMENT_MOTIONS,syncElementMotion} from './element-motion.mjs';
 // One visual contract for production DOM, the inspector and imported sketches.
 import {assetUrl} from './asset-loader.mjs';
-export const ELEMENT_KINDS={container:'Kontener',text:'Tekst',icon:'Ikona',image:'Grafika',button:'Przycisk',background:'Tło',timer:'Zegar gry',meter:'Pasek wyniku',toggle:'Przełącznik PIN',key:'Klawisz PIN'};
+export const ELEMENT_KINDS={container:'Kontener',text:'Tekst',input:'Pole tekstowe',icon:'Ikona',image:'Grafika',button:'Przycisk',background:'Tło',timer:'Zegar gry',meter:'Pasek wyniku',toggle:'Przełącznik PIN',key:'Klawisz PIN'};
 export const ELEMENT_FAMILIES={
  'button-main':'Przycisk główny','button-answer':'Odpowiedź w grze','button-home-card':'Kafel przygody','button-home-progress':'Strzałka do postępów','button-local':'Przycisk pomocniczy',
  'control-jelly':'Przełącznik jelly','control-toggle':'Mały toggle','control-pin':'Przełącznik PIN','control-pin-key':'Klawisz PIN','container-card':'Kafel ustawień','container-mission':'Kafel misji z ilustracją','image-mission':'Ilustracja misji','result-points-bubble':'Bańka punktów'
@@ -44,7 +44,7 @@ function kindOf(node){
  if(node.dataset.dsKind)return node.dataset.dsKind;
  if(node.matches('.game-clock,.game-timer,.time-pill,.timer,.spelling-timer,.clock,.game-time'))return'timer';
  if(node.matches('progress')&&node.closest('[data-view=game]'))return'timer';if(node.matches('progress,.round-progress,.math-round-progress'))return'meter';
- if(node.matches('.player-name-input'))return 'text';
+ if(node.matches('.player-name-input'))return 'input';
  if(node.matches('.pin-mode'))return'toggle';if(node.matches('.pin-key'))return'key';
  if(node.matches('.spelling-screen-bg,.home-art-backdrop,.home-sky-bleed,.home-ground-bleed'))return'background';
  if(node.matches('button'))return'button';if(node.matches('img,.mn-soap-picture,.mn-production-photo,.player-avatar-art,.home-art-slice,.home-logo-art'))return'image';

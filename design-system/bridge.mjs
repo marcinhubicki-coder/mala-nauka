@@ -164,21 +164,6 @@ function scheduleReport() {
   clearTimeout(reportTimer);
   reportTimer=setTimeout(report,70);
 }
-let isolationVersion=0;
-async function isolatePart(selector){
- const version=++isolationVersion,deadline=performance.now()+2500;
- let target;
- do{target=[...collect().values()].find(row=>row.node.matches(selector))?.node;if(target)break;await new Promise(resolve=>requestAnimationFrame(resolve));}while(version===isolationVersion&&performance.now()<deadline);
- if(!target||version!==isolationVersion)return;
- await focusItem({selector,reveal:true});
- target=[...items.values()].find(row=>row.node.matches(selector))?.node||target;
- if(target.ownerSVGElement)target=target.ownerSVGElement;
- for(const n of document.querySelectorAll('.ds-isolation-path,.ds-isolation-target'))n.classList.remove('ds-isolation-path','ds-isolation-target');
- target.classList.add('ds-isolation-target');for(let n=target.parentElement;n;n=n.parentElement)n.classList.add('ds-isolation-path');
- let sheet=document.querySelector('#ds-library-isolation');if(!sheet){sheet=document.createElement('style');sheet.id='ds-library-isolation';document.head.append(sheet);}
- sheet.textContent=`body{background:#f4f9ff!important;padding:16px!important;margin:0!important;min-height:100dvh!important;display:grid!important;place-items:center!important}body:before,body:after{display:none!important}.ds-isolation-path>:not(.ds-isolation-path):not(.ds-isolation-target){display:none!important}.ds-isolation-path:not(html):not(body){display:contents!important;position:static!important;background:none!important;box-shadow:none!important;transform:none!important}.ds-isolation-target{position:relative!important;inset:auto!important;translate:none!important;max-width:100%!important;max-height:calc(100dvh - 32px)!important;margin:0 auto!important;flex:none!important}img.ds-isolation-target{object-fit:contain!important;width:100%;height:auto}.ds-isolation-target[data-ds-kind=background]{width:100%!important;height:260px!important}.ds-isolation-target[data-ds-kind=icon]{width:48px;height:48px}`;
- inspecting=false;showHighlight=false;report();
-}
 let focusVersion=0;
 async function focusItem(message) {
   const version=++focusVersion;
@@ -255,7 +240,6 @@ if (studio) {
       scheduleReport();
     }
     if(message.type==='inspect'){inspecting=Boolean(message.enabled);showHighlight=Boolean(message.highlight);paintHighlight();}
-    if(message.type==='isolate'&&typeof message.selector==='string'){await isolatePart(message.selector);return;}
     if(message.type==='focus')focusItem(message);
     if(message.type==='blueprint'){
       const source=items.get(message.id);if(!source)return;

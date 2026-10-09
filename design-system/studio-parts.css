@@ -1,0 +1,36 @@
+/* Production primitives in an independent, unscaled 390 px sample canvas. */
+.live-component{--player-navy:#101957;--player-muted:#6670a0;--profile-accent:var(--ds-theme-accent);--profile-accent-deep:var(--ds-theme-bottom);--profile-accent-soft:#e1f5ff;--profile-accent-shadow:#187de044;--profile-accent-shadow-deep:#145ead33;--profile-color-ms:600ms;font-family:var(--ds-font-body);color:var(--player-navy)}
+#live-sample:has([data-ds-recipe]){display:grid;align-items:center;justify-items:stretch;gap:10px}
+#live-sample>.step-dot,#live-sample>[data-ds-recipe=icon-pin-dot],#live-sample>.player-avatar-art,#live-sample>.part-icon-button{justify-self:center}
+.live-component .step-dot{display:grid;place-items:center;flex:none;width:31px;height:31px;border-radius:50%;font:700 19px var(--ds-font-body);background:radial-gradient(ellipse at 35% 25%,#eafaff,#bde8ff);color:#0061d4}
+.live-component [data-ds-recipe=icon-pin-dot]{display:block;width:14px;height:14px;border:2px solid #a9b8cd;border-radius:50%;background:transparent}
+.live-component [data-ds-recipe=icon-pin-dot].filled{background:var(--profile-accent);border-color:var(--profile-accent)}
+.live-component .part-text{font-family:var(--ds-font-body);font-size:20px;line-height:1.25}
+.live-component [data-ds-recipe=text-player-title]{font-family:var(--ds-font-display);font-size:35px;margin:0}
+.live-component [data-ds-recipe=text-nickname]{font-family:var(--ds-font-display);font-size:32px}
+.live-component [data-ds-recipe=text-player-copy]{display:block;font-size:16px}
+.live-component [data-ds-recipe=text-nickname-help]{font-size:12px;color:#7080a4}
+.live-component [data-ds-recipe=text-field-label]{font-family:var(--ds-font-ui);font-size:20px;font-weight:800}
+.live-component .part-image{display:block;width:100%;height:auto;max-height:280px;object-fit:contain;border-radius:16px}
+.live-component .part-background{width:100%;height:280px;border-radius:16px;background-size:cover;background-position:center}
+.live-component .part-surface{width:100%;min-height:100px;background:#fff;border:1px solid #d8e3f7;border-radius:20px;box-shadow:0 12px 25px #34567818}
+.live-component .part-panel{width:100%;height:auto;margin:0;border:1px solid #d8e3f7;border-radius:28px;padding:20px;background:#fff;box-shadow:0 12px 25px #34567818}
+.live-component .part-panel-body,.live-component .part-composition{display:flex;flex-direction:column;gap:12px}
+.live-component .part-icon-button{display:grid;place-items:center;width:52px;height:52px;border:1px solid #cbe5ff;border-radius:19px;background:var(--ds-theme-light);color:var(--ds-theme-idle-ink)}
+.live-component .part-icon-button svg{width:24px;height:24px}
+.live-component .part-points{display:grid;place-items:center;width:140px;height:140px;justify-self:center;border-radius:50%;background:linear-gradient(var(--ds-theme-light),var(--ds-theme-accent));color:#fff;font:700 40px var(--ds-font-display);box-shadow:0 10px 20px #145ead33}
+.live-component .player-card{flex:none;min-height:115px;grid-template-columns:84px minmax(0,1fr) 30px;border-radius:28px}
+.live-component .player-card .player-avatar-art{width:84px;height:84px;flex-basis:84px}
+.live-component .player-card strong{font-size:32px}
+.live-component .player-card .player-select-mark,.live-component .player-card .check{width:30px;height:30px}
+.live-component .player-card .empty-check{width:26px;height:26px}
+.live-component .player-grid.has-selection .player-card:not(.is-selected){opacity:.35;filter:grayscale(1);transition:opacity 350ms,filter 350ms}
+.live-component .pin-key{width:100%;font-family:var(--ds-font-body)}
+.live-component .pin-profile .player-avatar-art{width:84px;height:84px;flex-basis:84px}
+.live-component .player-title h1{white-space:normal}
+.live-component .pin-fields{width:100%}
+.live-component .part-mode-card{position:relative;width:100%;padding:16px;border-radius:24px;border:0;color:var(--player-navy);background:white;display:grid;gap:10px}
+.live-component .part-mode-card>.part-surface{position:absolute;inset:0;height:100%;z-index:0}
+.live-component .part-mode-card>.part-image,.live-component .part-mode-card>.part-text{position:relative;z-index:1}
+.live-component .part-meter-fill{display:block;border-radius:12px}
+.live-recipe-controls [hidden]{display:none!important}

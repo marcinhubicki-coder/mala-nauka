@@ -143,10 +143,10 @@
 .pin-profile h2{margin:0;font-size:clamp(24px,calc(min(224px,100vw - 166px) / var(--nickname-length,6)),40px);line-height:1.1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.4px}
 .pin-instruction{font-size:23px;font-weight:500;margin:16px 0 8px;color:var(--player-navy);white-space:nowrap}.pin-instruction strong{font-weight:700}
 .pin-fields>p{margin:0;color:#7080a4;font-family:var(--ds-font-body),sans-serif;font-size:14px;line-height:1.45}
-.pin-mode{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:5px;background:#edf6fc;border:1px solid #deebf5;border-radius:22px;--jelly-active-ink:#fff;--jelly-idle-ink:#617096;--jelly-top:var(--profile-accent);--jelly-bottom:var(--profile-accent-deep);--jelly-border-color:var(--profile-accent);--jelly-shadow:var(--profile-accent-shadow)}
+.pin-mode{font-size:16px;position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;padding:5px;background:#edf6fc;border:1px solid #deebf5;border-radius:22px;--jelly-active-ink:#fff;--jelly-idle-ink:#617096;--jelly-top:var(--profile-accent);--jelly-bottom:var(--profile-accent-deep);--jelly-border-color:var(--profile-accent);--jelly-shadow:var(--profile-accent-shadow)}
 .pin-mode label{position:relative;z-index:1;display:grid;place-items:center;min-width:0;min-height:43px;cursor:pointer}
 .pin-mode input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.pin-mode label span{font:700 16px var(--ds-font-body),sans-serif;color:var(--jelly-idle-ink);pointer-events:none;white-space:nowrap}
+.pin-mode label span{font:700 1em var(--ds-font-body),sans-serif;color:var(--jelly-idle-ink);pointer-events:none;white-space:nowrap}
 .pin-mode-indicator{position:absolute;pointer-events:none;border:1px solid transparent}
 #app[data-view="player-pin"] .pin-card{margin:0 auto}
 .pin-settings{display:flex;gap:14px;align-items:center;justify-content:space-between}.pin-settings p{font-size:13px;color:var(--muted);margin:4px 0 0}.pin-settings button{flex:none;width:auto;font-size:13px}

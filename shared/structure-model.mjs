@@ -1,10 +1,10 @@
-// Shared, DOM-backed vocabulary for the library, view map and element inspector.
+// Shared, code-backed vocabulary for the library, view map and element inspector.
 // Palettes are independent of families: a family is a complete view.
 export const ATOMS={
  title:{name:'Tytuł ekranu',selector:'.page-head h1,.player-title h1',parents:['layout','profile','card'],role:'display',size:25,weight:700},
  subtitle:{name:'Podtytuł',selector:'.wizard-intro p,.result-subtitle,.player-title p',parents:['layout','card','profile'],role:'body',size:16,weight:600},
  section:{name:'Nagłówek sekcji',selector:'.rule-explanation h3,.progress-section-title',parents:['card','popup'],role:'ui',size:20,weight:800},
- numberText:{name:'Numer + tekst',selector:'fieldset legend,.field-title',parents:['card'],role:'ui',size:20,weight:800},
+ numberText:{name:'Etykieta sekcji (tekst)',selector:'fieldset legend,.field-title',parents:['card'],role:'ui',size:20,weight:800},
  emphasis:{name:'Wyróżnik',selector:'.result-word,.collection-word-name',parents:['flashcard','card'],role:'display',size:24,weight:700},
  hint:{name:'Podpowiedź / treść zasady',selector:'.rule-explanation>p,.spelling-hint-description',parents:['popup','flashcard'],role:'body',size:17,weight:600},
  popupHeading:{name:'Nagłówek popupu',selector:'.result-rule-dialog h2,.spelling-hint-sheet h2,.pause-dialog h2',parents:['popup'],role:'display',size:24,weight:700},
@@ -22,19 +22,21 @@ export const PARTS=[
  atom('image-mn-soap-picture','Zdjęcie w bańce','image','.mn-production-photo,.mn-soap-picture'),
  atom('image-home-logo-art','Logo na ekranie startowym','image','.home-logo-art'),
  atom('background-home-art-backdrop','Tło ekranu','background','.home-art-backdrop,.spelling-art-layer,.spelling-screen-bg'),
- atom('control-jelly','Przełącznik jelly','toggle','.ds-jelly,.jelly-v4-container',{block:'jelly'}),
- atom('control-pin','PIN / bez PIN-u','toggle','.pin-mode',{inherits:'control-jelly',sample:'pin'}),
+ atom('control-jelly','Przełącznik jelly','toggle','.ds-jelly:not(.pin-mode),.jelly-v4-container:not(.pin-mode)',{block:'jelly'}),
+ group('control-pin','PIN / bez PIN-u','.pin-mode',['control-jelly','pin-option'],{kind:'toggle',inherits:'control-jelly',sample:'pin'}),
  atom('control-toggle','Przełącznik czasu / słów','toggle','.compact-toggle',{block:'toggle'}),
- atom('jelly-option','Opcja jelly','text','.jelly-v4-label,.category-card,.math-duration-choice'),
+ atom('jelly-option','Opcja jelly','text','.jelly-v4-label:not(.pin-mode>label),.category-card,.math-duration-choice'),
  atom('pin-option','Opcja PIN','text','.pin-mode label',{inherits:'jelly-option'}),
  atom('control-pin-key','Klawisz klawiatury PIN','key','.pin-key',{inherits:'button-main',sample:'key'}),
  atom('icon-pin-dot','Cyfra PIN · wskaźnik','icon','.pin-dots>span'),
- atom('input-player-name','Pole imienia','text','.player-name-input',{sample:'input'}),
+ atom('input-player-name','Pole imienia','input','.player-name-input',{sample:'input'}),
  atom('button-main','Przycisk główny','button','.primary,.start-button,.player-continue,.math-start-button',{block:'button'}),
  atom('button-answer','Odpowiedź','button','.answer,.math-answer',{block:'answer'}),
- atom('button-avatar-choice','Wybór avatara','button','.avatar-choice',{inherits:'button-main'}),
- atom('button-player-card','Karta wyboru gracza','button','.player-card',{sample:'player'}),
- atom('button-home-card','Kafel trybu gry','button','[data-action=choose-mode]'),
+ group('button-avatar-choice','Wybór avatara','.avatar-choice',['container-card','image-player-avatar-art'],{kind:'button',inherits:'button-main'}),
+ group('button-player-card','Karta wyboru gracza','.player-card',['container-card','image-player-avatar-art','text-nickname','icon-player-select'],{kind:'button',sample:'player'}),
+ atom('icon-player-select','Znacznik wybranego gracza','icon','.player-select-mark'),
+ group('button-home-card','Kafel trybu gry','[data-action=choose-mode]',['container-card','image-mission','text-mode-name'],{kind:'button'}),
+ atom('text-mode-name','Nazwa trybu gry','text','.home-tile-name'),
  atom('button-home-progress','Przycisk wyników','button','.home-progress-arrow',{inherits:'button-main'}),
  atom('button-back','Powrót','button','[data-action=players],[data-action=edit-player],[data-action=home]'),
  atom('text-player-title','Tytuł wyboru gracza','text','.player-title h1'),
@@ -78,7 +80,7 @@ function definitionPart(id,seen=new Set()){const p=PART_BY_ID[id];if(!p||seen.ha
 function inventoryPart(item,items,seen=new Set()){if(seen.has(item.id))return null;const next=new Set(seen).add(item.id),meta=PART_BY_ID[item.recipe];return {id:item.id,recipe:item.recipe||item.kind||'container',name:meta?.name||item.label,kind:item.kind,level:partLevel(item,items),selector:`[data-ds-element="${item.id}"]`,children:items.filter(n=>n.parent===item.id).map(n=>inventoryPart(n,items,next)).filter(Boolean)};}
 export function structureCatalog(registry,inventories=new Map()){
  const records=new Map(PARTS.map(p=>[p.id,{...p,children:[...p.children],uses:[]} ]));
- const add=(p,view)=>{let record=records.get(p.recipe);if(!record){record={id:p.recipe,name:p.name,recipe:p.recipe,kind:p.kind,selector:p.selector,level:p.level,children:[],uses:[]};records.set(p.recipe,record);}if(!record.uses.some(u=>u.view===view.id))record.uses.push({view:view.id,selector:p.selector});for(const child of p.children){if(!record.children.includes(child.recipe))record.children.push(child.recipe);add(child,view);}};
+ const add=(p,view)=>{let record=records.get(p.recipe);if(!record){record={id:p.recipe,name:p.name,recipe:p.recipe,kind:p.kind,selector:p.selector,level:p.level,children:[],uses:[]};records.set(p.recipe,record);}if(!record.uses.some(u=>u.view===view.id))record.uses.push({view:view.id,selector:p.selector});for(const child of p.children){if(record.level!=='atom'&&!record.children.includes(child.recipe))record.children.push(child.recipe);add(child,view);}};
  for(const view of registry.views)for(const p of viewParts(view,inventories.get(view.id)))add(p,view);
  const textAtoms=Object.entries(ATOMS).map(([id,a])=>({id:'text-role-'+id,name:a.name,atom:id,kind:'text',level:'atom',selector:a.selector,children:[],uses:registry.views.filter(v=>a.parents.some(p=>v.components.includes(p))).map(v=>({view:v.id,selector:a.selector}))}));
  return [...records.values(),...textAtoms,...registry.views.map(view=>({id:'view:'+view.id,name:view.name,level:'family',view:view.id,children:viewParts(view,inventories.get(view.id)).map(p=>p.recipe),uses:[{view:view.id}]}))];

@@ -291,3 +291,8 @@ html[data-animations="off"]::view-transition-group(root),html[data-animations="o
  font-weight:700;
  letter-spacing:-.45px;
 }
+
+/* A deliberate choice fades other cards, while keeping PIN validation intact. */
+.player-card{transition:opacity var(--player-selection-duration,280ms) ease,filter var(--player-selection-duration,280ms) ease,transform var(--player-selection-duration,280ms) ease}
+.player-grid.has-selection .player-card:not(.is-selected){opacity:var(--player-unselected-opacity,.28);filter:grayscale(1)}
+@media(prefers-reduced-motion:reduce){.player-card{transition:none}}

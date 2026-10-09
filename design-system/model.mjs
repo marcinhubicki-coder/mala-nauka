@@ -119,11 +119,12 @@ export function effectiveTokens(group){
  return {...familyTokens(config||{},globalThis.document?.getElementById('app')?.dataset.mode,group),...config?.overrides?.[view]?.[group]};
 }
 
-export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,historyState='dashboard',popup=''}){
+export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,pinPurpose='',historyState='dashboard',popup=''}){
  if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup))return `spelling-${popup}`;
  if(view==='wizard')return `${mode}-settings`;
  if(view==='game')return `${mode}-${state==='feedback-correct'?'correct':state==='feedback-wrong'?'wrong':'initial'}`;
  if(view==='results')return `${mode}-results`;
+ if(view==='player-pin'&&pinPurpose==='unlock')return 'player-unlock';
  if(view==='players')return hasPlayers?'players':'players-empty';
  if(view==='history')return ({dashboard:'progress',achievements:'trophies'})[historyState]||historyState;
  return ['home','settings','player-create','player-pin'].includes(view)?view:'';

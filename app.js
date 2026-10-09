@@ -1,4 +1,4 @@
-import {resolveRoute} from './shared/navigation.mjs';
+import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
 import {animateStateChange} from './shared/state-motion.mjs';
 import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
@@ -184,6 +184,7 @@ async function applyAvatarAccent(avatarId,{animate=true}={}){
 for(const avatarId of AVATARS)void sampleAvatarAccent(avatarId);
 const resultId=()=>globalThis.crypto?.randomUUID?.()||`result-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
 async function refreshPlayers(){
+ if(studioProfiles())return players;
  players=await playerService.listPlayers();
  const remembered=await playerService.getMeta('lastPlayerId');
  if(!players.some(player=>player.id===selectedPlayerId)){
@@ -199,18 +200,33 @@ async function persistProgress({strict=false}={}){
  try{await playerService.saveProgress(playerId,snapshot);}
  catch(error){const notice=document.querySelector('#storage-notice');if(notice)notice.hidden=false;if(strict)throw error;}
 }
-async function activatePlayer(player){
+const studioProfiles=()=>new URLSearchParams(location.search).has('studio');
+let playerSelectionEpoch=0,enterPlayerBusy=false;
+async function activatePlayer(player,from='',action=''){
  if(!player)return;
  activePlayer=player;selectedPlayerId=player.id;
- progress=cleanProgress(await playerService.getProgress(player.id));
+ if(!studioProfiles())progress=cleanProgress(await playerService.getProgress(player.id));
  pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';
- navigate('home');
+ routeTo(from?resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode):'home');
+ const duration=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__).fadeDuration;if(duration&&!matchMedia('(prefers-reduced-motion:reduce)').matches)root.animate([{opacity:0},{opacity:1}],{duration,easing:'ease-out'});
+}
+async function enterSelectedPlayer(){
+ if(enterPlayerBusy||view!=='players'||!selectedPlayerId)return;
+ enterPlayerBusy=true;const id=selectedPlayerId;
+ try{
+  editingPin=false;pendingPlayerId=id;pendingNickname='';pinInput='';pinError='';
+  const player=players.find(p=>p.id===id);if(!player)return;
+  if(player.hasPin===false){const unlocked=studioProfiles()?player:await playerService.unlockPlayer(id,'');if(view==='players'&&selectedPlayerId===id)await activatePlayer(unlocked,'players','enter-player');}
+  else playerPinPage();
+ }finally{enterPlayerBusy=false;}
 }
 const playerCheckIcon='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m7 16 6 6L26 9" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const playerPlusIcon='<svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 5v18M5 14h18" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>';
 const playerProgressIcon='<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><defs><linearGradient id="player-bars" x1="17" y1="25" x2="53" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#46c2ff"/><stop offset="1" stop-color="#0588ff"/></linearGradient><linearGradient id="player-star" x1="40" y1="7" x2="57" y2="27" gradientUnits="userSpaceOnUse"><stop stop-color="#ffe35a"/><stop offset="1" stop-color="#ffb300"/></linearGradient></defs><path d="M14 32c16 0 23-7 31-19m-10 0 12-2-1 12" stroke="#0f9bff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="15" y="45" width="11" height="17" rx="4" fill="url(#player-bars)"/><rect x="31" y="36" width="11" height="26" rx="4" fill="url(#player-bars)"/><rect x="47" y="27" width="11" height="35" rx="4" fill="url(#player-bars)"/><path d="m52 6 4 8 9 1-6.5 6 1.5 9-8-4.2-8 4.2 1.5-9-6.5-6 9-1 4-8Z" fill="url(#player-star)" stroke="#fff3ad" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 function setScreenTheme(color){const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=color;}
 function playersPage(){
+ playerSelectionEpoch++;enterPlayerBusy=false;delete root.dataset.pinPurpose;
+ const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);root.style.setProperty('--player-unselected-opacity',selection.otherOpacity);root.style.setProperty('--player-selection-duration',selection.fadeDuration+'ms');
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0,atLimit=players.length>=MAX_PLAYERS;
  const list=hasPlayers
@@ -264,6 +280,7 @@ function playerPinPage(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
  const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
  const name=player?.nickname||'Gracz';
+ root.dataset.pinPurpose=creating?'create':setting?'edit':'unlock';
  const noPin=creating&&!pendingPinEnabled;
  root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card ${noPin?'pin-no-code':''}"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?`<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span><label><input type="radio" name="profilePinMode" value="pin" ${pendingPinEnabled?'checked':''}><span>Ustaw PIN</span></label><label><input type="radio" name="profilePinMode" value="none" ${pendingPinEnabled?'':'checked'}><span>Bez PIN-u</span></label></div>`:''}<div class="pin-fields">${pinFieldsMarkup()}</div></section><p class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
  const container=root.querySelector('.pin-mode');
@@ -276,25 +293,26 @@ function playerPinPage(){
 async function submitPlayerPin(){
  if((!pendingNickname||pendingPinEnabled)&&pinInput.length!==4)return;
  if(deletingProfile){
-  const valid=await playerService.verifyPin(activePlayer?.id,pinInput);
+  const valid=studioProfiles()?pinInput==='1234':await playerService.verifyPin(activePlayer?.id,pinInput);
   if(!valid){pinError='Nieprawidłowy PIN. Spróbuj jeszcze raz.';pinInput='';playerPinPage();return;}
   deletingProfile=false;pinInput='';pinError='';showDeleteProfilePrompt();return;
  }
- if(editingPin){try{activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:true,pin:pinInput});editingPin=false;await refreshPlayers();navigate('settings');}catch(error){pinError=error.message;playerPinPage();}return;}
+ if(editingPin){try{activePlayer=studioProfiles()?{...activePlayer,hasPin:true}:await playerService.setPinProtection(activePlayer.id,{enabled:true,pin:pinInput});editingPin=false;await refreshPlayers();navigate('settings');}catch(error){pinError=error.message;playerPinPage();}return;}
  if(pendingNickname){
+  if(studioProfiles()){const player={id:'studio-new',nickname:pendingNickname,avatarId:pendingAvatarId,hasPin:pendingPinEnabled};players.push(player);await activatePlayer(player,'player-pin','submit-pin');return;}
   try{
    const firstProfile=players.length===0;
    const player=await playerService.createPlayer({nickname:pendingNickname,pin:pinInput,avatarId:pendingAvatarId,pinEnabled:pendingPinEnabled});
    if(firstProfile)await playerService.migrateLegacyProgress(player.id,legacyProgress);
    await playerService.useCreatedPlayer(player.id);
    await refreshPlayers();
-   await activatePlayer(player);
+   await activatePlayer(player,'player-pin','submit-pin');
   }catch(error){pinError=error?.message||'Nie udało się utworzyć profilu.';pinInput='';playerPinPage();}
   return;
  }
- const player=await playerService.unlockPlayer(pendingPlayerId,pinInput);
+ const player=studioProfiles()?(pinInput==='1234'?players.find(p=>p.id===pendingPlayerId):null):await playerService.unlockPlayer(pendingPlayerId,pinInput);
  if(!player){pinError='Nieprawidłowy PIN. Spróbuj jeszcze raz.';pinInput='';playerPinPage();return;}
- await activatePlayer(player);
+ await activatePlayer(player,'player-unlock','unlock-player');
 }
 
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
@@ -590,7 +608,8 @@ function finish(early=false,goHome=false){
  render(true,200);
 }
 function routeTo(target){
- if(target==='players'){void playerService.lockSession();activePlayer=null;playersPage();return;}
+ if(target==='player-create'){playerCreatePage();return;}
+ if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
  if(target==='progress'){navigate('history');return;}
  if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(selectedMode==='math'&&!new URLSearchParams(location.search).has('studio')){location.href=new URL('./matematyka/',import.meta.url).href;return;}navigate('wizard');return;}
  if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
@@ -604,15 +623,16 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
  if(action==='confirm-import'){await importBackup();return;}
  if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
- if(action==='players'){pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';playersPage();return;}
- if(action==='edit-player'){editingPin=false;editingProfile=false;pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='players'){const from=view==='player-pin'&&root.dataset.pinPurpose==='unlock'?'player-unlock':view;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode)||'players');return;}
+ if(action==='edit-player'){editingPin=false;editingProfile=false;pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,'player-pin',action,selectedMode));return;}
  if(action==='edit-profile'){if(!activePlayer||activePlayer.id==='guest')return;editingPin=false;editingProfile=true;pendingNickname=activePlayer.nickname;pendingAvatarId=activePlayer.avatarId||'a';pinInput='';pinError='';playerCreatePage();return;}
  if(action==='delete-profile'){if(!activePlayer||activePlayer.id==='guest')return;if(activePlayer.hasPin){deletingProfile=true;editingPin=false;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}showDeleteProfilePrompt();return;}
  if(action==='cancel-delete-profile'){deletingProfile=false;pinInput='';pinError='';modal.close();return;}
- if(action==='confirm-delete-profile'){const id=activePlayer?.id;if(!id||id==='guest'){modal.close();return;}await playerService.deletePlayer(id);modal.close();activePlayer=null;progress=cleanProgress(null);editingProfile=false;deletingProfile=false;await refreshPlayers();playersPage();return;}
- if(action==='add-player'){if(players.length>=MAX_PLAYERS){showModal('Limit profili',`<p>Możesz mieć maksymalnie ${MAX_PLAYERS} profile. Usuń jeden z istniejących profili, aby dodać nowy.</p><div class="stack">${btn('OK','cancel-delete-profile','primary')}</div>`);return;}editingPin=false;editingProfile=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';playerCreatePage();return;}
+ if(action==='confirm-delete-profile'){const id=activePlayer?.id;if(!id||id==='guest'){modal.close();return;}if(studioProfiles())players=players.filter(p=>p.id!==id);else await playerService.deletePlayer(id);modal.close();activePlayer=null;progress=cleanProgress(null);editingProfile=false;deletingProfile=false;await refreshPlayers();playersPage();return;}
+ if(action==='add-player'){if(players.length>=MAX_PLAYERS){showModal('Limit profili',`<p>Możesz mieć maksymalnie ${MAX_PLAYERS} profile. Usuń jeden z istniejących profili, aby dodać nowy.</p><div class="stack">${btn('OK','cancel-delete-profile','primary')}</div>`);return;}editingPin=false;editingProfile=false;pendingPinEnabled=true;pendingPlayerId=null;pendingNickname='';pendingAvatarId='a';pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,'players','add-player',selectedMode));return;}
  if(action==='choose-player'){
-  selectedPlayerId=button.dataset.player;
+  selectedPlayerId=button.dataset.player;const selectionEpoch=++playerSelectionEpoch;
+  root.querySelector('.player-grid')?.classList.add('has-selection');
   root.querySelectorAll('.player-card').forEach(card=>{
    const selected=card.dataset.player===selectedPlayerId;
    card.classList.toggle('is-selected',selected);card.setAttribute('aria-pressed',String(selected));
@@ -620,17 +640,18 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   });
   const next=root.querySelector('[data-action="continue-player"]');if(next)next.disabled=false;
   const player=players.find(item=>item.id===selectedPlayerId);if(player)void applyAvatarAccent(player.avatarId,{animate:true});
+  const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);if(selection.autoContinue){await new Promise(resolve=>setTimeout(resolve,matchMedia('(prefers-reduced-motion:reduce)').matches?0:selection.delay));if(selectionEpoch===playerSelectionEpoch&&view==='players')await enterSelectedPlayer();}
   return;
  }
- if(action==='guest-player'){await activatePlayer(playerService.beginGuestSession());return;}
- if(action==='continue-player'){editingPin=false;if(!selectedPlayerId)return;pendingPlayerId=selectedPlayerId;pendingNickname='';pinInput='';pinError='';const player=players.find(p=>p.id===selectedPlayerId);if(player?.hasPin===false){await activatePlayer(await playerService.unlockPlayer(selectedPlayerId,''));return;}playerPinPage();return;}
+ if(action==='guest-player'){await activatePlayer(studioProfiles()?{id:'studio-guest',nickname:'Gość',avatarId:'a',hasPin:false}:playerService.beginGuestSession(),'players','guest-player');return;}
+ if(action==='continue-player'){playerSelectionEpoch++;await enterSelectedPlayer();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
  if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
- if(action==='disable-pin'){activePlayer=await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
- if(action==='switch-player'){const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){routeTo(target);return;}playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
+ if(action==='switch-player'){const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){routeTo(target);return;}if(!studioProfiles())playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
  if(['home','settings','history','return-results','result-back','choose-mode'].includes(action)){
   const from=document.documentElement.dataset.dsView||view,context=action==='return-results'?collectionReturn?.result.mode+'-results':action==='choose-mode'?button.dataset.mode:'';
   if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
@@ -689,7 +710,7 @@ root.addEventListener('submit',async e=>{
   }
   document.activeElement?.blur();
   if(editingProfile&&activePlayer?.id&&activePlayer.id!=='guest'){
-   try{activePlayer=await playerService.updatePlayer(activePlayer.id,{nickname,avatarId:pendingAvatarId});await refreshPlayers();editingProfile=false;pendingNickname='';pinInput='';pinError='';settingsPage();}
+   try{activePlayer=studioProfiles()?{...activePlayer,nickname,avatarId:pendingAvatarId}:await playerService.updatePlayer(activePlayer.id,{nickname,avatarId:pendingAvatarId});await refreshPlayers();editingProfile=false;pendingNickname='';pinInput='';pinError='';settingsPage();}
    catch(error){const input=e.target.querySelector('#player-nickname'),help=e.target.querySelector('#nickname-help');if(help){help.textContent=error?.message||`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.add('is-invalid');}input.setAttribute('aria-invalid','true');input.focus({preventScroll:true});}
    return;
   }
@@ -752,9 +773,9 @@ async function renderStudioScenario(stateOverride=null){
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress=exampleProgress(words);lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
- if(screen==='players'){if(state==='empty')players=[];playersPage();return;}
+ if(screen==='players'){if(state==='empty')players=[];else if(['one','two'].includes(state))players=players.slice(0,state==='one'?1:2);playersPage();return;}
  if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
- if(screen==='player-pin'){pendingNickname='Ania';pendingAvatarId='c';pinInput='';playerPinPage();return;}
+ if(screen==='player-pin'){editingPin=false;deletingProfile=false;pendingNickname=state==='unlock'?'':'Ania';pendingPlayerId=state==='unlock'?activePlayer.id:null;pendingAvatarId='c';pendingPinEnabled=state!=='no-pin';pinInput='';playerPinPage();return;}
  if(['home','settings','wizard','history'].includes(screen)){
   navigate(screen);
   if(screen==='history'&&state!=='dashboard'){

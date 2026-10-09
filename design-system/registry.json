@@ -501,6 +501,33 @@
       "category": "login"
     },
     {
+      "id": "player-unlock",
+      "name": "Odblokowanie gracza · PIN",
+      "mode": "spelling",
+      "screen": "player-pin",
+      "state": "unlock",
+      "route": "/",
+      "components": [
+        "profile",
+        "button",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background",
+        "pin-toggle",
+        "pin-key"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "login"
+    },
+    {
       "id": "home",
       "name": "Ekran startowy",
       "mode": "spelling",

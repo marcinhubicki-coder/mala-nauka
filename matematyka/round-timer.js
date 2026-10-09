@@ -1,3 +1,4 @@
+import {gameSound} from '../shared/sound-runtime.mjs';
 import {renderSpellingResult,toggleResultDetail,stopResultScroll} from '../ortografia/result-screen.mjs';
 import {renderProgressScreen,destroyProgressScreen} from '../progress-screen.mjs';
 import {exampleProgress} from '../progress-example.mjs';
@@ -130,6 +131,7 @@ function endRound() {
   if (!clock || cancelled || document.querySelector('.math-round-summary')) return;
   if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
 
+  gameSound.cue('roundEnd');
   clock.end();
   syncTimerSnapshot();
   renderRoundSummary();

@@ -1,3 +1,4 @@
+import {gameSound} from '../shared/sound-runtime.mjs';
 import {designReady} from '../shared/design-runtime.mjs';
 import {renderMathStudioResult} from './round-timer.js';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
@@ -228,6 +229,7 @@ function startSelectedGame() {
   state.screen = state.selectedMode;
   resetAttemptState();
   state.question = makeQuestion(state.screen);
+  gameSound.cue('roundStart');
   window.dispatchEvent(new CustomEvent('math-round-start', { detail: { mode: state.screen, duration: state.duration } }));
   renderGame();
 }
@@ -346,6 +348,7 @@ function chooseAnswer(answer) {
   if (!q) return;
 
   if (answer === q.correct) {
+    gameSound.cue('correct');
     state.locked = true;
     renderGame({ feedback: 'Dobrze!', feedbackType: 'good' });
     window.setTimeout(() => {
@@ -354,6 +357,7 @@ function chooseAnswer(answer) {
     return;
   }
 
+  gameSound.cue('incorrect');
   state.wrongAnswers.add(answer);
   state.lastWrongAnswer = answer;
 

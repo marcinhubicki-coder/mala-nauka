@@ -16,13 +16,18 @@ test('every cue is finite, bounded and non-silent',()=>{
   assert.ok(samples.some(x=>Math.abs(x)>.01),id);
  }
 });
-test('ambient layers do not click at loop boundaries',()=>{
+test('loop seam is no sharper than the signal and continuous beds never fade to silence',()=>{
  for(const [id] of SOUND_LAYERS){
-  const samples=generateLayer(id,1,16000);
-  assert.equal(samples.length,16000);
+  const samples=generateLayer(id,3,16000);
+  assert.equal(samples.length,48000);
   assert.ok(samples.every(Number.isFinite),id);
-  assert.ok(Math.abs(samples[0])<.01,id);
-  assert.ok(Math.abs(samples.at(-1))<.01,id);
+  let maxDifference=0;for(let i=1;i<samples.length;i++)maxDifference=Math.max(maxDifference,Math.abs(samples[i]-samples[i-1]));
+  assert.ok(Math.abs(samples[0]-samples.at(-1))<=maxDifference*1.05+.001,id);
+  if(['rain','stream','wind','leaves','waves','warmNoise','pad'].includes(id)){
+   const rms=a=>Math.sqrt(a.reduce((n,x)=>n+x*x,0)/a.length);
+   const seam=[...samples.slice(-1600),...samples.slice(0,1600)];
+   assert.ok(rms(seam)>rms(samples)*.45,id+' has no silent seam');
+  }
  }
 });
 test('presets cover ten channels and silence really is silent',()=>{
@@ -34,6 +39,8 @@ test('settings clamp values and validate strictly',()=>{
  assert.equal(settings.volume,100);assert.equal(settings.mix[0],0);assert.equal(settings.mix[1],100);
  assert.doesNotThrow(()=>validateSoundSettings(settings));
  assert.throws(()=>validateSoundSettings({...settings,mix:[20]}));
+ assert.doesNotThrow(()=>validateSoundSettings({enabled:false,volume:35,cueVolume:55,ambientVolume:35,ambientEnabled:false,quietMode:true,ambientPreset:'focus',mix:[18,0,0,0,0,0,0,24,0,10]}));
+ assert.throws(()=>validateSoundSettings({...settings,tempo:12}));
 });
 test('PCM WAV and ZIP download signatures are standard',async()=>{
  const wav=new Uint8Array(await wavBlob(generateCue('correct')).arrayBuffer());

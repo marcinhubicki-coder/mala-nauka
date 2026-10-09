@@ -193,7 +193,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     app.dataset.state=game.state;
     if (session !== game || !nodes?.word.isConnected) mount(game);
     if (shownQuestion !== game.question) {
-      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; return present(game, first);
+      const first = shownQuestion === 0; shownQuestion = game.question; shownState = game.state; const ready=present(game, first);app.mnScreenReady=ready;return ready;
     } else if (shownState !== game.state && game.state.startsWith('feedback')) {
       shownState = game.state; const correct = game.state === 'feedback-correct';
       app.classList.add('spelling-has-feedback');

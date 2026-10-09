@@ -1,3 +1,5 @@
+import {validateNavigation} from '../shared/navigation.mjs';
+import {familyTokens} from '../shared/building-blocks.mjs';
 import {validateSurface} from '../shared/surface-effects.mjs';
 import {validateLogoTransition} from '../shared/logo-transition.mjs';
 import {validateRecipes,validateBlueprints,recipesCSS,ATOMS} from '../shared/component-recipes.mjs';
@@ -41,6 +43,7 @@ export function validateConfig(config) {
     safeKeys(config.componentNames);
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
+  if(config.navigation)validateNavigation(config.navigation);
   if(config.motion)validateMotion(config.motion);
   if(config.logoTransition)validateLogoTransition(config.logoTransition);
   for(const [view,row]of Object.entries(config.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
@@ -50,6 +53,8 @@ export function validateConfig(config) {
   if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(config.tokens);
+  for(const [mode,values]of Object.entries(config.familyTokens||{})){if(!MODES.includes(mode))throw Error('Nieznana rodzina tokenów.');validateTokens(values,true);}
+  if(config.defaultTheme){safeKeys(config.defaultTheme);if(THEME_FIELDS.some(k=>!config.defaultTheme[k])||Object.entries(config.defaultTheme).some(([k,v])=>!THEME_FIELDS.includes(k)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(v)))throw Error('Nieprawidłowa paleta domyślna.');}
   safeKeys(config.themes);
   for(const mode of MODES){const theme=config.themes[mode];safeKeys(theme);if(THEME_FIELDS.some(key=>!theme[key]))throw Error(`Niepełna paleta: ${mode}.`);for(const [key,value]of Object.entries(theme))if(!THEME_FIELDS.includes(key)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value))throw Error(`Nieprawidłowy kolor: ${mode}.${key}.`);}
   if(Object.keys(config.themes).some(mode=>!MODES.includes(mode)))throw Error('Nieznany tryb.');
@@ -74,10 +79,11 @@ export function variables(node, prefix = '--ds') {
 }
 export function configCSS(config) {
   validateConfig(config);
-  let css = `:root{${variables(config.tokens)}`;
+  let css = `:root{${variables(config.tokens)}${variables(config.defaultTheme||{},'--ds-default-theme')}`;
   for (const [role, font] of Object.entries(config.typography)) css += `--ds-font-${role}:"${FONT_NAMES[font]}",ui-rounded,system-ui,sans-serif;`;
   css += '}';
   for (const [mode, theme] of Object.entries(config.themes)) css += `#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(theme, '--ds-theme')}}`;
+  for(const [mode,tokens]of Object.entries(config.familyTokens||{}))css+=`#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(tokens)}}`;
   for (const [view, overrides] of Object.entries(config.overrides || {})) {
     if (!/^[a-z0-9-]+$/.test(view)) throw Error('Nieprawidłowy identyfikator widoku.');
     css += `html[data-ds-view="${view}"]{${variables(overrides)}}`;
@@ -89,6 +95,9 @@ export function changedViews(changes, registry) {
     if (change.path.startsWith('overrides.')) return change.path.split('.')[1] === view.id;
     if (change.path.startsWith('themes.')) return change.path.split('.')[1] === view.mode;
     if (change.path.startsWith('motion')) return true;
+    if(change.path.startsWith('elementStates.'))return change.path.split('.')[1]===view.id;
+    if(change.path.startsWith('familyStyles.')||change.path.startsWith('familyTokens.'))return change.path.split('.')[1]===view.mode;
+    if(change.path.startsWith('navigation.'))return true;
     if(change.path.startsWith('elementOverrides.'))return change.path.split('.')[1]===view.id;
     if(change.path.startsWith('elementStyles.'))return true;
     if(change.path.startsWith('effects.'))return view.mode==='spelling'&&['initial','correct','wrong','rule','hint'].some(state=>view.id.endsWith('-'+state));
@@ -107,7 +116,7 @@ export function changedViews(changes, registry) {
 export function effectiveTokens(group){
  const config=globalThis.__MALA_NAUKA_DESIGN__;
  const view=globalThis.document?.documentElement?.dataset.dsView;
- return {...config?.tokens?.[group],...config?.overrides?.[view]?.[group]};
+ return {...familyTokens(config||{},globalThis.document?.getElementById('app')?.dataset.mode,group),...config?.overrides?.[view]?.[group]};
 }
 
 export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,historyState='dashboard',popup=''}){

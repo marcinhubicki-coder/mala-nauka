@@ -127,7 +127,7 @@ function setupTopbar() {
     <header class="topbar">
       <div></div>
       <div class="brand">
-        <a class="math-home-link" href="../" aria-label="Wróć do Małej Nauki">
+        <a class="math-home-link" data-action="home" href="../" aria-label="Wróć do Małej Nauki">
           <img src="../assets/icon-192.png" alt="" width="24" height="24">
           <span>Mała Nauka</span>
         </a>
@@ -315,8 +315,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
   `;
 
   app.querySelector('#back')?.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('math-round-cancel'));
-    renderCategories();
+    window.dispatchEvent(new CustomEvent('math-request-exit'));
   });
 
   app.querySelectorAll('[data-answer]').forEach(button => {

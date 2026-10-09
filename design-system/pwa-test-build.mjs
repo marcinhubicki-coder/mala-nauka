@@ -14,6 +14,8 @@ export function optimizedTestConfig(saved){
  const hidden=[];
  for(const [family,style] of Object.entries(config.elementStyles||{}))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'global',family,mode:style.visibility});
  for(const [view,items] of Object.entries(config.elementOverrides||{}))for(const [id,style] of Object.entries(items))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'view',view,id,mode:style.visibility});
+ for(const [mode,rows] of Object.entries(config.familyStyles||{}))for(const [id,style]of Object.entries(rows))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'family',mode,id,visibility:style.visibility});
+ for(const [view,states]of Object.entries(config.elementStates||{}))for(const [state,rows]of Object.entries(states))for(const [id,style]of Object.entries(rows))if(['hidden','removed'].includes(style.visibility))hidden.push({scope:'state',view,state,id,mode:style.visibility});
  return {config,report:{kind:'optimized-pwa-test',optimization:'mobile-v2-full-effects',usesDesignDraft:Boolean(saved.project?.designDraft),original,optimized:{frameRate:effects.bubble.frameRate,transitionBlur:effects.bubble.transitionBlur,transitionSparks:effects.bubble.transitionSparks,particleBudget:effects.particleBudget,ambientSoftness:effects.ambient.softness},hidden}};
 }
 function replaceOnce(source,a,b){if(source.split(a).length!==2)throw Error('Silnik bańki zmienił się — wstrzymano automatyczną optymalizację.');return source.replace(a,b);}
@@ -58,6 +60,8 @@ export function assertVisibilityReadyForProduction(config){
   checked++;
   if(config.elementOverrides?.[view]?.[id]?.visibility!==row.visibility)stale.push(view+': '+id);
  }
+ for(const [mode,rows]of Object.entries(draft.familyStyles||{}))for(const [id,row]of Object.entries(rows)){if(!['visible','hidden','removed'].includes(row.visibility))continue;checked++;if(config.familyStyles?.[mode]?.[id]?.visibility!==row.visibility)stale.push(mode+': '+id);}
+ for(const [view,states]of Object.entries(draft.elementStates||{}))for(const [state,rows]of Object.entries(states))for(const [id,row]of Object.entries(rows)){if(!['visible','hidden','removed'].includes(row.visibility))continue;checked++;if(config.elementStates?.[view]?.[state]?.[id]?.visibility!==row.visibility)stale.push(view+': '+state+': '+id);}
  if(stale.length)throw Error('Publikacja zablokowana: '+stale.length+' ustawień widoczności w Komponentach nie jest zatwierdzonych do produkcji. Zatwierdź projekt i jego aktualny wygląd przed wydaniem. Pierwsze różnice: '+stale.slice(0,3).join(', '));
  return checked;
 }

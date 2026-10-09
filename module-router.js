@@ -1,3 +1,4 @@
+import {resolveRoute} from './shared/navigation.mjs';
 const studioMode=new URLSearchParams(location.search).has('studio');
 const MODULE_PATHS={
   spelling:'ortografia',
@@ -16,7 +17,9 @@ document.addEventListener('click',event=>{
   if(!button||studioMode)return;
   const mode=button.dataset.mode;
   if(lockedMode===mode)return;
-  const folder=MODULE_PATHS[mode];
+  const target=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'home','choose-mode',mode,mode);
+  if(!target.endsWith('-settings'))return;
+  const folder=MODULE_PATHS[target.slice(0,-9)];
   if(!folder)return;
   event.preventDefault();
   event.stopPropagation();

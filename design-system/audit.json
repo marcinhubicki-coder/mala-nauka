@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-06T00:09:26.711Z",
+  "date": "2026-10-09T11:22:13.034Z",
   "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
   "cleanup": {
     "removedAssets": 28,
@@ -26,7 +26,7 @@
       "flagi/segment-motion-v3.css"
     ]
   },
-  "wordCount": 455,
+  "wordCount": 510,
   "wordSources": {
     "król": "data/words-01.json",
     "góra": "data/words-01.json",
@@ -102,6 +102,13 @@
     "wzgórze": "data/words-01.json",
     "ósmy": "data/words-01.json",
     "ówczesny": "data/words-01.json",
+    "ciuch": "data/words-01.json",
+    "rówieśnik": "data/words-01.json",
+    "ślub": "data/words-01.json",
+    "śródziemny": "data/words-01.json",
+    "śruba": "data/words-01.json",
+    "uśmiechać": "data/words-01.json",
+    "uśmiechnięty": "data/words-01.json",
     "skrót": "data/words-02.json",
     "obrót": "data/words-02.json",
     "powrót": "data/words-02.json",
@@ -282,6 +289,12 @@
     "przerwa": "data/words-04.json",
     "przepraszam": "data/words-04.json",
     "przepis": "data/words-04.json",
+    "ciśnieniomierz": "data/words-04.json",
+    "ośnieżony": "data/words-04.json",
+    "śnieżka": "data/words-04.json",
+    "śnieżny": "data/words-04.json",
+    "śnieżyca": "data/words-04.json",
+    "śnieżynka": "data/words-04.json",
     "żaba": "data/words-05.json",
     "żółtko": "data/words-05.json",
     "łyżka": "data/words-05.json",
@@ -482,7 +495,49 @@
     "dźwięk": "data/words-08.json",
     "dźwięczny": "data/words-08.json",
     "dźwignia": "data/words-08.json",
-    "niedźwiedź": "data/words-08.json"
+    "niedźwiedź": "data/words-08.json",
+    "ciśnienie": "data/words-08.json",
+    "znaleźć": "data/words-08.json",
+    "część": "data/words-08.json",
+    "dziś": "data/words-08.json",
+    "garść": "data/words-08.json",
+    "gąsienica": "data/words-08.json",
+    "gdzieś": "data/words-08.json",
+    "kiść": "data/words-08.json",
+    "leśniczy": "data/words-08.json",
+    "liść": "data/words-08.json",
+    "paśnik": "data/words-08.json",
+    "pieśń": "data/words-08.json",
+    "siać": "data/words-08.json",
+    "sieć": "data/words-08.json",
+    "siedemdziesiąt": "data/words-08.json",
+    "siedzisko": "data/words-08.json",
+    "sierp": "data/words-08.json",
+    "siew": "data/words-08.json",
+    "siewnik": "data/words-08.json",
+    "silnik": "data/words-08.json",
+    "silny": "data/words-08.json",
+    "siła": "data/words-08.json",
+    "siłownia": "data/words-08.json",
+    "siny": "data/words-08.json",
+    "sitko": "data/words-08.json",
+    "sito": "data/words-08.json",
+    "ścieg": "data/words-08.json",
+    "ścisk": "data/words-08.json",
+    "śledź": "data/words-08.json",
+    "ślina": "data/words-08.json",
+    "śliwa": "data/words-08.json",
+    "ślizg": "data/words-08.json",
+    "śmiać": "data/words-08.json",
+    "śmietnik": "data/words-08.json",
+    "śniadanie": "data/words-08.json",
+    "śnić": "data/words-08.json",
+    "śniegowy": "data/words-08.json",
+    "świnia": "data/words-08.json",
+    "świt": "data/words-08.json",
+    "treść": "data/words-08.json",
+    "wieść": "data/words-08.json",
+    "wiśnia": "data/words-08.json"
   },
   "fontUsage": [
     {
@@ -518,66 +573,6 @@
     {
       "file": "angielski/wizard-retina.css",
       "selector": "#app[data-mode=\"english\"][data-view=\"wizard\"] .start-button",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": "#app[data-view=\"results\"][data-mode=\"spelling\"]",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-heading .eyebrow",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-title-wrap h1",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".round-score strong",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".round-summary-line em",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-stat-copy b",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-detail-head strong",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-word-copy strong",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-word-state",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-again,.result-collection",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-rule-dialog",
-      "role": "body"
-    },
-    {
-      "file": "app.css",
-      "selector": ".result-continue-rail .continue-handle",
       "role": "body"
     },
     {
@@ -907,12 +902,12 @@
     },
     {
       "file": "player-profiles.css",
-      "selector": ".player-name-input",
+      "selector": ".pin-error-outside",
       "role": "body"
     },
     {
       "file": "player-profiles.css",
-      "selector": ".nickname-error",
+      "selector": ".player-name-input",
       "role": "body"
     },
     {
@@ -933,6 +928,21 @@
     {
       "file": "player-profiles.css",
       "selector": ".player-card strong",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".settings-section-title",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": ".settings-profile-main strong",
+      "role": "body"
+    },
+    {
+      "file": "player-profiles.css",
+      "selector": "#app[data-view=\"player-create\"][data-profile-editor=\"edit\"] .page-head h1,\n#app[data-view=\"player-create\"][data-profile-editor=\"edit\"] .player-form-card h2",
       "role": "body"
     },
     {
@@ -1041,6 +1051,11 @@
       "role": "body"
     },
     {
+      "file": "pwa-viewport.css",
+      "selector": "#portrait-notice",
+      "role": "body"
+    },
+    {
       "file": "shared/components.css",
       "selector": ":root",
       "role": "flag"
@@ -1088,6 +1103,81 @@
     {
       "file": "shared/components.css",
       "selector": ".round-score-audit",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": "#app[data-view=\"results\"]",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-points-core strong",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-heading .eyebrow",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-title-wrap h1",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".round-score strong",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".round-summary-line em",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-stat-copy b",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-detail-head strong",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-word-copy strong",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-word-state",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-again,.result-collection",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-rule-dialog",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".result-continue-rail .continue-handle",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": "#app[data-view=\"results\"] .result-v4",
+      "role": "body"
+    },
+    {
+      "file": "shared/round-result.css",
+      "selector": ".math-exit-dialog",
       "role": "body"
     },
     {
@@ -1296,28 +1386,44 @@
       "display"
     ]
   },
-  "cssBytes": 436291,
-  "jsBytes": 725880,
+  "cssBytes": 484373,
+  "jsBytes": 865482,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 67007
+      "bytes": 84129
     },
     {
-      "path": "app.css",
-      "bytes": 64500
+      "path": "shared/round-result.css",
+      "bytes": 40272
+    },
+    {
+      "path": "spelling/bubble.mjs",
+      "bytes": 39431
     },
     {
       "path": "flagi/adventure.css",
       "bytes": 39019
     },
     {
-      "path": "spelling/bubble.mjs",
-      "bytes": 38728
+      "path": "app.css",
+      "bytes": 29057
+    },
+    {
+      "path": "player-profiles.css",
+      "bytes": 28307
+    },
+    {
+      "path": "shared/element-system.mjs",
+      "bytes": 27579
     },
     {
       "path": "sw.js",
-      "bytes": 27105
+      "bytes": 27174
+    },
+    {
+      "path": "spelling-art.css",
+      "bytes": 25451
     },
     {
       "path": "ortografia/wizard-v2.mjs",
@@ -1329,19 +1435,19 @@
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 22779
+      "bytes": 22795
     },
     {
       "path": "angielski/wizard-v2.mjs",
       "bytes": 21691
     },
     {
-      "path": "ortografia/wizard-v2.css",
-      "bytes": 20196
+      "path": "spelling/word-particles.mjs",
+      "bytes": 20697
     },
     {
-      "path": "spelling-art.css",
-      "bytes": 20120
+      "path": "ortografia/wizard-v2.css",
+      "bytes": 20196
     },
     {
       "path": "flagi/feedback-transition.js",

@@ -810,7 +810,9 @@
         "atom-image",
         "atom-button",
         "atom-background",
-        "result-progress"
+        "result-progress",
+        "progress",
+        "slider"
       ],
       "fixture": true,
       "fontRoles": [
@@ -943,7 +945,9 @@
         "atom-image",
         "atom-button",
         "atom-background",
-        "result-progress"
+        "result-progress",
+        "progress",
+        "slider"
       ],
       "fixture": true,
       "fontRoles": [
@@ -1073,7 +1077,9 @@
         "atom-image",
         "atom-button",
         "atom-background",
-        "result-progress"
+        "result-progress",
+        "progress",
+        "slider"
       ],
       "fixture": true,
       "fontRoles": [
@@ -1195,7 +1201,9 @@
         "atom-image",
         "atom-button",
         "atom-background",
-        "result-progress"
+        "result-progress",
+        "progress",
+        "slider"
       ],
       "fixture": true,
       "fontRoles": [
@@ -1623,10 +1631,8 @@
     },
     {
       "from": "*-results",
-      "to": [
-        "*-settings"
-      ],
-      "action": "Jeszcze raz",
+      "to": "*-initial",
+      "action": "Nowa runda",
       "selector": ".result-continue-rail,[data-action=\"again\"]",
       "state": false,
       "condition": ""
@@ -1870,6 +1876,13 @@
       "selector": "[data-action=\"home\"]",
       "state": false,
       "condition": ""
+    },
+    {
+      "from": "*-initial",
+      "to": "*-settings",
+      "action": "Wyjdź po potwierdzeniu",
+      "selector": "[data-action=\"exit-confirm\"]",
+      "condition": "Zapis wyniku przerwanej rundy"
     }
   ]
 }

@@ -1,0 +1,175 @@
+{
+  "tokens": {
+    "layout": {
+      "canvasWidth": 390,
+      "sidePadding": 14,
+      "safeTop": 47,
+      "safeBottom": 34,
+      "sectionGap": 18,
+      "headerHeight": 43,
+      "headerGap": 13,
+      "headerBottom": 21,
+      "missionHeight": 94,
+      "missionBottom": 17
+    },
+    "card": {
+      "radius": 27,
+      "paddingX": 18,
+      "paddingTop": 13,
+      "paddingBottom": 20,
+      "borderWidth": 2
+    },
+    "jelly": {
+      "height": 54,
+      "radius": 21,
+      "inset": 4,
+      "labelSize": 16.8,
+      "labelWeight": 800,
+      "trackShadowY": 3,
+      "trackShadowBlur": 7,
+      "trackShadowOpacity": 0.035,
+      "duration": 1080,
+      "stretch": 1.9,
+      "recoil": 0.72,
+      "bounce": 0.92,
+      "inertia": 2.85,
+      "magnet": 1.55,
+      "squish": 22,
+      "tilt": 2.6,
+      "glow": 0.85,
+      "shine": 1.75,
+      "blur": 0.35,
+      "saturation": 1.08,
+      "contrast": 1.04,
+      "inkDelay": 500,
+      "inkDuration": 560,
+      "inkBump": 1.38,
+      "inkGlow": 0.82,
+      "inkFade": 1.32,
+      "inkBlur": 0.45
+    },
+    "toggle": {
+      "width": 122,
+      "height": 31,
+      "radius": 14,
+      "labelSize": 11.5
+    },
+    "button": {
+      "height": 71,
+      "radius": 34,
+      "fontSize": 30,
+      "paddingX": 25,
+      "shadowY": 4,
+      "shadowBlur": 7,
+      "borderWidth": 2
+    },
+    "answer": {
+      "height": 95,
+      "radius": 24,
+      "gap": 12,
+      "paddingX": 10,
+      "fontSize": 34,
+      "widthPercent": 100,
+      "compactHeight": 69,
+      "compactFontSize": 23
+    },
+    "flashcard": {
+      "radius": 27,
+      "padding": 20,
+      "gap": 14
+    },
+    "slider": {
+      "height": 54,
+      "radius": 27,
+      "handleSize": 48,
+      "threshold": 96
+    },
+    "sliderWrong": {
+      "springDuration": 500,
+      "springOvershoot": 4,
+      "fillDuration": 470,
+      "completionDelay": 300,
+      "glowBlur": 23.5,
+      "sparkDuration": 1240
+    },
+    "sliderResult": {
+      "springDuration": 520,
+      "springOvershoot": 4.5,
+      "fillDuration": 440,
+      "completionDelay": 420,
+      "glowBlur": 14,
+      "doneDuration": 420
+    },
+    "popup": {
+      "radius": 30,
+      "padding": 22,
+      "maxHeightPercent": 88
+    },
+    "progress": {
+      "height": 18,
+      "radius": 9,
+      "duration": 3600,
+      "easePower": 2.15,
+      "stretch": 0.85,
+      "bounce": 2.65,
+      "wobble": 0.42,
+      "startKick": 2.8,
+      "flash": 1.5,
+      "finishDuration": 1180
+    },
+    "resultText": {
+      "settlePercent": 82,
+      "rollDuration": 340,
+      "hundredPause": 130,
+      "hundredStagger": 38,
+      "hundredRevealDelay": 280,
+      "kickDuration": 310,
+      "handoffDelay": 170
+    },
+    "profile": {
+      "radius": 26,
+      "gap": 14,
+      "padding": 16,
+      "avatarSize": 96
+    },
+    "trophy": {
+      "size": 96,
+      "gap": 16
+    },
+    "space": {
+      "xs": 4,
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 24,
+      "xxl": 32
+    },
+    "color": {
+      "ink": "#09043f",
+      "muted": "#515c98",
+      "surface": "#ffffff",
+      "correct": "#239764",
+      "wrong": "#dd4161"
+    },
+    "englishWordFlip": {
+      "duration": 1375,
+      "perspective": 1450,
+      "depth": 115,
+      "rotation": 180,
+      "midScale": 0.94,
+      "swapPoint": 50,
+      "easingPreset": 1,
+      "direction": 0,
+      "pauseDuration": 45,
+      "settleDuration": 180,
+      "motionBlur": 1.5
+    }
+  },
+  "recipes": {},
+  "typography": {
+    "body": "nunito",
+    "ui": "dosis",
+    "display": "dynapuff",
+    "flag": "fredoka"
+  }
+}

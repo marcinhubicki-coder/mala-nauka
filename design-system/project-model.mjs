@@ -2,7 +2,7 @@ import {normalizeEffectsConfig} from '../spelling/effect-model.mjs';
 import {DISCOVERY_RULES,validateDiscoveryRules} from '../shared/discovery-model.mjs';
 import {validateBlueprint} from '../shared/component-recipes.mjs';
 import {validateTokens} from './validation.mjs';
-const DESIGN_FIELDS=['typography','tokens','themes','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides','elementOrder','studioPreferences','elementAnimations','logoTransition','screenEffects'];
+const DESIGN_FIELDS=['typography','tokens','themes','defaultTheme','overrides','recipes','motion','effects','scoring','elementStyles','elementOverrides','elementOrder','familyTokens','familyStyles','elementStates','navigation','studioPreferences','elementAnimations','logoTransition','screenEffects'];
 export const designFields=config=>Object.fromEntries(DESIGN_FIELDS.filter(k=>config[k]!==undefined).map(k=>[k,structuredClone(config[k])]));
 export function editableProjectConfig(config){
   const result={...structuredClone(config),...structuredClone(config.project?.designDraft||{})};

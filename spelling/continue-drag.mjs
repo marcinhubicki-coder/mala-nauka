@@ -6,14 +6,14 @@ import {jellyTransform} from '../shared/jelly-v4.mjs';
 export function dragFraction(start, current, travel) {
   return travel > 0 ? Math.max(0, Math.min(1, (current - start) / travel)) : 0;
 }
-export function completedDrag(fraction, distance) {
-  const threshold=(effectiveTokens('slider').threshold??96)/100;
+export function completedDrag(fraction, distance, thresholdValue=effectiveTokens('slider').threshold??96) {
+  const threshold=thresholdValue/100;
   return fraction >= threshold && distance >= 24;
 }
 
-export function continueMotion(variant='wrong'){
+export function continueMotion(variant='wrong',getTokens=effectiveTokens){
   const defaults={springDuration:405,springOvershoot:3,fillDuration:350,completionDelay:variant==='result'?350:240,glowBlur:9,...(variant==='result'?{doneDuration:300}:{sparkDuration:600})};
-  return {...defaults,...effectiveTokens(variant==='result'?'sliderResult':'sliderWrong')};
+  return {...defaults,...getTokens(variant==='result'?'sliderResult':'sliderWrong')};
 }
 
 export function sliderJellyTransform(x,amount=0,direction=1,jelly=effectiveTokens('jelly')){
@@ -21,13 +21,13 @@ export function sliderJellyTransform(x,amount=0,direction=1,jelly=effectiveToken
   return `translate3d(${offset}px,0,0) ${jellyTransform(amount,direction,jelly)}`;
 }
 
-export function createContinueDrag(rail, { canContinue, onComplete, completionDelay, variant='wrong' }) {
+export function createContinueDrag(rail, { canContinue, onComplete, completionDelay, variant='wrong',getTokens=effectiveTokens }) {
   const handle = rail.querySelector('.continue-handle');
-  let settings=continueMotion(variant),jelly=effectiveTokens('jelly');
+  let settings=continueMotion(variant,getTokens),jelly=getTokens('jelly');
   let gesture = null, animation = null, completed = false, current = 0;
   let completionTimer;
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const refresh=()=>{settings=continueMotion(variant);jelly=effectiveTokens('jelly');};
+  const refresh=()=>{settings=continueMotion(variant,getTokens);jelly=getTokens('jelly');};
   const transform=(x,amount=0,direction=1)=>sliderJellyTransform(x,preference.matches?0:amount,direction,jelly);
   const settleAnimation=(frames,duration)=>{
     animation?.cancel();
@@ -94,7 +94,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
   const up = event => {
     if(!gesture||gesture.id!==event.pointerId)return;
     move(event);
-    const commit=gesture&&canContinue()&&completedDrag(gesture.fraction,gesture.distance);
+    const commit=gesture&&canContinue()&&completedDrag(gesture.fraction,gesture.distance,getTokens('slider').threshold??96);
     if(commit)complete(gesture.travel);
     else reset();
   };
@@ -116,7 +116,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
   rail.addEventListener('pointercancel',cancel);
   rail.addEventListener('lostpointercapture',cancel);
   rail.addEventListener('keydown',key);
-  return {reset:()=>{clearTimeout(completionTimer);completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
+  return {setProgress:fraction=>{clearTimeout(completionTimer);completed=false;reset(false);const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;if(fraction>=1)complete(travel);else{draw(Math.max(0,Math.min(1,fraction))*travel);rail.style.setProperty('--drag-progress',fraction);rail.setAttribute('aria-valuenow',String(Math.round(fraction*100)));}},reset:()=>{clearTimeout(completionTimer);completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
     clearTimeout(completionTimer);animation?.cancel();
     rail.removeEventListener('pointerdown',down);rail.removeEventListener('pointermove',move);
     rail.removeEventListener('pointerup',up);rail.removeEventListener('pointercancel',cancel);

@@ -15,7 +15,7 @@ import { transitionToResult, settleResult } from './ortografia/result-motion.mjs
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
 import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
-import { renderHomeScreen } from './home-screen.mjs?v=20260930-release';
+import { renderHomeScreen } from './home-screen.mjs?v=20261010-vector-home';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
 import { MODES, modeIds, cleanConfig, createSource, levelLabel, categoryLabel } from './modes.mjs?v=32-dictation-packs';
 import { cleanProgress, migrateProgress, recordResult, localDay } from './progress.mjs?v=5-learning';

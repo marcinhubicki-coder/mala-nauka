@@ -1,26 +1,28 @@
-# Approved home artwork
+# Home artwork and editable controls
 
-The visual source is the approved `Kolorowa przygoda nauki dla dzieci.png`
-(853 × 1844). ImageGen removed only the greeting, two numeric scores and
-the latest-round caption so real player data can be rendered over the art.
-The original logo, explorer, illustrations, static lettering and game tiles
-are retained. The operating-system status bar and home indicator in the
-reference are excluded by the SVG viewBox; they are never drawn by the app.
+`home-retina.webp` supplies the approved explorer scene, its static headline,
+logo and settings illustration. The SVG mask removes the entire raster stats
+and modes region. No mode button, stats icon or mode label uses the atlas.
 
-`home-retina.webp` is a 1440 × 3113 WebP export, approximately 537 KiB.
-This is a high-quality resampled export of the supplied artwork, not a
-new native-resolution illustration. Resampling does not add source detail.
-The shared atlas is downloaded and decoded once. The clickable tiles use
-SVG windows into the same art, real buttons and the existing module router.
-They keep the original `abc`, `1+2`, flag, globe, book and custom lettering.
+`shared/home-atoms.mjs` supplies vector surfaces, background decorations,
+badge surfaces, UK flag, globe, book, target with arrow, gold star and chevron.
+`home-screen.mjs` composes those atoms with real buttons and live text.
+`home-screen.css` owns layout, gradients, shadows and text rhythm. Tile palette
+variables are set per mode; every editable layer has a stable `data-ds-key`.
+The stats card has two intentional CSS plates, without a raster card beneath.
 
-`home-screen.mjs` holds coordinates in the reference's 853 × 1844 space.
-`home-screen.css` scales that space uniformly to fit the available viewport
-after iOS safe areas, without stretching or clipping the drawing. The live
-greeting and numeric stats use the self-hosted variable Dosis font (OFL).
-Static custom lettering stays in the artwork, rather than approximating it
-with a different system font.
+The canvas uses the reference 853 × 1844 coordinates. Content excludes the
+operating system status bar and home indicator, and scales uniformly after
+safe-area insets. Self-hosted Dosis provides Polish UI text. The nickname has
+extra glyph space so descenders in j/y remain visible when truncation is needed.
+The exact font of the illustration's custom lettering has not been identified.
 
-Development verification covers 390 × 844, 393 × 852, 402 × 874, 430 × 932,
-440 × 956 and a 390 × 664 browser viewport at device pixel ratio 3. These
-are browser emulations, not a claim of testing on physical iPhones.
+The shared vector module is included in `tools/build-design.mjs` centralFiles,
+so consumer Test PWA builds fetch it together with the canonical home renderer.
+A consumer must be rebuilt to pick up a new canonical source commit.
+
+2026-10-10 validation: canonical build and 231 existing tests passed before
+final visual revisions. Browser comparison was blocked: local preview failed
+with a container proc-mount error, and authenticated Vercel preview access was
+rejected by automatic approval review. Do not treat this as a verified 1:1
+browser match or a physical iPhone test.

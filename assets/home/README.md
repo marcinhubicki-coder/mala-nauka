@@ -18,11 +18,13 @@ extra glyph space so descenders in j/y remain visible when truncation is needed.
 The exact font of the illustration's custom lettering has not been identified.
 
 The shared vector module is included in `tools/build-design.mjs` centralFiles,
-so consumer Test PWA builds fetch it together with the canonical home renderer.
-A consumer must be rebuilt to pick up a new canonical source commit.
+so consumer builds fetch it together with the canonical home renderer.
+The current `studio/pwa-test` is a full local build, not a consumer: its
+`home-screen.mjs`, `home-screen.css` and `shared/home-atoms.mjs` must be synced
+directly, then rebuilt. The 2026-10-10 Test PWA commit does that explicitly.
 
-2026-10-10 validation: canonical build and 231 existing tests passed before
-final visual revisions. Browser comparison was blocked: local preview failed
+2026-10-10 validation: canonical build and 231 existing tests passed after
+vector and style revisions. Browser comparison was blocked: local preview failed
 with a container proc-mount error, and authenticated Vercel preview access was
 rejected by automatic approval review. Do not treat this as a verified 1:1
 browser match or a physical iPhone test.

@@ -35,8 +35,29 @@ export const PARTS=[
  atom('button-avatar-choice','Wybór avatara','button','.avatar-choice', {children:['container-card','image-player-avatar-art'],inherits:'button-main'}),
  atom('button-player-card','Karta wyboru gracza','button','.player-card', {children:['container-card','image-player-avatar-art','text-nickname','icon-player-select'],sample:'player'}),
  atom('icon-player-select','Znacznik wybranego gracza','icon','.player-select-mark'),
- atom('button-home-card','Kafel trybu gry','button','[data-action=choose-mode]', {children:['container-card','image-mission','text-mode-name']}),
+ atom('button-home-card','Kafel trybu gry','button','[data-action=choose-mode]',{children:['icon-home-tile-surface','container-home-decoration','container-home-badge','text-mode-name']}),
+ atom('icon-home-tile-surface','Podkład kafla trybu','icon','.home-tile-surface'),
+ group('container-home-decoration','Dekoracje tła','.home-tile-decoration',['icon-home-decoration-star','icon-home-decoration-plus','icon-home-decoration-rays','icon-home-decoration-cloud','icon-home-decoration-mountains']),
+ atom('icon-home-decoration-star','Gwiazda dekoracyjna','icon','[data-ds-key="home-spelling-star"],[data-ds-key^="home-reading-star-"]'),
+ atom('icon-home-decoration-plus','Plus dekoracyjny','icon','[data-ds-key^="home-math-plus-"]'),
+ atom('icon-home-decoration-rays','Promienie · angielski','icon','[data-ds-key="home-english-rays"]'),
+ atom('icon-home-decoration-cloud','Chmurka · angielski','icon','[data-ds-key="home-english-cloud"]'),
+ atom('icon-home-decoration-mountains','Góry · flagi','icon','[data-ds-key="home-flags-mountains"]'),
+ group('container-home-badge','Ikona i podkład','.home-mode-badge',['icon-home-badge-surface','icon-home-mode-glyph','text-home-mode-symbol']),
+ atom('icon-home-badge-surface','Podkład ikony trybu','icon','.home-badge-surface'),
+ atom('icon-home-mode-glyph','Symbol trybu · wektor','icon','.home-mode-glyph'),
+ atom('text-home-mode-symbol','Symbol trybu · tekst','text','.home-mode-symbol'),
+ group('container-home-stats','Moje postępy','.home-stats',['background-home-stats-outer','background-home-stats-inner','container-home-stat','button-home-progress']),
+ atom('background-home-stats-outer','Podkład wyników · zewnętrzny','background','.home-stats-outer'),
+ atom('background-home-stats-inner','Podkład wyników · wewnętrzny','background','.home-stats-inner'),
+ group('container-home-stat','Wynik · ikona i tekst','.home-stat',['container-home-stat-icon','text-home-stat-value','text-home-stat-label']),
+ group('container-home-stat-icon','Symbol wyniku i podkład','.home-stat-icon',['icon-home-stat-backing','icon-home-stat-symbol']),
+ atom('icon-home-stat-backing','Okrągły podkład wyniku','icon','.home-stat-backing'),
+ atom('icon-home-stat-symbol','Tarcza / złota gwiazda','icon','.home-stat-symbol'),
+ atom('text-home-stat-value','Wartość wyniku','text','.home-stat-value'),
+ atom('text-home-stat-label','Opis wyniku','text','.home-stat-label'),
  atom('text-mode-name','Nazwa trybu gry','text','.home-tile-name'),
+ atom('icon-home-chevron','Chevron · moje wyniki','icon','[data-ds-key=home-arrow-icon]'),
  atom('button-home-progress','Przycisk wyników','button','.home-progress-arrow',{inherits:'button-main'}),
  atom('button-back','Powrót','button','[data-action=players],[data-action=edit-player],[data-action=home]'),
  atom('text-player-title','Tytuł wyboru gracza','text','.player-title h1'),
@@ -68,7 +89,7 @@ export const PARTS=[
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));
 export function recipeLineage(id){const chain=[],seen=new Set();while(id&&!seen.has(id)){seen.add(id);chain.unshift(id);id=PART_BY_ID[id]?.inherits;}return chain;}
 export const LEVEL_NAMES={atom:'Atom',group:'Grupa',family:'Rodzina · widok'};
-const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','container-player-actions'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home-art-backdrop','image-home-logo-art','button-home-progress','button-home-card'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','control-toggle','button-main'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','image-mission','result-points-bubble','container-card','container-round-progress','container-result-continue-rail','button-home-progress','button-back'],progress:['button-back','container-card','container-round-progress']};
+const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','container-player-actions'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home-art-backdrop','image-home-logo-art','container-home-stats','button-home-card'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','control-toggle','button-main'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','image-mission','result-points-bubble','container-card','container-round-progress','container-result-continue-rail','button-home-progress','button-back'],progress:['button-back','container-card','container-round-progress']};
 export function viewType(view){const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
 export function partLevel(item,items=[]){return PART_BY_ID[item.recipe]?.level||(['button','key','input','toggle','text','icon','image','background','timer','meter'].includes(item.kind)?'atom':items.some(n=>n.parent===item.id)?'group':'atom');}
 export function viewParts(view,inventory){

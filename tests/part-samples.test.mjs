@@ -59,3 +59,23 @@ test('newly mapped groups are built recursively and avatars preserve the product
  assert.match(profileAvatar({avatarId:'l'}),/viewBox="960 650 320 320"/);
  assert.doesNotMatch(profileAvatar({avatarId:'ab'}),/data-avatar="ab"/);
 });
+
+test('home library examples reuse production vectors and expose their composed recipes',async()=>{
+ const {homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES}=await import('../shared/home-atoms.mjs');
+ for(const mode of Object.keys(HOME_TILE_SIZES)){
+  const card=partSample('button-home-card',{mode});
+  assert.match(card,/data-action="choose-mode"/);
+  for(const recipe of ['icon-home-tile-surface','container-home-decoration','container-home-badge','icon-home-badge-surface','text-mode-name'])assert.ok(card.includes(`data-ds-recipe="${recipe}"`),`${mode}: ${recipe}`);
+  for(const decoration of homeDecorationAtoms(mode))assert.ok(card.includes(decoration.svg),`${mode}: library must use the production vector`);
+ }
+ const progress=partSample('container-home-stats');
+ for(const recipe of ['background-home-stats-outer','background-home-stats-inner','container-home-stat-icon','icon-home-stat-backing','icon-home-stat-symbol'])assert.ok(progress.includes(`data-ds-recipe="${recipe}"`),recipe);
+ const reference=homeDecorationStar();
+ for(const mode of ['spelling','reading'])for(const a of homeDecorationAtoms(mode)){
+  assert.equal(a.svg,reference,'both modes share one star silhouette');
+  assert.equal(a.width,a.height,'a wide tile must not stretch the star');
+ }
+ const mountain=homeDecorationAtoms('flags')[0];
+ assert.ok(mountain.x+mountain.width<HOME_TILE_SIZES.flags[0]);
+ assert.ok(mountain.y+mountain.height<HOME_TILE_SIZES.flags[1]);
+});

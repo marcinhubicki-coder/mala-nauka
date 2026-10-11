@@ -1,3 +1,5 @@
+import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon} from '../home-screen.mjs';
+import {homeTileSurface,homeBadgeSurface,homeModeGlyph,homeStatBacking,homeStatSymbol,homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES} from './home-atoms.mjs';
 import {PART_BY_ID} from './structure-model.mjs';
 import {profileAvatar,pinModeMarkup,pinDotMarkup,pinDotsMarkup,pinKeyMarkup,pinKeypadMarkup} from './profile-parts.mjs';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -5,7 +7,7 @@ const texts={
  'text-player-title':'Kto dziś odkrywa?', 'text-nickname':'Maja', 'text-pin-instruction':'Ustaw 4 cyfry',
  'text-player-copy':'Małe kroki, wielkie odkrycia.', 'text-field-label':'Co ćwiczymy?',
  'text-nickname-help':'Od 3 do 16 znaków.', 'jelly-option':'Podstawowe', 'pin-option':'Ustaw PIN',
- 'text-continue-copy':'Przesuń, aby kontynuować', 'text-progress-value':'72%', 'text-mode-name':'Ortografia'
+ 'text-continue-copy':'Przesuń, aby kontynuować', 'text-progress-value':'72%', 'text-mode-name':'Ortografia', 'text-home-mode-symbol':'abc', 'text-home-stat-value':'0 pkt', 'text-home-stat-label':'Zagraj pierwszą rundę'
 };
 const arrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 const check='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
@@ -16,7 +18,7 @@ export function jellyMarkup(labels=['Wszystkie','Podstawowe','Trudne'],selected=
 export function partSample(id,options={}){
  const catalog=options.catalog||Object.values(PART_BY_ID),byId=new Map(catalog.map(p=>[p.id,p])),assetURL=options.assetURL|| (path=>new URL('../'+path,import.meta.url).href);
  const opts={pin:true,pinDigits:0,playerCount:3,selectedPlayer:-1,choice:0,percent:72,mode:'default',...options};
- const stamp=(markup,recipe,kind=byId.get(recipe)?.kind||'container')=>markup.replace(/^(<\w+)(?=[\s>])/,(tag)=>`${tag} data-ds-recipe="${esc(recipe)}" data-ds-kind="${kind}"`);
+ const stamp=(markup,recipe,kind=byId.get(recipe)?.kind||'container')=>markup.replace(/^<([^>]+)>/,tag=>tag.replace(/ data-ds-(?:recipe|kind)="[^"]*"/g,'')).replace(/^(<\w+)(?=[\s>])/,(tag)=>`${tag} data-ds-recipe="${esc(recipe)}" data-ds-kind="${kind}"`);
  const tag=(name,recipe,cls,body,attrs='')=>`<${name} data-ds-recipe="${esc(recipe)}" data-ds-kind="${byId.get(recipe)?.kind||'container'}" class="${cls}" ${attrs}>${body}</${name}>`;
  const img=(recipe,path)=>tag('img',recipe,'part-image','',`src="${esc(assetURL(path))}" alt="${esc(byId.get(recipe)?.name||'Ilustracja')}"`);
  const avatar=(key='a')=>stamp(profileAvatar({avatarId:key},'',assetURL),'image-player-avatar-art');
@@ -24,6 +26,11 @@ export function partSample(id,options={}){
  const dots=()=>stamp(pinDotsMarkup(opts.pinDigits),'container-pin-dots').replaceAll('<span class=', '<span data-ds-recipe="icon-pin-dot" data-ds-kind="icon" class=');
  const mode=()=>stamp(pinModeMarkup(opts.pin,'block-pin'),'control-pin').replaceAll('<label>', '<label data-ds-recipe="pin-option" data-ds-kind="text">');
  const player=(index=0)=>tag('button','button-player-card',`player-card ${opts.selectedPlayer===index?'is-selected':''}`,avatar('abc'[index%3])+tag('strong','text-nickname','', ['Maja','Tomek','Lena'][index%3])+tag('span','icon-player-select','player-select-mark',opts.selectedPlayer===index?`<span class="check">${check}</span>`:'<span class="empty-check"></span>'),`type="button" data-sample-player="${index}" aria-pressed="${opts.selectedPlayer===index}"`);
+ const homeMode=HOME_TILE_SIZES[opts.mode]?opts.mode:'spelling';
+ const homeNames={spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'};
+ // Production markup and styles are reused in the standalone library examples.
+ const homePreview=(body,width,height)=>`<div class="home-canvas home-part-preview home-game-button" data-mode="${homeMode}" style="aspect-ratio:${width}/${height}">${body}</div>`;
+ const homeAtom=(recipe,art)=>homePreview(tag('span',recipe,'home-part-atom home-game-button',art,`data-mode="${homeMode}"`),140,140);
  const render=(recipe,seen=new Set())=>{
   if(seen.has(recipe))return '';
   const next=new Set(seen).add(recipe),p=byId.get(recipe)||PART_BY_ID[recipe]||{id:recipe,name:recipe,kind:'container',children:[]};
@@ -46,10 +53,25 @@ export function partSample(id,options={}){
    case 'icon-pin-dot':return stamp(pinDotMarkup(opts.pinDigits>0),'icon-pin-dot');
    case 'input-player-name':return tag('input',recipe,'player-name-input','', 'type="text" value="Maja" maxlength="16" aria-label="Imię gracza"');
    case 'button-main':case 'button-answer':return tag('button',recipe,recipe==='button-main'?'start-button':'recipe-answer',recipe==='button-main'?'Dalej':'rz','type="button" data-sample-press aria-pressed="false"');
-   case 'button-back':case 'button-home-progress':return tag('button',recipe,'part-icon-button',recipe==='button-back'?arrow.replace('M5 12h14m-6-6 6 6-6 6','M19 12H5m6-6-6 6 6 6'):arrow,'type="button" data-sample-press aria-pressed="false"');
+   case 'button-back':return tag('button',recipe,'part-icon-button',recipe==='button-back'?arrow.replace('M5 12h14m-6-6 6 6-6 6','M19 12H5m6-6-6 6 6 6'):arrow,'type="button" data-sample-press aria-pressed="false"');
    case 'button-avatar-choice':return tag('button',recipe,'avatar-choice',avatar(),'type="button" data-sample-avatar="a" aria-pressed="false"');
    case 'button-player-card':return player();
-   case 'button-home-card':return tag('button',recipe,'part-mode-card',child('container-card')+child('image-mission')+child('text-mode-name'),'type="button" data-sample-press aria-pressed="false"');
+   case 'button-home-card':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeModeCard(homeMode,homeNames[homeMode],'left:0;top:0;width:100%;height:100%'),recipe),w,h);}
+   case 'container-home-decoration':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeDecoration(homeMode),recipe),w,h);}
+   case 'container-home-badge':return homePreview(stamp(renderHomeBadge(homeMode).replace('class="home-mode-badge"','class="home-mode-badge home-part-badge"').replace('<span ','<span data-mode="'+homeMode+'" '),recipe),158,158);
+   case 'container-home-stat-icon':return homePreview(stamp(renderHomeStatIcon('target').replace('class="home-icon home-stat-icon"','class="home-icon home-stat-icon home-part-stat-icon"'),recipe),140,140);
+   case 'container-home-stat':return homePreview(tag('div',recipe,'home-stat',renderHomeStatIcon('star')+tag('div','container','',child('text-home-stat-value')+child('text-home-stat-label'))),340,140);
+   case 'container-home-stats':return homePreview(stamp(renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'left:0;top:0;width:100%;height:100%'),recipe),810,184);
+   case 'icon-home-tile-surface':return homeAtom(recipe,homeTileSurface(homeMode));
+   case 'icon-home-badge-surface':return homeAtom(recipe,homeBadgeSurface(homeMode));
+   case 'icon-home-mode-glyph':return homeAtom(recipe,homeModeGlyph(['english','flags','reading'].includes(homeMode)?homeMode:'english'));
+   case 'icon-home-stat-backing':return homeAtom(recipe,homeStatBacking('target'));
+   case 'icon-home-stat-symbol':return homeAtom(recipe,homeStatSymbol('star'));
+   case 'icon-home-decoration-star':return homeAtom(recipe,homeDecorationStar());
+   case 'icon-home-decoration-plus':case 'icon-home-decoration-rays':case 'icon-home-decoration-cloud':case 'icon-home-decoration-mountains':{const key=recipe.split('-').at(-1),m={plus:'math',rays:'english',cloud:'english',mountains:'flags'}[key];return homeAtom(recipe,homeDecorationAtoms(m).find(a=>a.id.startsWith(key)).svg);}
+   case 'icon-home-chevron':return homeAtom(recipe,homeStatSymbol('chevron'));
+   case 'button-home-progress':return homePreview(tag('button',recipe,'home-progress-arrow',homeStatSymbol('chevron'),'type="button" data-sample-press aria-label="Moje wyniki"'),100,100);
+   case 'background-home-stats-outer':case 'background-home-stats-inner':return homePreview(tag('span',recipe,recipe.endsWith('outer')?'home-stats-outer':'home-stats-inner','','style="z-index:0"'),810,184);
    case 'result-points-bubble':return tag('div',recipe,'part-points','125');
    case 'container-player-title':return tag('header',recipe,'player-title',children());
    case 'container-player-grid':return tag('div',recipe,`player-grid ${opts.selectedPlayer>=0?'has-selection':''}`,Array.from({length:opts.playerCount},(_,i)=>player(i)).join(''));

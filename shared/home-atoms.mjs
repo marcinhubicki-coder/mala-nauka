@@ -9,16 +9,29 @@ export function homeTileSurface(mode){
  return svg(mode,`<rect x="1.5" y="1.5" width="253" height="243" rx="26" fill="url(#home-${mode}-surface)"/><rect x="2.5" y="2.5" width="251" height="241" rx="25" fill="url(#home-${mode}-light)" stroke="white" stroke-opacity=".26" stroke-width="3"/>`,`${linear(`home-${mode}-surface`,'var(--tile-light)','var(--tile-dark)')}<radialGradient id="home-${mode}-light" cx=".18" cy=".03" r="1"><stop stop-color="white" stop-opacity=".1"/><stop offset=".55" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="var(--tile-shade)" stop-opacity=".08"/></radialGradient>`,'0 0 256 246').replace('<svg ','<svg preserveAspectRatio="none" ');
 }
 
+// Decoration coordinates use the actual tile size. Square stars keep the same
+// silhouette in the wide Reading tile and the compact Orthography tile.
+export const HOME_TILE_SIZES={spelling:[257,245],math:[253,245],english:[255,245],flags:[386,250],reading:[386,250]};
+export function homeDecorationStar(){return svg('decoration-star',`<path d="${star}" fill="white" opacity=".27"/>`);}
+export function homeDecorationAtoms(mode){
+ const atom=(id,label,x,y,width,height,art)=>({id,label,x,y,width,height,svg:art});
+ const starAtom=(id,x,y,size)=>atom(id,'Gwiazda dekoracyjna',x,y,size,size,homeDecorationStar());
+ const plus=svg('plus','<path d="M70 30v80M30 70h80" fill="none" stroke="white" opacity=".29" stroke-width="25" stroke-linecap="round"/>');
+ const rays=svg('rays','<path d="m18 27 17-21M19 52l28-7" fill="none" stroke="#fff5a2" stroke-width="9" stroke-linecap="round"/>','','0 0 56 64');
+ const cloud=svg('cloud','<path d="M0 82C-1 60 13 45 32 47C38 19 62 9 83 23C98 1 125 1 144 18V114H0Z" fill="#ffed74" opacity=".28"/>','','0 0 144 114');
+ const mountains=svg('mountains','<path d="M0 117 77 12Q84 2 91 12L123 56 137 40Q145 31 152 43L195 117 154 101 137 116 103 73 64 101Z" fill="url(#home-mountain)"/><path d="m0 117 64-16 39-28 34 43 17-15 41 16-43-74-15-3-14 16-32-44Z" fill="#64e88b" opacity=".12"/>',linear('home-mountain','#96efa1','#17ae67'),'0 0 195 120');
+ return ({
+  spelling:[starAtom('star',181,51,70)],
+  math:[atom('plus-1','Plus · duży',180,35,38,38,plus),atom('plus-2','Plus · mały',195,96,34,34,plus)],
+  english:[atom('rays','Promienie',196,33,56,64,rays),atom('cloud','Chmurka',180,113,144,114,cloud)],
+  flags:[atom('mountains','Góry',169,87,195,120,mountains)],
+  reading:[starAtom('star-1',223,25,70),starAtom('star-2',295,57,65),starAtom('star-3',253,120,62)]
+ })[mode]||[];
+}
+// Composite export for artwork previews; production exposes each atom separately.
 export function homeTileDecoration(mode){
- const stars=positions=>positions.map(([x,y,s,r])=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="${star}" fill="white" opacity=".27"/></g>`).join('');
- const body={
-  spelling:stars([[181,51,.5,0]]),
-  math:'<g stroke="white" opacity=".29" stroke-width="10" stroke-linecap="round"><path d="M199 41v31m-15-15h30" transform="rotate(-10 199 57)"/><path d="M213 101v27m-14-14h28" transform="rotate(12 213 114)"/></g>',
-  english:'<g fill="none" stroke="#fff5a2" stroke-width="9" stroke-linecap="round"><path d="m207 57 14-16m-13 36 22-5"/></g><path d="M191 178q-4-39 22-34 8-29 43-24v126h-65Z" fill="#ffed74" opacity=".24"/>',
-  flags:'<path d="m118 202 60-106q6-9 12 0l22 30 10-10q7-9 13 1l36 85-54-21-13 18-27-36-22 21Z" fill="url(#home-mountain)"/><path d="m118 202 60-39 26 36 13-18 54 21-59-76-22-30Z" fill="#64e88b" opacity=".12"/>',
-  reading:stars([[137,25,.48,-9],[185,50,.46,4],[156,100,.46,-8]])
- }[mode]||'';
- return svg(mode,body,linear('home-mountain','#96efa1','#17ae67'),'0 0 256 246').replace('<svg ','<svg preserveAspectRatio="none" ');
+ const [w,h]=HOME_TILE_SIZES[mode]||[256,246];
+ return svg(mode,homeDecorationAtoms(mode).map(a=>a.svg.replace('<svg ',`<svg x="${a.x}" y="${a.y}" width="${a.width}" height="${a.height}" `)).join(''),'',`0 0 ${w} ${h}`);
 }
 
 export function homeBadgeSurface(mode){
@@ -32,8 +45,15 @@ export function homeModeGlyph(mode){
  return '';
 }
 
-export function homeStatIcon(kind){
- if(kind==='star')return svg(kind,`<circle cx="70" cy="70" r="62" fill="url(#home-star-halo)"/><path d="${star}" fill="url(#home-star-gold)" stroke="#ffe263" stroke-width="1.5" transform="translate(0 4)"/>`,linear('home-star-halo','#fffcea','#fff2c6')+linear('home-star-gold','#ffe714','#ffa500'));
+export function homeStatBacking(kind){
+ return svg(kind,`<circle cx="70" cy="70" r="62" fill="url(#home-${kind}-halo)"/>`,kind==='star'?linear('home-star-halo','#fffcea','#fff2c6'):linear('home-target-halo','#fff8fc','#ffdeea'));
+}
+export function homeStatSymbol(kind){
+ if(kind==='star')return svg(kind,`<path d="${star}" fill="url(#home-star-gold)" stroke="#ffe263" stroke-width="1.5" transform="translate(70 70) scale(.84) translate(-70 -65)"/>`,`<linearGradient id="home-star-gold" x1=".15" y1="0" x2=".8" y2="1"><stop stop-color="#fff34a"/><stop offset=".42" stop-color="#ffd51a"/><stop offset="1" stop-color="#f39100"/></linearGradient>`);
  if(kind==='chevron')return svg(kind,'<path d="m58 44 27 26-27 26" fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>');
- return svg(kind,`<circle cx="64" cy="80" r="60" fill="url(#home-target-halo)"/><circle cx="62" cy="79" r="40" fill="url(#home-target-pink)"/><circle cx="62" cy="79" r="27" fill="#fff5fa"/><circle cx="62" cy="79" r="16" fill="#ee2184"/><circle cx="62" cy="79" r="7" fill="#ffe2ee"/><path d="m65 77 43-44" stroke="#46209c" stroke-width="10" stroke-linecap="round"/><path d="m65 73 43-44" stroke="url(#home-arrow-purple)" stroke-width="7" stroke-linecap="round"/><path d="m92 40 3-25q1-8 6-5l11 16 18 4q6 2 1 7l-21 14Z" fill="url(#home-arrow-purple)"/><path d="m95 37 6-24 10 16Z" fill="#dd9bff" opacity=".8"/>`,linear('home-target-halo','#fff8fc','#ffdeea')+linear('home-target-pink','#ff7bb6','#f01b76')+linear('home-arrow-purple','#c472ff','#7135d8'));
+ return svg(kind,`<circle cx="70" cy="70" r="40" fill="url(#home-target-pink)"/><circle cx="70" cy="70" r="27" fill="#fff5fa"/><circle cx="70" cy="70" r="16" fill="#ee2184"/><circle cx="70" cy="70" r="7" fill="#ffe2ee"/><path d="m72 70 36-37" stroke="#46209c" stroke-width="10" stroke-linecap="round"/><path d="m72 66 36-37" stroke="url(#home-arrow-purple)" stroke-width="7" stroke-linecap="round"/><path d="m92 40 3-25q1-8 6-5l11 16 18 4q6 2 1 7l-21 14Z" fill="url(#home-arrow-purple)"/><path d="m95 37 6-24 10 16Z" fill="#dd9bff" opacity=".8"/>`,linear('home-target-pink','#ff7bb6','#f01b76')+linear('home-arrow-purple','#c472ff','#7135d8'));
+}
+export function homeStatIcon(kind){
+ if(kind==='chevron')return homeStatSymbol(kind);
+ return svg(kind,[homeStatBacking(kind),homeStatSymbol(kind)].map(a=>a.replace('<svg ','<svg width="140" height="140" ')).join(''));
 }

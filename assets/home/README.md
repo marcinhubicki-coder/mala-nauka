@@ -28,3 +28,18 @@ vector and style revisions. Browser comparison was blocked: local preview failed
 with a container proc-mount error, and authenticated Vercel preview access was
 rejected by automatic approval review. Do not treat this as a verified 1:1
 browser match or a physical iPhone test.
+
+2026-10-11 refinements: the target rings and halo share the center (70,70).
+The gold star is scaled to 84% with three stronger gold gradient stops.
+A separate last-row scene continuation extends from y=939 to y=1026 beneath
+the live results plates, without exposing the baked-in raster panel.
+Mountains are inset within the wide Flags tile; Reading and Orthography use
+one square, unrotated star atom. English has a curved cloud and separate rays.
+
+Design Studio now declares the results plates, stat symbol/backing pairs,
+mode surfaces, decoration groups and badge groups in its shared part catalog.
+Standalone samples reuse the production renderers and SVGs. Named vector
+wrappers own their SVGs; the inspector omits duplicate anonymous SVG leaves.
+Canonical build and 232 tests pass. SVG atom renders were inspected locally;
+full browser/iPhone comparison remains unverified because preview access is
+protected and the local browser container could not start.

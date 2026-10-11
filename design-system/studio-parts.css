@@ -34,3 +34,13 @@
 .live-component .part-mode-card>.part-image,.live-component .part-mode-card>.part-text{position:relative;z-index:1}
 .live-component .part-meter-fill{display:block;border-radius:12px}
 .live-recipe-controls [hidden]{display:none!important}
+
+.live-component .home-part-preview { width:min(100%,390px); margin:auto; min-height:0; }
+.live-component .home-part-atom { position:absolute; inset:0; display:block; }
+.live-component .home-part-atom svg { display:block; width:100%; height:100%; }
+.live-component .home-part-preview > .home-progress-arrow { width:100%; height:100%; }
+.live-component .home-part-preview > .home-progress-arrow svg { width:85%; height:85%; }
+
+.live-component .home-part-preview > .home-part-badge { left:0; top:0; width:100%; height:100%; }
+.live-component .home-part-preview > .home-part-stat-icon { width:100%; height:100%; }
+.live-component .home-part-preview > .home-stat { height:100%; }

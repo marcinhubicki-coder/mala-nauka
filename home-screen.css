@@ -253,7 +253,7 @@ body:has(#app[data-view="home"]) {
 .home-logo-art{position:absolute;z-index:2;display:block;pointer-events:none}
 
 .home-hero-underlap { position:absolute; z-index:0; display:block; pointer-events:none; }
-.home-hero-underlap svg { display:block; width:100%; height:100%; }
+.home-hero-underlap svg { display:block; width:100%; height:100%; overflow:hidden; }
 .home-stat-icon { position:relative; }
 .home-stat-backing,.home-stat-symbol { position:absolute; inset:0; display:block; pointer-events:none; }
 .home-decoration-atom { position:absolute; display:block; filter:drop-shadow(0 .4cqw .5cqw #2854630d); }

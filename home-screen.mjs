@@ -5,14 +5,14 @@ import {composeTemplate} from './shared/structure-model.mjs';
 import {compileViewMarkup} from './shared/view-contracts.mjs';
 import {assetUrl} from './shared/asset-loader.mjs';
 const WIDTH=853, TOP=100, CONTENT_HEIGHT=1670;
-const SETTINGS=[709,122,103,103], STATS=[22,954,810,184];
-export const HOME_MODES_BOUNDS=[32,1248,789,507],HOME_WELCOME_BOUNDS=[22,220,810,918];
+const SETTINGS=[709,122,103,103], STATS=[10,940,833,210];
+export const HOME_MODES_BOUNDS=[26,1240,801,521],HOME_WELCOME_BOUNDS=[10,220,833,930];
 const TILES={
- spelling:[32,1248,257,245],
- math:[301,1248,253,245],
- english:[566,1248,255,245],
- flags:[32,1505,386,250],
- reading:[434,1505,386,250]
+ spelling:[26,1240,269,260],
+ math:[295,1240,266,260],
+ english:[560,1240,267,260],
+ flags:[26,1499,398,262],
+ reading:[428,1499,399,262]
 };
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const position=([x,y,w,h])=>`left:${x/WIDTH*100}%;top:${(y-TOP)/CONTENT_HEIGHT*100}%;width:${w/WIDTH*100}%;height:${h/CONTENT_HEIGHT*100}%`;

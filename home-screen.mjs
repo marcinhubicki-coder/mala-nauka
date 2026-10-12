@@ -2,6 +2,7 @@
 // Coordinates use the design's 853 × 1844 canvas; iOS draws its own system bars.
 import {homeTileSurface,homeDecorationAtoms,HOME_TILE_SIZES,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeStatIcon} from './shared/home-atoms.mjs';
 import {composeTemplate} from './shared/structure-model.mjs';
+import {compileViewMarkup} from './shared/view-contracts.mjs';
 import {assetUrl} from './shared/asset-loader.mjs';
 const WIDTH=853, TOP=100, CONTENT_HEIGHT=1670;
 const SETTINGS=[709,122,103,103], STATS=[22,954,810,184];
@@ -80,5 +81,5 @@ export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeI
  'container-home-adventures':renderHomeAdventures(position([26,1162,801,68])),
  'family-home-modes':renderHomeModes(modes,modeIds,position(HOME_MODES_BOUNDS))
  };
- return `<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka">${composeTemplate('home',slots)}</section>`;
+ return compileViewMarkup('home',`<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka">${composeTemplate('home',slots)}</section>`);
 }

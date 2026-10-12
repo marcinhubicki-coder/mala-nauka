@@ -7,6 +7,7 @@ import {viewContract,validateViewContract,inheritedMode} from '../shared/view-co
 import {SPELLING_SETTINGS_CONTRACT,validateSpellingSettingsContract} from '../shared/spelling-settings-contract.mjs';
 import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/element-styles.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
+import {HOME_RECTS,homeRect,homePosition,validateHomeLayout} from '../shared/home-layout.mjs';
 import {STARTUP_LINKS,resolveRoute,routeKey,validateNavigation,routeTargets} from '../shared/navigation.mjs';
 
 // A reusable recipe is a real source-level component shared across views.
@@ -49,6 +50,22 @@ export function planRouteEdit(config,{from,action,to,reset=false}){
  return {config:draft,change:{path:'navigation.routes.'+info.key,from,action,before,after:reset?null:to,current:resolveRoute(draft,from,action)}};
 }
 
+export function inspectHomeLayout(config,id){
+ if(!Object.hasOwn(HOME_RECTS,id))throw Error('Unknown Home block: '+id);
+ return {...homeRect(config,id),style:homePosition(config,id),override:config.layoutOverrides?.home?.[id]||null};
+}
+export function planLayoutEdit(config,{id,geometry={},reset=false}){
+ if(!Object.hasOwn(HOME_RECTS,id))throw Error('Unknown Home layout block: '+id);
+ if(!reset&&!Object.keys(geometry).length)throw Error('Select at least one coordinate: x, y, w or h');
+ const draft=structuredClone(config),old=draft.layoutOverrides?.home?.[id]||null;
+ draft.layoutOverrides??={};
+ draft.layoutOverrides.home??={};
+ if(reset)delete draft.layoutOverrides.home[id];
+ else draft.layoutOverrides.home[id]={...(draft.layoutOverrides.home[id]||{}),...geometry};
+ validateHomeLayout(draft);
+ return {config:draft,change:{id,path:'layoutOverrides.home.'+id,before:old,after:draft.layoutOverrides.home[id]||null,rect:homeRect(draft,id).rect,style:homePosition(draft,id)}};
+}
+
 export function findEditableBlock(view,id){
  if(view==='home'){validateViewContract('home');const row=viewContract('home').find(row=>row.id===id);return row?{...row,view,mode:inheritedMode(view,id),blockId:'block-'+row.recipe}:null;}
  if(view==='spelling-settings'){validateSpellingSettingsContract();const row=SPELLING_SETTINGS_CONTRACT[id];return row?{...row,view,blockId:'block-'+row.recipe}:null;}
@@ -84,8 +101,17 @@ async function main(argv=process.argv.slice(2)){
  if(command==='help'){console.log('Design Studio engine: inspect --view home --id home-mode-spelling | set --view home --id home-mode-spelling --property radius --value 28 [--apply] | inspect-recipe --recipe button-back | set-recipe --recipe button-back --property radius --value 22 [--apply] | check');return;}
  const filename=resolve(option(argv,'config')||'design-system/config.json');
  const current=JSON.parse(await readFile(filename,'utf8'));
- if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);console.log('VALID: Home, Ortografia settings and design styles');return;}
+ if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);console.log('VALID: Home, Ortografia settings and design styles');return;}
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
+ if(command==='inspect-layout'){console.log(JSON.stringify(inspectHomeLayout(current,option(argv,'id')),null,2));return;}
+ if(command==='set-layout'){
+  const geometry={};
+  for(const key of ['x','y','w','h']){const raw=option(argv,key);if(raw!==null)geometry[key]=Number(raw);}
+  const planned=planLayoutEdit(current,{id:option(argv,'id'),geometry,reset:argv.includes('--reset')});
+  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  else console.log('DRY RUN '+JSON.stringify(planned.change));
+  return;
+ }
  if(command==='inspect-route'){console.log(JSON.stringify(inspectRoute(current,{from:option(argv,'from'),action:option(argv,'action'),mode:option(argv,'mode')||'spelling'}),null,2));return;}
  if(command==='set-route'){
   const planned=planRouteEdit(current,{from:option(argv,'from'),action:option(argv,'action'),to:option(argv,'to'),reset:argv.includes('--reset')});

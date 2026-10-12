@@ -46,3 +46,16 @@ npm run studio:engine -- set-route --from players --action enter-player --to pro
 ```
 
 Połączenia stałe, w tym sprawdzenie PIN, pozostają nietykalne. Zmiany trafiają do `config.navigation.routes` i są odczytywane przez wspólny `resolveRoute` podczas rozgrywki; bez lokalnych handlerów i łatek CSS. W pierwszej iteracji silnik ogranicza tę operację do scenariuszy profilu z `STARTUP_LINKS`; nie zgaduje połączeń innych ekranów.
+
+## Edycja układu Home bez modyfikacji kodu
+
+Zatwierdzone położenie elementów trzymamy w `shared/home-layout.mjs`. Nadpisania w `config.layoutOverrides.home` są wartościami `x/y/w/h` na artboardzie 853 × 1844 (przy uwzględnieniu obszaru treści). Zarówno renderer PWA, jak i podgląd Studio korzystają z tych samych wartości.
+
+```bash
+npm run studio:engine -- inspect-layout --id home-mode-spelling
+npm run studio:engine -- set-layout --id home-mode-spelling --x 34 --w 255
+npm run studio:engine -- set-layout --id home-mode-spelling --x 34 --w 255 --apply
+npm run studio:engine -- set-layout --id home-mode-spelling --reset --apply
+```
+
+Brak `--apply` oznacza suchy test. Silnik nie zapisze elementu wykraczającego poza artboard. Zmiany indywidualnych wystąpień są kontrolowane przez jawny model, bez doklejania CSS.

@@ -34,3 +34,15 @@ npm run studio:engine -- set-recipe --recipe control-jelly --mode spelling --pro
 Zmiana przepisu działa przez \`elementStyles.<recipe>\` lub \`familyStyles.<mode>.<recipe>\`. Komponenty, których renderery mają jawną recepturę lub adapter starszego widoku przypisuje je na podstawie katalogu, dziedziczą zmianę. Narzędzie nie tworzy duplikatu atomu, nie skanuje DOM i nie zgaduje nazwy elementu.
 
 **Istotne:** nie oznacza to zakończenia migracji 41 widoków do deklaratywnych kontraktów. Indywidualne zmiany niezarejestrowanych instancji nadal wymagają migracji widoku.
+
+## Sterowanie nawigacją przez silnik
+
+Polecenia pracują na istniejących, zadeklarowanych połączeniach, które runtime już obsługuje:
+
+```bash
+npm run studio:engine -- inspect-route --from players --action enter-player
+npm run studio:engine -- set-route --from players --action enter-player --to progress
+npm run studio:engine -- set-route --from players --action enter-player --to progress --apply
+```
+
+Połączenia stałe, w tym sprawdzenie PIN, pozostają nietykalne. Zmiany trafiają do `config.navigation.routes` i są odczytywane przez wspólny `resolveRoute` podczas rozgrywki; bez lokalnych handlerów i łatek CSS. W pierwszej iteracji silnik ogranicza tę operację do scenariuszy profilu z `STARTUP_LINKS`; nie zgaduje połączeń innych ekranów.

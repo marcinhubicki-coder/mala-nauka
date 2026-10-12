@@ -7,6 +7,7 @@ import {viewContract,validateViewContract,inheritedMode} from '../shared/view-co
 import {SPELLING_SETTINGS_CONTRACT,validateSpellingSettingsContract} from '../shared/spelling-settings-contract.mjs';
 import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/element-styles.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
+import {STARTUP_LINKS,resolveRoute,routeKey,validateNavigation,routeTargets} from '../shared/navigation.mjs';
 
 // A reusable recipe is a real source-level component shared across views.
 // It can be edited without first scraping any screen's DOM or inventing IDs.
@@ -26,6 +27,26 @@ export function planRecipeEdit(config,{recipe,property,value,mode=null,reset=fal
  if(reset)delete dest[property];else dest[property]=value;
  validateElementStyles(draft);
  return {config:draft,change:{recipe,kind:part.kind,scope:mode?'theme':'global',mode,path:path.concat(property).join('.'),before,after:reset?undefined:value}};
+}
+
+
+export function inspectRoute(config,{from,action,mode='spelling'}){
+ if(!from||!action)throw Error('Route needs source view and action');
+ const route=STARTUP_LINKS.find(row=>row.from===from&&row.action===action);
+ if(!route)throw Error('Route is not in the explicitly supported startup map: '+routeKey(from,action));
+ return {from,action,mode,fixed:Boolean(route.fixed),allowed:route.targets||[route.to],current:resolveRoute(config,from,action,mode),key:routeKey(from,action)};
+}
+export function planRouteEdit(config,{from,action,to,reset=false}){
+ const info=inspectRoute(config,{from,action});
+ if(info.fixed)throw Error('Fixed navigation step cannot be overridden: '+info.key);
+ if(!reset&&(!routeTargets.includes(to)||!info.allowed.includes(to)))throw Error('Destination not allowed for '+info.key);
+ const draft=structuredClone(config);
+ draft.navigation??={routes:{}};
+ draft.navigation.routes??={};
+ const before=draft.navigation.routes[info.key]||null;
+ if(reset)delete draft.navigation.routes[info.key];else draft.navigation.routes[info.key]=to;
+ validateNavigation(draft.navigation);
+ return {config:draft,change:{path:'navigation.routes.'+info.key,from,action,before,after:reset?null:to,current:resolveRoute(draft,from,action)}};
 }
 
 export function findEditableBlock(view,id){
@@ -65,6 +86,13 @@ async function main(argv=process.argv.slice(2)){
  const current=JSON.parse(await readFile(filename,'utf8'));
  if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);console.log('VALID: Home, Ortografia settings and design styles');return;}
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
+ if(command==='inspect-route'){console.log(JSON.stringify(inspectRoute(current,{from:option(argv,'from'),action:option(argv,'action'),mode:option(argv,'mode')||'spelling'}),null,2));return;}
+ if(command==='set-route'){
+  const planned=planRouteEdit(current,{from:option(argv,'from'),action:option(argv,'action'),to:option(argv,'to'),reset:argv.includes('--reset')});
+  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  else console.log('DRY RUN '+JSON.stringify(planned.change));
+  return;
+ }
  if(command==='set-recipe'){
   const reset=argv.includes('--reset'),property=option(argv,'property');
   if(!property)throw Error('--property is required');

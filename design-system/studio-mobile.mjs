@@ -73,12 +73,10 @@ function touchPreview(){
 function sync(){
   scheduled=false;
   const buttons=[...document.querySelectorAll('#navigation [data-page]')];
-  const signature=buttons.map(button=>button.dataset.page+button.className).join('|');
+  const signature=buttons.map(button=>button.dataset.page+button.className+button.hidden).join('|');
   if(signature!==navigationSignature){
     navigationSignature=signature;
-    document.getElementById('mobile-navigation-list').replaceChildren(...buttons.map(button=>{
-      const copy=button.cloneNode(true);copy.removeAttribute('title');copy.setAttribute('aria-current',button.classList.contains('active')?'page':'false');return copy;
-    }));
+    document.getElementById('mobile-navigation-list').replaceChildren(...[...document.querySelectorAll('#navigation [data-nav-group]')].map(group=>{const section=group.cloneNode(true);section.hidden=false;for(const copy of section.querySelectorAll('[data-page]')){copy.removeAttribute('title');copy.setAttribute('aria-current',copy.classList.contains('active')?'page':'false');}section.hidden=![...section.querySelectorAll('[data-page]')].some(b=>!b.hidden);return section;}));
   }
   const next=workspace.querySelector('.component-layout')?'components':workspace.querySelector('.effect-workspace')?'effects':workspace.querySelector('.motion-workspace')?'motion':'';
   if(editor!==next){editor=next;setPane('choose');}
@@ -96,7 +94,8 @@ function sync(){
   dimensions();
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(sync);}}
-document.getElementById('mobile-menu-open').onclick=()=>menu.showModal();
+document.getElementById('mobile-menu-open').onclick=()=>{document.getElementById('mobile-tool-search').value=document.getElementById('studio-nav-search').value;menu.showModal();};
+document.getElementById('mobile-tool-search').addEventListener('input',event=>{const input=document.getElementById('studio-nav-search');input.value=event.target.value;input.dispatchEvent(new Event('input',{bubbles:true}));});
 document.getElementById('mobile-menu-close').onclick=()=>menu.close();
 menu.addEventListener('click',event=>{
   const button=event.target.closest('[data-page]');if(!button)return;
@@ -118,7 +117,7 @@ window.addEventListener('message',event=>{
   if([...workspace.querySelectorAll('iframe')].some(frame=>frame.contentWindow===event.source))setPane('edit');
 });
 new MutationObserver(schedule).observe(workspace,{childList:true,subtree:true});
-new MutationObserver(schedule).observe(document.getElementById('navigation'),{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+new MutationObserver(schedule).observe(document.getElementById('navigation'),{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});
 new MutationObserver(schedule).observe(document.querySelector('.top-actions'),{childList:true,subtree:true});
 new MutationObserver(schedule).observe(modal,{childList:true,attributes:true,attributeFilter:['open']});
 const sizeObserver=new ResizeObserver(dimensions);sizeObserver.observe(topbar);sizeObserver.observe(dock);

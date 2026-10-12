@@ -37,6 +37,7 @@ export function validateNavigation(value){
  for(const [key,v]of Object.entries(value.playerSelection||{})){const bounds={delay:[0,2000],fadeDuration:[0,1500],otherOpacity:[0,1]}[key];if(key==='autoContinue'?typeof v!=='boolean':!bounds||!Number.isFinite(v)||v<bounds[0]||v>bounds[1])throw Error('Nieprawidłowe przejście wyboru gracza.');}
 }
 export function architectureLinks(mode){return [
+ {from:mode+'-settings',action:'start',label:'Zaczynamy!',to:mode+'-initial',fixed:true},
  {from:mode+'-settings',action:'home',label:'Powrót',to:'home'},
  {from:mode+'-initial',action:'exit-confirm',label:'Wyjdź · po potwierdzeniu',to:mode+'-settings'},
  {from:mode+'-results',action:'result-back',label:'Powrót',to:mode+'-settings'},
@@ -45,3 +46,21 @@ export function architectureLinks(mode){return [
  {from:'progress',action:'return-results',context:mode+'-results',label:'Powrót do rundy',to:mode+'-results'},
  {from:'progress',action:'home',label:'Powrót do startu',to:'home'}
  ];}
+
+// Actual screen actions shared by both maps. Game feedback and popup states
+// stay in their parent screen, while round start/end remain visible routes.
+export function screenLinks(registry,id,{context='home'}={}){
+ const main=key=>key.replace(/-(correct|wrong|pause|hint)$/,'-initial').replace(/-rule$/,'-results');
+ let rows=id.startsWith('player')?startupLinks(id):id==='home'?GAME_MODES.map(mode=>({from:id,action:'choose-mode',context:mode,label:'Zagraj: '+({spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'})[mode],to:mode+'-settings'})).concat([{from:id,action:'settings',label:'Ustawienia',to:'settings'},{from:id,action:'history',label:'Moje wyniki',to:'progress'}]):id==='settings'?[{from:id,action:'home',label:'Powrót',to:'home'},{from:id,action:'switch-player',label:'Zmień gracza',to:'players'}]:GAME_MODES.flatMap(architectureLinks).filter(r=>r.from===id);
+ if(id==='progress')rows=rows.filter(r=>r.action==='home'||r.context===context);
+ for(const flow of registry?.flows||[]){
+  if(flow.state)continue;
+  const matches=flow.from===id||(flow.from.includes('*')&&new RegExp('^'+flow.from.replace('*','[a-z]+')+'$').test(id));if(!matches)continue;
+  for(const target of Array.isArray(flow.to)?flow.to:[flow.to]){
+   const to=main(target.replace('*',id.split('-')[0]));if(to===id||rows.some(r=>r.to===to))continue;
+   const action=flow.selector?.match(/data-action=["']?([a-z-]+)/)?.[1]||'open-'+to;
+   rows.push({from:id,action,label:flow.action,to,fixed:true,selector:flow.selector});
+  }
+ }
+ return [...new Map(rows.map(r=>[routeKey(r.from,r.action,r.context),r])).values()];
+}

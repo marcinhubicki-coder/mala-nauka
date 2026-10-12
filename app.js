@@ -1,3 +1,4 @@
+import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
 import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
@@ -222,6 +223,7 @@ const playerPlusIcon='<svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><p
 const playerProgressIcon='<svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><defs><linearGradient id="player-bars" x1="17" y1="25" x2="53" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#46c2ff"/><stop offset="1" stop-color="#0588ff"/></linearGradient><linearGradient id="player-star" x1="40" y1="7" x2="57" y2="27" gradientUnits="userSpaceOnUse"><stop stop-color="#ffe35a"/><stop offset="1" stop-color="#ffb300"/></linearGradient></defs><path d="M14 32c16 0 23-7 31-19m-10 0 12-2-1 12" stroke="#0f9bff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="15" y="45" width="11" height="17" rx="4" fill="url(#player-bars)"/><rect x="31" y="36" width="11" height="26" rx="4" fill="url(#player-bars)"/><rect x="47" y="27" width="11" height="35" rx="4" fill="url(#player-bars)"/><path d="m52 6 4 8 9 1-6.5 6 1.5 9-8-4.2-8 4.2 1.5-9-6.5-6 9-1 4-8Z" fill="url(#player-star)" stroke="#fff3ad" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 function setScreenTheme(color){const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=color;}
 function playersPage(){
+ prepareScreenChange(root,'players');
  playerSelectionEpoch++;enterPlayerBusy=false;delete root.dataset.pinPurpose;
  const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);root.style.setProperty('--player-unselected-opacity',selection.otherOpacity);root.style.setProperty('--player-selection-duration',selection.fadeDuration+'ms');
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
@@ -239,6 +241,7 @@ function playersPage(){
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
 function playerCreatePage(){
+ prepareScreenChange(root,'player-create');
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
  const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
  root.dataset.profileEditor=editing?'edit':'create';
@@ -272,6 +275,7 @@ function setPinMode(index){
  if(changed){pinInput='';pinError='';renderPinFields(true);}
 }
 function playerPinPage(){
+ prepareScreenChange(root,'player-pin');
  spellingArt.reset();view='player-pin';root.dataset.view=view;delete root.dataset.mode;
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
  const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
@@ -314,6 +318,7 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ prepareScreenChange(root,next);
  editingPin=false;editingProfile=false;deletingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
@@ -508,6 +513,7 @@ document.addEventListener('mala-nauka:flag-presentation',event=>{
  if(state?.startsWith('feedback'))game.setPresentationHold(Boolean(event.detail.held));
 });
 function renderGame() {
+ prepareScreenChange(root,'game');
  if(game)root.dataset.state=game.state;
  if(!game||view!=='game')return;if(game.state==='ended'){finish();return;}if(game.state==='paused')return;
  if(game.mode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}

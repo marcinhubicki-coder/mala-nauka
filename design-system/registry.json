@@ -609,7 +609,7 @@
     },
     {
       "id": "spelling-initial",
-      "name": "Ortografia · przed odpowiedzią",
+      "name": "Ortografia · gra",
       "mode": "spelling",
       "screen": "game",
       "state": "initial",
@@ -745,7 +745,7 @@
     },
     {
       "id": "english-initial",
-      "name": "Angielski · przed odpowiedzią",
+      "name": "Angielski · gra",
       "mode": "english",
       "screen": "game",
       "state": "initial",
@@ -877,7 +877,7 @@
     },
     {
       "id": "flags-initial",
-      "name": "Flagi · przed odpowiedzią",
+      "name": "Flagi · gra",
       "mode": "flags",
       "screen": "game",
       "state": "initial",
@@ -1012,7 +1012,7 @@
     },
     {
       "id": "reading-initial",
-      "name": "Czytanie · przed odpowiedzią",
+      "name": "Czytanie · gra",
       "mode": "reading",
       "screen": "game",
       "state": "initial",
@@ -1142,7 +1142,7 @@
     },
     {
       "id": "math-initial",
-      "name": "Matematyka · przed odpowiedzią",
+      "name": "Matematyka · gra",
       "mode": "math",
       "screen": "game",
       "state": "initial",

@@ -1,13 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
-import {pinnedContentSource} from '../tools/content-source.mjs';
+import {pinnedContentSource,usesLocalDesignSnapshot} from '../tools/content-source.mjs';
 import {discoverImages} from '../design-system/catalog-refresh.mjs';
 import {GitClient,mergeCatalog} from '../design-system/git-client.mjs';
 import {configureAssets} from '../shared/asset-loader.mjs';
 import {sceneFor,sceneUrl} from '../spelling/scenes.mjs';
 const read=async p=>JSON.parse(await readFile(new URL('../'+p,import.meta.url),'utf8'));
 const assets=await read('design-system/assets.json');
+test('a pinned generated PWA retains local assets while ordinary consumer previews stay pinned remotely',()=>{
+ const sha='a'.repeat(40),report={kind:'optimized-pwa-test',sourceCommit:'b'.repeat(40)};
+ assert.equal(usesLocalDesignSnapshot('studio/pwa-test',report),true);
+ assert.equal(usesLocalDesignSnapshot(sha,report),true);
+ assert.equal(usesLocalDesignSnapshot(sha),false);
+ assert.equal(usesLocalDesignSnapshot('reading-preview',report),false);
+ assert.equal(usesLocalDesignSnapshot(sha,{...report,sourceCommit:'main'}),false);
+});
 test('scene assignments come only from the manifest, including intentional removal',()=>{
  const catalog=structuredClone(assets),word=Object.keys(catalog.words)[0],path=catalog.words[word].path;
  configureAssets(catalog,'https://example.test/commit-a/');assert.equal(sceneFor('',word).asset,path);assert.equal(sceneUrl(sceneFor('',word)),`https://example.test/commit-a/${path}`);

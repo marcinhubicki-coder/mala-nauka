@@ -9,6 +9,9 @@ export function missionIllustration(mode='spelling',assetURL=path=>path){
 export function normalizeMission(root,mode,assetURL=path=>path){
  const intro=root?.querySelector('.wizard-intro');if(!intro)return;
  for(const old of intro.querySelectorAll('.spelling-mission-art,.english-mission-art,.english-mission-boy,.reading-mission-art,.flag-mission-art,.mode-icon'))old.remove();
- intro.dataset.dsRecipe='container-mission';intro.dataset.dsKey='mission';intro.classList.add('mission-card');
+ intro.dataset.dsRecipe='container-mission';intro.dataset.dsKey='mission';
+ // DOMTokenList.add also emits a class mutation when the token already exists.
+ // This function runs inside the design observer, so it must be idempotent.
+ if(!intro.classList.contains('mission-card'))intro.classList.add('mission-card');
  if(!intro.querySelector('.mission-illustration'))intro.insertAdjacentHTML('afterbegin',missionIllustration(mode,assetURL));
 }

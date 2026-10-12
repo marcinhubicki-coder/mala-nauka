@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 28,
+  "revision": 29,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4740,6 +4740,6 @@
       "#57bf45",
       "#fe7b06"
     ],
-    "soundInParent": true
+    "soundInParent": false
   }
 }

@@ -1,3 +1,4 @@
+import {behaviorDefinition} from './behaviors.mjs';
 // The library describes the same parts that the runtime annotates, not mock copies.
 export const BLOCKS={
  jelly:{name:'Slidery jelly',level:'Grupa',recipe:'control-jelly',parts:['Tor / podkład','Aktywna bryła jelly','Etykieta tekstowa × liczba opcji','Stany: nieaktywny / aktywny / przeciągany'],groups:['jelly']},
@@ -10,7 +11,7 @@ export const BLOCKS={
 };
 export const BLUE_THEME={accent:'#187de0',light:'#48b6ff',middle:'#3199ef',bottom:'#116dca',border:'#8bc7ff',lip:'#145ead',shine:'#ffffff80',depth:'#145ead33',activeInk:'#ffffff',idleInk:'#426388'};
 export const FAMILY_NAMES={default:'Domyślny',spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};
-export function familyTokens(config,mode,group){return {...config.tokens?.[group],...config.familyTokens?.[mode]?.[group]};}
+export function familyTokens(config,mode,group){const b=config.behaviors?.bindings;return {...config.tokens?.[group],...behaviorDefinition(config,b?.global?.[group],group)?.settings,...config.familyTokens?.[mode]?.[group],...behaviorDefinition(config,b?.families?.[mode]?.[group],group)?.settings};}
 export function componentState(root){
  const pin=root?.querySelector('.pin-mode input:checked');if(pin)return pin.value==='none'?'no-pin':'pin';
  const scope=root?.querySelector('[name=spellingScope]:checked,[name=englishScope]:checked');if(scope)return scope.value;

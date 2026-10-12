@@ -1,3 +1,5 @@
+import {triggerSurfaceEffects} from '../shared/surface-effects.mjs';
+import {animateStateChange} from '../shared/state-motion.mjs';
 import {collectScreenCopy} from '../shared/screen-copy.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
 import {configureRules,ruleLibrary} from '../shared/rules-library.mjs';
@@ -234,6 +236,9 @@ if (studio) {
   window.addEventListener('message',async event=>{
     if(event.origin!==location.origin || event.source!==parent || event.data?.channel!=='mala-nauka-studio')return;
     const message=event.data;
+    if(message.type==='surface-demo'){if(message.event!=='continuous')triggerSurfaceEffects(app(),message.event);return;}
+    if(message.type==='state-demo'){const node=app();if(node)animateStateChange(node,node.getBoundingClientRect().height*.8);return;}
+    if(message.type==='preview-pause'){for(const animation of document.getAnimations())if(message.paused)animation.pause();else if(animation.playState==='paused')animation.play();return;}
     if(message.type==='copy-scan'){await designReady;copyScanning=true;emit({type:'copy-list',rows:collectScreenCopy(app())});}
     if(message.type==='design'){
       await designReady;applyDesign(message.config);

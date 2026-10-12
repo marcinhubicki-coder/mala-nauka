@@ -1,8 +1,9 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {normalizeEffectsConfig} from '../spelling/effect-model.mjs';
 import {DISCOVERY_RULES,validateDiscoveryRules} from '../shared/discovery-model.mjs';
 import {validateBlueprint} from '../shared/component-recipes.mjs';
 import {validateTokens} from './validation.mjs';
-const DESIGN_FIELDS=['typography','tokens','themes','defaultTheme','overrides','recipes','motion','effects','scoring','elementStyles','recipeStates','elementOverrides','elementOrder','familyTokens','familyStyles','elementStates','navigation','studioPreferences','elementAnimations','logoTransition','exitTransition','screenEffects','sound'];
+const DESIGN_FIELDS=['behaviors','typography','tokens','themes','defaultTheme','overrides','recipes','motion','effects','scoring','elementStyles','recipeStates','elementOverrides','elementOrder','familyTokens','familyStyles','elementStates','navigation','studioPreferences','elementAnimations','logoTransition','exitTransition','screenEffects','sound'];
 export const designFields=config=>Object.fromEntries(DESIGN_FIELDS.filter(k=>config[k]!==undefined).map(k=>[k,structuredClone(config[k])]));
 export function editableProjectConfig(config){
   const result={...structuredClone(config),...structuredClone(config.project?.designDraft||{})};
@@ -68,7 +69,7 @@ export function validateProject(p){
   safeProject(p);if(p?.schemaVersion!==1||!id(p.id)||!text(p.name,80)||!Array.isArray(p.tasks)||p.tasks.length>60||!Array.isArray(p.screens)||p.screens.length>20||!Array.isArray(p.releases)||p.releases.length>16)throw Error('Nieprawidłowy projekt.');
   validateDiscoveryRules(p.rules);validateCopy(p.copy);validateTriggers(p);const ids=new Set();for(const s of p.screens){validateScreen(s);if(ids.has(s.id))throw Error('Powtórzony ekran.');ids.add(s.id);}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(p.startDate)||!Number.isFinite(Date.parse(p.startDate))||!(p.targetDate===''||/^\d{4}-\d{2}-\d{2}$/.test(p.targetDate)))throw Error('Wybierz daty projektu.');
-  if(p.designDraft){if(Object.keys(p.designDraft).some(k=>!DESIGN_FIELDS.includes(k)))throw Error('Nieprawidłowe pola szkicu wyglądu.');validateTokens(p.designDraft.tokens);}
+  if(p.designDraft){if(Object.keys(p.designDraft).some(k=>!DESIGN_FIELDS.includes(k)))throw Error('Nieprawidłowe pola szkicu wyglądu.');validateTokens(resolveBehaviorConfig(p.designDraft).tokens);}
   const taskIds=new Set();for(const t of p.tasks){if(!id(t.id)||taskIds.has(t.id)||!text(t.title,120)||!t.title.trim()||!['critical','high','normal','later'].includes(t.priority)||!['todo','doing','review','done'].includes(t.status)||!int(t.days,1,30)||!Array.isArray(t.depends)||t.depends.length>20||t.depends.some(v=>!id(v))||t.depends.includes(t.id)||!text(t.screen||'',80)||!(t.deadline===''||/^\d{4}-\d{2}-\d{2}$/.test(t.deadline)))throw Error('Sprawdź zadanie, termin i zależności.');taskIds.add(t.id);}
   if(p.tasks.some(t=>t.depends.some(d=>!taskIds.has(d))))throw Error('Zależność wskazuje usunięte zadanie.');
   const releases=new Set();for(const r of p.releases){if(!id(r.id)||releases.has(r.id)||!text(r.name,80)||!Number.isFinite(Date.parse(r.at))||!['test','approved','published'].includes(r.status))throw Error('Sprawdź wersję testową.');releases.add(r.id);validateSnapshot(r.snapshot);if(r.fingerprint!==fingerprint(r.snapshot))throw Error('Treść zapisanej wersji uległa zmianie. Zapisz nową próbę.');if(!r.checks||['flow','learning','content','mobile'].some(k=>typeof r.checks[k]!=='boolean')||Object.keys(r.checks).length!==4)throw Error('Wersja wymaga czterech kontroli.');if(!Array.isArray(r.reviews)||r.reviews.length>60||r.reviews.some(c=>!text(c.text,1200)||!['open','addressed'].includes(c.status)))throw Error('Sprawdź listę uwag.');if(r.status==='approved')approveRelease(r);}

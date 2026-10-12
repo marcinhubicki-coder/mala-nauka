@@ -1,0 +1,41 @@
+/* The context row also uses viewport space; size previews from the actual remainder. */
+ .studio-main:is(:has(>.workspace>.motion-workspace),:has(>.workspace>.logo-lab)){display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+ .studio-main:is(:has(>.workspace>.motion-workspace),:has(>.workspace>.logo-lab))>.studio-topbar,.studio-main:is(:has(>.workspace>.motion-workspace),:has(>.workspace>.logo-lab))>.studio-context{flex:none}
+ #workspace:is(:has(>.motion-workspace),:has(>.logo-lab)){flex:1;min-height:0;height:auto;overflow:hidden}
+ #workspace>.motion-workspace{height:100%;min-height:0}
+/* Transforms do not shrink layout boxes. Keep the phone out of normal flow. */
+.motion-workspace:not(.effect-workspace) .motion-stage{flex:1 1 0;min-height:180px;overflow:hidden;display:block}
+.motion-stage:not(.is-comparing)>.motion-phone,
+.effect-preview-pane .effect-stage:not(.is-comparing)>.effect-phone{position:absolute;top:50%;left:50%;right:auto;bottom:auto;margin:0;transform:translate(-50%,-50%) scale(var(--motion-scale));transform-origin:center}
+.control-compare-cell .motion-phone{position:absolute;top:50%;left:50%;margin:0;transform:translate(-50%,-50%) scale(var(--motion-scale));transform-origin:center}
+.control-compare-cell{display:block}
+.motion-workspace:not(.effect-workspace)>.motion-preview>*:not(.motion-stage){flex-shrink:0}
+.motion-workspace:not(.effect-workspace)>.motion-preview{overflow:hidden}
+.motion-workspace.behavior-workspace{grid-template-columns:minmax(340px,460px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:0}
+.behavior-workspace>.motion-section-tabs{grid-column:1/-1;margin:0;padding:12px 20px;border-bottom:1px solid #dce5f3}
+.behavior-library{padding:20px;min-width:0;min-height:0;overflow:auto;background:#f8faff;border-right:1px solid #dce5f3}
+.behavior-library .form-field{display:grid;gap:6px;margin:0 0 12px}
+.behavior-library :is(select,input[type=text],input:not([type])){width:100%;min-height:40px;padding:8px 10px;border:1px solid #cbd9ed;border-radius:10px;background:#fff;color:#20385d;font:inherit;box-sizing:border-box}
+.behavior-library .control-top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.behavior-library input[type=number]{width:90px;min-height:36px;border:1px solid #cbd9ed;border-radius:9px;padding:6px}
+.behavior-library input[type=range]{width:100%;accent-color:#168bed}
+.behavior-name-controls{padding:14px;border:1px solid #dce5f3;border-radius:14px;background:#fff}
+.behavior-name-controls button{width:100%}
+.behavior-preview{min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.behavior-preview .motion-route{grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr)}
+.behavior-preview .form-field{margin:8px 0;gap:4px}
+.behavior-preview .form-field select{max-width:100%;width:100%}
+@media(max-width:940px){.motion-workspace.behavior-workspace{grid-template-columns:minmax(280px,360px) minmax(0,1fr)}}
+@media(max-width:690px){
+ body.mobile-editor .studio-main:is(:has(>.workspace>.motion-workspace),:has(>.workspace>.logo-lab)){height:calc(100dvh - var(--mobile-dock-height))}
+ body[data-mobile-pane=preview] .studio-main:is(:has(>.workspace>.motion-workspace),:has(>.workspace>.logo-lab))>#studio-context{display:none}
+ #workspace>.motion-workspace{height:100%;min-height:0}
+ .motion-workspace.behavior-workspace{display:flex;height:calc(100dvh - var(--mobile-header-height) - var(--mobile-dock-height));overflow:hidden}
+ .behavior-workspace>.motion-section-tabs{flex:none;padding:8px 12px;order:0}
+ .behavior-library{flex:1;order:1;width:100%;border:0;overflow:auto;padding:14px}
+ .behavior-workspace>.behavior-preview{width:100%;flex:1;min-height:0;padding:12px}
+ body[data-mobile-pane=preview] .behavior-library{display:none}
+ body:not([data-mobile-pane=preview]) .behavior-workspace>.behavior-preview{display:none}
+ body[data-mobile-pane=preview] .motion-workspace:not(.effect-workspace) .motion-stage{height:auto;flex:1 1 0;min-height:120px}
+ .motion-workspace:not(.effect-workspace)>.motion-preview{overflow:auto}
+}

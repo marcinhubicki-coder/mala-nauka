@@ -3,11 +3,11 @@ export const ELEMENT_MOTIONS={none:'Bez animacji',float:'Spokojne unoszenie',pul
 const active=new Map();
 export function syncElementMotion(node,style={}){
  for(const [old,row]of active)if(!old.isConnected){row.animation.cancel();active.delete(old);}
- const selected=node.matches?.(':is(.selected,.active,.is-active,.is-selected,[aria-pressed=true],label:has(input:checked))'),kind=(selected?style.activeAnimation:style.idleAnimation)||style.animation||'none',signature=JSON.stringify([kind,style.animationDuration,style.animationDistance]);
+ const selected=node.matches?.(':is(.selected,.active,.is-active,.is-selected,[aria-pressed=true],label:has(input:checked))'),kind=(selected?style.activeAnimation:style.idleAnimation)||style.animation||'none',prefix=(selected&&style.activeAnimation?'active':!selected&&style.idleAnimation?'idle':'animation'),distance=style[prefix+'Distance']??style.animationDistance??6,duration=style[prefix+'Duration']??style.animationDuration??1600,signature=JSON.stringify([kind,duration,distance]);
  if(active.get(node)?.signature===signature){const a=active.get(node).animation;if(document.hidden||node.closest('.paused')||style.visibility==='hidden'||style.visibility==='removed')a.pause();else if(a.playState==='paused')a.play();return;}
  active.get(node)?.animation.cancel();active.delete(node);
- if(kind==='none'||!ELEMENT_MOTIONS[kind]||!node.animate||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches||active.size>=16)return;
- const d=style.animationDistance??6,duration=style.animationDuration??1600;
+ if(kind==='none'||duration===0||!ELEMENT_MOTIONS[kind]||!node.animate||globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches||active.size>=16)return;
+ const d=distance;
  const frames=kind==='fade'?[{opacity:0},{opacity:1}]:kind==='float'?[{transform:'translateY(0)'},{transform:`translateY(${-d}px)`},{transform:'translateY(0)'}]:kind==='pulse'?[{transform:'scale(1)'},{transform:`scale(${1+d/200})`},{transform:'scale(1)'}]:kind==='sway'?[{transform:`rotate(${-d/3}deg)`},{transform:`rotate(${d/3}deg)`},{transform:`rotate(${-d/3}deg)`}]:[{transform:`translateY(${d}px)`,opacity:0},{transform:'translateY(0)',opacity:1}];
  const animation=node.animate(frames,{duration,iterations:['enter','fade'].includes(kind)?1:Infinity,easing:'ease-in-out',composite:['enter','fade'].includes(kind)?'replace':'add'});
  if(document.hidden||node.closest('.paused'))animation.pause();

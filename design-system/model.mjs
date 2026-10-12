@@ -1,3 +1,5 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
+import {validateBehaviors} from './behaviors-model.mjs';
 import {validateNavigation} from '../shared/navigation.mjs';
 import {familyTokens} from '../shared/building-blocks.mjs';
 import {validateSurface} from '../shared/surface-effects.mjs';
@@ -44,25 +46,27 @@ export function validateConfig(config) {
     safeKeys(config.componentNames);
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
+  validateBehaviors(config);
+  const resolved=resolveBehaviorConfig(config);
   if(config.navigation)validateNavigation(config.navigation);
-  if(config.motion)validateMotion(config.motion);
+  if(config.motion)validateMotion(resolved.motion);
    if(config.sound)validateSoundSettings(config.sound);
-  if(config.exitTransition)validateLogoTransition(config.exitTransition);
-  if(config.logoTransition)validateLogoTransition(config.logoTransition);
-  for(const [view,row]of Object.entries(config.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
-  validateElementStyles(config);
+  if(config.exitTransition)validateLogoTransition(resolved.exitTransition);
+  if(config.logoTransition)validateLogoTransition(resolved.logoTransition);
+  for(const [view,row]of Object.entries(resolved.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
+  validateElementStyles(resolved);
   if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(p.hiddenInspectorGroups&&(!Array.isArray(p.hiddenInspectorGroups)||p.hiddenInspectorGroups.some(id=>!['geometry','animation','surface','text','colors','image','clip','shared','advanced','scope'].includes(id))))throw Error('Nieprawidłowa grupa panelu.');if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 
-  if(config.effects)validateEffects(config.effects);if(config.scoring)validateScoring(config.scoring);
+  if(config.effects)validateEffects(resolved.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
-  validateTokens(config.tokens);
-  for(const [mode,values]of Object.entries(config.familyTokens||{})){if(!MODES.includes(mode))throw Error('Nieznana rodzina tokenów.');validateTokens(values,true);}
+  validateTokens(resolved.tokens);
+  for(const [mode,values]of Object.entries(resolved.familyTokens||{})){if(!MODES.includes(mode))throw Error('Nieznana rodzina tokenów.');validateTokens(values,true);}
   if(config.defaultTheme){safeKeys(config.defaultTheme);if(THEME_FIELDS.some(k=>!config.defaultTheme[k])||Object.entries(config.defaultTheme).some(([k,v])=>!THEME_FIELDS.includes(k)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(v)))throw Error('Nieprawidłowa paleta domyślna.');}
   safeKeys(config.themes);
   for(const mode of MODES){const theme=config.themes[mode];safeKeys(theme);if(THEME_FIELDS.some(key=>!theme[key]))throw Error(`Niepełna paleta: ${mode}.`);for(const [key,value]of Object.entries(theme))if(!THEME_FIELDS.includes(key)||!/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value))throw Error(`Nieprawidłowy kolor: ${mode}.${key}.`);}
   if(Object.keys(config.themes).some(mode=>!MODES.includes(mode)))throw Error('Nieznany tryb.');
   safeKeys(config.overrides||{});
-  for(const [view,value]of Object.entries(config.overrides||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok.');validateTokens(value,true);}
+  for(const [view,value]of Object.entries(resolved.overrides||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok.');validateTokens(value,true);}
   if(config.copyOverrides)validateCopy(config.copyOverrides);
   if(config.project){
     validateProject(config.project);
@@ -82,6 +86,7 @@ export function variables(node, prefix = '--ds') {
 }
 export function configCSS(config) {
   validateConfig(config);
+  config=resolveBehaviorConfig(config);
   let css = `:root{${variables(config.tokens)}${variables(config.defaultTheme||{},'--ds-default-theme')}`;
   for (const [role, font] of Object.entries(config.typography)) css += `--ds-font-${role}:"${FONT_NAMES[font]}",ui-rounded,system-ui,sans-serif;`;
   css += '}';
@@ -97,6 +102,7 @@ export function changedViews(changes, registry) {
   return registry.views.filter(view => changes.some(change => {
     if (change.path.startsWith('overrides.')) return change.path.split('.')[1] === view.id;
     if (change.path.startsWith('themes.')) return change.path.split('.')[1] === view.mode;
+    if (change.path.startsWith('behaviors.')) return true;
     if (change.path.startsWith('motion')) return true;
     if(change.path.startsWith('elementStates.'))return change.path.split('.')[1]===view.id;
     if(change.path.startsWith('familyStyles.')||change.path.startsWith('familyTokens.'))return change.path.split('.')[1]===view.mode;

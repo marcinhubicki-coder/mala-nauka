@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-12T10:11:42.766Z",
-  "sourceCommit": "1e1484441f0c9ecb44ba5111281d0c3e9f8f8f3b",
+  "date": "2026-10-12T10:51:46.072Z",
+  "sourceCommit": "076d11c07fb475b564bdd95d85fabedf73b17704",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -1072,7 +1072,7 @@
     },
     {
       "file": "shared/components.css",
-      "selector": ":root",
+      "selector": "@import './mission-parts.css';\n\n:root",
       "role": "flag"
     },
     {
@@ -1416,12 +1416,12 @@
       "display"
     ]
   },
-  "cssBytes": 491116,
-  "jsBytes": 995734,
+  "cssBytes": 491147,
+  "jsBytes": 996381,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 86148
+      "bytes": 86342
     },
     {
       "path": "shared/round-result.css",

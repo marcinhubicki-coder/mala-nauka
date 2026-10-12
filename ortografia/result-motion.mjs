@@ -325,7 +325,6 @@ export async function transitionToResult(root, freeze, render) {
       // Older iOS: keep the paused scene in place, including its body background.
       document.documentElement.classList.add('result-transition-fallback');
       const body = document.body;
-      document.getAnimations().forEach(animation => animation.pause());
       animation = body.animate([{filter:'blur(0)',opacity:1},{filter:'blur(28px)',opacity:0}],{duration:1500,easing:'ease-in',fill:'forwards'});
       await animation.finished; render(true, 1000); animation.cancel();
       if (!document.hidden && !reduced()) {

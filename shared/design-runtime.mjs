@@ -71,11 +71,13 @@ export async function initDesign() {
     const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background,config:config.exitTransition,speed:motion.speed});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
     annotateElements(app,config,document.documentElement.dataset.dsView);
   };
+  let annotationFrame=0,presenceRecords=[];
   if (app) new MutationObserver(records=>{
     const meaningful=records.some(record=>{
       if(record.target.closest?.('[data-mn-decoration]'))return false;
       if(record.type==='childList')return true;
       if(record.attributeName!=='class')return true;
+      if(record.oldValue===record.target.getAttribute('class'))return false;
       // Choosing a maths setup option only changes visual selection classes.
       // Re-annotating the whole design tree here causes an unnecessary WebKit
       // repaint of the hero and makes attached particles appear to jump.
@@ -84,8 +86,14 @@ export async function initDesign() {
       }
       return true;
     });
-    if(meaningful){annotate();animatePresence(records);}
-  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
+    if(meaningful){
+      presenceRecords.push(...records);
+      if(!annotationFrame)annotationFrame=requestAnimationFrame(()=>{
+        annotationFrame=0;const batch=presenceRecords;presenceRecords=[];
+        annotate();animatePresence(batch);
+      });
+    }
+  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
   if(app)app.addEventListener('change',event=>{const label=event.target.closest?.('label');if(!label)return;for(const node of label.parentElement.children)if(node.dataset.dsElement)syncElementMotion(node,visualValue(config,document.documentElement.dataset.dsView,{id:node.dataset.dsElement,recipe:node.dataset.dsRecipe,kind:node.dataset.dsKind}));});
   if(app)app.addEventListener('click',event=>{if(event.target.closest('[data-action=answer],.math-answer,.answer'))queueMicrotask(()=>triggerSurfaceEffects(app,'answer'));});
   annotate();

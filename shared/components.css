@@ -1,3 +1,4 @@
+@import './mission-parts.css';
 /* The common contract. A mode supplies color and artwork; components own geometry. */
 :root{--ds-font-body:"MN Body",sans-serif;--ds-font-ui:"MN UI",sans-serif;--ds-font-display:"MN Display",sans-serif;--ds-font-flag:"MN Flag",sans-serif}
 html{font-family:var(--ds-font-body)}

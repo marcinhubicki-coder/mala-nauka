@@ -43,7 +43,7 @@ test('connection selection opens, scrolls and focuses a control without opening 
 test('round-end preview uses the existing blur contract and reduced motion avoids animation',()=>{
  const motion=transitionMotion({},'spelling-initial','spelling-results');assert.equal(motion.style,'blur');assert.equal(motion.duration,1500);assert.equal(motionFrames(motion)[0].filter,'blur(28px)');
  assert.equal(animateScreen({animate(){throw Error('must not animate');}},motion,{reduced:true}),null);
- const timing=logoTiming(EXIT_BLOB_CONFIG);assert.equal(logoFrame(EXIT_BLOB_CONFIG,390,844,timing.orbit).stage,'Kolorowe bloby');assert.equal(EXIT_BLOB_CONFIG.soundInParent,true);
+ const timing=logoTiming(EXIT_BLOB_CONFIG);assert.equal(logoFrame(EXIT_BLOB_CONFIG,390,844,timing.orbit).stage,'Kolorowe bloby');assert.equal(EXIT_BLOB_CONFIG.soundInParent,false,'screen animation owns its audio timeline');
 });
 test('closing the Sound Lab task test removes its live iframe and stops preview audio',()=>{
  const state={removed:0,stopped:0},stage={innerHTML:''},button={hidden:false};

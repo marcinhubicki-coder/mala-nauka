@@ -424,12 +424,15 @@ async function start() {
  const nextGame=game;
  const render=()=>{prepareScreenChange(root,'game');stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}return renderGame();};
  if(selectedMode==='spelling'){
-  game.pause();
+  // Hold the round clock, while allowing the incoming scene's animations to
+  // finish. Pausing the session here deadlocks the view-transition callback.
+  game.setPresentationHold(true);
   try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
   catch{render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
+  game.setPresentationHold(false);
   if(document.hidden){pause();return;}
-  game.resume();spellingArt.setPaused(false);syncGame();startGameTicker();
+  spellingArt.setPaused(false);syncGame();startGameTicker();
  }else{game.setPresentationHold(true);try{await transitionToResult(root,()=>document.activeElement?.blur(),render);}catch{render();root.inert=false;}if(game!==nextGame||view!=='game')return;game.setPresentationHold(false);startGameTicker();}
 
 }

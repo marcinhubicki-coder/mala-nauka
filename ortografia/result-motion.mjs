@@ -318,7 +318,14 @@ export async function transitionToResult(root, freeze, render) {
   try {
     if (document.startViewTransition) {
       // The outgoing scene is a browser snapshot; its game simulation is paused.
-      transition = document.startViewTransition(() => render(true, 2500));
+      transition = document.startViewTransition(() => {
+        // Spelling renderers return image/WAAPI promises. Awaiting them in this
+        // snapshot callback can deadlock WebKit: paused rendering prevents the
+        // animations from finishing, and the view transition stays locked.
+        const sceneReady = render(true, 2500);
+        if (sceneReady && typeof sceneReady.then === 'function')
+          sceneReady.catch(error => console.error('[spelling-transition] Scene not ready', error));
+      });
       await transition.ready.catch(() => {settleResult(root);});
       await transition.finished;
     } else {

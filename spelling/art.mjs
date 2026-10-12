@@ -181,7 +181,15 @@ export function createSpellingArt(app, { onContinue } = {}) {
 
     const pictureChange = bubble.transitionToScene(pictureUrl, scene, first);
     const inkChange = animateInk('in');
-    await Promise.all([inkChange, pictureChange]);
+    // If WebKit suspends an animation while changing scenes, never leave
+    // answers disabled forever. The most expensive scene has 4.2 seconds.
+    let deadline;
+    try {
+      await Promise.race([
+        Promise.all([inkChange, pictureChange]),
+        new Promise(resolve => { deadline = setTimeout(resolve, 4200); })
+      ]);
+    } finally { clearTimeout(deadline); }
     if (token !== generation || session !== game) return;
 
     game.setPresentationHold(false); app.classList.remove('ink-changing');

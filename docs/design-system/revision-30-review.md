@@ -23,7 +23,7 @@ Matematyka ponownie uruchamia rundę po ustawieniach. Blur pozostaje przy wejśc
 
 ## Dowody
 
-- Audyt, build i 262/262 testów Node.
+- Audyt, build i 263/263 testów Node.
 - `tools/verify-atomic-editor.mjs`: granice kafli, pełny podkład wyników, brak kolizji nagłówka, przezroczystość PNG, wybieranie ustawień, kontrolki w panelu, propagacja wspólnej skali i tekstowe pytanie w rzeczywistym ekranie oraz bibliotece.
 - `tools/verify-screen-readiness.mjs`: ustawienia wszystkich pięciu trybów; start, odpowiedź, zakończenie, podsumowanie, kolekcja i powrót do Home w każdym trybie. Jeden właściciel audio, brak dodatkowych kontekstów w dokumentach gier, niezerowe bufory muzyki i blobów. Brak błędów JavaScript oraz brakujących żądań zasobów.
 - Sound Lab w WebKit: niezależne zapisy i reset stref, trzy zestawy Jelly, prawidłowe wymiary testu przeglądarki, zakończony ton testowy.
@@ -79,3 +79,5 @@ Układ dokumentu i przewijanie nie tworzą klocków w bibliotece. Powrót jest j
 | Historia rund | Poprawna hierarchia; brak osieroconych/wycofanych kontenerów; wspólny powrót |
 
 Szczegóły sprawdza `tools/verify-view-structure.mjs`: 41 rzeczywiście wyrenderowanych widoków, ich rodzice, samodzielne akcje podsumowania oraz wymiary i ścieżka SVG powrotu. `tools/verify-atomic-editor.mjs` sprawdza też tożsamość tekstowego przepisu pytania, jego dostępność dla inspektora i współdziałanie wspólnej skali z biblioteką.
+
+Przypięte wdrożenie Test PWA rozpoznaje własny raport generowania także przy wdrożeniu przez SHA. Zachowuje lokalne zasoby, zamiast przypadkowo przechodzić w tryb zdalnego konsumenta.

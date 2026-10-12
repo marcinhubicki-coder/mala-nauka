@@ -169,6 +169,7 @@ function renderCategories() {
         <h1>Co dziś ćwiczymy?</h1>
       </div>
 
+      <section class="wizard-intro mission-card"><div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
       <section class="math-duration-setup" aria-label="Czas rozgrywki">
         <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Wybierz czas rundy">

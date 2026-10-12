@@ -47,6 +47,7 @@ export function validateConfig(config) {
   if(config.navigation)validateNavigation(config.navigation);
   if(config.motion)validateMotion(config.motion);
    if(config.sound)validateSoundSettings(config.sound);
+  if(config.exitTransition)validateLogoTransition(config.exitTransition);
   if(config.logoTransition)validateLogoTransition(config.logoTransition);
   for(const [view,row]of Object.entries(config.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
   validateElementStyles(config);
@@ -101,6 +102,7 @@ export function changedViews(changes, registry) {
     if(change.path.startsWith('familyStyles.')||change.path.startsWith('familyTokens.'))return change.path.split('.')[1]===view.mode;
     if(change.path.startsWith('navigation.'))return true;
     if(change.path.startsWith('elementOverrides.'))return change.path.split('.')[1]===view.id;
+    if(change.path.startsWith('recipeStates.'))return true;
     if(change.path.startsWith('elementStyles.'))return true;
     if(change.path.startsWith('effects.'))return view.mode==='spelling'&&['initial','correct','wrong','rule','hint'].some(state=>view.id.endsWith('-'+state));
     if(change.path.startsWith('scoring.'))return view.id==='spelling-results';

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 27,
+  "revision": 28,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -268,7 +268,94 @@
     "style": "blur",
     "duration": 320,
     "distance": 18,
-    "easing": "ease-out"
+    "easing": "ease-out",
+    "speed": 1,
+    "transitions": {
+      "spelling-settings--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "math-settings--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "english-settings--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "flags-settings--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "reading-settings--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "progress--home": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "home--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "spelling-results--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "math-results--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "english-results--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "flags-results--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      },
+      "reading-results--progress": {
+        "style": "blob",
+        "duration": 320,
+        "distance": 18,
+        "easing": "ease-out",
+        "speed": 1
+      }
+    }
   },
   "effects": {
     "correctStyle": "production",
@@ -4320,105 +4407,155 @@
     "button-player-card": {
       "height": 119.5
     },
-    "text": {},
     "input-player-name": {
       "fontRole": "display",
       "fontSize": 23
+    },
+    "container-setup-form": {
+      "gap": 0
+    },
+    "family-game-settings": {
+      "gap": 0
+    },
+    "button-game-start": {
+      "offsetY": 18,
+      "gap": 0
+    },
+    "container-mission": {
+      "overflow": "visible",
+      "offsetY": -3
+    },
+    "text-wizard-note": {
+      "visibility": "removed"
+    },
+    "container-result-line": {
+      "gap": 0,
+      "radius": 0,
+      "offsetY": -3.5
+    },
+    "container-round-progress": {
+      "height": 33,
+      "offsetY": -8.5
+    },
+    "result-points-bubble": {
+      "radius": 73,
+      "offsetX": -15.5,
+      "width": 94.5,
+      "height": 72,
+      "opacity": 0.9
+    },
+    "container-result-summary": {
+      "offsetY": -23
+    },
+    "container-result-stat": {
+      "offsetY": -25
+    },
+    "container-result-details": {
+      "offsetY": -20,
+      "height": 217
+    },
+    "container-result-actions": {
+      "offsetY": 27
+    },
+    "container-result-header": {
+      "offsetY": -6.5
+    },
+    "text-result-mode": {
+      "fontSize": 11
+    },
+    "container-result-review": {
+      "height": 217.5,
+      "overflow": "visible"
+    },
+    "container-player-grid": {
+      "gap": 0,
+      "overflow": "visible"
+    },
+    "container-player-title": {
+      "gap": 0
+    },
+    "button-answer": {
+      "animationDuration": 3000,
+      "animationDistance": 1,
+      "animation": "float",
+      "effect": "none"
+    },
+    "button-game-hint": {
+      "animation": "pulse",
+      "animationDuration": 2600,
+      "animationDistance": 2.5
+    },
+    "container-spelling-question": {
+      "animation": "pulse",
+      "animationDuration": 5272.5,
+      "animationDistance": 2
+    },
+    "text-mission-title": {
+      "text": "Twoja przygoda"
+    },
+    "container-card": {
+      "gap": 0
+    },
+    "text-result-subtitle": {
+      "offsetY": -9.5
+    },
+    "text-result-title": {
+      "offsetY": -3.5
+    },
+    "icon-result-rays-right": {
+      "offsetY": -16,
+      "offsetX": -10
+    },
+    "icon-result-rays-left": {
+      "offsetY": -19,
+      "offsetX": 10
+    },
+    "button-result-back": {
+      "offsetY": -3
+    },
+    "family-math-settings": {
+      "effect": "bokeh",
+      "effectSize": 80,
+      "effectColor": "#6a98ff",
+      "effectIntensity": 0.35,
+      "effectDensity": 12,
+      "effectSpeed": 1.1
+    },
+    "text-math-setup-title": {
+      "effect": "particles",
+      "effectColor": "#ffe4a8",
+      "opacity": 1,
+      "textColor": "#ffffff",
+      "effectSize": 36,
+      "animationDistance": 1.5,
+      "effectDensity": 20,
+      "animation": "float",
+      "effectIntensity": 0.85,
+      "effectSpeed": 1.85,
+      "effectBlur": 12,
+      "animationDuration": 3930
+    },
+    "family-player-shell": {
+      "gap": 10
+    },
+    "text-player-title": {
+      "offsetY": -9
+    },
+    "text-player-subtitle": {
+      "offsetY": -9
+    },
+    "text-pin-error": {
+      "offsetY": 17
+    },
+    "container-spelling-question-body": {
+      "effect": "none",
+      "animation": "pulse",
+      "animationDistance": 13.5,
+      "animationDuration": 3796
     }
   },
   "elementOverrides": {
-    "spelling-settings": {
-      "h2": {
-        "text": "Twoja przygoda"
-      },
-      "setup-form": {
-        "gap": 0
-      },
-      "spelling-wizard-canvas": {
-        "gap": 0
-      },
-      "spacer-muwfhj4u": {
-        "width": 215,
-        "height": 75,
-        "offsetX": -92,
-        "offsetY": 366.5
-      },
-      "primary": {
-        "gap": 0,
-        "offsetY": 18
-      },
-      "wizard-intro": {
-        "overflow": "visible",
-        "offsetY": -3
-      },
-      "icon-home": {},
-      "card": {
-        "gap": 0
-      },
-      "spelling-mission-art": {
-        "fit": "contain",
-        "imageScale": 1.05,
-        "offsetY": -6
-      },
-      "wizard-note": {
-        "visibility": "removed"
-      }
-    },
     "spelling-results": {
-      "round-summary-line": {
-        "gap": 0,
-        "radius": 0,
-        "offsetY": -3.5
-      },
-      "round-progress": {
-        "height": 33,
-        "offsetY": -8.5
-      },
-      "result-points-bubble": {
-        "radius": 73,
-        "offsetX": -15.5,
-        "width": 94.5,
-        "height": 72,
-        "opacity": 0.9
-      },
-      "round-summary": {
-        "offsetY": -23
-      },
-      "result-stat-toggle-result": {
-        "offsetY": -25
-      },
-      "result-stat-toggle-result-1": {
-        "offsetY": -25
-      },
-      "result-details": {
-        "offsetY": -20,
-        "height": 217
-      },
-      "result-actions": {
-        "offsetY": 27
-      },
-      "result-title-wrap": {
-        "offsetY": -6.5
-      },
-      "p": {
-        "offsetY": -9.5
-      },
-      "result-count-2": {},
-      "h1": {
-        "offsetY": -3.5
-      },
-      "result-rays-1": {
-        "offsetY": -16,
-        "offsetX": -10
-      },
-      "result-rays": {
-        "offsetY": -19,
-        "offsetX": 10
-      },
-      "round-mode-pill": {
-        "fontSize": 11
-      },
-      "result-sheet": {},
       "strong-5": {
         "fontSize": 15,
         "offsetY": 3,
@@ -4428,146 +4565,12 @@
         "fontSize": 11,
         "offsetY": 1,
         "offsetX": 5
-      },
-      "result-detail-review": {
-        "height": 217.5,
-        "overflow": "visible"
-      },
-      "primary": {
-        "offsetY": -3
       }
     },
     "spelling-pause": {
       "layout-root": {
         "padding": 47,
         "gap": 8.44
-      }
-    },
-    "english-settings": {
-      "english-mission-art": {
-        "imageX": 50,
-        "opacity": 1,
-        "fit": "cover"
-      },
-      "english-mission-boy": {
-        "fit": "cover",
-        "imageScale": 1,
-        "imageX": 50
-      },
-      "primary": {
-        "offsetY": 18
-      }
-    },
-    "flags-settings": {
-      "primary": {
-        "offsetY": 18
-      },
-      "p": {
-        "text": "Podróż dookoła świata."
-      }
-    },
-    "reading-settings": {
-      "primary": {
-        "offsetY": 18
-      },
-      "p": {
-        "text": "Przeczytaj i  pamiętaj."
-      }
-    },
-    "math-settings": {
-      "img": {
-        "imageScale": 1
-      },
-      "layout-root": {
-        "effect": "bokeh",
-        "effectSize": 80,
-        "effectColor": "#6a98ff",
-        "effectIntensity": 0.35,
-        "effectDensity": 12,
-        "effectSpeed": 1.1
-      },
-      "h1": {
-        "effect": "particles",
-        "effectColor": "#ffe4a8",
-        "opacity": 1,
-        "textColor": "#ffffff",
-        "effectSize": 36,
-        "animationDistance": 1.5,
-        "effectDensity": 20,
-        "animation": "float",
-        "effectIntensity": 0.85,
-        "effectSpeed": 1.85,
-        "effectBlur": 12,
-        "animationDuration": 3930
-      }
-    },
-    "players": {
-      "player-grid": {
-        "gap": 0,
-        "overflow": "visible"
-      },
-      "player-shell": {
-        "gap": 10
-      },
-      "player-card-choose-player-2": {},
-      "player-title": {
-        "gap": 0
-      },
-      "h1": {
-        "offsetY": -9
-      },
-      "p": {
-        "offsetY": -9
-      },
-      "player-card-choose-player": {}
-    },
-    "player-pin": {
-      "pin-error-outside": {
-        "offsetY": 17
-      }
-    },
-    "settings": {
-      "layout-root": {
-        "effect": "none",
-        "effectSize": 71,
-        "effectIntensity": 1,
-        "effectBlur": 8.5,
-        "effectDensity": 22,
-        "effectSpeed": 1.5
-      }
-    },
-    "players-empty": {
-      "layout-root": {
-        "animation": "none"
-      }
-    },
-    "spelling-initial": {
-      "answer-answer": {
-        "effect": "none",
-        "animation": "float",
-        "animationDuration": 3000,
-        "animationDistance": 1
-      },
-      "answer-answer-1": {
-        "animationDuration": 2900,
-        "animationDistance": 1.1,
-        "animation": "float"
-      },
-      "spelling-hint": {
-        "animation": "pulse",
-        "animationDuration": 2600,
-        "animationDistance": 2.5
-      },
-      "spelling-question-card": {
-        "animation": "pulse",
-        "animationDuration": 5272.5,
-        "animationDistance": 2
-      },
-      "question-content": {
-        "effect": "none",
-        "animation": "pulse",
-        "animationDistance": 13.5,
-        "animationDuration": 3796
       }
     }
   },
@@ -4702,5 +4705,41 @@
     "ducking": 60,
     "logoEnabled": true,
     "logoVolume": 72
+  },
+  "familyStyles": {
+    "flags": {
+      "text-mission-hint": {
+        "text": "Podróż dookoła świata."
+      }
+    },
+    "reading": {
+      "text-mission-hint": {
+        "text": "Przeczytaj i pamiętaj."
+      }
+    }
+  },
+  "exitTransition": {
+    "enabled": true,
+    "turns": 1,
+    "turnDuration": 600,
+    "orbitRadius": 70,
+    "shapeSize": 32,
+    "morph": 0.8,
+    "splashDuration": 900,
+    "overlap": 0.1,
+    "randomness": 0.55,
+    "whiteDuration": 1000,
+    "whiteWobble": 0.09,
+    "revealAt": 0.52,
+    "revealDuration": 800,
+    "seed": 17,
+    "colors": [
+      "#0490fb",
+      "#fc237a",
+      "#ffbd1e",
+      "#57bf45",
+      "#fe7b06"
+    ],
+    "soundInParent": true
   }
 }

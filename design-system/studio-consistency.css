@@ -14,13 +14,13 @@
 .flow-column{gap:28px;}
 .wire-card{position:relative;z-index:1;}
 .flow-canvas{min-height:600px;}
-.inspector :is(details[data-inspector-group],.visual-fields>details,.surface-editor>details,.visual-properties details),.flow-inspector>[data-flow-section],.sound-control-group,.sound-map-inspector>details,.motion-control-group{
+.inspector :is(details[data-inspector-group],.visual-fields>details,.visual-properties>details),.flow-inspector>[data-flow-section],.sound-control-group,.sound-map-inspector>details,.motion-control-group{
  border:1px solid var(--studio-line,#dce5f1);border-radius:14px;background:#fff;overflow:visible;
 }
-.inspector :is(details[data-inspector-group],.visual-fields>details,.surface-editor>details,.visual-properties details)>summary,.flow-inspector>[data-flow-section]>summary,.sound-control-group>summary,.sound-map-inspector>details>summary,.motion-control-group>summary{
+.inspector :is(details[data-inspector-group],.visual-fields>details,.visual-properties>details)>summary,.flow-inspector>[data-flow-section]>summary,.sound-control-group>summary,.sound-map-inspector>details>summary,.motion-control-group>summary{
  padding:13px 14px;min-height:44px;border-radius:13px;background:linear-gradient(110deg,#f0f6ff,#f5f2ff);color:var(--studio-ink,#223f61);
 }
-.inspector :is(details[data-inspector-group],.visual-fields>details,.surface-editor>details,.visual-properties details)[open]>summary,.flow-inspector>[data-flow-section][open]>summary,.sound-control-group[open]>summary,.sound-map-inspector>details[open]>summary,.motion-control-group[open]>summary{
+.inspector :is(details[data-inspector-group],.visual-fields>details,.visual-properties>details)[open]>summary,.flow-inspector>[data-flow-section][open]>summary,.sound-control-group[open]>summary,.sound-map-inspector>details[open]>summary,.motion-control-group[open]>summary{
  border-radius:13px 13px 0 0;border-bottom:1px solid var(--studio-line,#dce5f1);
 }
 .studio-reset-footer{display:grid;gap:9px;margin-top:18px;padding-top:16px;border-top:1px solid var(--studio-line,#dce5f1);}
@@ -41,19 +41,22 @@ body:has(.studio-tooltip-layer) .tooltip::after{display:none!important;}
 .motion-playbar input[type=number]{max-width:90px;}
 .motion-workspace:not(.effect-workspace)>.inspector{min-height:0;overflow:auto;}
 @media(max-width:690px){.motion-workspace:not(.effect-workspace){height:auto;overflow:visible;}.motion-workspace:not(.effect-workspace)>.motion-preview{padding:14px;}.flow-canvas{min-height:480px;}.studio-tooltip-layer{font-size:12px;}}
-.sound-check{display:grid;justify-items:start;gap:12px;margin-top:16px;}
-.sound-check-button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 18px;border:1px solid #cddff4;border-radius:16px;background:#fff;color:#1476d5;box-shadow:0 4px 12px #2360a00c;font:inherit;font-size:14px;font-weight:650;cursor:pointer;}
+.sound-check{display:flex;align-items:stretch;width:100%;height:48px;min-width:0;gap:0;margin-top:16px;overflow:hidden;}
+.sound-check-button{position:relative;z-index:1;flex:none;height:48px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 18px;border:1px solid #cddff4;border-radius:16px;background:#fff;color:#1476d5;box-shadow:0 4px 12px #2360a00c;font:inherit;font-size:14px;font-weight:650;cursor:pointer;}
 .sound-check-button svg{width:22px;height:22px;flex:none;}
 .sound-check-button.is-playing{background:#1476d5;border-color:#1476d5;color:white;}
-.sound-check-copy{width:100%;padding:18px;border:1px solid var(--studio-line,#dce5f1);border-radius:14px;background:#fff;text-align:center;}
-.sound-check-copy h3{margin:0 0 8px;font-size:15px;}
-.sound-check-copy p{margin:6px 0!important;text-align:center;}
+.sound-check-copy{flex:1;min-width:0;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:3px 12px;margin-left:-12px;border:1px solid var(--studio-line,#dce5f1);border-radius:0 14px 14px 0;background:#fff;text-align:center;transform-origin:left center;animation:sound-check-expand 260ms ease-out;}
+.sound-check-copy h3{max-width:100%;margin:0;font-size:11px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sound-check-copy p{max-width:100%;margin:0!important;font-size:10px;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+@keyframes sound-check-expand{from{opacity:0;transform:translateX(-18px) scaleX(.92)}to{opacity:1;transform:translateX(0) scaleX(1)}}
+.sound-studio .sound-hero{position:relative;display:block;}
+.sound-hero>div:first-child{width:100%;min-width:0;}
+.sound-hero>div:first-child>p,.sound-hero h2{padding-right:100px;}
+.sound-hero-mark{position:absolute;top:24px;right:27px;color:#1476d5;}
+@media(max-width:740px){.sound-hero-mark{display:grid;width:54px;height:54px;top:20px;right:20px;font-size:32px;border-radius:18px;}.sound-check-button{padding:10px;font-size:12px;}.sound-check-copy{padding-right:6px;}}
 .sound-check-copy[hidden],.sound-transport [hidden]{display:none!important;}
 .visual-properties details[data-inspector-group] > :not(summary){margin:12px 14px;}
 .visual-properties details[data-inspector-group] .surface-editor{margin:0;padding:14px;}
-.animated-exit-card{padding:14px;margin:14px 0;border:1px solid #dce5f1;border-radius:14px;background:#f6f9ff;}
-.animated-exit-card h3{font-size:15px;margin:0 0 7px;}
-.animated-exit-card p{font-size:12px;line-height:1.5;}
 .mn-screen-blob .mn-logo-svg{display:block;width:100%;height:100%;}
 
 .motion-phone .phone-inner{isolation:isolate;z-index:1;}
@@ -61,3 +64,11 @@ body:has(.studio-tooltip-layer) .tooltip::after{display:none!important;}
 .studio-permanent-link{display:block;padding:0 8px;margin-top:8px;color:#1476d5;font-size:12px;font-weight:650;}
 .studio-build-version{display:block;padding:6px 8px 0;color:#72849e;font-size:10px;line-height:1.4;overflow-wrap:anywhere;}
 @media(min-width:691px) and (max-width:1100px){.studio-permanent-link,.studio-build-version{display:none;}}
+
+/* Only the outer accordion owns a frame; its summary touches the frame. */
+.inspector .visual-properties>details{padding:0!important;border-radius:14px!important;background:#fff;}
+.inspector .visual-properties>details>summary{padding:13px 14px!important;min-height:44px;border-radius:13px;}
+.inspector .visual-properties>details[open]>summary{border-radius:13px 13px 0 0;}
+.inspector .visual-properties .surface-editor>details,.live-recipe-controls details details{border:0;border-radius:0!important;background:transparent;padding:0!important;box-shadow:none;}
+.inspector .visual-properties .surface-editor>details>summary,.live-recipe-controls details details>summary{border:0;background:transparent;padding:10px 0!important;}
+.inspector .image-controls{padding:0;margin:8px 0;}

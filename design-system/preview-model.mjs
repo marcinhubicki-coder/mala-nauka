@@ -10,7 +10,7 @@ export const FIELD_LABELS = {
 };
 
 export const MODE_NAMES = {spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};
-export const STATE_NAMES = {default:'Zwykły',idle:'Przed wyborem',selected:'Wybrany',dragging:'Przeciągany',disabled:'Nieaktywny',pressed:'Wciśnięty',initial:'Gra',correct:'Poprawny',wrong:'Błędny',prompt:'Pytanie',reveal:'Pokazanie odpowiedzi',feedback:'Po odpowiedzi',closed:'Zamknięty',open:'Otwarty',scrolling:'Przewijany',running:'W trakcie',paused:'Pauza',finished:'Koniec',empty:'Pusty',locked:'Zablokowany',unlocked:'Odblokowany',complete:'Ukończony','spring-back':'Powrót uchwytu'};
+export const STATE_NAMES = {default:'Domyślny',idle:'Przed wyborem',selected:'Wybrany',dragging:'Przeciągany',disabled:'Nieaktywny',pressed:'Wciśnięty',initial:'Gra',correct:'Poprawny',wrong:'Błędny',prompt:'Pytanie',reveal:'Pokazanie odpowiedzi',feedback:'Po odpowiedzi',closed:'Zamknięty',open:'Otwarty',scrolling:'Przewijany',running:'W trakcie',paused:'Pauza',finished:'Koniec',empty:'Pusty',locked:'Zablokowany',unlocked:'Odblokowany',complete:'Ukończony','spring-back':'Powrót uchwytu'};
 export const html = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 export const number = value => Number(value).toLocaleString('pl-PL',{maximumFractionDigits:3});
 export const componentName = (component, config) => config.componentNames?.[component.id] || component.name;

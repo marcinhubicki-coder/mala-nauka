@@ -414,7 +414,7 @@ function historyPage() {
  renderProgressScreen(root,{progress,words,backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
   onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});
 }
-function unlockAudio(){void gameSound.unlock();}
+function unlockAudio(){void gameSound.unlock({gesture:true});}
 function beep(correct){gameSound.cue(correct?'correct':'incorrect');if(correct&&game?.streak>1&&game.streak%3===0)gameSound.cue('star');}
 async function start() {
  settleResult(root);
@@ -422,15 +422,15 @@ async function start() {
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();gameSound.cue('roundStart');lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
- const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;return renderGame();};
+ const render=()=>{prepareScreenChange(root,'game');stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}return renderGame();};
  if(selectedMode==='spelling'){
   game.pause();
-  try{await render();await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
+  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
   catch{render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
   if(document.hidden){pause();return;}
   game.resume();spellingArt.setPaused(false);syncGame();startGameTicker();
- }else{render();startGameTicker();}
+ }else{game.setPresentationHold(true);try{await transitionToResult(root,()=>document.activeElement?.blur(),render);}catch{render();root.inert=false;}if(game!==nextGame||view!=='game')return;game.setPresentationHold(false);startGameTicker();}
 
 }
 function balancedReadingPrompt(text){
@@ -595,7 +595,7 @@ function updateClock(){
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i wrócimy do ustawień tego trybu.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Wyjdź do ustawień':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
+function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
 function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');
@@ -606,8 +606,7 @@ function finish(early=false,goHome=false){
  if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
  view='results';
  const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
- if(result.mode==='spelling'){void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});return;}
- render(true,200);
+ void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});
 }
 function routeTo(target){
  if(target==='player-create'){playerCreatePage();return;}
@@ -693,7 +692,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
- if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='exit-confirm')finish(true,true);
+ if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='exit-confirm')finish(true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }

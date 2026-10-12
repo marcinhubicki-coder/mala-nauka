@@ -18,12 +18,12 @@
   },
   "hidden": [
     {
-      "scope": "view",
-      "view": "spelling-settings",
-      "id": "wizard-note",
+      "scope": "global",
+      "family": "text-wizard-note",
       "mode": "removed"
     }
   ],
-  "sourceCommit": "736dc80d79076fe9a2b63e883d8f4cb175a7bd8f",
-  "audioDiagnostics": true
+  "audioDiagnostics": true,
+  "revision": 28,
+  "sourceCommit": "076d11c07fb475b564bdd95d85fabedf73b17704"
 }

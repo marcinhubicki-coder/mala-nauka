@@ -6,8 +6,9 @@ import {librarySections,previewScale,PREVIEW_DEVICE,viewIcon,MODE_ICONS,studioIc
 import {jellyChoices} from '../design-system/studio-jelly.mjs';
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
 
-test('buttons stay atomic in the library and runtime hierarchy, retaining their editable composition',()=>{
- for(const id of ['button-main','button-answer','button-home-card','button-avatar-choice','button-player-card'])assert.equal(PART_BY_ID[id].level,'atom');
+test('simple buttons are atoms and composite cards are groups in both library and hierarchy',()=>{
+ for(const id of ['button-main','button-answer','button-home-settings'])assert.equal(PART_BY_ID[id].level,'atom');
+ for(const id of ['button-home-card','button-avatar-choice','button-player-card'])assert.equal(PART_BY_ID[id].level,'group');
  const items=[{id:'layout-root'},{id:'new-action',recipe:'button-new-action',kind:'button',parent:'layout-root',label:'Nowa akcja'},{id:'action-copy',recipe:'text-action-copy',kind:'text',parent:'new-action',label:'Tekst'}];
  assert.equal(partLevel(items[1],items),'atom');
  const parts=viewParts(registry.views[0],{items});assert.equal(parts[0].level,'atom');assert.equal(parts[0].children[0].recipe,'text-action-copy');

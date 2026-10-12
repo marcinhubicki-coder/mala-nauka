@@ -1,3 +1,7 @@
+import {navigateWithBlob} from '../shared/screen-blob-transition.mjs';
+import {transitionMotion} from '../shared/screen-motion.mjs';
+import {transitionToResult} from '../ortografia/result-motion.mjs';
+import {prepareScreenChange} from '../shared/design-runtime.mjs';
 import {gameSound} from '../shared/sound-runtime.mjs';
 import {renderSpellingResult,toggleResultDetail,stopResultScroll} from '../ortografia/result-screen.mjs';
 import {renderProgressScreen,destroyProgressScreen} from '../progress-screen.mjs';
@@ -134,21 +138,23 @@ function endRound() {
   gameSound.cue('roundEnd');
   clock.end();
   syncTimerSnapshot();
-  renderRoundSummary();
+  showRoundSummaryWithBlur();
   void saveMathProgress();
   clock = null;
   syncTimerSnapshot();
 }
 
-function renderRoundSummary() {
+function showRoundSummaryWithBlur(){const app=document.querySelector('#app');void transitionToResult(app,()=>{},(animate=false,delay=1000)=>renderRoundSummary({animate,delay})).catch(()=>renderRoundSummary());}
+function renderRoundSummary({animate=true,delay=200}={}) {
  const app=document.querySelector('#app');if(!app)return;
  lastResult={mode:'math',category:currentMode,duration:currentDuration,correct,wrong};
- renderSpellingResult(app,lastResult,[],null,{animate:true,delay:200});
+ renderSpellingResult(app,lastResult,[],null,{animate,delay});
  app.querySelector('.result-v4').classList.add('math-round-summary');
 }
 function goRoute(action){
  const app=document.querySelector('#app'),from=document.documentElement.dataset.dsView||'math-results';
  const to=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,action==='exit-confirm'?'math-initial':from,action,'math',action==='return-results'?historyOrigin:'');
+ if(to==='home'){const motion=transitionMotion(globalThis.__MALA_NAUKA_DESIGN__?.motion,from,'home');const url=new URL('../',import.meta.url).href;if(motion.style==='blob')void navigateWithBlob(url,{app,config:globalThis.__MALA_NAUKA_DESIGN__?.exitTransition,speed:motion.speed});else location.href=url;return;}
  stopResultScroll(app);destroyProgressScreen(app);
  if(to==='math-settings'){window.dispatchEvent(new CustomEvent('math-back-to-setup'));return;}
  if(to==='math-results'&&lastResult){renderRoundSummary();return;}
@@ -162,15 +168,15 @@ async function showHistory(){
  const studio=new URLSearchParams(location.search).has('studio');
  let progress=exampleProgress(words);
  if(!studio){await playerService.init();const profile=await playerService.getSessionPlayer();progress=cleanProgress(profile?await playerService.getProgress(profile.id):null);}
- app.dataset.view='history';app.dataset.mode='math';
+ prepareScreenChange(app,'history');app.dataset.view='history';app.dataset.mode='math';
  renderProgressScreen(app,{progress,words,initialMode:'math',backAction:historyOrigin==='math-results'?'return-results':'home',onPractice:mode=>{if(mode==='math'){goRoute('result-back');return;}const folder={spelling:'ortografia',english:'angielski',reading:'czytanie',flags:'flagi'}[mode];if(folder)location.href=new URL('../'+folder+'/',import.meta.url).href;}});
 }
 window.addEventListener('math-request-exit',()=>{
  if(document.querySelector('.math-exit-dialog[open]'))return;
  clock?.pause();const dialog=document.createElement('dialog');dialog.className='math-exit-dialog';
- dialog.innerHTML='<h2>Zakończyć tę rundę?</h2><p>Zapiszemy wynik i wrócimy do ustawień Matematyki.</p><button data-math-resume>Graj dalej</button><button data-math-exit>Wyjdź do ustawień</button>';document.body.append(dialog);dialog.showModal();
+ dialog.innerHTML='<h2>Zakończyć tę rundę?</h2><p>Zapiszemy wynik i pokażemy podsumowanie.</p><button data-math-resume>Graj dalej</button><button data-math-exit>Zakończ i zobacz podsumowanie</button>';document.body.append(dialog);dialog.showModal();
  const close=()=>{dialog.remove();clock?.resume();};dialog.addEventListener('cancel',close);dialog.querySelector('[data-math-resume]').onclick=close;
- dialog.querySelector('[data-math-exit]').onclick=()=>{void saveMathProgress(true);clock?.end();cancelled=true;clock=null;dialog.remove();goRoute('exit-confirm');};
+ dialog.querySelector('[data-math-exit]').onclick=()=>{void saveMathProgress(true);clock?.end();cancelled=true;clock=null;dialog.remove();gameSound.cue('roundEnd');showRoundSummaryWithBlur();};
 });
 
 export function renderMathStudioResult(fixture) {

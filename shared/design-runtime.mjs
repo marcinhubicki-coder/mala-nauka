@@ -11,13 +11,26 @@ import {configCSS,viewIdFor} from '../design-system/model.mjs';
 import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {syncElementMotion} from './element-motion.mjs';
-import {annotateElements,visualValue} from './element-system.mjs';
+import {visualValue} from './element-styles.mjs';
 import {hasViewContract} from './view-contracts.mjs';
 import {applyCompiledView} from './compiled-runtime.mjs';
 const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
 const studioRuntime=new URLSearchParams(location.search).has('studio');
-const updateView=(root,settings,view)=>!studioRuntime&&hasViewContract(view)?applyCompiledView(root,settings,view):annotateElements(root,settings,view);
+let inspectorLoader;
+const updateView=(root,settings,view)=>{
+ if(!root||!view)return;
+ if(!studioRuntime&&hasViewContract(view))return applyCompiledView(root,settings,view);
+ // Legacy views migrate gradually. The editor classifier downloads only when
+ // an unported view (or Studio inspection) genuinely needs it.
+ inspectorLoader??=import('./element-system.mjs').then(module=>module.annotateElements);
+ void inspectorLoader.then(annotate=>{
+  // Navigations may occur while import is in flight; never annotate a stale
+  // screen or overwrite a newer design revision.
+  if(root!==document.getElementById('app')||document.documentElement.dataset.dsView!==view||config!==settings)return;
+  annotate(root,settings,view);
+ }).catch(error=>console.error('[design-inspector]',error));
+};
 export function prepareScreenChange(app,nextView){
  if(!app||app.dataset.view===nextView||!config)return;
  const to=nextView==='history'?'progress':nextView==='wizard'?(app.dataset.mode||'spelling')+'-settings':nextView;

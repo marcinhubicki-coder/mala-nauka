@@ -1,4 +1,4 @@
-import {visualValue} from './element-system.mjs';
+import {visualValue} from './element-styles.mjs';
 const stateAnimations=new WeakMap();
 export function animateStateChange(node,oldHeight){
  if(!node||matchMedia('(prefers-reduced-motion:reduce)').matches)return;

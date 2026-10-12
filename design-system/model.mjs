@@ -12,7 +12,7 @@ import {validateSoundSettings} from '../shared/sound-library.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
 import {validateProject,validateCopy} from './project-model.mjs';
-import {elementCSS,validateElementStyles} from '../shared/element-system.mjs';
+import {elementCSS,validateElementStyles} from '../shared/element-styles.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);

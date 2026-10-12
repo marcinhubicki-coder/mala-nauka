@@ -52,3 +52,13 @@ W `design-system/config.json` v2 zapisano nadpisanie „Twoja mała misja” →
 Prace odbywają się na `refactor/v2-parity-first`; nie dopisywać zmian bezpośrednio do `main`, `design/system-v1` ani `studio/pwa-test`. Jeśli Codex dalej pracuje na v2, najpierw porównać jego nowe commity i selektywnie przenieść potwierdzone zmiany.
 
 **Definicja sukcesu:** wygląd nie gorszy niż produkcyjny, każda edycja ma jedno źródło, mniejszy runtime, działające scenariusze na iPhonie. Ani liczba komponentów, ani liczba testów nie są celem samym w sobie.
+
+## Etap P4 — lżejszy cache offline (2026-10-13)
+
+W poprzedniej wersji instalacja Service Workera pobierała praktycznie **cały katalog 743 assetów (~117 MB)** po 12 równoległych plików, zanim kończyła aktywację. Dla urządzenia mobilnego nie jest to dobre zachowanie domyślne.
+
+Nowe wydanie ładuje **niewielki zestaw startowy** (logo, Home, profile, grafiki kreatorów, tło gry Ortografia i fonty). Pozostałe ilustracje zapisują się automatycznie w cache dopiero po faktycznym użyciu. Instalacja nie pobiera masowo fotografii ortograficznych ani nieużywanych wariantów graficznych.
+
+Gwarancja offline na tym etapie: kod i zasoby wspólne oraz pobrane wcześniej ilustracje. **Nie należy nazywać tego pełnym pakietem offline wszystkich ilustracji.** Pełny pakiet powinien być funkcją *świadomego pobrania* z informacją o rozmiarze, anulowaniem i postępem. Nie dodawać ukrytego pobierania całych 117 MB.
+
+Budowanie wypisuje `offlineBootstrapBytes` i `offlineDeferredBytes`; CI pilnuje budżetu startowego poniżej 6 MB. Konieczny jest pomiar na fizycznym iPhonie przed publikacją produkcyjną.

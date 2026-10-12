@@ -23,7 +23,7 @@ test('Home ma jawne źródłowe znaczniki wspólnych części oraz pięć trybó
 test('Powrót to jeden atom, akcja nie jest zakodowana w wariancie ikony',()=>{
  const nav=source('shared/navigation-parts.mjs');
  assert.match(nav,/function backButton\(/);
- assert.match(nav,/data-ds-recipe=\\?"button-back\\?"/);
+ assert.match(nav,/data-ds-recipe="button-back"/);
  assert.match(nav,/data-action/);
  assert.match(nav,/pageHeading\(/);
 });

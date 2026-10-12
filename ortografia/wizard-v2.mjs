@@ -1,4 +1,5 @@
 import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
+import {spellingAttrs} from '../shared/spelling-settings-contract.mjs';
 import { dictationPacks, cleanDictationTag } from '../spelling/dictation.mjs?v=1';
 import { WORD_LIMITS, cleanRoundSettings } from '../spelling/round.mjs?v=1';
 
@@ -70,10 +71,10 @@ function esc(value){
 function indicator(){return '<span class="spelling-segment-indicator" aria-hidden="true"></span>';}
 
 function scopeChoices(){
- return '<div class="spelling-v2-scope-grid spelling-segmented" data-segmented="scope" role="radiogroup" aria-label="Zakres słów">'+indicator()+
-  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="all" '+(state.scope==='all'?'checked':'')+'><span>Wszystko</span></label>'+
-  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="categories" '+(state.scope==='categories'?'checked':'')+'><span>Kategorie</span></label>'+
-  '<label class="spelling-v2-choice"><input type="radio" name="spellingScope" value="dictation" '+(state.scope==='dictation'?'checked':'')+'><span>Dyktando</span></label></div>';
+ return '<div class="spelling-v2-scope-grid spelling-segmented" '+spellingAttrs('scope-jelly')+' data-segmented="scope" role="radiogroup" aria-label="Zakres słów">'+indicator()+
+  '<label class="spelling-v2-choice" '+spellingAttrs('scope-all')+'><input type="radio" name="spellingScope" value="all" '+(state.scope==='all'?'checked':'')+'><span>Wszystko</span></label>'+
+  '<label class="spelling-v2-choice" '+spellingAttrs('scope-categories')+'><input type="radio" name="spellingScope" value="categories" '+(state.scope==='categories'?'checked':'')+'><span>Kategorie</span></label>'+
+  '<label class="spelling-v2-choice" '+spellingAttrs('scope-dictation')+'><input type="radio" name="spellingScope" value="dictation" '+(state.scope==='dictation'?'checked':'')+'><span>Dyktando</span></label></div>';
 }
 function categoryChoices(){
  return CATEGORIES.map(([id,label])=>
@@ -82,7 +83,7 @@ function categoryChoices(){
 }
 function levelChoices(){
  return indicator()+LEVELS.map(([value,label])=>
-  '<label class="spelling-v2-choice"><input type="radio" name="difficulty" value="'+value+'" '+(state.difficulty===value?'checked':'')+'><span>'+esc(label)+'</span></label>'
+  '<label class="spelling-v2-choice" '+spellingAttrs('level-'+value)+'><input type="radio" name="difficulty" value="'+value+'" '+(state.difficulty===value?'checked':'')+'><span>'+esc(label)+'</span></label>'
  ).join('');
 }
 function dictationChoices(){
@@ -90,16 +91,16 @@ function dictationChoices(){
 }
 function durationChoices(){
  return indicator()+DURATIONS.map(seconds=>
-  '<label class="spelling-time-choice"><input type="radio" name="duration" value="'+seconds+'" '+(state.duration===seconds?'checked':'')+'><span>'+(seconds/60)+' min</span></label>'
+  '<label class="spelling-time-choice" '+spellingAttrs('duration-'+seconds)+'><input type="radio" name="duration" value="'+seconds+'" '+(state.duration===seconds?'checked':'')+'><span>'+(seconds/60)+' min</span></label>'
  ).join('');
 }
 function countChoices(){
- return indicator()+WORD_LIMITS.map(count=>'<label class="spelling-time-choice"><input type="radio" name="wordLimit" value="'+count+'" '+(state.wordLimit===count?'checked':'')+'><span>'+count+' słów</span></label>').join('');
+ return indicator()+WORD_LIMITS.map(count=>'<label class="spelling-time-choice" '+spellingAttrs('word-limit-'+count)+'><input type="radio" name="wordLimit" value="'+count+'" '+(state.wordLimit===count?'checked':'')+'><span>'+count+' słów</span></label>').join('');
 }
 function limitChoices(){
- return '<div class="spelling-limit-mode spelling-segmented" data-segmented="limit" role="radiogroup" aria-label="Koniec rundy">'+indicator()+
-  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="time" '+(state.limitMode==='time'?'checked':'')+'><span>Czas</span></label>'+
-  '<label class="spelling-v2-choice"><input type="radio" name="limitMode" value="count" '+(state.limitMode==='count'?'checked':'')+'><span>Słowa</span></label></div>';
+ return '<div class="spelling-limit-mode spelling-segmented" '+spellingAttrs('limit-jelly')+' data-segmented="limit" role="radiogroup" aria-label="Koniec rundy">'+indicator()+
+  '<label class="spelling-v2-choice" '+spellingAttrs('limit-time')+'><input type="radio" name="limitMode" value="time" '+(state.limitMode==='time'?'checked':'')+'><span>Czas</span></label>'+
+  '<label class="spelling-v2-choice" '+spellingAttrs('limit-count')+'><input type="radio" name="limitMode" value="count" '+(state.limitMode==='count'?'checked':'')+'><span>Słowa</span></label></div>';
 }
 function syncRoundChoice(){
  root.querySelectorAll('[data-round-options]').forEach(container=>{
@@ -287,13 +288,13 @@ function install(){
   '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='categories'?state.categories.join(','):'all')+'">'+
   '<input type="hidden" name="selectedDictationTag" value="'+esc(state.dictationTag)+'">'+
   '<input type="hidden" name="dyktando" value="'+(state.dyktando?'1':'0')+'">'+
-  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
+  '<fieldset class="spelling-v2-section" '+spellingAttrs('scope-section')+'><legend><span class="step-dot">1</span>Co ćwiczymy?</legend>'+scopeChoices()+
    '<div class="spelling-category-panel '+(state.scope==='categories'?'is-open':'')+'" data-category-panel aria-hidden="'+(state.scope==='categories'?'false':'true')+'"><div class="spelling-category-grid">'+categoryChoices()+'</div></div>'+
    '<div class="spelling-category-panel" data-dictation-panel aria-hidden="true"><div class="spelling-category-grid spelling-dictation-grid">'+dictationChoices()+'</div></div></fieldset>'+
-  '<fieldset class="spelling-v2-section"><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" data-segmented="level">'+levelChoices()+'</div></fieldset>'+
-  '<fieldset class="spelling-v2-section spelling-round-section"><legend><span class="step-dot">3</span>Ustal misję</legend>'+limitChoices()+
-   '<div class="spelling-time-segmented spelling-segmented" data-segmented="time" data-round-options="time" role="radiogroup" aria-label="Czas rundy">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div>'+
-   '<div class="spelling-time-segmented spelling-segmented" data-segmented="count" data-round-options="count" role="radiogroup" aria-label="Liczba słów w rundzie">'+countChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div></fieldset>';
+  '<fieldset class="spelling-v2-section" '+spellingAttrs('level-section')+'><legend><span class="step-dot">2</span>Wybierz pulę wyrazów</legend><div class="spelling-v2-level-grid spelling-segmented" '+spellingAttrs('level-jelly')+' data-segmented="level">'+levelChoices()+'</div></fieldset>'+
+  '<fieldset class="spelling-v2-section spelling-round-section" '+spellingAttrs('round-section')+'><legend><span class="step-dot">3</span>Ustal misję</legend>'+limitChoices()+
+   '<div class="spelling-time-segmented spelling-segmented" '+spellingAttrs('time-jelly')+' data-segmented="time" data-round-options="time" role="radiogroup" aria-label="Czas rundy">'+durationChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div>'+
+   '<div class="spelling-time-segmented spelling-segmented" '+spellingAttrs('count-jelly')+' data-segmented="count" data-round-options="count" role="radiogroup" aria-label="Liczba słów w rundzie">'+countChoices()+'<span class="spelling-dyktando-time-copy" aria-hidden="true">Ćwiczymy dyktando!</span></div></fieldset>';
  const canvas=document.createElement('div');canvas.className='spelling-wizard-canvas';
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
@@ -347,4 +348,4 @@ root?.addEventListener('change',event=>{
 window.addEventListener('resize',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)requestAnimationFrame(()=>syncSegments(false));},{passive:true});
 window.addEventListener('orientationchange',()=>{if(root?.dataset.mode==='spelling'&&root.dataset.view==='wizard'&&state)window.setTimeout(()=>syncSegments(false),120);},{passive:true});
 const observer=new MutationObserver(()=>requestAnimationFrame(install));
-if(root){observer.observe(root,{childList:true,subtree:true});install();}
+if(root){observer.observe(root,{childList:true,subtree:false});install();}

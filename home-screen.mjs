@@ -45,7 +45,7 @@ export function renderHomeHero(nickname='Odkrywco',style=''){
  <p class="home-hero-copy" data-ds-recipe="text-home-subtitle" data-ds-kind="text" data-ds-key="home-subtitle">Świetnie Ci idzie, co dalej?</p></section>`;
 }
 export function renderHomeAdventures(style=''){
- return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Wybierz swoją przygodę</h2><p data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
+ return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-kind="text" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Wybierz swoją przygodę</h2><p data-ds-kind="text" data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
 }
 export function renderHomeDecoration(mode){
  const [w,h]=HOME_TILE_SIZES[mode];

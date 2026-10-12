@@ -1,4 +1,5 @@
 import {effectiveTokens} from '../design-system/model.mjs';
+import {acquireInputLock} from '../shared/input-lock.mjs';
 // The defaults preserve the approved result motion. Design Studio may tune each
 // phase without changing the geometry of the result screen.
 export function resultMotionSettings(override={}){
@@ -306,7 +307,7 @@ export function revealResult(root, delay = 1000, override={}) {
 export async function transitionToResult(root, freeze, render) {
   if (reduced() || document.hidden) {render(false); return;}
   freeze();
-  root.inert = true;
+  const unlockInput=acquireInputLock(root,'round-transition');
   document.documentElement.classList.add('result-transition');
   let transition, animation;
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -318,7 +319,12 @@ export async function transitionToResult(root, freeze, render) {
   try {
     if (document.startViewTransition) {
       // The outgoing scene is a browser snapshot; its game simulation is paused.
-      transition = document.startViewTransition(() => render(true, 2500));
+      transition = document.startViewTransition(() => {
+        // The browser snapshot callback must return synchronously: waiting for
+        // the scene's Web Animations here freezes frames on mobile WebKit.
+        const ready=render(true,2500);
+        if(ready?.then)ready.catch(error=>console.warn('[game-transition]',error));
+      });
       await transition.ready.catch(() => {settleResult(root);});
       await transition.finished;
     } else {
@@ -336,7 +342,7 @@ export async function transitionToResult(root, freeze, render) {
     document.removeEventListener('visibilitychange', visibility);
     preference.removeEventListener('change', preferenceChanged);
     document.documentElement.classList.remove('result-transition', 'result-transition-fallback');
-    root.inert = false;
+    unlockInput();
     if (!document.hidden && root.dataset.view === 'results') root.querySelector('h1')?.focus({preventScroll: true});
   }
 }

@@ -181,7 +181,11 @@ export function createSpellingArt(app, { onContinue } = {}) {
 
     const pictureChange = bubble.transitionToScene(pictureUrl, scene, first);
     const inkChange = animateInk('in');
-    await Promise.all([inkChange, pictureChange]);
+    // WebKit can suspend an animation after backgrounding. A timeout prevents
+    // permanently disabled answers while preserving normal scene timings.
+    let timer;
+    try{await Promise.race([Promise.all([inkChange,pictureChange]),new Promise(resolve=>{timer=setTimeout(resolve,8000);})]);}
+    finally{clearTimeout(timer);}
     if (token !== generation || session !== game) return;
 
     game.setPresentationHold(false); app.classList.remove('ink-changing');

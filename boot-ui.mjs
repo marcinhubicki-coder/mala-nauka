@@ -32,8 +32,8 @@ else if(app){
  let seen=false;try{seen=sessionStorage.getItem('mn-logo-seen')==='1';}catch{}
  const full=!seen&&['players','player-create','player-pin'].includes(app.dataset.view);
  await prepare(full);
- let screen=app.dataset.view+':'+app.dataset.mode;
- new MutationObserver(()=>{const next=app.dataset.view+':'+app.dataset.mode;if(next===screen)return;screen=next;void prepare(false);}).observe(app,{attributes:true,attributeFilter:['data-view','data-mode']});
+ // Bootstrap is a one-shot loader. The shared transition engine owns later
+ // view changes; a second LogoTransition could trap input on top of the game.
  const warm=()=>void preloadAssets(['assets/ortografia/wizard-mission-retina-v1.webp','assets/ortografia/game-meadow-v1.webp']).catch(()=>{});
  if('requestIdleCallback'in window)requestIdleCallback(warm,{timeout:1500});else setTimeout(warm,700);
 }

@@ -424,8 +424,13 @@ async function start() {
   // Hold the round clock, while allowing the incoming scene's animations to
   // finish. Pausing the session here deadlocks the view-transition callback.
   game.setPresentationHold(true);
-  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
-  catch{render();root.inert=false;}
+  try{
+   await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);
+   // Decoding is bounded independently from the view-transition lock.
+   let timer;
+   try{await Promise.race([import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root)),new Promise(resolve=>{timer=setTimeout(resolve,8000);})]);}
+   finally{clearTimeout(timer);}
+  }catch(error){console.error('[spelling-start]',error);render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
   game.setPresentationHold(false);
   if(document.hidden){pause();return;}

@@ -12,8 +12,12 @@ import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {annotateElements,visualValue} from './element-system.mjs';
+import {hasViewContract} from './view-contracts.mjs';
+import {applyCompiledView} from './compiled-runtime.mjs';
 const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
+const studioRuntime=new URLSearchParams(location.search).has('studio');
+const updateView=(root,settings,view)=>!studioRuntime&&hasViewContract(view)?applyCompiledView(root,settings,view):annotateElements(root,settings,view);
 export function prepareScreenChange(app,nextView){
  if(!app||app.dataset.view===nextView||!config)return;
  const to=nextView==='history'?'progress':nextView==='wizard'?(app.dataset.mode||'spelling')+'-settings':nextView;
@@ -32,7 +36,7 @@ export function applyDesign(value) {
   window.__MALA_NAUKA_DESIGN__ = value;
   document.documentElement.dataset.dsRevision = String(value.revision);
   configureScreenCopy(value.copyOverrides||[]);
-  annotateElements(document.getElementById('app'),value,document.documentElement.dataset.dsView);
+  updateView(document.getElementById('app'),value,document.documentElement.dataset.dsView);
   document.dispatchEvent(new CustomEvent('mala-nauka:design', {detail:value}));
 }
 export const currentDesign = () => config;
@@ -70,7 +74,7 @@ export async function initDesign() {
     if(app.dataset.view==='wizard')normalizeMission(app,app.dataset.mode,assetUrl);
     applyScreenCopy(app);
     const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')&&!window.__MALA_NAUKA_EXTERNAL_TRANSITION__){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background,config:config.exitTransition,speed:motion.speed});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
-    annotateElements(app,config,document.documentElement.dataset.dsView);
+    updateView(app,config,document.documentElement.dataset.dsView);
   };
   let annotationFrame=0,presenceRecords=[];
   if (app) new MutationObserver(records=>{

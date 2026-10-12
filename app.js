@@ -6,18 +6,15 @@ import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
 import {animateStateChange} from './shared/state-motion.mjs';
 import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
-import {createStudioGame} from './design-system/scenarios.mjs';
 import {designReady,applyDesign} from './shared/design-runtime.mjs';
 import {pageHeading} from './shared/navigation-parts.mjs';
 import {loadWords,assetUrl} from './shared/asset-loader.mjs';
 import {missionIllustration} from './shared/mission-parts.mjs';
-import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=20-points-bubble';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
-import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20261010-vector-home';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
@@ -772,6 +769,7 @@ load();registerOffline();
 // Studio scenarios use the real renderers and Session, with a stopped clock.
 // No profile, score, backup or offline-cache writes happen in this mode.
 async function renderStudioScenario(stateOverride=null){
+ const {exampleProgress}=await import('./progress-example.mjs?v=1');
  const query=new URLSearchParams(location.search);
  const screen=query.get('screen')||'wizard',state=stateOverride||query.get('state')||'initial';
  selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
@@ -794,11 +792,13 @@ async function renderStudioScenario(stateOverride=null){
  }
  if(screen==='results'&&selectedMode==='spelling'){
   view='results';root.dataset.view=view;root.dataset.mode=selectedMode;
+  const {exampleResult}=await import('./ortografia/result-example.mjs?v=1');
   lastResult=exampleResult(words,state==='rule'?'mixed':state);
   renderSpellingResult(root,lastResult,words,null,{animate:query.has('animate'),delay:120});
   if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
   return;
  }
+ const {createStudioGame}=await import('./design-system/scenarios.mjs');
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
  view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();

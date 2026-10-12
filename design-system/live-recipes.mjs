@@ -73,7 +73,7 @@ export class LiveRecipes{
  if(['control-pin','container-pin-card','container-pin-fields'].includes(this.part))example=this.select('pin','Stan profilu',this.pin===false?'none':'pin',{pin:'Z PIN-em',none:'Bez PIN-u'});
  if(['container-pin-keypad','container-pin-dots','icon-pin-dot'].includes(this.part))example=this.select('pinDigits','Wpisane cyfry',String(this.pinDigits||0),{0:'0',1:'1',2:'2',3:'3',4:'4'});
  if(this.part==='container-player-grid')example=this.select('playerCount','Liczba graczy',String(this.playerCount||3),{1:'1 gracz',2:'2 graczy',3:'3 graczy'});
- if(['jelly','toggle'].includes(this.block)&&!this.atom)example=this.select('example','Przykład z gry',this.example,Object.fromEntries(Object.keys(SEGMENTED_EXAMPLES).map(id=>[id,{scope:'Zakres: Kategorie / Dyktando',level:'Poziomy',time:'Czas',count:'Liczba słów',language:'Język'}[id]])))+this.select('count','Liczba opcji',String(this.count),Object.fromEntries(Array.from({length:MAX_OPTIONS-1},(_,i)=>[i+2,String(i+2)])));
+ if(this.block==='jelly'&&!this.atom)example=this.select('example','Przykład z gry',this.example,Object.fromEntries(Object.keys(SEGMENTED_EXAMPLES).map(id=>[id,{scope:'Zakres: Kategorie / Dyktando',level:'Poziomy',time:'Czas',count:'Liczba słów',language:'Język'}[id]])))+this.select('count','Liczba opcji',String(this.count),Object.fromEntries(Array.from({length:MAX_OPTIONS-1},(_,i)=>[i+2,String(i+2)])));
  if(this.block==='slider'&&!this.atom)example=this.select('variant','Zastosowanie',this.variant,{wrong:'Po błędzie',result:'Nowa runda'});
  if(['slider','progress'].includes(this.block)&&!this.atom)example+=`<label class=form-field><span>Symulacja · <output id=live-percent>${this.percent}%</output></span><input type=range id=live-progress min=0 max=100 value=${this.percent}></label><button class=quiet-button data-live-complete>100% · zakończenie</button><button class=quiet-button data-live-restart>Od początku</button>`;
  const used=this.atom?this.owner.registry.views.filter(v=>ATOMS[this.atom].parents.some(p=>v.components.includes(p))):this.owner.registry.views.filter(v=>this.record?.uses.some(u=>u.view===v.id));
@@ -92,7 +92,7 @@ export class LiveRecipes{
  if(this.atom){const r=config.recipes?.[this.atom]||DEFAULT_RECIPES[this.atom];sample.style.cssText=recipeStyle(r);sample.textContent=this.atom==='numberText'?'Co ćwiczymy?':'Małe kroki, wielkie odkrycia';}
  else if(this.block==='generic'){mountPartSample(this,sample);return;}
  else if(['jelly','toggle'].includes(this.block)){
-  const values=SEGMENTED_EXAMPLES[this.example];const rows=Array.from({length:this.count},(_,i)=>values[i]||'Opcja '+(i+1));this.choice=Math.min(this.choice,rows.length-1);
+  const values=this.block==='toggle'?['Czas','Słowa']:SEGMENTED_EXAMPLES[this.example];const rows=Array.from({length:this.block==='toggle'?2:this.count},(_,i)=>values[i]||'Opcja '+(i+1));this.choice=Math.min(this.choice,rows.length-1);
   sample.innerHTML=`<div class=ds-jelly><i class=live-jelly-indicator></i>${rows.map((label,i)=>`<label data-ds-element="sample-option-${i}" data-ds-kind=text data-ds-recipe=jelly-option><input type=radio name=live-jelly value=${i} ${i===this.choice?'checked':''}><span>${html(label)}</span></label>`).join('')}</div>`;
   const jelly=createJellyV4({indicatorSelector:'.live-jelly-indicator',getTokens:()=>familyTokens(this.config,this.mode,'jelly')}),node=sample.firstElementChild;
   if(this.block==='toggle')node.style.cssText=`width:${t.width}px;height:${t.height}px;`;

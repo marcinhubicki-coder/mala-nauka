@@ -265,7 +265,7 @@
     }
   },
   "motion": {
-    "style": "fade",
+    "style": "blur",
     "duration": 320,
     "distance": 18,
     "easing": "ease-out"

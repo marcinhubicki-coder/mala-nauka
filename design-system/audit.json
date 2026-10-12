@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-09T11:22:13.034Z",
-  "sourceCommit": "f16b7770c6473f692284ecd44f3a282bfa5d3829",
+  "date": "2026-10-12T08:00:56.944Z",
+  "sourceCommit": "8ca5ef230da02647722e3f4f85a38d0e5929d9cb",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -576,6 +576,11 @@
       "role": "body"
     },
     {
+      "file": "boot-loader.css",
+      "selector": ".mn-loader-sound",
+      "role": "body"
+    },
+    {
       "file": "czytanie/wizard-retina.css",
       "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"]",
       "role": "body"
@@ -788,7 +793,7 @@
     {
       "file": "home-screen.css",
       "selector": ".home-stat-value",
-      "role": "body"
+      "role": "ui"
     },
     {
       "file": "home-screen.css",
@@ -803,6 +808,11 @@
     {
       "file": "home-screen.css",
       "selector": ".home-adventures p",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-mode-symbol",
       "role": "ui"
     },
     {
@@ -1247,6 +1257,11 @@
       "ui",
       "display"
     ],
+    "player-unlock": [
+      "body",
+      "ui",
+      "display"
+    ],
     "home": [
       "body",
       "ui",
@@ -1386,12 +1401,12 @@
       "display"
     ]
   },
-  "cssBytes": 484373,
-  "jsBytes": 865482,
+  "cssBytes": 489278,
+  "jsBytes": 967608,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 84129
+      "bytes": 85715
     },
     {
       "path": "shared/round-result.css",
@@ -1410,16 +1425,20 @@
       "bytes": 29057
     },
     {
-      "path": "player-profiles.css",
-      "bytes": 28307
+      "path": "shared/element-system.mjs",
+      "bytes": 28841
     },
     {
-      "path": "shared/element-system.mjs",
-      "bytes": 27579
+      "path": "player-profiles.css",
+      "bytes": 28779
     },
     {
       "path": "sw.js",
       "bytes": 27174
+    },
+    {
+      "path": "shared/sound-library.mjs",
+      "bytes": 26744
     },
     {
       "path": "spelling-art.css",
@@ -1435,7 +1454,7 @@
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 22795
+      "bytes": 22960
     },
     {
       "path": "angielski/wizard-v2.mjs",

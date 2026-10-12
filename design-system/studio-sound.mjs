@@ -1,3 +1,4 @@
+import {studioIcon} from './studio-ui.mjs';
 import {SOUND_CUES,SOUND_LAYERS,SOUND_PRESETS,SOUND_FIELDS,CUE_FIELDS,cueSettings,layerSeconds,DEFAULT_SOUND_SETTINGS,normalizeSoundSettings,SoundPreviewEngine,ambientLevels,generateCue,mixAmbience,wavBlob,zipBlob} from '../shared/sound-library.mjs';
 import {StudioSoundMap} from './studio-sound-map.mjs';
 
@@ -21,10 +22,10 @@ export class StudioSound{
   this.workspace.addEventListener('input',event=>this.input(event));
   this.workspace.addEventListener('change',event=>this.change(event));
   window.addEventListener('message',event=>{if(this.active&&event.origin===location.origin&&event.source===this.gameFrame()?.contentWindow&&event.data?.channel==='mala-nauka-studio'&&event.data.type==='ready'){this.sendDesign();this.gameFrame().contentWindow.postMessage({channel:'mala-nauka-studio',type:'inspect',enabled:false,highlight:false},location.origin);}});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){this.engine.stop();this.logo?.pause();this.status();}});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){this.clearCheck();this.engine.stop();this.logo?.pause();this.status();}});
   window.addEventListener('pagehide',()=>{this.engine.stop();});
  }
- leave(){this.active=false;this.soundMap?.destroy();this.logo?.destroy();this.logo=null;this.engine.stop();this.gameFrame()?.remove();}
+ leave(){this.clearCheck();this.active=false;this.soundMap?.destroy();this.logo?.destroy();this.logo=null;this.engine.stop();this.gameFrame()?.remove();}
  gameFrame(){return this.workspace.querySelector('#sound-game-frame');}
  sendDesign(){this.gameFrame()?.contentWindow?.postMessage({channel:'mala-nauka-studio',type:'design',...this.getDesign()},location.origin);}
  render(){
@@ -34,7 +35,7 @@ export class StudioSound{
   const layers=SOUND_LAYERS.map(([id,name,hint],i)=>'<label class="sound-channel"><span class="sound-channel-index">'+String(i+1).padStart(2,'0')+'</span><span class="sound-channel-name"><strong>'+name+'</strong><small>'+hint+'</small></span><input type="range" min="0" max="100" step="1" value="'+s.mix[i]+'" data-sound-layer="'+i+'" aria-label="'+name+'"><output data-layer-value="'+i+'">'+s.mix[i]+'%</output></label>').join('');
   const mapMarkup='<section class="sound-panel" data-sound-map-panel><div class="sound-panel-heading"><div><h3>Mapa dźwięków</h3><p>Ten sam podział na ekrany i połączenia co w architekturze. Wybierz ekran, przypisz brzmienia i głośność. Mapę przesuwaj pustym obszarem; zmiany trafiają do gry.</p></div><button type="button" class="solid-button" data-sound-action="save-test">Zapisz i testuj w grze</button></div><div data-sound-map></div></section>';
   this.workspace.innerHTML='<div class="content-page sound-studio" data-sound-studio>'+
-   '<header class="sound-hero"><div><span class="inspector-kicker">Dźwięk i koncentracja</span><h2>Sound Lab</h2><p>Miękkie, wesołe brzmienia do nauki i zabawy. Warstwy płyną bez przerwy na końcu pętli. Zapisz miks i posłuchaj go przy prawdziwych zadaniach.</p><div class="sound-transport"><button type="button" class="quiet-button" data-sound-action="check">♫ Sprawdź dźwięk</button><span role="status" data-sound-status aria-live="polite">Odsłuch zatrzymany.</span></div></div><div class="sound-hero-mark" aria-hidden="true">♫</div></header>'+
+   '<header class="sound-hero"><div><span class="inspector-kicker">Dźwięk i koncentracja</span><h2>Sound Lab</h2><p>Miękkie, wesołe brzmienia do nauki i zabawy. Warstwy płyną bez przerwy na końcu pętli. Zapisz miks i posłuchaj go przy prawdziwych zadaniach.</p><div class="sound-check"><button type="button" class="sound-check-button" data-sound-action="check" aria-expanded="false" aria-pressed="false">'+studioIcon('music')+'<span>Sprawdź dźwięk</span></button><section class="sound-check-copy" data-sound-check-copy hidden><h3>Test dźwięku przeglądarki</h3><p>Ten ton gra z domyślną głośnością, niezależnie od miksera. Sprawdza odsłuch w tej przeglądarce.</p><p role="status" data-sound-status aria-live="polite">Odsłuch zatrzymany.</p></section></div></div><div class="sound-hero-mark" aria-hidden="true">♫</div></header>'+
    '<nav class="sound-transport sound-section-links" aria-label="Pracownie dźwięku"><button type="button" class="quiet-button" data-sound-jump="cue-panel">Krótkie brzmienia</button><button type="button" class="quiet-button" data-sound-jump="mixer-panel">Tło i długość pętli</button><button type="button" class="quiet-button" data-sound-jump="map-panel">Mapa dźwięków</button></nav><section class="sound-panel sound-settings"><div class="sound-panel-heading"><div><h3>Ustawienia aplikacji</h3><p>Miks trafia do wspólnego szkicu gry. Zapisz na GitHub, aby udostępnić go kolejnej wersji testowej.</p></div></div><div class="sound-master-grid">'+
    switcher('enabled','Dźwięki w grze','Kliknięcia, odpowiedzi, nagrody i animacje',s.enabled)+
    switcher('ambientEnabled','Tło podczas nauki','Opcjonalna atmosfera, uruchamiana po świadomym wyborze',s.ambientEnabled)+
@@ -48,9 +49,9 @@ export class StudioSound{
    '<section class="sound-panel sound-mixer-panel" data-sound-mixer-panel><div class="sound-panel-heading"><div><h3>Mikser natury i muzyki</h3><p>Nieregularne dźwięki natury i pogodna melodia. Suwaki działają na żywo; puszczenie suwaka zapisuje zmianę w szkicu.</p></div><div class="sound-transport"><button type="button" class="solid-button" data-sound-action="play">▶ Odsłuchaj tło</button><button type="button" class="quiet-button" data-sound-action="stop">■ Stop</button></div></div>'+
    '<div class="sound-presets" role="group" aria-label="Presety atmosfery">'+presets+'</div>'+
    '<div class="sound-channels">'+layers+'</div><details class="sound-control-group" open><summary>Długość przed powtórzeniem</summary>'+slider('loopSeconds','Długość podkładu',s.loopSeconds,'24–180 sekund; melodia dopasowuje koniec do pełnej frazy')+'<p class="sound-loop-info" data-sound-loop-info></p></details>'+
-   '<div class="sound-lab-actions"><button type="button" class="solid-button" data-sound-action="save-test">Zapisz i testuj w grze</button><button type="button" class="quiet-button" data-sound-action="save">Zapisz miks do gry</button><span role="status" data-sound-status aria-live="polite">Odsłuch zatrzymany.</span><div><button type="button" class="quiet-button" data-sound-action="ambient-download">Pobierz pętlę WAV</button><button type="button" class="quiet-button" data-sound-action="reset">Przywróć wesołą naukę</button></div></div>'+
+   '<div class="sound-lab-actions"><button type="button" class="solid-button" data-sound-action="save-test">Zapisz i testuj w grze</button><button type="button" class="quiet-button" data-sound-action="save">Zapisz miks do gry</button><span role="status" data-sound-status aria-live="polite">Odsłuch zatrzymany.</span><div><button type="button" class="quiet-button" data-sound-action="ambient-download">Pobierz pętlę WAV</button><footer class="studio-reset-footer"><p>Przywraca fabryczny miks tła i ustawienia odsłuchu Wesoła nauka. Zachowuje mapę przypisań i własne krótkie brzmienia.</p><button type="button" class="quiet-button" data-sound-action="reset">Przywróć wesołą naukę</button></footer></div></div>'+
    '</section><section class="sound-panel"><div class="sound-panel-heading"><div><h3>Kolory i bloby</h3><p>Dźwięk podąża za ustawionym czasem obrotów, kolorów oraz białego bloba.</p></div><button type="button" class="solid-button" data-sound-action="logo">▶ Odtwórz animację z dźwiękiem</button></div><div class="sound-logo-stage"><div class="sound-logo-screen"><span aria-hidden="true">☀</span><strong>Czas na małą przygodę!</strong></div></div></section>'+
-   '<section class="sound-panel"><div class="sound-panel-heading"><div><h3>Przetestuj przy zadaniach</h3><p>Ten sam ekran i dźwięk co w Komponentach oraz PWA. Dotknij odpowiedzi w podglądzie, aby włączyć dźwięk.</p></div><div class="sound-transport"><label>Tryb <select data-sound-mode>'+MODES.map(([id,label])=>'<option value="'+id+'" '+(id===this.mode?'selected':'')+'>'+label+'</option>').join('')+'</select></label><button type="button" class="quiet-button" data-sound-action="save-test">Zapisz i otwórz grę</button></div></div><div class="sound-game-stage" data-sound-game-stage><p>Podgląd otworzysz przyciskiem „Zapisz i testuj w grze”.</p></div></section>'+mapMarkup+'</div>' ;
+   '<section class="sound-panel"><div class="sound-panel-heading"><div><h3>Przetestuj przy zadaniach</h3><p>Ten sam ekran i dźwięk co w Komponentach oraz PWA. Dotknij odpowiedzi w podglądzie, aby włączyć dźwięk.</p></div><div class="sound-transport"><label>Tryb <select data-sound-mode>'+MODES.map(([id,label])=>'<option value="'+id+'" '+(id===this.mode?'selected':'')+'>'+label+'</option>').join('')+'</select></label><button type="button" class="quiet-button" data-sound-action="save-test">Zapisz i otwórz grę</button><button type="button" class="quiet-button" data-sound-action="close-test" hidden>Zakończ test</button></div></div><div class="sound-game-stage" data-sound-game-stage><p>Podgląd otworzysz przyciskiem „Zapisz i testuj w grze”.</p></div></section>'+mapMarkup+'</div>' ;
   this.status();
   this.renderCueMixer();this.updateLoopInfo();
   this.soundMap?.destroy();this.soundMap=new StudioSoundMap({root:this.workspace.querySelector('[data-sound-map]'),registry:this.registry,getSettings:()=>this.settings,getDesign:this.getDesign,save:()=>this.persist(),play:(id,level)=>this.playCue(id,level),editCue:id=>this.selectCue(id,true)});this.soundMap.render();
@@ -98,7 +99,24 @@ export class StudioSound{
   this.persist();this.engine.stop();this.logo?.destroy();this.logo=null;this.status('Zapisany miks jest w podglądzie gry. Kliknij odpowiedź.');
   const row=MODES.find(row=>row[0]===this.mode)||MODES[0],url=new URL(row[2],location.origin);
   url.search=new URLSearchParams({studio:'1',mode:row[0],screen:'game',state:'initial',viewId:row[0]+'-initial',soundLab:'1'});
-  const stage=this.workspace.querySelector('[data-sound-game-stage]');stage.innerHTML=`<iframe id="sound-game-frame" title="${row[1]} · odsłuch zapisanego miksu" src="${escapeHTML(url.href)}" width="390" height="844" allow="autoplay"></iframe>`;stage.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const stage=this.workspace.querySelector('[data-sound-game-stage]');stage.innerHTML=`<iframe id="sound-game-frame" title="${row[1]} · odsłuch zapisanego miksu" src="${escapeHTML(url.href)}" width="390" height="844" allow="autoplay"></iframe>`;this.workspace.querySelector('[data-sound-action=close-test]').hidden=false;stage.scrollIntoView({behavior:'smooth',block:'nearest'});
+ }
+ closeTest(){
+  this.gameFrame()?.remove();this.engine.stop();this.logo?.pause();this.clearCheck();
+  const stage=this.workspace.querySelector('[data-sound-game-stage]');if(stage)stage.innerHTML='<p>Test zakończony. Możesz zmienić miks i ponownie otworzyć grę.</p>';
+  const button=this.workspace.querySelector('[data-sound-action=close-test]');if(button)button.hidden=true;this.status('Test przy zadaniach zakończony.');
+ }
+ clearCheck(){
+  if(this.checkVoice){try{this.checkVoice.source.stop();}catch{}this.checkVoice=null;}
+  const button=this.workspace.querySelector('[data-sound-action=check]');if(button){button.classList.remove('is-playing');button.setAttribute('aria-pressed','false');}
+ }
+ async checkSound(){
+  this.clearCheck();const button=this.workspace.querySelector('[data-sound-action=check]'),copy=this.workspace.querySelector('[data-sound-check-copy]');copy.hidden=false;button.setAttribute('aria-expanded','true');button.classList.add('is-playing');button.setAttribute('aria-pressed','true');
+  try{
+   const voice=await this.engine.cue('correct',DEFAULT_SOUND_SETTINGS);if(!voice){this.clearCheck();return;}this.checkVoice=voice;
+   const ended=voice.source.onended;voice.source.onended=()=>{ended?.();if(this.checkVoice===voice){this.checkVoice=null;button.classList.remove('is-playing');button.setAttribute('aria-pressed','false');this.status('Ton testowy zakończony.');}};
+   this.status('Odtwarzam ton testowy z domyślną głośnością.');
+  }catch(error){this.clearCheck();throw error;}
  }
  playLogo(){
   this.logo?.destroy();const stage=this.workspace.querySelector('.sound-logo-stage'),app=stage.querySelector('.sound-logo-screen'),overlay=document.createElement('div');overlay.className='sound-logo-overlay';stage.append(overlay);
@@ -113,7 +131,8 @@ export class StudioSound{
    if(b.dataset.soundCueReset){const key=b.dataset.soundCueReset;this.settings.cues[this.selectedCue]={...cueSettings(this.selectedCue,this.settings),[key]:cueSettings(this.selectedCue)[key]};this.persist();this.renderCueMixer();return;}
    if(b.dataset.soundPreset){const id=b.dataset.soundPreset;this.settings.ambientPreset=id;this.settings.mix=[...SOUND_PRESETS[id].mix];this.updateMixUI();this.persist();return;}
    const action=b.dataset.soundAction;if(!action)return;
-   if(action==='check'){await this.engine.cue('correct',DEFAULT_SOUND_SETTINGS);this.status('Ton testowy gra z domyślną głośnością, niezależnie od miksera.');return;}
+   if(action==='check'){await this.checkSound();return;}
+   if(action==='close-test'){this.closeTest();return;}
    if(action==='play'){
     if(!ambientLevels(this.settings).some(level=>level>0)){this.status('Tło jest wyciszone. Podnieś głośność ogólną, tła i przynajmniej jeden kanał.');return;}
     this.status('Przygotowuję podkład…');await this.engine.start(this.settings);this.status();return;
@@ -121,7 +140,7 @@ export class StudioSound{
    if(action==='save'){this.persist();this.status('Mapa, krótkie brzmienia i tło zapisane w szkicu i przekazane do gry.');this.notice?.('Dźwięki gotowe do testów. Zapis na GitHub udostępnia je kolejnemu wydaniu.');return;}
    if(action==='save-test'){this.testGame();return;}
    if(action==='logo'){this.playLogo();return;}
-   if(action==='stop'){this.logo?.pause();this.engine.stop();this.status();return;}
+   if(action==='stop'){this.clearCheck();this.logo?.pause();this.engine.stop();this.status();return;}
    if(action==='reset'){const cues=this.settings.cues,bindings=this.settings.bindings;this.settings=normalizeSoundSettings({...DEFAULT_SOUND_SETTINGS,cues,bindings});this.leave();this.save(this.settings);this.render();this.notice?.('Przywrócono wesołą naukę. Mapa i krótkie brzmienia zachowują Twoje ustawienia.');return;}
    if(action==='ambient-download'){saveDownload(wavBlob(mixAmbience(this.settings.mix,undefined,16000,this.settings)),'mala-nauka-ambient-mix.wav');return;}
    if(action==='archive'&&!this.busy){

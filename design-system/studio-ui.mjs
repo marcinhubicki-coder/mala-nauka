@@ -65,3 +65,8 @@ export function previewScale(width,height,{paddingX=24,paddingY=24,columns=1,gap
  const availableWidth=Math.max(0,(width-paddingX-(columns-1)*gap)/columns);
  return Math.min(1,availableWidth/PREVIEW_DEVICE.width,Math.max(0,height-paddingY)/PREVIEW_DEVICE.height);
 }
+
+export function mapViewIcon(view={}){
+ if(['players','players-empty','player-create','player-pin','player-unlock','home','settings'].includes(view.id)||['login','home'].includes(view.category))return viewIcon(view);
+ return MODE_ICONS[view.mode||view.id?.split('-')[0]]||viewIcon(view);
+}

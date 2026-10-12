@@ -89,9 +89,9 @@ test('muting while audio unlocks does not play a queued first answer',async()=>{
 });
 test('Sound Lab reports an intentional mute and its test tone ignores mixer levels without saving',async()=>{
  const lab=Object.create(StudioSound.prototype);lab.active=true;lab.settings=normalizeSoundSettings({volume:0,cueVolume:0,mix:Array(10).fill(0)});
- let played,status;lab.engine={async cue(id,settings){played={id,settings};}};lab.status=value=>{status=value;};lab.workspace={contains:()=>true};
+ let played,status,cleaned=0;const classes=new Set(),button={classList:{add:c=>classes.add(c),remove:c=>classes.delete(c)},setAttribute(){}},copy={hidden:true},voice={source:{onended:()=>cleaned++,stop(){}}};lab.engine={async cue(id,settings){played={id,settings};return voice;}};lab.status=value=>{status=value;};lab.workspace={contains:()=>true,querySelector:selector=>selector.includes('check-copy')?copy:button};
  await lab.click({target:{closest:()=>({dataset:{soundCue:'correct'}})}});assert.match(status,/wyciszone/);assert.equal(played,undefined);
- await lab.click({target:{closest:()=>({dataset:{soundAction:'check'}})}});assert.equal(played.id,'correct');assert.ok(played.settings.volume>0);assert.equal(lab.settings.volume,0);assert.match(status,/niezależnie od miksera/);
+ await lab.click({target:{closest:()=>({dataset:{soundAction:'check'}})}});assert.equal(played.id,'correct');assert.ok(played.settings.volume>0);assert.equal(lab.settings.volume,0);assert.match(status,/domyślną głośnością/);assert.equal(copy.hidden,false);assert.ok(classes.has('is-playing'));voice.source.onended();assert.equal(cleaned,1);assert.equal(classes.has('is-playing'),false);assert.equal(lab.settings.volume,0);
 });
 test('mapped interactions play the selected mixed sound and respect local volume and silence',async()=>{
  const ctx=fakeContext(),engine=new SoundPreviewEngine({contextFactory:()=>ctx,workerFactory:null}),controller=new GameSoundController(engine);

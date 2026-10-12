@@ -1,3 +1,4 @@
+import {playScreenBlob} from './screen-blob-transition.mjs';
 import {gameSound,installGameSounds} from './sound-runtime.mjs';
 import {animatePresence} from './state-motion.mjs';
 import {triggerSurfaceEffects} from './surface-effects.mjs';
@@ -9,7 +10,13 @@ import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {annotateElements,visualValue} from './element-system.mjs';
 const base = new URL('../', import.meta.url);
-let config,designSignature;
+let config,designSignature,pendingOutgoing;
+export function prepareScreenChange(app,nextView){
+ if(!app||app.dataset.view===nextView||!config)return;
+ const motion=config.motion||DEFAULT_MOTION;
+ if(motion.style!=='blob'&&!Object.values(motion.transitions||{}).some(r=>r.style==='blob'))return;
+ pendingOutgoing={from:document.documentElement.dataset.dsView,node:app.cloneNode(true),background:getComputedStyle(document.body).background};
+}
 export function applyDesign(value) {
   const nextSignature=JSON.stringify(value);if(nextSignature===designSignature)return;designSignature=nextSignature;
   const css = configCSS(value);
@@ -56,7 +63,7 @@ export async function initDesign() {
     }
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
     applyScreenCopy(app);
-    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();screenAnimation=animateScreen(app,transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen));}if(screen)previousScreen=screen;
+    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
     annotateElements(app,config,document.documentElement.dataset.dsView);
   };
   if (app) new MutationObserver(records=>{

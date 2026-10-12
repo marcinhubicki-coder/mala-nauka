@@ -1,7 +1,7 @@
 export const pairKey=(from,to)=>`${from}--${to}`;
 export function flowEdges(registry){
  const ids=new Set(registry.views.map(v=>v.id)),rows=[];
- for(const flow of registry.flows){const origins=flow.from.includes('*')?registry.views.filter(v=>new RegExp('^'+flow.from.replace('*','[a-z]+')+'$').test(v.id)).map(v=>v.id):[flow.from];for(const from of origins)for(const target of flow.to){const to=target.replace('*',from.split('-')[0]);if(ids.has(from)&&ids.has(to)&&from!==to){const key=pairKey(from,to);if(!rows.some(r=>r.key===key))rows.push({key,from,to,action:flow.action,condition:flow.condition,selector:flow.selector||'',state:flow.state===true});}}}
+ for(const flow of registry.flows){const origins=flow.from.includes('*')?registry.views.filter(v=>new RegExp('^'+flow.from.replace('*','[a-z]+')+'$').test(v.id)).map(v=>v.id):[flow.from];for(const from of origins)for(const target of (Array.isArray(flow.to)?flow.to:[flow.to])){const to=target.replace('*',from.split('-')[0]);if(ids.has(from)&&ids.has(to)&&from!==to){const key=pairKey(from,to);if(!rows.some(r=>r.key===key))rows.push({key,from,to,action:flow.action,condition:flow.condition,selector:flow.selector||'',state:flow.state===true});}}}
  return rows;
 }
 export const motionEdges=registry=>flowEdges(registry).filter(e=>!e.state);

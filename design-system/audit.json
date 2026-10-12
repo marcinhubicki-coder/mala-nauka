@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-12T10:51:46.072Z",
-  "sourceCommit": "076d11c07fb475b564bdd95d85fabedf73b17704",
+  "date": "2026-10-12T13:15:11.151Z",
+  "sourceCommit": "dc64c686b74dec86e2299448e35c8a0fe873ce37",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -1072,7 +1072,7 @@
     },
     {
       "file": "shared/components.css",
-      "selector": "@import './mission-parts.css';\n\n:root",
+      "selector": "@import './mission-parts.css';\n@import './spelling-word.css';\n@import './navigation-parts.css';\n\n:root",
       "role": "flag"
     },
     {
@@ -1129,6 +1129,11 @@
       "file": "shared/mission-parts.css",
       "selector": "#app[data-view=wizard] .mission-card p,.live-component .mission-card p",
       "role": "body"
+    },
+    {
+      "file": "shared/navigation-parts.css",
+      "selector": "#app[data-view=wizard]>.page-head h1",
+      "role": "display"
     },
     {
       "file": "shared/round-result.css",
@@ -1206,6 +1211,11 @@
       "role": "body"
     },
     {
+      "file": "shared/spelling-word.css",
+      "selector": "[data-ds-recipe=\"text-spelling-word\"]",
+      "role": "display"
+    },
+    {
       "file": "shared/wizard-controls.css",
       "selector": "#app[data-view=\"wizard\"]:is([data-mode=\"flags\"],[data-mode=\"spelling\"]) :is(.flag-segmented,.spelling-segmented,.flag-language-options) label>span",
       "role": "body"
@@ -1223,11 +1233,6 @@
     {
       "file": "spelling-art.css",
       "selector": ".spelling-title",
-      "role": "display"
-    },
-    {
-      "file": "spelling-art.css",
-      "selector": "#app[data-view=\"game\"][data-mode=\"spelling\"] .word",
       "role": "display"
     },
     {
@@ -1416,12 +1421,12 @@
       "display"
     ]
   },
-  "cssBytes": 491147,
-  "jsBytes": 996381,
+  "cssBytes": 483113,
+  "jsBytes": 1008787,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 86342
+      "bytes": 81435
     },
     {
       "path": "shared/round-result.css",
@@ -1437,43 +1442,43 @@
     },
     {
       "path": "shared/element-system.mjs",
-      "bytes": 31018
+      "bytes": 33592
     },
     {
-      "path": "app.css",
-      "bytes": 29057
+      "path": "shared/sound-library.mjs",
+      "bytes": 32848
     },
     {
       "path": "player-profiles.css",
       "bytes": 28779
     },
     {
-      "path": "shared/sound-library.mjs",
-      "bytes": 27304
-    },
-    {
       "path": "sw.js",
       "bytes": 27174
-    },
-    {
-      "path": "spelling-art.css",
-      "bytes": 25451
     },
     {
       "path": "ortografia/wizard-v2.mjs",
       "bytes": 24628
     },
     {
-      "path": "progress-screen.css",
-      "bytes": 24516
+      "path": "shared/structure-model.mjs",
+      "bytes": 24365
     },
     {
-      "path": "shared/structure-model.mjs",
-      "bytes": 24433
+      "path": "spelling-art.css",
+      "bytes": 24145
+    },
+    {
+      "path": "progress-screen.css",
+      "bytes": 24005
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 23091
+      "bytes": 23178
+    },
+    {
+      "path": "app.css",
+      "bytes": 22200
     },
     {
       "path": "angielski/wizard-v2.mjs",
@@ -1497,7 +1502,7 @@
     },
     {
       "path": "progress-screen.mjs",
-      "bytes": 19158
+      "bytes": 19240
     }
   ],
   "fonts": [

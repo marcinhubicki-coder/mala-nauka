@@ -83,18 +83,7 @@ body:has(#app[data-view="wizard"][data-mode="english"])::after {
   line-height:1.1;
 }
 
-#app[data-mode="english"][data-view="wizard"] .page-head .icon {
-  width:calc(43 * var(--english-u));
-  height:calc(43 * var(--english-u));
-  min-width:38px;
-  min-height:38px;
-  border:1px solid rgba(255,255,255,.93);
-  border-radius:calc(16 * var(--english-u));
-  background:linear-gradient(140deg,#fff,#f8fcff);
-  color:#09043f;
-  font-size:calc(30 * var(--english-u));
-  box-shadow:0 calc(5 * var(--english-u)) calc(10 * var(--english-u)) rgba(38,114,174,.10);
-}
+
 
 #app[data-mode="english"][data-view="wizard"] .wizard-intro {
   position:relative;

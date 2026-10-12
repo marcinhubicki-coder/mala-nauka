@@ -56,6 +56,11 @@ body:has(.studio-tooltip-layer) .tooltip::after{display:none!important;}
 @media(max-width:740px){.sound-hero-mark{display:grid;width:54px;height:54px;top:20px;right:20px;font-size:32px;border-radius:18px;}.sound-check-button{padding:10px;font-size:12px;}.sound-check-copy{padding-right:6px;}}
 .sound-check-copy[hidden],.sound-transport [hidden]{display:none!important;}
 .visual-properties details[data-inspector-group] > :not(summary){margin:12px 14px;}
+.visual-properties details[data-inspector-group] > .control{width:auto!important;min-width:0;}
+.visual-properties details[data-inspector-group] .range-wrap{width:100%;min-width:0;}
+.visual-properties .control-top>label,.visual-properties .saved-value>span{min-width:0;}
+.visual-properties .control-value{flex:none;}
+.visual-properties .saved-value{flex-wrap:wrap;gap:6px;}
 .visual-properties details[data-inspector-group] .surface-editor{margin:0;padding:14px;}
 .mn-screen-blob .mn-logo-svg{display:block;width:100%;height:100%;}
 

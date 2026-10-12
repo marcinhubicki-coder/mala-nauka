@@ -1,13 +1,16 @@
+import {resultStatMarkup,resultStatIcon,resultStatCopy,resultStatSprig} from '../ortografia/result-screen.mjs';
 import {progressCollectionMarkup,collectionWordMarkup,collectionFiltersMarkup} from '../progress-screen.mjs';
+import {backButton} from './navigation-parts.mjs';
+import {wordMarkup} from '../spelling/word-reveal.mjs';
 import {missionIllustration} from './mission-parts.mjs';
-import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon,renderHomeSettings,renderHomeHero,renderHomeAdventures,renderHomeScreen,renderHomeLogo} from '../home-screen.mjs';
+import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon,renderHomeSettings,renderHomeHero,renderHomeAdventures,renderHomeScreen,renderHomeLogo,renderHomeToday,renderHomeLast,renderHomeWelcome,renderHomeModes,HOME_MODES_BOUNDS,HOME_WELCOME_BOUNDS} from '../home-screen.mjs';
 import {homeTileSurface,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES} from './home-atoms.mjs';
 import {PART_BY_ID} from './structure-model.mjs';
 import {profileAvatar,pinModeMarkup,pinDotMarkup,pinDotsMarkup,pinKeyMarkup,pinKeypadMarkup} from './profile-parts.mjs';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const texts={
  'text-mission-title':'Twoja mała misja','text-mission-hint':'Małe kroki, wielkie odkrycia.', 'text-player-title':'Kto dziś odkrywa?', 'text-nickname':'Maja', 'text-pin-instruction':'Ustaw 4 cyfry',
- 'text-player-copy':'Małe kroki, wielkie odkrycia.', 'text-field-label':'Co ćwiczymy?',
+ 'text-player-copy':'Małe kroki, wielkie odkrycia.', 'text-player-form-title':'Jak Cię wołamy?', 'text-field-label':'Co ćwiczymy?',
  'text-nickname-help':'Od 3 do 16 znaków.', 'jelly-option':'Podstawowe', 'pin-option':'Ustaw PIN',
  'text-continue-copy':'Przesuń, aby kontynuować', 'text-progress-value':'72%', 'text-mode-name':'Ortografia', 'text-home-mode-symbol':'abc', 'text-home-stat-value':'0 pkt', 'text-home-stat-label':'Zagraj pierwszą rundę'
 };
@@ -50,6 +53,7 @@ export function partSample(id,options={}){
    case 'image-player-brand-art':case 'image-player-empty-art':return img(recipe,p.asset);
    case 'image-home-logo-art':return homePreview(renderHomeLogo('inset:0'),180,140);
    case 'image-mission':return `<div class="mission-sample">${missionIllustration(homeMode,assetURL)}</div>`;
+   case 'text-spelling-word':return wordMarkup('kr_l');
    case 'image-mn-soap-picture':return img(recipe,opts.photoAsset||'assets/scenes/krol.jpg');
    case 'background-home-art-backdrop':return tag('div',recipe,'part-background','',`style="background:linear-gradient(#eaf5ff,#d9e9ff)" aria-label="Tło scenariusza gry"`);
    case 'control-jelly':return stamp(jellyMarkup(opts.labels,opts.choice),'control-jelly');
@@ -59,20 +63,20 @@ export function partSample(id,options={}){
    case 'icon-pin-dot':return stamp(pinDotMarkup(opts.pinDigits>0),'icon-pin-dot');
    case 'input-player-name':return tag('input',recipe,'player-name-input','', 'type="text" value="Maja" maxlength="16" aria-label="Imię gracza"');
    case 'button-main':case 'button-answer':return tag('button',recipe,recipe==='button-main'?'start-button':'recipe-answer',recipe==='button-main'?'Dalej':'rz','type="button" data-sample-press aria-pressed="false"');
-   case 'button-back':return tag('button',recipe,'part-icon-button',recipe==='button-back'?arrow.replace('M5 12h14m-6-6 6 6-6 6','M19 12H5m6-6-6 6 6 6'):arrow,'type="button" data-sample-press aria-pressed="false"');
+   case 'button-back':return backButton();
    case 'button-avatar-choice':return tag('button',recipe,'avatar-choice',avatar(),'type="button" data-sample-avatar="a" aria-pressed="false"');
    case 'button-player-card':return player();
    case 'button-home-card':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeModeCard(homeMode,homeNames[homeMode],'left:0;top:0;width:100%;height:100%'),recipe),w,h);}
    case 'container-home-decoration':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeDecoration(homeMode),recipe),w,h);}
    case 'container-home-badge':return homePreview(stamp(renderHomeBadge(homeMode).replace('class="home-mode-badge"','class="home-mode-badge home-part-badge"').replace('<span ','<span data-mode="'+homeMode+'" '),recipe),158,158);
    case 'icon-home-target':case 'icon-home-star':return homePreview(renderHomeStatIcon(recipe.endsWith('target')?'target':'star').replace('class="home-icon home-stat-icon"','class="home-icon home-stat-icon home-part-stat-icon"'),100,100);
-   case 'container-home-stat':return homePreview(tag('div',recipe,'home-stat',renderHomeStatIcon('target')+tag('div','container','',child('text-home-stat-value')+child('text-home-stat-label'))),340,140);
+   case 'container-home-stat':return homePreview(renderHomeToday(),296,140);
    case 'button-home-settings':return homePreview(renderHomeSettings('left:0;top:0;width:100%;height:100%'),103,103);
    case 'container-home-hero':return homePreview(renderHomeHero('Odkrywco','left:0;top:0;width:100%;height:100%'),810,820);
-   case 'family-home-welcome':return homePreview(tag('section',recipe,'home-welcome',renderHomeHero('Odkrywco','left:0;top:0;width:100%;height:90%')+renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'left:0;top:82%;width:100%;height:18%')),810,918);
-   case 'family-home-modes':return homePreview(tag('nav',recipe,'home-game-buttons',Object.keys(HOME_TILE_SIZES).map((mode,i)=>renderHomeModeCard(mode,homeNames[mode],`left:${i<3?i*33.5:i===3?0:50}%;top:${i<3?0:51}%;width:${i<3?32:48}%;height:49%`)).join('')),801,507);
+   case 'family-home-welcome':return homePreview(renderHomeWelcome({},'inset:0'),HOME_WELCOME_BOUNDS[2],HOME_WELCOME_BOUNDS[3]);
+   case 'family-home-modes':return homePreview(renderHomeModes(Object.fromEntries(Object.entries(homeNames).map(([id,name])=>[id,{name}])) ,undefined,'inset:0'),HOME_MODES_BOUNDS[2],HOME_MODES_BOUNDS[3]);
    case 'container-home-adventures':return homePreview(renderHomeAdventures('inset:0'),801,68);
-   case 'container-home-last':return homePreview(renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'inset:0').match(/<div class="home-stat home-stat-last"[\s\S]*?<\/section>/)[0].replace('</section>',''),450,140);
+   case 'container-home-last':return homePreview(renderHomeLast(),453,140);
    case 'background-home':return homePreview(tag('span',recipe,'home-background',''),853,1670);
    case 'background-home-hero':return homePreview(tag('span',recipe,'home-hero-backing',''),810,820);
    case 'image-home-hero':return img(recipe,'assets/brand/home-adventure-3d.webp');
@@ -87,17 +91,19 @@ export function partSample(id,options={}){
    case 'icon-home-chevron':return homeAtom(recipe,homeStatSymbol('chevron'));
    case 'button-home-progress':return homePreview(tag('button',recipe,'home-progress-arrow',homeStatSymbol('chevron'),'type="button" data-sample-press aria-label="Moje wyniki"'),100,100);
    case 'background-home-stats-outer':case 'background-home-stats-inner':return homePreview(tag('span',recipe,recipe.endsWith('outer')?'home-stats-outer':'home-stats-inner','','style="z-index:0"'),810,184);
+   case 'container-result-stat':case 'icon-result-stat':case 'text-result-stat':case 'icon-result-sprig':{const key=opts.statKind==='retained'?'retained':'review',label=key==='retained'?'Dziś było pewne':'Do powtórki',markup=recipe==='container-result-stat'?resultStatMarkup(label,3,key,opts.state==='selected'):recipe==='icon-result-stat'?resultStatIcon(key):recipe==='text-result-stat'?resultStatCopy(label,3):resultStatSprig();return `<div class="result-part-sample" data-result="${key}" style="--result-u:1px;--result-ink:#071b56;--result-muted:#8298b7;--result-green:#218b52;--result-rose:#e90a76;width:172px;max-width:100%">${markup}</div>`;}
    case 'result-points-bubble':return tag('div',recipe,'part-points','125');
    case 'container-player-title':return tag('header',recipe,'player-title',children());
    case 'container-player-grid':return tag('div',recipe,`player-grid ${opts.selectedPlayer>=0?'has-selection':''}`,Array.from({length:opts.playerCount},(_,i)=>player(i)).join(''));
-   case 'container-player-actions':return tag('div',recipe,'player-actions',children());
-   case 'container-player-form-card':return tag('section',recipe,'part-panel player-form-card',tag('div','container-card','part-panel-body',avatar()+child('text-field-label')+child('input-player-name')+child('text-nickname-help')+child('container-avatar-picker')+child('button-main')));
+   case 'container-player-form-card':return tag('section',recipe,'part-panel player-form-card',avatar()+child('text-player-form-title')+child('text-player-copy')+child('container-player-form'));
+   case 'container-player-form':return tag('form',recipe,'player-form',child('text-field-label')+child('input-player-name')+child('text-nickname-help')+child('container-avatar-picker')+child('button-main'));
    case 'container-avatar-picker':return tag('div',recipe,'avatar-picker',Array.from('abcd',key=>tag('button','button-avatar-choice','avatar-choice',avatar(key),`type="button" data-sample-avatar="${key}" aria-pressed="false"`)).join(''));
    case 'container-pin-profile':return tag('div',recipe,'pin-profile',avatar()+tag('h2','text-nickname','','Maja'));
    case 'container-pin-dots':return dots();
    case 'container-pin-keypad':return keys();
    case 'container-pin-fields':return tag('div',recipe,'pin-fields',opts.pin?child('text-pin-instruction')+tag('p','text-player-copy','','PIN służy do przełączania profili.')+dots()+keys():tag('h3','text-pin-instruction','pin-instruction','Bez PIN-u')+tag('p','text-player-copy','','Do tego profilu wejdziesz bez kodu. PIN możesz ustawić później.')+child('button-main'));
-   case 'container-pin-card':return tag('section',recipe,`pin-card part-panel ${opts.pin?'':'pin-no-code'}`,tag('div','container-card','part-panel-body',child('container-pin-profile')+mode()+child('container-pin-fields')));
+   case 'container-pin-card':return tag('section',recipe,`pin-card part-panel ${opts.pin?'':'pin-no-code'}`,child('container-pin-profile')+mode()+child('container-pin-fields'));
+   case 'container-setting-field':return tag('fieldset',recipe,'setting-field',tag('legend','container-field-title','live-number-text',child('icon-step-dot')+child('text-field-label'))+child('control-jelly'));
    case 'container-field-title':return tag('div',recipe,'live-number-text',children());
    case 'container-mission':return tag('section',recipe,'mission-card',missionIllustration(homeMode,assetURL)+tag('div','container','',tag('h2','text-mission-title','','Twoja mała misja')+tag('p','text-mission-hint','','Małe kroki, wielkie odkrycia.')));
    case 'icon-continue-handle':return tag('span',recipe,'part-icon-button',arrow);

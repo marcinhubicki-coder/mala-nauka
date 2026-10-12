@@ -36,7 +36,8 @@ test('Math neon loader does not delay the real app',async()=>{
  assert.match(html,/neon-effects\.css/);
  assert.equal((html.match(/--digit-index:/g)||[]).length,9);
  assert.match(html,/math-neon-loading/);
- assert.match(math,/math-neon-wordmark/);
+ assert.match(math,/pageHeading\('Matematyka'/);
+ assert.doesNotMatch(math,/class="hero"/);
  assert.match(math,/app.innerHTML/);
  assert.doesNotMatch(css,/backdrop-filter|feGaussianBlur|filter:\s*blur/);
  const names=['mn-neon-switch-on','mn-neon-digit-pulse','mn-neon-number-success'];

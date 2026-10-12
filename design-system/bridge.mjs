@@ -1,8 +1,9 @@
 import {collectScreenCopy} from '../shared/screen-copy.mjs';
+import {PART_BY_ID} from '../shared/structure-model.mjs';
 import {configureRules,ruleLibrary} from '../shared/rules-library.mjs';
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
 import {configureAssets,rewriteAssetNodes,previewAssets,assetManifest} from '../shared/asset-loader.mjs';
-import {annotateElements,visualValue} from '../shared/element-system.mjs';
+import {annotateElements,visualValue,isLayoutWrapper} from '../shared/element-system.mjs';
 import {blueprintTemplate,newLayer,validateBlueprint} from '../shared/component-recipes.mjs';
 
 const query = new URLSearchParams(location.search);
@@ -25,7 +26,9 @@ const visible = node => {
   if(!node?.getClientRects().length)return false;
   for(let parent=node;parent&&parent!==document.body;parent=parent.parentElement){
     const style=getComputedStyle(parent);
-    if(parent.hidden||parent.inert||parent.getAttribute('aria-hidden')==='true'&&!parent.matches('img,svg,.spelling-screen-bg')||style.visibility==='hidden'||style.display==='none'||Number(style.opacity)===0)return false;
+    // aria-hidden and inert affect accessibility/input, not painted visibility.
+    // Decorative atoms must remain selectable in the design editor.
+    if(parent.hidden||style.visibility==='hidden'||style.display==='none'||Number(style.opacity)===0)return false;
   }
   const rect=node.getBoundingClientRect();return rect.width>0&&rect.height>0;
 };
@@ -62,7 +65,7 @@ function collect() {
   const mapped=annotateElements(app(),window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView);
   for(const item of mapped)result.set(item.id,item);
   for (const component of registry.components.filter(c=>!c.fine)) {
-    [...document.querySelectorAll(component.selector)].filter(node => app().contains(node) || node.matches('dialog')).forEach((node,index) => {
+    [...document.querySelectorAll(component.selector)].filter(node => (app().contains(node)||node.matches('dialog'))&&!isLayoutWrapper(node)).forEach((node,index) => {
       const existing=[...result.values()].find(row=>row.node===node);
       if(existing){if(!['timer','meter','toggle','key','background','icon','image','text'].includes(existing.kind))existing.component=component.id;existing.index=index;}
       else {const id=`${component.id}-${index}`;node.dataset.dsElement=id;result.set(id,{id,component:component.id,index,label:caption(node),node,kind:'container',depth:0,parent:'layout-root'});}
@@ -75,7 +78,7 @@ function collect() {
     item.order=order++;
     if(item.id==='layout-root'){item.kind='container';item.label='Cały ekran';continue;}
     let parent=item.node.parentElement;
-    while(parent&&!byNode.has(parent))parent=parent.parentElement;
+    while(parent&&(!byNode.has(parent)||PART_BY_ID[byNode.get(parent)?.recipe]?.level==='atom'))parent=parent.parentElement;
     item.parent=byNode.get(parent)?.id||'layout-root';
   }
   for(const item of result.values()){
@@ -158,7 +161,7 @@ function report() {
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',screen:app()?.dataset.view,viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);

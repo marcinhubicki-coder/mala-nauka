@@ -1,0 +1,9 @@
+[data-ds-recipe="text-spelling-word"]{display:inline-flex;align-items:center;justify-content:center;max-width:none;white-space:nowrap;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-weight:700;font-size:clamp(42px,14.5vw,65px);line-height:1.2;letter-spacing:-1.7px;color:var(--ink,#09043f);text-shadow:0 2px 0 #ffffff5c;padding:.12em .04em .08em;overflow:visible}
+[data-ds-recipe="text-spelling-word"] .gap{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 1.04em;width:1.04em;height:1.04em;min-width:0;margin:0 .025em;border:0;color:inherit;line-height:1;overflow:visible}
+[data-ds-recipe="text-spelling-word"] .bubble-glass{position:absolute;inset:.01em;border-radius:50%;border:1px solid #fff;background:
+ radial-gradient(ellipse 17% 12% at 31% 20%,#fff 15%,#ffffffbb 50%,transparent 75%),
+ radial-gradient(ellipse 35% 40% at 77% 75%,#ffbcea9c,transparent 80%),
+ radial-gradient(ellipse 40% 45% at 22% 63%,#9cdeff96,transparent 83%),
+ conic-gradient(from 135deg,#ddcaff91,#a2f1fa82,#fbe8d995,#eeb5f891,#c9ddff72,#ffc6ed9c,#ddcaff91);
+ box-shadow:0 0 0 1px #bb9ee59c,0 3px 8px #7970b533,inset 1px 2px 4px white,inset -2px -3px 6px #ede5ff,inset 3px 0 7px #e8a6ef91;
+ transition:opacity .65s ease,filter .65s ease,scale .65s ease;animation:small-soap 7.7s ease-in-out infinite}

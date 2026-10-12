@@ -1,4 +1,5 @@
 import {prepareScreenChange} from './shared/design-runtime.mjs';
+import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
 import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
@@ -7,7 +8,9 @@ import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
 import {createStudioGame} from './design-system/scenarios.mjs';
 import {designReady,applyDesign} from './shared/design-runtime.mjs';
-import {loadWords} from './shared/asset-loader.mjs';
+import {pageHeading} from './shared/navigation-parts.mjs';
+import {loadWords,assetUrl} from './shared/asset-loader.mjs';
+import {missionIllustration} from './shared/mission-parts.mjs';
 import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
@@ -25,6 +28,7 @@ import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './play
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
+const modeHost=new URLSearchParams(location.search).get('audio-host')==='1'?null:createModeHost({app:root,audio:gameSound,getDesign:()=>window.__MALA_NAUKA_DESIGN__,navigate:target=>{if(target==='players')playersPage();else navigate(target);}});
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
 let pinSuppressClickUntil=0;
@@ -65,15 +69,8 @@ const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
 const book='<svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M5 9c6-2 10 0 15 4 5-4 9-6 15-4v23c-6-2-10-1-15 2-5-3-9-4-15-2V9Z" fill="currentColor" opacity=".18"/><path d="M5 9c6-2 10 0 15 4 5-4 9-6 15-4v23c-6-2-10-1-15 2-5-3-9-4-15-2V9ZM20 13v21" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/></svg>';
-const globe='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#2698ed" stroke="#d1f7ff" stroke-width="2"/><path d="m13 5 5 3-2 5-5 2-1 5-6-2a17 17 0 0 1 9-13m5 15 6-1 5 6-3 9-5 3-3-8-5-3zm12-12 6 8-4 5-5-4-2-6Z" fill="#a4e64e"/></svg>';
-const englishFlag='<svg viewBox="0 0 60 40" aria-hidden="true"><defs><clipPath id="union-clip"><rect width="60" height="40" rx="6"/></clipPath></defs><g clip-path="url(#union-clip)"><path fill="#204b9b" d="M0 0h60v40H0z"/><path stroke="white" stroke-width="10" d="m0 0 60 40M60 0 0 40"/><path stroke="#eb4267" stroke-width="4" d="m0 0 60 40M60 0 0 40"/><path stroke="white" stroke-width="14" d="M30 0v40M0 20h60"/><path stroke="#eb4267" stroke-width="8" d="M30 0v40M0 20h60"/></g></svg>';
-const homeTargetIcon='<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="23" cy="25" r="17" fill="#ffedf5"/><circle cx="23" cy="25" r="12" fill="#ff5a9b"/><circle cx="23" cy="25" r="6.5" fill="#fff"/><path d="M25 22 36 11m0 0-1 7 7-1m-7 1 7-7" stroke="#7255e5" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const homeStarIcon='<svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="m24 5.5 5.7 11.7 12.9 1.8-9.3 9.1 2.2 12.8L24 34.8l-11.5 6.1 2.2-12.8L5.4 19l12.9-1.8L24 5.5Z" fill="#ffc51e"/><path d="m24 8 4.8 10 11 1.5" stroke="#ffe783" stroke-width="2" stroke-linecap="round" opacity=".85"/></svg>';
 const homeChevronIcon='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const homeSettingsIcon='<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m13 3-1 4-4 2-4-1-2 5 3 3v4l-3 2 3 5 4-1 3 2 1 3h6l1-4 4-2 4 1 2-5-3-3v-4l3-2-3-5-4 1-3-2-1-3h-6Z" fill="#81809e"/><circle cx="16" cy="17" r="7" fill="#5a5a77"/><circle cx="16" cy="17" r="4.5" fill="#f0effa"/><circle cx="16" cy="17" r="2.5" fill="#555674"/></svg>';
 
-const brandMark='<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><defs><linearGradient id="brand-grad" x1="12" y1="10" x2="53" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#54B9FF"/><stop offset=".48" stop-color="#7C77F3"/><stop offset="1" stop-color="#EE5E9A"/></linearGradient></defs><rect x="4" y="4" width="56" height="56" rx="18" fill="white"/><rect x="4.75" y="4.75" width="54.5" height="54.5" rx="17.25" stroke="#DDE9F7" stroke-width="1.5"/><path d="M14 39c6-2.6 11-1.5 18 3.4V22.8c-6.2-4-11.8-5.1-18-2.5V39Zm36 0c-6-2.6-11-1.5-18 3.4V22.8c6.2-4 11.8-5.1 18-2.5V39Z" fill="#20375B" opacity=".94"/><path d="M17.2 28.2 24 34l8-11 8 11 6.8-5.8" stroke="url(#brand-grad)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="17" r="3" fill="#EF438F"/><circle cx="47" cy="17" r="3" fill="#F5AB26"/></svg>';
-const homeHeroArt='<svg viewBox="0 0 300 190" fill="none" aria-hidden="true"><defs><linearGradient id="hero-shirt" x1="139" y1="95" x2="224" y2="159" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB44D"/><stop offset="1" stop-color="#F0785C"/></linearGradient><linearGradient id="hero-book" x1="127" y1="134" x2="226" y2="177" gradientUnits="userSpaceOnUse"><stop stop-color="#55C3ED"/><stop offset="1" stop-color="#4179D9"/></linearGradient><filter id="hero-shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#466487" flood-opacity=".17"/></filter></defs><ellipse cx="190" cy="173" rx="91" ry="11" fill="#8BCB8D" opacity=".24"/><circle cx="258" cy="41" r="20" fill="#fff" opacity=".78"/><circle cx="258" cy="41" r="13.5" fill="#54B8ED"/><path d="M245 39c4-5 8-8 15-9l4 8-5 6 3 8c-7 2-13-1-17-6l4-3-4-4Z" fill="#A9E65C"/><path d="m108 37 4.5 8.5 9.5 1.4-7 6.7 1.7 9.4-8.7-4.5-8.7 4.5 1.7-9.4-7-6.7 9.5-1.4L108 37Z" fill="#FFD85C" opacity=".96"/><g filter="url(#hero-shadow)"><path d="M180 64c0-24 16-40 39-40 22 0 39 16 39 40 0 25-14 45-39 45-25 0-39-20-39-45Z" fill="#F5C88E"/><path d="M181 61c0-25 17-42 40-42 16 0 31 8 37 23-11 4-19 2-26-5-8 10-20 17-38 19-3 0-7 2-13 5Z" fill="#2F4E73"/><circle cx="195" cy="64" r="3.1" fill="#263F60"/><circle cx="238" cy="64" r="3.1" fill="#263F60"/><path d="M205 79c7 6 15 6 22 0" stroke="#263F60" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="188" cy="73" rx="7" ry="4" fill="#EE8E8D" opacity=".55"/><ellipse cx="245" cy="73" rx="7" ry="4" fill="#EE8E8D" opacity=".55"/><path d="M181 111c12-10 25-15 39-15 16 0 31 7 43 20l-12 46H166l-7-35c3-6 11-12 22-16Z" fill="url(#hero-shirt)"/><path d="M159 124c-14 2-27 12-33 26l16 8c6-10 12-16 23-20l-6-14Z" fill="#F5C88E"/><path d="M253 116c10 5 19 13 23 24l-15 8c-5-8-10-13-18-17l10-15Z" fill="#F5C88E"/><path d="M121 147c-7 0-12 5-12 11 0 5 4 9 9 10 8 1 14-4 17-10l-14-11Z" fill="#F5C88E"/><path d="M270 137c7-3 14 0 16 6 2 5-1 10-6 13-7 3-14 0-19-5l9-14Z" fill="#F5C88E"/><path d="M127 139 206 111l7 14-79 30-7-16Z" fill="#35AF9C"/><path d="m206 111 19-9-8 21-4 2-7-14Z" fill="#F8E5BE"/><path d="m225 102 7-3-4 8-3-5Z" fill="#273E5D"/></g><g filter="url(#hero-shadow)"><path d="M127 143c20-8 39-8 58 1v30c-18-9-38-9-58-1v-30Z" fill="#FDFEFF"/><path d="M185 144c20-9 39-9 58-1v30c-20-8-39-8-58 1v-30Z" fill="url(#hero-book)"/><path d="M185 144v30" stroke="#D8E7F8" stroke-width="2"/><path d="M139 152c12-4 23-4 34 0M139 160c12-4 23-4 34 0" stroke="#C6D8EB" stroke-width="2.4" stroke-linecap="round"/><path d="M198 152c10-4 21-4 31 0M198 160c10-4 21-4 31 0" stroke="#C7E8F7" stroke-width="2.4" stroke-linecap="round"/></g><path d="M79 98c0-8 6-14 14-14s14 6 14 14-6 14-14 14-14-6-14-14Z" fill="#fff" opacity=".82"/><path d="M93 89v18M84 98h18" stroke="#8A6BE7" stroke-width="4" stroke-linecap="round"/></svg>';
 
 const avatarThemes={
  a:{bg:'#ffd9e9',hood:'#f45d9b',hair:'#8b4b2b',accent:'#ff8bbb'},
@@ -205,7 +202,8 @@ async function activatePlayer(player,from='',action=''){
  activePlayer=player;selectedPlayerId=player.id;
  if(!studioProfiles())progress=cleanProgress(await playerService.getProgress(player.id));
  pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';
- routeTo(from?resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode):'home');
+ if(!from&&new URLSearchParams(location.search).get('audio-host')==='1'&&window.__MALA_NAUKA_MODE__){selectedMode=window.__MALA_NAUKA_MODE__;navigate('wizard');}
+ else routeTo(from?resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode):'home');
  const duration=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__).fadeDuration;if(duration&&!matchMedia('(prefers-reduced-motion:reduce)').matches)root.animate([{opacity:0},{opacity:1}],{duration,easing:'ease-out'});
 }
 async function enterSelectedPlayer(){
@@ -315,8 +313,7 @@ async function submitPlayerPin(){
  await activatePlayer(player,'player-unlock','unlock-player');
 }
 
-function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
-function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
+function pageHead(title,action='home') {return pageHeading(title,{action});}
 function navigate(next) {
  prepareScreenChange(root,next);
  editingPin=false;editingProfile=false;deletingProfile=false;
@@ -337,7 +334,7 @@ function home() {
 function wizard() {
  if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
- root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color}">${modeIcon(selectedMode)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
+ root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color} mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
  <fieldset><legend><span class="step-dot">2</span>${selectedMode==='reading'?'Co czytamy?':'Wybierz poziom'}</legend><div class="choices levels ${selectedMode==='spelling'?'four':''}">${mode.levels.map((label,index)=>{const value=selectedMode==='spelling'?index:index+1;return `<label class="choice"><input type="radio" name="difficulty" value="${value}" ${config.difficulty===value?'checked':''}><span>${label}</span></label>`;}).join('')}</div></fieldset>
  <fieldset><legend><span class="step-dot">3</span>Ile mamy czasu?</legend><div class="choices four">${DURATIONS.map(d=>`<label class="choice"><input type="radio" name="duration" value="${d}" ${config.duration===d?'checked':''}><span>${minutes(d)}</span></label>`).join('')}</div></fieldset></section>
@@ -612,10 +609,11 @@ function finish(early=false,goHome=false){
  void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});
 }
 function routeTo(target){
+ if((['home','settings','players'].includes(target)||target.endsWith('-settings')&&target.slice(0,-9)!==selectedMode)&&requestHostRoute(target))return;
  if(target==='player-create'){playerCreatePage();return;}
  if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
  if(target==='progress'){navigate('history');return;}
- if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(selectedMode==='math'&&!new URLSearchParams(location.search).has('studio')){location.href=new URL('./matematyka/',import.meta.url).href;return;}navigate('wizard');return;}
+ if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(modeHost&&!new URLSearchParams(location.search).has('studio')&&selectedMode!==globalThis.__MALA_NAUKA_MODE__){stopGameTicker();spellingArt.reset();modeHost.open(selectedMode);return;}navigate('wizard');return;}
  if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
  navigate(target==='settings'?'settings':'home');
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 26,
+  "revision": 28,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -9,9 +9,7 @@
       "id": "96b581a01cd5b389",
       "type": "webp",
       "group": "angielski",
-      "references": [
-        "angielski/wizard-v2.mjs"
-      ]
+      "references": []
     },
     {
       "path": "assets/angielski/wizard-lamp-mask-v3.svg",
@@ -21,6 +19,7 @@
       "type": "svg",
       "group": "angielski",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/wizard-retina.css"
       ]
     },
@@ -41,6 +40,7 @@
       "type": "webp",
       "group": "angielski",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/wizard-retina.css"
       ]
     },
@@ -52,7 +52,9 @@
       "type": "webp",
       "group": "angielski",
       "references": [
-        "angielski/wizard-v2.mjs"
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "shared/mission-parts.mjs"
       ]
     },
     {
@@ -63,6 +65,7 @@
       "type": "png",
       "group": "apple-touch-icon.png",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/index.html",
         "angielski/wizard-preview-frame.html",
         "czytanie/index.html",
@@ -93,7 +96,26 @@
       "id": "503aaf9ccebdf3b2",
       "type": "webp",
       "group": "brand",
-      "references": []
+      "references": [
+        ".design-qa/publish-tree.json",
+        "home-screen.mjs",
+        "index.html",
+        "profile-preview-frame.html",
+        "shared/part-samples.mjs",
+        "shared/structure-model.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/home-mark.png",
+      "size": 28746,
+      "sha": "8010e4d9ed6f06e44eadf6c31f7256e11f9b3f691fbda7bc95e802a1ac9b079c",
+      "id": "8010e4d9ed6f06e4",
+      "type": "png",
+      "group": "brand",
+      "references": [
+        "home-screen.mjs",
+        "shared/structure-model.mjs"
+      ]
     },
     {
       "path": "assets/brand/home-mark.webp",
@@ -112,6 +134,9 @@
       "type": "webp",
       "group": "brand",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "app.js",
         "player-profiles.css"
       ]
     },
@@ -123,8 +148,11 @@
       "type": "webp",
       "group": "brand",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "app.js",
-        "player-profiles.css"
+        "player-profiles.css",
+        "shared/profile-parts.mjs"
       ]
     },
     {
@@ -135,7 +163,10 @@
       "type": "webp",
       "group": "brand",
       "references": [
-        "app.js"
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "app.js",
+        "shared/structure-model.mjs"
       ]
     },
     {
@@ -146,9 +177,13 @@
       "type": "webp",
       "group": "brand",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "app.js",
         "index.html",
-        "profile-preview-frame.html"
+        "profile-preview-frame.html",
+        "shared/part-samples.mjs",
+        "shared/structure-model.mjs"
       ]
     },
     {
@@ -168,8 +203,10 @@
       "type": "webp",
       "group": "czytanie",
       "references": [
-        "czytanie/wizard-v2.mjs",
-        "ortografia/wizard-v2.mjs"
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "boot-ui.mjs",
+        "shared/mission-parts.mjs"
       ]
     },
     {
@@ -180,6 +217,7 @@
       "type": "webp",
       "group": "czytanie",
       "references": [
+        ".design-qa/publish-tree.json",
         "czytanie/wizard-retina.css"
       ]
     },
@@ -324,7 +362,8 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure.css"
+        "flagi/adventure.css",
+        "shared/round-result.css"
       ]
     },
     {
@@ -346,7 +385,9 @@
       "type": "webp",
       "group": "flags",
       "references": [
-        "flagi/adventure-game.mjs"
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "shared/mission-parts.mjs"
       ]
     },
     {
@@ -408,6 +449,7 @@
       "type": "webp",
       "group": "flags",
       "references": [
+        ".design-qa/publish-tree.json",
         "flagi/setup-retina.css"
       ]
     },
@@ -623,6 +665,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/wizard-retina.css"
       ]
     },
@@ -1240,7 +1283,11 @@
       "id": "64c98a80601fc019",
       "type": "svg",
       "group": "flags",
-      "references": []
+      "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "shared/screen-blob-transition.mjs"
+      ]
     },
     {
       "path": "assets/flags/svg/es.svg",
@@ -1313,6 +1360,7 @@
       "type": "svg",
       "group": "flags",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/wizard-retina.css"
       ]
     },
@@ -1505,7 +1553,10 @@
       "id": "4ef2de6fb25ff5a1",
       "type": "svg",
       "group": "flags",
-      "references": []
+      "references": [
+        ".design-qa/publish-tree.json",
+        "shared/logo-transition.mjs"
+      ]
     },
     {
       "path": "assets/flags/svg/it.svg",
@@ -2579,6 +2630,8 @@
       "type": "woff",
       "group": "fonts",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "index.html",
         "profile-preview-frame.html",
         "shared/design-runtime.mjs"
@@ -2601,6 +2654,8 @@
       "type": "woff",
       "group": "fonts",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "shared/design-runtime.mjs"
       ]
     },
@@ -2621,6 +2676,8 @@
       "type": "woff",
       "group": "fonts",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "shared/design-runtime.mjs"
       ]
     },
@@ -2641,6 +2698,8 @@
       "type": "woff",
       "group": "fonts",
       "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
         "index.html",
         "profile-preview-frame.html",
         "shared/design-runtime.mjs"
@@ -2654,16 +2713,17 @@
       "type": "webp",
       "group": "home",
       "references": [
-        "home-screen.mjs",
-        "index.html",
-        "profile-preview-frame.html"
+        ".design-qa/home-current.html",
+        ".design-qa/home.html",
+        ".design-qa/publish-tree.json",
+        "shared/round-result.css"
       ]
     },
     {
       "path": "assets/home/README.md",
-      "size": 1549,
-      "sha": "ee6fa43d4f6ae665fe68976a1ef5d021eaabee32b3c08593359f60eefcbcbd13",
-      "id": "ee6fa43d4f6ae665",
+      "size": 2817,
+      "sha": "444d054555d9d45b4bd048b7ea37244607eab48e674fa137afdbae681dd06901",
+      "id": "444d054555d9d45b",
       "type": "md",
       "group": "home",
       "references": []
@@ -2676,6 +2736,7 @@
       "type": "png",
       "group": "icon-192.png",
       "references": [
+        ".design-qa/publish-tree.json",
         "angielski/index.html",
         "angielski/wizard-preview-frame.html",
         "czytanie/index.html",
@@ -2683,7 +2744,6 @@
         "flagi/index.html",
         "flagi/preview-frame.html",
         "index.html",
-        "matematyka/app.js",
         "matematyka/index.html",
         "ortografia/index.html",
         "ortografia/wizard-preview-frame.html",
@@ -3275,6 +3335,8 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
+        ".design-qa/publish-tree.json",
+        "boot-ui.mjs",
         "spelling/art.mjs",
         "spelling-art.css"
       ]
@@ -3345,7 +3407,7 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
-        "app.css"
+        "shared/round-result.css"
       ]
     },
     {
@@ -3419,6 +3481,7 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
+        ".design-qa/publish-tree.json",
         "ortografia/wizard-retina.css"
       ]
     },
@@ -3430,8 +3493,10 @@
       "type": "webp",
       "group": "ortografia",
       "references": [
-        "czytanie/wizard-v2.mjs",
-        "ortografia/wizard-v2.mjs"
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json",
+        "boot-ui.mjs",
+        "shared/mission-parts.mjs"
       ]
     },
     {
@@ -3451,6 +3516,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
         "progress-screen.css"
       ]
     },
@@ -3462,7 +3528,10 @@
       "type": "webp",
       "group": "progress",
       "references": [
-        "progress-screen.css"
+        ".design-qa/publish-tree.json",
+        "progress-screen.css",
+        "shared/part-samples.mjs",
+        "shared/structure-model.mjs"
       ]
     },
     {
@@ -3482,6 +3551,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
         "progress-preview-frame.html",
         "progress-screen.css"
       ]
@@ -3494,6 +3564,8 @@
       "type": "webp",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
+        "ortografia/result-screen.mjs",
         "progress-screen.mjs"
       ]
     },
@@ -3523,6 +3595,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
         "progress-screen.css"
       ]
     },
@@ -3534,6 +3607,7 @@
       "type": "svg",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
         "progress-screen.css"
       ]
     },
@@ -3545,6 +3619,7 @@
       "type": "webp",
       "group": "progress",
       "references": [
+        ".design-qa/publish-tree.json",
         "progress-screen.mjs"
       ]
     },
@@ -4673,7 +4748,10 @@
       "id": "d5c1094358e7fdae",
       "type": "jpg",
       "group": "scenes",
-      "references": []
+      "references": [
+        ".design-qa/publish-tree.json",
+        "shared/part-samples.mjs"
+      ]
     },
     {
       "path": "assets/scenes/krotki.jpg",
@@ -6324,7 +6402,10 @@
       "id": "bb101351f9ddce21",
       "type": "avif",
       "group": "scenes",
-      "references": []
+      "references": [
+        ".design-qa/publish-regression.json",
+        ".design-qa/publish-tree.json"
+      ]
     },
     {
       "path": "assets/scenes/tutaj.jpg",

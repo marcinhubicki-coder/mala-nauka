@@ -8,7 +8,7 @@ import {syncElementSurface} from '../shared/surface-effects.mjs';
 import {animateStateChange} from '../shared/state-motion.mjs';
 
 export function mountPartSample(library,sample){
- const settings=()=>({catalog:library.catalog(),assetURL:assetUrl,mode:library.mode,state:library.state,pin:library.pin!==false,pinDigits:library.pinDigits||0,playerCount:library.playerCount||3,selectedPlayer:library.selectedPlayer??-1,choice:library.choice,percent:library.percent});
+ const settings=()=>({catalog:library.catalog(),assetURL:assetUrl,mode:library.mode,state:library.state,statKind:library.statKind,pin:library.pin!==false,pinDigits:library.pinDigits||0,playerCount:library.playerCount||3,selectedPlayer:library.selectedPlayer??-1,choice:library.choice,percent:library.percent});
  const render=()=>{
   sample.innerHTML=partSample(library.part,settings());
   let index=0;

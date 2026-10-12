@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 29,
+  "revision": 30,
   "name": "Mała Nauka",
   "branch": "design/system-v1",
   "typography": {
@@ -4414,9 +4414,6 @@
     "container-setup-form": {
       "gap": 0
     },
-    "family-game-settings": {
-      "gap": 0
-    },
     "button-game-start": {
       "offsetY": 18,
       "gap": 0
@@ -4454,9 +4451,6 @@
       "offsetY": -20,
       "height": 217
     },
-    "container-result-actions": {
-      "offsetY": 27
-    },
     "container-result-header": {
       "offsetY": -6.5
     },
@@ -4485,11 +4479,6 @@
       "animationDuration": 2600,
       "animationDistance": 2.5
     },
-    "container-spelling-question": {
-      "animation": "pulse",
-      "animationDuration": 5272.5,
-      "animationDistance": 2
-    },
     "text-mission-title": {
       "text": "Twoja przygoda"
     },
@@ -4510,33 +4499,10 @@
       "offsetY": -19,
       "offsetX": 10
     },
-    "button-result-back": {
-      "offsetY": -3
-    },
-    "family-math-settings": {
-      "effect": "bokeh",
-      "effectSize": 80,
-      "effectColor": "#6a98ff",
-      "effectIntensity": 0.35,
-      "effectDensity": 12,
-      "effectSpeed": 1.1
-    },
     "text-math-setup-title": {
-      "effect": "particles",
-      "effectColor": "#ffe4a8",
-      "opacity": 1,
-      "textColor": "#ffffff",
-      "effectSize": 36,
-      "animationDistance": 1.5,
-      "effectDensity": 20,
-      "animation": "float",
-      "effectIntensity": 0.85,
-      "effectSpeed": 1.85,
-      "effectBlur": 12,
-      "animationDuration": 3930
-    },
-    "family-player-shell": {
-      "gap": 10
+      "fontRole": "display",
+      "fontSize": 25,
+      "textColor": "#09043f"
     },
     "text-player-title": {
       "offsetY": -9
@@ -4547,7 +4513,7 @@
     "text-pin-error": {
       "offsetY": 17
     },
-    "container-spelling-question-body": {
+    "text-spelling-word": {
       "effect": "none",
       "animation": "pulse",
       "animationDistance": 13.5,
@@ -4682,9 +4648,9 @@
     "enabled": true,
     "volume": 48,
     "cueVolume": 68,
-    "ambientVolume": 12,
+    "ambientVolume": 35,
     "ambientEnabled": true,
-    "quietMode": true,
+    "quietMode": false,
     "ambientPreset": "custom",
     "mix": [
       7,
@@ -4702,9 +4668,164 @@
     "tempo": 84,
     "variation": 70,
     "warmth": 65,
-    "ducking": 60,
+    "ducking": 0,
+    "crossfadeMs": 2600,
+    "soundscape": "playground",
+    "ambientZone": "home",
+    "ambience": {
+      "home": {
+        "soundscape": "playground",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          5,
+          2,
+          3,
+          9,
+          0,
+          0,
+          0,
+          42,
+          21
+        ],
+        "volume": 85,
+        "tempo": 84,
+        "energy": 54,
+        "variation": 61,
+        "loopSeconds": 72
+      },
+      "spelling": {
+        "soundscape": "playground",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          14,
+          2,
+          4,
+          11,
+          0,
+          0,
+          0,
+          31,
+          24
+        ],
+        "volume": 80,
+        "tempo": 88,
+        "energy": 49,
+        "variation": 67,
+        "loopSeconds": 72
+      },
+      "math": {
+        "soundscape": "playground",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          40,
+          28
+        ],
+        "volume": 78,
+        "tempo": 92,
+        "energy": 48,
+        "variation": 57,
+        "loopSeconds": 72
+      },
+      "english": {
+        "soundscape": "garden",
+        "ambientPreset": "custom",
+        "mix": [
+          7,
+          16,
+          4,
+          3,
+          14,
+          5,
+          1,
+          2,
+          22,
+          12
+        ],
+        "volume": 80,
+        "tempo": 76,
+        "energy": 38,
+        "variation": 73,
+        "loopSeconds": 96
+      },
+      "flags": {
+        "soundscape": "forest",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          13,
+          5,
+          18,
+          24,
+          10,
+          3,
+          0,
+          17,
+          15
+        ],
+        "volume": 80,
+        "tempo": 78,
+        "energy": 43,
+        "variation": 81,
+        "loopSeconds": 96
+      },
+      "reading": {
+        "soundscape": "forest",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          3,
+          2,
+          6,
+          14,
+          1,
+          2,
+          0,
+          9,
+          20
+        ],
+        "volume": 70,
+        "tempo": 68,
+        "energy": 28,
+        "variation": 69,
+        "loopSeconds": 96
+      },
+      "results": {
+        "soundscape": "playground",
+        "ambientPreset": "custom",
+        "mix": [
+          0,
+          5,
+          0,
+          0,
+          7,
+          0,
+          0,
+          0,
+          42,
+          34
+        ],
+        "volume": 85,
+        "tempo": 82,
+        "energy": 62,
+        "variation": 63,
+        "loopSeconds": 72
+      }
+    },
     "logoEnabled": true,
-    "logoVolume": 72
+    "logoVolume": 72,
+    "loopSeconds": 72,
+    "cues": {},
+    "bindings": {}
   },
   "familyStyles": {
     "flags": {

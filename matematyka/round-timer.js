@@ -1,3 +1,4 @@
+import {requestHostRoute} from '../shared/mode-host.mjs';
 import {navigateWithBlob} from '../shared/screen-blob-transition.mjs';
 import {transitionMotion} from '../shared/screen-motion.mjs';
 import {transitionToResult} from '../ortografia/result-motion.mjs';
@@ -154,6 +155,7 @@ function renderRoundSummary({animate=true,delay=200}={}) {
 function goRoute(action){
  const app=document.querySelector('#app'),from=document.documentElement.dataset.dsView||'math-results';
  const to=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,action==='exit-confirm'?'math-initial':from,action,'math',action==='return-results'?historyOrigin:'');
+ if((['home','settings','players'].includes(to)||to.endsWith('-settings')&&to!=='math-settings')&&requestHostRoute(to))return;
  if(to==='home'){const motion=transitionMotion(globalThis.__MALA_NAUKA_DESIGN__?.motion,from,'home');const url=new URL('../',import.meta.url).href;if(motion.style==='blob')void navigateWithBlob(url,{app,config:globalThis.__MALA_NAUKA_DESIGN__?.exitTransition,speed:motion.speed});else location.href=url;return;}
  stopResultScroll(app);destroyProgressScreen(app);
  if(to==='math-settings'){window.dispatchEvent(new CustomEvent('math-back-to-setup'));return;}
@@ -187,6 +189,7 @@ export function renderMathStudioResult(fixture) {
 }
 
 document.querySelector('#app').addEventListener('spelling-repeat-request',()=>{stopResultScroll(document.querySelector('#app'));window.dispatchEvent(new CustomEvent('math-restart',{detail:{mode:currentMode,duration:currentDuration}}));});
+window.addEventListener('math-presentation-hold',event=>clock?.setPresentationHold(event.detail===true));
 window.addEventListener('math-round-start', event => {
   startClock(event.detail?.mode || 'multiply', Number(event.detail?.duration) || 180);
 });

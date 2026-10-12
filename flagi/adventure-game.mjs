@@ -58,8 +58,6 @@ function flagAnswer(button,id){
 function enhance(){
   if(!root||root.dataset.mode!=='flags')return;
   if(root.dataset.view==='wizard'){
-    const back=root.querySelector('.page-head .icon');
-    if(back&&!back.querySelector('svg'))back.innerHTML='<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M25 14H3m9-9-9 9 9 9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const intro=root.querySelector('.wizard-intro');
     return;
   }

@@ -1,3 +1,6 @@
+import {pageHeading} from '../shared/navigation-parts.mjs';
+import {missionIllustration} from '../shared/mission-parts.mjs';
+import {transitionToResult} from '../ortografia/result-motion.mjs';
 import {gameSound} from '../shared/sound-runtime.mjs';
 import {designReady} from '../shared/design-runtime.mjs';
 import {renderMathStudioResult} from './round-timer.js';
@@ -123,20 +126,7 @@ function makeQuestion(mode) {
   };
 }
 
-function setupTopbar() {
-  return `
-    <header class="topbar">
-      <div></div>
-      <div class="brand">
-        <a class="math-home-link" data-action="home" href="../" aria-label="Wróć do Małej Nauki">
-          <img src="../assets/icon-192.png" alt="" width="24" height="24">
-          <span>Mała Nauka</span>
-        </a>
-      </div>
-      <div></div>
-    </header>
-  `;
-}
+function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title'});}
 
 function gameTopbar() {
   return `
@@ -164,12 +154,9 @@ function renderCategories() {
   app.innerHTML = `
     ${setupTopbar()}
     <section class="screen math-setup-screen">
-      <div class="hero">
-        <p class="eyebrow"><span class="math-neon-wordmark">Matematyka</span></p>
-        <h1>Co dziś ćwiczymy?</h1>
-      </div>
 
-      <section class="wizard-intro mission-card"><div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
+
+      <section class="wizard-intro mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration('math')}<div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
       <section class="math-duration-setup" aria-label="Czas rozgrywki">
         <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Wybierz czas rundy">
@@ -202,14 +189,6 @@ function renderCategories() {
     button.addEventListener('click', () => {
       state.duration = Number(button.dataset.duration);
       saveSetup();
-      async function bootMath(){
-  await playerService.init();
-  const player=await playerService.getSessionPlayer();
-  if(!player){location.replace('../');return;}
-  renderCategories();
-}
-
-bootMath();
     });
   });
 
@@ -225,14 +204,16 @@ bootMath();
   app.querySelector('[data-start]')?.addEventListener('click', startSelectedGame);
 }
 
-function startSelectedGame() {
+async function startSelectedGame() {
   saveSetup();
   state.screen = state.selectedMode;
   resetAttemptState();
   state.question = makeQuestion(state.screen);
   gameSound.cue('roundStart');
   window.dispatchEvent(new CustomEvent('math-round-start', { detail: { mode: state.screen, duration: state.duration } }));
-  renderGame();
+  window.dispatchEvent(new CustomEvent('math-presentation-hold',{detail:true}));
+  try{await transitionToResult(app,()=>document.activeElement?.blur(),()=>renderGame());}
+  finally{window.dispatchEvent(new CustomEvent('math-presentation-hold',{detail:false}));}
 }
 
 function nextQuestion() {
@@ -599,8 +580,12 @@ window.addEventListener('math-restart', event => {
 
 window.addEventListener('math-back-to-setup', renderCategories);
 
-renderCategories();
+async function bootMath(){
+ await playerService.init();const player=await playerService.getSessionPlayer();
+ if(!player){location.replace('../');return;}renderCategories();
+}
 if(new URLSearchParams(location.search).has('studio')){
+ renderCategories();
  const query=new URLSearchParams(location.search);
  if(query.get('screen')!=='wizard'){
   state.screen='add';state.selectedMode='add';state.question=makeQuestion('add');
@@ -609,4 +594,4 @@ if(new URLSearchParams(location.search).has('studio')){
   renderGame({feedback:query.get('state')==='correct'?'Świetnie!':query.get('state')==='wrong'?'Spróbuj jeszcze raz.':'',feedbackType:query.get('state')==='correct'?'good':query.get('state')==='wrong'?'bad':''});
   if(query.get('screen')==='results')renderMathStudioResult({correct:8,wrong:2,duration:180,mode:'add'});
  }
-}
+} else {await bootMath();}

@@ -10,7 +10,7 @@ const registry=JSON.parse(await readFile(new URL('../design-system/registry.json
 const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
 test('every declared block has a unique identity, children, selector and acyclic inheritance',()=>{
  assert.equal(new Set(PARTS.map(p=>p.id)).size,PARTS.length);
- for(const p of PARTS){assert.ok(p.selector);assert.ok(['atom','group'].includes(p.level));for(const id of p.children)assert.ok(PART_BY_ID[id],`${p.id} → ${id}`);const chain=recipeLineage(p.id);assert.equal(new Set(chain).size,chain.length);if(p.inherits)assert.ok(PART_BY_ID[p.inherits]);}
+ for(const p of PARTS){assert.ok(p.selector);assert.ok(['atom','group','family'].includes(p.level));for(const id of p.children)assert.ok(PART_BY_ID[id],`${p.id} → ${id}`);const chain=recipeLineage(p.id);assert.equal(new Set(chain).size,chain.length);if(p.inherits)assert.ok(PART_BY_ID[p.inherits]);}
  assert.deepEqual(recipeLineage('control-pin'),['control-jelly','control-pin']);
  assert.deepEqual(recipeLineage('control-pin-key'),['button-main','control-pin-key']);
 });
@@ -29,7 +29,7 @@ test('the runtime hierarchy replaces descriptions, retaining hidden and previous
  assert.equal(catalog.find(p=>p.id==='image-new-photo').level,'atom');
  assert.equal(catalog.find(p=>p.id==='container-new-group').level,'group');
  assert.equal(catalog.find(p=>p.id==='image-new-photo').uses[0].selector,'[data-ds-element="custom-image"]');
- assert.deepEqual(selectionStack(v,items.at(-1),items).map(p=>p.level),['family','group','group','atom']);
+ assert.deepEqual(selectionStack(v,items.at(-1),items).map(p=>p.level),['page','family','group','atom']);
  assert.equal(JSON.stringify(PARTS),before,'reading inventories must not mutate definitions');
 });
 test('PIN inherits jelly, then palette, variant, instance and visible-state exceptions',()=>{
@@ -38,7 +38,7 @@ test('PIN inherits jelly, then palette, variant, instance and visible-state exce
  assert.deepEqual(style,{opacity:.8,radius:20,padding:7,enterAnimation:'fade',background:'#aabbcc',height:52});
  const css=elementCSS(c);assert.match(css,/data-ds-recipe="control-pin"[^}]*radius:20px/);
  assert.match(css,/html\[data-ds-view="player-pin"\] :is\(#app,body\) \[data-ds-element\]\[data-ds-element="pin-mode"\]/);
- assert.ok(css.indexOf('data-ds-component-state="no-pin"')>css.indexOf('data-mode="spelling"'));
+ assert.ok(css.indexOf('data-ds-component-state="no-pin"')>css.indexOf('data-ds-mode="spelling"'));
 });
 test('all profile routes have explicit conditions and preserve protected intermediate steps',()=>{
  assert.equal(startupLinks('players-empty').length,startupLinks('players').length);

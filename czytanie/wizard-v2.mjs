@@ -229,7 +229,6 @@ function install(){
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
  const back=root.querySelector('.page-head .icon');if(back)back.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7"/></svg>';
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
- if(intro){const art=document.createElement('img');art.className='reading-mission-art';art.src=new URL('../assets/czytanie/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=2048;art.height=733;intro.prepend(art);}
  const theme=document.querySelector('meta[name="theme-color"]');if(theme)theme.content='#65c8f4';
  updateStartButton(false);
  syncTrainingUI(false);

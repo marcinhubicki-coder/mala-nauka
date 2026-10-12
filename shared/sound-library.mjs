@@ -235,7 +235,7 @@ export class SoundPreviewEngine{
  constructor({contextFactory,workerFactory}={}){
   this.contextFactory=contextFactory;this.workerFactory=workerFactory;this.jobs=new Map();this.jobId=0;this.ctx=null;this.channels=new Map();this.pending=new Map();this.buffers=new Map();this.bufferSizes=new Map();this.cacheBytes=0;this.voices=new Set();this.playing=false;this.generation=0;this.voiceGeneration=0;
  }
- async ready(){
+ async ready({gesture=false}={}){
   if(this.ctx?.state==='closed'){this.ctx=null;this.clearBuffers();}
   if(!this.ctx){
    const Context=globalThis.AudioContext||globalThis.webkitAudioContext;
@@ -247,6 +247,15 @@ export class SoundPreviewEngine{
    this.limiter=ctx.createDynamicsCompressor();this.limiter.threshold.value=-12;this.limiter.knee.value=14;this.limiter.ratio.value=4;this.limiter.attack.value=.008;this.limiter.release.value=.16;
    this.ambientBus=ctx.createGain();this.ambientBus.gain.value=1;
    this.ambientBus.connect(this.master);this.master.connect(this.filter);this.filter.connect(this.limiter);this.limiter.connect(ctx.destination);
+  }
+  if(gesture){
+   // Keep native activation inside the touch/click call stack, before any await.
+   try{if(globalThis.navigator?.audioSession)navigator.audioSession.type='playback';}catch{}
+   const ctx=this.ctx;
+   if(ctx.state!=='running'&&!this.primedContexts?.has(ctx)){
+    this.primedContexts??=new WeakSet();this.primedContexts.add(ctx);
+    const silent=ctx.createBufferSource();silent.buffer=ctx.createBuffer(1,1,ctx.sampleRate||44100);silent.connect(ctx.destination);silent.onended=()=>silent.disconnect();silent.start(0);
+   }
   }
   // WebKit can interrupt an already unlocked context when the device or tab sleeps.
   const ctx=this.ctx;

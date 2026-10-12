@@ -19,11 +19,12 @@ export class GameSoundController{
   if(this.starting)return;this.starting=true;
   void this.engine.start(this.settings).catch(error=>this.report(error)).finally(()=>{this.starting=false;});
  }
- unlock(){
+ unlock({gesture=false}={}){
   if(!this.enabled)return Promise.resolve();
-  if(this.unlocking)return this.unlocking;
+  // A pending resume from outside a gesture must not swallow the next real tap.
+  if(this.unlocking){if(gesture)void this.engine.ready({gesture:true}).catch(error=>this.report(error));return this.unlocking;}
   // Keep the promise so the first click's cue waits for resume instead of being dropped.
-  this.unlocking=this.engine.ready().then(ctx=>{
+  this.unlocking=this.engine.ready({gesture}).then(ctx=>{
    this.unlocked=ctx.state==='running';this.lastError=null;this.update();
    const request=this.logoRequest;
    if(request&&this.unlocked){const offset=request.offset+Math.max(0,performance.now()-request.began);if(offset<request.timing.total)void this.engine.logo(request.config,request.timing,offset,this.settings).catch(error=>this.report(error));}
@@ -60,8 +61,9 @@ export function installGameSounds(app){
  if(!studio)try{gameSound.setPreference(JSON.parse(localStorage.getItem('malaNauka.v1.settings')||'{}').sound!==false);}catch{}
  const targets='button,input,select,a,[role=button],summary';
  const controlFor=target=>{const label=target.closest?.('label');return label?.querySelector('input,select')||target.closest?.(targets);};
- const unlock=event=>{if(event.isTrusted&&controlFor(event.target))void gameSound.unlock();};
+ const unlock=event=>{if(event.isTrusted)void gameSound.unlock({gesture:true});};
  document.addEventListener('pointerdown',unlock,{capture:true,passive:true});
+ document.addEventListener('touchend',unlock,{capture:true,passive:true});
  document.addEventListener('keydown',event=>{if(['Enter',' ','ArrowLeft','ArrowRight'].includes(event.key))unlock(event);},{capture:true});
  const recent=new WeakMap();
  const playControl=(node)=>{

@@ -69,7 +69,7 @@ test('home library examples reuse production vectors and expose their composed r
   for(const decoration of homeDecorationAtoms(mode))assert.ok(card.includes(decoration.svg),`${mode}: library must use the production vector`);
  }
  const progress=partSample('container-home-stats');
- for(const recipe of ['background-home-stats-outer','background-home-stats-inner','container-home-stat-icon','icon-home-stat-backing','icon-home-stat-symbol'])assert.ok(progress.includes(`data-ds-recipe="${recipe}"`),recipe);
+ for(const recipe of ['background-home-stats-outer','background-home-stats-inner','icon-home-target','icon-home-star','container-home-stat','container-home-last'])assert.ok(progress.includes(`data-ds-recipe="${recipe}"`),recipe);
  const reference=homeDecorationStar();
  for(const mode of ['spelling','reading'])for(const a of homeDecorationAtoms(mode)){
   assert.equal(a.svg,reference,'both modes share one star silhouette');

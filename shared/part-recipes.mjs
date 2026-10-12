@@ -27,7 +27,7 @@ export const PART_RECIPES={
 };
 export function partRecipeDefaults(part,config={},mode='default'){
  const token=group=>({...config.tokens?.[group],...config.familyTokens?.[mode]?.[group]});
- const base={width:0,height:0,padding:0,gap:8,radius:0,fontSize:20,opacity:1,offsetX:0,offsetY:0,margin:0,shadowY:6,shadowBlur:18,shadowOpacity:.12,...PART_RECIPES[part.id]};
+ const base={width:0,height:0,padding:0,gap:8,radius:0,fontSize:20,opacity:1,scale:1,offsetX:0,offsetY:0,margin:0,shadowY:6,shadowBlur:18,shadowOpacity:.12,...PART_RECIPES[part.id]};
  if(part.block){const t=token(part.block);for(const key of ['height','width','radius','fontSize'])if(Number.isFinite(t[key]))base[key]=t[key];if(part.block==='card')Object.assign(base,{paddingTop:t.paddingTop??0,paddingBottom:t.paddingBottom??0,paddingLeft:t.paddingX??0,paddingRight:t.paddingX??0});}
  return base;
 }

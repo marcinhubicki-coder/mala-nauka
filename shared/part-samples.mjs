@@ -1,10 +1,12 @@
-import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon} from '../home-screen.mjs';
-import {homeTileSurface,homeBadgeSurface,homeModeGlyph,homeStatBacking,homeStatSymbol,homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES} from './home-atoms.mjs';
+import {progressCollectionMarkup,collectionWordMarkup,collectionFiltersMarkup} from '../progress-screen.mjs';
+import {missionIllustration} from './mission-parts.mjs';
+import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon,renderHomeSettings,renderHomeHero,renderHomeAdventures,renderHomeScreen,renderHomeLogo} from '../home-screen.mjs';
+import {homeTileSurface,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES} from './home-atoms.mjs';
 import {PART_BY_ID} from './structure-model.mjs';
 import {profileAvatar,pinModeMarkup,pinDotMarkup,pinDotsMarkup,pinKeyMarkup,pinKeypadMarkup} from './profile-parts.mjs';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const texts={
- 'text-player-title':'Kto dziś odkrywa?', 'text-nickname':'Maja', 'text-pin-instruction':'Ustaw 4 cyfry',
+ 'text-mission-title':'Twoja mała misja','text-mission-hint':'Małe kroki, wielkie odkrycia.', 'text-player-title':'Kto dziś odkrywa?', 'text-nickname':'Maja', 'text-pin-instruction':'Ustaw 4 cyfry',
  'text-player-copy':'Małe kroki, wielkie odkrycia.', 'text-field-label':'Co ćwiczymy?',
  'text-nickname-help':'Od 3 do 16 znaków.', 'jelly-option':'Podstawowe', 'pin-option':'Ustaw PIN',
  'text-continue-copy':'Przesuń, aby kontynuować', 'text-progress-value':'72%', 'text-mode-name':'Ortografia', 'text-home-mode-symbol':'abc', 'text-home-stat-value':'0 pkt', 'text-home-stat-label':'Zagraj pierwszą rundę'
@@ -29,7 +31,7 @@ export function partSample(id,options={}){
  const homeMode=HOME_TILE_SIZES[opts.mode]?opts.mode:'spelling';
  const homeNames={spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'};
  // Production markup and styles are reused in the standalone library examples.
- const homePreview=(body,width,height)=>`<div class="home-canvas home-part-preview home-game-button" data-mode="${homeMode}" style="aspect-ratio:${width}/${height}">${body}</div>`;
+ const homePreview=(body,width,height)=>`<div class="home-canvas home-part-preview home-game-button" data-mode="${homeMode}" style="aspect-ratio:${width}/${height};--home-design-width:${width};--home-u:calc(853 / ${width} * 1cqw)">${body}</div>`;
  const homeAtom=(recipe,art)=>homePreview(tag('span',recipe,'home-part-atom home-game-button',art,`data-mode="${homeMode}"`),140,140);
  const render=(recipe,seen=new Set())=>{
   if(seen.has(recipe))return '';
@@ -37,15 +39,19 @@ export function partSample(id,options={}){
   const child=childId=>render(childId,next),children=()=>p.children.map(child).join('');
   if(texts[recipe])return tag(recipe==='text-player-title'?'h1':recipe==='text-pin-instruction'?'h3':'span',recipe,'part-text',esc(texts[recipe]));
   switch(recipe){
+   case 'family-collection':case 'container-collection-grid':case 'container-collection-word':case 'container-collection-filters':{const word={word:'król',masked:'kr_l',answer:'ó',category:'u/ó'},card=collectionWordMarkup(word,'mastered');return `<div class="progress-canvas collection-part-sample" style="--progress-u:1px">${recipe==='container-collection-word'?card:recipe==='container-collection-filters'?collectionFiltersMarkup():recipe==='family-collection'?`<section data-ds-recipe="family-collection" data-ds-kind="container">${collectionFiltersMarkup()}<div class="collection-word-grid" data-ds-recipe="container-collection-grid" data-ds-kind="container">${card}</div></section>`:`<div class="collection-word-grid" data-ds-recipe="container-collection-grid" data-ds-kind="container">${card}</div>`}</div>`;}
+   case 'container-progress-collection':return `<div class="progress-canvas progress-part-sample" style="--progress-u:1px">${progressCollectionMarkup()}</div>`;
+   case 'background-progress-collection':return tag('div',recipe,'part-background','',`style="background-image:url('${assetURL('assets/progress/collection-v1.webp')}')"`);
+   case 'text-progress-collection':return tag('strong',recipe,'part-text','Moja kolekcja słów');
    case 'container-card':return tag('div',recipe,'part-surface','', 'aria-label="Kafel / podkład"');
    case 'icon-step-dot':return tag('span',recipe,'step-dot','1');
    case 'icon-player-select':return tag('span',recipe,'player-select-mark',`<span class="check">${check}</span>`);
    case 'image-player-avatar-art':return avatar();
    case 'image-player-brand-art':case 'image-player-empty-art':return img(recipe,p.asset);
-   case 'image-home-logo-art':return img(recipe,'assets/brand/player-logo-3d.webp');
-   case 'image-mission':return img(recipe,`assets/${{english:'angielski',reading:'czytanie'}[opts.mode]||'ortografia'}/wizard-mission-retina-${opts.mode==='english'?'v2':'v1'}.webp`);
+   case 'image-home-logo-art':return homePreview(renderHomeLogo('inset:0'),180,140);
+   case 'image-mission':return `<div class="mission-sample">${missionIllustration(homeMode,assetURL)}</div>`;
    case 'image-mn-soap-picture':return img(recipe,opts.photoAsset||'assets/scenes/krol.jpg');
-   case 'background-home-art-backdrop':return tag('div',recipe,'part-background','',`style="background-image:url('${esc(assetURL('assets/home/home-retina.webp'))}')" aria-label="Tło ekranu startowego"`);
+   case 'background-home-art-backdrop':return tag('div',recipe,'part-background','',`style="background:linear-gradient(#eaf5ff,#d9e9ff)" aria-label="Tło scenariusza gry"`);
    case 'control-jelly':return stamp(jellyMarkup(opts.labels,opts.choice),'control-jelly');
    case 'control-pin':return mode();
    case 'control-toggle':return stamp(jellyMarkup(['Czas','Słowa'],opts.choice%2,'block-toggle'),'control-toggle');
@@ -59,14 +65,23 @@ export function partSample(id,options={}){
    case 'button-home-card':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeModeCard(homeMode,homeNames[homeMode],'left:0;top:0;width:100%;height:100%'),recipe),w,h);}
    case 'container-home-decoration':{const [w,h]=HOME_TILE_SIZES[homeMode];return homePreview(stamp(renderHomeDecoration(homeMode),recipe),w,h);}
    case 'container-home-badge':return homePreview(stamp(renderHomeBadge(homeMode).replace('class="home-mode-badge"','class="home-mode-badge home-part-badge"').replace('<span ','<span data-mode="'+homeMode+'" '),recipe),158,158);
-   case 'container-home-stat-icon':return homePreview(stamp(renderHomeStatIcon('target').replace('class="home-icon home-stat-icon"','class="home-icon home-stat-icon home-part-stat-icon"'),recipe),140,140);
-   case 'container-home-stat':return homePreview(tag('div',recipe,'home-stat',renderHomeStatIcon('star')+tag('div','container','',child('text-home-stat-value')+child('text-home-stat-label'))),340,140);
+   case 'icon-home-target':case 'icon-home-star':return homePreview(renderHomeStatIcon(recipe.endsWith('target')?'target':'star').replace('class="home-icon home-stat-icon"','class="home-icon home-stat-icon home-part-stat-icon"'),100,100);
+   case 'container-home-stat':return homePreview(tag('div',recipe,'home-stat',renderHomeStatIcon('target')+tag('div','container','',child('text-home-stat-value')+child('text-home-stat-label'))),340,140);
+   case 'button-home-settings':return homePreview(renderHomeSettings('left:0;top:0;width:100%;height:100%'),103,103);
+   case 'container-home-hero':return homePreview(renderHomeHero('Odkrywco','left:0;top:0;width:100%;height:100%'),810,820);
+   case 'family-home-welcome':return homePreview(tag('section',recipe,'home-welcome',renderHomeHero('Odkrywco','left:0;top:0;width:100%;height:90%')+renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'left:0;top:82%;width:100%;height:18%')),810,918);
+   case 'family-home-modes':return homePreview(tag('nav',recipe,'home-game-buttons',Object.keys(HOME_TILE_SIZES).map((mode,i)=>renderHomeModeCard(mode,homeNames[mode],`left:${i<3?i*33.5:i===3?0:50}%;top:${i<3?0:51}%;width:${i<3?32:48}%;height:49%`)).join('')),801,507);
+   case 'container-home-adventures':return homePreview(renderHomeAdventures('inset:0'),801,68);
+   case 'container-home-last':return homePreview(renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'inset:0').match(/<div class="home-stat home-stat-last"[\s\S]*?<\/section>/)[0].replace('</section>',''),450,140);
+   case 'background-home':return homePreview(tag('span',recipe,'home-background',''),853,1670);
+   case 'background-home-hero':return homePreview(tag('span',recipe,'home-hero-backing',''),810,820);
+   case 'image-home-hero':return img(recipe,'assets/brand/home-adventure-3d.webp');
+   case 'text-home-greeting':case 'text-home-headline':case 'text-home-subtitle':case 'text-home-adventure-title':case 'text-home-mode-count':return tag('span',recipe,'part-text',({'text-home-greeting':'Hej Odkrywco!','text-home-headline':'sprawdź swoje postępy.','text-home-subtitle':'Świetnie Ci idzie, co dalej?','text-home-adventure-title':'Wybierz swoją przygodę','text-home-mode-count':'5 trybów'})[recipe]);
+   case 'background-home-stat-divider':return tag('span',recipe,'home-stat-divider','','style="width:1px;height:40px"');
    case 'container-home-stats':return homePreview(stamp(renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'left:0;top:0;width:100%;height:100%'),recipe),810,184);
    case 'icon-home-tile-surface':return homeAtom(recipe,homeTileSurface(homeMode));
    case 'icon-home-badge-surface':return homeAtom(recipe,homeBadgeSurface(homeMode));
    case 'icon-home-mode-glyph':return homeAtom(recipe,homeModeGlyph(['english','flags','reading'].includes(homeMode)?homeMode:'english'));
-   case 'icon-home-stat-backing':return homeAtom(recipe,homeStatBacking('target'));
-   case 'icon-home-stat-symbol':return homeAtom(recipe,homeStatSymbol('star'));
    case 'icon-home-decoration-star':return homeAtom(recipe,homeDecorationStar());
    case 'icon-home-decoration-plus':case 'icon-home-decoration-rays':case 'icon-home-decoration-cloud':case 'icon-home-decoration-mountains':{const key=recipe.split('-').at(-1),m={plus:'math',rays:'english',cloud:'english',mountains:'flags'}[key];return homeAtom(recipe,homeDecorationAtoms(m).find(a=>a.id.startsWith(key)).svg);}
    case 'icon-home-chevron':return homeAtom(recipe,homeStatSymbol('chevron'));
@@ -84,7 +99,7 @@ export function partSample(id,options={}){
    case 'container-pin-fields':return tag('div',recipe,'pin-fields',opts.pin?child('text-pin-instruction')+tag('p','text-player-copy','','PIN służy do przełączania profili.')+dots()+keys():tag('h3','text-pin-instruction','pin-instruction','Bez PIN-u')+tag('p','text-player-copy','','Do tego profilu wejdziesz bez kodu. PIN możesz ustawić później.')+child('button-main'));
    case 'container-pin-card':return tag('section',recipe,`pin-card part-panel ${opts.pin?'':'pin-no-code'}`,tag('div','container-card','part-panel-body',child('container-pin-profile')+mode()+child('container-pin-fields')));
    case 'container-field-title':return tag('div',recipe,'live-number-text',children());
-   case 'container-mission':return tag('section',recipe,'part-panel part-mission',tag('div','container-card','part-panel-body',child('image-mission')+child('text-player-copy')));
+   case 'container-mission':return tag('section',recipe,'mission-card',missionIllustration(homeMode,assetURL)+tag('div','container','',tag('h2','text-mission-title','','Twoja mała misja')+tag('p','text-mission-hint','','Małe kroki, wielkie odkrycia.')));
    case 'icon-continue-handle':return tag('span',recipe,'part-icon-button',arrow);
    case 'meter-round-progress-fill':return tag('span',recipe,'part-meter-fill','',`style="width:${opts.percent}%;height:18px;background:var(--ds-theme-accent)"`);
   }

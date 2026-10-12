@@ -9,7 +9,7 @@ export const BLOCKS={
  toggle:{name:'Przełączniki',level:'Grupa',recipe:'control-toggle',parts:['Tor / podkład','Bryła wyboru','Dwie etykiety'],groups:['toggle']}
 };
 export const BLUE_THEME={accent:'#187de0',light:'#48b6ff',middle:'#3199ef',bottom:'#116dca',border:'#8bc7ff',lip:'#145ead',shine:'#ffffff80',depth:'#145ead33',activeInk:'#ffffff',idleInk:'#426388'};
-export const FAMILY_NAMES={default:'Domyślny · niebieski',spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};
+export const FAMILY_NAMES={default:'Domyślny',spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'};
 export function familyTokens(config,mode,group){return {...config.tokens?.[group],...config.familyTokens?.[mode]?.[group]};}
 export function componentState(root){
  const pin=root?.querySelector('.pin-mode input:checked');if(pin)return pin.value==='none'?'no-pin':'pin';

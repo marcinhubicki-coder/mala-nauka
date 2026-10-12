@@ -18,24 +18,51 @@ export const PARTS=[
  atom('image-player-brand-art','Logo Małej Nauki','image','.player-brand-art',{asset:'assets/brand/player-logo-3d.webp'}),
  atom('image-player-empty-art','Ilustracja pierwszego gracza','image','.player-empty-art img',{asset:'assets/brand/player-empty-3d.webp'}),
  atom('image-player-avatar-art','Avatar gracza','image','.player-avatar-art'),
- atom('image-mission','Ilustracja misji','image','.spelling-mission-art,.english-mission-art,.reading-mission-art'),
+ atom('image-mission','Ilustracja misji','image','[data-ds-recipe="image-mission"]',{variantAxis:'mode',modes:['spelling','math','english','flags','reading'],views:['spelling-settings','math-settings','english-settings','flags-settings','reading-settings']}),
+ atom('text-mission-title','Tytuł misji','text','.mission-card h2'),
+ atom('text-mission-hint','Opis misji','text','.mission-card p',{variantAxis:'mode',modes:['spelling','math','english','flags','reading']}),
  atom('image-mn-soap-picture','Zdjęcie w bańce','image','.mn-production-photo,.mn-soap-picture'),
  atom('image-home-logo-art','Logo na ekranie startowym','image','.home-logo-art'),
- atom('background-home-art-backdrop','Tło ekranu','background','.home-art-backdrop,.spelling-art-layer,.spelling-screen-bg'),
+ atom('background-home-art-backdrop','Tło scenariusza gry','background','.home-art-backdrop,.spelling-art-layer,.spelling-screen-bg'),
+ atom('background-home','Tło ekranu startowego','background','.home-background'),
+ atom('button-home-settings','Przycisk ustawień · wektor','button','.home-settings-button',{states:['default','pressed']}),
+ atom('background-home-hero','Podkład powitania','background','.home-hero-backing'),
+ atom('image-home-hero','Ilustracja odkrywcy','image','.home-hero-photo',{asset:'assets/brand/home-adventure-3d.webp'}),
+ atom('text-home-greeting','Powitanie odkrywcy','text','.home-greeting-live'),
+ atom('text-home-headline','Sprawdź swoje postępy','text','.home-headline'),
+ atom('text-home-subtitle','Opis powitania','text','.home-hero-copy'),
+ group('container-home-hero','Powitanie odkrywcy','.home-hero',['background-home-hero','image-home-hero','text-home-greeting','text-home-headline','text-home-subtitle']),
+ group('family-home-welcome','Powitanie i postępy','.home-welcome',['container-home-hero','container-home-stats'],{level:'family'}),
+ atom('text-home-adventure-title','Wybierz swoją przygodę','text','.home-adventures h2'),
+ atom('text-home-mode-count','Liczba trybów','text','.home-adventures p'),
+ group('container-home-adventures','Nagłówek przygód','.home-adventures',['text-home-adventure-title','text-home-mode-count']),
+ group('family-home-modes','Pięć przygód','.home-game-buttons',['button-home-card'],{level:'family',repeats:{'button-home-card':['spelling','math','english','flags','reading']}}),
+ atom('background-progress-collection','Ilustracja kolekcji','background','.progress-collection-art',{asset:'assets/progress/collection-v1.webp'}),
+ atom('text-progress-collection','Moja kolekcja','text','.progress-collection-title'),
+ group('container-progress-collection','Moja kolekcja','.progress-illustrated.collection',['background-progress-collection','text-progress-collection','icon-home-chevron'],{kind:'button'}),
+ group('container-collection-filters','Filtry kolekcji','.collection-filters',['button-collection-filter']),
+ atom('button-collection-filter','Filtr kolekcji','button','[data-progress=filter]',{states:['default','selected']}),
+ group('container-collection-word','Słowo w kolekcji','.collection-word',['image-collection-word','text-collection-word','text-collection-state'],{kind:'button'}),
+ atom('image-collection-word','Ilustracja słowa','image','.collection-word img'),
+ atom('text-collection-word','Słowo','text','.collection-word strong'),
+ atom('text-collection-state','Etap nauki słowa','text','.collection-word small'),
+ group('container-collection-grid','Odkryte słowa','.collection-word-grid',['container-collection-word']),
+ group('family-collection','Kolekcja słów','.progress-subpage:has(.collection-filters)',['container-collection-filters','container-collection-grid'],{level:'family'}),
  atom('control-jelly','Przełącznik jelly','toggle','.ds-jelly:not(.pin-mode),.jelly-v4-container:not(.pin-mode)',{block:'jelly'}),
  group('control-pin','PIN / bez PIN-u','.pin-mode',['control-jelly','pin-option'],{kind:'toggle',inherits:'control-jelly',sample:'pin'}),
  atom('control-toggle','Przełącznik czasu / słów','toggle','.compact-toggle',{block:'toggle'}),
- atom('jelly-option','Opcja jelly','text','.jelly-v4-label:not(.pin-mode>label),.category-card,.math-duration-choice'),
+ atom('jelly-option','Opcja jelly','text','.jelly-v4-label:not(.pin-mode>label),.category-card,.math-duration-choice',{states:['default','selected','dragging','disabled']}),
  atom('pin-option','Opcja PIN','text','.pin-mode label',{inherits:'jelly-option'}),
  atom('control-pin-key','Klawisz klawiatury PIN','key','.pin-key',{inherits:'button-main',sample:'key'}),
  atom('icon-pin-dot','Cyfra PIN · wskaźnik','icon','.pin-dots>span'),
  atom('input-player-name','Pole imienia','input','.player-name-input',{sample:'input'}),
  atom('button-main','Przycisk główny','button','.primary,.start-button,.player-continue,.math-start-button',{block:'button'}),
+ atom('button-game-start','Rozpocznij przygodę','button','.start-button,.math-start-button',{inherits:'button-main',states:['default','pressed','disabled']}),
  atom('button-answer','Odpowiedź','button','.answer,.math-answer',{block:'answer'}),
- atom('button-avatar-choice','Wybór avatara','button','.avatar-choice', {children:['container-card','image-player-avatar-art'],inherits:'button-main'}),
- atom('button-player-card','Karta wyboru gracza','button','.player-card', {children:['container-card','image-player-avatar-art','text-nickname','icon-player-select'],sample:'player'}),
+ group('button-avatar-choice','Wybór avatara','.avatar-choice',['container-card','image-player-avatar-art'],{kind:'button',inherits:'button-main'}),
+ group('button-player-card','Karta wyboru gracza','.player-card',['container-card','image-player-avatar-art','text-nickname','icon-player-select'],{kind:'button',sample:'player',states:['default','selected','disabled']}),
  atom('icon-player-select','Znacznik wybranego gracza','icon','.player-select-mark'),
- atom('button-home-card','Kafel trybu gry','button','[data-action=choose-mode]',{children:['icon-home-tile-surface','container-home-decoration','container-home-badge','text-mode-name']}),
+ group('button-home-card','Kafel trybu gry','[data-action=choose-mode]',['icon-home-tile-surface','container-home-decoration','container-home-badge','text-mode-name'],{kind:'button',variantAxis:'mode',modes:['spelling','math','english','flags','reading'],states:['default','pressed']}),
  atom('icon-home-tile-surface','Podkład kafla trybu','icon','.home-tile-surface'),
  group('container-home-decoration','Dekoracje tła','.home-tile-decoration',['icon-home-decoration-star','icon-home-decoration-plus','icon-home-decoration-rays','icon-home-decoration-cloud','icon-home-decoration-mountains']),
  atom('icon-home-decoration-star','Gwiazda dekoracyjna','icon','[data-ds-key="home-spelling-star"],[data-ds-key^="home-reading-star-"]'),
@@ -47,13 +74,14 @@ export const PARTS=[
  atom('icon-home-badge-surface','Podkład ikony trybu','icon','.home-badge-surface'),
  atom('icon-home-mode-glyph','Symbol trybu · wektor','icon','.home-mode-glyph'),
  atom('text-home-mode-symbol','Symbol trybu · tekst','text','.home-mode-symbol'),
- group('container-home-stats','Moje postępy','.home-stats',['background-home-stats-outer','background-home-stats-inner','container-home-stat','button-home-progress']),
+ group('container-home-stats','Moje postępy','.home-stats',['background-home-stats-outer','background-home-stats-inner','container-home-stat','background-home-stat-divider','container-home-last']),
  atom('background-home-stats-outer','Podkład wyników · zewnętrzny','background','.home-stats-outer'),
  atom('background-home-stats-inner','Podkład wyników · wewnętrzny','background','.home-stats-inner'),
- group('container-home-stat','Wynik · ikona i tekst','.home-stat',['container-home-stat-icon','text-home-stat-value','text-home-stat-label']),
- group('container-home-stat-icon','Symbol wyniku i podkład','.home-stat-icon',['icon-home-stat-backing','icon-home-stat-symbol']),
- atom('icon-home-stat-backing','Okrągły podkład wyniku','icon','.home-stat-backing'),
- atom('icon-home-stat-symbol','Tarcza / złota gwiazda','icon','.home-stat-symbol'),
+ group('container-home-stat','Dziś rozwiązane','.home-stat-today',['icon-home-target','text-home-stat-value','text-home-stat-label']),
+ group('container-home-last','Ostatni wynik i moje wyniki','.home-stat-last',['icon-home-star','text-home-stat-value','text-home-stat-label','button-home-progress']),
+ atom('icon-home-target','Tarcza ze strzałą','icon','[data-ds-recipe="icon-home-target"]'),
+ atom('icon-home-star','Złota gwiazda','icon','[data-ds-recipe="icon-home-star"]'),
+ atom('background-home-stat-divider','Kreska między wynikami','background','.home-stat-divider'),
  atom('text-home-stat-value','Wartość wyniku','text','.home-stat-value'),
  atom('text-home-stat-label','Opis wyniku','text','.home-stat-label'),
  atom('text-mode-name','Nazwa trybu gry','text','.home-tile-name'),
@@ -66,19 +94,45 @@ export const PARTS=[
  atom('text-player-copy','Opis profilu','text','.player-title p,.player-form-card>p,.pin-fields>p'),
  atom('text-field-label','Etykieta pola','text','label[for=player-nickname],.avatar-label'),
  atom('text-nickname-help','Opis poprawności imienia','text','.nickname-help'),
+ atom('text-result-detail-title','Tytuł odpowiedzi rundy','text','.result-detail-head strong'),
+ atom('text-result-detail-description','Opis odpowiedzi rundy','text','.result-detail-head p'),
+ atom('text-result-title','Tytuł podsumowania','text','.result-title-wrap h1'),
+ atom('text-result-subtitle','Opis podsumowania','text','.result-subtitle'),
+ atom('icon-result-rays-left','Promienie podsumowania · lewo','icon','.result-rays:first-of-type'),
+ atom('icon-result-rays-right','Promienie podsumowania · prawo','icon','.result-rays:last-of-type'),
+ atom('button-result-back','Wróć do ustawień przygody','button','.result-actions>.primary',{inherits:'button-main',states:['default','pressed','disabled']}),
+ atom('text-player-subtitle','Opis wyboru gracza','text','.player-title p'),
+ atom('text-pin-error','Komunikat PIN','text','.pin-error-outside'),
+ atom('text-math-setup-title','Tytuł matematyki','text','.math-setup-screen .hero h1'),
+ group('family-player-shell','Wybór i konfiguracja gracza','.player-shell',['container-player-title','container-player-grid','container-player-actions'],{level:'family'}),
+ group('family-math-settings','Ustawienia matematyki','.math-setup-screen',['container-mission','control-jelly','button-game-start'],{level:'family'}),
+ group('container-spelling-question-body','Treść pytania ortografii','.spelling-question-card .question-content',['image-mn-soap-picture']),
  atom('result-points-bubble','Bańka punktów','container','.result-points-bubble'),
- group('container-player-title','Powitanie gracza','.player-title',['text-player-title','text-player-copy']),
+ group('container-player-title','Powitanie gracza','.player-title',['text-player-title','text-player-subtitle']),
  group('container-player-grid','Lista graczy','.player-grid',['button-player-card']),
  group('container-player-actions','Akcje wyboru gracza','.player-actions',['button-main','button-back']),
- group('container-player-form-card','Formularz nowego gracza','.player-form-card',['container-card','image-player-avatar-art','input-player-name','text-field-label','text-nickname-help','container-avatar-picker','button-main']),
+ group('container-player-form-card','Formularz nowego gracza','.player-form-card',['container-card','image-player-avatar-art','input-player-name','text-field-label','text-nickname-help','container-avatar-picker','button-main'],{level:'family'}),
  group('container-avatar-picker','Lista avatarów','.avatar-picker',['button-avatar-choice','image-player-avatar-art']),
  group('container-pin-profile','Profil nad PIN-em','.pin-profile',['image-player-avatar-art','text-nickname']),
  group('container-pin-dots','Wpisane cyfry PIN','.pin-dots',['icon-pin-dot']),
  group('container-pin-keypad','Klawiatura PIN','.pin-keypad',['control-pin-key']),
- group('container-pin-fields','PIN / informacja bez PIN-u','.pin-fields',['text-pin-instruction','text-player-copy','container-pin-dots','container-pin-keypad','button-main']),
- group('container-pin-card','Kafel ustawienia PIN-u','.pin-card',['container-card','container-pin-profile','control-pin','container-pin-fields']),
+ group('container-pin-fields','PIN / informacja bez PIN-u','.pin-fields',['text-pin-instruction','text-player-copy','container-pin-dots','container-pin-keypad','button-main'],{states:['default','pin','no-pin']}),
+ group('container-pin-card','Kafel ustawienia PIN-u','.pin-card',['container-card','container-pin-profile','control-pin','container-pin-fields'],{level:'family',states:['default','pin','no-pin']}),
  group('container-field-title','Numer + tekst','.field-title,fieldset legend',['icon-step-dot','text-field-label']),
- group('container-mission','Kafel misji','.wizard-intro',['container-card','image-mission','text-player-copy']),
+ group('container-mission','Kafel misji','.wizard-intro',['container-card','image-mission','text-mission-title','text-mission-hint']),
+ group('container-result-line','Wynik i procent','.round-summary-line',['text-result-mode']),
+ group('container-result-summary','Podsumowanie rundy','.round-summary',['container-result-line','container-round-progress'],{level:'family'}),
+ group('container-result-details','Odpowiedzi rundy','.result-details',['container-result-review'],{level:'family'}),
+ group('container-result-review','Do powtórki','.result-detail.is-review',['text-result-detail-title','text-result-detail-description']),
+ group('container-result-actions','Akcje po rundzie','.result-actions',['button-result-back','button-main','container-result-continue-rail']),
+ group('container-result-header','Powitanie po rundzie','.result-title-wrap',['result-points-bubble','text-result-title','text-result-subtitle','icon-result-rays-left','icon-result-rays-right']),
+ group('container-result-stat','Etap nauki','.result-stat',['text-home-stat-value']),
+ atom('text-result-mode','Tryb ukończonej rundy','text','.round-mode-pill'),
+ group('container-setup-form','Konfiguracja przygody','.setup-form',['container-field-title','control-jelly','control-toggle','button-game-start'],{level:'family'}),
+ group('family-game-settings','Ustawienia przygody','[class$="wizard-canvas"]',['container-mission','container-setup-form','text-wizard-note'],{level:'family'}),
+ atom('text-wizard-note','Wskazówka pod konfiguracją','text','.wizard-note'),
+ group('container-spelling-question','Pytanie ortografii','.spelling-question-card',['image-mn-soap-picture','container-spelling-question-body','button-answer','button-game-hint']),
+ atom('button-game-hint','Podpowiedź w grze','button','.spelling-hint',{states:['default','pressed','disabled']}),
  group('container-result-continue-rail','Slider akcji','.result-continue-rail,.spelling-continue-rail',['container-card','icon-continue-handle','text-continue-copy'],{block:'slider'}),
  atom('icon-continue-handle','Uchwyt slidera','icon','.continue-handle'),
  atom('text-continue-copy','Etykieta slidera','text','.continue-copy'),
@@ -86,24 +140,40 @@ export const PARTS=[
  atom('meter-round-progress-fill','Wypełnienie postępu','meter','.round-progress-fill'),
  atom('text-progress-value','Wartość postępu','text','[data-reel=percent]')
 ];
+const explicitUses={'family-player-shell':['players','players-empty','player-create'],'text-pin-error':['player-pin','player-unlock'],'family-math-settings':['math-settings'],'text-math-setup-title':['math-settings'],'container-spelling-question':['spelling-initial','spelling-correct','spelling-wrong'],'container-spelling-question-body':['spelling-initial','spelling-correct','spelling-wrong'],'button-game-hint':['spelling-initial','spelling-correct','spelling-wrong'],'jelly-option':['spelling-settings','english-settings','flags-settings','reading-settings','math-settings']};
+for(const [id,views]of Object.entries(explicitUses)){const p=PARTS.find(p=>p.id===id);if(p)p.views=views;}
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));
 export function recipeLineage(id){const chain=[],seen=new Set();while(id&&!seen.has(id)){seen.add(id);chain.unshift(id);id=PART_BY_ID[id]?.inherits;}return chain;}
-export const LEVEL_NAMES={atom:'Atom',group:'Grupa',family:'Rodzina · widok'};
-const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','container-player-actions'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home-art-backdrop','image-home-logo-art','container-home-stats','button-home-card'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','control-toggle','button-main'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','image-mission','result-points-bubble','container-card','container-round-progress','container-result-continue-rail','button-home-progress','button-back'],progress:['button-back','container-card','container-round-progress']};
-export function viewType(view){const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
+export const LEVEL_NAMES={atom:'Atom',group:'Grupa · molekuła',family:'Rodzina · organizm',template:'Szablon',page:'Widok · strona'};
+const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','container-player-actions'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','control-toggle','button-game-start','family-game-settings'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','container-result-header','container-result-summary','container-result-stat','container-result-details','container-result-actions'],collection:['button-back','family-collection'],progress:['button-back','container-progress-collection','container-card','container-round-progress']};
+export function viewType(view){if(view?.id==='collection'||view?.state==='collection')return 'collection';const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
 export function partLevel(item,items=[]){return PART_BY_ID[item.recipe]?.level||(['button','key','input','toggle','text','icon','image','background','timer','meter'].includes(item.kind)?'atom':items.some(n=>n.parent===item.id)?'group':'atom');}
 export function viewParts(view,inventory){
  const items=inventory?.items||[];
  if(items.length){const ids=new Set(items.map(n=>n.id));return items.filter(n=>n.id!=='layout-root'&&(!n.parent||n.parent==='layout-root'||!ids.has(n.parent))).map(n=>inventoryPart(n,items));}
  return (types[viewType(view)]||[]).map(id=>definitionPart(id));
 }
-function definitionPart(id,seen=new Set()){const p=PART_BY_ID[id];if(!p||seen.has(id))return null;const next=new Set(seen).add(id);return {...p,recipe:p.id,children:p.children.map(child=>definitionPart(child,next)).filter(Boolean)};}
+export function definitionPart(id,seen=new Set()){const p=PART_BY_ID[id];if(!p||seen.has(id))return null;const next=new Set(seen).add(id);return {...p,recipe:p.id,children:p.children.map(child=>definitionPart(child,next)).filter(Boolean)};}
 function inventoryPart(item,items,seen=new Set()){if(seen.has(item.id))return null;const next=new Set(seen).add(item.id),meta=PART_BY_ID[item.recipe];return {id:item.id,recipe:item.recipe||item.kind||'container',name:meta?.name||item.label,kind:item.kind,level:partLevel(item,items),selector:`[data-ds-element="${item.id}"]`,children:items.filter(n=>n.parent===item.id).map(n=>inventoryPart(n,items,next)).filter(Boolean)};}
 export function structureCatalog(registry,inventories=new Map()){
  const records=new Map(PARTS.map(p=>[p.id,{...p,children:[...p.children],uses:[]} ]));
- const add=(p,view)=>{let record=records.get(p.recipe);if(!record){record={id:p.recipe,name:p.name,recipe:p.recipe,kind:p.kind,selector:p.selector,level:p.level,children:[],uses:[]};records.set(p.recipe,record);}if(!record.uses.some(u=>u.view===view.id))record.uses.push({view:view.id,selector:p.selector});for(const child of p.children){if(record.level!=='atom'&&!record.children.includes(child.recipe))record.children.push(child.recipe);add(child,view);}};
- for(const view of registry.views)for(const p of viewParts(view,inventories.get(view.id)))add(p,view);
+ const add=(p,view)=>{let record=records.get(p.recipe);if(!record){record={id:p.recipe,name:p.name,recipe:p.recipe,kind:p.kind,selector:p.selector,level:p.level,children:[],uses:[],discovered:true};records.set(p.recipe,record);}if(!record.uses.some(u=>u.view===view.id))record.uses.push({view:view.id,selector:p.selector});for(const child of p.children){if(record.level!=='atom'&&!record.children.includes(child.recipe))record.children.push(child.recipe);add(child,view);}};
+ for(const view of registry.views)for(const p of viewParts(view,view.id==='home'?null:inventories.get(view.id)))add(p,view);
+ for(const p of records.values())if(p.views)p.uses=p.views.map(view=>({view,selector:p.selector}));
  const textAtoms=Object.entries(ATOMS).map(([id,a])=>({id:'text-role-'+id,name:a.name,atom:id,kind:'text',level:'atom',selector:a.selector,children:[],uses:registry.views.filter(v=>a.parents.some(p=>v.components.includes(p))).map(v=>({view:v.id,selector:a.selector}))}));
- return [...records.values(),...textAtoms,...registry.views.map(view=>({id:'view:'+view.id,name:view.name,level:'family',view:view.id,children:viewParts(view,inventories.get(view.id)).map(p=>p.recipe),uses:[{view:view.id}]}))];
+ return [...records.values(),...textAtoms,...templateCatalog(registry,inventories),...registry.views.map(view=>({id:'view:'+view.id,name:view.name,level:'page',view:view.id,template:templateForView(view).id,children:viewParts(view,view.id==='home'?null:inventories.get(view.id)).map(p=>p.recipe),uses:[{view:view.id}]}))];
 }
-export function selectionStack(view,selected,items){if(!selected)return[];const chain=[],seen=new Set();let item=items.find(n=>n.id===selected.id)||selected;while(item&&!seen.has(item.id)){seen.add(item.id);if(item.id!=='layout-root')chain.unshift({...item,level:partLevel(item,items)});item=items.find(n=>n.id===item.parent);}return [{id:'view:'+view.id,label:view.name,level:'family'},...chain];}
+export function selectionStack(view,selected,items){if(!selected)return[];const chain=[],seen=new Set();let item=items.find(n=>n.id===selected.id)||selected;while(item&&!seen.has(item.id)){seen.add(item.id);if(item.id!=='layout-root')chain.unshift({...item,level:partLevel(item,items)});item=items.find(n=>n.id===item.parent);}return [{id:'view:'+view.id,label:view.name,level:'page'},...chain];}
+
+export const GAME_MODES={spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'};
+const contentModes=new Set(['container-home-decoration','container-home-badge','icon-home-tile-surface','icon-home-badge-surface','icon-home-mode-glyph','text-home-mode-symbol','text-mode-name','container-mission']);
+export function partVariants(part){
+ if(part?.variantAxis==='mode'||contentModes.has(part?.id))return {axis:'mode',label:'Tryb',choices:Object.fromEntries((part.modes||Object.keys(GAME_MODES)).map(id=>[id,GAME_MODES[id]])),defaultMode:part.modes?.[0]||'spelling'};
+ if(['button','answer','jelly','toggle','slider'].includes(part?.block))return {axis:'palette',label:'Paleta',choices:{default:'Domyślny',...GAME_MODES},defaultMode:'default'};
+ return {axis:'default',label:'Wariant',choices:{default:'Domyślny'},defaultMode:'default'};
+}
+export function partStates(part){return part?.states||({jelly:['default','selected','dragging','disabled'],toggle:['default','selected'],button:['default','pressed','disabled'],answer:['default','correct','wrong','disabled'],slider:['default','dragging','spring-back','complete'],progress:['default','complete']})[part?.block]||(part?.kind==='button'?['default','pressed','disabled']:['default']);}
+export const PAGE_TEMPLATES=Object.fromEntries(Object.entries(types).map(([id,children])=>[id,{id:'template:'+id,name:({home:'Ekran startowy',login:'Wybór gracza',create:'Tworzenie gracza',pin:'PIN',profile:'Ustawienia profilu',settings:'Ustawienia przygody',game:'Gra',results:'Wynik rundy',progress:'Moje wyniki',collection:'Kolekcja słów'})[id],level:'template',slots:children.map((recipe,index)=>({id:recipe,recipe,order:index,optional:id!=='home'})),children}]));
+export function templateForView(view){return PAGE_TEMPLATES[viewType(view)];}
+export function templateCatalog(registry){return Object.values(PAGE_TEMPLATES).map(t=>({...t,uses:registry.views.filter(v=>templateForView(v).id===t.id).map(v=>({view:v.id})),view:registry.views.find(v=>templateForView(v).id===t.id)?.id}));}
+export function composeTemplate(id,slots){const template=PAGE_TEMPLATES[id];if(!template)throw Error('Nieznany szablon: '+id);return template.slots.map(s=>{if(!s.optional&&!slots[s.id])throw Error('Brak slotu: '+s.id);return slots[s.id]||'';}).join('');}

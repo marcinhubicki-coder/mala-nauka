@@ -30,7 +30,7 @@ export function studioIcon(id){return paths[id]?`<svg viewBox="0 0 24 24" aria-h
 export const NAV_ICONS={project:'rocket',components:'grid',builder:'layers',testing:'play',colors:'palette',fonts:'type',assets:'image',batches:'check',motion:'play',effects:'spark',sound:'music',scoring:'trophy',views:'flow',audit:'code',docs:'book',versions:'history'};
 export const MODE_ICONS={spelling:'letters',english:'globe',flags:'flag',reading:'book',math:'calculator'};
 export const CATEGORY_ICONS={login:'users',home:'home',results:'trophy',game:'play'};
-export function partIcon(part){return part.level==='family'?'screen':part.level==='group'?'layers':({text:'type',image:'image',background:'palette',button:'button',toggle:'toggle',key:'lock',input:'type',timer:'clock',meter:'target',icon:'atom'})[part.kind]||'square';}
+export function partIcon(part){return ['page','template'].includes(part.level)?'screen':['group','family'].includes(part.level)?'layers':({text:'type',image:'image',background:'palette',button:'button',toggle:'toggle',key:'lock',input:'type',timer:'clock',meter:'target',icon:'atom'})[part.kind]||'square';}
 export function viewIcon(view){
  const value=[view.id,view.screen,view.state].filter(Boolean).join(' ').toLowerCase();
  if(/setting|wizard/.test(value))return 'gear';
@@ -51,7 +51,7 @@ export function viewIcon(view){
 const details=new Set(['jelly-option','pin-option','text-mode-name']);
 export function librarySections(catalog,level){
  const rows=catalog.filter(p=>p.level===level);
- if(level!=='atom')return [{id:level,name:level==='group'?'Grupy elementów':'Rodziny · widoki',rows}];
+ if(level!=='atom')return [{id:level,name:({group:'Grupy · molekuły',family:'Rodziny · organizmy',template:'Szablony ekranów',page:'Widoki · scenariusze'})[level],rows}];
  return [
   {id:'objects',name:'Obiekty i sterowanie',rows:rows.filter(p=>!['text','image','background'].includes(p.kind))},
   {id:'graphics',name:'Grafika i tła',rows:rows.filter(p=>['image','background'].includes(p.kind))},

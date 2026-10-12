@@ -437,22 +437,7 @@ function install(){
  root.append(foreground);
 
  const intro=root.querySelector('.wizard-intro');
- if(intro&&!intro.querySelector('.english-mission-art')){
-  const art=document.createElement('img');
-  art.className='english-mission-art';
-  art.src=new URL('../assets/angielski/wizard-mission-retina-v2.webp',import.meta.url).href;
-  art.alt='';
-  art.width=1200;
-  art.height=404;
-  intro.prepend(art);
-  const boy=document.createElement('img');
-  boy.className='english-mission-boy';
-  boy.src=new URL('../assets/angielski/wizard-boy-retina-v3.webp',import.meta.url).href;
-  boy.alt='';
-  boy.width=360;
-  boy.height=345;
-  intro.append(boy);
- }
+
 
  updateStartButton(false);
  syncEditorUI(false,{resetAction:true});

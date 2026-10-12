@@ -18,7 +18,8 @@ export const STARTUP_LINKS=[
 ];
 export function startupLinks(id){return STARTUP_LINKS.filter(e=>e.from===(id.startsWith('players')?'players':id));}
 export function defaultTarget(from,action,mode='spelling',context=''){
- if(action==='exit-confirm'||action==='result-back'||action==='wizard')return mode+'-settings';
+ if(action==='exit-confirm')return mode+'-results';
+ if(action==='result-back'||action==='wizard')return mode+'-settings';
  if(action==='home')return 'home';if(action==='settings')return 'settings';
  if(action==='history')return 'progress';if(action==='switch-player')return 'players';
  if(action==='return-results')return context||mode+'-results';
@@ -39,7 +40,7 @@ export function validateNavigation(value){
 export function architectureLinks(mode){return [
  {from:mode+'-settings',action:'start',label:'Zaczynamy!',to:mode+'-initial',fixed:true},
  {from:mode+'-settings',action:'home',label:'Powrót',to:'home'},
- {from:mode+'-initial',action:'exit-confirm',label:'Wyjdź · po potwierdzeniu',to:mode+'-settings'},
+ {from:mode+'-initial',action:'exit-confirm',label:'Zakończ i zobacz podsumowanie',to:mode+'-results'},
  {from:mode+'-results',action:'result-back',label:'Powrót',to:mode+'-settings'},
  {from:mode+'-results',action:'again',label:'Nowa runda',to:mode+'-initial',fixed:true},
  {from:mode+'-results',action:'history',label:'Moje wyniki',to:'progress'},

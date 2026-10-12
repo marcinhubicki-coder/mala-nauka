@@ -8,14 +8,14 @@ import {syncElementSurface} from '../shared/surface-effects.mjs';
 import {animateStateChange} from '../shared/state-motion.mjs';
 
 export function mountPartSample(library,sample){
- const settings=()=>({catalog:library.catalog(),assetURL:assetUrl,mode:library.mode,pin:library.pin!==false,pinDigits:library.pinDigits||0,playerCount:library.playerCount||3,selectedPlayer:library.selectedPlayer??-1,choice:library.choice,percent:library.percent});
+ const settings=()=>({catalog:library.catalog(),assetURL:assetUrl,mode:library.mode,state:library.state,pin:library.pin!==false,pinDigits:library.pinDigits||0,playerCount:library.playerCount||3,selectedPlayer:library.selectedPlayer??-1,choice:library.choice,percent:library.percent});
  const render=()=>{
   sample.innerHTML=partSample(library.part,settings());
   let index=0;
   const scratch=document.createElement('div');
   const apply=()=>{for(const node of sample.querySelectorAll('[data-ds-recipe]')){
-   node.dataset.dsElement||='sample-part-'+index++;
-   const recipe=node.dataset.dsRecipe,style=visualValue(library.config,'',{id:node.dataset.dsElement,kind:node.dataset.dsKind,recipe,mode:library.mode});
+   node.dataset.dsState=library.state||'default';node.dataset.dsElement||='sample-part-'+index++;
+   const mode=node.closest('[data-mode]')?.dataset.mode||library.mode;node.dataset.dsMode=mode;const recipe=node.dataset.dsRecipe,style=visualValue(library.config,'',{id:node.dataset.dsElement,kind:node.dataset.dsKind,recipe,mode,state:library.state});
    scratch.style.cssText=declarations(style);
    for(let i=0;i<scratch.style.length;i++){const key=scratch.style[i];node.style.setProperty(key,scratch.style.getPropertyValue(key),scratch.style.getPropertyPriority(key));}
    if(style.text&&node.dataset.dsKind==='text'){
@@ -31,6 +31,7 @@ export function mountPartSample(library,sample){
    syncElementMotion(node,style);syncElementSurface(node,style);
   }};
   apply();
+  for(const node of sample.querySelectorAll('button')){if(library.state==='disabled')node.disabled=true;if(library.state==='pressed'||library.state==='selected'){node.classList.add('selected');node.setAttribute('aria-pressed','true');}}
   const observers=[];
   for(const node of sample.querySelectorAll('.pin-mode,.ds-jelly')){
    const pin=node.matches('.pin-mode'),jelly=createJellyV4({indicatorSelector:pin?'.pin-mode-indicator':'.live-jelly-indicator',getTokens:()=>familyTokens(library.config,library.mode,'jelly')});

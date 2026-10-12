@@ -115,7 +115,15 @@ test('document controls use the mapped source screen once, including a click fol
   Object.assign(globalThis,{document:{hidden:false,addEventListener(type,fn){events.set(type,fn);},querySelector:()=>null},window:{addEventListener(){}},location:{search:'?studio=1'},localStorage:{getItem:()=>null},MutationObserver:class{observe(){}}});
   gameSound.engine=engine;gameSound.configure({ambientEnabled:false,bindings:{'english-settings':{'control:difficulty':{cue:'bubble',volume:60}}}});gameSound.unlocked=false;gameSound.setPreference(true);gameSound.setVisible(true);installGameSounds(app);
   events.get('click')({target:input,isTrusted:true});events.get('change')({target:input,isTrusted:true});await tick();
-  assert.equal(ctx.calls.sources.length,1);assert.ok(ctx.calls.sources[0].buffer.duration>.2);assert.equal(gameSound.scene.view,'english-settings');
-  events.get('click')({target:input,isTrusted:false});await tick();assert.equal(ctx.calls.sources.length,1);
+  assert.equal(ctx.calls.sources.filter(s=>s.buffer.duration>.01).length,1);assert.ok(ctx.calls.sources.some(s=>s.buffer.duration>.2));assert.equal(gameSound.scene.view,'english-settings');
+  events.get('click')({target:input,isTrusted:false});await tick();assert.equal(ctx.calls.sources.filter(s=>s.buffer.duration>.01).length,1);
  }finally{await engine.close();gameSound.engine=previousEngine;gameSound.unlocked=false;gameSound.setScene({playing:false,paused:false});for(const name of names){const desc=old.get(name);if(desc)Object.defineProperty(globalThis,name,desc);else delete globalThis[name];}}
+});
+
+test('phone gesture primes the context synchronously and requests playback before awaiting resume',async()=>{
+ const ctx=fakeContext();let release;ctx.resume=()=>new Promise(resolve=>{release=()=>{ctx.state='running';resolve();};});
+ const engine=new SoundPreviewEngine({contextFactory:()=>ctx,workerFactory:null}),previous=Object.getOwnPropertyDescriptor(globalThis,'navigator'),session={type:'auto'};
+ Object.defineProperty(globalThis,'navigator',{value:{audioSession:session},configurable:true});
+ try{const pending=engine.ready({gesture:true});assert.equal(session.type,'playback');assert.equal(ctx.calls.sources.length,1);assert.equal(ctx.calls.sources[0].startTime,0);assert.ok(ctx.calls.sources[0].buffer.duration<.001);release();await pending;await engine.close();}
+ finally{if(previous)Object.defineProperty(globalThis,'navigator',previous);else delete globalThis.navigator;}
 });

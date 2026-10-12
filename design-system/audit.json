@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-12T08:00:56.944Z",
-  "sourceCommit": "8ca5ef230da02647722e3f4f85a38d0e5929d9cb",
+  "date": "2026-10-12T10:11:42.766Z",
+  "sourceCommit": "1e1484441f0c9ecb44ba5111281d0c3e9f8f8f3b",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -576,11 +576,6 @@
       "role": "body"
     },
     {
-      "file": "boot-loader.css",
-      "selector": ".mn-loader-sound",
-      "role": "body"
-    },
-    {
       "file": "czytanie/wizard-retina.css",
       "selector": "#app[data-mode=\"reading\"][data-view=\"wizard\"]",
       "role": "body"
@@ -818,6 +813,16 @@
     {
       "file": "home-screen.css",
       "selector": ".home-tile-name",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-headline",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-hero-copy",
       "role": "ui"
     },
     {
@@ -1116,6 +1121,16 @@
       "role": "body"
     },
     {
+      "file": "shared/mission-parts.css",
+      "selector": "#app[data-view=wizard] .mission-card h2,.live-component .mission-card h2",
+      "role": "ui"
+    },
+    {
+      "file": "shared/mission-parts.css",
+      "selector": "#app[data-view=wizard] .mission-card p,.live-component .mission-card p",
+      "role": "body"
+    },
+    {
       "file": "shared/round-result.css",
       "selector": "#app[data-view=\"results\"]",
       "role": "body"
@@ -1401,12 +1416,12 @@
       "display"
     ]
   },
-  "cssBytes": 489278,
-  "jsBytes": 967608,
+  "cssBytes": 491116,
+  "jsBytes": 995734,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 85715
+      "bytes": 86148
     },
     {
       "path": "shared/round-result.css",
@@ -1421,24 +1436,24 @@
       "bytes": 39019
     },
     {
-      "path": "app.css",
-      "bytes": 29057
+      "path": "shared/element-system.mjs",
+      "bytes": 31018
     },
     {
-      "path": "shared/element-system.mjs",
-      "bytes": 28841
+      "path": "app.css",
+      "bytes": 29057
     },
     {
       "path": "player-profiles.css",
       "bytes": 28779
     },
     {
-      "path": "sw.js",
-      "bytes": 27174
+      "path": "shared/sound-library.mjs",
+      "bytes": 27304
     },
     {
-      "path": "shared/sound-library.mjs",
-      "bytes": 26744
+      "path": "sw.js",
+      "bytes": 27174
     },
     {
       "path": "spelling-art.css",
@@ -1446,19 +1461,23 @@
     },
     {
       "path": "ortografia/wizard-v2.mjs",
-      "bytes": 24869
+      "bytes": 24628
     },
     {
       "path": "progress-screen.css",
-      "bytes": 24233
+      "bytes": 24516
+    },
+    {
+      "path": "shared/structure-model.mjs",
+      "bytes": 24433
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 22960
+      "bytes": 23091
     },
     {
       "path": "angielski/wizard-v2.mjs",
-      "bytes": 21691
+      "bytes": 21143
     },
     {
       "path": "spelling/word-particles.mjs",
@@ -1475,6 +1494,10 @@
     {
       "path": "modes.mjs",
       "bytes": 19709
+    },
+    {
+      "path": "progress-screen.mjs",
+      "bytes": 19158
     }
   ],
   "fonts": [

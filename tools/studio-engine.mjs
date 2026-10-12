@@ -5,7 +5,28 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {viewContract,validateViewContract,inheritedMode} from '../shared/view-contracts.mjs';
 import {SPELLING_SETTINGS_CONTRACT,validateSpellingSettingsContract} from '../shared/spelling-settings-contract.mjs';
-import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/element-system.mjs';
+import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/element-styles.mjs';
+import {PART_BY_ID} from '../shared/structure-model.mjs';
+
+// A reusable recipe is a real source-level component shared across views.
+// It can be edited without first scraping any screen's DOM or inventing IDs.
+export function inspectRecipe(config,recipe){
+ const part=PART_BY_ID[recipe];
+ if(!part)throw Error('Unknown registered component recipe: '+recipe);
+ return {id:part.id,name:part.name,level:part.level,kind:part.kind,states:part.states||['default'],style:config.elementStyles?.[recipe]||{}};
+}
+export function planRecipeEdit(config,{recipe,property,value,mode=null,reset=false}){
+ const part=PART_BY_ID[recipe];
+ if(!part)throw Error('Unknown registered component recipe: '+recipe);
+ if(!STYLE_FIELDS.includes(property))throw Error('Unsupported component property: '+property);
+ if(mode!==null&&!['spelling','english','flags','reading','math'].includes(mode))throw Error('Unknown mode: '+mode);
+ const draft=structuredClone(config),path=mode?['familyStyles',mode,recipe]:['elementStyles',recipe];
+ let dest=draft;for(const segment of path)dest=dest[segment]??=Object.create(null);
+ const before=dest[property];
+ if(reset)delete dest[property];else dest[property]=value;
+ validateElementStyles(draft);
+ return {config:draft,change:{recipe,kind:part.kind,scope:mode?'theme':'global',mode,path:path.concat(property).join('.'),before,after:reset?undefined:value}};
+}
 
 export function findEditableBlock(view,id){
  if(view==='home'){validateViewContract('home');const row=viewContract('home').find(row=>row.id===id);return row?{...row,view,mode:inheritedMode(view,id),blockId:'block-'+row.recipe}:null;}
@@ -39,10 +60,19 @@ function option(argv,key){const i=argv.indexOf('--'+key);return i===-1?null:argv
 function valueFromArg(raw){if(raw===null)throw Error('--value is required; use --reset to remove an override');try{return JSON.parse(raw);}catch{return raw;}}
 async function main(argv=process.argv.slice(2)){
  const command=argv[0]||'help';
- if(command==='help'){console.log('Design Studio engine: inspect --view home --id home-mode-spelling | set --view home --id home-mode-spelling --scope shared --property radius --value 28 [--apply] | check');return;}
+ if(command==='help'){console.log('Design Studio engine: inspect --view home --id home-mode-spelling | set --view home --id home-mode-spelling --property radius --value 28 [--apply] | inspect-recipe --recipe button-back | set-recipe --recipe button-back --property radius --value 22 [--apply] | check');return;}
  const filename=resolve(option(argv,'config')||'design-system/config.json');
  const current=JSON.parse(await readFile(filename,'utf8'));
  if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);console.log('VALID: Home, Ortografia settings and design styles');return;}
+ if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
+ if(command==='set-recipe'){
+  const reset=argv.includes('--reset'),property=option(argv,'property');
+  if(!property)throw Error('--property is required');
+  const planned=planRecipeEdit(current,{recipe:option(argv,'recipe'),property,mode:option(argv,'mode'),reset,value:reset?undefined:valueFromArg(option(argv,'value'))});
+  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  else console.log('DRY RUN '+JSON.stringify(planned.change));
+  return;
+ }
  const view=option(argv,'view'),id=option(argv,'id');
  if(!view||!id)throw Error('--view and --id are required');
  if(command==='inspect'){console.log(JSON.stringify(inspectEditableBlock(current,{view,id}),null,2));return;}

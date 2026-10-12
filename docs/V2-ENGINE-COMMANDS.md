@@ -19,3 +19,18 @@ npm run studio:engine -- set --view spelling-settings --id spelling-level-jelly 
 Bez `--apply` polecenie **nie zmienia plików**. Z `--apply` aktualizuje config po walidacji, następnie trzeba uruchomić `npm test`, sprawdzić Test PWA i porównać ze wzorcem. Można skorzystać z `--reset`, aby usunąć nadpisanie.
 
 **Ograniczenie świadome:** pilot obsługuje jawnie przeniesione komponenty Home i ustawienia Ortografii. Inne widoki muszą zostać zmigrowane do kontraktu przed edycją CLI — nie wolno zgadywać selektora ani dopisywać niejawnego wariantu.
+
+## Edycja przez przepis / wspólny komponent w całej aplikacji
+
+Jeżeli komponent istnieje w kanonicznym katalogu \`shared/structure-model.mjs\`, silnik pozwala edytować wspólny przepis, niezależnie od tego, czy cały widok jest już migrowany:
+
+\`\`\`bash
+npm run studio:engine -- inspect-recipe --recipe button-back
+npm run studio:engine -- set-recipe --recipe button-back --property radius --value 24
+npm run studio:engine -- set-recipe --recipe button-back --property radius --value 24 --apply
+npm run studio:engine -- set-recipe --recipe control-jelly --mode spelling --property height --value 52 --apply
+\`\`\`
+
+Zmiana przepisu działa przez \`elementStyles.<recipe>\` lub \`familyStyles.<mode>.<recipe>\`. Komponenty, których renderery mają jawną recepturę lub adapter starszego widoku przypisuje je na podstawie katalogu, dziedziczą zmianę. Narzędzie nie tworzy duplikatu atomu, nie skanuje DOM i nie zgaduje nazwy elementu.
+
+**Istotne:** nie oznacza to zakończenia migracji 41 widoków do deklaratywnych kontraktów. Indywidualne zmiany niezarejestrowanych instancji nadal wymagają migracji widoku.

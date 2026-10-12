@@ -3,7 +3,7 @@ export const STUDIO_SECTIONS=[
  ['start','Start','Wybierz zadanie i poznaj zakres zmiany.','Przegląd','home'],
  ['components','Edytuj ekran','Wybierz widok, stan i element (np. PIN, profil, przycisk). Zakres wspólny zmienia powiązane ekrany; wyjątek dotyczy jednego widoku.','Ekrany','grid'],
  ['views','Mapa ekranów','Sprawdź istniejące przejścia i otwórz element w edytorze.','Ekrany','flow'],
- ['builder','Biblioteka i próbki','Przepisy zmieniają wspólne elementy. Próbka na płótnie jest prototypem; jej zapis nie zastępuje ekranu gry.','Ekrany','layers'],
+ ['builder','Biblioteka klocków v2','Rodziny, grupy i atomy pochodzą z działających ekranów. Każdy klocek ma dokładnie ten sam podgląd w bibliotece i w edytorze.','Ekrany','layers'],
  ['colors','Kolory i odstępy','Tokeny są wspólne. Sprawdź kilka trybów po zmianie.','Styl','palette'],
  ['fonts','Typografia','Role fontów działają globalnie; treść konkretnego napisu edytuj na ekranie.','Styl','type'],
  ['assets','Słowa, grafiki i zasady','Edytuj opublikowaną bazę i przypisania. Nowe hasła przygotuj w kolejce słów.','Treści','image'],

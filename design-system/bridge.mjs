@@ -1,3 +1,5 @@
+import {runtimeLevel,runtimeRendererReady} from '../shared/runtime-blocks.mjs';
+import {screenReady} from '../shared/screen-readiness.mjs';
 import {triggerSurfaceEffects} from '../shared/surface-effects.mjs';
 import {animateStateChange} from '../shared/state-motion.mjs';
 import {collectScreenCopy} from '../shared/screen-copy.mjs';
@@ -18,6 +20,7 @@ if (studio) {
 }
 
 let copyScanning=false;
+let registryReady=Promise.resolve();
 let registry, inspecting = false, showHighlight = true, selection = null;
 let items = new Map(), actions = new Map(), reportTimer, overlay;
 const temporaryVisibility = new Map();
@@ -46,33 +49,15 @@ const gates = node => {
 const revealable = node => gates(node).length>0&&gates(node).every(([selector])=>app()?.querySelector(selector));
 const blockedByDialog = node => [...document.querySelectorAll('dialog[open]')].some(dialog=>!dialog.contains(node)&&node!==app());
 
-const exposed = item => {
-  if(item.id==='layout-root'||item.kind==='background')return true;
-  const r=item.node.getBoundingClientRect();
-  for(const x of [.2,.5,.8])for(const y of [.2,.5,.8]){
-    const px=r.left+r.width*x,py=r.top+r.height*y;
-    if(px<0||py<0||px>=innerWidth||py>=innerHeight)continue;
-    const hit=document.elementFromPoint(px,py);
-    if(hit&&(item.node.contains(hit)||hit.contains(item.node)))return true;
-  }
-  return false;
-};
 const caption = node => (node.getAttribute('aria-label') || node.getAttribute('alt') || node.querySelector('legend,h1,h2,h3,.setup-title')?.textContent || node.textContent || '').replace(/\s+/g,' ').trim().slice(0,55);
 
 function collect() {
   const result = new Map();
   if (!registry || !app()) return result;
   app().dataset.dsElement='layout-root';app().dataset.dsKind='container';
-  result.set('layout-root',{id:'layout-root',component:'layout',index:-1,label:'Cały ekran',node:app()});
+  result.set('layout-root',{id:'layout-root',component:'layout',index:-1,label:'Cały ekran',kind:'container',recipe:'layout',blockId:'screen-'+document.documentElement.dataset.dsView,node:app()});
   const mapped=annotateElements(app(),window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView);
   for(const item of mapped)result.set(item.id,item);
-  for (const component of registry.components.filter(c=>!c.fine)) {
-    [...document.querySelectorAll(component.selector)].filter(node => (app().contains(node)||node.matches('dialog'))&&!isLayoutWrapper(node)).forEach((node,index) => {
-      const existing=[...result.values()].find(row=>row.node===node);
-      if(existing){if(!['timer','meter','toggle','key','background','icon','image','text'].includes(existing.kind))existing.component=component.id;existing.index=index;}
-      else {const id=`${component.id}-${index}`;node.dataset.dsElement=id;result.set(id,{id,component:component.id,index,label:caption(node),node,kind:'container',depth:0,parent:'layout-root'});}
-    });
-  }
   // Resolve parents after every family has been mapped, including legacy containers.
   const byNode=new Map([...result.values()].map(item=>[item.node,item]));
   let order=0;
@@ -87,6 +72,7 @@ function collect() {
     item.depth=0;const seen=new Set([item.id]);let parent=result.get(item.parent);
     while(parent&&!seen.has(parent.id)){seen.add(parent.id);item.depth++;parent=result.get(parent.parent);}
   }
+  for(const item of result.values())item.level=runtimeLevel(item,[...result.values()]);
   return result;
 }
 
@@ -135,7 +121,7 @@ function selectedDetails() {
   const margins=(parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0)+(parseFloat(style.marginLeft)||0)+(parseFloat(style.marginRight)||0);
   const siblings=[...items.values()].filter(row=>row.parent===item.parent&&visible(row.node)).sort((a,b)=>(a.order||0)-(b.order||0)),previous=siblings[siblings.findIndex(row=>row.id===item.id)-1],previousRect=previous?.node.getBoundingClientRect(),horizontal=parentStyle?.display==='flex'&&parentStyle.flexDirection.startsWith('row');
   const before=previousRect?Math.max(0,horizontal?rect.left-previousRect.right:rect.top-previousRect.bottom):0;
-  return {state:item.state||document.documentElement.dataset.dsComponentState||'default',visible:visible(item.node),editableText:item.kind==='text'&&textNodes.length===1?(item.node.dataset.dsOriginalText||textNodes[0].textContent.trim()):null,id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,mode:item.mode,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),layoutSpacing:{parentId:item.parent,before,gap:parentGap,source:parentGap?'gap kontenera':margins?'margines elementu':'układ naturalny'},metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
+  return {state:item.state||document.documentElement.dataset.dsComponentState||'default',visible:visible(item.node),editableText:item.kind==='text'&&textNodes.length===1?(item.node.dataset.dsOriginalText||textNodes[0].textContent.trim()):null,id:item.id,component:item.component,kind:item.kind,recipe:item.recipe,blockId:item.blockId,level:item.level,mode:item.mode,nativeVariant,index:item.index,label:item.label,parents,actions:controls(item),rect:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},layoutSpacing:{parentId:item.parent,before,gap:parentGap,source:parentGap?'gap kontenera':margins?'margines elementu':'układ naturalny'},metrics:{width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor},visual:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item)};
 }
 let dialogOutline;
 function paintHighlight() {
@@ -157,23 +143,39 @@ function paintHighlight() {
   }
   document.body.append(overlay);
 }
+function itemMetrics(node){const style=getComputedStyle(node),rect=node.getBoundingClientRect();return {width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor,opacity:Number(style.opacity),fontFamily:style.fontFamily};}
+
 function report() {
   clearTimeout(reportTimer);
   if(copyScanning)emit({type:'copy-list',rows:collectScreenCopy(app())});
   items = collect();
   applyVisibility();
   paintHighlight();
-  emit({type:'inventory',screen:app()?.dataset.view,viewId:document.documentElement.dataset.dsView,rendered:Boolean(app()?.querySelector('button,input,dialog')&&!app()?.querySelector('.loading')),items:[...items.values()].map(({node,...item})=>({...item,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
+  if(libraryTarget)presentLibrary();
+  emit({type:'inventory',schemaVersion:2,screen:app()?.dataset.view,viewId:document.documentElement.dataset.dsView,rendered:Boolean(runtimeRendererReady(app())&&document.fonts.status==='loaded'&&app()?.querySelector('button,input,dialog')),items:[...items.values()].map(({node,...item})=>({...item,metrics:itemMetrics(node),editableText:item.kind==='text'&&[...node.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim()).length===1?(node.dataset.dsOriginalText||node.textContent.trim()):null,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);
   reportTimer=setTimeout(report,70);
 }
 let focusVersion=0;
+// scrollIntoView also scrolls containers around an iframe. Keep selection local
+// so choosing a library block cannot move its toolbar out of the panel.
+function scrollElementLocally(node){
+  for(let ancestor=node.parentElement;ancestor&&ancestor!==document.body;ancestor=ancestor.parentElement){
+    const style=getComputedStyle(ancestor),rect=node.getBoundingClientRect(),box=ancestor.getBoundingClientRect();
+    if(/auto|scroll/.test(style.overflowY)&&ancestor.scrollHeight>ancestor.clientHeight&&(rect.top<box.top||rect.bottom>box.bottom))ancestor.scrollTop+=rect.top-box.top-(ancestor.clientHeight-rect.height)/2;
+    if(/auto|scroll/.test(style.overflowX)&&ancestor.scrollWidth>ancestor.clientWidth&&(rect.left<box.left||rect.right>box.right))ancestor.scrollLeft+=rect.left-box.left-(ancestor.clientWidth-rect.width)/2;
+  }
+  const rect=node.getBoundingClientRect();
+  if(rect.top<0||rect.bottom>innerHeight)window.scrollTo({top:scrollY+rect.top-Math.max(0,(innerHeight-rect.height)/2),behavior:'instant'});
+}
 async function focusItem(message) {
   const version=++focusVersion;
+  await designReady;await registryReady;
+  if(version!==focusVersion)return;
   items=collect();
-  const find=()=>message.selector?[...items.values()].find(row=>row.node.matches(message.selector)):message.id?items.get(message.id):[...items.values()].find(row=>row.component===message.component&&row.index>=0&&(visible(row.node)||revealable(row.node)));
+  const find=()=>message.selector?[...items.values()].find(row=>row.node.matches(message.selector)):message.id?items.get(message.id)||[...items.values()].find(row=>message.blockId&&row.blockId===message.blockId):[...items.values()].find(row=>row.component===message.component&&row.index>=0&&(visible(row.node)||revealable(row.node)));
   let item=find();
   if(!item&&message.component==='layout')item=items.get('layout-root');
   if(!item){if(app()?.querySelector('button,input')&&!app()?.querySelector('.loading'))emit({type:'missing',component:message.component});return;}
@@ -184,7 +186,7 @@ async function focusItem(message) {
     applyVisibility();
     const click=(input,force=false)=>{if(!input||input.checked&&!force)return;const previous=inspecting;inspecting=false;(input.closest('label')||input).click();inspecting=previous;};
     if(!item.node.closest('[data-category-panel]')&&app()?.querySelector('[name="englishEditAction"]:enabled'))click(app().querySelector('[name="englishEditAction"][value="cancel"]'),true);
-    for(const [selector]of gates(item.node)){
+    for(const [selector]of visible(item.node)?[]:gates(item.node)){
       // A selected category scope already permits the time/count controls.
       if(selector.includes('spellingScope')&&selector.includes('all')&&!app()?.querySelector('[name="spellingScope"][value="dictation"]:checked'))continue;
       click(app()?.querySelector(selector),!visible(item.node));
@@ -195,25 +197,34 @@ async function focusItem(message) {
       if(close){const previous=inspecting;inspecting=false;close.click();inspecting=previous;}else dialog.close();
     }
     const radio=item.node.matches('label')?item.node.querySelector('input[type=radio]'):item.node.closest('label')?.querySelector('input[type=radio]');
-    if(radio&&!radio.disabled)click(radio);
+    if(radio&&!radio.disabled&&!visible(item.node))click(radio);
     // State adapters may rebuild the DOM; resolve the same stable identity again.
     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
     if(version!==focusVersion)return;
-    items=collect();item=items.get(id);
+    items=collect();item=items.get(id)||[...items.values()].find(row=>row.blockId===message.blockId);
     if(item){
       const deadline=performance.now()+1200;
-      while((!visible(item.node)||item.node.closest('label')?.querySelector('input')?.disabled)&&performance.now()<deadline){await new Promise(resolve=>requestAnimationFrame(resolve));if(version!==focusVersion)return;}
-      if(visible(item.node))item.node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+      while(!visible(item.node)&&revealable(item.node)&&performance.now()<deadline){await new Promise(resolve=>requestAnimationFrame(resolve));if(version!==focusVersion)return;}
+      if(visible(item.node))scrollElementLocally(item.node);
     }
   }
-  if(!item||!visible(item.node)||blockedByDialog(item.node)||message.reveal&&!exposed(item)){
+  if(!item){
     emit({type:'missing',component:message.component,message:'Element nie jest dostępny w tym stanie. Wybierz jego kontener lub właściwy ekran.'});return;
   }
   selection=item.id;report();
   emit({type:'focused',explicit:true,...selectedDetails()});
 }
 
+let libraryTarget,libraryIsolated=false;
+function presentLibrary(){
+ for(const node of document.querySelectorAll('[data-ds-library-hidden]'))node.removeAttribute('data-ds-library-hidden');
+ const item=items.get(libraryTarget);if(!item)return;
+ if(libraryIsolated)for(const row of items.values())if(row.id!=='layout-root'&&!item.node.contains(row.node)&&!row.node.contains(item.node))row.node.dataset.dsLibraryHidden='true';
+ const rect=item.node.getBoundingClientRect();emit({type:'library-preview',id:item.id,blockId:item.blockId,rect:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},selection:selectedDetails()});
+}
+
 if (studio) {
+  const maskStyle=document.createElement('style');maskStyle.textContent='[data-ds-library-hidden]{visibility:hidden!important}';document.head.append(maskStyle);
   document.addEventListener('pointerdown',()=>emit({type:'preview-interaction'}),true);
   document.addEventListener('focusin',()=>emit({type:'preview-focus'}));
   document.addEventListener('click',event=>{
@@ -236,6 +247,8 @@ if (studio) {
   window.addEventListener('message',async event=>{
     if(event.origin!==location.origin || event.source!==parent || event.data?.channel!=='mala-nauka-studio')return;
     const message=event.data;
+    if(message.type==='inventory-request'){await designReady;await screenReady(app());report();return;}
+    if(message.type==='library-preview'){await focusItem({...message,reveal:true});libraryTarget=selection;libraryIsolated=message.isolated===true;presentLibrary();return;}
     if(message.type==='surface-demo'){if(message.event!=='continuous')triggerSurfaceEffects(app(),message.event);return;}
     if(message.type==='state-demo'){const node=app();if(node)animateStateChange(node,node.getBoundingClientRect().height*.8);return;}
     if(message.type==='preview-pause'){for(const animation of document.getAnimations())if(message.paused)animation.pause();else if(animation.playState==='paused')animation.play();return;}
@@ -286,7 +299,8 @@ if (studio) {
     if(message.type==='reset-visibility'){temporaryVisibility.clear();report();}
     if(message.type==='reset-preview'){temporaryVisibility.clear();selection=null;report();}
   });
-  registry=await (await fetch(new URL('./registry.json',import.meta.url))).json();
+  registryReady=fetch(new URL('./registry.json',import.meta.url)).then(response=>response.json()).then(value=>{registry=value;});
+  await registryReady;
   await designReady;
   if(app())new MutationObserver(records=>{if(records.some(record=>record.type==='childList'||record.attributeName!=='style'))scheduleReport();}).observe(app(),{childList:true,subtree:true,attributes:true,attributeFilter:['class','open','checked','aria-pressed','data-state']});
   report();emit({type:'ready',view:query.get('viewId')});

@@ -13,7 +13,12 @@ test('every offline precache request resolves to an existing file or entry direc
   const catalog=JSON.parse(await readFile(new URL('../dist/design-system/assets.json',import.meta.url),'utf8'));
   const remotePaths=new Set([...catalog.assets.map(row=>row.path),'design-system/rules.json','design-system/config.json','design-system/assets.json',...Array.from({length:8},(_,i)=>`data/words-0${i+1}.json`)]);
   if(deployment.consumer)assert.match(deployment.contentSource,/^https:\/\/raw\.githubusercontent\.com\/marcinhubicki-coder\/mala-nauka\/[0-9a-f]{40}\/$/);
-  assert.ok(core.length+assets.length > 650);
+  // Offline bootstrap deliberately excludes the 700+ asset archive. Core app
+  // modules stay available offline; lesson illustrations are cached on demand.
+  assert.ok(core.length>0);
+  assert.ok(catalog.assets.length>650);
+  assert.ok(assets.length>10 && assets.length<50, 'Keep installation asset requests bounded');
+  assert.ok(assets.length < catalog.assets.length/10);
   for (const request of [...core,...assets]) {
     if(/^https?:/.test(request)){
       assert.ok(deployment.consumer,'Remote precache only belongs to a consumer build');

@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from './behaviors.mjs';
 import {migrateAtomicConfig} from './atomic-config.mjs';
 import {normalizeMission} from './mission-parts.mjs';
 import {playScreenBlob} from './screen-blob-transition.mjs';
@@ -21,7 +22,7 @@ export function prepareScreenChange(app,nextView){
  pendingOutgoing={from:document.documentElement.dataset.dsView,node:app.cloneNode(true),background:getComputedStyle(document.body).background};
 }
 export function applyDesign(value) {
-  value=migrateAtomicConfig(value);
+  value=resolveBehaviorConfig(migrateAtomicConfig(value));
   const nextSignature=JSON.stringify(value);if(nextSignature===designSignature)return;designSignature=nextSignature;
   const css = configCSS(value);
   let style = document.getElementById('ds-tokens');

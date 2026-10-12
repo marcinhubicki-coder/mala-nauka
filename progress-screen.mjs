@@ -52,7 +52,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   function tabs(){return '<nav class="progress-modes" aria-label="Postępy według przygody">'+Object.keys(NAMES).map(id=>'<button type="button" data-progress="mode" data-mode="'+id+'" class="progress-mode '+(mode===id?'is-active':'')+'" aria-pressed="'+(mode===id)+'" aria-label="'+NAMES[id]+'">'+glyph(id)+(mode===id?'<span>'+NAMES[id]+'</span>':'')+'</button>').join('')+'</nav>';}
   function header(title,sub=false){return pageHeading(title,{className:'progress-header',backClass:'progress-back',...(sub?{progress:'dashboard'}:{action:backAction})});}
   function render(){
-    root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=screen;
+    root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=screen==='collection'&&mode!=='spelling'?'sessions':screen;
     if(screen!=='dashboard'){renderSubpage();return;}
     const spelling=mode==='spelling';
     const sums=spelling?knowledge:{mastered:0,learning:0,review:0};

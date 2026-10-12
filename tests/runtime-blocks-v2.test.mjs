@@ -50,3 +50,10 @@ test('a provisional wizard is never accepted as the final block inventory',()=>{
  assert.equal(runtimeRendererReady({dataset:{view:'home'},querySelector:()=>null}),true);
  assert.equal(runtimeRendererReady({dataset:{view:'home'},querySelector:()=>({})}),false);
 });
+
+test('library includes revealable and deliberately hidden blocks, excluding dormant loaders',()=>{
+ const items=[{id:'layout-root',blockId:'screen-home',kind:'container'}, {id:'host',parent:'layout-root',blockId:'block-host',kind:'container',visible:false}, {id:'choice',parent:'host',blockId:'block-choice',kind:'button',visible:false,revealable:true}, {id:'loader',parent:'layout-root',blockId:'block-loader',kind:'icon',visible:false}, {id:'hidden',parent:'layout-root',blockId:'block-hidden',kind:'button',visible:false,configuredVisibility:'hidden'}];
+ const records=runtimeCatalog({views:[{id:'home',name:'Start'}]},new Map([['home',{items}]]));
+ assert.deepEqual(records.map(r=>r.id),['screen-home','block-host','block-choice','block-hidden']);
+ assert.ok(records.flatMap(r=>r.children).every(id=>records.some(r=>r.id===id)));
+});

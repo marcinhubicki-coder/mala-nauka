@@ -36,14 +36,20 @@ export function runtimeCatalog(registry,inventories=new Map()){
  const records=new Map();
  for(const view of registry.views){
   const items=inventories.get(view.id)?.items||[];
-  for(const item of items){
+  // Match Edit Screen: include painted/revealable blocks and deliberate hidden
+  // overrides, plus their actual ancestors. Dormant loaders are not samples.
+  const byId=new Map(items.map(item=>[item.id,item])),included=new Set();
+  for(const item of items)if(item.id==='layout-root'||item.visible!==false||item.revealable||['hidden','removed'].includes(item.configuredVisibility)){
+   let current=item;const seen=new Set();while(current&&!seen.has(current.id)){seen.add(current.id);included.add(current.id);current=byId.get(current.parent);}
+  }
+  for(const item of items.filter(item=>included.has(item.id))){
    const id=item.blockId||(item.id==='layout-root'?'screen-'+view.id:item.recipe);
    if(!id)continue;
    let record=records.get(id);
    if(!record){record={id,recipe:item.recipe||'layout',kind:item.kind||'container',name:item.id==='layout-root'?view.name:PART_BY_ID[item.recipe]?.name||item.label,level:runtimeLevel(item,items),children:[],uses:[]};records.set(id,record);}
    const use={view:view.id,id:item.id,blockId:id,label:item.label,mode:item.mode||view.mode,state:item.state||'default',visible:item.visible,revealable:item.revealable};
    if(!record.uses.some(u=>u.view===use.view&&u.id===use.id))record.uses.push(use);
-   for(const child of items.filter(row=>row.parent===item.id)){const childId=child.blockId||child.recipe;if(childId&&!record.children.includes(childId))record.children.push(childId);}
+   for(const child of items.filter(row=>row.parent===item.id&&included.has(row.id))){const childId=child.blockId||child.recipe;if(childId&&!record.children.includes(childId))record.children.push(childId);}
   }
  }
  return [...records.values()];

@@ -1496,7 +1496,7 @@
         "viewId": "spelling-settings",
         "tag": "h2",
         "original": "Twoja mała misja",
-        "text": "Twoja spokojna przygoda"
+        "text": "Twoja mała misja"
       }
     ],
     "rules": {
@@ -4400,7 +4400,7 @@
       "viewId": "spelling-settings",
       "tag": "h2",
       "original": "Twoja mała misja",
-      "text": "Twoja spokojna przygoda"
+      "text": "Twoja mała misja"
     }
   ],
   "elementStyles": {

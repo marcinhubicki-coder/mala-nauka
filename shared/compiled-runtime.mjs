@@ -1,7 +1,7 @@
 // Small gameplay adapter for statically declared view contracts.
 // The costly DOM classifier, shape hashing and element inventory are Studio-only.
 import {viewContract,validateViewContract} from './view-contracts.mjs';
-import {visualValue,iconSVG} from './element-system.mjs';
+import {visualValue,iconSVG} from './element-styles.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {syncElementSurface,syncScreenSurface} from './surface-effects.mjs';
 import {rememberPresence} from './state-motion.mjs';

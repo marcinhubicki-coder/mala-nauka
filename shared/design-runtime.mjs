@@ -14,12 +14,14 @@ import {syncElementMotion} from './element-motion.mjs';
 import {visualValue} from './element-styles.mjs';
 import {hasViewContract} from './view-contracts.mjs';
 import {applyCompiledView} from './compiled-runtime.mjs';
+import {applyHomeGeometry} from './home-layout.mjs';
 const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
 const studioRuntime=new URLSearchParams(location.search).has('studio');
 let inspectorLoader;
 const updateView=(root,settings,view)=>{
  if(!root||!view)return;
+ if(view==='home')applyHomeGeometry(root,settings);
  if(!studioRuntime&&hasViewContract(view))return applyCompiledView(root,settings,view);
  // Legacy views migrate gradually. The editor classifier downloads only when
  // an unported view (or Studio inspection) genuinely needs it.

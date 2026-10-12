@@ -23,15 +23,16 @@ test('game and mixer share the saved levels; Save forwards the complete design',
  const oldLocation=globalThis.location;globalThis.location={origin:'https://studio.test'};
  try{lab.persist();lab.persist();assert.equal(saved,1);assert.deepEqual(message.config.sound,lab.settings);assert.equal(message.assets.revision,7);}finally{globalThis.location=oldLocation;}
 });
-test('audio starts only after a gesture, respects pause and player mute, and live levels reuse sources',async()=>{
+test('audio starts after a gesture, continues during pauses and setup, and respects player mute',async()=>{
  const ctx=fakeContext(),engine=new SoundPreviewEngine({contextFactory:()=>ctx,workerFactory:null}),controller=new GameSoundController(engine);
  controller.configure(normalizeSoundSettings({mix:[0,0,0,0,0,0,0,45,0,0]}));controller.setScene({playing:true,paused:false});assert.equal(engine.ctx,null);
  await controller.unlock();await tick();assert.equal(engine.channels.size,1);
  const sources=ctx.calls.sources.length;
  controller.configure({...controller.settings,ambientVolume:20});await tick();assert.equal(ctx.calls.sources.length,sources);
- controller.cue('correct');await tick();assert.equal(engine.voices.size,1);assert.ok(engine.ambientBus.gain.value<1);
- controller.setScene({playing:true,paused:true});assert.equal(engine.channels.size,0);assert.equal(engine.voices.size,1,'pause bed without truncating answer');
+ controller.cue('correct');await tick();assert.equal(engine.voices.size,1);assert.equal(engine.ambientBus.gain.value,1,'default cues do not interrupt music');
+ controller.setScene({playing:true,paused:true});assert.equal(engine.channels.size,1);assert.equal(engine.voices.size,1,'pause keeps the same background and answer');
  controller.setScene({playing:true,paused:false});await tick();assert.equal(engine.channels.size,1);
+ controller.setScene({view:'home',playing:false,paused:false});await tick();assert.equal(ctx.calls.sources.length,sources+1,'same-zone setup and pause reuse the loop sources');
  controller.setPreference(false);assert.equal(engine.channels.size,0);assert.equal(engine.voices.size,0);
  controller.cue('correct');await tick();assert.equal(engine.voices.size,0);await engine.close();
 });

@@ -1,3 +1,4 @@
+import {gameSound} from '../shared/sound-runtime.mjs';
 import {jellyChoices,mountJellies} from './studio-jelly.mjs';
 import {playScreenBlob} from '../shared/screen-blob-transition.mjs';
 import {previewScale} from './studio-ui.mjs';
@@ -133,7 +134,7 @@ export class StudioMotion {
   if(button.id==='control-reset-all'){const entries=controlMotionEntries('spring').map(([path])=>{const [,group,key]=path.split('.');return[path,this.getBase().tokens[group][key]];});this.applyEntries(entries);this.endEdit?.();this.render();return;}
   if(button.id==='control-replay'){if(this.controlPreview==='englishFlip'){for(const frame of this.frames())this.send(frame,'word-flip-demo',{loop:this.controlLoop});return;}for(const frame of this.frames()){this.ready.delete(frame.dataset.readyKey);frame.src=this.url(this.registry.views.find(view=>view.id===frame.dataset.motionView),{animate:this.controlPreview==='result'});}this.updateStatus();return;}
   if(button.dataset.tokenReset!==undefined){const row=button.closest('[data-token-control]'),{tokenGroup:group,tokenKey:key}=row.dataset;this.edit(`tokens.${group}.${key}`,this.tokenSourceValue(this.getBase(),group,key));this.endEdit?.();return;}
-  if(button.id==='motion-play'){if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
+  if(button.id==='motion-play'){if(event.isTrusted){gameSound.setScene({preview:true});void gameSound.unlock({gesture:true});}if(this.playing)this.stop();else void this.play().catch(error=>{this.stop();this.updateStatus('Nie udało się odtworzyć przejścia.');this.notice(error.message);});}
   if(button.id==='motion-first'||button.id==='motion-second'){this.stop();void this.show(button.id==='motion-first'?this.from:this.to,false);}
   if(button.dataset.motionPair)this.choosePair(...button.dataset.motionPair.split(','));if(button.dataset.motionReset)this.pairEdit(button.dataset.motionReset,this.saved[button.dataset.motionReset]);if(button.id==='motion-reset-all'){this.edit(`motion.transitions.${pairKey(this.from,this.to)}`,{...this.saved});this.endEdit?.();}if(button.id==='motion-reverse')this.choosePair(this.to,this.from);
  }

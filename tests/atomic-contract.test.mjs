@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {PARTS,PART_BY_ID,structureCatalog,partVariants,partStates,PAGE_TEMPLATES,composeTemplate} from '../shared/structure-model.mjs';
-import {renderHomeScreen,renderHomeModeCard,renderHomeProgress,renderHomeSettings} from '../home-screen.mjs';
+import {renderHomeScreen,renderHomeModeCard,renderHomeProgress,renderHomeSettings,renderHomeToday,renderHomeLast,renderHomeModes,renderHomeWelcome} from '../home-screen.mjs';
+import {wordMarkup} from '../spelling/word-reveal.mjs';
+import {backButton,BACK_ARROW} from '../shared/navigation-parts.mjs';
 import {partSample} from '../shared/part-samples.mjs';
 import {MISSION_SIZE,missionIllustration} from '../shared/mission-parts.mjs';
 import {progressCollectionMarkup,collectionWordMarkup} from '../progress-screen.mjs';
@@ -32,6 +34,35 @@ test('decorative symbols are atomic and mode tiles remain composed groups in eve
  const stats=renderHomeProgress({today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę'},'left:0;top:0;width:100%;height:100%');assert.ok(partSample('container-home-stats').includes(stats.slice(stats.indexOf('>')+1)));
  for(const id of ['container-home-stat-icon','icon-home-stat-backing','icon-home-stat-symbol'])assert.equal(PART_BY_ID[id],undefined);
  for(const p of PARTS)if(p.level==='atom')assert.equal(p.children.length,0,p.id);
+});
+test('Home families and both stat blocks share their actual markup with the library',()=>{
+ const names={spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'},definitions=Object.fromEntries(Object.entries(names).map(([id,name])=>[id,{name}]));
+ assert.ok(partSample('family-home-modes').includes(renderHomeModes(definitions,undefined,'inset:0')));
+ assert.ok(partSample('family-home-welcome').includes(renderHomeWelcome({},'inset:0')));
+ assert.ok(partSample('container-home-stat').includes(renderHomeToday()));assert.ok(partSample('container-home-last').includes(renderHomeLast()));
+ assert.doesNotMatch(partSample('container-home-stat'),/0 pkt|Zagraj pierwszą rundę/);
+ assert.deepEqual(partStates(PART_BY_ID['button-home-settings']),['default']);
+});
+test('spelling question content is one masked text atom, with the picture outside its recipe',()=>{
+ const p=PART_BY_ID['text-spelling-word'],sample=partSample(p.id);
+ assert.deepEqual(p.children,[]);assert.ok(sample.includes(wordMarkup('kr_l')));
+ assert.doesNotMatch(sample,/<img|<image|image-mn-soap-picture/);
+ assert.match(wordMarkup('<kr_&l'),/&lt;kr/);assert.match(wordMarkup('<kr_&l'),/&amp;l/);
+ assert.equal(PART_BY_ID['text-spelling-word'].level,'atom');
+});
+test('navigation destinations share one atomic circle/arrow recipe and results have independent action slots',()=>{
+ for(const options of [{action:'home'},{action:'players'},{action:'result-back'},{progress:'dashboard'}]){const markup=backButton(options);assert.match(markup,/data-ds-recipe="button-back"/);assert.match(markup,/data-ds-atomic="true"/);assert.ok(markup.includes(BACK_ARROW));}
+ assert.equal(PART_BY_ID['button-back'].level,'atom');assert.deepEqual(partStates(PART_BY_ID['button-back']),['default']);
+ for(const id of ['button-result-back','container-result-actions','container-player-actions','family-player-shell','family-math-settings','family-game-settings','container-spelling-question','container-spelling-question-body'])assert.equal(PART_BY_ID[id],undefined,id);
+ for(const id of ['button-back','container-result-continue-rail','button-main'])assert.ok(PAGE_TEMPLATES.results.children.includes(id),id);
+});
+test('a bootstrap inventory cannot replace the screen/category requested in the editor',async()=>{
+ const {StudioPreview}=await import('../design-system/studio-preview.mjs'),oldLocation=globalThis.location;
+ globalThis.location={origin:'https://preview.test'};
+ try{const frame={dataset:{previewView:'home',initializingView:'home'},contentWindow:{}},preview=Object.create(StudioPreview.prototype);preview.frames=()=>[frame];preview.viewId='home';preview.registry={views:[{id:'home',screen:'home'}]};
+  preview.receive({origin:location.origin,source:frame.contentWindow,data:{channel:'mala-nauka-studio',type:'inventory',rendered:true,viewId:'players'}});
+  assert.equal(preview.viewId,'home');assert.equal(frame.dataset.previewView,'home');assert.equal(frame.dataset.initializingView,'home');
+ }finally{if(oldLocation===undefined)delete globalThis.location;else globalThis.location=oldLocation;}
 });
 test('mission has five content modes, five real setup uses and one common protrusion',()=>{
  const mission=structureCatalog(registry).find(p=>p.id==='image-mission');assert.equal(mission.uses.length,5);assert.ok(mission.uses.every(u=>u.view.endsWith('-settings')));

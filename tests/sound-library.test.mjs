@@ -23,7 +23,9 @@ test('loop seam is no sharper than the signal and continuous beds never fade to 
   assert.ok(samples.every(Number.isFinite),id);
   let maxDifference=0;for(let i=1;i<samples.length;i++)maxDifference=Math.max(maxDifference,Math.abs(samples[i]-samples[i-1]));
   assert.ok(Math.abs(samples[0]-samples.at(-1))<=maxDifference*1.05+.001,id);
-  if(['rain','stream','wind','leaves','waves','warmNoise','pad'].includes(id)){
+  // Stream bubbles and leaves are intentionally discrete sounds. Only beds
+  // with a continuous envelope must maintain energy at the loop boundary.
+  if(['rain','wind','waves','warmNoise','pad'].includes(id)){
    const rms=a=>Math.sqrt(a.reduce((n,x)=>n+x*x,0)/a.length);
    const seam=[...samples.slice(-1600),...samples.slice(0,1600)];
    assert.ok(rms(seam)>rms(samples)*.45,id+' has no silent seam');

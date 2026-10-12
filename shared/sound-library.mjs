@@ -1,3 +1,5 @@
+import {SOUND_ZONES,SOUND_COLLECTIONS,DEFAULT_AMBIENCE,ZONE_FIELDS,ZONE_MELODIES} from './sound-themes.mjs';
+export {SOUND_ZONES,SOUND_COLLECTIONS,DEFAULT_AMBIENCE,ZONE_FIELDS} from './sound-themes.mjs';
 // Original, procedural learning sounds. The same renderer powers Lab, WAV and PWA.
 export const SOUND_CUES=[
  ['tap','Kliknięcie','Miękki drewniany ton'],['toggle','Jelly','Wesołe odbicie'],
@@ -24,22 +26,25 @@ export const SOUND_PRESETS={
  dream:{label:'Miękki kosmos',mix:[0,0,0,0,0,0,0,12,36,42]},
  silence:{label:'Cisza',mix:Array(10).fill(0)}
 };
-export const SOUND_FIELDS={volume:[0,100],cueVolume:[0,100],ambientVolume:[0,100],energy:[0,100],tempo:[60,120],variation:[0,100],warmth:[0,100],ducking:[0,100],logoVolume:[0,100],loopSeconds:[24,180]};
-export const DEFAULT_SOUND_SETTINGS={enabled:true,volume:48,cueVolume:68,ambientVolume:45,ambientEnabled:true,quietMode:false,ambientPreset:'adventure',mix:[...SOUND_PRESETS.adventure.mix],energy:65,tempo:84,variation:70,warmth:65,ducking:60,logoEnabled:true,logoVolume:72,loopSeconds:72,cues:{},bindings:{}};
+export const SOUND_FIELDS={volume:[0,100],cueVolume:[0,100],ambientVolume:[0,100],energy:[0,100],tempo:[60,120],variation:[0,100],warmth:[0,100],ducking:[0,100],crossfadeMs:[800,6000],logoVolume:[0,100],loopSeconds:[24,180]};
+export const DEFAULT_SOUND_SETTINGS={enabled:true,volume:48,cueVolume:68,ambientVolume:45,ambientEnabled:true,quietMode:false,ambientPreset:'adventure',mix:[...SOUND_PRESETS.adventure.mix],energy:65,tempo:84,variation:70,warmth:65,ducking:0,crossfadeMs:2600,soundscape:'playground',ambientZone:'home',ambience:structuredClone(DEFAULT_AMBIENCE),logoEnabled:true,logoVolume:72,loopSeconds:72,cues:{},bindings:{}};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,Number(v)||0));
 export const CUE_FIELDS={volume:[0,150],duration:[50,250],pitch:[-12,12],attack:[1,80],wood:[0,100],bell:[0,100],pop:[0,100],air:[0,100]};
 export function cueSettings(id,settings={}){
- const row={volume:100,duration:100,pitch:0,attack:8,wood:100,bell:0,pop:['bubble','toggle'].includes(id)?100:0,air:0,...settings.cues?.[id]};
+ const row={volume:100,duration:100,pitch:0,attack:12,wood:68,bell:['correct','star','trophy','progress'].includes(id)?28:12,pop:['bubble','toggle','tap','next'].includes(id)?48:12,air:0,...settings.cues?.[id]};
  for(const [key,[min,max]]of Object.entries(CUE_FIELDS))row[key]=Math.round(clamp(row[key],min,max));
  return row;
 }
 export function normalizeSoundSettings(input={}){
+ input=input&&typeof input==='object'&&!Array.isArray(input)?input:{};
  const s={...DEFAULT_SOUND_SETTINGS,...(input&&typeof input==='object'&&!Array.isArray(input)?input:{})};
  for(const [key,[min,max]]of Object.entries(SOUND_FIELDS))s[key]=Math.round(clamp(s[key],min,max));
  for(const key of ['enabled','ambientEnabled','quietMode','logoEnabled'])s[key]=s[key]===true;
  if(!Object.hasOwn(SOUND_PRESETS,s.ambientPreset)&&s.ambientPreset!=='custom')s.ambientPreset='adventure';
  s.mix=Array.from({length:10},(_,i)=>Math.round(clamp(s.mix?.[i],0,100)));
  s.cues=Object.fromEntries(SOUND_CUES.filter(([id])=>s.cues?.[id]).map(([id])=>[id,cueSettings(id,s)]));
+ if(!Object.hasOwn(SOUND_COLLECTIONS,s.soundscape))s.soundscape='playground';if(!Object.hasOwn(SOUND_ZONES,s.ambientZone))s.ambientZone='home';
+ s.ambience=Object.fromEntries(Object.entries(DEFAULT_AMBIENCE).map(([zone,base])=>{const value=input.ambience?.[zone]||{},row={...base,...value,mix:[...(value.mix||base.mix)]};if(zone==='home'&&!input.ambience&&input.mix){row.mix=[...s.mix];row.ambientPreset=s.ambientPreset;for(const k of ['tempo','energy','variation','loopSeconds'])if(input[k]!==undefined)row[k]=s[k];}if(!Object.hasOwn(SOUND_COLLECTIONS,row.soundscape))row.soundscape=base.soundscape;row.mix=Array.from({length:10},(_,i)=>Math.round(clamp(row.mix[i],0,100)));for(const [key,[min,max]]of Object.entries(ZONE_FIELDS))row[key]=Math.round(clamp(row[key],min,max));return [zone,row];}));
  s.bindings=structuredClone(s.bindings&&typeof s.bindings==='object'&&!Array.isArray(s.bindings)?s.bindings:{});
  return Object.fromEntries(Object.keys(DEFAULT_SOUND_SETTINGS).map(key=>[key,s[key]]));
 }
@@ -57,6 +62,9 @@ export function validateSoundSettings(input){
   if(!SOUND_CUES.some(row=>row[0]===id)||!fields||Array.isArray(fields)||typeof fields!=='object')throw Error('Nieznane brzmienie.');
   for(const [key,value]of Object.entries(fields)){const limits=CUE_FIELDS[key];if(!limits||!Number.isInteger(value)||value<limits[0]||value>limits[1])throw Error('Niepoprawne ustawienie brzmienia: '+key);}
  }
+ if(!Object.hasOwn(SOUND_COLLECTIONS,s.soundscape)||!Object.hasOwn(SOUND_ZONES,s.ambientZone))throw Error('Nieznany zestaw lub strefa dźwięków.');
+ if(!s.ambience||typeof s.ambience!=='object'||Array.isArray(s.ambience))throw Error('Niepoprawne motywy tła.');
+ for(const [zone,row]of Object.entries(s.ambience)){if(!Object.hasOwn(SOUND_ZONES,zone)||!row||Array.isArray(row)||typeof row!=='object'||Object.keys(row).some(k=>!['soundscape','ambientPreset','mix',...Object.keys(ZONE_FIELDS)].includes(k)))throw Error('Nieznana strefa lub parametr motywu.');if(!Object.hasOwn(SOUND_COLLECTIONS,row.soundscape)||(!Object.hasOwn(SOUND_PRESETS,row.ambientPreset)&&row.ambientPreset!=='custom')||!Array.isArray(row.mix)||row.mix.length!==10||row.mix.some(v=>!Number.isInteger(v)||v<0||v>100))throw Error('Niepoprawny miks strefy.');for(const [key,[min,max]]of Object.entries(ZONE_FIELDS))if(!Number.isInteger(row[key])||row[key]<min||row[key]>max)throw Error('Niepoprawny parametr strefy: '+key);}
  if(!s.bindings||typeof s.bindings!=='object'||Array.isArray(s.bindings))throw Error('Niepoprawna mapa dźwięków.');
  let count=0;
  for(const [view,rows]of Object.entries(s.bindings)){
@@ -67,19 +75,23 @@ export function validateSoundSettings(input){
  }
  return input;
 }
+export function ambienceForZone(settings,zone='home'){
+ const s=normalizeSoundSettings(settings),theme=s.ambience[zone]||s.ambience.home;
+ return {...s,...theme,volume:s.volume,ambientVolume:s.ambientVolume*theme.volume/100,ambientZone:zone};
+}
+export function ambienceKey(settings){return [settings.ambientZone,settings.soundscape,settings.tempo,settings.variation,settings.energy,settings.quietMode,settings.loopSeconds].join(':');}
 function random(seed){let x=seed>>>0;return ()=>{x=(1664525*x+1013904223)>>>0;return x/4294967296;};}
 const TAU=Math.PI*2;
 const NOTES=[293.6648,329.6276,369.9944,440,493.8833,587.3295]; // D major pentatonic
 const CUE_NOTES={
- tap:[[440,0,.09,.21]],toggle:[[440,0,.10,.21],[587.33,.06,.13,.18]],
- correct:[[587.33,0,.17,.23],[739.99,.10,.22,.21],[880,.23,.26,.18]],
- incorrect:[[440,0,.18,.16],[369.99,.14,.24,.13]],
- hint:[[493.88,0,.18,.17],[659.25,.15,.24,.17]],next:[[440,0,.10,.16],[587.33,.08,.16,.15]],
- star:[[587.33,0,.14,.2],[739.99,.10,.17,.2],[880,.22,.25,.18]],
- trophy:[[440,0,.23,.2],[587.33,.14,.24,.21],[739.99,.28,.26,.2],[880,.44,.40,.19]],
- roundStart:[[440,0,.16,.21],[493.88,.12,.16,.2],[587.33,.25,.27,.21]],
- roundEnd:[[739.99,0,.2,.17],[659.25,.15,.22,.16],[587.33,.3,.35,.19],[293.66,.3,.38,.13]],
- progress:[[587.33,0,.18,.18],[739.99,.10,.20,.12]],bubble:[[220,0,.16,.18],[587.33,.045,.18,.09]]
+ tap:[[440,0,.08,.13],[587.33,.035,.10,.06]],toggle:[[392,0,.08,.14],[587.33,.055,.16,.13]],
+ correct:[[523.25,0,.13,.16],[659.25,.09,.16,.15],[783.99,.21,.26,.13]],
+ incorrect:[[392,0,.16,.13],[440,.15,.20,.10]],hint:[[493.88,0,.15,.13],[739.99,.12,.25,.12]],
+ next:[[392,0,.08,.12],[587.33,.07,.14,.12]],star:[[587.33,0,.12,.16],[739.99,.075,.14,.15],[987.77,.17,.26,.12]],
+ trophy:[[392,0,.17,.14],[523.25,.10,.18,.15],[659.25,.23,.20,.14],[783.99,.40,.39,.13]],
+ roundStart:[[392,0,.13,.15],[493.88,.085,.15,.14],[587.33,.22,.28,.15]],
+ roundEnd:[[739.99,0,.17,.12],[587.33,.12,.23,.13],[440,.27,.33,.12],[293.66,.27,.34,.09]],
+ progress:[[523.25,0,.14,.14],[783.99,.09,.22,.12]],bubble:[[196,0,.17,.12],[659.25,.06,.21,.07]]
 };
 function mallet(freq,x,duration,energy=.65,attack=.008){
  if(x<0||x>=duration)return 0;
@@ -88,7 +100,7 @@ function mallet(freq,x,duration,energy=.65,attack=.008){
 }
 export function generateCue(id,rate=16000,settings={}){
  const s=normalizeSoundSettings(settings),c=cueSettings(id,s),scale=c.duration/100,ratio=2**(c.pitch/12),notes=CUE_NOTES[id]||CUE_NOTES.tap,energy=s.quietMode ? .2 :s.energy/100;
- const out=new Float32Array(Math.ceil((Math.max(...notes.map(n=>n[1]+n[2]))+.08)*scale*rate)),rng=random(711);
+ const out=new Float32Array(Math.round(Math.ceil((Math.max(...notes.map(n=>n[1]+n[2]))+.08)*rate)*scale)),rng=random(711);
  for(let i=0;i<out.length;i++){
   const t=i/rate,u=t/scale;let v=0;
   for(const [freq,start,duration,level]of notes){
@@ -96,7 +108,7 @@ export function generateCue(id,rate=16000,settings={}){
    v+=c.wood/100*level*mallet(freq*ratio,x,d,energy,c.attack/1000);
    if(x>=0&&x<d)v+=c.bell/100*level*Math.min(1,x/(c.attack/1000))*Math.exp(-x*3/d)*Math.min(1,(d-x)/.04)*(Math.sin(TAU*freq*ratio*x)+.24*Math.sin(TAU*freq*ratio*2.76*x));
   }
-  v+=c.pop/100*.13*Math.sin(TAU*ratio*(300*u-630*u*u))*Math.sin(Math.PI*Math.min(1,u/.14))**2*Math.exp(-u*18);
+  v+=c.pop/100*.11*Math.sin(TAU*ratio*(240*u+950*u*u-2000*u*u*u))*Math.sin(Math.PI*Math.min(1,u/.14))**2*Math.exp(-u*18);
   v+=c.air/100*(rng()-.5)*.10*Math.min(1,t/(c.attack/1000))*Math.exp(-u*35);
   out[i]=Math.tanh(v)*.9;
  }
@@ -118,14 +130,15 @@ export function layerSeconds(id,settings={}){
 }
 export function generateLayer(id,seconds=layerSeconds(id),rate=16000,settings={}){
  const s=normalizeSoundSettings(settings),n=Math.max(32,Math.round(seconds*rate)),length=n/rate;
- const rng=random(731+SOUND_LAYERS.findIndex(row=>row[0]===id)*131+s.variation*17),variation=s.variation/100,energy=s.quietMode ? .15 :s.energy/100;
+ const kit=s.soundscape,zone=Object.keys(SOUND_ZONES).indexOf(s.ambientZone);
+ const rng=random(731+SOUND_LAYERS.findIndex(row=>row[0]===id)*131+s.variation*17+zone*211+Object.keys(SOUND_COLLECTIONS).indexOf(kit)*977),variation=s.variation/100,energy=s.quietMode ? .15 :s.energy/100;
  const overlap=Math.min(Math.round(rate*.8),Math.floor(n/4));
  const noise=new Float32Array(n+overlap);let low=0,mid=0,high=0;
  // Warm up filter state, avoiding a manufactured silence at the start.
  for(let i=0;i<2000;i++){const x=rng()*2-1;low=low*.998+x*.002;mid=mid*.965+x*.035;high=high*.55+x*.45;}
  for(let i=0;i<noise.length;i++){
   const x=rng()*2-1;low=low*.998+x*.002;mid=mid*.965+x*.035;high=high*.55+x*.45;
-  noise[i]=id==='rain'?mid*.65+high*.07:id==='stream'?mid*.65+low*1.2:id==='leaves'?mid*.45+high*.035:id==='waves'?mid*.8+low*1.4:low*2+mid*.15;
+  noise[i]=id==='rain'?mid*.35+high*.04:id==='stream'?low*.16+mid*.035:id==='leaves'?mid*.8+high*.16:id==='waves'?mid*.32+low*.8:low*.65+mid*.025;
  }
  const bed=seamlessLoop(noise,overlap),out=new Float32Array(n);
  const count=id==='birds'?Math.max(1,Math.floor(length*.4)):id==='stream'?Math.max(2,Math.floor(length*1.6)):id==='rain'?Math.max(2,Math.floor(length*2)):id==='leaves'?Math.max(1,Math.floor(length*.6)):6;
@@ -133,22 +146,23 @@ export function generateLayer(id,seconds=layerSeconds(id),rate=16000,settings={}
  const cyc=(freq,t)=>Math.sin(TAU*Math.round(freq*length)*t/length);
  const clock=t=>((t%length)+length)%length;
  const beats=Math.max(1,Math.round(length*s.tempo/60));
- const music=Array.from({length:beats},(_,i)=>{const phrase=Math.floor(i/16),degree=[0,2,3,1,4,2,1,3,0,1,4,3,2,1,3,0][i%16],varied=phrase&&i%4!==0?Math.min(5,Math.max(0,degree+(rng()<.5?-1:1))):degree;return {start:i*length/beats,duration:Math.min(length/beats*.86,.45+energy*.25),note:NOTES[varied],level:i%4===0?.13:(rng()<.18?0:.075+energy*.035)};});
+ const music=Array.from({length:beats},(_,i)=>{const phrase=Math.floor(i/16),degree=(ZONE_MELODIES[s.ambientZone]||ZONE_MELODIES.home)[i%16],varied=phrase&&i%4!==0?Math.min(5,Math.max(0,degree+(rng()<.5?-1:1))):degree;return {start:i*length/beats,duration:Math.min(length/beats*.86,.45+energy*.25),note:NOTES[varied],level:i%4===0?.13:(rng()<.18?0:.075+energy*.035)};});
  for(let i=0;i<n;i++){
   const t=i/rate,p=t/length,flow=.70+.15*Math.sin(TAU*p*2+.4)+.15*Math.sin(TAU*p*5+1.2);let v=0;
-  if(['rain','stream','wind','leaves','waves','warmNoise'].includes(id)){
+  if(['rain','stream','wind','waves','warmNoise'].includes(id)){
    const modulation=id==='waves'?.62+.28*Math.sin(TAU*p*3)+.1*Math.sin(TAU*p*7):id==='wind'?.7+.23*Math.sin(TAU*p*2)+.07*Math.sin(TAU*p*5):flow;
-   v=bed[i]*modulation*(id==='warmNoise'?.65:1);
+   v=bed[i]*modulation*(id==='warmNoise'?.4:id==='stream'?.35:1);
+   if(id==='waves'&&kit==='forest'){const wing=clock(t)%(length/9);v=wing<.7?bed[i]*Math.sin(Math.PI*wing/.7)**2*(.5+.5*cyc(9,t)):0;}
   }
   if(id==='crickets'){
    const phrase=clock(t+.34)%(length/7),burst=Math.sin(Math.PI*Math.min(1,phrase/.42))**2;
-   v=phrase<.42?.048*burst*cyc(2100,t)*(.65+.35*cyc(27,t)):bed[i]*.045;
+   v=phrase<.42?.035*burst*cyc(kit==='garden'?1700:2100,t)*(.65+.35*cyc(kit==='garden'?43:27,t)):0;
   }
   if(id==='pad'){
    const chords=[[146.8324,220,293.6648],[164.8138,246.9417,329.6276],[184.9972,220,369.9944],[146.8324,220,293.6648]];
    for(let c=0;c<4;c++){
     const a=TAU*(p-c/4),weight=Math.max(0,Math.cos(a))**2;
-    for(const freq of chords[c])v+=.045*weight*(cyc(freq,t)+.06*cyc(freq*2,t));
+    for(const freq of chords[(c+Math.max(0,zone))%4])v+=(kit==='garden'?.032:.04)*weight*(cyc(freq,t)+.035*cyc(freq*2,t));
    }
   }
   out[i]=v;
@@ -158,11 +172,12 @@ export function generateLayer(id,seconds=layerSeconds(id),rate=16000,settings={}
  const add=(start,duration,sample)=>{for(let j=Math.ceil(start*rate);j<(start+duration)*rate;j++){const i=j%n;out[i]+=sample(j/rate-start,i);}};
  if(['birds','stream','rain','leaves'].includes(id))for(const event of events)add(event.start,event.duration,(x,i)=>{
   const e=Math.sin(Math.PI*x/event.duration)**2;
-  if(id==='birds')return event.level*1.5*e*Math.sin(TAU*(event.freq*x+90*Math.sin(x*22+event.phase)))*(1-.22*Math.sin(x*55));
-  if(id==='leaves')return bed[i]*e*(.3+.8*variation);
-  return event.level*e*Math.sin(TAU*(event.freq*x-180*x*x))*Math.exp(-x*12);
+  if(id==='birds'){const species=kit==='forest'?Math.floor(event.phase)%3:0,freq=event.freq*(species===1?.73:species===2?1.17:1),syllable=species===1?18:species===2?38:22;return event.level*1.25*e*Math.sin(TAU*(freq*x+(kit==='garden'?45:90)*Math.sin(x*syllable+event.phase)))*(1-.22*Math.sin(x*55));}
+  if(id==='leaves')return bed[i]*e*(.4+.8*variation)+(kit==='forest'?.015*mallet(170+event.freq*.1,x,.075,.1):0);
+  return event.level*(id==='stream'?2:1)*e*Math.sin(TAU*(event.freq*x-420*x*x))*Math.exp(-x*(id==='stream'?8:12));
  });
- if(id==='chimes')for(const note of music)if(note.level)add(note.start,note.duration,x=>note.level*mallet(note.note,x,note.duration,energy));
+ if(id==='stream'&&kit==='garden')for(let k=0;k<6;k++)add(k*length/6+.2,.32,x=>.08*mallet(180+k%2*28,x,.32,.15)+.025*mallet(510,x,.19,.1));
+ if(id==='chimes')for(const note of music)if(note.level)add(note.start,note.duration,x=>note.level*mallet(note.note*(kit==='forest'?.5:1),x,note.duration,kit==='garden'?.1:energy,.012)+(kit==='garden'?note.level*.22*Math.sin(TAU*note.note*2.76*x)*Math.min(1,x/.02)*Math.exp(-x*14):0));
  for(let i=0;i<n;i++)out[i]=Math.tanh(out[i]*1.7);
  return out;
 }
@@ -315,60 +330,92 @@ export class SoundPreviewEngine{
   const voice=this.playBuffer(buffer,s.volume/100*s.cueVolume/100*cueSettings(id,s).volume/100*level*(s.quietMode ? .7 :1));
   this.duck(s);return voice;
  }
- playBuffer(buffer,level,offset=0){
-  const ctx=this.ctx,source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=buffer;gain.gain.value=level;
+ playBuffer(buffer,level,offset=0,rate=1){
+  const ctx=this.ctx,source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=buffer;if(source.playbackRate)source.playbackRate.value=rate;gain.gain.value=level;
   source.connect(gain);gain.connect(this.master);const voice={source,gain};
   if(this.voices.size>=8)this.release(this.voices.values().next().value);
   this.voices.add(voice);source.onended=()=>{source.disconnect();gain.disconnect();this.voices.delete(voice);};
   source.start(ctx.currentTime+.015,Math.min(buffer.duration-.001,Math.max(0,offset)));return voice;
  }
- async logo(config,timing,offset=0,settings={}){
+ async logo(config,timing,offset=0,settings={},rate=1){
   this.pauseLogo();const run=++this.logoRun,generation=this.voiceGeneration,ctx=await this.ready();
   if(run!==this.logoRun||generation!==this.voiceGeneration)return;
   const s=normalizeSoundSettings(settings);this.tune(s);
   const key='logo:'+JSON.stringify([config.turns,config.turnDuration,config.splashDuration,config.whiteDuration,timing,s.energy]);
   const buffer=this.buffer(key,()=>generateLogoSound(config,timing,16000,s));
   if(offset/1000>=buffer.duration)return;
-  this.logoVoice=this.playBuffer(buffer,s.volume/100*s.logoVolume/100*(s.quietMode ? .7 :1),offset/1000);return ctx;
+  this.logoVoice=this.playBuffer(buffer,s.volume/100*s.logoVolume/100*(s.quietMode ? .7 :1),offset/1000,rate);return ctx;
  }
  pauseLogo(){this.logoRun=(this.logoRun||0)+1;if(this.logoVoice&&this.ctx)this.release(this.logoVoice,.03);this.logoVoice=null;}
  async start(settings){
   const run=++this.generation;await this.ready();if(run!==this.generation)return;
-  this.playing=true;this.epoch=this.ctx.currentTime;
+  this.playing=true;this.epoch??=this.ctx.currentTime;
   try{await this.adjust(settings);}catch(error){if(run===this.generation)this.stopAmbience();throw error;}
  }
  async adjust(settings){
   if(!this.ctx)return;
   const s=normalizeSoundSettings(settings);this.settings=s;this.tune(s);if(!this.playing)return;
-  const levels=ambientLevels(s),key=s.tempo+':'+s.variation+':'+s.energy+':'+s.quietMode+':'+s.loopSeconds;
-  for(const [i,voice]of this.channels){
-   if(!levels[i]||voice.key!==key){this.release(voice);this.channels.delete(i);}
-   else voice.gain.gain.setTargetAtTime(levels[i],this.ctx.currentTime,.06);
+  const key=ambienceKey(s),levels=ambientLevels(s);
+  if(this.theme?.key===key){
+   // Returning while a different theme is preparing keeps the current theme.
+   if(this.preparing?.key!==key){this.themeRequest=(this.themeRequest||0)+1;this.preparing=null;}
+   for(const [i,voice]of this.channels){if(!levels[i]){this.release(voice);this.channels.delete(i);}else voice.gain.gain.setTargetAtTime(levels[i],this.ctx.currentTime,.08);}
+   const missing=levels.some((level,i)=>level&&!this.channels.has(i));
+   if(!missing)return;
   }
-  const generation=this.generation;
-  for(let i=0;i<SOUND_LAYERS.length;i++){
-   if(!levels[i]||this.channels.has(i)||this.pending.has(i))continue;
-   this.pending.set(i,generation);
-   // Yield between channels; synthesizing a forest must not freeze the game.
-   await new Promise(resolve=>setTimeout(resolve,0));
-   if(generation!==this.generation||!this.playing){if(this.pending.get(i)===generation)this.pending.delete(i);return;}
-   const current=this.settings,currentKey=current.tempo+':'+current.variation+':'+current.energy+':'+current.quietMode+':'+current.loopSeconds;
-   if(currentKey!==key){this.pending.delete(i);void this.adjust(current);return;}
-   if(!ambientLevels(current)[i]||this.channels.has(i)){this.pending.delete(i);continue;}
-   const id=SOUND_LAYERS[i][0];let buffer;try{buffer=await this.layerBuffer(id,key,current);}finally{if(this.pending.get(i)===generation)this.pending.delete(i);}
-   if(generation!==this.generation||!this.playing)return;
-   const latest=this.settings,latestKey=latest.tempo+':'+latest.variation+':'+latest.energy+':'+latest.quietMode+':'+latest.loopSeconds;
-   if(latestKey!==key){void this.adjust(latest);return;}
-   const level=ambientLevels(latest)[i];if(!level)continue;
-   const source=this.ctx.createBufferSource(),gain=this.ctx.createGain();source.buffer=buffer;source.loop=true;gain.gain.value=0;
-   source.connect(gain);gain.connect(this.ambientBus);source.onended=()=>{source.disconnect();gain.disconnect();};
-   source.start(this.ctx.currentTime+.015,((this.ctx.currentTime-this.epoch)%buffer.duration+buffer.duration)%buffer.duration);
-   gain.gain.setTargetAtTime(level,this.ctx.currentTime,.12);this.channels.set(i,{source,gain,key});
-  }
+  if(this.preparing?.key===key)return this.preparing.promise;
+  const request=(this.themeRequest||0)+1;this.themeRequest=request;const generation=this.generation;
+  const prepare=async()=>{
+   const buffers=new Map();
+   for(let i=0;i<SOUND_LAYERS.length;i++){
+    if(!levels[i]||this.theme?.key===key&&this.channels.has(i))continue;
+    this.pending.set(i,request);await new Promise(resolve=>setTimeout(resolve,0));
+    if(request!==this.themeRequest||generation!==this.generation||!this.playing)return;
+    try{buffers.set(i,await this.layerBuffer(SOUND_LAYERS[i][0],key,s));}
+    finally{if(this.pending.get(i)===request)this.pending.delete(i);}
+   }
+   if(request!==this.themeRequest||generation!==this.generation||!this.playing)return;
+   const latestLevels=ambientLevels(this.settings),t=this.ctx.currentTime+.025;
+   if(this.theme?.key===key){
+    for(const [i,buffer]of buffers)if(latestLevels[i])this.channels.set(i,this.loopVoice(buffer,latestLevels[i],key,this.theme.bus,t));
+    return;
+   }
+   // Prepare the complete incoming theme before touching the outgoing one.
+   const bus=this.ctx.createGain();bus.gain.value=0;bus.connect(this.ambientBus);
+   const theme={key,bus,channels:new Map()};
+   for(const [i,buffer]of buffers)if(latestLevels[i])theme.channels.set(i,this.loopVoice(buffer,latestLevels[i],key,bus,t));
+   const old=this.theme;this.theme=theme;this.channels=theme.channels;
+   const seconds=this.settings.crossfadeMs/1000;
+   this.fadeTheme(theme,true,t,seconds);if(old)this.retireTheme(old,t,seconds);
+  };
+  const promise=prepare().finally(()=>{if(this.preparing?.request===request)this.preparing=null;});
+  this.preparing={key,request,promise};return promise;
+ }
+ loopVoice(buffer,level,key,bus,t){
+  const source=this.ctx.createBufferSource(),gain=this.ctx.createGain();source.buffer=buffer;source.loop=true;gain.gain.value=level;
+  source.connect(gain);gain.connect(bus);source.onended=()=>{source.disconnect();gain.disconnect();};
+  source.start(t,((t-this.epoch)%buffer.duration+buffer.duration)%buffer.duration);return {source,gain,key};
+ }
+ fadeTheme(theme,incoming,t,seconds){
+  const param=theme.bus.gain,start=Math.max(0,Math.min(1,param.value));
+  // A quick route change may interrupt a curve already in progress. Remove
+  // that complete curve before scheduling another, including in WebKit.
+  param.cancelScheduledValues(0);param.setValueAtTime?.(start,this.ctx.currentTime);
+  if(param.setValueCurveAtTime){const curve=Float32Array.from({length:33},(_,i)=>incoming?Math.sin(i/32*Math.PI/2):Math.cos(i/32*Math.PI/2)*start);param.setValueCurveAtTime(curve,t,seconds);}
+  else param.setTargetAtTime(incoming?1:0,t,seconds/4);
+ }
+ retireTheme(theme,t,seconds){
+  this.retiring??=new Set();for(const old of this.retiring)this.disposeTheme(old);this.retiring.add(theme);
+  this.fadeTheme(theme,false,t,seconds);
+  theme.timer=setTimeout(()=>{this.disposeTheme(theme);this.retiring.delete(theme);},(seconds+.12)*1000);
+ }
+ disposeTheme(theme){
+  clearTimeout(theme.timer);for(const voice of theme.channels.values())this.release(voice);theme.channels.clear();theme.bus.disconnect();
  }
  stopAmbience(){
-  this.generation++;this.playing=false;
-  if(this.ctx)for(const voice of this.channels.values())this.release(voice);
+  this.generation++;this.themeRequest=(this.themeRequest||0)+1;this.playing=false;this.preparing=null;
+  if(this.theme){this.disposeTheme(this.theme);this.theme=null;}
+  if(this.retiring)for(const theme of this.retiring)this.disposeTheme(theme);this.retiring?.clear();
   this.channels.clear();this.pending.clear();
  }
  stop(){

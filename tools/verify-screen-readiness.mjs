@@ -1,23 +1,70 @@
-import assert from 'node:assert/strict';import {writeFile} from 'node:fs/promises';
-const {chromium,webkit}=await import(process.env.PLAYWRIGHT_MODULE||'playwright'),kind=process.argv[2]||'webkit',base=process.argv[3]||'http://127.0.0.1:4182';
-const browser=await(kind==='webkit'?webkit.launch():chromium.launch(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})),errors=[],report={kind,base,modes:{}};
-const options={viewport:{width:390,height:844},userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',isMobile:true,hasTouch:true,serviceWorkers:'block'};
-const ctx=await browser.newContext(options),p=await ctx.newPage();p.on('pageerror',e=>errors.push(e.message));
-const done=async()=>{await p.waitForFunction(()=>!document.querySelector('#mn-preloader')&&document.querySelector('#app')?.inert===false,{},{timeout:20000});};
+const {webkit,chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
+const kind=process.argv[2]||'webkit';
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {readFile} from 'node:fs/promises';
+const server=createServer(async(req,res)=>{try{let path=new URL(req.url,'http://localhost').pathname;if(path.endsWith('/'))path+='index.html';const data=await readFile(new URL('../dist'+path,import.meta.url));res.setHeader('content-type',path.endsWith('.mjs')||path.endsWith('.js')?'application/javascript':path.endsWith('.html')?'text/html':path.endsWith('.css')?'text/css':path.endsWith('.json')?'application/json':'application/octet-stream');res.end(data);}catch{res.writeHead(404);res.end();}});
+if(!process.argv[3])await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const base=process.argv[3]||'http://127.0.0.1:'+server.address().port;
+const browser=await (kind==='webkit'?webkit:chromium).launch({headless:true,...((kind==='webkit'?process.env.WEBKIT_EXECUTABLE:process.env.CHROME_PATH)?{executablePath:kind==='webkit'?process.env.WEBKIT_EXECUTABLE:process.env.CHROME_PATH}:{})});
+const context=await browser.newContext({viewport:{width:1440,height:1000},hasTouch:true,serviceWorkers:'block'});
+const page=await context.newPage(),errors=[],missing=[];
+page.on('response',r=>{if(r.status()>=400)missing.push(new URL(r.url()).pathname);});
+page.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message);});page.on('console',m=>{if(m.type()==='error')console.log('CONSOLE',m.text());});
+await context.addInitScript(()=>{
+ window.__audioQA=[];window.__audioContexts=new Set();const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+ const create=A.prototype.createBufferSource;
+ A.prototype.createBufferSource=function(){window.__audioContexts.add(this);const source=create.call(this),start=source.start;source.start=function(...args){const data=this.buffer?.getChannelData(0);let peak=0;if(data)for(let i=0;i<data.length;i+=31)peak=Math.max(peak,Math.abs(data[i]));window.__audioQA.push({loop:this.loop,duration:this.buffer?.duration,offset:args[1]||0,peak});return start.apply(this,args);};return source;};
+});
 try{
- await p.goto(base+'/');await p.locator('#mn-preloader svg').waitFor();const fills=await p.locator('#mn-preloader svg path').evaluateAll(ns=>ns.slice(0,5).map(n=>n.getAttribute('fill')));assert.equal(new Set(fills).size,5);await done();assert.equal(await p.locator('html').getAttribute('data-device'),'phone');report.cold='colored logo once; decoded first screen PASS';
- await p.locator('[data-action=guest-player]').click();await p.locator('#app[data-view=home]').waitFor();await done();await p.reload();await p.locator('#app[data-view=home]').waitFor();await done();assert.equal(await p.locator('[data-action=choose-mode]').count(),5);report.warm='selected player retained; no repeated full logo PASS';
+ await page.goto(base+'/design-system/#components');
+ await page.locator('#preview-toolbar').waitFor({timeout:20000});
  for(const mode of ['spelling','english','flags','reading','math']){
-  await p.goto(base+'/');await p.locator('#app[data-view=home]').waitFor();await done();await p.locator('[data-action=choose-mode][data-mode='+mode+']').click();
-  const start=async()=>{if(mode==='math'){await p.locator('[data-start]').click();await p.locator('[data-math-quiz]').waitFor();}else{const time=p.locator('[name=limitMode][value=time]');if(await time.count())await time.check({force:true});await p.locator('#setup-form').evaluate(n=>n.requestSubmit());await p.locator('#app[data-view=game]').waitFor();}await done();await p.waitForTimeout(800);};
-  const exit=async()=>{if(mode==='math'){await p.locator('#back').click();await p.locator('[data-math-exit]').click();await p.locator('.category-grid').waitFor();}else{const paused=p.locator('dialog[open] [data-action=exit]');if(await paused.count())await paused.click();else await p.locator('[data-action=exit]').first().click();await p.locator('[data-action=exit-confirm]').click();await p.locator('#setup-form').waitFor();}await done();};
-  await start();if(mode==='spelling'||mode==='math'){
-   await p.setViewportSize({width:844,height:390});await p.locator('#portrait-notice').waitFor();await p.waitForTimeout(250);assert.equal(await p.locator('#app').evaluate(n=>n.inert),true);if(mode==='math')assert.equal(await p.evaluate(()=>window.__mathTimerSnapshot.paused),true);else assert.equal(await p.locator('#app').getAttribute('data-state'),'paused');await p.setViewportSize({width:390,height:844});await p.waitForTimeout(250);if(mode==='spelling')await p.locator('[data-action=resume]').click();
-  }
-  await exit();await start();await p.evaluate(async mode=>{const {Session}=await import(mode==='math'?'/game.mjs?v=20261001-adventure':'/game.mjs?v=20261002-flags-ready-v2');const tick=Session.prototype.tick;Session.prototype.tick=function(){if(!this.presentationHeld&&this.state==='playing'){this.lastTime=this.now()-310000;Session.prototype.tick=tick;}return tick.call(this);};},mode);await p.locator('.result-v4').waitFor({timeout:16000});await done();await p.waitForTimeout(3200);assert.equal(await p.locator('#app').getAttribute('data-mode'),mode);
-  await p.locator('[data-action=history]').click();await p.locator('[data-action=return-results]').click();await p.locator('.result-v4').waitFor();
-  const rail=p.locator('.result-continue-rail');await rail.focus();for(let i=0;i<10;i++)await p.keyboard.press('ArrowRight');if(mode==='math')await p.locator('[data-math-quiz]').waitFor();else await p.locator('#app[data-view=game]').waitFor();await done();await exit();report.modes[mode]='real start, confirmed exit, natural end, history return, next round PASS';console.log('MODE',mode,'PASS');
+  await page.locator('[data-studio-nav=mode][value='+mode+']').locator('..').click();
+  await page.locator('[data-studio-nav=view][value='+mode+'-settings]').locator('..').click();
+  const frame=page.frameLocator('#device-frame');
+  await frame.locator('#app[data-view="wizard"] .mission-illustration').waitFor({state:'attached',timeout:15000});
+  assert.ok(await frame.locator('.mission-illustration').evaluate(n=>n.getBoundingClientRect().width)>300);
+  const app=frame.locator('#app');assert.ok(await app.locator('[data-ds-element]').count()>10);
+  console.log('PASS Studio settings '+mode);
  }
- const delayCtx=await browser.newContext(options),q=await delayCtx.newPage();q.on('pageerror',e=>errors.push(e.message));await q.addInitScript(()=>{sessionStorage.setItem('mn-logo-seen','1');sessionStorage.setItem('malaNauka.sessionPlayerId','guest');});await q.route('**/assets/**',async route=>{await new Promise(r=>setTimeout(r,1200));await route.continue();});await q.goto(base+'/');await q.locator('#mn-preloader svg').waitFor();const neutral=await q.locator('#mn-preloader svg path').evaluateAll(ns=>ns.slice(0,5).map(n=>n.getAttribute('fill')));assert.equal(new Set(neutral).size,1);await q.waitForFunction(()=>!document.querySelector('#mn-preloader'),{},{timeout:20000});report.delay='asset delay >250ms: neutral orbit, white blob, ready screen PASS';await q.close();await delayCtx.close();
- report.errors=errors;assert.deepEqual(errors,[]);await writeFile('/tmp/screen-readiness-'+kind+'.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));
-}catch(error){console.log('FAIL STATE',await p.locator('body').evaluate(()=>({width:innerWidth,height:innerHeight,visible:document.visibilityState,view:document.querySelector('#app')?.dataset,inert:document.querySelector('#app')?.inert,dialogs:[...document.querySelectorAll('dialog[open]')].map(n=>n.innerText)})));await p.screenshot({path:'/tmp/readiness-failure.png'});throw error;}finally{await browser.close();}
+ await page.screenshot({path:'.design-qa/studio-webkit.png'});
+ await page.setViewportSize({width:390,height:844});
+ await page.goto(base+'/');
+ await page.locator('[data-action="guest-player"]').click({timeout:20000});
+ await page.locator('.home-canvas').waitFor({timeout:15000});
+ await page.waitForFunction(()=>window.__MALA_NAUKA_AUDIO_HOST__?.unlocked&&window.__MALA_NAUKA_AUDIO_HOST__?.engine.theme?.key.startsWith('home:'),{timeout:15000});
+ for(const mode of ['spelling','english','flags','reading','math']){
+  await page.locator('[data-action="choose-mode"][data-mode="'+mode+'"]').tap();
+  const holder=await page.locator('[data-mode-host]').elementHandle(),gameFrame=await holder.contentFrame();
+  const game=page.frameLocator('[data-mode-host]');
+  try{await game.locator('.mission-illustration').waitFor({timeout:8000});}catch(e){console.log('HOST FAILURE',mode,await gameFrame.locator('body').innerText(),await gameFrame.evaluate(()=>({url:location.href,view:document.querySelector('#app')?.dataset.view,session:sessionStorage.getItem('malaNauka.sessionPlayerId')})));throw e;}
+  await game.locator(mode==='math'?'[data-start]':'.start-button').tap();
+  await game.locator(mode==='math'?'[data-answer]':'#app[data-view="game"] button.answer:not(:disabled)').first().waitFor({timeout:15000});
+  await gameFrame.waitForFunction(()=>!document.querySelector('#app').inert,{timeout:15000});
+  assert.equal(await gameFrame.evaluate(async()=>{const {gameSound}=await import('/shared/sound-runtime.mjs');return gameSound===parent.__MALA_NAUKA_AUDIO_HOST__;}),true);
+  assert.equal(await gameFrame.evaluate(()=>window.__audioContexts.size),0,'mode document does not create a second audio context');
+  await page.waitForFunction(mode=>window.__MALA_NAUKA_AUDIO_HOST__?.engine.theme?.key.startsWith(mode+':'),mode,{timeout:15000});
+  await game.locator(mode==='math'?'[data-answer]':'.answer').first().tap({force:true});
+  console.log('PASS PWA start/answer '+mode);
+  await game.locator(mode==='math'?'#back':'[data-action="exit"]').tap();
+  await game.locator(mode==='math'?'[data-math-exit]':'[data-action="exit-confirm"]').tap();
+  await game.locator('#app[data-view="results"] h1').waitFor({timeout:15000});
+  await game.locator('[data-action="history"]').tap();
+  await game.locator('[data-progress="collection"]').first().tap();
+  await game.locator('[data-progress="dashboard"]').tap();
+  await game.locator('[data-action="return-results"]').tap();
+  await game.locator('[data-action="result-back"]').tap();
+  await game.locator('[data-action="home"]').tap();
+  await page.locator('.home-canvas').waitFor({timeout:15000});
+  await page.waitForFunction(()=>!document.querySelector('#app').inert,{timeout:15000});
+  await page.waitForFunction(()=>window.__MALA_NAUKA_AUDIO_HOST__?.engine.theme?.key.startsWith('home:'),{timeout:15000});
+  console.log('PASS PWA results/collection/return '+mode);
+ }
+ assert.equal(await page.evaluate(()=>window.__audioContexts.size),1);
+ assert.ok(await page.evaluate(()=>window.__audioQA.some(s=>s.loop&&s.peak>.001)&&window.__audioQA.some(s=>!s.loop&&s.duration>1&&s.offset>0&&s.peak>.001)));
+ console.log('PASS continuous owner, audible loop buffers and blob buffers');
+ console.log('AUDIO',JSON.stringify(await page.evaluate(()=>({loops:window.__audioQA.filter(s=>s.loop).length,cues:window.__audioQA.filter(s=>!s.loop&&s.duration<1).length,blobs:window.__audioQA.filter(s=>!s.loop&&s.duration>1&&s.offset>0).length,ctx:window.__MALA_NAUKA_AUDIO_HOST__?.engine.ctx?.state,unlocked:window.__MALA_NAUKA_AUDIO_HOST__?.unlocked,error:window.__MALA_NAUKA_AUDIO_HOST__?.lastError,theme:window.__MALA_NAUKA_AUDIO_HOST__?.engine.theme?.key}))));
+ console.log('MISSING',JSON.stringify([...new Set(missing)]));assert.deepEqual(errors,[]);
+ console.log('PASS runtime errors: 0');
+}finally{await browser.close();server.close();}

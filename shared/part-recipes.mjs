@@ -1,6 +1,7 @@
 // Defaults come from the production CSS contracts, never from measured preview DOM.
 // Token-based controls resolve their geometry from the same runtime tokens.
 export const PART_RECIPES={
+ 'button-back':{width:44,height:44,radius:22,padding:0},
  'icon-step-dot':{width:31,height:31,radius:200,fontSize:19,fontRole:'body'},
  'image-player-avatar-art':{width:106,height:106,radius:200},
  'icon-pin-dot':{width:14,height:14,radius:200},
@@ -16,7 +17,6 @@ export const PART_RECIPES={
  'text-field-label':{fontRole:'ui',fontSize:20},
  'text-nickname-help':{fontRole:'body',fontSize:12},
  'container-player-grid':{gap:13,height:0},
- 'container-player-actions':{gap:14,height:0},
  'container-avatar-picker':{gap:8,height:0},
  'container-pin-profile':{gap:16,height:0},
  'container-pin-dots':{gap:13,height:0},

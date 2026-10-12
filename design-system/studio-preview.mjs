@@ -100,6 +100,7 @@ export class StudioPreview {
     const tile=document.createElement('article');tile.className='preview-tile';tile.dataset.tileView=view.id;
     tile.innerHTML=`<button class=preview-tile-heading data-active-view=${view.id}>${html(view.name)}<span>Edytuj ten ekran</span></button><div class=phone-zone><div class=phone-outer><div class=phone-inner><iframe class=device-frame data-preview-view=${view.id} ${view.id===this.viewId?'id=device-frame':''} title='Podgląd: ${html(view.name)}' src='${this.viewURL(view)}' loading=lazy></iframe><div class=phone-notch></div><div class=phone-status><span>9:41</span><span class=phone-signals>▮▮▮ ◔ ▰</span></div><div class=phone-homebar></div></div><span class=phone-note>390 × 844 · iPhone 13 Pro</span></div></div>`;
     tile.querySelector('iframe').addEventListener('load',()=>this.prepare(tile.querySelector('iframe')));
+    tile.querySelector('iframe').dataset.initializingView=view.id;
     return tile;
   }
   syncGallery(){
@@ -130,7 +131,7 @@ export class StudioPreview {
     if(this.editingMode==='view'&&!this.view.components.includes(this.componentId))this.componentId=this.view.components[0];
     if(this.compare&&!this.compareViews.includes(id))this.compareViews.push(id);
     this.notifyState();
-    if(this.isOpen){this.renderToolbar();this.renderInspector();this.syncGallery();const frame=this.activeFrame();if(frame&&frame.src!==this.viewURL(this.view))frame.src=this.viewURL(this.view);if(this.pendingSelector){this.send(frame,'focus',{selector:this.pendingSelector,reveal:true});this.pendingSelector='';}else this.send(frame,'focus',{id:'layout-root',reveal:true});}
+    if(this.isOpen){this.renderToolbar();this.renderInspector();this.syncGallery();const frame=this.activeFrame();if(frame&&frame.src!==this.viewURL(this.view)){frame.dataset.initializingView=this.viewId;frame.src=this.viewURL(this.view);}if(this.pendingSelector){this.send(frame,'focus',{selector:this.pendingSelector,reveal:true});this.pendingSelector='';}else this.send(frame,'focus',{id:'layout-root',reveal:true});}
   }
   chooseComponent(id){
     if(!this.registry.components.some(component=>component.id===id))return;
@@ -153,7 +154,7 @@ export class StudioPreview {
   renderSelectionPanel(){
     const node=this.workspace.querySelector('#selected-element');if(!node)return;
     const selected=this.activeSelection(),stack=selectionStack(this.view,selected,this.inventories.get(this.viewId)?.items||[]);
-    node.innerHTML=selected?`<section class=selected-element><nav class=structure-stack aria-label="Rodzina, grupy i atom"><button class=structure-crumb data-tree-select=layout-root><small>Widok · strona</small>${html(this.view.name)}</button>${stack.slice(1).map(p=>`<button class=structure-crumb data-tree-select="${html(p.id)}"><small>${LEVEL_NAMES[p.level]}</small>${html(PART_BY_ID[p.recipe]?.name||p.label)}</button>`).join('')}</nav><button class=small-button data-open-recipe="${html(selected.id==='layout-root'?'view:'+this.viewId:selected.recipe||selected.kind)}">Otwórz przepis tego klocka</button><h3>${html(selected.label)}</h3><p class=element-measure>${number(selected.metrics.width)} × ${number(selected.metrics.height)} px</p>${selected.layoutSpacing?`<p class=spacing-source>Przed elementem: <b>${number(selected.layoutSpacing.before)} px</b> · ${html(selected.layoutSpacing.source)}<br>Gap rodzica: <b>${number(selected.layoutSpacing.gap)} px</b></p>`:''}${selected.parents?.length?'<button class=small-button id=select-parent>‹ Kontener wyżej</button>':''}<p class=selection-status data-status='${selected.visible===false?'missing':'visible'}'>${selected.visible===false?'Element jest ukryty w tym stanie. Wybierz go ponownie, aby odsłonić.':'Wybrany element w podglądzie'}</p>${selected.actions?.length?`<details class=live-states><summary>Stan tego elementu</summary><p>Zmienia tylko przykład w podglądzie.</p><div>${selected.actions.map(action=>`<button class='state-pill ${action.selected?'active':''}' data-preview-action='${action.id}' data-action-label='${html(action.label)}'>${html(action.label)}</button>`).join('')}</div></details>`:''}</section>`:'<p class=empty-hint>Wybierz kontener, a potem schodź po jego gałęziach.</p>';
+    node.innerHTML=selected?`<section class=selected-element><nav class=structure-stack aria-label="Rodzina, grupy i atom"><button class=structure-crumb data-tree-select=layout-root><small>Widok · strona</small>${html(this.view.name)}</button>${stack.slice(1).map(p=>`<button class=structure-crumb data-tree-select="${html(p.id)}"><small>${LEVEL_NAMES[p.level]}</small>${html(PART_BY_ID[p.recipe]?.name||p.label)}</button>`).join('')}</nav><button class=small-button data-open-recipe="${html(selected.id==='layout-root'?'view:'+this.viewId:selected.recipe||selected.kind)}">Otwórz przepis tego klocka</button><h3>${html(selected.label)}</h3><p class=element-measure>${number(selected.metrics.width)} × ${number(selected.metrics.height)} px</p>${selected.layoutSpacing?`<p class=spacing-source>Przed elementem: <b>${number(selected.layoutSpacing.before)} px</b> · ${html(selected.layoutSpacing.source)}<br>Gap rodzica: <b>${number(selected.layoutSpacing.gap)} px</b></p>`:''}${selected.parents?.length?'<button class=small-button id=select-parent>‹ Kontener wyżej</button>':''}<p class=selection-status data-status='${selected.visible===false?'missing':'visible'}'>${selected.visible===false?'Element jest ukryty w tym stanie. Wybierz go ponownie, aby odsłonić.':'Wybrany element w podglądzie'}</p>${selected.actions?.length>1?`<details class=live-states><summary>Stan tego elementu</summary><p>Zmienia tylko przykład w podglądzie.</p><div>${selected.actions.map(action=>`<button class='state-pill ${action.selected?'active':''}' data-preview-action='${action.id}' data-action-label='${html(action.label)}'>${html(action.label)}</button>`).join('')}</div></details>`:''}</section>`:'<p class=empty-hint>Wybierz kontener, a potem schodź po jego gałęziach.</p>';
   }
   renderLayers(){
     const node=this.workspace.querySelector('#preview-layers');if(!node)return;
@@ -190,6 +191,15 @@ export class StudioPreview {
     if(event.origin!==location.origin||event.data?.channel!=='mala-nauka-studio')return;
     const frame=this.frames().find(frame=>frame.contentWindow===event.source);if(!frame)return;
     const message=event.data;let id=frame.dataset.previewView;
+    // A new document can briefly render its bootstrap/player screen before its
+    // requested fixture. That inventory must not switch the editor's category.
+    if(frame.dataset.initializingView){
+      if(message.type==='inventory'){
+        const expected=this.registry.views.find(v=>v.id===frame.dataset.initializingView);
+        if(!message.rendered||message.viewId!==frame.dataset.initializingView||message.screen&&message.screen!==expected?.screen)return;
+        delete frame.dataset.initializingView;
+      }else if(message.type==='select'||message.type==='focused')return;
+    }
     if(message.type==='inventory'&&message.rendered&&message.viewId&&message.viewId!==id&&this.registry.views.some(v=>v.id===message.viewId)){
       const old=id,next=message.viewId,tile=frame.closest('.preview-tile'),view=this.registry.views.find(v=>v.id===next);
       this.inventories.delete(old);this.selections.delete(old);frame.dataset.previewView=next;frame.title='Podgląd: '+view.name;tile.dataset.tileView=next;const heading=tile.querySelector('.preview-tile-heading');heading.dataset.activeView=next;heading.innerHTML=html(view.name)+'<span>Edytuj ten ekran</span>';
@@ -246,7 +256,7 @@ export class StudioPreview {
     if(button.id==='restore-layers')this.send(this.activeFrame(),'reset-visibility');
     if(button.id==='select-parent'){const id=this.activeSelection()?.parents?.[0];if(id)this.send(this.activeFrame(),'focus',{id,reveal:true});}
     if(button.dataset.previewAction)this.send(this.activeFrame(),'action',{id:button.dataset.previewAction,label:button.dataset.actionLabel});
-    if(button.id==='reset-preview'){this.broadcast('reset-preview');for(const frame of this.frames())frame.src=frame.src;this.notice('Przywrócono początkowy stan przykładu. Zmiany wyglądu zostają w szkicu.');}
+    if(button.id==='reset-preview'){this.broadcast('reset-preview');for(const frame of this.frames()){frame.dataset.initializingView=frame.dataset.previewView;frame.src=frame.src;}this.notice('Przywrócono początkowy stan przykładu. Zmiany wyglądu zostają w szkicu.');}
     if(button.id==='toggle-zoom'){this.zoom=this.zoom==='fit'?'100':'fit';this.renderToolbar();this.syncGallery();}
     if(button.id==='upload-element-asset')this.upload?.(this.activeSelection());
     if(button.id==='start-compare'){this.editingMode='component';this.compare=true;this.compareViews=relatedViews(this.registry,this.componentId).slice(0,2).map(view=>view.id);if(!this.compareViews.includes(this.viewId))this.viewId=this.compareViews[0];this.renderToolbar();this.renderInspector();this.syncGallery();this.focus(false);this.notifyState();}

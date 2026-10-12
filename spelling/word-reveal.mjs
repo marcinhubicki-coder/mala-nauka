@@ -1,24 +1,11 @@
+const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function wordMarkup(masked){
+ const [before,after]=String(masked).split('_');
+ return `<div class="word" data-ds-kind="text" data-ds-recipe="text-spelling-word" data-ds-atomic="true" aria-hidden="true"><span class="word-side word-before">${escape(before)}</span><span class="gap"><span class="bubble-glass"></span><i class="word-spark star-a"></i><i class="word-spark star-b"></i><i class="word-spark star-c"></i><i class="word-spark star-d"></i></span><span class="word-side word-after">${escape(after)}</span></div>`;
+}
 export function createWord(masked) {
-  const word = document.createElement('div');
-  word.className = 'word';
-  word.setAttribute('aria-hidden', 'true');
-
-  const [before, after] = masked.split('_');
-
-  const left = document.createElement('span');
-  left.className = 'word-side word-before';
-  left.textContent = before;
-
-  const gap = document.createElement('span');
-  gap.className = 'gap';
-  gap.innerHTML = '<span class="bubble-glass"></span><i class="word-spark star-a"></i><i class="word-spark star-b"></i><i class="word-spark star-c"></i><i class="word-spark star-d"></i>';
-
-  const right = document.createElement('span');
-  right.className = 'word-side word-after';
-  right.textContent = after;
-
-  word.append(left, gap, right);
-  return word;
+ const template=document.createElement('template');template.innerHTML=wordMarkup(masked);
+ return template.content.firstElementChild;
 }
 
 export function revealWord(word, answer, reduced) {

@@ -20,7 +20,7 @@ test('all declared parts construct immediately from code, with real locally avai
  assert.ok(images>=6);
 });
 test('PIN is a composed jelly variant; changing mode replaces only its fields and keeps profile and selector',()=>{
- assert.equal(PART_BY_ID['control-pin'].level,'group');assert.ok(PART_BY_ID['control-pin'].children.includes('control-jelly'));
+ assert.equal(PART_BY_ID['control-pin'].level,'group');assert.deepEqual(PART_BY_ID['control-pin'].children,['pin-option']);
  const pin=partSample('container-pin-card',{pin:true}),noPin=partSample('container-pin-card',{pin:false});
  for(const markup of [pin,noPin]){assert.match(markup,/data-ds-recipe="image-player-avatar-art"/);assert.match(markup,/data-ds-recipe="control-pin"/);assert.match(markup,/data-ds-recipe="container-pin-fields"/);}
  assert.match(pin,/class="pin-keypad"/);assert.doesNotMatch(noPin,/class="pin-keypad"/);assert.match(noPin,/Bez PIN-u/);

@@ -43,10 +43,12 @@ body:has(#app[data-view="home"]) {
   color: #0b0747;
 }
 
-.home-art-slice {
+.home-logo-art {
+  position: absolute;
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
@@ -102,6 +104,9 @@ body:has(#app[data-view="home"]) {
   white-space: nowrap;
   pointer-events: none;
 }
+
+.home-greeting-live>span:first-child { margin-right:.14em;flex:none; }
+.home-greeting-live>span:last-child { flex:none; }
 
 .home-nickname {
   min-width: 0;

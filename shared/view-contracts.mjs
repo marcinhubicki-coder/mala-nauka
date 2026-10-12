@@ -48,6 +48,12 @@ for(const mode of MODES){
 }
 export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item)))});
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
+export function inheritedMode(view,id){
+ const byId=new Map(viewContract(view).map(item=>[item.id,item]));
+ let item=byId.get(id);
+ while(item){if(item.mode)return item.mode;item=byId.get(item.parent);}
+ return view;
+}
 export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
  if(!items?.length)throw Error('Missing view contract: '+view);
  const ids=new Map();
@@ -70,7 +76,7 @@ export function staticViewInventory(view){
  const items=viewContract(view);
  validateViewContract(view,items);
  return [{id:'layout-root',blockId:'screen-'+view,recipe:'layout',kind:'container',parent:null,mode:view,level:'family',state:'default',visible:true,label:'Ekran główny'},
- ...items.map(item=>({id:item.id,blockId:'block-'+item.recipe,recipe:item.recipe,kind:item.kind,parent:item.parent,mode:item.mode||view,level:item.level,state:'default',visible:true,label:item.id,action:item.action}))];
+ ...items.map(item=>({id:item.id,blockId:'block-'+item.recipe,recipe:item.recipe,kind:item.kind,parent:item.parent,mode:inheritedMode(view,item.id),level:item.level,state:'default',visible:true,label:item.id,action:item.action}))];
 }
 // Convert an already-rendered component tree into a lightweight, declarative DOM.
 // Only contract IDs are accepted; design attributes never change the geometry.
@@ -86,7 +92,7 @@ export function compileViewMarkup(view,markup){
   if(!attrs.includes('data-ds-kind="'+component.kind+'"'))throw Error('Kind mismatch: '+id);
   if(component.action&&!attrs.includes('data-action="'+component.action+'"'))throw Error('Action mismatch: '+id);
   const atomic=component.level==='atom'&&['button','icon','image','text'].includes(component.kind)?' data-ds-atomic="true"':'';
-  const mode=component.mode&&!attrs.includes('data-ds-mode=')?' data-ds-mode="'+component.mode+'"':'';
+  const mode=!attrs.includes('data-ds-mode=')?' data-ds-mode="'+inheritedMode(view,id)+'"':'';
   return '<'+tag+attrs+' data-ds-contract="v2" data-ds-element="'+id+'" data-ds-block="block-'+component.recipe+'" data-ds-state="default"'+mode+(attrs.includes('data-ds-atomic=')?'':atomic)+'>';
  });
  if(used.size!==items.length)throw Error('Renderer omitted '+(items.length-used.size)+' declared blocks from '+view+': '+items.filter(i=>!used.has(i.id)).map(i=>i.id).slice(0,8).join(','));

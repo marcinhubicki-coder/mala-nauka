@@ -20,7 +20,7 @@ export function applyCompiledView(root,config,view){
  for(const item of contract){
   const node=byId.get(item.id);
   if(!node||node.dataset.dsRecipe!==item.recipe||node.dataset.dsBlock!=='block-'+item.recipe)throw Error('Component is out of sync: '+item.id);
-  const style=visualValue(config,view,{id:item.id,recipe:item.recipe,blockId:node.dataset.dsBlock,kind:item.kind,mode:item.mode||view,state:node.dataset.dsState||'default'});
+  const style=visualValue(config,view,{id:item.id,recipe:item.recipe,blockId:node.dataset.dsBlock,kind:item.kind,mode:node.dataset.dsMode||view,state:node.dataset.dsState||'default'});
   syncElementMotion(node,style);
   syncElementSurface(node,style);
   rememberPresence(node,style);

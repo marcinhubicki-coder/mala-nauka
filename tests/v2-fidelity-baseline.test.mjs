@@ -16,7 +16,8 @@ test('Home ma jawne źródłowe znaczniki wspólnych części oraz pięć trybó
  for(const key of ['home-logo','home-settings','home-hero','home-headline','home-stats','home-modes']) {
   assert.ok(home.includes('data-ds-key="'+key+'"'), 'Brak jawnego klucza: '+key);
  }
- for(const mode of ['spelling','math','english','flags','reading']) assert.match(home,new RegExp('\\b'+mode+':\\s*\\['));
+ const layout=source('shared/home-layout.mjs');
+ for(const mode of ['spelling','math','english','flags','reading']) assert.match(layout,new RegExp('\\b'+mode+':\\s*\\['));
  assert.match(home,/data-action="choose-mode"/);
 });
 

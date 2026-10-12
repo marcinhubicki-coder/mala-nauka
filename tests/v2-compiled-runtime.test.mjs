@@ -4,7 +4,8 @@ import {readFileSync} from 'node:fs';
 const source=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 test('Production home uses compiled contract instead of DOM structure scanner',()=>{
  const runtime=source('shared/design-runtime.mjs');
- assert.match(runtime,/!studioRuntime&&hasViewContract\(view\)\?applyCompiledView\(root,settings,view\):annotateElements/);
+ assert.match(runtime,/if\(!studioRuntime&&hasViewContract\(view\)\)return applyCompiledView\(root,settings,view\)/);
+ assert.match(runtime,/inspectorLoader\?\?=import\('\.\/element-system\.mjs'\)/);
  assert.ok(runtime.includes("updateView(app,config,document.documentElement.dataset.dsView)"));
  assert.ok(runtime.includes("updateView(document.getElementById('app'),value,document.documentElement.dataset.dsView)"));
 });

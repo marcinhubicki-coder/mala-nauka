@@ -40,6 +40,30 @@ try{
  const state=await gameFrame.locator('#app').getAttribute('data-state');
  assert.ok(['feedback-correct','feedback-wrong'].includes(state),state);
  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),17,'Answer feedback replaced the game component tree');
+
+ // Complete the actual hosted round instead of only checking isolated previews.
+ await gameFrame.locator('#app [data-action="exit"]').click();
+ await gameFrame.locator('#modal[open]').waitFor({timeout:10000});
+ assert.equal(await gameFrame.locator('#modal [data-ds-subcontract="spelling-pause"]').count(),4,'Exit confirmation must retain four declared children plus root');
+ await gameFrame.locator('#modal [data-action="exit-confirm"]').click();
+ await gameFrame.locator('#app[data-view="results"]').waitFor({timeout:18000});
+ assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),18,'Results must compile all 18 declared parts');
+ assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-repeat"]').count(),1);
+ assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-history"][data-action="history"]').count(),1);
+ assert.equal(await gameFrame.locator('#app .learning-stats-two [data-action="toggle-result"]').count(),2);
+ const retainedRows=await gameFrame.locator('#result-detail-retained .result-word-row').count();
+ if(retainedRows)await gameFrame.locator('[data-ds-element="spelling-result-retained"]').click();
+ const openPanel=retainedRows?'#result-detail-retained':'#result-detail-review';
+ const detailAction=gameFrame.locator(openPanel+' [data-action="show-result-rule"]').first();
+ if(await detailAction.count()){
+  await detailAction.click();
+  await gameFrame.locator('dialog.result-rule-dialog[open]').waitFor({timeout:9000});
+  assert.equal(await gameFrame.locator('[data-ds-subcontract="spelling-rule"]').count(),10);
+  await gameFrame.locator('dialog.result-rule-dialog .rule-close').click();
+  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),18,'Closing rule lost results identity');
+ }
+ await gameFrame.locator('[data-ds-element="spelling-result-history"]').click();
+ await gameFrame.locator('#app[data-view="history"]').waitFor({timeout:13000});
  await page.close();
 
  const views=[

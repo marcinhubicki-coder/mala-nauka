@@ -1,46 +1,447 @@
 {
-  "phase": "layout",
-  "passed": 0,
-  "total": 8,
+  "phase": "animation",
+  "passed": 5,
+  "total": 10,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": false,
       "errors": []
     },
     {
       "name": "chromium-02-belarus-correct",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "feedback-correct",
+      "country": "by",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 8,
+      "crop": "288.15 159.75 224 157.71",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-03-belarus-wrong",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 8,
+      "crop": "288.15 159.75 224 157.71",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-04-poland-short",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 160.1490478515625,
+        "w": 209.4691162109375,
+        "h": 182.47842407226562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 361.1875,
+        "w": 335.390625,
+        "h": 51.09375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 159.5,
+        "w": 335.390625,
+        "h": 252.78125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 422.796875,
+          "w": 163.1875,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 422.796875,
+          "w": 163.203125,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 480.6875,
+          "w": 163.1875,
+          "h": 49.90625,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 480.6875,
+          "w": 163.203125,
+          "h": 49.90625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 8,
+      "crop": "222.4 209.88 224 124.44",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-05-swiss-max",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
       "name": "chromium-07-liechtenstein",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
       "name": "chromium-08-vatican",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
       "name": "chromium-09-long-country",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "errors": []
+    },
+    {
+      "name": "chromium-10-pwa-safe-area",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "errors": []
+    },
+    {
+      "name": "chromium-animation-frames",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     }
   ]

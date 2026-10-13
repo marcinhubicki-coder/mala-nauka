@@ -31,3 +31,7 @@ Pełny screenshot ma 946 × 2048 px. Kolorowe wnętrza kafli zaczynają się w p
 - dolny rząd: zielony (37,1671), fioletowy (482,1671).
 
 Aktualny model `HOME_TILES`, przeliczony na canvas 390 × 844, przewiduje początek górnego rzędu y≈1377 px i dolnego y≈1664 px. Różnice w obrębie 7–12 px mogą pochodzić z paddingu podkładów SVG i zaokrągleń. **Nie przestawiać całych rzędów na podstawie niezweryfikowanego podglądu**: najpierw overlay i stan faktyczny CSS.
+
+## Weryfikacja przycisku i zbiorczy import wzorców
+Na zatwierdzonym ekranie wyników akcja jest nazwana „Moja kolekcja”, a nie „Moje wyniki”. W V2 otwiera teraz bezpośrednio kolekcję słów poprzez istniejący ekran postępów, bez tworzenia nowego widoku; powrót do wyniku jest zachowany.
+W Design Studio można wczytać jednocześnie pięć pełnych PNG `IMG_2946–2950`, automatycznie przypisanych do właściwych stanów. Szósty, wykadrowany obraz z V1 jest referencją detalu bańki punktów i nie może być nakładany na cały ekran.

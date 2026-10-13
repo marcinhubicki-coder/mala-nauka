@@ -1,5 +1,13 @@
 /* Screenshot comparison is a local-only Studio tool, never part of PWA. */
 const DATABASE='mala-nauka-v2-reference-screens',STORE='screens';
+export const screenshotViewByFilename=Object.freeze({
+ IMG_2946:'home',IMG_2947:'spelling-settings',IMG_2948:'spelling-wrong',
+ IMG_2949:'spelling-initial',IMG_2950:'spelling-results'
+});
+export function referenceViewForFile(name){
+ const filename=String(name||'').replaceAll('\\','/').split('/').pop().replace(/\.[a-z0-9]+$/i,'').toUpperCase();
+ return screenshotViewByFilename[filename]||null;
+}
 export const referenceProfiles=Object.freeze({
  home:'Home — produkcja',
  'spelling-settings':'Ortografia — ustawienia',
@@ -48,7 +56,7 @@ export class ReferenceCalibration {
   const root=this.studio.workspace;
   root.addEventListener('change',event=>{
    if(event.target?.id!=='reference-upload')return;
-   const file=event.target.files?.[0];if(file)void this.import(this.studio.viewId,file);
+   const files=[...(event.target.files||[])];if(files.length)void this.importFiles(files);
    event.stopImmediatePropagation();
   },true);
   root.addEventListener('input',event=>{
@@ -67,10 +75,10 @@ export class ReferenceCalibration {
   node.insertAdjacentHTML('beforeend',`<section class="reference-calibration" aria-label="Porównanie ze wzorcem">
    <div class="reference-heading"><strong>Porównaj z produkcją</strong><span id="reference-status" role="status">Wczytaj wzorzec ekranu</span></div>
    <div class="reference-actions">
-    <label class="small-button reference-upload">Wczytaj wzorzec<input type="file" id="reference-upload" accept="image/png,image/jpeg,image/webp" aria-label="Wczytaj zrzut produkcyjny"></label>
+    <label class="small-button reference-upload">Wczytaj wzorce<input type="file" id="reference-upload" multiple accept="image/png,image/jpeg,image/webp" aria-label="Wczytaj zrzut produkcyjny"></label>
     <label class="reference-opacity">Nałożenie <input type="range" id="reference-opacity" min="0" max="100" value="${this.opacity}" aria-label="Procent widoczności wzorca"><output id="reference-opacity-value">${this.opacity}%</output></label>
     <button type="button" class="small-button" id="reference-remove">Usuń wzorzec</button>
-   </div><p class="reference-help">PNG zostaje tylko w tej przeglądarce (IndexedDB), nie trafia na GitHub. Wzorzec 946 × 2048 idealnie odpowiada ekranowi 390 × 844.</p>
+   </div><p class="reference-help">Zaznacz razem IMG_2946–2950: Studio przypisze je automatycznie do Home, ustawień, gry, slidera i wyników. Obrazy pozostają tylko w tej przeglądarce (IndexedDB). Wyciętego kadru z V1 nie rozciągamy do 390 × 844.</p>
   </section>`);
   this.status();
  }
@@ -105,15 +113,26 @@ export class ReferenceCalibration {
   }
   this.status();
  }
- async import(view,file){
+ async importFiles(files){
+  let loaded=0,skipped=0;
+  for(const file of files){
+   const view=referenceViewForFile(file.name)||(files.length===1?this.studio.viewId:null);
+   if(!view){skipped++;continue;}
+   if(await this.import(view,file,{silent:true}))loaded++;
+  }
+  this.sync();
+  this.studio.notice(loaded?'Wczytano '+loaded+' wzorców'+(skipped?' · pominięto '+skipped+' nierozpoznanych plików':''):'Nie rozpoznano wzorców. Wybierz IMG_2946–2950.');
+ }
+ async import(view,file,{silent=false}={}){
   try{
    const size=await saveReference(view,file);
    const old=this.cache.get(view);if(old?.url)URL.revokeObjectURL(old.url);
    const ratio=referenceAspect(size.width,size.height);
    this.cache.set(view,{url:URL.createObjectURL(file),...ratio});
    this.sync();
-   this.studio.notice(ratio.compatible?'Wzorzec zapisany. Przesuń suwak nałożenia.':'Zapisano wykadrowany obraz. Pełny screenshot da dokładniejsze porównanie.');
-  }catch(error){this.studio.notice('Nie udało się zapisać wzorca: '+error.message);}
+   if(!silent)this.studio.notice(ratio.compatible?'Wzorzec zapisany. Przesuń suwak nałożenia.':'Zapisano wykadrowany obraz. Pełny screenshot da dokładniejsze porównanie.');
+   return true;
+  }catch(error){this.studio.notice('Nie udało się zapisać wzorca: '+error.message);return false;}
  }
  async remove(view){
   try{await removeReference(view);}catch(error){this.studio.notice('Błąd usuwania wzorca: '+error.message);return;}

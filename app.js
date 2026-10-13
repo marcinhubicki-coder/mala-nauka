@@ -713,7 +713,11 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
   const mode=action==='choose-mode'?button.dataset.mode:selectedMode;
   const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,mode,context);
-  routeTo(target);return;
+  routeTo(target);
+  // Results link to the spelling word collection directly (return-to-results is preserved).
+  if(action==='history'&&button.dataset.historyScreen==='collection'&&target==='progress')
+   root.querySelector('[data-progress="collection"]')?.click();
+  return;
  }
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);

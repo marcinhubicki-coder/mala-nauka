@@ -12,6 +12,7 @@ import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/eleme
 import {PART_BY_ID} from '../shared/structure-model.mjs';
 import {HOME_RECTS,homeRect,homePosition,validateHomeLayout} from '../shared/home-layout.mjs';
 import {TYPE_STYLES,TYPE_PROPERTIES,validateTypeScale,resolvedTypeScale} from '../shared/type-system.mjs';
+import {ATOM_TYPES,atomTypeFor} from '../shared/atom-vocabulary.mjs';
 import {STARTUP_LINKS,resolveRoute,routeKey,validateNavigation,routeTargets} from '../shared/navigation.mjs';
 
 // A reusable recipe is a real source-level component shared across views.
@@ -135,7 +136,8 @@ async function saveConfigAtomic(filename,config){
 
 
 const normalizeName=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-export function listEditableBlocks({view='',query='',kind='',limit=100}={}){
+export function listEditableBlocks({view='',query='',kind='',atom='',limit=100}={}){
+ if(atom&&!Object.hasOwn(ATOM_TYPES,atom))throw Error('Unknown atom type: '+atom);
  if(!Number.isInteger(limit)||limit<1||limit>1000)throw Error('Limit must be 1-1000');
  if(view&&!VIEWS.has(view))throw Error('Unknown registered view: '+view);
  const result=[];
@@ -143,9 +145,10 @@ export function listEditableBlocks({view='',query='',kind='',limit=100}={}){
   if(view&&v.id!==view)continue;
   for(const row of inventorySnapshot(v)||[]){
    if(row.id==='layout-root'||(kind&&row.kind!==kind))continue;
-   const part=PART_BY_ID[row.recipe],name=part?.name||row.label||row.id;
+   const part=PART_BY_ID[row.recipe],name=part?.name||row.label||row.id,atomType=atomTypeFor({kind:row.kind,recipe:row.recipe,level:part?.level||'atom'});
+   if(atom&&atomType!==atom)continue;
    if(query&&!normalizeName([v.id,row.id,row.recipe,row.kind,row.label,name].join(' ')).includes(normalizeName(query)))continue;
-   result.push({view:v.id,id:row.id,name,kind:row.kind,recipe:row.recipe,level:part?.level||'unclassified',legacyAdapter:v.id!=='home',mode:v.mode});
+   result.push({view:v.id,id:row.id,name,kind:row.kind,atomType,recipe:row.recipe,level:part?.level||'unclassified',legacyAdapter:v.id!=='home',mode:v.mode});
    if(result.length>=limit)return result;
   }
  }
@@ -180,7 +183,7 @@ async function main(argv=process.argv.slice(2)){
   const query=option(argv,'query')||'';
   if(command==='search'&&!query)throw Error('Search requires --query');
   if(command==='list'&&!option(argv,'view'))throw Error('List requires --view');
-  const rows=listEditableBlocks({view:option(argv,'view')||'',query,kind:option(argv,'kind')||'',limit:option(argv,'limit')===null?100:Number(option(argv,'limit'))});
+  const rows=listEditableBlocks({view:option(argv,'view')||'',query,kind:option(argv,'kind')||'',atom:option(argv,'atom')||'',limit:option(argv,'limit')===null?100:Number(option(argv,'limit'))});
   console.log(JSON.stringify(rows,null,2));return;
  }
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}

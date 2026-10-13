@@ -51,6 +51,13 @@ try{
     try{
       await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
       await page.waitForSelector('.question-card[data-adventure-ready="true"]',{timeout:20000});
+      if(scene.name==='02-pl-correct'){
+        await page.waitForFunction(()=>document.querySelector('.question-card')?.classList.contains('is-revealed'),{timeout:20000});
+        for(const [step,delay] of [['a-early',110],['b-mid',160],['c-late',170]]){
+          await page.waitForTimeout(delay);
+          await page.screenshot({path:join(OUT,'timeline-'+step+'.jpg'),type:'jpeg',quality:83,fullPage:true});
+        }
+      }
       if(scene.state!=='question'){
         await page.waitForFunction(()=>document.querySelector('.question-card')?.dataset.flagScenePhase==='revealed',{timeout:20000});
       }

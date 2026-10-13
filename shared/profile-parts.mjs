@@ -4,9 +4,8 @@ const avatars='abcdefghijkl';
 export function profileAvatar(player={},extra='',assetURL=path=>path){
  let key=player.avatarId;
  if(typeof key!=='string'||key.length!==1||!avatars.includes(key)){const sum=[...String(player.id||player.nickname||'a')].reduce((n,c)=>n+c.charCodeAt(0),0);key=avatars[sum%4];}
- const index=avatars.indexOf(key)-4;
- const image=index>=0?`<svg viewBox="${index%4*320} ${index<4?302:650} 320 320" preserveAspectRatio="xMidYMid slice"><image href="${escape(assetURL('assets/brand/player-avatars-extra-v1.webp'))}" width="1280" height="1280"/></svg>`:'';
- return `<span class="player-avatar-art ${index>=0?'player-avatar-extra ':''}${escape(extra)}" data-avatar="${key}" aria-hidden="true">${image}</span>`;
+ const src=escape(assetURL('assets/brand/avatars/'+key+'.webp'));
+ return `<span class="player-avatar-art ${escape(extra)}" data-avatar="${key}" style="--player-avatar-src:url(&quot;${src}&quot;)" aria-hidden="true"></span>`;
 }
 export function pinModeMarkup(enabled=true,name='profilePinMode'){
  return `<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span>${[['pin','Ustaw PIN'],['none','Bez PIN-u']].map(([value,label],i)=>`<label><input type="radio" name="${escape(name)}" value="${value}" ${enabled===(i===0)?'checked':''}><span>${label}</span></label>`).join('')}</div>`;

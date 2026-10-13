@@ -84,7 +84,7 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 
 /* Shared phone safe area; spelling wizard remains the geometry reference. */
 #app[data-ds]:is([data-view="players"],[data-view="player-create"],[data-view="player-pin"],[data-view="settings"]){padding-top:max(calc(var(--ds-layout-safe-top) * var(--ds-u)),var(--app-safe-top,env(safe-area-inset-top,0px)));padding-bottom:max(calc(var(--ds-layout-safe-bottom) * var(--ds-u)),var(--app-safe-bottom,env(safe-area-inset-bottom,0px)));overflow-y:auto;justify-content:flex-start}
-#app[data-ds] .player-avatar-art{aspect-ratio:1;flex-shrink:0;object-fit:contain;align-self:center}
+#app[data-ds] .player-avatar-art{aspect-ratio:1 / 1;flex-shrink:0;box-sizing:border-box;align-self:center}
 #app[data-ds] .avatar-choice .player-avatar-art{height:auto;aspect-ratio:1;max-width:100%}
 #app[data-ds] .create-avatar-preview{height:auto;min-height:calc(var(--ds-profile-avatar-size) * var(--ds-u))}
 #app[data-ds] [data-ds-kind=icon]>svg{max-width:100%;max-height:100%;display:block}

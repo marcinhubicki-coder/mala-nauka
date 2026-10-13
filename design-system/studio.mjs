@@ -195,13 +195,13 @@ function renderVersions(){workspace.innerHTML=`<div class="content-page"><div cl
 function render(){const context=document.getElementById('studio-context');context.innerHTML=sectionContext(page);context.hidden=page==='start';({start:()=>{workspace.innerHTML=startHTML();},project:()=>projectStudio.render(),components:renderComponents,testing:()=>testing.render(),colors:renderColors,fonts:renderFonts,assets:renderAssets,batches:()=>batchStudio.render(),builder:()=>builder.render(),motion:()=>motion.render(),effects:()=>play.render(),sound:()=>soundLab.render(),scoring:()=>play.renderScoring(),views:renderViews,audit:renderAudit,docs:renderDocs,versions:renderVersions}[page]||renderComponents)();}
 workspace.addEventListener('change',event=>{
  const target=event.target;
- if(target.dataset.fontRole){checkpoint();config.typography[target.dataset.fontRole]=target.value;sendDesign();renderFonts();}
+ if(target.dataset.fontRole){checkpoint();config.typography[target.dataset.fontRole]=target.value;sendDesign();requestAnimationFrame(()=>{if(page==='fonts')renderFonts();});}
  if(target.dataset.typeScaleRole&&target.dataset.typeScaleField){
   const role=target.dataset.typeScaleRole,field=target.dataset.typeScaleField,range=TYPE_PROPERTIES[field];
   if(!TYPE_STYLE_IDS.includes(role))return;
   const value=field==='fontRole'?target.value:Number(target.value);
   if(field==='fontRole'?!Object.keys(config.typography).includes(value):!range||!Number.isFinite(value)||value<range[0]||value>range[1])return;
-  checkpoint();config.typeScale??={};config.typeScale[role]??={};config.typeScale[role][field]=value;sendDesign();renderFonts();
+  checkpoint();config.typeScale??={};config.typeScale[role]??={};config.typeScale[role][field]=value;sendDesign();requestAnimationFrame(()=>{if(page==='fonts')renderFonts();});
  }
  if(target.dataset.space){checkpoint();config.tokens.space[target.dataset.space]=Math.max(0,Math.min(64,Number(target.value)));sendDesign();}
  if(target.dataset.token)header();

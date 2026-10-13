@@ -33,6 +33,17 @@ try{
  assert.ok(Math.abs(dimensions.offsetY)<1,'Screenshot must align vertically to iPhone screen');
  assert.ok(Math.abs(dimensions.width-dimensions.screenWidth)<1,'Screenshot must match iPhone width');
  assert.equal(dimensions.opacity,'0.5');
+ // The two submitted gameplay screenshots show TWO slider positions after
+ // a wrong answer, not question-before-answer. Never overwrite the latter.
+ const stored=await page.evaluate(async()=>{
+  const request=indexedDB.open('mala-nauka-v2-reference-screens',1);
+  const db=await new Promise((resolve,reject)=>{request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});
+  const names=await new Promise((resolve,reject)=>{const tx=db.transaction('screens','readonly'),r=tx.objectStore('screens').getAllKeys();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+  db.close();return names;
+ });
+ assert.ok(stored.includes('spelling-wrong'));
+ assert.ok(stored.includes('spelling-wrong-complete'));
+ assert.ok(!stored.includes('spelling-initial'),'Approved gesture image was incorrectly assigned as the question state');
  await page.reload({waitUntil:'domcontentloaded'});
  await page.locator('#reference-status').filter({hasText:'Wzorzec wyrównany do telefonu'}).waitFor({timeout:16000});
  assert.equal(await page.locator('.preview-tile .studio-reference-image').count(),1);

@@ -162,7 +162,7 @@ try{
   await page.waitForTimeout(450);
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.dsView),viewId);
   if(['spelling-initial','spelling-correct','spelling-wrong','spelling-results'].includes(viewId))
-   await capture(page,viewId,{ 'spelling-initial':'IMG_2949.png','spelling-correct':null,'spelling-wrong':'IMG_2948.png','spelling-results':'IMG_2950.png' }[viewId]);
+   await capture(page,viewId,{ 'spelling-initial':null,'spelling-correct':null,'spelling-wrong':null,'spelling-results':'IMG_2950.png' }[viewId]);
   if(viewId==='spelling-settings')assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29);
   if(['spelling-initial','spelling-correct','spelling-wrong','spelling-hint','spelling-pause'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Incomplete gameplay contract: '+viewId);
   if(viewId==='spelling-initial')assert.equal(await page.locator('.answers .answer').count(),2);

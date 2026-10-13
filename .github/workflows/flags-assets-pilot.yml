@@ -1,4 +1,4 @@
-name: Generate prebaked flag cloth assets
+name: Generate complete 195-country WebP cloth library
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       scope:
         description: 'Generate six pilot flags or complete 195-country library'
         required: true
-        default: pilot
+        default: all
         type: choice
         options: [pilot, all]
 
@@ -25,7 +25,7 @@ concurrency:
 jobs:
   prebake:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check pilot integration before asset generation
+      - name: Check source integration before asset generation
         run: |
           node --check tools/build-flag-cloth-assets.mjs
           node --check flagi/flag-on-pole.mjs
@@ -45,13 +45,15 @@ jobs:
           npx playwright install chromium
       - name: Generate WebP with existing canvas renderer
         run: |
-          if [ "${{ github.event.inputs.scope }}" = 'all' ]; then
-            node tools/build-flag-cloth-assets.mjs --all
-          else
+          if [ "${{ github.event.inputs.scope }}" = 'pilot' ]; then
             node tools/build-flag-cloth-assets.mjs
+          else
+            node tools/build-flag-cloth-assets.mjs --all
           fi
       - name: Validate assets and update PWA offline cache
         run: node tools/sync-flags-offline-cache.mjs
+      - name: Verify generated files and offline inventory
+        run: node --test tests/flags-prebaked.test.mjs
       - name: Commit assets to the isolated branch
         run: |
           git add assets/flags/cloth-prebaked/ sw.js
@@ -60,6 +62,6 @@ jobs:
           else
             git -c user.name='github-actions[bot]' \
                 -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-                commit -m 'build(flags): generate offline cloth assets [skip ci]'
+                commit -m 'build(flags): generate verified WebP cloth library [skip ci]'
             git push origin HEAD:feature/flags-game-v2
           fi

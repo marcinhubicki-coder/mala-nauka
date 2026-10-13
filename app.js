@@ -262,6 +262,19 @@ function renderPinError(){
  const node=root.querySelector('.pin-error-outside');if(!node)return;
  node.textContent=pinError||'';node.classList.toggle('is-visible',Boolean(pinError));
 }
+// PIN is a stateful group: entering digits must not replace its keys or dots.
+// Preserve input focus, element identity and future declarative component IDs.
+function syncPinEntry(){
+ const fields=root.querySelector('.pin-fields');if(!fields)return;
+ const dots=fields.querySelector('.pin-dots');
+ if(dots){
+  dots.setAttribute('aria-label','Wpisano '+pinInput.length+' z 4 cyfr');
+  dots.querySelectorAll(':scope > span').forEach((dot,index)=>dot.classList.toggle('filled',index<pinInput.length));
+ }
+ const submit=fields.querySelector('.pin-keypad [data-action="submit-pin"]');
+ if(submit)submit.disabled=pinInput.length!==4;
+ renderPinError();
+}
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
  const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();renderPinError();if(animate)animateStateChange(card,oldHeight);
@@ -656,8 +669,8 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='guest-player'){await activatePlayer(studioProfiles()?{id:'studio-guest',nickname:'Gość',avatarId:'a',hasPin:false}:playerService.beginGuestSession(),'players','guest-player');return;}
  if(action==='continue-player'){playerSelectionEpoch++;await enterSelectedPlayer();return;}
  if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview .player-avatar-art');if(preview)updateProfileAvatar(preview,pendingAvatarId);void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
- if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
- if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
+ if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';syncPinEntry();}return;}
+ if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';syncPinEntry();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}

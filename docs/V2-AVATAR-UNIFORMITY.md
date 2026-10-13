@@ -23,6 +23,10 @@ Poprzedni renderer mieszał siatkę 2×2 (pierwsze cztery avatary), siatkę 4×2
 
 `tools/qa-avatars-browser.mjs` przechodzi całą drogę w Chromium (390 × 844 / DPR 3): wybór każdego z 12 avatarów, podgląd, przejście na PIN, zapis profilu, ustawienia i edycja avatara. Test wykrywa brakujące obrazki, błędy JS, różnicę szerokości i wysokości, zmianę średnicy w jednym kontekście.
 
-Wykonano ręczną kontrolę przeglądarkową przed zamknięciem sesji: **12/12 obrazków wczytuje się jako 384 × 384**, picker **62,5 × 62,5 CSS px**, podgląd i ekran PIN **96 × 96 CSS px**, zmiana a–l nie zmienia wielkości podglądu, brak błędów JS. Pełnego nowego skryptu end-to-end obejmującego także *zapis i ponowną edycję* nie uruchomiono, ponieważ Vercel Sandbox zablokował nowe sesje po przekroczeniu limitu snapshotów Hobby. Do jego wykonania wymagane jest dostępne środowisko przeglądarkowe.
+Kontrola w Chromium (390 × 844, DPR 3) potwierdziła: **12/12 obrazków wczytuje się jako 384 × 384**, picker **62,5 × 62,5 CSS px**, podgląd oraz PIN **96 × 96 CSS px**, avatar w ustawieniach **44 × 44 CSS px**. Zmiana a–l nie zmienia średnicy podglądu.
 
-**Nie uznawać jeszcze za przeprowadzony** fizycznego testu iPhone/Safari ani pełnego end-to-end przez edycję. Produkcji nie publikować automatycznie.
+**Pełna automatyczna ścieżka end-to-end również przeszła:** utworzenie profilu, wybór wszystkich 12 avatarów, zapis PIN, ustawienia, edycja profilu i zapis innego avatara. **0 błędów JavaScript, 0 nieudanych żądań grafik**. Potwierdzenie: [GitHub Actions — Avatar geometry regression](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38338006339), wynik `success`. Dodatkowo przeszły **353 testy kodowe**.
+
+Ze względu na limit Hobby Snapshot Storage nie dało się utworzyć kolejnego Vercel Sandbox; test został uruchomiony na GitHub Actions bez zmiany planu i bez zwiększania limitu Vercela.
+
+**Nadal niewykonany:** fizyczny test iPhone/Safari (w tym rzeczywista klawiatura ekranowa i płynność przejść). Produkcji nie publikować automatycznie.

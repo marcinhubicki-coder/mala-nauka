@@ -2,7 +2,7 @@ import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
 import {overlayAttrs,hydrateSpellingOverlay} from './shared/spelling-overlays.mjs';
-import {hydratePinParts,pinAttrs} from './shared/pin-parts-contract.mjs';
+import {hydratePinParts,pinAttrs,PIN_CHILD_IDS} from './shared/pin-parts-contract.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
@@ -306,7 +306,7 @@ function playerPinPage(){
  const back=deleting||setting?'settings':creating?'edit-player':'players';
  const nav=pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView,backId:'pin-back',titleId:'pin-page-title'});
  const markup=nav+`<section ${attrs('pin-card')} class="pin-card ${noPin?'pin-no-code':''}"><div ${attrs('pin-profile')} class="pin-profile">${avatarMarkup(player,'player-avatar-large',attrs('pin-avatar'))}<h2 ${attrs('pin-nickname')} style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div ${attrs('pin-fields')} class="pin-fields">${pinFieldsMarkup()}</div></section><p ${attrs('pin-error')} class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
- root.innerHTML=compileViewMarkup(contractView,markup,{variant:purpose});
+ root.innerHTML=compileViewMarkup(contractView,markup,{variant:purpose,childIds:PIN_CHILD_IDS});
  hydratePinParts(root.querySelector('.pin-card'),{hasMode:creating,hasKeypad:!noPin});
  const container=root.querySelector('.pin-mode');
  void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});

@@ -45,8 +45,8 @@
   transform:rotate(-4deg) translate3d(0,-13px,0);
 }
 #app[data-mode="flags"] .question-card.flag-reveal-scene.is-revealed .flag-cloth{
-  /* 79% of cloth width slides it into the upper-right atlas corner. */
-  transform:translate3d(79%,-12%,0) rotate(1deg) scale(.42);
+  /* Pixel offset is calculated once for each flag ratio and phone width. */
+  transform:translate3d(var(--flag-corner-x,150px),var(--flag-corner-y,-18px),0) rotate(1deg) scale(.42);
 }
 #app[data-mode="flags"] .question-card.flag-reveal-scene.is-revealed .flag-scene-sky,
 #app[data-mode="flags"] .question-card.flag-reveal-scene.is-revealed .flag-clouds{opacity:0}
@@ -247,9 +247,9 @@
   text-shadow:0 0 7px #ffe087c2;
   opacity:0;transform:scale(.3) rotate(-15deg);
 }
-#app[data-mode="flags"] .flag-map-sparkle:nth-of-type(1){left:14%;top:24%}
-#app[data-mode="flags"] .flag-map-sparkle:nth-of-type(2){left:57%;top:15%}
-#app[data-mode="flags"] .flag-map-sparkle:nth-of-type(3){left:78%;top:53%}
+#app[data-mode="flags"] .flag-map-sparkle-a{left:14%;top:24%}
+#app[data-mode="flags"] .flag-map-sparkle-b{left:57%;top:15%}
+#app[data-mode="flags"] .flag-map-sparkle-c{left:78%;top:53%}
 #app[data-mode="flags"] .question-card.flag-reveal-scene.correct.is-revealed .flag-map-sparkle{
   animation:flag-atlas-twinkle .7s .27s ease-out both;
 }

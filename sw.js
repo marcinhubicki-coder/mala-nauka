@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v132-profile-progress-20261003';
+const CACHE='mala-nauka-v133-flags-prebaked-pilot-20261013';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -20,9 +20,10 @@ const CORE=[
   "./assets/flags/adventure/answer-compass-v1.svg",
   "./app.js?v=20261002-flags-reveal-v1",
   "./flagi/adventure.css?v=17-framing",
-  "./flagi/adventure-game.mjs?v=16-setup",
+  "./flagi/adventure-game.mjs?v=17-prebaked",
+  "./flagi/cloth-prebaked.css?v=1",
   "./flagi/text-fit.mjs?v=2",
-  "./flagi/flag-on-pole.mjs?v=11",
+  "./flagi/flag-on-pole.mjs?v=12-prebaked",
   "./flagi/flag-cloth.mjs?v=8",
   "./assets/flags/adventure/cloud-vignette-v2.webp",
   "./assets/flags/adventure/cloth-light-v1.webp",

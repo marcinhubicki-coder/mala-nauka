@@ -29,6 +29,14 @@ try{
   throw new Error('Hosted Ortografia wizard did not hydrate: '+JSON.stringify({diagnostic,errors})+'; '+error.message.slice(0,80));
  });
  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),29,'Wizard has an incomplete component contract');
+ // Production IMG_2947.png measures the white setup sheet at about
+ // x=14, y=223, width=362 in the 390x844 iPhone artboard.
+ const setupBounds=await gameFrame.locator('.setup-card.spelling-wizard-v2').evaluate(node=>{
+  const rect=node.getBoundingClientRect();return {x:rect.left,y:rect.top,width:rect.width};
+ });
+ assert.ok(Math.abs(setupBounds.x-14)<9,'Wizard sheet changed its horizontal reference position: '+JSON.stringify(setupBounds));
+ assert.ok(Math.abs(setupBounds.y-223)<12,'Wizard sheet changed its vertical reference position: '+JSON.stringify(setupBounds));
+ assert.ok(Math.abs(setupBounds.width-362)<14,'Wizard sheet no longer matches the approved side margins: '+JSON.stringify(setupBounds));
  const before=await gameFrame.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);
  await gameFrame.locator('[data-ds-element="spelling-scope-categories"]').click();
@@ -60,6 +68,14 @@ try{
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-repeat"]').count(),1);
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-history"][data-action="history"]').count(),1);
  assert.equal(await gameFrame.locator('#app .learning-stats-two [data-action="toggle-result"]').count(),2);
+ // The result scene must actually load, not merely exist as unused CSS.
+ const scene=gameFrame.locator('#app .result-scenery .result-hero');
+ await scene.waitFor({timeout:9000});
+ assert.equal(await scene.evaluate(async image=>{await image.decode();return image.naturalWidth>0;}),true,'Approved bunny artwork did not load');
+ const pointsBounds=await gameFrame.locator('#app .result-points-bubble').evaluate(node=>{
+  const rect=node.getBoundingClientRect();return {width:rect.width,height:rect.height};
+ });
+ assert.ok(Math.abs(pointsBounds.width-pointsBounds.height)<3,'Points pearl is distorted into an oval: '+JSON.stringify(pointsBounds));
  const retainedRows=await gameFrame.locator('#result-detail-retained .result-word-row').count();
  if(retainedRows)await gameFrame.locator('[data-ds-element="spelling-result-retained"]').click();
  const openPanel=retainedRows?'#result-detail-retained':'#result-detail-review';

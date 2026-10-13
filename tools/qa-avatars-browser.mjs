@@ -78,7 +78,21 @@ try{
  assert.equal(pin.id,'l');
  assert.ok(Math.abs(pin.w-previewSizes[0])<0.3,'PIN avatar changed size from the profile preview');
 
- for(const digit of '1234')await page.locator('[data-action=pin-digit][data-digit="'+digit+'"]').click();
+ const keypadHandle=await page.locator('.pin-keypad').elementHandle();
+ const dotsHandle=await page.locator('.pin-dots').elementHandle();
+ assert.ok(keypadHandle&&dotsHandle,'PIN controls missing');
+ assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),true);
+ for(const [i,digit] of [...'1234'].entries()){
+  await page.locator('[data-action=pin-digit][data-digit="'+digit+'"]').click();
+  const stable=await page.evaluate(({keypad,dots})=>({
+   keypad:keypad.isConnected&&document.querySelector('.pin-keypad')===keypad,
+   dots:dots.isConnected&&document.querySelector('.pin-dots')===dots
+  }),{keypad:keypadHandle,dots:dotsHandle});
+  assert.equal(stable.keypad,true,'PIN keypad was recreated after digit '+digit);
+  assert.equal(stable.dots,true,'PIN dots were recreated after digit '+digit);
+  assert.equal(await page.locator('.pin-dots > span.filled').count(),i+1);
+  assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),i!==3);
+ }
  await page.locator('[data-action=submit-pin]').click();
  await page.locator('#app[data-view=home]').waitFor({timeout:15000});
  await page.locator('[data-action=settings]').click();

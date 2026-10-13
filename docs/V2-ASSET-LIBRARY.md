@@ -31,3 +31,8 @@ Zwykłe wydanie zmienia hash `mala-nauka-ds-…` i czyści starsze pliki kodu. *
 Przy każdym żądaniu z `/assets/scenes/` Service Worker najpierw szuka obrazu w trwałej pamięci, a nie pobiera go ponownie. Cache ma limit **160 ostatnio pobranych ilustracji** (liczba plików, nie gwarantowany rozmiar w MB). W razie braku miejsca obraz nadal ładuje się z sieci — cache nie może blokować rozgrywki. Ta strategia nie umożliwia korzystania offline z nigdy niepobranych zdjęć.
 
 Gdy zmieni się zawartość istniejących ścieżek, trzeba utworzyć nową wersję biblioteki i cache (np. `-v2`), a nie niejawnie nadpisywać stare pliki. Weryfikować Safari/PWA po aktualizacji i offline, nie tylko środowisko Chromium.
+
+## Build z GitHub Actions (detached HEAD)
+Testy na pull requestach działają na commicie merge w trybie `detached HEAD`. Brak nazwy gałęzi w `git branch --show-current` nie może wyłączać etykiety V2 ani zabezpieczeń zapisu. Builder odczytuje w tym wypadku `design-system/config.json.branch` i wymusza zgodność deklaracji dla V2. W lokalnym teście zachowuje 401 scen, ponieważ Python HTTP Server **nie potrafi wykonać Vercel rewrites**. Jedynie build publikowany na Vercelu (ustawione `VERCEL`) pomija ten katalog; dzięki temu CI sprawdza prawdziwe komponenty i sceny, a produkcyjny deployment nadal nie zawiera archiwum.
+
+Test `qa-reference-studio-browser` sprawdza teraz zgodność `window.__DS_STUDIO_BRANCH__` z `deployment.json.branch`. To wykrywa sytuację, gdy podgląd pokazywał V2, ale w runtime GitClient wskazywał na nieprawidłową gałąź.

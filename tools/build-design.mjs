@@ -7,6 +7,14 @@ import {selectOfflineBootstrapAssets,offlineAssetBudget} from './offline-cache-p
 import {selectOfflineCore} from './offline-core-policy.mjs';
 const root=process.cwd(),out=resolve(root,'dist'),canonicalBranch='design/system-v1';
 let branch=process.env.VERCEL_GIT_COMMIT_REF;try{branch||=execFileSync('git',['branch','--show-current'],{encoding:'utf8'}).trim();}catch{}
+// Pull-request CI checks out a detached merge commit: git has no branch name.
+// Use the versioned Studio config as a deterministic fallback for that build.
+// Never override Vercel's explicit branch. Ensure a V2 build cannot silently
+// write to a different Studio branch.
+const declaredStudioBranch=JSON.parse(await readFile(resolve(root,'design-system/config.json'),'utf8')).branch;
+branch||=declaredStudioBranch;
+const studioV2=branch.startsWith('refactor/v2-')||branch==='design/system-v2';
+if(studioV2&&declaredStudioBranch!==branch)throw Error('Niezgodna gałąź Studio V2: '+branch+' / '+declaredStudioBranch);
 let generatedReport;try{generatedReport=JSON.parse(await readFile(resolve(root,'design-system/pwa-test-report.json'),'utf8'));}catch{}
 const consumer=process.argv.includes('--consumer')||!usesLocalDesignSnapshot(branch,generatedReport);
 const source=consumer?await pinnedContentSource({sourceURL:process.env.DS_SOURCE_URL,sourceSHA:process.env.DS_SOURCE_SHA}):'/';
@@ -17,7 +25,10 @@ async function walk(dir){for(const item of await readdir(dir,{withFileTypes:true
 await walk(root);
 // Scene archive is frozen on assets/library-v1 and hosted separately.
 // Do not package its 400+ unchanged illustrations into every UI preview.
-const externalSceneLibrary=branch.startsWith('refactor/v2-')||branch==='design/system-v2';
+// CI tests use a plain local HTTP server with no Vercel rewrites, so their
+// compiled preview must include scenes. Only an actual hosted V2 deployment
+// removes them and serves the archive via the configured Vercel rewrite.
+const externalSceneLibrary=studioV2&&Boolean(process.env.VERCEL);
 if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/scenes/'))files.delete(path);
 files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,builtAt:new Date().toISOString(),sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,consumer,contentSource:consumer?source:null,deploymentUrl:process.env.VERCEL_URL||null,branchUrl:process.env.VERCEL_BRANCH_URL||null})));
 const localSource=process.env.DS_SOURCE_DIR;
@@ -78,7 +89,7 @@ for(const [path,bytes] of [...files]){
  if(path.endsWith('.html')){
   let html=bytes.toString();const baseMatch=html.match(/<base\s+href=['"]([^'"]+)['"]/),base=baseMatch?posix.normalize(posix.join(posix.dirname(path),baseMatch[1])):posix.dirname(path);
   if(consumer)html=assetReferences(html);
-  if(path==='design-system/index.html'&&externalSceneLibrary)
+  if(path==='design-system/index.html'&&studioV2)
    html=html.replace('</head>','<script>window.__DS_STUDIO_BRANCH__='+JSON.stringify(branch)+'</script></head>');
   const links=[...html.matchAll(/<link\b[^>]*rel=['"]stylesheet['"][^>]*>/g)];
   const styles=[];for(const link of links){const href=link[0].match(/href=['"]([^'"]+)['"]/)?.[1];if(href&&!/^https?:/.test(href))styles.push(posix.normalize(posix.join(base,href.split('?')[0])));}

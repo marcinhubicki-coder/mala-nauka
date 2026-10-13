@@ -73,6 +73,10 @@ try{
  await page.locator('#player-nickname').fill('TestAda');
  await page.locator('#player-create-form button[type=submit]').click();
  await page.locator('#app[data-view=player-pin]').waitFor();
+ await page.locator('#app [data-ds-element="pin-card"]').waitFor({timeout:9000}).catch(async err=>{
+  const snapshot=await page.locator('#app').evaluate(n=>({view:n.dataset.view,contract:n.querySelectorAll('[data-ds-contract="v2"]').length,html:n.innerHTML.slice(0,200)}));
+  throw new Error('PIN mount failed: '+JSON.stringify({snapshot,errors})+'; '+err.message.slice(0,100));
+ });
  assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),8,'PIN entry must compile its eight-part family');
  assert.equal(await page.locator('#app [data-ds-element=pin-back][data-action=edit-player]').count(),1);
  const shellHandle=await page.locator('#app [data-ds-element=pin-fields]').elementHandle();

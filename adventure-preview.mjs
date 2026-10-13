@@ -8,10 +8,11 @@ const records=new Map(FLAGS.map(record=>[record.id,record]));
 for(const record of [...FLAGS].sort((a,b)=>a.country.localeCompare(b.country,'pl'))){
   const option=document.createElement('option');option.value=record.id;option.textContent=record.country;country.append(option);
 }
-country.value=records.has(params.get('country'))?params.get('country'):'pl';
+country.value=records.has(params.get('country'))?params.get('country'):(params.get('screen')?.startsWith('flag-scenic')?'by':'pl');
 const paths={
   profiles:'profile-preview-frame.html',wizard:'ortografia/wizard-preview-frame.html',
   flags:'flagi/preview-frame.html','flag-material':'flagi/preview-frame.html?country=pl&scene=material',
+  'flag-scenic':'flagi/scenic-preview.html?country=by','flag-scenic-correct':'flagi/scenic-preview.html?country=by&state=correct&freeze=1','flag-scenic-wrong':'flagi/scenic-preview.html?country=by&state=wrong&freeze=1',
   'flag-question':'flagi/preview-frame.html?country=pl','flag-correct':'flagi/preview-frame.html?country=pl&state=correct','flag-wrong':'flagi/preview-frame.html?country=pl&state=wrong','flag-map':'flagi/preview-frame.html?country=pl&state=wrong',
   'flag-long':'flagi/preview-frame.html?country=cf&state=wrong','flag-nepal':'flagi/preview-frame.html?country=np',
   'flag-square':'flagi/preview-frame.html?country=ch','flag-country':'flagi/preview-frame.html?country=pl&variant=countries',
@@ -20,11 +21,11 @@ const paths={
 function resize(){const [w,h]=device.value.split(',');phone.style.width=w+'px';phone.style.height=h+'px';}
 function change(){
   const material=screen.value==='flag-material';
-  const flagScreens=['flag-material','flag-question','flag-correct','flag-wrong','flag-map'];
+  const flagScreens=['flag-material','flag-question','flag-correct','flag-wrong','flag-map','flag-scenic','flag-scenic-correct','flag-scenic-wrong'];
   country.hidden=countryLabel.hidden=!flagScreens.includes(screen.value);
   const path=paths[screen.value]||'ortografia/result-preview-frame.html?case='+screen.value+'&animate=1';
   const url=new URL(path,location.href);
-  if(flagScreens.includes(screen.value))url.searchParams.set('country',country.value);
+  if(flagScreens.includes(screen.value))url.searchParams.set('country',country.value==='pl'&&screen.value.startsWith('flag-scenic')?'by':country.value);
   open.href=url.href;url.searchParams.set('safe','1');
   if(screen.value==='progress')url.searchParams.set('chrome','1');
   phone.src=url.href;resize();

@@ -1,4 +1,4 @@
-const CACHE='mala-nauka-v136-flags-atlas-reveal-20261013';
+const CACHE='mala-nauka-v137-flags-atlas-reveal-loop2-20261013';
 const FLAG_CDN_HOST='cdn.jsdelivr.net';
 const FLAG_CDN_PATH='/gh/lipis/flag-icons@7.5.0/flags/4x3/';
 const CORE=[
@@ -22,8 +22,8 @@ const CORE=[
   "./flagi/adventure.css?v=17-framing",
   "./flagi/adventure-game.mjs?v=19-atlas-reveal",
   "./flagi/cloth-prebaked.css?v=1",
-  "./flagi/reveal-v2.css?v=1",
-  "./flagi/reveal-v2.mjs?v=1",
+  "./flagi/reveal-v2.css?v=2",
+  "./flagi/reveal-v2.mjs?v=2",
   "./assets/flags/cloth-prebaked/ad.webp",
   "./assets/flags/cloth-prebaked/ae.webp",
   "./assets/flags/cloth-prebaked/af.webp",

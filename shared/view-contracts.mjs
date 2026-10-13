@@ -46,7 +46,20 @@ for(const mode of MODES){
  home.push(row('home-'+mode+(mode==='spelling'||mode==='math'?'-symbol':'-glyph'),mode==='spelling'||mode==='math'?'text-home-mode-symbol':'icon-home-mode-glyph',mode==='spelling'||mode==='math'?'text':'icon','home-'+mode+'-badge'));
  home.push(row('home-'+mode+'-name','text-mode-name','text',card));
 }
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item)))});
+const playersEmpty=[
+ row('player-shell','family-player-empty','container','layout-root','family'),
+ row('player-brand-art','image-player-brand-art','image','player-shell'),
+ row('player-title','container-player-title','container','player-shell','group'),
+ row('player-heading','text-player-title','text','player-title'),
+ row('player-subtitle','text-player-copy','text','player-title'),
+ row('player-empty-illustration','image-player-empty-art','image','player-shell'),
+ row('player-benefit','group-player-benefit','container','player-shell','group'),
+ row('player-benefit-icon','icon-player-benefit-icon','icon','player-benefit'),
+ row('player-benefit-copy','text-player-copy','text','player-benefit'),
+ row('player-add','button-main','button','player-shell','atom','add-player'),
+ row('player-guest','button-player-later','button','player-shell','atom','guest-player')
+];
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item)))});
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
 export function inheritedMode(view,id){
  const byId=new Map(viewContract(view).map(item=>[item.id,item]));
@@ -72,6 +85,7 @@ export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
  return true;
 }
 export function viewContract(view){return VIEW_CONTRACTS[view]||[];}
+export function viewAttrs(view,id){const item=viewContract(view).find(row=>row.id===id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'" data-ds-recipe="'+item.recipe+'" data-ds-kind="'+item.kind+'"';}
 export function staticViewInventory(view){
  const items=viewContract(view);
  validateViewContract(view,items);

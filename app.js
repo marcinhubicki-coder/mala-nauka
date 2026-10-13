@@ -294,9 +294,16 @@ function playerPinPage(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
  const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
  const name=player?.nickname||'Gracz';
- root.dataset.pinPurpose=creating?'create':setting?'edit':'unlock';
+ const purpose=creating?'create':setting?'edit':deleting?'delete':'unlock';
+ const contractView=purpose==='unlock'?'player-unlock':'player-pin';
+ const attrs=id=>viewAttrs(contractView,id);
+ root.dataset.pinPurpose=purpose;
  const noPin=creating&&!pendingPinEnabled;
- root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card ${noPin?'pin-no-code':''}"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div class="pin-fields">${pinFieldsMarkup()}</div></section><p class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
+ const title=deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN';
+ const back=deleting||setting?'settings':creating?'edit-player':'players';
+ const nav=pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView,backId:'pin-back',titleId:'pin-page-title'});
+ const markup=nav+`<section ${attrs('pin-card')} class="pin-card ${noPin?'pin-no-code':''}"><div ${attrs('pin-profile')} class="pin-profile">${avatarMarkup(player,'player-avatar-large',attrs('pin-avatar'))}<h2 ${attrs('pin-nickname')} style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div ${attrs('pin-fields')} class="pin-fields">${pinFieldsMarkup()}</div></section><p ${attrs('pin-error')} class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
+ root.innerHTML=compileViewMarkup(contractView,markup,{variant:purpose});
  const container=root.querySelector('.pin-mode');
  void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){

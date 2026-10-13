@@ -4530,6 +4530,11 @@
         "offsetX": 5
       }
     },
+    "spelling-settings": {
+      "spelling-start": {
+        "offsetY": 3
+      }
+    },
     "spelling-pause": {
       "layout-root": {
         "padding": 47,

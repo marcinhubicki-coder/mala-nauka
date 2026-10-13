@@ -85,6 +85,9 @@ try{
  assert.ok(wizardFooter.note.height>=12&&wizardFooter.note.display!=='none'&&wizardFooter.note.visibility!=='hidden','Wizard note is invisible: '+JSON.stringify(wizardFooter));
  assert.ok(wizardFooter.note.top>=wizardFooter.card.bottom+8&&wizardFooter.note.bottom<wizardFooter.button.top,
   'Wizard note/CTA spacing does not match production: '+JSON.stringify(wizardFooter));
+ // IMG_2947.png reference CTA begins at approximately y=629 CSS px. The
+ // global atom offset belongs to other modules; this exception is spelling-only.
+ assert.ok(Math.abs(wizardFooter.button.top-630)<=12,'Approved CTA offset drifted: '+JSON.stringify(wizardFooter));
  await capture(page,'spelling-settings-live','IMG_2947.png');
  const before=await gameFrame.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);

@@ -49,3 +49,6 @@ Gest wykonywany klawiaturą i odtwarzany w Studio dotąd nie odsłaniał wypełn
 
 ## Przywrócenie edukacyjnej informacji pod formularzem (13.10.2026)
 Zmierzyliśmy, że `.wizard-note` istniał w DOM, ale miał `display:none`. Przyczyną był zapis w **wspólnym modelu Design Studio**: `design-system/config.json → elementStyles.text-wizard-note.visibility = removed`. Nie nadpisujemy tego CSS `!important`; przywrócenie elementu odbywa się przez usunięcie niedozwolonego dla zatwierdzonego wzorca ukrycia z konfiguracji. Domyślną informacją przy rundzie na czas jest „Po pomyłce czas czeka, aż poznasz odpowiedź.”. Test sprawdza widoczność i odstępy po hydratacji w rzeczywistym PWA.
+
+## Lokalna korekta położenia przycisku
+Wyrównanie 390 × 844 z załączonym `IMG_2947` pokazuje przycisk startowy V2 około 15 px niżej niż w produkcji. Globalny atom `button-game-start` ma `offsetY:18`, używany także w innych modułach, więc nie zmieniamy jego definicji. W `elementOverrides['spelling-settings']['spelling-start']` ustawiamy lokalne `offsetY:3`; model Studio i PWA wyliczają ten sam wynik. Test E2E mierzy rzeczywistą pozycję CTA i pilnuje, aby pozostał pod notatką i w obszarze widocznym na iPhone 13 Pro.

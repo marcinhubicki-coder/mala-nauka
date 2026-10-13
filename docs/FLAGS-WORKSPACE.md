@@ -22,3 +22,23 @@ Pracuj przede wszystkim w `flagi/`, `data/flags.mjs`, `assets/flags/` i testach.
 4. Produkcję aktualizujemy dopiero po akceptacji.
 
 Uwaga: Design Studio nie zastępuje silnika gry i nie jest źródłem prawdy dla tych przejść. Ten branch pozostaje osobnym miejscem pracy nad modułem Flagi.
+
+## Wydajność materiału — pilotaż WebP (2026-10-13)
+
+Problem: flagi/flag-cloth.mjs generuje jednorazowo statyczną fakturę z 1536 trójkątów i kolorowaniem każdego piksela. Nawet z cache przygotowanie nowego kraju może zajmować setki milisekund, a wygląd materiału nie zmienia się podczas gry.
+
+Rozwiązanie: tools/build-flag-cloth-assets.mjs używa oryginalnego renderera w bezgłowym Chrome poza telefonem, a następnie eksportuje wynik do WebP z przezroczystością. Pilotaż obejmuje PL, GB, CH, NP, JP, CF. Rozmiar ok. 600 pikseli fizycznych szerokości; maks. 150 KiB / obraz.
+
+flagi/flag-on-pole.mjs preferuje gotowy WebP tylko dla sześciu krajów. Przy poprawnym wczytaniu nie uruchamia kosztownego renderowania Canvas; maszt i tkanina nadal poruszają się razem przez CSS. Przy braku obrazka używa dotychczasowego Canvasa. Pozostałe kraje działają bez zmian.
+
+Uruchamianie lokalnie (Node 22 i Chrome):
+  npm install --no-save --no-package-lock playwright
+  node tools/build-flag-cloth-assets.mjs
+  node tools/sync-flags-offline-cache.mjs
+  node --test tests/flags-prebaked.test.mjs
+
+Pełna biblioteka dopiero po walidacji: node tools/build-flag-cloth-assets.mjs --all.
+
+Workflow .github/workflows/flags-assets-pilot.yml generuje pilotaż na izolowanej gałęzi. Nie zmienia main ani Design Studio.
+
+Warunki akceptacji: poprawne krawędzie Nepalu, kwadrat Szwajcarii, detale flag, wszystkie pliki do 150 KiB, brak Canvas przy trafieniu WebP, poprawne przejścia odpowiedzi, offline i pomiary na fizycznym iPhone 13 Pro. Tych testów nie wolno uznać za wykonane, zanim nie zostaną rzeczywiście potwierdzone.

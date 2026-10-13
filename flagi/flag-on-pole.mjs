@@ -1,9 +1,7 @@
 import { renderFlagCloth, prewarmFlagCloth } from './flag-cloth.mjs?v=8';
 
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-// A controlled 6-country pilot. Other countries keep the original Canvas path
-// until the complete 195-asset library has passed visual and memory QA.
-const PREBAKED_PILOT = new Set(['pl','gb','ch','np','jp','cf']);
+// All 195 countries use prerendered WebP; Canvas remains the on-demand fallback.
 const preloadJobs = new Map();
 const prebakedUrl = id => new URL('assets/flags/cloth-prebaked/' + id + '.webp', document.baseURI).href;
 
@@ -11,9 +9,7 @@ const prebakedUrl = id => new URL('assets/flags/cloth-prebaked/' + id + '.webp',
 export function flagOnPole(record,{label='Flaga do rozpoznania'}={}){
   const source=new URL(record.flagSvg,document.baseURI).href;
   const ratio=record.id==='ch'||record.id==='va'?1:4/3;
-  const image=PREBAKED_PILOT.has(record.id)
-    ? '<img class="flag-cloth-prebaked" src="' + esc(prebakedUrl(record.id)) + '" alt="" decoding="async">'
-    : '';
+  const image='<img class="flag-cloth-prebaked" src="' + esc(prebakedUrl(record.id)) + '" alt="" decoding="async">';
   return '<div class="flag-on-pole" role="img" aria-label="' + esc(label) + '" data-flag-source="' + esc(source) + '" style="--flag-ratio:' + ratio + '"><div class="flag-camera"><span class="flag-scene-sky" aria-hidden="true"></span><div class="flag-rig"><span class="flag-pole" aria-hidden="true"><i></i><b></b></span><div class="flag-cloth" aria-hidden="true"><img class="flag-cloth-fallback" src="' + esc(source) + '" alt="" width="640" height="480">' + image + '<canvas class="flag-cloth-canvas" data-cloth-source="' + esc(source) + '" data-cloth-ratio="' + ratio + '"></canvas></div><span class="flag-clouds" aria-hidden="true"></span></div></div></div>';
 }
 
@@ -67,6 +63,5 @@ export function prepareFlag(record,host){
   const source=new URL(record.flagSvg,document.baseURI).href;
   const width=Math.min(host.clientWidth*.71,host.clientHeight*.67*ratio);
   const fallback=()=>prewarmFlagCloth(source,width,width/ratio);
-  if(PREBAKED_PILOT.has(record.id))return preloadWebp(record.id).catch(fallback);
-  return fallback();
+  return preloadWebp(record.id).catch(fallback);
 }

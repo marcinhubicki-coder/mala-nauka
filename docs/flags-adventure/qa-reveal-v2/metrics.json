@@ -1,0 +1,477 @@
+[
+  {
+    "name": "01-pl-question",
+    "id": "pl",
+    "state": "question",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 106.8,
+      "y": 217.6,
+      "width": 194.7,
+      "height": 171.2
+    },
+    "poleOpacity": 1,
+    "map": null,
+    "mapOpacity": null,
+    "selected": false,
+    "zoomed": false,
+    "imageReady": true,
+    "title": null,
+    "overflowX": false,
+    "phase": "question",
+    "errors": []
+  },
+  {
+    "name": "02-pl-correct",
+    "id": "pl",
+    "state": "correct",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 258.6,
+      "y": 215.4,
+      "width": 78.5,
+      "height": 68
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 207,
+      "width": 292,
+      "height": 157
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Polska",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "03-pl-wrong",
+    "id": "pl",
+    "state": "wrong",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 258.6,
+      "y": 215.4,
+      "width": 78.5,
+      "height": 68
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 207,
+      "width": 292,
+      "height": 157
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Polska",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "04-np-correct",
+    "id": "np",
+    "state": "correct",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 258.6,
+      "y": 215.4,
+      "width": 78.5,
+      "height": 68
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 207,
+      "width": 292,
+      "height": 157
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Nepal",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "05-ch-wrong",
+    "id": "ch",
+    "state": "wrong",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 277.6,
+      "y": 215.4,
+      "width": 59.1,
+      "height": 67.7
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 207,
+      "width": 292,
+      "height": 157
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Szwajcaria",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "06-cf-correct",
+    "id": "cf",
+    "state": "correct",
+    "width": 390,
+    "height": 844,
+    "card": {
+      "x": 24,
+      "y": 183,
+      "width": 342,
+      "height": 275
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 506,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 18,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      },
+      {
+        "x": 201,
+        "y": 592,
+        "width": 171,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 258.6,
+      "y": 215.4,
+      "width": 78.5,
+      "height": 68
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 207,
+      "width": 292,
+      "height": 157
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Republika Środkowoafrykańska",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "07-pl-short",
+    "id": "pl",
+    "state": "wrong",
+    "width": 390,
+    "height": 700,
+    "card": {
+      "x": 24,
+      "y": 164,
+      "width": 342,
+      "height": 219
+    },
+    "answers": [
+      {
+        "x": 18,
+        "y": 424,
+        "width": 171,
+        "height": 62
+      },
+      {
+        "x": 201,
+        "y": 424,
+        "width": 171,
+        "height": 62
+      },
+      {
+        "x": 18,
+        "y": 498,
+        "width": 171,
+        "height": 62
+      },
+      {
+        "x": 201,
+        "y": 498,
+        "width": 171,
+        "height": 62
+      }
+    ],
+    "flag": {
+      "x": 276.9,
+      "y": 195.7,
+      "width": 59.9,
+      "height": 51.9
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 49,
+      "y": 188,
+      "width": 292,
+      "height": 101
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Polska",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  },
+  {
+    "name": "08-ch-large",
+    "id": "ch",
+    "state": "correct",
+    "width": 430,
+    "height": 932,
+    "card": {
+      "x": 25.8,
+      "y": 183,
+      "width": 378.3,
+      "height": 363
+    },
+    "answers": [
+      {
+        "x": 19.8,
+        "y": 594,
+        "width": 189.2,
+        "height": 76
+      },
+      {
+        "x": 221,
+        "y": 594,
+        "width": 189.2,
+        "height": 76
+      },
+      {
+        "x": 19.8,
+        "y": 680,
+        "width": 189.2,
+        "height": 76
+      },
+      {
+        "x": 221,
+        "y": 680,
+        "width": 189.2,
+        "height": 76
+      }
+    ],
+    "flag": {
+      "x": 294.3,
+      "y": 215,
+      "width": 81.1,
+      "height": 92.8
+    },
+    "poleOpacity": 0,
+    "map": {
+      "x": 50.8,
+      "y": 207,
+      "width": 328.3,
+      "height": 245
+    },
+    "mapOpacity": 1,
+    "selected": true,
+    "zoomed": true,
+    "imageReady": true,
+    "title": "Szwajcaria",
+    "overflowX": false,
+    "phase": "revealed",
+    "errors": []
+  }
+]

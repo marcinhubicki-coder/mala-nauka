@@ -68,21 +68,15 @@ try{
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-repeat"]').count(),1);
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-history"][data-action="history"]').count(),1);
  assert.equal(await gameFrame.locator('#app .learning-stats-two [data-action="toggle-result"]').count(),2);
- // The result scene must actually load, not merely exist as unused CSS.
- const scene=gameFrame.locator('#app .result-scenery .result-hero');
- await scene.waitFor({state:'attached',timeout:9000});
- const sceneDiagnostic=await scene.evaluate(async image=>{
-  await image.decode();
-  const elements=[];let element=image;
-  for(let depth=0;depth<5&&element;depth++,element=element.parentElement){
-   const rect=element.getBoundingClientRect(),computed=getComputedStyle(element);
-   elements.push({tag:element.tagName,cls:String(element.className),width:rect.width,height:rect.height,visibility:computed.visibility,display:computed.display,opacity:computed.opacity});
-  }
-  return {naturalWidth:image.naturalWidth,elements};
+ // The approved results background is one canonical image, not an invisible duplicate DOM picture.
+ const background=await gameFrame.locator('#app[data-view=results][data-mode=spelling]').evaluate(async root=>{
+  const value=getComputedStyle(root).backgroundImage;
+  const url=value.match(/url\\(["']?([^"')]+)["']?\\)/)?.[1];
+  const response=url?await fetch(url):null;
+  return {value,status:response?.status||0};
  });
- console.log('Result scene geometry:',JSON.stringify(sceneDiagnostic));
- assert.ok(sceneDiagnostic.naturalWidth>0,'Approved bunny artwork did not load');
- assert.ok(sceneDiagnostic.elements[0].width>10&&sceneDiagnostic.elements[0].height>10,'Bunny has zero layout size: '+JSON.stringify(sceneDiagnostic));
+ assert.ok(background.value.includes('result-background-v6.webp'),'Wrong results background: '+JSON.stringify(background));
+ assert.equal(background.status,200,'Approved bunny and meadow asset could not be loaded');
  const pointsBounds=await gameFrame.locator('#app .result-points-bubble').evaluate(node=>{
   const rect=node.getBoundingClientRect();return {width:rect.width,height:rect.height};
  });

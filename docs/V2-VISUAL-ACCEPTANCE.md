@@ -15,7 +15,7 @@ Pliki graficzne są źródłowymi załącznikami rozmowy, nie zostały wrzucone 
 
 ## Pierwsza poprawka
 
-W V2 klasy `result-scenery`, `result-hero`, `result-meadow` były obecne w CSS, ale **nie były renderowane w wyniku**. Wprowadzone DOM `result-scenery` odwołuje się do oryginalnych assetów `result-hero-retina-v5.webp` i `result-meadow-retina-v4.webp`. Bańka punktów ma ponownie proporcje koła. Liczba punktów pozostaje wynikiem `scoreResult(result)` i zachowuje istniejący reel.
+**Korekta po uruchomieniu testu Chromium:** produkcyjny ekran wyników celowo używa scalonej grafiki `result-background-v6.webp` z `pwa-viewport.css`. Dawne klasy `result-scenery`, `result-hero` i `result-meadow` były ukryte; pierwsza próba dodania ich do DOM stworzyła zbędną drugą scenografię. Duplikat został usunięty, a właściwe tło pozostawione jako jedno źródło prawdy. Test sprawdza teraz plik renderowany jako tło oraz jego osiągalność. Bańka punktów zachowuje kształt perłowego koła i rzeczywistą wartość `scoreResult(result)`.
 
 ## Kryteria ukończenia
 

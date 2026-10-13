@@ -3,13 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 const body=readFileSync(new URL('../ortografia/result-screen.mjs',import.meta.url),'utf8');
 const css=readFileSync(new URL('../shared/round-result.css',import.meta.url),'utf8');
-test('result scenery actually mounts the approved bunny and meadow art',()=>{
- for(const name of ['result-hero-retina-v5.webp','result-meadow-retina-v4.webp']){
-  assert.ok(body.includes(name));
-  assert.ok(existsSync(new URL('../assets/ortografia/'+name,import.meta.url)));
- }
- assert.match(body,/class="result-scenery"/);
- assert.match(css,/\.result-scenery\s*\{/);
+test('results use the production unified background and no duplicate image DOM',()=>{
+ const viewport=readFileSync(new URL('../pwa-viewport.css',import.meta.url),'utf8');
+ assert.ok(existsSync(new URL('../assets/ortografia/result-background-v6.webp',import.meta.url)));
+ assert.ok(viewport.includes('result-background-v6.webp'));
+ assert.ok(!body.includes('class="result-scenery"'));
+ assert.ok(!css.includes('background:linear-gradient(180deg,#c8baf8'));
 });
 test('round award remains a live points value inside a pearl bubble',()=>{
  assert.match(body,/class="result-points-bubble"/);
@@ -17,10 +16,11 @@ test('round award remains a live points value inside a pearl bubble',()=>{
  assert.match(css,/height:calc\(82 \* var\(--result-u\)\)/);
 });
 
-test('bunny is scoped to spelling and stays in the offline bootstrap',()=>{
- assert.match(body,/spelling \? '<div class="result-scenery"/);
+test('one unified results background is precached without duplicate image resources',()=>{
  const bootstrap=readFileSync(new URL('../tools/offline-cache-policy.mjs',import.meta.url),'utf8');
- for(const name of ['result-hero-retina-v5.webp','result-meadow-retina-v4.webp'])assert.ok(bootstrap.includes(name));
+ assert.ok(bootstrap.includes('result-background-v6.webp'));
+ assert.ok(!bootstrap.includes('result-hero-retina-v5.webp'));
+ assert.ok(!bootstrap.includes('result-meadow-retina-v4.webp'));
 });
 
 test('result collection CTA opens the actual word collection and preserves return to result',()=>{

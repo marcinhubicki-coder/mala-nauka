@@ -226,9 +226,6 @@ body:has(#app[data-view="results"]){background:transparent}
 
 /* 2026-10-13 approved V1 results: the bunny scene must exist behind
    the cloud sheet, and the points award appears inside a round pearl. */
-#app[data-view="results"][data-mode="spelling"]{background:linear-gradient(180deg,#c8baf8 0%,#fdfaff 44%,#fffcf9 80%,#c3e4ab 100%)}
-#app[data-view="results"][data-mode="spelling"] .result-hero{object-fit:cover}
-#app[data-view="results"][data-mode="spelling"] .result-meadow{max-height:calc(195 * var(--result-u));object-fit:cover;object-position:bottom}
 #app[data-view="results"][data-mode="spelling"] .result-points-bubble{
  width:calc(82 * var(--result-u));height:calc(82 * var(--result-u));
  border:calc(1 * var(--result-u)) solid #ffffffda;
@@ -243,5 +240,3 @@ body:has(#app[data-view="results"]){background:transparent}
 }
 #app[data-view="results"][data-mode="spelling"] .result-points-core strong{font-size:calc(29 * var(--result-u))}
 
-/* Paint cloud whitening OVER scenery, UNDER title and interactions. */
-#app[data-view="results"][data-mode="spelling"] .result-v4::before{z-index:1}

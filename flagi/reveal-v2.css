@@ -177,6 +177,13 @@
   overflow:hidden;
 }
 #app[data-mode="flags"] .flag-reveal-scene.is-revealed .flag-dissolve-curtain{opacity:0}
+#app[data-mode="flags"] .flag-dissolve-drops{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden;
+}
 #app[data-mode="flags"] .flag-dissolve-drop{
   position:absolute;
   display:block;

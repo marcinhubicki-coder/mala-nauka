@@ -16,7 +16,7 @@ test('All five gameplay states reuse 17 semantic pieces and two independent butt
  assert.equal(base.filter(item=>item.action==='answer').length,2);
  assert.equal(base.filter(item=>item.action==='pause').length,1);
  assert.equal(base.filter(item=>item.action==='spelling-hint').length,1);
- assert.equal(base.filter(item=>item.level==='group').length,7);
+ assert.equal(base.filter(item=>item.level==='group').length,8);
 });
 test('Compiled Orthography gameplay correctly keeps both answer actions and its slider independent',()=>{
  const blocks=viewContract('spelling-initial');

@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 34,
-  "total": 34,
+  "passed": 40,
+  "total": 40,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -14,63 +14,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -99,71 +107,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -186,73 +202,271 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-11-poland-mockup-wrong",
+      "state": "feedback-wrong",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-12-poland-mockup-correct",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
@@ -273,63 +487,71 @@
         "h": 700
       },
       "flag": {
-        "x": 69.1875,
-        "y": 160.1490478515625,
-        "w": 209.4691162109375,
-        "h": 182.47842407226562
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09320068359375
       },
       "paper": {
-        "x": 27.296875,
-        "y": 361.1875,
-        "w": 335.390625,
-        "h": 51.09375
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 159.5,
-        "w": 335.390625,
-        "h": 252.78125
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 422.796875,
-          "w": 163.1875,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 422.796875,
-          "w": 163.203125,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 480.6875,
-          "w": 163.1875,
-          "h": 49.90625,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 480.6875,
-          "w": 163.203125,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -360,71 +582,79 @@
         "h": 932
       },
       "flag": {
-        "x": 75.765625,
-        "y": 215.5865478515625,
-        "w": 211.5107421875,
-        "h": 240.94281005859375
+        "x": 111.46875,
+        "y": 214.15940856933594,
+        "w": 212.57296752929688,
+        "h": 243.27284240722656
       },
       "paper": {
-        "x": 30.09375,
-        "y": 480.90625,
-        "w": 369.796875,
-        "h": 68.03125
+        "x": 21.5,
+        "y": 526.578125,
+        "w": 387,
+        "h": 42.859375
       },
       "atlas": {
-        "x": 30.09375,
-        "y": 211.6875,
-        "w": 369.796875,
-        "h": 337.25
+        "x": 21.5,
+        "y": 200.375,
+        "w": 387,
+        "h": 320.59375
       },
       "answers": [
         {
           "id": "es",
           "text": "Hiszpania",
           "disabled": true,
-          "x": 30.09375,
-          "y": 562.921875,
-          "w": 180.390625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 21.5,
+          "y": 572.234375,
+          "w": 190,
+          "h": 71.515625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ch",
           "text": "Szwajcaria",
           "disabled": true,
-          "x": 219.484375,
-          "y": 562.921875,
-          "w": 180.40625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 218.5,
+          "y": 572.234375,
+          "w": 190,
+          "h": 71.515625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ru",
           "text": "Rosja",
           "disabled": true,
-          "x": 30.09375,
-          "y": 634.484375,
-          "w": 180.390625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 21.5,
+          "y": 650.75,
+          "w": 190,
+          "h": 71.53125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 219.484375,
-          "y": 634.484375,
-          "w": 180.40625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 218.5,
+          "y": 650.75,
+          "w": 190,
+          "h": 71.53125,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "183.7 301.67 120 86.97",
+      "labels": 3,
+      "crop": "174.7 305.3 138 79.69",
       "capital": "Stolica: Berno",
       "swipeVisible": false,
       "overflowX": false,
@@ -447,71 +677,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "li",
           "text": "Liechtenstein",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "ie",
           "text": "Irlandia",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
-      "labels": 5,
-      "crop": "203 299.76 120 84.49",
+      "neighbors": 8,
+      "labels": 3,
+      "crop": "200 307 126 70",
       "microstate": "marker",
       "capital": "Stolica: Vaduz",
       "swipeVisible": false,
@@ -535,71 +773,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 195.23800659179688,
-        "w": 191.1749267578125,
-        "h": 217.77377319335938
+        "x": 102.03125,
+        "y": 193.93914794921875,
+        "w": 192.57308959960938,
+        "h": 220.38714599609375
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "lt",
           "text": "Litwa",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "va",
           "text": "Watykan",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "rs",
           "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "mk",
           "text": "Macedonia Północna",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
+      "neighbors": 7,
       "labels": 3,
-      "crop": "218 356.31 144 101.38",
+      "crop": "218 367 144 80",
       "microstate": "marker",
       "capital": "Stolica: Watykan",
       "swipeVisible": true,
@@ -623,63 +869,71 @@
         "h": 700
       },
       "flag": {
-        "x": 69.1875,
-        "y": 160.1490478515625,
-        "w": 209.4691162109375,
-        "h": 182.47842407226562
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09320068359375
       },
       "paper": {
-        "x": 27.296875,
-        "y": 361.1875,
-        "w": 335.390625,
-        "h": 51.09375
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 159.5,
-        "w": 335.390625,
-        "h": 252.78125
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
       },
       "answers": [
         {
           "id": "pt",
           "text": "Portugalia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 422.796875,
-          "w": 163.1875,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 199.484375,
-          "y": 422.796875,
-          "w": 163.203125,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "se",
           "text": "Szwecja",
           "disabled": true,
-          "x": 27.296875,
-          "y": 480.6875,
-          "w": 163.1875,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "me",
           "text": "Czarnogóra",
           "disabled": true,
-          "x": 199.484375,
-          "y": 480.6875,
-          "w": 163.203125,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -710,63 +964,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 221.55609130859375,
-        "w": 228.80441284179688,
-        "h": 199.3271484375
+        "x": 102.03125,
+        "y": 221.3218231201172,
+        "w": 231.15924072265625,
+        "h": 200.3826446533203
       },
       "paper": {
-        "x": 27.296875,
-        "y": 440.703125,
-        "w": 335.390625,
-        "h": 55.6875
+        "x": 19.5,
+        "y": 478.09375,
+        "w": 351,
+        "h": 35.09375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 220.671875,
-        "w": 335.390625,
-        "h": 275.71875
+        "x": 19.5,
+        "y": 211.03125,
+        "w": 351,
+        "h": 262.46875
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 507.84375,
-          "w": 163.1875,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 19.5,
+          "y": 515.46875,
+          "w": 172,
+          "h": 57.90625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 515.46875,
+          "w": 172,
+          "h": 57.90625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 507.84375,
-          "w": 163.203125,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 19.5,
+          "y": 580.375,
+          "w": 172,
+          "h": 57.921875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 567.15625,
-          "w": 163.1875,
-          "h": 51.3125,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 567.15625,
-          "w": 163.203125,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 198.5,
+          "y": 580.375,
+          "w": 172,
+          "h": 57.921875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -774,7 +1036,7 @@
       "highlight": true,
       "neighbors": 11,
       "labels": 6,
-      "crop": "240.8 214.66 187.19 114.88",
+      "crop": "231.01 214.66 206.78 114.88",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -797,63 +1059,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -861,6 +1131,99 @@
       "neighbors": null,
       "labels": null,
       "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-two-line-sand-and-production-slider",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Sarajewo",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -882,63 +1245,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -967,71 +1338,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "li",
           "text": "Liechtenstein",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "sk",
           "text": "Słowacja",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 18,
+      "neighbors": 21,
       "labels": 9,
-      "crop": "149.13 207.08 230.44 162.24",
+      "crop": "118.33 207.08 292.03 162.24",
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
       "overflowX": false,
@@ -1054,63 +1433,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -1139,63 +1526,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -1224,71 +1619,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "vector-fallback",
       "activeCount": 41,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -1311,63 +1714,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -1396,76 +1807,84 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.5,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.21875
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 3,
+      "animations": 12,
       "sand": "falling",
       "qa": {
         "enabled": "true",
@@ -1485,63 +1904,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
+        "x": 19.5,
         "y": 0,
-        "w": 335.390625,
-        "h": 6
+        "w": 351,
+        "h": 14
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -1570,71 +1997,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -1657,73 +2092,271 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-11-poland-mockup-wrong",
+      "state": "feedback-wrong",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-12-poland-mockup-correct",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
@@ -1744,63 +2377,71 @@
         "h": 700
       },
       "flag": {
-        "x": 69.1875,
-        "y": 160.1490478515625,
-        "w": 209.4691162109375,
-        "h": 182.47842407226562
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09317016601562
       },
       "paper": {
-        "x": 27.296875,
-        "y": 361.1875,
-        "w": 335.390625,
-        "h": 51.09375
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 159.5,
-        "w": 335.390625,
-        "h": 252.78125
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 422.796875,
-          "w": 163.1875,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 422.796875,
-          "w": 163.203125,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 480.6875,
-          "w": 163.1875,
-          "h": 49.90625,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 480.6875,
-          "w": 163.203125,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -1831,71 +2472,79 @@
         "h": 932
       },
       "flag": {
-        "x": 75.765625,
-        "y": 215.5865478515625,
-        "w": 211.5107421875,
-        "h": 240.94277954101562
+        "x": 111.46875,
+        "y": 214.15940856933594,
+        "w": 212.57296752929688,
+        "h": 243.27284240722656
       },
       "paper": {
-        "x": 30.09375,
-        "y": 480.90625,
-        "w": 369.796875,
-        "h": 68.03125
+        "x": 21.5,
+        "y": 526.578125,
+        "w": 387,
+        "h": 42.859375
       },
       "atlas": {
-        "x": 30.09375,
-        "y": 211.6875,
-        "w": 369.796875,
-        "h": 337.25
+        "x": 21.5,
+        "y": 200.375,
+        "w": 387,
+        "h": 320.59375
       },
       "answers": [
         {
           "id": "es",
           "text": "Hiszpania",
           "disabled": true,
-          "x": 30.09375,
-          "y": 562.921875,
-          "w": 180.390625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 21.5,
+          "y": 572.234375,
+          "w": 190,
+          "h": 71.515625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ch",
           "text": "Szwajcaria",
           "disabled": true,
-          "x": 219.484375,
-          "y": 562.921875,
-          "w": 180.40625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 218.5,
+          "y": 572.234375,
+          "w": 190,
+          "h": 71.515625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ru",
           "text": "Rosja",
           "disabled": true,
-          "x": 30.09375,
-          "y": 634.484375,
-          "w": 180.390625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 21.5,
+          "y": 650.75,
+          "w": 190,
+          "h": 71.53125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 219.484375,
-          "y": 634.484375,
-          "w": 180.40625,
-          "h": 63.5625,
-          "labelFits": true
+          "x": 218.5,
+          "y": 650.75,
+          "w": 190,
+          "h": 71.53125,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "183.7 301.67 120 86.97",
+      "labels": 3,
+      "crop": "174.7 305.3 138 79.69",
       "capital": "Stolica: Berno",
       "swipeVisible": false,
       "overflowX": false,
@@ -1918,71 +2567,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "li",
           "text": "Liechtenstein",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "ie",
           "text": "Irlandia",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
-      "labels": 5,
-      "crop": "203 299.76 120 84.49",
+      "neighbors": 8,
+      "labels": 3,
+      "crop": "200 307 126 70",
       "microstate": "marker",
       "capital": "Stolica: Vaduz",
       "swipeVisible": false,
@@ -2006,71 +2663,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 195.23802185058594,
-        "w": 191.1749267578125,
-        "h": 217.7737579345703
+        "x": 102.03125,
+        "y": 193.93914794921875,
+        "w": 192.57308959960938,
+        "h": 220.38714599609375
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "lt",
           "text": "Litwa",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "va",
           "text": "Watykan",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "rs",
           "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "mk",
           "text": "Macedonia Północna",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
+      "neighbors": 7,
       "labels": 3,
-      "crop": "218 356.31 144 101.38",
+      "crop": "218 367 144 80",
       "microstate": "marker",
       "capital": "Stolica: Watykan",
       "swipeVisible": true,
@@ -2094,63 +2759,71 @@
         "h": 700
       },
       "flag": {
-        "x": 69.1875,
-        "y": 160.1490478515625,
-        "w": 209.4691162109375,
-        "h": 182.47842407226562
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09317016601562
       },
       "paper": {
-        "x": 27.296875,
-        "y": 361.1875,
-        "w": 335.390625,
-        "h": 51.09375
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 159.5,
-        "w": 335.390625,
-        "h": 252.78125
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
       },
       "answers": [
         {
           "id": "pt",
           "text": "Portugalia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 422.796875,
-          "w": 163.1875,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 199.484375,
-          "y": 422.796875,
-          "w": 163.203125,
-          "h": 49.890625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "se",
           "text": "Szwecja",
           "disabled": true,
-          "x": 27.296875,
-          "y": 480.6875,
-          "w": 163.1875,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "me",
           "text": "Czarnogóra",
           "disabled": true,
-          "x": 199.484375,
-          "y": 480.6875,
-          "w": 163.203125,
-          "h": 49.90625,
-          "labelFits": true
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -2181,63 +2854,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 221.54046630859375,
-        "w": 228.80441284179688,
-        "h": 199.3271484375
+        "x": 102.03125,
+        "y": 221.3061981201172,
+        "w": 231.15924072265625,
+        "h": 200.3826446533203
       },
       "paper": {
-        "x": 27.296875,
-        "y": 440.6875,
-        "w": 335.390625,
-        "h": 55.6875
+        "x": 19.5,
+        "y": 478.078125,
+        "w": 351,
+        "h": 35.09375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 220.65625,
-        "w": 335.390625,
-        "h": 275.71875
+        "x": 19.5,
+        "y": 211.03125,
+        "w": 351,
+        "h": 262.453125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 507.828125,
-          "w": 163.1875,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 19.5,
+          "y": 515.46875,
+          "w": 172,
+          "h": 57.90625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 515.46875,
+          "w": 172,
+          "h": 57.90625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 507.828125,
-          "w": 163.203125,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 19.5,
+          "y": 580.375,
+          "w": 172,
+          "h": 57.921875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 567.140625,
-          "w": 163.1875,
-          "h": 51.3125,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 567.140625,
-          "w": 163.203125,
-          "h": 51.3125,
-          "labelFits": true
+          "x": 198.5,
+          "y": 580.375,
+          "w": 172,
+          "h": 57.921875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
@@ -2245,7 +2926,7 @@
       "highlight": true,
       "neighbors": 11,
       "labels": 6,
-      "crop": "240.8 214.66 187.19 114.88",
+      "crop": "231.01 214.66 206.78 114.88",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -2268,63 +2949,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -2335,7 +3024,100 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 1,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-two-line-sand-and-production-slider",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Sarajewo",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
       "qa": {
         "enabled": "true"
       },
@@ -2353,63 +3135,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -2438,71 +3228,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "ba",
           "text": "Bośnia i Hercegowina",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "li",
           "text": "Liechtenstein",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "sk",
           "text": "Słowacja",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 18,
+      "neighbors": 21,
       "labels": 9,
-      "crop": "149.13 207.08 230.44 162.24",
+      "crop": "118.33 207.08 292.03 162.24",
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
       "overflowX": false,
@@ -2525,63 +3323,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -2610,63 +3416,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -2695,71 +3509,79 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "by",
           "text": "Białoruś",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "de",
           "text": "Niemcy",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "hu",
           "text": "Węgry",
           "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "vector-fallback",
       "activeCount": 41,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -2782,63 +3604,71 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": false,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": false,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": false,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "activeCount": 0,
@@ -2867,76 +3697,84 @@
         "h": 844
       },
       "flag": {
-        "x": 69.1875,
-        "y": 193.09878540039062,
-        "w": 252.4344482421875,
-        "h": 219.91299438476562
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
       },
       "paper": {
-        "x": 27.296875,
-        "y": 435.484375,
-        "w": 335.390625,
-        "h": 61.609375
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
       },
       "atlas": {
-        "x": 27.296875,
-        "y": 191.890625,
-        "w": 335.390625,
-        "h": 305.203125
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
       },
       "answers": [
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 509.765625,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
           "id": "pl",
           "text": "Polska",
           "disabled": true,
-          "x": 199.484375,
-          "y": 509.765625,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         },
         {
-          "id": "si",
-          "text": "Słowenia",
+          "id": "rs",
+          "text": "Serbia",
           "disabled": true,
-          "x": 27.296875,
-          "y": 574.953125,
-          "w": 163.1875,
-          "h": 57.1875,
-          "labelFits": true
-        },
-        {
-          "id": "gr",
-          "text": "Grecja",
-          "disabled": true,
-          "x": 199.484375,
-          "y": 574.953125,
-          "w": 163.203125,
-          "h": 57.1875,
-          "labelFits": true
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
         }
       ],
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 6,
-      "crop": "305.79 172.17 188.72 132.87",
+      "labels": 4,
+      "crop": "291.38 178.17 217.54 120.85",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 3,
+      "animations": 12,
       "sand": "falling",
       "qa": {
         "enabled": "true",

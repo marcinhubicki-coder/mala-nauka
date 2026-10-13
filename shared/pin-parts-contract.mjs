@@ -18,6 +18,7 @@ export const PIN_PARTS=Object.freeze({
   row('pin-no-code-submit','button-main','button','pin-fields','submit-pin')
  ])
 });
+export const PIN_CHILD_IDS=Object.freeze(new Set(Object.values(PIN_PARTS).flat().map(part=>part.id)));
 const ids=Object.freeze(Object.fromEntries(Object.entries(PIN_PARTS).map(([type,rows])=>[type,new Map(rows.map(row=>[row.id,row]))])));
 export function pinAttrs(id){
  const row=Object.values(ids).map(group=>group.get(id)).find(Boolean);

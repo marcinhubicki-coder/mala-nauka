@@ -72,7 +72,23 @@ const mathSettings=[
  ...['add','subtract','multiply','divide'].map(id=>row('math-category-'+id,'button-math-category','button','math-categories','atom','choose-category')),
  row('math-start','button-game-start','button','layout-root','atom','start-game')
 ];
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item)))});
+const playerCreate=[
+ row('create-back','button-back','button','layout-root','atom','players'),
+ row('create-page-title','text-player-title','text','layout-root'),
+ row('create-card','container-player-form-card','container','layout-root','family'),
+ row('create-preview','image-player-avatar-art','image','create-card'),
+ row('create-heading','text-player-form-title','text','create-card'),
+ row('create-copy','text-player-copy','text','create-card'),
+ row('create-form','container-player-form','container','create-card','group'),
+ row('create-name-label','text-field-label','text','create-form'),
+ row('create-name-input','input-player-name','input','create-form'),
+ row('create-name-help','text-nickname-help','text','create-form'),
+ row('create-avatar-label','text-field-label','text','create-form'),
+ row('create-avatar-picker','container-avatar-picker','container','create-form','group'),
+ ...'abcdefghijkl'.split('').map(letter=>row('create-avatar-'+letter,'button-avatar-choice','button','create-avatar-picker','group','choose-avatar')),
+ row('create-submit','button-main','button','create-form','atom','submit-player-form')
+];
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item)))});
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
 export function inheritedMode(view,id){
  const byId=new Map(viewContract(view).map(item=>[item.id,item]));

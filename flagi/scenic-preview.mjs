@@ -61,7 +61,7 @@ function showFlag(record){
 }
 function playQuestion(){
  clearTimeout(autoTimer);readyForNext=false;
- state='playing';app.classList.remove('is-pending');
+ state='playing';app.classList.remove('is-pending','is-presenting','is-transitioning');
  sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');
  mapHost.replaceChildren();
  feedback.textContent='';swipe.hidden=true;autohint.hidden=true;
@@ -89,7 +89,7 @@ function startTicker(){
 async function respond(chosenId,{fixture=false}={}){
  if(state!=='playing')return;
  const record=records.get(queue[step]);if(!record)return;
- state='showing-map';app.classList.add('is-pending');const token=++transitionToken;
+ state='showing-map';app.classList.add('is-pending','is-presenting');app.classList.remove('is-transitioning');const token=++transitionToken;
  const correct=chosenId===record.id;if(correct)points++;
  updateHud();
  for(const button of answers.querySelectorAll('button')){
@@ -107,7 +107,7 @@ async function respond(chosenId,{fixture=false}={}){
  if(token!==transitionToken)return;
  // The map is completely mounted before parchment starts opening.
  requestAnimationFrame(()=>requestAnimationFrame(()=>sheet.classList.add('is-opening')));
- await delay(960);
+ await delay(1170);
  if(token!==transitionToken)return;
  sheet.classList.remove('is-opening');sheet.classList.add('is-open');
  state=correct?'feedback-correct':'feedback-wrong';readyForNext=true;
@@ -172,7 +172,7 @@ let goingNext=false;
 async function toNext(){
  if(goingNext||!readyForNext||state==='playing'||state==='ended')return;
  goingNext=true;readyForNext=false;clearTimeout(autoTimer);
- state='transition';const token=++transitionToken;
+ state='transition';app.classList.add('is-transitioning');app.classList.remove('is-presenting');const token=++transitionToken;
  autohint.hidden=true;swipe.hidden=true;feedback.textContent='';
  // Load the next flag *under* the unrolling sheet, then roll the sheet down.
  const next=step+1<queue.length?step+1:0,nextRecord=records.get(queue[next]);
@@ -183,7 +183,7 @@ async function toNext(){
  showFlag(nextRecord);
  sheet.classList.remove('is-open','is-opening');sheet.classList.add('is-closing');
  // Keep old answer buttons while their 15 grains/letter are settling.
- await delay(660);
+ await delay(820);
  step=next;
  renderButtons(optionsFor(nextRecord));
  answers.classList.remove('is-sanding');answers.classList.add('is-growing');
@@ -219,6 +219,34 @@ function setupSwipe(){
    if(state==='feedback-wrong'&&(event.key==='Enter'||event.key===' ')){
      event.preventDefault();void toNext();
    }
+ });
+}
+// Desktop-only, maximum ±2 degrees, coalesced in requestAnimationFrame.
+const tiltQueue=new Map();
+let tiltFrame=0;
+function updateTilt(){
+ tiltFrame=0;
+ for(const [element,coord] of tiltQueue){
+  if(!element.isConnected)continue;
+  element.style.setProperty('--tilt-x',(coord.y*-2).toFixed(2)+'deg');
+  element.style.setProperty('--tilt-y',(coord.x*2).toFixed(2)+'deg');
+ }
+ tiltQueue.clear();
+}
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+ answers.addEventListener('pointermove',event=>{
+  const el=event.target.closest('.scenic-answer');if(!el||el.disabled)return;
+  const box=el.getBoundingClientRect();
+  tiltQueue.set(el,{
+   x:Math.max(-1,Math.min(1,((event.clientX-box.left)/box.width-.5)*2)),
+   y:Math.max(-1,Math.min(1,((event.clientY-box.top)/box.height-.5)*2))
+  });
+  if(!tiltFrame)tiltFrame=requestAnimationFrame(updateTilt);
+ });
+ answers.addEventListener('pointerout',event=>{
+  const el=event.target.closest('.scenic-answer');
+  if(!el||el.contains(event.relatedTarget))return;
+  el.style.removeProperty('--tilt-x');el.style.removeProperty('--tilt-y');
  });
 }
 answers.addEventListener('click',event=>{

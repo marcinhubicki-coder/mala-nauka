@@ -90,3 +90,170 @@ button{font:inherit}
  .scenic-map-scroll,.scenic-map-scroll.is-opening,.scenic-map-scroll.is-closing,
  .scenic-swipe-knob,.scenic-answers .sand-letter{transition:none!important;animation-duration:.01ms!important}
 }
+
+
+/* -----------------------------------------------------------------------
+   Folded treasure-map transition, loop 2.
+   Inspired by physical three-leaf paper unfolding: each reusable leaf rotates
+   about a crease. The actual bitmap/SVG atlas stays in one fixed DOM subtree.
+   Transforms + opacity replace a frame-by-frame clip-path and protect iOS PWA.
+   ----------------------------------------------------------------------- */
+.scenic-map-scroll{
+  perspective:920px;
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  clip-path:none;
+  visibility:hidden;
+  opacity:0;
+  transform-origin:center 95%;
+  transform:translate3d(0,48px,0) scaleY(.12);
+}
+.scenic-map-scroll.is-opening,
+.scenic-map-scroll.is-open,
+.scenic-map-scroll.is-closing{visibility:visible;opacity:1;clip-path:none}
+.scenic-map-scroll.is-opening{
+  animation:scenic-scroll-rise-3d 1120ms cubic-bezier(.2,.73,.18,1) both;
+}
+.scenic-map-scroll.is-open{
+  transform:none;
+  animation:none;
+}
+.scenic-map-scroll.is-closing{
+  animation:scenic-scroll-close-3d 790ms cubic-bezier(.55,.04,.78,.35) both;
+}
+@keyframes scenic-scroll-rise-3d{
+  0%{transform:translate3d(0,35%,0) scaleY(.11) rotateX(-62deg)}
+  28%{transform:translate3d(0,18%,0) scaleY(.37) rotateX(-27deg)}
+  63%{transform:translate3d(0,-1.1%,0) scaleY(.96) rotateX(4deg)}
+  100%{transform:none}
+}
+@keyframes scenic-scroll-close-3d{
+  0%{transform:none}
+  27%{transform:translate3d(0,-1%,0) scaleY(.98) rotateX(-5deg)}
+  65%{transform:translate3d(0,19%,0) scaleY(.39) rotateX(-36deg)}
+  100%{transform:translate3d(0,35%,0) scaleY(.08) rotateX(-78deg)}
+}
+.scenic-map-inner{
+  transform-origin:center bottom;
+  backface-visibility:hidden;
+}
+.scenic-map-scroll.is-opening .scenic-map-inner{
+  animation:scenic-atlas-inner-arrival 1120ms ease-out both;
+}
+.scenic-map-scroll.is-closing .scenic-map-inner{
+  animation:scenic-atlas-inner-depart 790ms ease-in both;
+}
+@keyframes scenic-atlas-inner-arrival{
+  0%,33%{opacity:0}
+  62%{opacity:.65}
+  83%,100%{opacity:1}
+}
+@keyframes scenic-atlas-inner-depart{
+  0%,36%{opacity:1}
+  76%,100%{opacity:0}
+}
+.scenic-fold-stage{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  overflow:visible;
+  pointer-events:none;
+  transform-style:preserve-3d;
+  perspective:780px;
+  border-radius:16px;
+  transform-origin:center bottom;
+  visibility:hidden;
+}
+.scenic-map-scroll:is(.is-opening,.is-closing) .scenic-fold-stage{visibility:visible}
+.scenic-fold-leaf{
+  display:block;
+  position:absolute;
+  left:1px;right:1px;
+  height:34%;
+  border:1px solid #fce3ae;
+  background:
+    linear-gradient(180deg,#5f3c182e 0%,transparent 11%,#fff8dc5c 42%,#a17a434d 96%),
+    url("../assets/flags/adventure/paper-v2-pwa.svg") center / 100% 300% no-repeat,
+    #f3dfb5;
+  box-shadow:inset 0 1px 4px #fff9,0 4px 8px #6e4f2d48;
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  transform-origin:center bottom;
+  transform:rotateX(-89deg);
+  will-change:transform;
+}
+.scenic-fold-leaf-a{bottom:0;background-position:50% 100%}
+.scenic-fold-leaf-b{bottom:33%;background-position:50% 50%}
+.scenic-fold-leaf-c{bottom:66%;background-position:50% 0%}
+.scenic-map-scroll.is-opening .scenic-fold-leaf-a{animation:scenic-fold-a-in 1120ms ease both}
+.scenic-map-scroll.is-opening .scenic-fold-leaf-b{animation:scenic-fold-b-in 1120ms ease both}
+.scenic-map-scroll.is-opening .scenic-fold-leaf-c{animation:scenic-fold-c-in 1120ms ease both}
+@keyframes scenic-fold-a-in{
+  0%{transform:rotateX(-88deg)}
+  24%{transform:rotateX(3deg)}
+  38%,100%{transform:rotateX(0)}
+}
+@keyframes scenic-fold-b-in{
+  0%,19%{transform:rotateX(-88deg)}
+  49%{transform:rotateX(7deg)}
+  65%,100%{transform:rotateX(0)}
+}
+@keyframes scenic-fold-c-in{
+  0%,47%{transform:rotateX(-88deg)}
+  77%{transform:rotateX(5deg)}
+  93%,100%{transform:rotateX(0)}
+}
+.scenic-map-scroll.is-closing .scenic-fold-leaf-a{animation:scenic-fold-a-out 790ms ease both}
+.scenic-map-scroll.is-closing .scenic-fold-leaf-b{animation:scenic-fold-b-out 790ms ease both}
+.scenic-map-scroll.is-closing .scenic-fold-leaf-c{animation:scenic-fold-c-out 790ms ease both}
+@keyframes scenic-fold-a-out{
+  0%,65%{transform:rotateX(0)}
+  100%{transform:rotateX(-88deg)}
+}
+@keyframes scenic-fold-b-out{
+  0%,32%{transform:rotateX(0)}
+  82%,100%{transform:rotateX(-88deg)}
+}
+@keyframes scenic-fold-c-out{
+  0%{transform:rotateX(0)}
+  47%,100%{transform:rotateX(-88deg)}
+}
+.scenic-fold-seam{
+  position:absolute;bottom:-1px;left:0;right:0;height:13px;
+  border-radius:9px;
+  background:linear-gradient(180deg,#815421,#d3a66a 22%,#fff2ca 55%,#855528 85%);
+  box-shadow:0 2px 6px #3a291d59,0 -2px 8px #e0b17d;
+  transform-origin:center bottom;
+}
+.scenic-screen.is-presenting .scenic-paper-row{
+  transform:translate3d(0,-7px,0) rotateX(3deg);
+  transition:transform .58s cubic-bezier(.2,.84,.24,1),filter .35s;
+  filter:drop-shadow(0 3px 3px #4d3d3059);
+}
+.scenic-screen.is-transitioning .scenic-paper-row{
+  transform:translate3d(0,2px,0) rotateX(-2deg);
+}
+.scenic-paper-row{
+  perspective:750px;
+  transform-origin:center 88%;
+  transition:transform .38s ease;
+}
+/* Restrained parallax: only a few degrees, no live motion sensor polling. */
+@media(hover:hover) and (pointer:fine){
+  .scenic-answer{
+    transform-style:preserve-3d;
+    transform:perspective(700px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
+    transition:transform .14s ease,box-shadow .2s ease;
+  }
+  .scenic-answer:hover{box-shadow:inset 0 2px 5px #fff,0 8px 13px #59452f75}
+}
+.scenic-answer:active{transform:translate3d(0,2px,0) rotateX(3deg)}
+@media(prefers-reduced-motion:reduce){
+  .scenic-map-scroll.is-opening{animation:none;transform:none;opacity:1;visibility:visible}
+  .scenic-map-scroll.is-closing{animation:none;opacity:0;visibility:hidden}
+  .scenic-map-scroll.is-opening .scenic-map-inner,
+  .scenic-map-scroll.is-closing .scenic-map-inner{animation:none}
+  .scenic-fold-stage{display:none}
+  .scenic-screen.is-presenting .scenic-paper-row{transform:none}
+  .scenic-answer{transform:none!important}
+}

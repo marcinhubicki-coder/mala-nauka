@@ -9,6 +9,7 @@ on:
       - "shared/compiled-runtime.mjs"
       - "shared/structure-model.mjs"
       - "tools/qa-orthography-browser.mjs"
+      - "tools/qa-orthography-complete-browser.mjs"
       - "tests/v2-spelling-*.mjs"
       - ".github/workflows/orthography-qa.yml"
   workflow_dispatch:
@@ -35,6 +36,8 @@ jobs:
           echo $! > /tmp/orthography-http.pid
       - name: Spell settings, full quiz, results, rule and eight preview variants
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
+      - name: Natural completion of a ten-word Orthography round
+        run: node tools/qa-orthography-complete-browser.mjs http://127.0.0.1:8765
       - name: Report server diagnostics
         if: failure()
         run: tail -180 /tmp/orthography-http.log || true

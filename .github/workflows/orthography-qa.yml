@@ -24,6 +24,7 @@ on:
       - "design-system/config.json"
       - "design-system/git-client.mjs"
       - "tests/v2-studio-git-branch.test.mjs"
+      - "tests/v2-studio-save-roundtrip.test.mjs"
       - ".github/workflows/orthography-qa.yml"
   workflow_dispatch:
 permissions:

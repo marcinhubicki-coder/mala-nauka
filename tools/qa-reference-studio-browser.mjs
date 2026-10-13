@@ -12,6 +12,12 @@ try{
  await page.goto(base+'/design-system/#components',{waitUntil:'domcontentloaded'});
  const fileInput=page.locator('#reference-upload');
  await fileInput.waitFor({timeout:18000});
+ const {injectedBranch,deployedBranch}=await page.evaluate(async()=>{
+  const info=await fetch('/design-system/deployment.json',{cache:'no-store'}).then(r=>r.json());
+  return {injectedBranch:window.__DS_STUDIO_BRANCH__,deployedBranch:info.branch};
+ });
+ assert.equal(injectedBranch,'refactor/v2-parity-first','Studio must write to V2, never silently to V1');
+ assert.equal(injectedBranch,deployedBranch,'HTML code and published branch metadata disagree');
  // Generate a valid 390x844 PNG to exercise real image decoding and IndexedDB.
  const data=await page.evaluate(async()=>{
   const canvas=document.createElement('canvas');canvas.width=390;canvas.height=844;

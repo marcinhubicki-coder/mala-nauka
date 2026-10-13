@@ -1,16 +1,21 @@
-# Flagi — scenic preview po uwagach do mockupu, 13.10.2026
+# Flagi — scenic preview: jedna scena i materiały rastrowe, 13.10.2026
 
 Zmiany pozostają na `feature/flags-scenic-preview-v1`. Nie zmieniono kodu produkcyjnej Ortografii, Design Studio, produkcyjnych Flag ani main.
 
 ## Układ i assety
 
-Dwa dostarczone mockupy są wzorcami: duża flaga/chłopiec/pies w pytaniu, duży nagłówek kraju ze stolicą i flagą nad mapą po odpowiedzi. Widoki poprawnej i błędnej odpowiedzi mają ten sam układ. Stan błędny nie dokłada ikon na odpowiedziach; również dekoracyjne obrazki kafelków zastępuje neutralna faktura.
+Dwa dostarczone mockupy są wzorcami: duża flaga/chłopiec/pies w pytaniu, duży nagłówek kraju ze stolicą i flagą nad mapą po odpowiedzi. Krajobraz, chłopiec, piesek i geometria czterech odpowiedzi są identyczne przed odpowiedzią, podczas rozwijania i po przejściu. Usunięto podmianę całej sceny po kliknięciu. Atlas rozwija się nad flagą; po rozłożeniu maszt jest ukryty, podczas zwijania odsłaniana jest następna flaga. Kafelki we wszystkich stanach mają neutralną fakturę bez ikon. Suwak jest poniżej twarzy postaci.
 
 - `scenic-mockup-v5.webp`: pejzaż opracowany z pierwszego mockupu, z ciągłą półką skalną połączoną z lewym zboczem.
 - `scenic-foreground-v4.webp`: pełny przezroczysty kadr z chłopcem i psem. Ten sam układ współrzędnych co tło, wspólne skalowanie. Włosy zachodzą na dolną krawędź kafelka; warstwa nie przyjmuje zdarzeń dotyku.
 - `scenic-pole-v4.webp`: drewniany maszt ze złotym zakończeniem. Nie używa dekoracji wektorowego masztu z produkcyjnego komponentu.
 - `scenic-rock-base-v5.webp`: kamienie i roślinność zakrywające stopę masztu; cień styku łączy maszt z podłożem. Skalna półka w tle łączy ten punkt z resztą krajobrazu.
-- `scenic-atlas-scene-v4.webp`: scena z zamkiem, balonem i stołem, opracowana z drugiego mockupu.
+- `scenic-question-paper-v6.webp`: rastrowy pergamin razem z przestrzennym mosiężnym kompasem, opracowany z mockupu; zastępuje wektorowy kompas i tło SVG.
+- `scenic-answer-paper-v6.webp`: jasny kafelek z naturalnym obrzeżem i delikatnymi konturami; bez ikon i tekstu.
+- `scenic-atlas-paper-v6.webp`: papier atlasu z nieregularną krawędzią i miedzianymi pinezkami.
+- `scenic-task-sign-v6.webp`: drewno, śruby i prawdziwa faktura lin tabliczki zadania.
+
+Scena `scenic-atlas-scene-v4.webp` pozostaje historycznym assetem, ale nie jest używana ani wczytywana przez preview. Drugi mockup służy układowi i typografii atlasu; najnowsza uwaga użytkownika wymaga zachowania pierwszego krajobrazu po kliknięciu. Pełne prompty i pliki: [RASTER-ASSETS-V6](FLAGS-SCENIC-RASTER-ASSETS-V6.md).
 
 Wszystkie flagi pochodzą z istniejącej biblioteki WebP. Nie wygenerowano ilustracji nowych krajów ani map osobnych państw.
 
@@ -30,7 +35,7 @@ Lista wejściowa użytkownika:
 
 ## Papier i światło
 
-Trzy powierzchnie niosą raster rzeczywiście przygotowanego atlasu: mapa, wyróżnienie, etykiety, nazwa, stolica i flaga. Zagięcia otwierają się kolejno z osobnym easingiem każdego etapu. Ciepły refleks z góry/lewej i cień zależą od fazy obrotu. Ruch używa transformacji i opacity trzech niewielkich warstw światła/cienia. Sam papier jest nieprzezroczysty podczas obracania — poprzedni półprzezroczysty efekt ujawnił się dopiero w oglądanych klatkach i został usunięty.
+Trzy powierzchnie niosą raster rzeczywiście przygotowanego atlasu: mapa, wyróżnienie, etykiety, nazwa, stolica i flaga. Zagięcia otwierają się kolejno. Górna krawędź każdego panelu jest osią następnego: pozycje w przestrzeni 3D wynikają z długości papieru i kątów zagięć, więc panel nie przesuwa się niezależnie przez scenę. Przeliczone raz klatki Web Animations zachowują wspólne osie, także po pauzie. Cienie i refleksy zależą od kąta. Ciepły refleks z góry/lewej i cień zależą od fazy obrotu. Ruch używa transformacji i opacity trzech niewielkich warstw światła/cienia. Sam papier jest nieprzezroczysty podczas obracania — poprzedni półprzezroczysty efekt ujawnił się dopiero w oglądanych klatkach i został usunięty.
 
 Maska miękkich brzegów mapy jest taka sama w przygotowanym obrazie zagięć i w końcowym atlasie. Koniec animacji nie przełącza ostrego prostokąta na miękką mapę. Przygotowanie z poprzedniej sesji nie może nadpisać obrazu po restarcie.
 
@@ -40,7 +45,7 @@ Wysokie kafelki zachowują czytelny rozmiar liter. Długie nazwy zawijają się 
 
 ## Geografia
 
-Jeden WebP Europy i SVG wybranego kraju nadal mają wspólne źródło Natural Earth w układzie 680 × 500. Kadr ma proporcje rzeczywistego pola mapy; nie rozciąga geografii na niskim ekranie. Zmniejszony minimalny margines kraju zapobiega pokazaniu 12–14 sąsiadów Polski przy szerokim polu. Minimalna szerokość okna nadal wynosi 120 jednostek, żeby nie powiększać mikropaństw. Natural Earth 1:110m nie zawiera dokładnych granic części mikropaństw; istniejące znaczniki położenia są zachowane.
+Jeden WebP Europy i SVG wybranego kraju nadal mają wspólne źródło Natural Earth w układzie 680 × 500. Kadr ma proporcje rzeczywistego pola mapy; nie rozciąga geografii na niskim ekranie. Minimalna szerokość okna wynosi 160 jednostek, a kraj ma margines. Oprócz zoomu wybierana jest niewielka korekta położenia kamery, z ochroną całej geometrii kraju. Pozwala to pokazać 6–10 sąsiadów bez nadmiernego powiększania kraju lub mikropaństwa. Fragmenty dużych krajów mogą mieć etykietę w rzeczywiście widocznej części ich geometrii. Materiał papieru, miękkie granice i cienie są wypalone w jednym WebP; granice nadal pochodzą z tego samego SVG. Nie animuje się filtrów dużej mapy. Natural Earth 1:110m nie zawiera dokładnych granic części mikropaństw; istniejące znaczniki położenia są zachowane.
 
 ## Iteracje
 
@@ -52,24 +57,32 @@ Jeden WebP Europy i SVG wybranego kraju nadal mają wspólne źródło Natural E
 
 5. Dopasowanie nagłówka według szerokości i wysokości, test Wielkiej Brytanii/Macedonii oraz dwuliniowej odpowiedzi w stanie pytania; kod `422213fc6439425de39828fb4e5b7c3339403e11`. Workflow [38413930908](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38413930908): **46/46, 23/23 Chromium i 23/23 WebKit, zero błędów JavaScript i zero zarejestrowanych awarii renderera**. Obejrzano końcowe trzy stany, długie i dwuwyrazowe nagłówki, dwie linie odpowiedzi także pod włosami, otwieranie/zwijanie oraz piasek w obu silnikach. Poprzedni jednorazowy timeout po pauzie nie powtórzył się. Testy obejmują poprawną odpowiedź/auto, błąd/suwak/niepełny gest/klik toru, pauzę/zachowanie czasu/wznowienie, trzy kolejne pytania, restart na granicach, reduced motion/klawiaturę, awarie obrazów/SVG, opóźnione ładowanie, safe-area i niski/większy ekran.
 
+## Dalsze iteracje po odrzuceniu poprzedniej wersji
+
+1. `d542f0719d343e02a855e4e4c6c7eb0e5242e549`, workflow [38421297470](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38421297470): 48/48. Usunięto podmianę tła, wektorowy kompas i niezależne przesuwanie zagięć. Dodano trzy materiały z imagegen oraz test stałości sceny/geometrii kafelków. Obejrzano live preview, rzeczywisty suwak, trzy stany i klatki. Wykryto spłaszczenie kompasu, nagłówek przy brzegu, podwójną stopkę i przerwę przed powrotem pytania.
+2. `403d440fc7a3bd4398a4d7bea8eff27a4ee3e40f`, workflow [38423058756](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38423058756): 38/48. Naprawiono proporcje materiałów, odstępy atlasu, stopkę i synchronizację pergaminu. Dodano rastrową tabliczkę oraz subtelny materiał mapy. Wszystkie scenariusze mechaniki przeszły; 10 asercji w obu silnikach wykryło zbyt wielu sąsiadów Polski/Liechtensteinu w szerszym kadrze. Nie osłabiono tych asercji.
+3. `3871ca44a43cd2fc7d5c29e3a55bf1b11d4a4cb8`, workflow [38424972784](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38424972784): 48/48. Korekta pozycji kamery, etykiety w widocznych fragmentach, proporcje dużej flagi i suwak poniżej twarzy. Obejrzano nowe zrzuty i klatki oraz działający Vercel. Wczesne klatki ujawniły zbyt wczesne ukrywanie flagi podczas rozwijania.
+4. `0c25a8094a771c176031852950f990b7d9f7dabf`: flaga jest przykrywana stopniowo przez rozwijającą się mapę; znika dopiero po jej rozłożeniu. Dalsza korekta punktów etykiet dużych krajów. Buforowanie i limit czasu ładowania papieru, czytelne tła zastępcze i ochrona przed późnym zakończeniem startu po restarcie. Dodano scenariusz awarii wszystkich nowych materiałów oraz asercje widoczności flagi w otwieraniu/po zakończeniu. Workflow [38426189692](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38426189692): **50/50, 25/25 Chromium i 25/25 WebKit, zero błędów JS i awarii renderera**. Obejrzano wszystkie końcowe stany, dwie linie, kadry różnych państw, start/środek/koniec obu kierunków pergaminu, cztery fazy piasku oraz wariant awarii materiałów.
+
 ## Materiał do oceny
 
 - [Zrzut działającego Vercela w przeglądarce, 480 × 936](flags-adventure/qa-scenic/scenic-live-vercel.jpg).
+- [Atlas w rzeczywistym preview](flags-adventure/qa-scenic/scenic-live-vercel-atlas.jpg).
 - [Trzy stany gry](flags-adventure/qa-scenic/scenic-stany.jpg).
 - [Początek, środek i koniec otwierania oraz zwijania](flags-adventure/qa-scenic/scenic-pergamin-klatki.jpg).
 - [Rozsypanie, kopczyki, formowanie i nowe pytanie](flags-adventure/qa-scenic/scenic-piasek-klatki.jpg).
 - [Dwie linie odpowiedzi i piasku](flags-adventure/qa-scenic/scenic-dwie-linie.jpg).
 - [Porównanie z dwoma dostarczonymi wzorcami](flags-adventure/qa-scenic/scenic-porownanie-mockup.jpg); wzorce mają inne proporcje, więc plansza porównawcza dopasowuje je do formatu testowego.
-- [Pełny raport 46/46](flags-adventure/qa-scenic/report.json).
+- [Pełny raport końcowej rundy](flags-adventure/qa-scenic/report.json).
 
 ## Publikacja i granice weryfikacji
 
-Aktualny interaktywny podgląd: https://mala-nauka-5p43d457f-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by
+Interaktywny podgląd końcowej rundy: https://mala-nauka-7du3pcyvn-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by
 
-Deployment `dpl_Bxe2gxoN3BppfEEubssK5jqiXMw4`, **READY**, źródło `git`, target preview, gałąź `feature/flags-scenic-preview-v1`. Commit opublikowanego i przebadanego kodu: `422213fc6439425de39828fb4e5b7c3339403e11`. Końcowy raport i surowe zrzuty zapisał CI w commicie `2cc8ceef7db22d3e6d94e5f2350c00debf8a22e5`; nie zmienia on kodu gry.
+Deployment `dpl_EgPz928jqT8J43UL22zGUGnL2Ghf`, **READY**, target preview (`null` w API), źródło Git, projekt `mala-nauka-pwa` / `prj_XYilLjwfEzvpnPs8sqjhwPc9jQpW`, team `team_AH1pDr3GHKtAmeKiMMZvaSrd`. Wdrożony i przebadany commit kodu: `0c25a8094a771c176031852950f990b7d9f7dabf`, należący do `feature/flags-scenic-preview-v1`. Raport 50/50 i surowe klatki zapisał CI w commicie `c1fd960f7e5cdafefa95af258994c3b4aac1210a`.
 
-Wdrożony kontroler gry oraz moduł pergaminu zwracają HTTP 200 i są identyczne bajtowo z lokalnym kodem końcowego przebiegu QA. Otworzono też ten deployment w przeglądarce i sprawdzono rzeczywisty ekran pytania. Wcześniejszą opublikowaną iterację sprawdzono interaktywnie przez błąd i pełny suwak do nowej flagi.
+Kontroler rozgrywki, moduł pergaminu i moduł geografii zwracają HTTP 200 i są identyczne bajtowo z końcowym lokalnym kodem. Otworzono ten deployment w przeglądarce: sprawdzono pytanie, błąd, pełny suwak do Polski, poprawną odpowiedź i automatyczne przejście do Szwajcarii. Zapisano rzeczywiste zrzuty pytania i atlasu. Testy zapisują klatki w obu silnikach; zrzuty oceniono samodzielnie.
 
-W trakcie pracy Vercel odrzucał część commitów limitem `Deployment rate limited — retry in 24 hours`. Mimo tego zwykła integracja Git opublikowała powyższy commit kodu. Nie zmieniano planu, zabezpieczeń, produkcyjnych aliasów ani main i nie używano produkcyjnego deploymentu jako obejścia. Commit z samym raportem QA może nie mieć własnego deploymentu; dowodem aktualności UI jest weryfikacja kodu na wskazanym, niezmiennym URL.
+Vercel odrzucił część prób integracji Git komunikatem `Deployment rate limited — retry in 24 hours`. Końcowy preview został przyjęty przez standardowe API Vercela z tego samego commitu i projektu. Nie zmieniono planu, zabezpieczeń, produkcyjnych aliasów ani main. Nie publikowano na produkcji.
 
-Pozostaje fizyczny test iPhone 13 Pro: FPS/temperatura, pamięć, gest dotykowy i Safari/PWA przy prawdziwych safe-area. WebKit na runnerze i zrzuty nie zastępują takiego pomiaru. Zrekonstruowane assety i adaptacja do różnych proporcji ekranu nie są deklarowane jako pikselowo identyczna kopia bitmap mockupów.
+Pozostaje fizyczny test iPhone 13 Pro: płynność, temperatura, pamięć, gest dotykowy i Safari/PWA przy prawdziwych safe-area. WebKit na runnerze i zrzuty nie zastępują pomiaru na urządzeniu. Referencje mają inne proporcje niż testowany viewport; gra dostosowuje się do ekranu. Przyjęcie wyglądu przez użytkownika nadal wymaga oceny działającego preview.

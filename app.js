@@ -1,7 +1,7 @@
 import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
-import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
+import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
 import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
 import {animateStateChange} from './shared/state-motion.mjs';
@@ -655,7 +655,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='guest-player'){await activatePlayer(studioProfiles()?{id:'studio-guest',nickname:'Gość',avatarId:'a',hasPin:false}:playerService.beginGuestSession(),'players','guest-player');return;}
  if(action==='continue-player'){playerSelectionEpoch++;await enterSelectedPlayer();return;}
- if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
+ if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview .player-avatar-art');if(preview)updateProfileAvatar(preview,pendingAvatarId);void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
  if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
  if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}

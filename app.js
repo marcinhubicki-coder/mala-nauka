@@ -1,4 +1,5 @@
 import {prepareScreenChange} from './shared/design-runtime.mjs';
+import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
@@ -223,15 +224,17 @@ function playersPage(){
  const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);root.style.setProperty('--player-unselected-opacity',selection.otherOpacity);root.style.setProperty('--player-selection-duration',selection.fadeDuration+'ms');
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0,atLimit=players.length>=MAX_PLAYERS;
+ const emptyAttrs=id=>viewAttrs('players-empty',id);
  const list=hasPlayers
   ?`<div class="player-grid count-${players.length}" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
-  :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
+  :`<figure class="player-empty-art" aria-hidden="true"><img ${emptyAttrs('player-empty-illustration')} src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit" ${emptyAttrs('player-benefit')}><span class="player-benefit-icon" ${emptyAttrs('player-benefit-icon')} aria-hidden="true">${playerProgressIcon}</span><p ${emptyAttrs('player-benefit-copy')}>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
   ?`<div class="player-actions ${atLimit?'limit-actions':''}">${atLimit?'':btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
-  :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
+  :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue',emptyAttrs('player-add'))}${btn('Później','guest-player','player-later',emptyAttrs('player-guest'))}</div>`;
  const subtitle=players.length===3?'Wybierz jeden z trzech profili.':hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.';
- root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ const markup=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}" ${hasPlayers?'':emptyAttrs('player-shell')}><img class="player-brand-art" ${hasPlayers?'':emptyAttrs('player-brand-art')} src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title" ${hasPlayers?'':emptyAttrs('player-title')}><h1 ${hasPlayers?'':emptyAttrs('player-heading')} tabindex="-1">Kto dziś <span>gra?</span></h1><p ${hasPlayers?'':emptyAttrs('player-subtitle')} class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ root.innerHTML=hasPlayers?markup:compileViewMarkup('players-empty',markup);
  const selected=players.find(player=>player.id===selectedPlayerId);if(selected)void applyAvatarAccent(selected.avatarId,{animate:false});else writeAvatarAccent(defaultAvatarAccent,{animate:false});
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }

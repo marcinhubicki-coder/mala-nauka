@@ -7,6 +7,10 @@ import {diff,validateConfig} from './model.mjs';
 import {validateBatches,validatePublication,EMPTY_BATCHES} from './batch-model.mjs';
 export const REPOSITORY='marcinhubicki-coder/mala-nauka';
 export const BRANCH=globalThis.__DS_STUDIO_BRANCH__||'design/system-v1';
+export function assertStudioBranch(configBranch,writeBranch=BRANCH){
+ if(configBranch!==writeBranch)throw Error(`Konfiguracja wskazuje ${configBranch||'nieznaną gałąź'}, a zapis GitHub: ${writeBranch}. Zapis wstrzymany, by nie mieszać Design Studio V1 i V2.`);
+ return true;
+}
 export const PRODUCTION_BRANCH='main';
 const bytesToBase64 = bytes => {let text='';for(let offset=0;offset<bytes.length;offset+=32768)text+=String.fromCharCode(...bytes.subarray(offset,offset+32768));return btoa(text);};
 const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.replace(/\s/g,'')),char=>char.charCodeAt(0)));
@@ -159,7 +163,7 @@ export class GitClient {
  }
  async save({config,assets,rules,batches,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
-  validateConfig(config);validateAssets(assets);if(rules)validateRules(rules);
+  validateConfig(config);assertStudioBranch(config.branch);validateAssets(assets);if(rules)validateRules(rules);
   if(batches)validateBatches(batches);validatePublication(batches,assets,wordEdits);
   const ref=await this.request(`git/ref/heads/${BRANCH}`);
   if(ref.object.sha!==this.#head)throw new GitConflict('Branch zmienił się od ostatniego odczytu. Wczytaj aktualną wersję i scal zmiany.');

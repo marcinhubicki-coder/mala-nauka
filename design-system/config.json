@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "revision": 30,
   "name": "Mała Nauka",
-  "branch": "design/system-v1",
+  "branch": "refactor/v2-parity-first",
   "typography": {
     "body": "nunito",
     "ui": "dosis",

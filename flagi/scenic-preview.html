@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<base href="../"><title>Mała Nauka · Flagi — pejzażowy wariant</title>
+<meta name="theme-color" content="#85c8ed">
+<link rel="preload" href="assets/flags/adventure/game-scene-v2.webp" as="image" type="image/webp">
+<link rel="stylesheet" href="flagi/adventure.css?v=17-framing">
+<link rel="stylesheet" href="flagi/cloth-prebaked.css?v=1">
+<link rel="stylesheet" href="flagi/scenic-preview.css?v=1">
+<script src="flagi/europe-map.js?v=7"></script></head>
+<body><main id="scenic-screen" class="scenic-screen" aria-label="Podgląd wariantu pejzażowego gry Flagi">
+  <div class="scenic-ios-status" aria-hidden="true"><span>9:41</span><span>▂▄▆ ▰</span></div>
+  <header class="scenic-header"><button class="scenic-nav" data-action="restart" aria-label="Rozpocznij ponownie">×</button><div class="scenic-timer"><strong id="scenic-clock">2:46</strong><small>Flagi</small></div><button class="scenic-nav" data-action="pause" aria-label="Pauza">Ⅱ</button></header>
+  <div class="scenic-progress" aria-label="Postęp rozgrywki"><i id="scenic-progress-fill"></i></div>
+  <div class="scenic-meta"><span class="scenic-task" id="scenic-task">Zadanie 1</span><span class="scenic-lang">PL</span><strong class="scenic-score" id="scenic-score">0 pkt</strong></div>
+  <section class="scenic-hero" id="scenic-hero" aria-label="Flaga do rozpoznania">
+    <div id="scenic-flag-host" class="scenic-flag-host"></div>
+    <div class="scenic-land-shadow" aria-hidden="true"></div>
+  </section>
+  <div class="scenic-paper-row" id="scenic-paper-row">
+    <div class="scenic-compass" aria-hidden="true">✥</div>
+    <p class="scenic-prompt">Który kraj ma taką flagę?</p>
+  </div>
+  <section class="scenic-answers" id="scenic-answers" aria-label="Wybierz państwo"></section>
+  <div class="scenic-story" aria-hidden="true"><div class="scenic-boy"></div><div class="scenic-dog">
+    <svg viewBox="0 0 158 158" xmlns="http://www.w3.org/2000/svg" role="presentation"><defs><radialGradient id="fur" cx=".28" cy=".17" r=".92"><stop stop-color="#fff9e8"/><stop offset=".74" stop-color="#e8c997"/><stop offset="1" stop-color="#c7935b"/></radialGradient><linearGradient id="ear"><stop stop-color="#bf7839"/><stop offset="1" stop-color="#7d482d"/></linearGradient></defs>
+    <ellipse cx="79" cy="136" rx="47" ry="17" fill="#344d2f" opacity=".24"/>
+    <path d="M43 47Q13 25 9 74Q13 104 43 96L63 53Z" fill="url(#ear)"/><path d="M112 48Q144 22 150 74Q146 102 115 97L95 53Z" fill="url(#ear)"/>
+    <path d="M29 78C27 20 129 19 130 79Q129 129 84 140Q31 130 29 78Z" fill="url(#fur)" stroke="#a86c3d" stroke-width="2"/>
+    <path d="M80 38Q67 45 62 65L80 108 102 69Q94 41 80 38" fill="#a86635" opacity=".89"/>
+    <ellipse cx="54" cy="85" rx="15" ry="17" fill="#fff8ee"/><ellipse cx="109" cy="85" rx="15" ry="17" fill="#fff8ee"/>
+    <circle cx="56" cy="86" r="7" fill="#2d241d"/><circle cx="107" cy="86" r="7" fill="#2d241d"/><circle cx="59" cy="83" r="2.5" fill="#fff"/><circle cx="110" cy="83" r="2.5" fill="#fff"/>
+    <ellipse cx="80" cy="112" rx="31" ry="23" fill="#fffaf1"/><path d="M66 102Q80 93 93 102Q87 115 79 114Q69 113 66 102Z" fill="#3d2827"/>
+    <path d="M79 114Q75 129 65 118M79 114Q85 129 96 118" stroke="#513334" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M52 126Q80 146 108 126" stroke="#c9573c" stroke-width="7" fill="none"/><circle cx="80" cy="140" r="9" fill="#d5a138" stroke="#f4d983" stroke-width="2"/>
+    </svg></div><div class="scenic-ground"></div></div>
+  <div class="scenic-feedback" id="scenic-feedback" role="status" aria-live="polite"></div>
+  <section class="scenic-map-scroll" id="scenic-map-scroll" aria-label="Mapa kraju" aria-hidden="true">
+    <div class="scenic-map-inner"><div class="scenic-europe-map" id="scenic-europe-map"></div><div class="scenic-map-caption"><strong id="scenic-country-name"></strong><span id="scenic-country-capital"></span></div></div>
+    <span class="scenic-map-roller" aria-hidden="true"></span>
+  </section>
+  <div class="scenic-sand-canvas-holder" aria-hidden="true"><canvas id="scenic-sand-canvas"></canvas></div>
+  <div class="scenic-controls" id="scenic-controls"><div class="scenic-auto-hint" id="scenic-auto-hint" hidden>Zapamiętaj kraj i stolicę…</div><div class="scenic-swipe" id="scenic-swipe" hidden role="group" aria-label="Przejdź do następnego pytania"><span class="scenic-swipe-knob" id="scenic-swipe-knob" role="button" tabindex="0" aria-label="Przesuń, aby przejść dalej">❯</span><span>Przesuń, aby przejść dalej</span></div></div>
+</main><script type="module" src="flagi/scenic-preview.mjs?v=1"></script></body></html>

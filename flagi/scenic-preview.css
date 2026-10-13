@@ -1,0 +1,92 @@
+@font-face{font-family:ScenicRound;src:local("Arial Rounded MT Bold");font-display:swap}
+*{box-sizing:border-box}
+html,body{padding:0;margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:ScenicRound,ui-rounded,-apple-system,BlinkMacSystemFont,"Trebuchet MS",sans-serif;color:#10173e;background:#7bc7e6}
+button{font:inherit}
+.scenic-screen{--paper:#fff1d1;position:relative;width:100%;height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#b0d7b1 url("../assets/flags/adventure/game-scene-v2.webp") center center/cover no-repeat}
+.scenic-screen::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#9bd9ff2a 0%,transparent 30%,#fff0bf10 63%,#152d2b26 100%)}
+.scenic-screen>*{position:absolute}
+.scenic-ios-status{top:8px;left:8%;right:8%;display:flex;justify-content:space-between;font-size:13px;font-weight:900;color:#061630;text-shadow:0 1px 2px #fff;z-index:8}
+.scenic-header{top:4.5%;left:5%;width:90%;height:10%;display:flex;justify-content:space-between;align-items:center;z-index:7}
+.scenic-nav{display:grid;place-items:center;border:1px solid #fff;width:46px;height:46px;border-radius:17px;background:#fffaf4f0;color:#0d1440;font-size:36px;font-weight:750;line-height:1;box-shadow:0 4px 10px #354f5f30;cursor:pointer;touch-action:manipulation}
+.scenic-nav:last-child{font-size:25px}
+.scenic-timer{display:flex;align-items:center;flex-direction:column;justify-content:center;gap:0;text-shadow:0 1px 4px #e6f6ff}
+.scenic-timer strong{font-size:41px;line-height:1.08;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.scenic-timer small{font-size:13px;font-weight:750}
+.scenic-progress{z-index:6;top:15.7%;left:8%;width:84%;height:10px;border-radius:10px;background:#fffffff2;border:2px solid #ffffffdc;box-shadow:0 2px 6px #20362440;overflow:hidden}
+.scenic-progress i{display:block;width:69%;height:100%;background:linear-gradient(90deg,#0e9f5a,#11b76a,#139759);border-radius:10px;transition:width .5s ease}
+.scenic-meta{z-index:6;top:18%;left:7%;right:7%;height:5.5%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
+.scenic-task{width:max-content;display:block;padding:9px 13px 8px;background:linear-gradient(115deg,#f6dfa3,#ffeec1 50%,#d6aa66);font-size:14px;font-weight:800;transform:rotate(-6deg);border:1px solid #bf8c45;border-radius:5px;box-shadow:0 3px 4px #4833215c}
+.scenic-task::before,.scenic-task::after{content:"";position:absolute;top:-10px;width:2px;height:12px;background:#a97131}.scenic-task::before{left:13px}.scenic-task::after{right:13px}
+.scenic-lang{width:42px;height:42px;display:grid;place-items:center;border-radius:100%;background:#fffffff5;color:#105840;font-size:15px;font-weight:900;border:2px solid #fff;box-shadow:0 3px 8px #57633f30}
+.scenic-score{justify-self:end;padding:9px 14px;border-radius:18px;background:#edffdded;border:2px solid #fff;color:#0b8152;font-size:18px;white-space:nowrap;box-shadow:0 4px 10px #41594723}
+.scenic-hero{z-index:1;left:8%;right:8%;top:23%;height:29%;pointer-events:none}
+.scenic-flag-host,.scenic-flag-host .flag-on-pole,.scenic-flag-host .flag-camera,.scenic-flag-host .flag-rig{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.scenic-flag-host .flag-scene-sky,.scenic-flag-host .flag-clouds{display:none}
+.scenic-flag-host .flag-pole{left:15%;top:3%;height:95%;width:7px;z-index:2}
+.scenic-flag-host .flag-cloth{left:calc(15% + 5px);top:4%;width:79%;z-index:3;aspect-ratio:calc(var(--flag-ratio) / 1.15);transform:rotate(-2deg);filter:drop-shadow(2px 8px 7px #2d344a4d)}
+.scenic-flag-host .flag-cloth-prebaked{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
+.scenic-flag-host .flag-cloth.is-prebaked .flag-cloth-prebaked{opacity:1}
+.scenic-flag-host .flag-cloth.is-prebaked .flag-cloth-fallback,.scenic-flag-host .flag-cloth.is-prebaked canvas{visibility:hidden}
+.scenic-land-shadow{position:absolute;left:13%;bottom:0;width:36%;height:16px;background:radial-gradient(ellipse,#3e462b69,transparent 72%);z-index:0}
+.scenic-paper-row{z-index:5;top:54.5%;left:7.2%;width:85.6%;height:7.1%;min-height:46px;display:flex;justify-content:center;align-items:center;padding:8px 12px 8px 27px;color:#121d45;border:2px solid #f9e6b9;border-radius:9px 9px 14px 14px;background:linear-gradient(115deg,#fff5dbf4,#f6ddb0f5 60%,#fff1cdf2);box-shadow:inset 0 0 0 2px #e3bd7a38,0 5px 11px #483a2650}
+.scenic-paper-row::before,.scenic-paper-row::after{content:"";position:absolute;inset:-4px auto -4px -4px;width:11px;border-radius:9px;background:linear-gradient(90deg,#b88b50,#fae8bd 36%,#e2b777 74%,#9a6a32);box-shadow:0 2px 5px #5f492e55}
+.scenic-paper-row::after{left:auto;right:-4px}
+.scenic-compass{position:absolute;left:-21px;top:50%;transform:translateY(-50%) rotate(-17deg);width:43px;height:43px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#f6e3af,#b47d2c);border:3px solid #794e1f;box-shadow:0 2px 7px #402f1b59;color:#70471e;font-size:28px}
+.scenic-prompt{text-align:center;font-size:clamp(13px,4.3vw,19px);font-weight:900;margin:0;letter-spacing:-.25px;white-space:nowrap}
+.scenic-answers{z-index:6;top:63.3%;left:7.5%;width:85%;height:18%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:9px 11px}
+.scenic-answer{position:relative;min-width:0;display:grid;place-items:center;overflow:hidden;border:3px solid #fffdf1;border-radius:18px;background:linear-gradient(139deg,#fffaed,#fae9c7e8);box-shadow:inset 0 2px 5px #fff,0 5px 8px #59452f57;font-size:clamp(13px,3.7vw,19px);font-weight:900;color:#11153b;cursor:pointer;touch-action:manipulation}
+.scenic-answer::before{content:"";position:absolute;inset:0;opacity:.32;background:repeating-radial-gradient(ellipse at 15% 70%,transparent 0 18px,#c5a06f40 19px 20px);pointer-events:none}
+.scenic-answer[disabled]{cursor:default}
+.scenic-answer.correct{background:linear-gradient(135deg,#efffe9,#a6edb7);border-color:#219f5b;color:#0c724c}
+.scenic-answer.wrong{background:linear-gradient(135deg,#fff0ed,#f2bfc5);border-color:#dc6273;color:#8b303b}
+.scenic-answer-label{position:relative;display:block;max-width:100%;line-height:1.05;overflow-wrap:break-word;text-align:center;padding:0 4px}
+.scenic-answer-label .sand-letter{display:inline-block;white-space:pre;will-change:opacity,transform}
+.scenic-answers.is-sanding .sand-letter{opacity:0}
+.scenic-answers.is-growing .sand-letter{animation:scenic-grain-rise .59s cubic-bezier(.12,.8,.12,1) both;animation-delay:calc(var(--char-index,0) * 16ms)}
+@keyframes scenic-grain-rise{from{opacity:0;transform:translate3d(0,15px,0) scale(.55);filter:blur(1px)}to{opacity:1;transform:none;filter:none}}
+.scenic-story{z-index:2;pointer-events:none;left:0;right:0;bottom:0;height:22%;overflow:hidden}
+.scenic-boy{position:absolute;inset:0;background:url("../assets/flags/adventure/mission-v1.webp") 95% 61%/auto 180% no-repeat;filter:drop-shadow(0 4px 6px #26342f88);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 29%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0%,#000 29%,#000 100%)}
+.scenic-dog{position:absolute;right:12%;bottom:-6px;width:125px;height:125px;filter:drop-shadow(0 2px 4px #2a221e66)}
+.scenic-dog svg{width:100%;height:100%}
+.scenic-ground{position:absolute;bottom:0;left:0;right:0;height:10px;background:linear-gradient(transparent,#c5a46555)}
+.scenic-feedback{z-index:12;top:81.6%;left:8%;right:8%;height:5%;text-align:center;font-size:14px;font-weight:850;color:#153e35;text-shadow:0 1px 2px #fff}
+.scenic-map-scroll{z-index:9;left:7%;width:86%;top:25%;height:36%;min-height:230px;border-radius:16px 16px 12px 12px;border:4px solid #ffe8b8;box-shadow:inset 0 0 8px #d2a56d89,0 11px 19px #51402c66;clip-path:inset(96% 0 0 0 round 13px);background:#f7e9c7;opacity:0;pointer-events:none;will-change:clip-path,opacity}
+.scenic-map-scroll.is-opening{opacity:1;animation:scenic-paper-unroll .89s cubic-bezier(.14,.8,.22,1) both}
+.scenic-map-scroll.is-open{opacity:1;clip-path:inset(0 round 13px)}
+.scenic-map-scroll.is-closing{opacity:1;animation:scenic-paper-rollup .68s cubic-bezier(.3,.04,.77,.4) both}
+@keyframes scenic-paper-unroll{0%{clip-path:inset(96% 0 0 0 round 13px);filter:brightness(1.12)}55%{clip-path:inset(38% 0 0 0 round 13px)}100%{clip-path:inset(0 0 0 0 round 13px);filter:none}}
+@keyframes scenic-paper-rollup{from{clip-path:inset(0 0 0 0 round 13px)}to{clip-path:inset(96% 0 0 0 round 13px)}}
+.scenic-map-inner{position:absolute;inset:5px;border-radius:10px;background:#dfedca;overflow:hidden;isolation:isolate}
+.scenic-europe-map{position:absolute;left:4px;right:4px;top:2px;bottom:70px;overflow:hidden;background:linear-gradient(135deg,#c9ebdc,#e4e3b0)}
+.scenic-europe-map .continent-map-host,.scenic-europe-map .continent-map-canvas{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;min-height:0}
+.scenic-europe-map svg{width:100%;height:100%;display:block;overflow:hidden}
+.scenic-europe-map svg .country{fill:#aad093;stroke:#fcebc0}
+.scenic-europe-map svg .scenic-country-overlay{fill:#21af58!important;fill-opacity:.67;stroke:#fff5bd;stroke-width:1.9;stroke-linejoin:round;filter:drop-shadow(0 0 3px #f8ff3af2);mix-blend-mode:multiply}
+.scenic-europe-map svg .scenic-country-halo{fill:none!important;stroke:#d1f971!important;stroke-width:4;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px #17832d);pointer-events:none}
+.scenic-europe-map svg .scenic-europe-raster{pointer-events:none}
+.scenic-map-caption{position:absolute;bottom:0;left:4px;right:4px;height:70px;display:flex;flex-direction:column;justify-content:center;gap:1px;border:2px solid #fff8dd;border-radius:16px;background:linear-gradient(115deg,#fff3d9f7,#f6e1b9ed);padding:8px 12px;box-shadow:0 -2px 8px #9274453a}
+.scenic-map-caption strong{font-size:clamp(15px,6vw,25px);line-height:1.08;color:#17503c;overflow-wrap:anywhere}
+.scenic-map-caption span{font-size:clamp(13px,3.6vw,17px);color:#426b70;font-weight:700}
+.scenic-map-roller{position:absolute;left:0;right:0;bottom:-1px;height:15px;border-radius:8px;background:linear-gradient(#8a5425,#e9c58b 25%,#fff5d1 50%,#c18d4e 75%,#896131);box-shadow:0 -1px 5px #60492848;pointer-events:none}
+.scenic-controls{position:absolute;z-index:18;left:7%;right:7%;bottom:max(14px,env(safe-area-inset-bottom));height:50px;display:grid;place-items:center;pointer-events:none}
+.scenic-auto-hint{background:#fff9ddeb;color:#155f42;border-radius:25px;padding:10px 18px;font-size:13px;font-weight:850;border:2px solid #fff;box-shadow:0 3px 8px #2f563035}
+.scenic-swipe{position:relative;width:100%;height:49px;background:linear-gradient(110deg,#e9fae4,#9dd9ad);border:4px solid #fff8e8;border-radius:26px;display:flex;align-items:center;justify-content:center;color:#155a40;font-size:13px;font-weight:800;box-shadow:0 3px 9px #2d423359;touch-action:none;pointer-events:auto}
+.scenic-swipe-knob{position:absolute;z-index:2;left:0;top:-6px;bottom:-6px;width:52px;display:grid;place-items:center;border-radius:50%;background:#fff9ef;border:3px solid #e8dfd1;box-shadow:0 1px 7px #574b3245;color:#138952;font-size:31px;transition:transform .14s ease}
+.scenic-sand-canvas-holder{position:absolute;inset:0;z-index:20;pointer-events:none}
+#scenic-sand-canvas{width:100%;height:100%;display:block}
+.scenic-screen.is-pending .scenic-answers{pointer-events:none}
+.scenic-screen.is-paused::after{content:"Pauza";position:absolute;inset:0;z-index:24;background:#192b3959;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:900;text-shadow:0 2px 10px #000}
+[hidden]{display:none!important}
+@media(max-height:760px){
+ .scenic-header{top:5%;height:8%}.scenic-timer strong{font-size:33px}.scenic-nav{width:38px;height:38px;font-size:30px}
+ .scenic-progress{top:15.2%}.scenic-meta{top:17.9%}.scenic-task{font-size:12px;padding:7px 10px}
+ .scenic-hero{top:23%;height:28%}.scenic-paper-row{top:52%;height:7%}.scenic-answers{top:61%;height:19%}
+ .scenic-story{height:21%}.scenic-feedback{top:80.5%}
+ .scenic-map-scroll{top:23%;height:36%}.scenic-paper-row{min-height:39px}
+ .scenic-dog{width:90px;height:90px}.scenic-boy{background-size:auto 155%}
+}
+@media(prefers-reduced-motion:reduce){
+ .scenic-map-scroll,.scenic-map-scroll.is-opening,.scenic-map-scroll.is-closing,
+ .scenic-swipe-knob,.scenic-answers .sand-letter{transition:none!important;animation-duration:.01ms!important}
+}

@@ -36,3 +36,14 @@ test('PIN renderer keeps structural contract outside dynamic dots and keypad',()
  assert.match(app,/const dots=fields\.querySelector\('\.pin-dots'\)/);
  assert.ok(!app.includes('root.innerHTML=pageHead(deleting?'));
 });
+
+test('A PIN parent family composes child atoms without approving unknown blocks',()=>{
+ const parent=contract('player-pin').map(item=>'<div '+viewAttrs('player-pin',item.id)+(item.id==='pin-back'?' data-action="edit-player"':'')+'></div>').join('');
+ const children='<div data-ds-key="pin-mode" data-ds-recipe="control-pin" data-ds-kind="toggle"></div><button data-ds-key="pin-key-1" data-ds-recipe="control-pin-key" data-ds-kind="key" data-action="pin-digit"></button>';
+ const nested=new Set(['pin-mode','pin-key-1']);
+ const compiled=compileViewMarkup('player-pin',parent+children,{variant:'create',childIds:nested});
+ assert.equal((compiled.match(/data-ds-contract="v2"/g)||[]).length,8);
+ assert.match(compiled,/data-ds-key="pin-key-1"/);
+ assert.doesNotMatch(compiled,/data-ds-key="pin-key-1"[^>]*data-ds-contract="v2"/);
+ assert.throws(()=>compileViewMarkup('player-pin',parent+children.replace('pin-key-1','pin-key-99'),{variant:'create',childIds:nested}),/undeclared component/);
+});

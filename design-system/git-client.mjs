@@ -6,7 +6,7 @@ import {validateAssets} from './validation.mjs';
 import {diff,validateConfig} from './model.mjs';
 import {validateBatches,validatePublication,EMPTY_BATCHES} from './batch-model.mjs';
 export const REPOSITORY='marcinhubicki-coder/mala-nauka';
-export const BRANCH='design/system-v1';
+export const BRANCH=globalThis.__DS_STUDIO_BRANCH__||'design/system-v1';
 export const PRODUCTION_BRANCH='main';
 const bytesToBase64 = bytes => {let text='';for(let offset=0;offset<bytes.length;offset+=32768)text+=String.fromCharCode(...bytes.subarray(offset,offset+32768));return btoa(text);};
 const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.replace(/\s/g,'')),char=>char.charCodeAt(0)));

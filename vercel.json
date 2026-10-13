@@ -46,5 +46,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/scenes/:path*",
+      "destination": "https://mala-nauka-assets.vercel.app/assets/scenes/:path*"
+    }
   ]
 }

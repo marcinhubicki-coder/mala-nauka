@@ -12,9 +12,13 @@ if(tag){
    const breadcrumb=document.querySelector('.breadcrumb');if(breadcrumb)breadcrumb.textContent='Design Studio V2 · Preview';
    document.title='Mała Nauka · Design Studio V2 (Preview)';
    const github=document.querySelector('.sidebar-bottom a[href*="github.com"]');if(github)github.href='https://github.com/marcinhubicki-coder/mala-nauka/tree/'+data.branch;
-   // This v2 branch still uses the v1 GitClient write target. Prevent silent writes to v1.
-   const save=document.getElementById('save-git');if(save){save.disabled=true;save.title='Podgląd V2: zapis GitHub wymaga migracji klienta Git na branch v2.';}
-   const connect=document.getElementById('connect-git');if(connect){connect.disabled=true;connect.title='Podgląd V2: zapis wymaga migracji klienta Git.';}
+   // The HTML build injects the verified branch before Studio scripts load.
+   if(window.__DS_STUDIO_BRANCH__!==data.branch){
+    const save=document.getElementById('save-git');if(save)save.disabled=true;
+    const connect=document.getElementById('connect-git');if(connect)connect.disabled=true;
+    version.textContent='Błąd wersji gałęzi — zapis zablokowany';
+    return;
+   }
   }else{link.href='https://mala-nauka-pwa-git-design-system-v1-nzckzxw2x6-4792s-projects.vercel.app/design-system/';link.textContent='Stały link do Studio';}
   if(!data.sha)return;
   const time=data.builtAt?new Intl.DateTimeFormat('pl-PL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Warsaw'}).format(new Date(data.builtAt)):'';

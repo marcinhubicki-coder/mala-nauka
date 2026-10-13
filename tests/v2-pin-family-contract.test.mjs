@@ -30,7 +30,7 @@ test('PIN renderer validates correct back action for each state without multiply
 test('PIN renderer keeps structural contract outside dynamic dots and keypad',()=>{
  const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
  assert.match(app,/const contractView=purpose==='unlock'\?'player-unlock':'player-pin'/);
- assert.match(app,/root\.innerHTML=compileViewMarkup\(contractView,markup,\{variant:purpose\}\)/);
+ assert.match(app,/root\.innerHTML=compileViewMarkup\(contractView,markup,\{variant:purpose,childIds:PIN_CHILD_IDS\}\)/);
  assert.match(app,/const fields=root\.querySelector\('\.pin-fields'\)/);
  assert.match(app,/if\(changed\)\{pinInput='';pinError='';renderPinFields\(true\);\}/);
  assert.match(app,/const dots=fields\.querySelector\('\.pin-dots'\)/);

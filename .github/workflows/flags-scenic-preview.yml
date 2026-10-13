@@ -45,7 +45,7 @@ jobs:
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
         continue-on-error: true
-        run: SCENIC_QA_PHASE=animation node tools/flags-scenic-qa.mjs
+        run: SCENIC_QA_PHASE=full node tools/flags-scenic-qa.mjs
       - name: Save generated atlas and screenshots on isolated branch
         if: always()
         run: |

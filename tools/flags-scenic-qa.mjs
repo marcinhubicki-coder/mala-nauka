@@ -37,7 +37,7 @@ async function check(name,browser,options,run){
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',msg=>{if(msg.type()==='error'&&msg.text().startsWith('[scenic]'))errors.push(msg.text());});
  try{await run(page);const result={name,...await metrics(page),errors};reports.push(result);assert.equal(errors.length,0,'JS errors');console.log(JSON.stringify({name,status:'PASS',state:result.state}));}
- catch(error){const result={name,error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,String(error));}
+ catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,String(error));}
  finally{await context.close();}
 }
 async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
@@ -82,12 +82,19 @@ try{
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
+    await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
+    for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
+     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.classList.contains('scenic-fold-leaf')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
+     await capture(page,engine+'-rollup-'+label);
+    }
+    await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
+    await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
     await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.sandPhase==='falling');
     await capture(page,engine+'-sand-falling');
     await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.sandPhase==='settled');
     await capture(page,engine+'-sand-settled');
-    await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.sandPhase==='forming');
-    await capture(page,engine+'-sand-forming');await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
+    await page.waitForFunction(()=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=.76);
+    await capture(page,engine+'-sand-forming');await page.waitForFunction(()=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=.93);await capture(page,engine+'-sand-end');await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
    });
   }
   if(phase==='full'){

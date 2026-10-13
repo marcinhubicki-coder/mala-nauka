@@ -152,7 +152,7 @@ const ticker=setInterval(()=>{
   if(!seconds){setState('ended');for(const b of answers.children)b.disabled=true;feedback.textContent='Dobra robota! Zdobywasz '+points+' pkt.';feedback.classList.add('is-ended');}
 },1000);
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
-const observer=new ResizeObserver(()=>{fitFlag();placeScroll();});observer.observe(app);
+const observer=new ResizeObserver(()=>{fitFlag();placeScroll();});observer.observe($('scenic-stage'));
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();sand.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});

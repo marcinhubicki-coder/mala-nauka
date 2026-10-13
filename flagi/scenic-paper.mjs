@@ -22,19 +22,19 @@ export async function preparePaper(sheet,mapResult,record) {
     }
     for(const path of svg.querySelectorAll('.country')){
       if(path.dataset.country!==record.id){path.setAttribute('fill','#b9d69c');continue;}
-      path.setAttribute('fill','#25a861');path.setAttribute('fill-opacity','.62');
+      path.setAttribute('fill','#21af58');path.setAttribute('fill-opacity','.66');path.setAttribute('style','mix-blend-mode:multiply');
       path.setAttribute('stroke','#faffbb');path.setAttribute('stroke-width','1.7');
     }
     svg.querySelector('.scenic-country-halo')?.remove();
     const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}),url=URL.createObjectURL(blob),img=new Image();
     try{img.src=url;await img.decode();ctx.drawImage(img,x,y,w,h);}finally{URL.revokeObjectURL(url);}
-    ctx.font='800 10px ScenicRound';ctx.textAlign='center';ctx.fillStyle='#284a38';
+    ctx.font='850 10px ScenicBody';ctx.textAlign='center';ctx.fillStyle='#284a38';
     for(const label of inner.querySelectorAll('.scenic-map-label')){
       const r=label.getBoundingClientRect();ctx.fillText(label.textContent,r.left-base.left+r.width/2,r.top-base.top+r.height*.8);
     }
   }
   ctx.fillStyle='#fff1d8';ctx.fillRect(0,height-65,width,65);
-  ctx.textAlign='left';ctx.fillStyle='#17503c';ctx.font='700 23px ScenicRound';
+  ctx.textAlign='left';ctx.fillStyle='#17503c';ctx.font='650 23px ScenicRound';
   ctx.fillText(record.country,14,height-36,width-28);
   ctx.fillStyle='#456754';ctx.font='700 14px ScenicRound';ctx.fillText('Stolica: '+record.capital,14,height-14,width-28);
   const snapshot=canvas.toDataURL('image/webp',.9);

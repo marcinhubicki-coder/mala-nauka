@@ -29,7 +29,7 @@ function glyphs(answers,origin,rand) {
 
 export function createSand(canvas,app,answers) {
   const ctx=canvas.getContext('2d',{alpha:true});
-  const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
+  const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
   async function transition({timeline,reduced,seed,replace}) {
     clear();if(reduced){replace();return;}
     const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);
@@ -51,6 +51,7 @@ export function createSand(canvas,app,answers) {
     canvas.dataset.grains=String(grains.length);
     try{await timeline.tween(SCENIC.sandMs,t=>{
       ctx.clearRect(0,0,origin.width,origin.height);
+      app.dataset.sandProgress=t.toFixed(3);
       app.dataset.sandPhase=t<SCENIC.sandFall?'falling':t<SCENIC.sandSettle?'settled':'forming';
       // Solid letters take over only after the grains reach their new silhouettes.
       answers.style.setProperty('--ink-opacity',String(Math.max(0,(t-.91)/.09)));

@@ -54,8 +54,19 @@ try{
  const history=frame.locator('#app [data-ds-element=spelling-result-history]');
  assert.equal(await repeat.count(),1);
  assert.equal(await history.getAttribute('data-action'),'history');
- await repeat.focus();
- for(let step=0;step<10;step++)await repeat.press('ArrowRight');
+ // Approved results CTA must open the word collection, not the progress dashboard.
+ await history.click();
+ await frame.locator('#app[data-view=history][data-history-state=collection]').waitFor({timeout:12000});
+ assert.equal(await frame.locator('.progress-subpage h1').innerText(),'Moja kolekcja słów');
+ // From the collection, return through the dashboard to the just-finished results.
+ await frame.locator('#app[data-view=history] [data-progress=dashboard]').first().click();
+ await frame.locator('#app[data-view=history][data-history-state=dashboard]').waitFor({timeout:12000});
+ await frame.locator('#app[data-view=history] [data-action=return-results]').first().click();
+ await frame.locator('#app[data-view=results]').waitFor({timeout:12000});
+ assert.equal(await frame.locator('.round-summary-line').innerText(),scores);
+ const repeatAfterReturn=frame.locator('#app [data-ds-element=spelling-result-repeat]');
+ await repeatAfterReturn.focus();
+ for(let step=0;step<10;step++)await repeatAfterReturn.press('ArrowRight');
  await frame.locator('#app[data-view=game]').waitFor({timeout:20000});
  assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17,'Repeat round did not preserve the compiled game family');
  assert.equal(await frame.locator('#app .answers .answer').count(),2);

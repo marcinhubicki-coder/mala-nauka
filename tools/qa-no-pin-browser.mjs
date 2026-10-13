@@ -15,11 +15,15 @@ try{
  await page.locator('#player-nickname').fill('BezPinu');
  await page.locator('#player-create-form button[type=submit]').click();
  await page.locator('#app[data-view="player-pin"]').waitFor();
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),8,'No-PIN flow must compile same PIN shell');
+ const noPinShell=await page.locator('#app [data-ds-element=pin-fields]').elementHandle();
  assert.equal(await page.locator('.pin-keypad [data-action=submit-pin]').isDisabled(),true);
  const avatar=page.locator('.pin-profile .player-avatar-art');
  assert.equal(await avatar.getAttribute('data-avatar'),'j');
  await page.locator('.pin-mode label').filter({hasText:'Bez PIN-u'}).click();
  await page.locator('.pin-card.pin-no-code').waitFor({timeout:10000});
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),8,'PIN/none switch must keep eight shell blocks');
+ assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-element="pin-fields"]')===element,noPinShell),true,'PIN toggle discarded PIN family');
  assert.equal(await page.locator('.pin-keypad').count(),0);
  assert.equal(await page.locator('.pin-profile .player-avatar-art').getAttribute('data-avatar'),'j');
  await page.locator('.pin-fields [data-action=submit-pin]').click();

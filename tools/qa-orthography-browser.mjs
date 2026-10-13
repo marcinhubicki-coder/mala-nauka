@@ -29,11 +29,13 @@ try{
  await page.locator('#setup-form .start-button').click();
  await page.locator('#app[data-view="game"][data-mode="spelling"]').waitFor({timeout:13000});
  assert.equal(await page.locator('#app .answers .answer').count(),2);
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Gameplay must render exactly 17 contract pieces');
  assert.equal(await page.locator('#app .spelling-question-card').count(),1);
  await page.locator('#app .answers .answer').first().click();
  await page.waitForFunction(()=>/feedback/.test(document.querySelector('#app')?.dataset.state||''),{timeout:10000});
  const state=await page.locator('#app').getAttribute('data-state');
  assert.ok(['feedback-correct','feedback-wrong'].includes(state),state);
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Answer feedback replaced the game component tree');
  await page.close();
 
  const views=[
@@ -54,6 +56,7 @@ try{
   await page.waitForTimeout(450);
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.dsView),viewId);
   if(viewId==='spelling-settings')assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29);
+  if(['spelling-initial','spelling-correct','spelling-wrong','spelling-hint','spelling-pause'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Incomplete gameplay contract: '+viewId);
   if(viewId==='spelling-initial')assert.equal(await page.locator('.answers .answer').count(),2);
   if(viewId==='spelling-results')assert.equal(await page.locator('.learning-stats-two .result-stat').count(),2);
   if(viewId==='spelling-rule')assert.ok(await page.locator('.rule-dialog-head').count());

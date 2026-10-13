@@ -1,0 +1,57 @@
+name: Generate prebaked flag cloth assets
+
+on:
+  push:
+    branches: [feature/flags-game-v2]
+    paths:
+      - 'tools/build-flag-cloth-assets.mjs'
+      - '.github/workflows/flags-assets-pilot.yml'
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Generate six pilot flags or complete 195-country library'
+        required: true
+        default: pilot
+        type: choice
+        options: [pilot, all]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flags-prebake-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prebake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser generator
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium
+      - name: Generate WebP with existing canvas renderer
+        run: |
+          if [ "${{ github.event.inputs.scope }}" = 'all' ]; then
+            node tools/build-flag-cloth-assets.mjs --all
+          else
+            node tools/build-flag-cloth-assets.mjs
+          fi
+      - name: Commit assets to the isolated branch
+        run: |
+          git add assets/flags/cloth-prebaked/
+          if git diff --cached --quiet; then
+            echo 'All assets unchanged'
+          else
+            git -c user.name='github-actions[bot]' \
+                -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+                commit -m 'build(flags): generate offline cloth assets [skip ci]'
+            git push origin HEAD:feature/flags-game-v2
+          fi

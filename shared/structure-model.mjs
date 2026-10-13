@@ -15,6 +15,10 @@ const group=(id,name,selector,children,extra={})=>({id,name,kind:'container',sel
 export const PARTS=[
  atom('container-card','Kafel / podkład','container','.setup-card,.settings-card,.card',{block:'card'}),
  atom('icon-step-dot','Numer w kółku','icon','.step-dot'),
+ group('family-player-empty','Pierwszy gracz','.player-shell-empty',['image-player-brand-art','container-player-title','image-player-empty-art','group-player-benefit','button-main','button-player-later'],{level:'family'}),
+ group('group-player-benefit','Korzyści z profilu','.player-benefit',['icon-player-benefit-icon','text-player-copy']),
+ atom('icon-player-benefit-icon','Ikona postępów gracza','icon','.player-benefit-icon'),
+ atom('button-player-later','Kontynuuj jako gość','button','.player-later'),
  atom('image-player-brand-art','Logo Małej Nauki','image','.player-brand-art',{asset:'assets/brand/player-logo-3d.webp'}),
  atom('image-player-empty-art','Ilustracja pierwszego gracza','image','.player-empty-art img',{asset:'assets/brand/player-empty-3d.webp'}),
  atom('image-player-avatar-art','Avatar gracza','image','.player-avatar-art'),

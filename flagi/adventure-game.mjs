@@ -1,7 +1,7 @@
 import { FLAGS } from '../data/flags.mjs';
 import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=13-all-webp';
 import { fitLabel } from './text-fit.mjs?v=2';
-import { focusContinentMap, dissolveDrops } from './reveal-v2.mjs?v=1';
+import { focusContinentMap, dissolveDrops } from './reveal-v2.mjs?v=2';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -141,7 +141,7 @@ function enhance(){
       );
       const show=result=>{
         if(!card.isConnected){ready();return;}
-        if(result?.found)focusContinentMap(result,{zoom:1.23});
+        if(result?.found)focusContinentMap(result,{zoom:1.28});
         requestAnimationFrame(()=>requestAnimationFrame(reveal));
       };
       Promise.resolve(mounted).then(show,()=>show(null));

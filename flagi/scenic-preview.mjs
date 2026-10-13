@@ -59,14 +59,14 @@ function fitFlag(){
   app.querySelector('.scenic-ios-status').hidden=$('scenic-stage').offsetTop>0;
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
   const ratio=(current()?.id==='ch'||current()?.id==='va'?1:4/3)/1.15;
-  cloth.style.width=Math.min(hero.clientWidth*.70,hero.clientHeight*.94*ratio)+'px';
+  cloth.style.width=Math.min(hero.clientWidth*.65,hero.clientHeight*.94*ratio)+'px';
 }
 function showFlag(record){
   flagHost.innerHTML=flagOnPole(record,{label:'Flaga do rozpoznania'});
   const pole=flagHost.querySelector('.flag-pole');pole.replaceChildren();
   const poleImage=document.createElement('img');poleImage.src='assets/flags/adventure/scenic-pole-v4.webp';poleImage.alt='';poleImage.decoding='async';pole.append(poleImage);
   const cloth=flagHost.querySelector('.flag-cloth'),ratio=(record.id==='ch'||record.id==='va'?1:4/3)/1.15;
-  cloth.style.width=Math.min(hero.clientWidth*.70,hero.clientHeight*.94*ratio)+'px';paintFlags(flagHost);
+  cloth.style.width=Math.min(hero.clientWidth*.65,hero.clientHeight*.94*ratio)+'px';paintFlags(flagHost);
   app.dataset.country=record.id;
 }
 function fitCaption(){

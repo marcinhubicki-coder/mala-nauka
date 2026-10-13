@@ -36,15 +36,18 @@ function cropNear(svg,selected,mapWidth,mapHeight){
  for(let width=minimum;width<=460;width+=6){
   const height=width/ratio;
   if(width>base.w||height>base.h)break;
-  const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2));
-  const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height/2));
-  const frame={x,y,w:width,h:height};
-  const visible=peers.filter(p=>neighboring(frame,p)).length;
-  // Smallest sensible crop containing roughly six to ten neighbours.
-  const missing=Math.max(0,6-visible),extra=Math.max(0,visible-10);
-  const score=missing*14+extra*9+Math.abs(visible-8)*1.6+width*.016;
-  if(score<best){best=score;chosen={...frame,visible};}
-  if(visible>=7&&visible<=10)break;
+  for(const dx of [0,-.09,.09,-.18,.18])for(const dy of [0,-.12,.12]){
+   const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2+dx*width));
+   const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height/2+dy*height));
+   // Keep the complete country and breathing room. Slightly shifting the
+   // camera can avoid a crowded Balkan/Benelux corner without excessive zoom.
+   if(box.x<x+width*.08||box.x+box.w>x+width*.92||box.y<y+height*.08||box.y+box.h>y+height*.92)continue;
+   const frame={x,y,w:width,h:height},visible=peers.filter(p=>neighboring(frame,p)).length;
+   const missing=Math.max(0,6-visible),extra=Math.max(0,visible-10);
+   const score=missing*14+extra*9+Math.abs(visible-8)*1.6+width*.016+(Math.abs(dx)+Math.abs(dy))*4;
+   if(score<best){best=score;chosen={...frame,visible};}
+  }
+  if(chosen?.visible>=7&&chosen.visible<=10)break;
  }
  if(!chosen){
   const w=Math.min(base.w,Math.max(200,box.w*2.2)),h=Math.min(base.h,w/ratio);
@@ -62,7 +65,17 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  const {svg,active}=result;
  if(result.fallbackMarker){active.setAttribute('r','2.1');node.dataset.microstate='marker';}
  const crop=cropNear(svg,active,node.clientWidth,node.clientHeight);
- const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country)})).filter(p=>p.box&&records.has(p.id));
+ const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country),shape:country})).filter(p=>p.box&&records.has(p.id));
+ if(crop)for(const item of labels){
+  const b=item.box,inside=(x,y)=>{try{return item.shape.isPointInFill(new DOMPoint(x,y));}catch{return true;}};
+  if(b.cx>crop.x&&b.cx<crop.x+crop.w&&b.cy>crop.y&&b.cy<crop.y+crop.h&&inside(b.cx,b.cy)){item.point={x:b.cx,y:b.cy};continue;}
+  const left=Math.max(crop.x,b.x),top=Math.max(crop.y,b.y),w=Math.min(crop.x+crop.w,b.x+b.w)-left,h=Math.min(crop.y+crop.h,b.y+b.h)-top;
+  let distance=Infinity;
+  if(w>0&&h>0)for(let ix=0;ix<7;ix++)for(let iy=0;iy<7;iy++){
+   const x=left+w*(ix+.5)/7,y=top+h*(iy+.5)/7,d=(x-b.cx)**2+(y-b.cy)**2;
+   if(d<distance&&inside(x,y)){distance=d;item.point={x,y};}
+  }
+ }
  if(crop){
   svg.setAttribute('viewBox',[crop.x,crop.y,crop.w,crop.h].map(x=>+x.toFixed(2)).join(' '));
   svg.dataset.scenicZoom='true';
@@ -100,7 +113,8 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   const accepted=[];
   const candidates=labels.filter(p=>p.id===record.id||neighboring(crop,p.box)).sort((a,b)=>Number(b.id===record.id)-Number(a.id===record.id)||b.box.w*b.box.h-a.box.w*a.box.h);
   for(const item of candidates){
-   const x=(item.box.cx-crop.x)/crop.w*node.clientWidth,y=(item.box.cy-crop.y)/crop.h*node.clientHeight+(result.fallbackMarker&&item.id===record.id?13:0);
+   if(!item.point)continue;
+   const x=(item.point.x-crop.x)/crop.w*node.clientWidth,y=(item.point.y-crop.y)/crop.h*node.clientHeight+(result.fallbackMarker&&item.id===record.id?13:0);
    const text=language==='en'?records.get(item.id).countryEn:records.get(item.id).country;
    const half=Math.min(47,text.length*2.8);
    if(x<half+3||x>node.clientWidth-half-3||y<10||y>node.clientHeight-10)continue;

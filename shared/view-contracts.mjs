@@ -109,7 +109,26 @@ const spellingSettings=Object.values(SPELLING_SETTINGS_CONTRACT).map(item=>({
  ...(item.id==='spelling-back'?{action:'home'}:{}),
  ...(item.id==='spelling-start'?{action:'submit-setup'}:{})
 }));
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item)))});
+const spellingGame=[
+ row('spelling-game-hud','group-spelling-hud','container','layout-root','group',null,'spelling'),
+ row('spelling-game-exit','button-spelling-exit','button','spelling-game-hud','atom','exit','spelling'),
+ row('spelling-game-clock','container-spelling-clock','container','spelling-game-hud','group',null,'spelling'),
+ row('spelling-game-timer','text-game-clock','text','spelling-game-clock','atom',null,'spelling'),
+ row('spelling-game-progress','meter-round-progress-fill','meter','spelling-game-clock','atom',null,'spelling'),
+ row('spelling-game-pause','button-spelling-pause','button','spelling-game-hud','atom','pause','spelling'),
+ row('spelling-game-title','text-spelling-title','text','layout-root','atom',null,'spelling'),
+ row('spelling-game-visual','container-spelling-visual','container','layout-root','group',null,'spelling'),
+ row('spelling-game-question','container-spelling-question','container','layout-root','group',null,'spelling'),
+ row('spelling-game-word','container-spelling-word','container','spelling-game-question','group',null,'spelling'),
+ row('spelling-game-answers','group-spelling-answers','container','layout-root','group',null,'spelling'),
+ row('spelling-game-answer-0','button-answer','button','spelling-game-answers','atom','answer','spelling'),
+ row('spelling-game-answer-1','button-answer','button','spelling-game-answers','atom','answer','spelling'),
+ row('spelling-game-actions','group-spelling-actions','container','layout-root','group',null,'spelling'),
+ row('spelling-game-hint','button-game-hint','button','spelling-game-actions','atom','spelling-hint','spelling'),
+ row('spelling-game-next','container-result-continue-rail','container','spelling-game-actions','group',null,'spelling'),
+ row('spelling-game-feedback','text-spelling-feedback','text','layout-root','atom',null,'spelling')
+];
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item))),'spelling-initial':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-correct':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-wrong':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-hint':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-pause':Object.freeze(spellingGame.map(item=>Object.freeze(item)))});
 // Build the immutable contract index once. Renderers reuse it instead of
 // repeatedly scanning up to 90 entries for each labelled component.
 const VIEW_INDEX=Object.freeze(Object.fromEntries(Object.entries(VIEW_CONTRACTS).map(([view,items])=>[view,new Map(items.map(item=>[item.id,item]))])));

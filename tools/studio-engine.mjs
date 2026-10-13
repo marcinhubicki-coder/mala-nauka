@@ -121,6 +121,25 @@ async function saveConfigAtomic(filename,config){
  catch(error){await rm(temp,{force:true}).catch(()=>{});throw error;}
 }
 
+
+const normalizeName=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+export function listEditableBlocks({view='',query='',kind='',limit=100}={}){
+ if(!Number.isInteger(limit)||limit<1||limit>1000)throw Error('Limit must be 1-1000');
+ if(view&&!VIEWS.has(view))throw Error('Unknown registered view: '+view);
+ const result=[];
+ for(const v of VIEWS.values()){
+  if(view&&v.id!==view)continue;
+  for(const row of inventorySnapshot(v)||[]){
+   if(row.id==='layout-root'||(kind&&row.kind!==kind))continue;
+   const part=PART_BY_ID[row.recipe],name=part?.name||row.label||row.id;
+   if(query&&!normalizeName([v.id,row.id,row.recipe,row.kind,row.label,name].join(' ')).includes(normalizeName(query)))continue;
+   result.push({view:v.id,id:row.id,name,kind:row.kind,recipe:row.recipe,level:part?.level||'unclassified',legacyAdapter:v.id!=='home',mode:v.mode});
+   if(result.length>=limit)return result;
+  }
+ }
+ return result;
+}
+
 function option(argv,key){const i=argv.indexOf('--'+key);return i===-1?null:argv[i+1]??null;}
 function valueFromArg(raw){if(raw===null)throw Error('--value is required; use --reset to remove an override');try{return JSON.parse(raw);}catch{return raw;}}
 async function main(argv=process.argv.slice(2)){
@@ -134,6 +153,13 @@ async function main(argv=process.argv.slice(2)){
   const planned=planDesignBatch(current,JSON.parse(await readFile(resolve(source),'utf8')));
   if(argv.includes('--apply'))await saveConfigAtomic(filename,planned.config);
   console.log((argv.includes('--apply')?'APPLIED ':'DRY RUN ')+JSON.stringify(planned.changes));return;
+ }
+ if(command==='list'||command==='search'){
+  const query=option(argv,'query')||'';
+  if(command==='search'&&!query)throw Error('Search requires --query');
+  if(command==='list'&&!option(argv,'view'))throw Error('List requires --view');
+  const rows=listEditableBlocks({view:option(argv,'view')||'',query,kind:option(argv,'kind')||'',limit:option(argv,'limit')===null?100:Number(option(argv,'limit'))});
+  console.log(JSON.stringify(rows,null,2));return;
  }
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
  if(command==='inspect-layout'){console.log(JSON.stringify(inspectHomeLayout(current,option(argv,'id')),null,2));return;}

@@ -74,3 +74,14 @@ npm run studio:engine -- batch --changes edits.json --apply
 ```
 
 Bez `--apply` jest tylko symulacja. Jeśli którakolwiek operacja jest błędna, cały pakiet jest odrzucany bez zapisu. Zatwierdzony pakiet zapisuje konfigurację atomowo przez plik tymczasowy. Po zapisie wymagany jest test regresyjny oraz sprawdzenie w przeglądarce.
+
+## Wyszukiwanie zarejestrowanych elementów
+
+```bash
+npm run studio:engine -- list --view spelling-results
+npm run studio:engine -- search --query powrot --kind button
+npm run studio:engine -- search --query jelly --limit 50
+npm run studio:engine -- inspect --view spelling-results --id navigation-back-result-back
+```
+
+Odczyt zwraca ID, nazwę, widok, przepis komponentu i oznaczenie `legacyAdapter`. Zapytania działają także bez polskich znaków. Dopiero po odnalezieniu rzeczywistego elementu silnik planuje zmianę przez `batch`.

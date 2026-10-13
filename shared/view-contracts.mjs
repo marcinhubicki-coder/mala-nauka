@@ -88,7 +88,22 @@ const playerCreate=[
  ...'abcdefghijkl'.split('').map(letter=>row('create-avatar-'+letter,'button-avatar-choice','button','create-avatar-picker','group','choose-avatar')),
  row('create-submit','button-main','button','create-form','atom','submit-player-form')
 ];
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item)))});
+// PIN variants share the same stable shell; its inner keypad/dots can change
+// state without invalidating the family's identity. The key atoms migrate next.
+const pinFrame=backAction=>[
+ row('pin-back','button-back','button','layout-root','atom',backAction),
+ row('pin-page-title','text-player-title','text','layout-root'),
+ row('pin-card','container-pin-card','container','layout-root','family'),
+ row('pin-profile','container-pin-profile','container','pin-card','group'),
+ row('pin-avatar','image-player-avatar-art','image','pin-profile'),
+ row('pin-nickname','text-nickname','text','pin-profile'),
+ row('pin-fields','container-pin-fields','container','pin-card','group'),
+ row('pin-error','text-pin-error','text','layout-root')
+];
+const playerPin=pinFrame('edit-player');
+playerPin[0]={...playerPin[0],variantActions:Object.freeze({create:'edit-player',edit:'settings',delete:'settings'})};
+const playerUnlock=pinFrame('players');
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item)))});
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
 export function inheritedMode(view,id){
  const byId=new Map(viewContract(view).map(item=>[item.id,item]));

@@ -123,7 +123,7 @@ export const PARTS=[
  group('container-spelling-word','Zawartość słowa','.question-content',['text-spelling-word']),
  group('group-spelling-answers','Dwa pola odpowiedzi','.answers.count-2',['button-answer']),
  group('group-spelling-actions','Podpowiedź i przejście dalej','.spelling-action-row',['button-game-hint','container-result-continue-rail']),
- atom('text-spelling-feedback','Komunikat poprawnej odpowiedzi','.feedback'),
+ atom('text-spelling-feedback','Komunikat poprawnej odpowiedzi','text','.feedback'),
  atom('text-spelling-word','Treść pytania ortografii','text','.question-content>.word'),
  atom('result-points-bubble','Bańka punktów','container','.result-points-bubble'),
  group('container-player-title','Powitanie gracza','.player-title',['text-player-title','text-player-copy']),

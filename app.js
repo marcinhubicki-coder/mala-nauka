@@ -81,7 +81,7 @@ const fallbackAvatarId=player=>{
  for(let i=0;i<source.length;i++)sum+=source.charCodeAt(i);
  return ['a','b','c','d'][sum%4];
 };
-function avatarMarkup(player,extra=''){return profileAvatar(player,extra);}
+function avatarMarkup(player,extra='',contractAttrs=''){return profileAvatar(player,extra,undefined,contractAttrs);}
 
 const avatarAccentCache=new Map(),avatarImageCache=new Map();
 const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)',toggleAccent:'#5d91bd',toggleSoft:'#e8f0f6',toggleShadow:'rgba(93,145,189,.18)'};
@@ -242,11 +242,14 @@ function playerCreatePage(){
  prepareScreenChange(root,'player-create');
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
  const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
+ const attrs=id=>editing?'':viewAttrs('player-create',id);
  root.dataset.profileEditor=editing?'edit':'create';
  const title=editing?'Edytuj profil':'Nowy gracz',back=editing?'settings':'players';
  const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
  const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';
- root.innerHTML=pageHead(title,back)+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>${heading}</h2><p>${copy}</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help" role="status" aria-live="polite">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ const navigation=editing?pageHead(title,back):pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView:'player-create',backId:'create-back',titleId:'create-page-title'});
+ const markup=navigation+`<section class="player-form-card card" ${attrs('create-card')}><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large',attrs('create-preview'))}</div><h2 ${attrs('create-heading')}>${heading}</h2><p ${attrs('create-copy')}>${copy}</p><form id="player-create-form" ${attrs('create-form')} novalidate lang="pl"><label ${attrs('create-name-label')} for="player-nickname">Nick</label><input ${attrs('create-name-input')} id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small ${attrs('create-name-help')} id="nickname-help" class="nickname-help" role="status" aria-live="polite">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><span ${attrs('create-avatar-label')} class="avatar-label">Wybierz avatar</span><div ${attrs('create-avatar-picker')} class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}" ${attrs('create-avatar-'+id)}`)).join('')}</div><button ${attrs('create-submit')} ${editing?'':'data-action="submit-player-form"'} class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ root.innerHTML=editing?markup:compileViewMarkup('player-create',markup);
  void applyAvatarAccent(pendingAvatarId,{animate:false});
  root.scrollTop=0;
 }

@@ -1,0 +1,40 @@
+name: Orthography v2 end-to-end
+on:
+  pull_request:
+    paths:
+      - "ortografia/**"
+      - "spelling/**"
+      - "shared/spelling-*.mjs"
+      - "shared/view-contracts.mjs"
+      - "shared/compiled-runtime.mjs"
+      - "shared/structure-model.mjs"
+      - "tools/qa-orthography-browser.mjs"
+      - "tests/v2-spelling-*.mjs"
+      - ".github/workflows/orthography-qa.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  orthography:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit tests and PWA build
+        run: npm test
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Serve isolated preview
+        run: |
+          python3 -m http.server 8765 --directory dist > /tmp/orthography-http.log 2>&1 &
+          echo $! > /tmp/orthography-http.pid
+      - name: Spell settings, full quiz, results, rule and eight preview variants
+        run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
+      - name: Report server diagnostics
+        if: failure()
+        run: tail -180 /tmp/orthography-http.log || true

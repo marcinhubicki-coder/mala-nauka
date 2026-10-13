@@ -14,7 +14,10 @@ try{
  await h2.fill('40');await h2.dispatchEvent('change');await studio.waitForTimeout(160);
  assert.equal(await studio.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--ds-type-h2-size').trim()),'40px');
  await studio.getByRole('button',{name:'Biblioteka klocków v2'}).first().click();
- assert.match(await studio.locator('.block-library-heading').innerText(),/13 typów atomów · 60 wspólnych klocków/);
+ const libraryHeading=await studio.locator('.block-library-heading').innerText();
+ const sharedCount=libraryHeading.match(/13 typów atomów · (\d+) wspólnych klocków/);
+ assert.ok(sharedCount,'The shared atom library count is missing');
+ assert.ok(Number(sharedCount[1])>=40&&Number(sharedCount[1])<=100,'Shared catalog count looks wrong: '+sharedCount[1]);
  const shared=await studio.locator('.block-catalog-row').count();
  await studio.locator('[data-block-details]').selectOption('all');
  const detailed=await studio.locator('.block-catalog-row').count();

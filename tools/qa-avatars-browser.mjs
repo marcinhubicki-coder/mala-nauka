@@ -83,6 +83,8 @@ try{
  assert.ok(Math.abs(pin.w-previewSizes[0])<0.3,'PIN avatar changed size from the profile preview');
 
  assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-element="pin-fields"]')===element,shellHandle),true);
+ assert.equal(await page.locator('.pin-card [data-ds-subcontract="pin-controls"]').count(),21,'PIN create should expose each key and dot');
+ const keyHandle=await page.locator('[data-ds-key="pin-key-4"]').elementHandle();
  const keypadHandle=await page.locator('.pin-keypad').elementHandle();
  const dotsHandle=await page.locator('.pin-dots').elementHandle();
  assert.ok(keypadHandle&&dotsHandle,'PIN controls missing');
@@ -94,6 +96,7 @@ try{
    dots:dots.isConnected&&document.querySelector('.pin-dots')===dots
   }),{keypad:keypadHandle,dots:dotsHandle});
   assert.equal(stable.keypad,true,'PIN keypad was recreated after digit '+digit);
+  assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-key="pin-key-4"]')===element,keyHandle),true,'PIN key 4 remounted');
   assert.equal(stable.dots,true,'PIN dots were recreated after digit '+digit);
   assert.equal(await page.locator('.pin-dots > span.filled').count(),i+1);
   assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),i!==3);

@@ -30,6 +30,13 @@ function fitAll(){
     const host=cloth.closest('.flag-on-pole'),[width,height=1]=getComputedStyle(cloth).aspectRatio.split('/').map(Number);
     // Constrain both axes through width; max-height alone distorts square flags.
     cloth.style.width=Math.min(host.clientWidth*.71,host.clientHeight*.67*width/height)+'px';
+    if(cloth.closest('.flag-reveal-scene')){
+      // Reposition accurately even for square flags and Nepal. Animating only
+      // transforms avoids left/width relayout during the answer transition.
+      const right=host.clientWidth-10-cloth.offsetLeft-cloth.offsetWidth*.42;
+      cloth.style.setProperty('--flag-corner-x',Math.round(Math.max(0,right))+'px');
+      cloth.style.setProperty('--flag-corner-y',Math.round(13-cloth.offsetTop)+'px');
+    }
   });
   paintFlags(root);
   const host=root.querySelector('.flag-on-pole');

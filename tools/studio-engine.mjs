@@ -1,3 +1,5 @@
+import {inventorySnapshot,VIEW_SNAPSHOT_IDS} from '../design-system/view-inventory-snapshots.mjs';
+import {readFileSync} from 'node:fs';
 // Headless Design Studio engine: controlled configuration edits, not source patches.
 // The visual editor writes these same elementStyles/elementOverrides/familyStyles.
 import {readFile,writeFile} from 'node:fs/promises';
@@ -66,10 +68,13 @@ export function planLayoutEdit(config,{id,geometry={},reset=false}){
  return {config:draft,change:{id,path:'layoutOverrides.home.'+id,before:old,after:draft.layoutOverrides.home[id]||null,rect:homeRect(draft,id).rect,style:homePosition(draft,id)}};
 }
 
+const VIEWS=new Map(JSON.parse(readFileSync(new URL('../design-system/registry.json',import.meta.url),'utf8')).views.map(view=>[view.id,view]));
 export function findEditableBlock(view,id){
  if(view==='home'){validateViewContract('home');const row=viewContract('home').find(row=>row.id===id);return row?{...row,view,mode:inheritedMode(view,id),blockId:'block-'+row.recipe}:null;}
- if(view==='spelling-settings'){validateSpellingSettingsContract();const row=SPELLING_SETTINGS_CONTRACT[id];return row?{...row,view,blockId:'block-'+row.recipe}:null;}
- return null;
+ if(view==='spelling-settings'){validateSpellingSettingsContract();const row=SPELLING_SETTINGS_CONTRACT[id];if(row)return {...row,view,blockId:'block-'+row.recipe};}
+ const registryView=VIEWS.get(view);if(!registryView)return null;
+ const item=inventorySnapshot(registryView)?.find(row=>row.id===id);
+ return item?{...item,view,legacyAdapter:true}:null;
 }
 function targetPath(item,scope){
  if(scope==='shared')return ['elementStyles',item.blockId];
@@ -101,7 +106,7 @@ async function main(argv=process.argv.slice(2)){
  if(command==='help'){console.log('Design Studio engine: inspect --view home --id home-mode-spelling | set --view home --id home-mode-spelling --property radius --value 28 [--apply] | inspect-recipe --recipe button-back | set-recipe --recipe button-back --property radius --value 22 [--apply] | check');return;}
  const filename=resolve(option(argv,'config')||'design-system/config.json');
  const current=JSON.parse(await readFile(filename,'utf8'));
- if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);console.log('VALID: Home, Ortografia settings and design styles');return;}
+ if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);if(VIEW_SNAPSHOT_IDS.length!==VIEWS.size)throw Error('View inventory snapshot coverage incomplete');console.log('VALID: '+VIEW_SNAPSHOT_IDS.length+' inventoried screens, Home renderer contract, Ortografia settings and design styles');return;}
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
  if(command==='inspect-layout'){console.log(JSON.stringify(inspectHomeLayout(current,option(argv,'id')),null,2));return;}
  if(command==='set-layout'){

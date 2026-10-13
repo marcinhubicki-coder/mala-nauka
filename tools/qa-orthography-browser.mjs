@@ -1,10 +1,25 @@
 // End-to-end settings -> gameplay and all eight Orthography Studio fixtures.
 // No production writes: fresh browser context uses ephemeral localStorage.
 import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {join} from 'node:path';
 const {chromium}=await import('playwright');
 const base=process.argv[2]||'http://127.0.0.1:8765';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const errors=[],broken=[];
+const visualDirectory=process.env.V2_SCREENSHOT_DIR||'';
+const screenshots=[];
+if(visualDirectory)await mkdir(visualDirectory,{recursive:true});
+// Capture the actual PWA viewport at iPhone 13 Pro DPR 3. These diagnostic
+// PNGs are uploaded as short-lived CI artifacts, never bundled by Vercel.
+async function capture(page,viewId,reference){
+ if(!visualDirectory)return;
+ await page.evaluate(()=>document.fonts.ready);
+ const file=viewId+'.png';
+ await page.screenshot({path:join(visualDirectory,file),animations:'disabled',timeout:20000});
+ screenshots.push({view:viewId,approvedReference:reference,file,viewport:'390x844',dpr:3});
+}
+
 try{
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:3,reducedMotion:'reduce'});
  // A gameplay request for the Studio DOM classifier is an architecture
@@ -21,6 +36,7 @@ try{
  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
  await page.locator('[data-action="guest-player"]').click();
  await page.locator('#app[data-view="home"]').waitFor();
+ await capture(page,'home','IMG_2946.png');
  await page.locator('[data-action="choose-mode"][data-mode="spelling"]').click();
  const gameFrame=page.frameLocator('iframe[data-mode-host="spelling"]');
  await gameFrame.locator('#app[data-view="wizard"][data-mode="spelling"]').waitFor({timeout:11000});
@@ -37,6 +53,7 @@ try{
  assert.ok(Math.abs(setupBounds.x-14)<9,'Wizard sheet changed its horizontal reference position: '+JSON.stringify(setupBounds));
  assert.ok(Math.abs(setupBounds.y-223)<12,'Wizard sheet changed its vertical reference position: '+JSON.stringify(setupBounds));
  assert.ok(Math.abs(setupBounds.width-362)<14,'Wizard sheet no longer matches the approved side margins: '+JSON.stringify(setupBounds));
+ await capture(page,'spelling-settings-live','IMG_2947.png');
  const before=await gameFrame.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);
  await gameFrame.locator('[data-ds-element="spelling-scope-categories"]').click();
@@ -51,6 +68,7 @@ try{
  await gameFrame.locator('#app[data-view="game"][data-mode="spelling"]').waitFor({timeout:13000});
  assert.equal(await gameFrame.locator('#app .answers .answer').count(),2);
  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),17,'Gameplay must render exactly 17 contract pieces');
+ await capture(page,'spelling-game-live','IMG_2949.png');
  assert.equal(await gameFrame.locator('#app .spelling-question-card').count(),1);
  await gameFrame.locator('#app .answers .answer').first().click();
  await gameFrame.locator('#app[data-state^="feedback"]').waitFor({timeout:10000});
@@ -65,6 +83,7 @@ try{
  await gameFrame.locator('#modal [data-action="exit-confirm"]').click();
  await gameFrame.locator('#app[data-view="results"]').waitFor({timeout:18000});
  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),18,'Results must compile all 18 declared parts');
+ await capture(page,'spelling-results-live','IMG_2950.png');
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-repeat"]').count(),1);
  assert.equal(await gameFrame.locator('#app [data-ds-element="spelling-result-history"][data-action="history"]').count(),1);
  assert.equal(await gameFrame.locator('#app .learning-stats-two [data-action="toggle-result"]').count(),2);
@@ -121,6 +140,8 @@ try{
   await page.waitForFunction(()=>document.querySelector('#app')?.dataset.view,{timeout:12000});
   await page.waitForTimeout(450);
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.dsView),viewId);
+  if(['spelling-initial','spelling-correct','spelling-wrong','spelling-results'].includes(viewId))
+   await capture(page,viewId,{ 'spelling-initial':'IMG_2949.png','spelling-correct':null,'spelling-wrong':'IMG_2948.png','spelling-results':'IMG_2950.png' }[viewId]);
   if(viewId==='spelling-settings')assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29);
   if(['spelling-initial','spelling-correct','spelling-wrong','spelling-hint','spelling-pause'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Incomplete gameplay contract: '+viewId);
   if(viewId==='spelling-initial')assert.equal(await page.locator('.answers .answer').count(),2);
@@ -173,6 +194,8 @@ try{
   }
   await page.close();
  }
+ if(visualDirectory)await writeFile(join(visualDirectory,'manifest.json'),
+  JSON.stringify({revision:process.env.GITHUB_SHA||null,branch:'refactor/v2-parity-first',capturedAt:new Date().toISOString(),screenshots},null,2)+'\n');
  assert.deepEqual(errors,[]);
  assert.deepEqual(broken,[]);
  console.log(JSON.stringify({ok:true,stages:8,wizardBlocks:29,answerState:state,jsErrors:0,failedLocalRequests:0}));

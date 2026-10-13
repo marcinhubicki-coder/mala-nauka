@@ -40,5 +40,15 @@ test('service worker invalidates old flag modules without precaching absent bina
   assert.match(worker,/mala-nauka-v133-flags-prebaked-pilot/);
   assert.match(worker,/flag-on-pole\.mjs\?v=12-prebaked/);
   assert.match(worker,/cloth-prebaked\.css\?v=1/);
-  assert.doesNotMatch(worker,/assets\/flags\/cloth-prebaked\/(?:pl|gb|ch|np|jp|cf)\.webp/);
+  let manifest=null;
+  try{manifest=JSON.parse(await get('assets/flags/cloth-prebaked/manifest.json'));}
+  catch(error){if(error.code!=='ENOENT')throw error;}
+  if(manifest){
+    for(const id of pilot){
+      assert.ok(manifest.flags?.[id],'Missing pilot in manifest: '+id);
+      assert.ok(worker.includes('./assets/flags/cloth-prebaked/'+id+'.webp'),'Offline file missing: '+id);
+    }
+  }else{
+    assert.doesNotMatch(worker,/assets\/flags\/cloth-prebaked\/(?:pl|gb|ch|np|jp|cf)\.webp/);
+  }
 });

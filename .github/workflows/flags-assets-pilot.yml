@@ -5,6 +5,7 @@ on:
     branches: [feature/flags-game-v2]
     paths:
       - 'tools/build-flag-cloth-assets.mjs'
+      - 'sw.js'
       - '.github/workflows/flags-assets-pilot.yml'
   workflow_dispatch:
     inputs:

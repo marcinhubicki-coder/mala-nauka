@@ -101,7 +101,8 @@ function enhance(){
       content.insertAdjacentHTML('beforeend',`
         <div class="flag-reveal-mask" aria-hidden="true">
           <div class="flag-adventure-map"><div data-adventure-map></div></div>
-          <div class="flag-dissolve-curtain" aria-hidden="true">${dissolveDrops(record.id)}</div>
+          <div class="flag-dissolve-curtain" aria-hidden="true"></div>
+          <div class="flag-dissolve-drops" aria-hidden="true">${dissolveDrops(record.id)}</div>
           <div class="flag-map-aura" aria-hidden="true"></div>
           <span class="flag-scene-compass" aria-hidden="true">${compass()}</span>
           <span class="flag-map-sparkle flag-map-sparkle-a" aria-hidden="true">✦</span>

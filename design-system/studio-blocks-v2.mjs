@@ -12,12 +12,13 @@ export class StudioBlocksV2 {
  get config(){return this.owner.getDesign().config;}
  get open(){return Boolean(this.workspace.querySelector('[data-block-library-v2]'));}
  catalog(){const rows=runtimeCatalog(this.owner.registry,this.owner.getInventories());return this.details?rows:semanticCatalog(rows);}
+ visibleRecords(){return this.catalog().filter(r=>this.details||(r.registered&&(this.viewFilter?r.uses.some(u=>u.view===this.viewFilter):new Set(r.uses.map(u=>u.view)).size>=2)));}
  get record(){return this.catalog().find(r=>r.id===this.part);}
  get use(){return this.record?.uses[this.useIndex]||this.record?.uses[0];}
  selectPart(id,context={}){
   const inventory=this.owner.getInventories().get(context.view)?.items||[],item=inventory.find(i=>i.id===context.id);
   const record=this.catalog().find(r=>r.id===(context.blockId||item?.blockId||id)||r.recipe===item?.recipe||r.recipe===id||r.uses.some(use=>use.blockId===id));
-  this.part=record?.id||id;this.level=record?.level||'family';this.useIndex=Math.max(0,record?.uses.findIndex(u=>u.view===context.view&&(!context.id||u.id===context.id))||0);this.scope='global';
+  this.part=record?.id||id;if(record&&!record.registered)this.details=true;this.level=record?.level||'family';this.useIndex=Math.max(0,record?.uses.findIndex(u=>u.view===context.view&&(!context.id||u.id===context.id))||0);this.scope='global';
  }
  path(key){const use=this.use;if(['background','textColor'].includes(key)&&['spelling','english','flags','reading','math'].includes(use.mode))return `familyStyles.${use.mode}.${this.part}.${key}`;return this.scope==='view'?`elementOverrides.${use.view}.${use.id}.${key}`:`elementStyles.${this.part}.${key}`;}
  style(){const u=this.use;if(!u)return{};return rawVisualValue(this.config,u.view,{...u,recipe:this.record.recipe,kind:this.record.kind});}
@@ -29,11 +30,11 @@ export class StudioBlocksV2 {
   this.scanner.start();this.refresh();
   this.resize?.disconnect();this.resize=new ResizeObserver(()=>this.fit());this.resize.observe(this.workspace.querySelector('.block-runtime-stage'));
  }
- refresh(){if(!this.open)return;const records=this.catalog();if(!this.record&&records.length){const initial=records.find(r=>r.level===this.level)||records[0];this.part=initial.id;this.level=initial.level;}
+ refresh(){if(!this.open)return;const records=this.visibleRecords();if(records.length&&!records.some(r=>r.id===this.part)){const initial=records.find(r=>r.level===this.level)||records[0];this.part=initial.id;this.level=initial.level;this.useIndex=0;}
   this.workspace.querySelector('.block-scan-status').textContent=this.status();this.renderRows();if(!document.activeElement?.closest('.block-properties'))this.renderControls();this.mount();
  }
  renderRows(){
-  const query=this.search.toLocaleLowerCase('pl'),records=this.catalog().filter(r=>(this.details||(r.registered&&(this.viewFilter?r.uses.some(u=>u.view===this.viewFilter):new Set(r.uses.map(u=>u.view)).size>=2)))&&r.level===this.level&&(!this.viewFilter||r.uses.some(u=>u.view===this.viewFilter))&&(!query||[r.name,...r.uses.map(u=>u.label)].join(' ').toLocaleLowerCase('pl').includes(query)));
+  const query=this.search.toLocaleLowerCase('pl'),records=this.visibleRecords().filter(r=>r.level===this.level&&(!this.viewFilter||r.uses.some(u=>u.view===this.viewFilter))&&(!query||[r.name,...r.uses.map(u=>u.label)].join(' ').toLocaleLowerCase('pl').includes(query)));
   this.workspace.querySelector('.block-catalog-rows').innerHTML=records.map(r=>`<button class="block-catalog-row ${r.id===this.part?'active':''}" data-block-select="${r.id}" aria-pressed=${r.id===this.part}><strong>${html(r.name)}</strong><small>${BLOCK_LEVELS[r.level]} · ${r.uses.length} ${r.uses.length===1?'użycie':'użyć'}</small></button>`).join('')||'<p>Brak klocków w tym wyborze.</p>';
   this.workspace.querySelector('.block-catalog-errors').innerHTML=this.scanner.failures.size?`<p>${html(this.status())}</p>${[...this.scanner.failures.keys()].map(id=>`<p>${html(this.owner.registry.views.find(v=>v.id===id)?.name||id)}</p>`).join('')}<button class=quiet-button data-block-retry>Ponów odczyt</button>`:'';
  }
@@ -78,8 +79,8 @@ export class StudioBlocksV2 {
   if(event.type==='input'&&n.dataset.blockNumber){const key=n.dataset.blockNumber,[min,max]=VISUAL_FIELDS[key],value=+n.value;if(Number.isFinite(value)&&value>=min&&value<=max)this.write(key,value);}
   if(event.type==='change'){
    if(n.hasAttribute('data-block-details')){this.details=n.value==='all';this.part='';this.refresh();}
-   if(n.hasAttribute('data-block-level')){this.level=n.value;this.renderRows();}
-   if(n.hasAttribute('data-block-view')){this.viewFilter=n.value;this.renderRows();}
+   if(n.hasAttribute('data-block-level')){this.level=n.value;this.part='';this.refresh();}
+   if(n.hasAttribute('data-block-view')){this.viewFilter=n.value;this.part='';this.refresh();}
    if(n.hasAttribute('data-block-use')){this.useIndex=+n.value;this.ready=false;this.renderControls();this.mount();}
    if(n.hasAttribute('data-block-scope')){this.scope=n.value;this.renderControls();}
    if(n.dataset.blockField)this.write(n.dataset.blockField,n.value||undefined);

@@ -1,0 +1,16 @@
+/* The precomputed fabric already includes folds, texture, seams and alpha.
+   Keep the same stage geometry; CSS camera still animates pole + cloth together. */
+#app[data-mode="flags"] .flag-cloth-prebaked{
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:left top;
+  opacity:0;
+  pointer-events:none;
+}
+#app[data-mode="flags"] .flag-cloth.is-prebaked .flag-cloth-prebaked{opacity:1}
+#app[data-mode="flags"] .flag-cloth.is-prebaked .flag-cloth-canvas{opacity:0}
+#app[data-mode="flags"] .flag-cloth.is-prebaked .flag-cloth-fallback{visibility:hidden}

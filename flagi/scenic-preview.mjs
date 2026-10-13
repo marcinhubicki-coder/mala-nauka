@@ -170,6 +170,11 @@ function fallIntoSand(){
 }
 let goingNext=false;
 async function toNext(){
+ if(app.classList.contains('is-paused')){
+   clearTimeout(autoTimer);
+   autoTimer=setTimeout(()=>void toNext(),420);
+   return;
+ }
  if(goingNext||!readyForNext||state==='playing'||state==='ended')return;
  goingNext=true;readyForNext=false;clearTimeout(autoTimer);
  state='transition';app.classList.add('is-transitioning');app.classList.remove('is-presenting');const token=++transitionToken;

@@ -68,6 +68,10 @@ Końcowe zestawy zostały obejrzane po udanym przebiegu. Zweryfikowano treść m
 
 ## Publikacja i granice weryfikacji
 
-Vercel 2026-10-13 odrzucił nowy preview: HTTP 402, `api-deployments-free-per-day`, ponad 100 deploymentów dziennie, `retryAfter: 86400`. Nie opublikowano przez `main`, nie zmieniono ochrony deploymentów ani planu. Istniejący link Vercel wskazuje wcześniejszy kod i nie jest potwierdzeniem v2. Wdrożenie aktualnego SHA wymaga odnowienia limitu.
+Preview v2: https://mala-nauka-aw9mi0y4c-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by
+
+Deployment `dpl_RbFGWBa3PbwXHXSnvGETLvM7g5tj`, źródło `git`, status **READY**, commit wydania `d082f65488b626416d62fbff1198f0afc6dc549d`. Wdrożony HTML aplikacji i moduł piasku zwracają HTTP 200 i są zgodne z obejrzanym kodem; Vercel dopisuje jedynie własny skrypt paska podglądu. Wdrożony raport potwierdza 34/34.
+
+Ręczne API publikacji 2026-10-13 dwukrotnie zgłosiło HTTP 402, `api-deployments-free-per-day`, limit ponad 100 deploymentów dziennie, `retryAfter: 86400`. Mimo tego istniejąca integracja Git ukończyła deployment powyższego commita na osobnym preview. Nie opublikowano przez `main`, nie zmieniono ochrony deploymentów ani planu.
 
 Chromium i desktopowy WebKit nie potwierdzają wydajności GPU telefonu ani zachowania rzeczywistego Safari/PWA. Pozostaje fizyczny test iPhone 13 Pro: płynność, dotyk, bezpieczne obszary, pamięć przy długiej sesji i powrót z tła. Nie deklarujemy zmierzonego 60 FPS ani pełnego trybu offline. Wariant obsługuje awarie pojedynczych grafik, ale nie instaluje oddzielnego service workera.

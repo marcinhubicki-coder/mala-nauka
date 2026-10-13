@@ -14,7 +14,7 @@ test('Orthography wizard shares exactly one complete 29-block contract with Stud
  for(const row of blocks){assert.ok(PART_BY_ID[row.recipe],row.recipe);assert.match(spellingAttrs(row.id.replace(/^spelling-/,'')),new RegExp('data-ds-key="'+row.id+'"'));}
  assert.equal(blocks.find(x=>x.id==='spelling-back').action,'home');
  assert.equal(blocks.find(x=>x.id==='spelling-start').action,'submit-setup');
- assert.equal(blocks.filter(x=>x.level==='atom').length,19);
+ assert.equal(blocks.filter(x=>x.level==='atom').length,20);
 });
 test('DOM hydration preserves existing jelly controls rather than remounting their subtree',()=>{
  const nodes=blocks.map(row=>({dataset:{dsKey:row.id,dsRecipe:row.recipe,dsKind:row.kind,...(row.action?{action:row.action}:{})}}));

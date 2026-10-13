@@ -10,7 +10,7 @@ on:
       - 'flagi/scenic-preview.html'
       - 'flagi/scenic-preview.css'
       - 'flagi/scenic-*.mjs'
-      - 'assets/flags/adventure/scenic-scene-v3.webp'
+      - 'assets/flags/adventure/scenic-*.webp'
       - 'adventure-preview.mjs'
   workflow_dispatch:
 

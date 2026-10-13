@@ -3,15 +3,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <base href="../"><title>Mała Nauka · Flagi — pejzażowy wariant</title>
 <meta name="theme-color" content="#85c8ed">
-<link rel="preload" href="assets/flags/adventure/scenic-scene-v3.webp" as="image" type="image/webp">
+<link rel="preload" href="assets/flags/adventure/scenic-mockup-v4.webp" as="image" type="image/webp">
 <link rel="stylesheet" href="flagi/adventure.css?v=17-framing">
 <link rel="stylesheet" href="flagi/cloth-prebaked.css?v=1">
 <link rel="preload" href="assets/fonts/fredoka-polish-v1.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="flagi/scenic-preview.css?v=2">
+<link rel="stylesheet" href="flagi/scenic-preview.css?v=4">
 <script src="flagi/europe-map.js?v=7"></script><script src="flagi/map-microstates.js?v=1"></script></head>
-<body><main id="scenic-screen" class="scenic-screen" aria-label="Podgląd wariantu pejzażowego gry Flagi"><div class="scenic-stage" id="scenic-stage">
+<body><main id="scenic-screen" class="scenic-screen" aria-label="Podgląd wariantu pejzażowego gry Flagi"><div class="scenic-feedback-scene" aria-hidden="true"></div><div class="scenic-foreground" aria-hidden="true"></div><div class="scenic-stage" id="scenic-stage">
   <div class="scenic-ios-status" aria-hidden="true"><span>9:41</span><svg width="58" height="14" viewBox="0 0 58 14"><g fill="currentColor"><rect x="0" y="9" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="7" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="13" rx="1"/></g><path d="M22 5q6-6 12 0M25 8q3-3 6 0" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="28" cy="11" r="1.5" fill="currentColor"/><rect x="39" y="2" width="15" height="10" rx="2" fill="none" stroke="currentColor"/><rect x="41" y="4" width="11" height="6" rx="1" fill="currentColor"/><path d="M56 5v4" stroke="currentColor" stroke-width="2"/></svg></div>
-  <header class="scenic-header"><button class="scenic-nav" data-action="restart" aria-label="Rozpocznij ponownie">×</button><div class="scenic-timer"><strong id="scenic-clock">2:46</strong><small>Flagi</small></div><button class="scenic-nav" data-action="pause" aria-label="Pauza" aria-pressed="false">Ⅱ</button></header>
+  <header class="scenic-header"><button class="scenic-nav" data-action="restart" aria-label="Rozpocznij ponownie">×</button><div class="scenic-timer"><strong id="scenic-clock">2:46</strong><small id="scenic-clock-caption">Flagi</small></div><button class="scenic-nav" data-action="pause" aria-label="Pauza" aria-pressed="false">Ⅱ</button></header>
   <div id="scenic-progress" class="scenic-progress" aria-label="Postęp rozgrywki"><i id="scenic-progress-fill"></i></div>
   <div class="scenic-meta"><span class="scenic-task" id="scenic-task">Zadanie 1</span><span class="scenic-lang">PL</span><strong class="scenic-score" id="scenic-score">0 pkt</strong></div>
   <section class="scenic-hero" id="scenic-hero" aria-label="Flaga do rozpoznania">
@@ -25,9 +25,9 @@
   <section class="scenic-answers" id="scenic-answers" aria-label="Wybierz państwo"></section>
   <div class="scenic-feedback" id="scenic-feedback" role="status" aria-live="polite"></div>
   <section class="scenic-map-scroll" id="scenic-map-scroll" aria-label="Mapa kraju" aria-hidden="true">
-    <div class="scenic-fold-stage" aria-hidden="true"><span class="scenic-fold-leaf scenic-fold-leaf-a"></span><span class="scenic-fold-leaf scenic-fold-leaf-b"></span><span class="scenic-fold-leaf scenic-fold-leaf-c"></span></div><div class="scenic-map-inner"><div class="scenic-europe-map"><div id="scenic-europe-map"></div></div><div class="scenic-map-caption"><strong id="scenic-country-name"></strong><span id="scenic-country-capital"></span></div></div>
+    <span class="scenic-paper-shadow" aria-hidden="true"></span><div class="scenic-fold-stage" aria-hidden="true"><span class="scenic-fold-leaf scenic-fold-leaf-a"><i class="scenic-fold-shade"></i><i class="scenic-fold-light"></i></span><span class="scenic-fold-leaf scenic-fold-leaf-b"><i class="scenic-fold-shade"></i><i class="scenic-fold-light"></i></span><span class="scenic-fold-leaf scenic-fold-leaf-c"><i class="scenic-fold-shade"></i><i class="scenic-fold-light"></i></span></div><div class="scenic-map-inner"><div class="scenic-map-caption"><strong id="scenic-country-name"></strong><span id="scenic-country-capital"></span><img id="scenic-map-flag" class="scenic-map-flag" alt="" decoding="async"></div><div class="scenic-europe-map"><div id="scenic-europe-map"></div></div><div class="scenic-atlas-compass" aria-hidden="true">✧</div></div>
     <span class="scenic-map-roller" aria-hidden="true"></span>
   </section>
   <div class="scenic-sand-canvas-holder" aria-hidden="true"><canvas id="scenic-sand-canvas"></canvas></div>
-  <div class="scenic-controls" id="scenic-controls"><div class="scenic-auto-hint" id="scenic-auto-hint" hidden>Zapamiętaj kraj i stolicę…</div><div class="scenic-swipe" id="scenic-swipe" hidden role="group" aria-label="Przejdź do następnego pytania"><span class="scenic-swipe-knob" id="scenic-swipe-knob" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Przesuń, aby przejść dalej">❯</span><span>Przesuń, aby przejść dalej</span></div></div>
-</div></main><script type="module" src="flagi/scenic-preview.mjs?v=2"></script></body></html>
+  <div class="scenic-controls" id="scenic-controls"><div class="scenic-auto-hint" id="scenic-auto-hint" hidden>Za chwilę następna flaga…</div><div class="scenic-swipe" id="scenic-swipe" hidden role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Przesuń, aby przejść dalej"><span class="scenic-swipe-knob continue-handle" id="scenic-swipe-knob" aria-hidden="true">❯</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
+</div></main><script type="module" src="flagi/scenic-preview.mjs?v=4"></script></body></html>

@@ -28,7 +28,7 @@ async function metrics(page){return page.evaluate(()=>{
  const app=document.querySelector('#scenic-screen'),svg=document.querySelector('.scenic-europe-map svg'),host=document.querySelector('.continent-map-host');
  return {state:app.dataset.state,country:app.dataset.country,score:document.querySelector('#scenic-score').textContent,task:document.querySelector('#scenic-task').textContent,
   viewport:{w:innerWidth,h:innerHeight},flag:rect('.flag-cloth'),paper:rect('.scenic-paper-row'),atlas:rect('.scenic-map-scroll'),
-  answers:[...document.querySelectorAll('.scenic-answer')].map(n=>{const r=n.getBoundingClientRect();return {id:n.dataset.id,text:n.textContent,disabled:n.disabled,x:r.x,y:r.y,w:r.width,h:r.height,labelFits:n.querySelector('.scenic-answer-label').scrollWidth<=n.clientWidth};}),
+  answers:[...document.querySelectorAll('.scenic-answer')].map(n=>{const r=n.getBoundingClientRect();return {id:n.dataset.id,text:n.textContent,disabled:n.disabled,x:r.x,y:r.y,w:r.width,h:r.height,labelFits:n.querySelector('.scenic-answer-label').scrollWidth<=n.clientWidth&&n.querySelector('.scenic-answer-label').getBoundingClientRect().height<=n.clientHeight-8,lineCount:Math.round(n.querySelector('.scenic-answer-label').getBoundingClientRect().height/parseFloat(getComputedStyle(n.querySelector('.scenic-answer-label')).lineHeight)),icons:n.querySelectorAll('svg,img').length};}),
   raster:host?.dataset.mapImage,activeCount:svg?.querySelectorAll('.country').length||0,highlight:!!svg?.querySelector('.scenic-country-overlay'),
   neighbors:Number(svg?.dataset.visibleNeighbors),labels:Number(host?.dataset.labelCount),crop:svg?.getAttribute('viewBox'),microstate:host?.dataset.microstate,
   capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
@@ -57,6 +57,8 @@ try{
    {id:'by',mode:'question',w:390,h:844,name:'01-belarus-question'},
    {id:'by',mode:'correct',w:390,h:844,name:'02-belarus-correct'},
    {id:'by',mode:'wrong',w:390,h:844,name:'03-belarus-wrong'},
+   {id:'pl',mode:'wrong',w:390,h:844,name:'11-poland-mockup-wrong'},
+   {id:'pl',mode:'correct',w:390,h:844,name:'12-poland-mockup-correct'},
    {id:'pl',mode:'correct',w:390,h:700,name:'04-poland-short'},
    {id:'ch',mode:'correct',w:430,h:932,name:'05-swiss-max'},
    {id:'li',mode:'correct',w:390,h:844,name:'07-liechtenstein'},
@@ -66,7 +68,7 @@ try{
   ])await check(engine+'-'+sample.name,browser,{viewport:{width:sample.w,height:sample.h}},async page=>{
    await open(page,sample.id);if(sample.safe)await page.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px}'});
    if(sample.mode!=='question'){await choose(page,sample.mode==='correct');await state(page,'feedback-'+sample.mode);}
-   const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.h>=40&&b.y+b.h<sample.h));
+   const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.icons===0&&b.h>=40&&b.y+b.h<sample.h));
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.animations,0,'Steady atlas must not keep moving');
@@ -81,13 +83,13 @@ try{
     // Pause and seek the actual Web Animations timeline. Screenshot overhead
     // cannot skip a fold; each frame has a precise fraction of the same opening.
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
-     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.classList.contains('scenic-fold-leaf')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
+     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
     await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
-     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.classList.contains('scenic-fold-leaf')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
+     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
      await capture(page,engine+'-rollup-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
@@ -108,6 +110,17 @@ try{
    });
   }
   if(phase==='full'){
+   await check(engine+'-two-line-sand-and-production-slider',browser,{},async page=>{
+    await open(page,'ba');const before=await metrics(page);assert(before.answers.some(b=>b.lineCount===2));assert(before.answers.every(b=>b.lineCount<=2&&b.labelFits));
+    await choose(page,false);await state(page,'feedback-wrong');
+    const clock=await page.locator('#scenic-clock').textContent();await page.locator('#scenic-swipe').click({position:{x:180,y:20}});await page.waitForTimeout(400);assert.equal((await metrics(page)).state,'feedback-wrong');
+    const a=await page.locator('#scenic-swipe-knob').boundingBox();await page.mouse.move(a.x+a.width/2,a.y+a.height/2);await page.mouse.down();await page.mouse.move(a.x+a.width/2+60,a.y+a.height/2);await page.mouse.up();await page.waitForTimeout(550);assert.equal((await metrics(page)).state,'feedback-wrong');assert.equal(await page.locator('#scenic-swipe').getAttribute('aria-valuenow'),'0');
+    assert.equal(await page.locator('#scenic-clock').textContent(),clock);assert.equal(await page.locator('#scenic-clock-caption').textContent(),'Czas zatrzymany');
+    await page.evaluate(()=>document.querySelector('#scenic-screen').dataset.qaCaptureAt='.76');await slide(page);
+    await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.qaCaptured==='0.76');
+    const moves=await page.locator('#scenic-sand-canvas').evaluate(n=>({up:Number(n.dataset.upward),down:Number(n.dataset.downward)}));assert(moves.up>0&&moves.down>0);
+    await capture(page,engine+'-two-line-sand');await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'playing');
+   });
    await check(engine+'-correct-auto-and-pause',browser,{},async page=>{
     await open(page,'by',false);await choose(page);await state(page,'feedback-correct');await page.waitForTimeout(900);
     await page.locator('[data-action="pause"]').click();const before=await metrics(page);await page.waitForTimeout(SCENIC.memoryMs+400);
@@ -135,7 +148,7 @@ try{
    });
    await check(engine+'-reduced-motion-and-keyboard',browser,{reducedMotion:'reduce'},async page=>{
     await open(page,'ba');await choose(page,false);await state(page,'feedback-wrong');await capture(page,engine+'-reduced-motion');
-    await page.locator('#scenic-swipe-knob').focus();await page.keyboard.press('ArrowRight');await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');assert.equal((await metrics(page)).animations,0);
+    await page.locator('#scenic-swipe').focus();await page.keyboard.press('Enter');assert.equal((await metrics(page)).task,'Zadanie 1');for(let i=0;i<11;i++)await page.keyboard.press('ArrowRight');await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');assert.equal((await metrics(page)).animations,0);
    });
    await check(engine+'-image-fallback',browser,{},async page=>{
     await page.route('**/assets/maps/europe-scenic.webp',route=>route.abort());await page.route('**/assets/flags/cloth-prebaked/by.webp',route=>route.abort());
@@ -144,7 +157,7 @@ try{
    });
    await check(engine+'-map-fetch-failure',browser,{},async page=>{
     await page.route('**/assets/maps/europe.svg',route=>route.abort());await open(page);await choose(page,false);await state(page,'feedback-wrong');assert((await page.locator('.scenic-map-unavailable').textContent()).includes('niedostępna'));
-    await page.locator('#scenic-swipe-knob').press('Enter');await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');
+    await page.locator('#scenic-swipe').focus();for(let i=0;i<11;i++)await page.keyboard.press('ArrowRight');await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');
    });
    await check(engine+'-memory-starts-after-slow-bitmap',browser,{},async page=>{
     await page.route('**/assets/maps/europe-scenic.webp',async route=>{await new Promise(done=>setTimeout(done,1800));await route.continue();});

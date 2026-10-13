@@ -9,7 +9,8 @@ function glyphs(answers,origin,rand) {
   const ctx=scratch.getContext('2d',{willReadFrequently:true});
   return [...answers.querySelectorAll('.scenic-answer')].map(button=>{
     const letters=[...button.querySelectorAll('.sand-letter')].filter(s=>s.textContent.trim());
-    const points=[];
+    const points=[],lines=[];
+    for(const span of letters){const r=span.getBoundingClientRect();let line=lines.find(l=>Math.abs(l.top-r.top)<2);if(!line){line={top:r.top,left:r.left,right:r.right,bottom:r.bottom};lines.push(line);}line.left=Math.min(line.left,r.left);line.right=Math.max(line.right,r.right);line.bottom=Math.max(line.bottom,r.bottom);}
     for(const span of letters){
       const r=span.getBoundingClientRect(),style=getComputedStyle(span);
       ctx.clearRect(0,0,64,64);ctx.font=`${style.fontWeight} 40px ${style.fontFamily}`;
@@ -19,7 +20,8 @@ function glyphs(answers,origin,rand) {
       const maxX=Math.max(1,...ink.map(p=>p.x)),maxY=Math.max(1,...ink.map(p=>p.y));
       for(let i=0;i<SCENIC.grainsPerLetter;i++){
         const p=ink[Math.floor(rand()*ink.length)]||{x:10,y:20};
-        points.push({x:r.left-origin.left+(p.x/maxX)*r.width,y:r.top-origin.top+(p.y/maxY)*r.height*.87});
+        const line=lines.find(l=>Math.abs(l.top-r.top)<2);
+        points.push({x:r.left-origin.left+(p.x/maxX)*r.width,y:r.top-origin.top+(p.y/maxY)*r.height*.87,baseline:line.bottom-origin.top-2,lineCenter:(line.left+line.right)/2-origin.left,lineWidth:line.right-line.left});
       }
     }
     const r=button.querySelector('.scenic-answer-label').getBoundingClientRect();
@@ -41,14 +43,15 @@ export function createSand(canvas,app,answers) {
       const target=next[row],count=Math.max(group.points.length,target.points.length);
       for(let i=0;i<count;i++){
         const start=group.points[i%group.points.length],end=target.points[i%target.points.length];
-        const dx=(rand()-.5)*Math.min(64,group.width*.65),pileX=group.center+dx;
+        const dx=(rand()-.5)*Math.min(64,start.lineWidth*.65),pileX=start.lineCenter+dx;
         grains.push({start,end,fromOld:i<group.points.length,toNew:i<target.points.length,
-          pile:{x:pileX,y:group.baseline-(1-Math.abs(dx)/40)*(2+rand()*4)},
+          pile:{x:pileX,y:start.baseline-(1-Math.abs(dx)/40)*(2+rand()*4)},
           size:1.2+rand()*1.1,delay:rand()*.075,spread:(rand()-.5)*17,
           color:['#473b32','#5a4738','#6b503c'][Math.floor(rand()*3)]});
       }
     });
     canvas.dataset.grains=String(grains.length);
+    if(app.dataset.qa==='true'){canvas.dataset.upward=String(grains.filter(g=>g.toNew&&g.end.y<g.pile.y).length);canvas.dataset.downward=String(grains.filter(g=>g.toNew&&g.end.y>g.pile.y).length);}
     try{await timeline.tween(SCENIC.sandMs,t=>{
       ctx.clearRect(0,0,origin.width,origin.height);
       if(app.dataset.qa==='true')app.dataset.sandProgress=t.toFixed(3);
@@ -70,6 +73,8 @@ export function createSand(canvas,app,answers) {
           alpha=g.toNew?1:1-q;alpha*=Math.min(1,(1-t)/.07);
         }
         if(alpha<=0)continue;ctx.globalAlpha=alpha;ctx.fillStyle=g.color;ctx.fillRect(x,y,g.size,g.size);
+        // A tiny warm upper edge and shaded lower edge pick up the scene light.
+        if(g.size>1.65){ctx.globalAlpha=alpha*.46;ctx.fillStyle='#b58a58';ctx.fillRect(x,y,g.size,.55);ctx.globalAlpha=alpha*.36;ctx.fillStyle='#1d2420';ctx.fillRect(x,y+g.size-.5,g.size,.5);}
       }
       ctx.globalAlpha=1;
       // Capture target is armed before resuming: no screenshot/IPC timing race.

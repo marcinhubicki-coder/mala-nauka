@@ -32,7 +32,7 @@ export function createSand(canvas,app,answers) {
   const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
   async function transition({timeline,reduced,seed,replace}) {
     clear();if(reduced){replace();return;}
-    const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=app.getBoundingClientRect(),rand=randomFrom(seed);
+    const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);
     canvas.width=Math.round(origin.width*dpr);canvas.height=Math.round(origin.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
     const old=glyphs(answers,origin,rand);
     answers.classList.add('is-sanding');replace();

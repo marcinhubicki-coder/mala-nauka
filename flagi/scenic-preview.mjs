@@ -42,6 +42,7 @@ function updateHud(){
   $('scenic-progress').setAttribute('aria-label','Pozostało '+seconds+' sekund');
 }
 function fitFlag(){
+  app.querySelector('.scenic-ios-status').hidden=$('scenic-stage').offsetTop>0;
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
   const ratio=(current()?.id==='ch'||current()?.id==='va'?1:4/3)/1.15;
   cloth.style.width=Math.min(hero.clientWidth*.83,hero.clientHeight*.9*ratio)+'px';
@@ -53,7 +54,7 @@ function showFlag(record){
   app.dataset.country=record.id;
 }
 function placeScroll(){
-  const viewport=app.getBoundingClientRect(),h=hero.getBoundingClientRect(),p=$('scenic-paper-row').getBoundingClientRect();
+  const viewport=$('scenic-stage').getBoundingClientRect(),h=hero.getBoundingClientRect(),p=$('scenic-paper-row').getBoundingClientRect();
   const top=h.top-viewport.top+2;sheet.style.top=top+'px';sheet.style.height=(p.bottom-viewport.top-top)+'px';
 }
 async function warmFlag(record){

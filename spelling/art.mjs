@@ -9,6 +9,7 @@ import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
 import {compileViewMarkup,viewAttrs} from '../shared/view-contracts.mjs';
+import {overlayAttrs,hydrateSpellingOverlay} from '../shared/spelling-overlays.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
 export function createSpellingArt(app, { onContinue } = {}) {
@@ -51,8 +52,10 @@ export function createSpellingArt(app, { onContinue } = {}) {
     session.hintUsed=true;session.pause(); bubble.setPaused(true);wordParticles?.setPaused(true);
     app.classList.add('spelling-hint-open');
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
+    hint.dataset.dsKey='hint-shell';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
-    hint.innerHTML = `<div class="hint-sheet-head">${lightbulbSvg()}<h2 id="spelling-hint-title">Mała podpowiedź</h2><button type="button" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p>${RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hint.innerHTML = `<div class="hint-sheet-head" ${overlayAttrs('hint','hint-head')}>${lightbulbSvg()}<h2 ${overlayAttrs('hint','hint-title')} id="spelling-hint-title">Mała podpowiedź</h2><button type="button" ${overlayAttrs('hint','hint-dismiss')} data-action="dismiss-hint" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p ${overlayAttrs('hint','hint-copy')}>${RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hydrateSpellingOverlay(hint,'hint');
     hint.querySelector('button').addEventListener('click', closeHint);
     hint.addEventListener('cancel', event => { event.preventDefault(); closeHint(); });
     hint.addEventListener('keydown', event => event.stopPropagation());

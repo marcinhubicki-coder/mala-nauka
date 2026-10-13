@@ -53,6 +53,8 @@ try{
   assert.ok(Math.abs(c.w-diameter)<0.3,'Inconsistent picker circle diameter: '+c.id);
  }
 
+ const previewHandle=await page.locator('[data-ds-element="create-preview"]').elementHandle();
+ assert.ok(previewHandle,'Avatar preview has no compiled identity');
  const previewSizes=[];
  for(const letter of 'abcdefghijkl'){
   await page.locator('[data-action=choose-avatar][data-avatar='+letter+']').click();
@@ -62,6 +64,7 @@ try{
   },letter,{timeout:5000});
   const snapshot=await measure(),preview=snapshot.preview[0];
   assert.equal(preview.id,letter);
+  assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-element="create-preview"]')===element,previewHandle),true,'Avatar DOM instance was recreated while selecting '+letter);
   isSquare(preview,'Preview '+letter);
   previewSizes.push(preview.w);
  }

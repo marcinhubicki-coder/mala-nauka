@@ -225,7 +225,16 @@ export function createSpellingArt(app, { onContinue } = {}) {
       else if(correct&&effects.enabled&&effects.correctStyle==='production'&&(!effectPreview?.id||effectPreview.id==='confetti'))stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));
       else stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo:false,target:app.querySelector('.soap-svg')||app.querySelector('.mn-soap-shell'),onMetrics:effectPreview?.onMetrics});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
-      if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
+      if(!correct){
+        continueDrag?.reset();
+        const params=new URLSearchParams(location.search);
+        const progress=params.get('studio')==='1'?Number(params.get('sliderProgress')):NaN;
+        // Only a Studio screenshot fixture may set a deterministic gesture
+        // pose. Normal games always start at 0 and require a real drag.
+        if(Number.isFinite(progress)&&progress>=1&&progress<=95)
+          continueDrag?.setProgress(progress/100);
+        else nodes.next.focus({ preventScroll: true });
+      }
     }
   }
   function setPaused(paused) {

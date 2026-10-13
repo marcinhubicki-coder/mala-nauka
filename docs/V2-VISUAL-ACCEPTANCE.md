@@ -40,3 +40,6 @@ W Design Studio można wczytać jednocześnie pięć pełnych PNG `IMG_2946–29
 Oba screenshoty `IMG_2948.png` i `IMG_2949.png` pokazują już **błędną odpowiedź „strach”**, z wyświetloną poprawną formą oraz sliderem podczas gestu. Pierwszy jest mniej więcej w połowie, drugi prawie na końcu. Nie ma wśród pięciu zrzutów produkcyjnych wzorca *przed udzieleniem odpowiedzi*. UI podpowiedzi widoczne przed odpowiedzią pozostaje niezmienione; nie wolno przerabiać go na slider na podstawie tych dwóch przykładów.
 
 Testy generują zrzuty `spelling-initial` i `spelling-wrong`, ale nie raportują bezpośredniej „zgodności pikselowej” bez porównania identycznego słowa, tego samego stanu i pozycji uchwytu. Overlay dostępny pod `spelling-wrong` może przełączać oba momenty gestu.
+
+## Odtwarzanie rzeczywistej pozycji suwaka w Studio
+Po wybraniu widoku błędnej odpowiedzi Studio ma dwa warianty: `IMG_2948` (uchwyt 50%) i `IMG_2949` (uchwyt 90%). Zmiana wariantu powoduje ponowne wczytanie wyłącznie tego iframe z parametrem testowym `sliderProgress`. Przeglądarka **nie symuluje pozycji przez zmiany CSS**: scenariusz testowy wywołuje `continueDrag.setProgress` z produkcyjnego kontrolera gestów. Parametr jest ignorowany w zwykłym PWA bez `studio=1`. Nie przyspiesza rundy i nie omija walidacji rzeczywistego gestu użytkownika.

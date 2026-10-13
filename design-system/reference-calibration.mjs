@@ -61,7 +61,14 @@ export class ReferenceCalibration {
   const root=this.studio.workspace;
   root.addEventListener('change',event=>{
    if(event.target?.id==='reference-variant'){
-    this.wrongVariant=event.target.value==='complete'?'complete':'mid';this.sync();return;
+    this.wrongVariant=event.target.value==='complete'?'complete':'mid';
+    this.sync();
+    // Reload only the wrong-answer fixture: the real gesture controller
+    // reproduces this reference position, with no fake CSS transformations.
+    const view=this.studio.registry.views.find(item=>item.id==='spelling-wrong');
+    if(view)for(const frame of root.querySelectorAll('iframe[data-preview-view="spelling-wrong"]'))
+     frame.src=this.studio.viewURL(view);
+    return;
    }
    if(event.target?.id!=='reference-upload')return;
    const files=[...(event.target.files||[])];if(files.length)void this.importFiles(files);

@@ -46,7 +46,7 @@ export class StudioPreview {
   send(frame,type,data={}){frame?.contentWindow?.postMessage({channel:'mala-nauka-studio',type,...data},location.origin);}
   broadcast(type,data={}){for(const frame of this.frames())this.send(frame,type,data);}
   sendDesign(){this.broadcast('design',this.getDesign());this.updateSavedIndicators();this.renderPills();}
-  viewURL(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:this.scenarioStates.get(view.id)||view.state,viewId:view.id});return url.href;}
+  viewURL(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:this.scenarioStates.get(view.id)||view.state,viewId:view.id});if(view.id==='spelling-wrong')url.searchParams.set('sliderProgress',this.references.wrongVariant==='complete'?'90':'50');return url.href;}
   name(component=this.component){return componentName(component,this.config);}
   available(){const inventory=this.inventories.get(this.viewId);return new Set(inventory?.items.some(item=>item.index>=0&&item.visible)?inventory.items.filter(item=>item.visible||item.temporary!=='visible').map(item=>item.component):this.view.components);}
   activeSelection(){return this.selections.get(this.viewId);}

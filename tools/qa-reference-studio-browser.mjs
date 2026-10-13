@@ -47,6 +47,14 @@ try{
  await page.reload({waitUntil:'domcontentloaded'});
  await page.locator('#reference-status').filter({hasText:'Wzorzec wyrównany do telefonu'}).waitFor({timeout:16000});
  assert.equal(await page.locator('.preview-tile .studio-reference-image').count(),1);
+ // Compare mode uses the *real* slider renderer at 50% and 90%.
+ for(const percentage of [50,90]){
+  await page.goto(base+'/ortografia/?studio=1&mode=spelling&screen=game&state=wrong&viewId=spelling-wrong&sliderProgress='+percentage,{waitUntil:'domcontentloaded'});
+  const rail=page.locator('#app[data-state="feedback-wrong"] .spelling-continue-rail');
+  await rail.waitFor({timeout:16000});
+  await page.waitForFunction(p=>document.querySelector('.spelling-continue-rail')?.getAttribute('aria-valuenow')===String(p),percentage,{timeout:10000});
+  assert.equal(await rail.getAttribute('aria-valuenow'),String(percentage));
+ }
  assert.deepEqual(errors,[]);
  console.log(JSON.stringify({ok:true,imported:names.length,persisted:true,aligned:true,pageErrors:0}));
 }finally{await page?.close();await browser.close();}

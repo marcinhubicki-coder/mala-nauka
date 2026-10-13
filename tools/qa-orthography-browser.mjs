@@ -14,7 +14,10 @@ try{
  await page.locator('#app[data-view="home"]').waitFor();
  await page.locator('[data-action="choose-mode"][data-mode="spelling"]').click();
  await page.locator('#app[data-view="wizard"][data-mode="spelling"]').waitFor();
- await page.waitForFunction(()=>document.querySelector('#app [data-spelling-wizard-v2="true"]')!==null,{timeout:10000});
+ await page.locator('#app [data-spelling-wizard-v2="true"]').waitFor({timeout:8500}).catch(async error=>{
+  const diagnostic=await page.evaluate(()=>({url:location.href,view:document.querySelector('#app')?.dataset.view,mode:document.querySelector('#app')?.dataset.mode,pending:document.querySelector('#app')?.dataset.dsContractPending,card:document.querySelector('#app .setup-card')?.outerHTML.slice(0,180),html:document.querySelector('#app')?.innerHTML.slice(0,300)}));
+  throw new Error('Ortografia wizard was not hydrated: '+JSON.stringify({diagnostic,errors})+'; '+error.message.slice(0,80));
+ });
  assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29,'Wizard has an incomplete component contract');
  const before=await page.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);

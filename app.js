@@ -1,6 +1,7 @@
 import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
+import {overlayAttrs,hydrateSpellingOverlay} from './shared/spelling-overlays.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
@@ -626,8 +627,27 @@ function updateClock(){
  }
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
-function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
+function showModal(title,content,pauseVariant=''){
+ if(pauseVariant)modal.dataset.dsKey='pause-shell';
+ else for(const key of ['dsKey','dsElement','dsRecipe','dsKind','dsBlock','dsSubcontract','dsState'])delete modal.dataset[key];
+ modal.innerHTML=`<h2 id="modal-title" ${pauseVariant?overlayAttrs('pause','pause-title'):''}>${title}</h2>${content}`;
+ if(pauseVariant)hydrateSpellingOverlay(modal,'pause',{variant:pauseVariant});
+ if(!modal.open)modal.showModal();
+ modal.querySelector('button')?.focus();
+}
+function pause(exit=false){
+ if(!game||view!=='game')return;
+ stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();
+ if(game.state==='ended')return;
+ spellingArt.setPaused(true);root.classList.add('paused');
+ const variant=game.mode==='spelling'?(exit?'exit':'pause'):'';
+ const part=id=>variant?overlayAttrs('pause',id):'';
+ const copy=exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.';
+ const buttons=btn(exit?'Graj dalej':'Wracam do gry','resume','primary',part('pause-resume'))+
+   btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'exit-confirm':'exit','secondary',part('pause-end'));
+ showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',
+  `<p ${part('pause-copy')}>${copy}</p><div class="stack">${buttons}</div>`,variant);
+}
 function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');

@@ -1,6 +1,11 @@
 // Declarative identities for actual spelling setup controls. Studio and PWA
 // use the same names; no DOM shape hashing is necessary for these components.
 const rows=[
+ ['back','button-back','button','layout-root','atom'],
+ ['page-title','text-player-title','text','layout-root','atom'],
+ ['mission','container-mission','container','layout-root','group'],
+ ['note','text-wizard-note','text','layout-root','atom'],
+ ['start','button-game-start','button','layout-root','atom'],
  ['scope-section','group-spelling-scope','container','layout-root','group'],
  ['scope-jelly','control-jelly','toggle','scope-section','group'],
  ...['all','categories','dictation'].map(x=>['scope-'+x,'jelly-option','text','scope-jelly','atom']),
@@ -23,7 +28,7 @@ export function validateSpellingSettingsContract(){
   if(row.parent!=='layout-root'&&!Object.hasOwn(SPELLING_SETTINGS_CONTRACT,row.parent))throw Error('Missing spelling parent: '+row.id);
   if(row.level==='atom'&&nodes.some(child=>child.parent===row.id))throw Error('Atom has children: '+row.id);
  }
- if(nodes.length!==24)throw Error('Incomplete spelling contract: '+nodes.length);
+ if(nodes.length!==29)throw Error('Incomplete spelling contract: '+nodes.length);
  return true;
 }
 export function spellingAttrs(suffix){

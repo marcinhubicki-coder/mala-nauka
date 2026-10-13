@@ -29,6 +29,9 @@ on:
       - "tests/v2-spelling-game-contract.test.mjs"
       - "shared/view-contracts.mjs"
       - "shared/structure-model.mjs"
+      - "design-system/config.json"
+      - "design-system/git-client.mjs"
+      - "tests/v2-studio-git-branch.test.mjs"
       - ".github/workflows/avatar-qa.yml"
   workflow_dispatch:
 

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {viewContract,viewAttrs,validateViewContract,compileViewMarkup,staticViewInventory} from '../shared/view-contracts.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
-import {profileAvatar} from '../shared/profile-parts.mjs';
+import {profileAvatar,updateProfileAvatar} from '../shared/profile-parts.mjs';
 const blocks=viewContract('player-create');
 test('New-player screen is 25 declared blocks: one family, twelve avatar choices and separate submit action',()=>{
  assert.equal(validateViewContract('player-create'),true);
@@ -35,4 +35,21 @@ test('Existing edit flow retains its separate back destination and form submissi
  assert.match(source,/const navigation=editing\?pageHead\(title,back\)/);
  assert.match(source,/data-action="submit-player-form"/);
  assert.match(source,/root\.addEventListener\('submit',async e=>/);
+});
+
+test('Avatar state updates in place and keeps the declarative identity untouched',()=>{
+ const attributes={src:'/assets/brand/avatars/a.webp'};
+ const image={getAttribute:key=>attributes[key],setAttribute:(key,value)=>{attributes[key]=value;}};
+ const node={classList:{contains:value=>value==='player-avatar-art'},dataset:{avatar:'a',dsElement:'create-preview',dsContract:'v2'},querySelector:query=>query==='img.player-avatar-image'?image:null};
+ assert.equal(updateProfileAvatar(node,'k'),true);
+ assert.equal(node.dataset.avatar,'k');
+ assert.equal(node.dataset.dsElement,'create-preview');
+ assert.equal(node.dataset.dsContract,'v2');
+ assert.equal(attributes.src,'/assets/brand/avatars/k.webp');
+ assert.equal(updateProfileAvatar(node,'k'),true);
+ assert.equal(updateProfileAvatar(node,'not-an-avatar'),false);
+ assert.equal(attributes.src,'/assets/brand/avatars/k.webp');
+ const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
+ assert.match(app,/updateProfileAvatar\(preview,pendingAvatarId\)/);
+ assert.doesNotMatch(app,/preview\.innerHTML=avatarMarkup/);
 });

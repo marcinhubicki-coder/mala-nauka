@@ -11,6 +11,7 @@ import {SPELLING_SETTINGS_CONTRACT,validateSpellingSettingsContract} from '../sh
 import {STYLE_FIELDS,validateElementStyles,rawVisualValue} from '../shared/element-styles.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
 import {HOME_RECTS,homeRect,homePosition,validateHomeLayout} from '../shared/home-layout.mjs';
+import {TYPE_STYLES,TYPE_PROPERTIES,validateTypeScale,resolvedTypeScale} from '../shared/type-system.mjs';
 import {STARTUP_LINKS,resolveRoute,routeKey,validateNavigation,routeTargets} from '../shared/navigation.mjs';
 
 // A reusable recipe is a real source-level component shared across views.
@@ -101,18 +102,29 @@ export function inspectEditableBlock(config,{view,id}){
  return {...item,style:rawVisualValue(config,view,item)};
 }
 
+export function planTypeScaleEdit(config,{style,property,value,reset=false}){
+ if(!Object.hasOwn(TYPE_STYLES,style))throw Error('Unknown typography style: '+style);
+ if(property!=='fontRole'&&!Object.hasOwn(TYPE_PROPERTIES,property))throw Error('Unknown typography property: '+property);
+ const draft=structuredClone(config),before=draft.typeScale?.[style]?.[property];
+ draft.typeScale??={};draft.typeScale[style]??={};
+ if(reset)delete draft.typeScale[style][property];else draft.typeScale[style][property]=value;
+ if(!Object.keys(draft.typeScale[style]).length)delete draft.typeScale[style];
+ validateTypeScale(draft);
+ return {config:draft,change:{path:'typeScale.'+style+'.'+property,before,after:reset?undefined:value,effective:resolvedTypeScale(draft)[style][property]}};
+}
+
 export function planDesignBatch(config,operations){
  if(!Array.isArray(operations)||!operations.length||operations.length>100)throw Error('Batch requires 1-100 operations');
  let next=structuredClone(config);const changes=[];
  for(const [index,operation]of operations.entries()){
   try{
-   if(!operation||Array.isArray(operation)||!['style','recipe','layout','route'].includes(operation.type))throw Error('Unknown edit operation');
+   if(!operation||Array.isArray(operation)||!['style','recipe','layout','route','typography'].includes(operation.type))throw Error('Unknown edit operation');
    const {type,...args}=operation;
-   const planned=type==='style'?planStyleEdit(next,args):type==='recipe'?planRecipeEdit(next,args):type==='layout'?planLayoutEdit(next,args):planRouteEdit(next,args);
+   const planned=type==='style'?planStyleEdit(next,args):type==='recipe'?planRecipeEdit(next,args):type==='layout'?planLayoutEdit(next,args):type==='typography'?planTypeScaleEdit(next,args):planRouteEdit(next,args);
    next=planned.config;changes.push({step:index+1,type,...planned.change});
   }catch(error){throw Error('Batch step '+(index+1)+' rejected: '+error.message);}
  }
- validateElementStyles(next);validateHomeLayout(next);if(next.navigation)validateNavigation(next.navigation);
+ validateElementStyles(next);validateHomeLayout(next);validateTypeScale(next);if(next.navigation)validateNavigation(next.navigation);
  return {config:next,changes};
 }
 async function saveConfigAtomic(filename,config){
@@ -147,7 +159,17 @@ async function main(argv=process.argv.slice(2)){
  if(command==='help'){console.log('Design Studio engine: inspect --view home --id home-mode-spelling | set --view home --id home-mode-spelling --property radius --value 28 [--apply] | inspect-recipe --recipe button-back | set-recipe --recipe button-back --property radius --value 22 [--apply] | check');return;}
  const filename=resolve(option(argv,'config')||'design-system/config.json');
  const current=JSON.parse(await readFile(filename,'utf8'));
- if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);if(VIEW_SNAPSHOT_IDS.length!==VIEWS.size)throw Error('View inventory snapshot coverage incomplete');console.log('VALID: '+VIEW_SNAPSHOT_IDS.length+' inventoried screens, Home renderer contract, Ortografia settings and design styles');return;}
+ if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);validateTypeScale(current);if(VIEW_SNAPSHOT_IDS.length!==VIEWS.size)throw Error('View inventory snapshot coverage incomplete');console.log('VALID: '+VIEW_SNAPSHOT_IDS.length+' inventoried screens, Home renderer contract, Ortografia settings and design styles');return;}
+ if(command==='inspect-type'){const style=option(argv,'style');if(!Object.hasOwn(TYPE_STYLES,style))throw Error('Unknown type style');console.log(JSON.stringify(resolvedTypeScale(current)[style],null,2));return;}
+ if(command==='set-type'){
+  const reset=argv.includes('--reset'),property=option(argv,'property');
+  if(!property)throw Error('--property is required');
+  const raw=option(argv,'value');
+  const value=reset?undefined:property==='fontRole'?raw:Number(raw);
+  const planned=planTypeScaleEdit(current,{style:option(argv,'style'),property,value,reset});
+  if(argv.includes('--apply'))await saveConfigAtomic(filename,planned.config);
+  console.log((argv.includes('--apply')?'APPLIED ':'DRY RUN ')+JSON.stringify(planned.change));return;
+ }
  if(command==='batch'){
   const source=option(argv,'changes');if(!source)throw Error('--changes is required');
   const planned=planDesignBatch(current,JSON.parse(await readFile(resolve(source),'utf8')));

@@ -59,7 +59,20 @@ const playersEmpty=[
  row('player-add','button-main','button','player-shell','atom','add-player'),
  row('player-guest','button-player-later','button','player-shell','atom','guest-player')
 ];
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item)))});
+const mathSettings=[
+ row('math-back','button-back','button','layout-root','atom','home'),
+ row('math-heading','text-math-setup-title','text','layout-root'),
+ row('math-mission','container-mission','container','layout-root','group'),
+ row('mission-illustration','image-mission','image','math-mission'),
+ row('math-mission-title','text-mission-title','text','math-mission'),
+ row('math-mission-hint','text-mission-hint','text','math-mission'),
+ row('math-duration','container-math-duration-setup','container','layout-root','group'),
+ ...[60,120,180,300].map(duration=>row('math-duration-'+duration,'button-math-duration','button','math-duration','atom','choose-duration')),
+ row('math-categories','group-math-categories','container','layout-root','group'),
+ ...['add','subtract','multiply','divide'].map(id=>row('math-category-'+id,'button-math-category','button','math-categories','atom','choose-category')),
+ row('math-start','button-game-start','button','layout-root','atom','start-game')
+];
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item)))});
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
 export function inheritedMode(view,id){
  const byId=new Map(viewContract(view).map(item=>[item.id,item]));
@@ -85,6 +98,7 @@ export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
  return true;
 }
 export function viewContract(view){return VIEW_CONTRACTS[view]||[];}
+export function viewKey(view,id){const item=viewContract(view).find(row=>row.id===id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'"';}
 export function viewAttrs(view,id){const item=viewContract(view).find(row=>row.id===id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'" data-ds-recipe="'+item.recipe+'" data-ds-kind="'+item.kind+'"';}
 export function staticViewInventory(view){
  const items=viewContract(view);

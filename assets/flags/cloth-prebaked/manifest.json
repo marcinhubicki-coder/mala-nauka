@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "renderer": "flagi/flag-cloth.mjs",
+  "quality": "webp/max-150KiB",
+  "flags": {
+    "pl": {
+      "file": "pl.webp",
+      "bytes": 81326,
+      "width": 600,
+      "height": 519,
+      "quality": 0.94
+    },
+    "gb": {
+      "file": "gb.webp",
+      "bytes": 94010,
+      "width": 600,
+      "height": 519,
+      "quality": 0.94
+    },
+    "ch": {
+      "file": "ch.webp",
+      "bytes": 128844,
+      "width": 600,
+      "height": 690,
+      "quality": 0.94
+    },
+    "np": {
+      "file": "np.webp",
+      "bytes": 37690,
+      "width": 600,
+      "height": 519,
+      "quality": 0.94
+    },
+    "jp": {
+      "file": "jp.webp",
+      "bytes": 79156,
+      "width": 600,
+      "height": 519,
+      "quality": 0.94
+    },
+    "cf": {
+      "file": "cf.webp",
+      "bytes": 90096,
+      "width": 600,
+      "height": 519,
+      "quality": 0.94
+    }
+  }
+}

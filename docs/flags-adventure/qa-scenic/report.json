@@ -108,9 +108,9 @@
         "h": 71.453125
       }
     ],
-    "bitmap": null,
-    "pathCount": 0,
-    "highlighted": false,
+    "bitmap": "ready",
+    "pathCount": 1,
+    "highlighted": true,
     "mapReady": true,
     "overflowX": false,
     "score": "1 pkt",
@@ -167,9 +167,9 @@
         "h": 71.453125
       }
     ],
-    "bitmap": null,
-    "pathCount": 0,
-    "highlighted": false,
+    "bitmap": "ready",
+    "pathCount": 1,
+    "highlighted": true,
     "mapReady": true,
     "overflowX": false,
     "score": "0 pkt",
@@ -226,9 +226,9 @@
         "h": 62
       }
     ],
-    "bitmap": null,
-    "pathCount": 0,
-    "highlighted": false,
+    "bitmap": "ready",
+    "pathCount": 1,
+    "highlighted": true,
     "mapReady": true,
     "overflowX": false,
     "score": "1 pkt",
@@ -285,9 +285,9 @@
         "h": 79.375
       }
     ],
-    "bitmap": null,
-    "pathCount": 0,
-    "highlighted": false,
+    "bitmap": "ready",
+    "pathCount": 1,
+    "highlighted": true,
     "mapReady": true,
     "overflowX": false,
     "score": "1 pkt",
@@ -344,7 +344,7 @@
         "h": 71.453125
       }
     ],
-    "bitmap": null,
+    "bitmap": "ready",
     "pathCount": 0,
     "highlighted": false,
     "mapReady": false,

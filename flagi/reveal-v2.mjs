@@ -41,7 +41,7 @@ export function focusContinentMap(result,{zoom=1.24}={}){
 }
 // Deterministic, decorative blurred blotches. Only opacity and transform
 // animate; never recalculate SVG geography, filters or per-frame masks.
-export function dissolveDrops(id,count=9){
+export function dissolveDrops(id,count=11){
   let seed=0x9e3779b9;
   for(const c of String(id))seed=(Math.imul(seed,31)+c.charCodeAt(0))>>>0;
   const random=()=>((seed=Math.imul(seed,1664525)+1013904223>>>0)/4294967296);
@@ -49,7 +49,7 @@ export function dissolveDrops(id,count=9){
     const x=Math.round(12+random()*78);
     const y=Math.round(13+random()*68);
     const size=Math.round(30+random()*44);
-    const delay=Math.round(55+index*35+random()*55);
+    const delay=Math.round(22+index*24+random()*40);
     return '<i class="flag-dissolve-drop" style="--spot-x:'+x+'%;--spot-y:'+y+'%;--spot-size:'+size+'px;--spot-delay:'+delay+'ms" aria-hidden="true"></i>';
   }).join('');
 }

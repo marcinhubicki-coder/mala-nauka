@@ -17,6 +17,8 @@ try{
  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
  await page.locator('[data-action=add-player]').click();
  await page.locator('.avatar-choice').first().waitFor();
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),25,'New profile must use the complete compiled contract');
+ assert.equal(await page.locator('#app [data-ds-element="create-back"][data-action="players"]').count(),1);
  await page.waitForFunction(()=>{
   const images=[...document.querySelectorAll('.avatar-choice .player-avatar-image')];
   return images.length===12&&images.every(img=>img.complete&&img.naturalWidth===384&&img.naturalHeight===384);
@@ -84,6 +86,8 @@ try{
 
  await page.locator('[data-action=edit-profile]').click();
  await page.locator('#app[data-view=player-create]').waitFor();
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),0,'Existing edit renderer remains separate until explicitly migrated');
+ assert.equal(await page.locator('#app [data-action="settings"]').count(),1,'Edit profile must return to Settings');
  const editor=await measure();
  assert.equal(editor.choices.length,12);
  for(const item of editor.choices)isSquare(item,'Editing picker '+item.id);

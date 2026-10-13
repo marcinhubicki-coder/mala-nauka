@@ -57,3 +57,17 @@ To są osobne kontrole jakości, **nie powód do przepisywania działającej log
 - Dodatkowo osobny test zagrał **10/10 słów do naturalnego zakończenia**: 5 poprawnych i 5 błędnych, obsłużył slider po błędzie, uzyskał wynik **5/10 = 50%**, 0 błędów JavaScriptu — [GitHub Actions #38347168628](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38347168628).
 - Testy poprzednich ekranów przeszły po optymalizacji kontraktów rodzica i dzieci (nadrzędny ekran PIN i wewnętrzne klawisze / Jelly).
 - **Ważne:** sukces CI potwierdza renderowanie i interakcje w Chromium, ale nie jest równoznaczny z ręcznym zatwierdzeniem wyglądu ani wydajności PWA na fizycznym iPhone/Safari. Brak nowego zweryfikowanego URL Vercel z tym SHA z powodu wcześniejszego limitu deploy.
+
+## Kontrola końcowa — 13.10.2026
+
+Przed uznaniem migracji Ortografii za ukończoną wykonano dodatkowe testy, wykraczające poza samo załadowanie makiet:
+
+- **Pełna rozgrywka:** ustawienia → dziesięć słów (poprawne i błędne odpowiedzi) → przejścia po błędach za pomocą slidera → naturalny koniec → prawidłowe wyniki.
+- **Ponowna rozgrywka:** slider `spelling-result-repeat` został przesunięty za pomocą rzeczywistych zdarzeń klawiatury (nie syntetycznego zdarzenia gry). Pojawił się nowy ekran gry, 17/17 komponentów, dwie interaktywne odpowiedzi.
+- **Druga niezależna akcja wyników:** `spelling-result-history` nadal otwiera `history`; nie jest połączona ani w kodzie, ani w kontrakcie ze sliderem.
+- **Budżet runtime:** podczas ustawień Ortografii, samej gry i wyświetlania wyników iframe **nie pobiera** `shared/element-system.mjs`. Starszy ekran historii nadal może ładować klasyfikator po kliknięciu „Moje wyniki” — nie jest to regresja Ortografii i będzie migrowany osobno.
+- **Regresje:** tryb z PIN-em i bez, 12 avatarów, Studio, typografia oraz wszystkie 41 zarejestrowanych widoków.
+
+**Ostatnie potwierdzone CI:** [Orthography v2 end-to-end #38355111582](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38355111582) i [Avatar geometry regression #38355111577](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38355111577). Oba zakończone `success`. **377/377 testów Node; 0 błędów JS w E2E.** W jednej z rund kontrolnych odnotowano cztery odpowiedzi poprawne i sześć błędnych, prawidłowy wynik `4/10 = 40%`, następnie uruchomiono następną rundę.
+
+**Status:** migracja i testy automatyczne Ortografii v2 — zakończone. Weryfikacja wizualna na fizycznym iPhonie / Safari, test rzeczywistej płynności, audio/haptics oraz akceptacja wyglądu względem produkcji — nadal osobny, **niezakończony** etap QA. Ostatniego SHA nie należy oznaczać jako wdrożonego na Vercel, dopóki nie zostanie potwierdzony deployment `READY`. `main` pozostaje bez zmian.

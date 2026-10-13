@@ -7,6 +7,10 @@ const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const errors=[],broken=[];
 try{
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:3,reducedMotion:'reduce'});
+ // A gameplay request for the Studio DOM classifier is an architecture
+ // regression: all Orthography screens have first-class declarative contracts.
+ const inspectorRequests=[];
+ page.on('request',request=>{if(/\/shared\/element-system\.mjs(?:\?|$)/.test(request.url()))inspectorRequests.push(request.url());});
  page.on('pageerror',e=>errors.push(e.message));
  page.on('response',r=>{if(r.status()>=400&&r.url().startsWith(base))broken.push({url:r.url(),status:r.status()});});
  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
@@ -64,6 +68,7 @@ try{
  }
  await gameFrame.locator('[data-ds-element="spelling-result-history"]').click();
  await gameFrame.locator('#app[data-view="history"]').waitFor({timeout:13000});
+ assert.deepEqual(inspectorRequests,[],'Real Orthography gameplay must never download the Studio DOM inspector');
  await page.close();
 
  const views=[

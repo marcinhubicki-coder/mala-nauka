@@ -175,7 +175,27 @@ const content=new StudioContent({workspace,modal,getData:()=>({assets,rules,word
  picture:path=>objectURLs.get(path)||assetUrl(path),dialog:html=>showDialog(html),notice:toast,upload:openUpload,
  update:value=>{checkpoint();if(value.assets)assets=validateAssets(value.assets);if(value.rules)rules=validateRules(value.rules);void persistContent();sendDesign();}
 });
-function renderAssets(){content.render();}
+// Opening the library checks the canonical GitHub index without downloading
+// images or overwriting a local draft. Throttle only during the same session.
+let imageIndexCheck={at:0,status:'',pending:null};
+function renderAssets(){
+ content.render();
+ const node=workspace.querySelector('#asset-source-status');
+ if(!node)return;
+ const show=()=>{const active=workspace.querySelector('#asset-source-status');if(active)active.textContent=imageIndexCheck.status||'Sprawdzanie aktualnego indeksu online…';};
+ show();
+ if(imageIndexCheck.pending||Date.now()-imageIndexCheck.at<60000)return;
+ imageIndexCheck.pending=fetchLibraryIndexes().then(({current,archive})=>{
+  const report=libraryIndexReport(current,archive,baseAssets);
+  imageIndexCheck.status=report.issues.length
+   ?'Indeks online wymaga uwagi: '+report.issues.slice(0,2).join(' · ')+' Użyj „Odśwież bazę z GitHub”, aby scalić.'
+   :'Indeks online zgodny · '+report.total+' grafik · '+report.scenes+' scen · '+report.aliases+' aliasów · bez pobierania zdjęć';
+  imageIndexCheck.at=Date.now();show();
+ }).catch(error=>{
+  imageIndexCheck.status='Indeks online niedostępny: '+error.message+'. Szkic pozostaje bez zmian.';
+  imageIndexCheck.at=Date.now();show();
+ }).finally(()=>imageIndexCheck.pending=null);
+}
 preview.openRecipe=(id,context)=>{builder.liveRecipes.selectPart(id,context);builder.tab='recipes';navigate('builder');};
 const studioFlow=new StudioFlow({workspace,registry,getInventories:()=>preview.inventories,openRecipe:id=>{builder.liveRecipes.selectPart(id);builder.tab='recipes';navigate('builder');},editSelection:(key,value)=>{const next=clone(config);next.navigation||={routes:{}};next.navigation.playerSelection||={};if(value===undefined)delete next.navigation.playerSelection[key];else next.navigation.playerSelection[key]=value;validateConfig(next);checkpoint();config=next;sendDesign();},getDesign:()=>config,editRoute:(key,to)=>{checkpoint();config.navigation||={routes:{}};if(to)config.navigation.routes[key]=to;else delete config.navigation.routes[key];validateConfig(config);sendDesign();},openView:(id,state)=>{preview.openView(id,state);navigate('components');},openElement:(id,selector,state)=>{preview.pendingSelector=selector;preview.openView(id,state);navigate('components');},buildFlow:()=>{projectStudio.tab='screens';navigate('project');}});
 function renderViews(){studioFlow.render();}

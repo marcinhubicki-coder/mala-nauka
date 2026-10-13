@@ -34,13 +34,13 @@ try{
    svg.setAttribute('width','1360');svg.setAttribute('height','1000');
    const ns='http://www.w3.org/2000/svg';
    const defs=doc.createElementNS(ns,'defs');
-   defs.innerHTML=String.raw\`
+   defs.innerHTML=`
     <linearGradient id="sea" x2=".92" y2="1"><stop stop-color="#b1e6e5"/><stop offset=".47" stop-color="#85cfe0"/><stop offset="1" stop-color="#61b7d7"/></linearGradient>
     <linearGradient id="ground" x2=".72" y2="1"><stop stop-color="#c7dd91"/><stop offset=".45" stop-color="#a9c98b"/><stop offset="1" stop-color="#89b98b"/></linearGradient>
     <radialGradient id="sunlight"><stop stop-color="#fffbe1" stop-opacity=".85"/><stop offset="1" stop-color="#fffbe1" stop-opacity="0"/></radialGradient>
     <pattern id="waves" width="43" height="33" patternUnits="userSpaceOnUse"><path d="M2 12q9-5 18 0t18 0" fill="none" stroke="#f1ffff" stroke-width=".9" opacity=".32"/></pattern>
     <filter id="noise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed="14" stitchTiles="stitch" result="grain"/><feColorMatrix in="grain" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".1"/></feComponentTransfer></filter>
-   \`;
+   `;
    svg.insertBefore(defs,svg.firstChild);
    const rect=(fill,attrs={})=>{const e=doc.createElementNS(ns,'rect');for(const [k,v] of Object.entries({x:'0',y:'0',width:'680',height:'500',fill,...attrs}))e.setAttribute(k,v);return e;};
    const countries=svg.querySelector('#countries');

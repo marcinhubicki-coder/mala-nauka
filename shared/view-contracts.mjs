@@ -104,9 +104,12 @@ const playerPin=pinFrame('edit-player');
 playerPin[0]={...playerPin[0],variantActions:Object.freeze({create:'edit-player',edit:'settings',delete:'settings'})};
 const playerUnlock=pinFrame('players');
 export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item)))});
+// Build the immutable contract index once. Renderers reuse it instead of
+// repeatedly scanning up to 90 entries for each labelled component.
+const VIEW_INDEX=Object.freeze(Object.fromEntries(Object.entries(VIEW_CONTRACTS).map(([view,items])=>[view,new Map(items.map(item=>[item.id,item]))])));
 export const hasViewContract=view=>Object.hasOwn(VIEW_CONTRACTS,view);
 export function inheritedMode(view,id){
- const byId=new Map(viewContract(view).map(item=>[item.id,item]));
+ const byId=VIEW_INDEX[view]||new Map();
  let item=byId.get(id);
  while(item){if(item.mode)return item.mode;item=byId.get(item.parent);}
  return view;
@@ -132,8 +135,8 @@ export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
  return true;
 }
 export function viewContract(view){return VIEW_CONTRACTS[view]||[];}
-export function viewKey(view,id){const item=viewContract(view).find(row=>row.id===id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'"';}
-export function viewAttrs(view,id){const item=viewContract(view).find(row=>row.id===id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'" data-ds-recipe="'+item.recipe+'" data-ds-kind="'+item.kind+'"';}
+export function viewKey(view,id){const item=VIEW_INDEX[view]?.get(id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'"';}
+export function viewAttrs(view,id){const item=VIEW_INDEX[view]?.get(id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'" data-ds-recipe="'+item.recipe+'" data-ds-kind="'+item.kind+'"';}
 export function staticViewInventory(view){
  const items=viewContract(view);
  validateViewContract(view,items);
@@ -144,7 +147,7 @@ export function staticViewInventory(view){
 // Only contract IDs are accepted; design attributes never change the geometry.
 export function compileViewMarkup(view,markup,{variant='create'}={}){
  const items=viewContract(view);validateViewContract(view,items);
- const byId=new Map(items.map(item=>[item.id,item])),used=new Set();
+ const byId=VIEW_INDEX[view],used=new Set();
  const result=markup.replace(/<([a-z][\w-]*)([^>]*\sdata-ds-key="([^"]+)"[^>]*)>/gi,(whole,tag,attrs,id)=>{
   const component=byId.get(id);
   if(!component)throw Error('Renderer emitted an undeclared component: '+id);

@@ -19,6 +19,18 @@ export function focusContinentMap(result,{zoom=1.24}={}){
     const source=svg.viewBox.baseVal,target=active.getBBox();
     const box=focusedViewBox(source,target,zoom);
     if(!box)return false;
+    // A second, geometry-identical outline separates the country from the
+    // parchment at Retina size; it never changes borders or country shapes.
+    if(!svg.querySelector('.country-focus-halo')){
+      const halo=active.cloneNode(true);
+      halo.removeAttribute('id');
+      halo.removeAttribute('data-country');
+      halo.removeAttribute('tabindex');
+      halo.removeAttribute('role');
+      halo.setAttribute('class','country-focus-halo');
+      halo.setAttribute('aria-hidden','true');
+      active.parentNode.insertBefore(halo,active);
+    }
     svg.setAttribute('viewBox',box.join(' '));
     svg.dataset.focusedCountry='true';
     return true;

@@ -71,10 +71,13 @@ try{
   await gameFrame.locator('dialog.result-rule-dialog .rule-close').click();
   assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),18,'Closing rule lost results identity');
  }
+ // Check the strict budget while still on the compiled results screen.
+ // History is a different, not-yet-migrated module and may legitimately
+ // lazy-load the legacy inspector after the history action is dispatched.
+ const spellingInspector=inspectorRequests.filter(request=>new URL(request.frame,base).pathname.startsWith('/ortografia/'));
+ assert.deepEqual(spellingInspector,[],'Orthography settings/game/results loaded the Studio DOM classifier: '+JSON.stringify(inspectorRequests));
  await gameFrame.locator('[data-ds-element="spelling-result-history"]').click();
  await gameFrame.locator('#app[data-view="history"]').waitFor({timeout:13000});
- const spellingInspector=inspectorRequests.filter(request=>new URL(request.frame,base).pathname.startsWith('/ortografia/'));
- assert.deepEqual(spellingInspector,[],'The Orthography iframe must not download the Studio DOM classifier: '+JSON.stringify(inspectorRequests));
  await page.close();
 
  const views=[

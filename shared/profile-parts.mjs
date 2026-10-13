@@ -5,7 +5,9 @@ export function profileAvatar(player={},extra='',assetURL=path=>path){
  let key=player.avatarId;
  if(typeof key!=='string'||key.length!==1||!avatars.includes(key)){const sum=[...String(player.id||player.nickname||'a')].reduce((n,c)=>n+c.charCodeAt(0),0);key=avatars[sum%4];}
  const src=escape(assetURL('assets/brand/avatars/'+key+'.webp'));
- return `<span class="player-avatar-art ${escape(extra)}" data-avatar="${key}" style="--player-avatar-src:url(&quot;${src}&quot;)" aria-hidden="true"></span>`;
+ // Use a real image, never CSS background URL resolution (which is relative to
+ // the stylesheet and broke when components.css moved under /styles/).
+ return `<span class="player-avatar-art ${escape(extra)}" data-avatar="${key}" aria-hidden="true"><img class="player-avatar-image" src="${src}" width="384" height="384" alt="" decoding="async" draggable="false"></span>`;
 }
 export function pinModeMarkup(enabled=true,name='profilePinMode'){
  return `<div class="pin-mode" role="radiogroup" aria-label="Ochrona profilu"><span class="pin-mode-indicator" aria-hidden="true"></span>${[['pin','Ustaw PIN'],['none','Bez PIN-u']].map(([value,label],i)=>`<label><input type="radio" name="${escape(name)}" value="${value}" ${enabled===(i===0)?'checked':''}><span>${label}</span></label>`).join('')}</div>`;

@@ -14,7 +14,7 @@ test('country zoom remains inside the original map bounds',()=>{
     {x:210,y:140,width:72,height:68},
     {x:350,y:300,width:2,height:2}
   ]){
-    const result=focusedViewBox(source,box,1.23);
+    const result=focusedViewBox(source,box,1.28);
     assert.equal(result.length,4);
     assert.ok(result[0]>=source.x&&result[1]>=source.y);
     assert.ok(result[0]+result[2]<=source.width+.1);
@@ -59,7 +59,7 @@ test('all three preview states and their CSS are wired',async()=>{
     assert.ok(css.includes(key),'missing '+key);
   for(const path of ['flagi/index.html','flagi/preview-frame.html']){
     const html=await get(path);
-    assert.ok(html.includes('reveal-v2.css?v=1'));
+    assert.ok(html.includes('reveal-v2.css?v=2'));
     assert.ok(html.includes('adventure-game.mjs?v=19-atlas-reveal'));
   }
 });

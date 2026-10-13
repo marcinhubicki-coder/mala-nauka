@@ -42,6 +42,10 @@ jobs:
         run: node tools/qa-avatars-browser.mjs http://127.0.0.1:8765
       - name: Verify profile without PIN and preserved avatar
         run: node tools/qa-no-pin-browser.mjs http://127.0.0.1:8765
+      - name: Recheck Studio typography and shared component library
+        run: node tools/qa-typography-browser.mjs http://127.0.0.1:8765
+      - name: Recheck all 41 registered view renderers
+        run: node tools/qa-all-views-browser.mjs http://127.0.0.1:8765
       - name: Server logs on failure
         if: failure()
         run: cat /tmp/avatars-http.log || true

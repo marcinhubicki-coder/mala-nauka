@@ -100,7 +100,7 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   const accepted=[];
   const candidates=labels.filter(p=>p.id===record.id||neighboring(crop,p.box)).sort((a,b)=>Number(b.id===record.id)-Number(a.id===record.id)||b.box.w*b.box.h-a.box.w*a.box.h);
   for(const item of candidates){
-   const x=(item.box.cx-crop.x)/crop.w*node.clientWidth,y=(item.box.cy-crop.y)/crop.h*node.clientHeight;
+   const x=(item.box.cx-crop.x)/crop.w*node.clientWidth,y=(item.box.cy-crop.y)/crop.h*node.clientHeight+(result.fallbackMarker&&item.id===record.id?13:0);
    const text=language==='en'?records.get(item.id).countryEn:records.get(item.id).country;
    const half=Math.min(47,text.length*2.8);
    if(x<half+3||x>node.clientWidth-half-3||y<10||y>node.clientHeight-10)continue;

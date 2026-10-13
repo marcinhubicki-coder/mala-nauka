@@ -77,7 +77,7 @@ export function createSand(canvas,app,answers) {
         const target=Number(app.dataset.qaCaptureAt);
         if(t>=target){delete app.dataset.qaCaptureAt;app.dataset.qaCaptured=String(target);timeline.setPaused(true);}
       }
-    });}finally{clear();}
+    },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaCaptureAt===undefined?undefined:Number(app.dataset.qaCaptureAt)}:{});}finally{clear();}
   }
   return {transition,clear};
 }

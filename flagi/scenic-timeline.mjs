@@ -20,13 +20,16 @@ export class ScenicTimeline {
       this.jobs.add(job);if(!this.paused)job.resume();
     });
   }
-  tween(ms,paint) {
+  tween(ms,paint,{stopAt}={}) {
     if(this.cancelled)return Promise.reject(new DOMException('Cancelled','AbortError'));
     return new Promise((resolve,reject)=>{
       let elapsed=0,last=0,frame;
       const tick=now=>{
         if(last)elapsed+=now-last;last=now;
-        const progress=Math.min(1,elapsed/ms);paint(progress);
+        let progress=Math.min(1,elapsed/ms);
+        const limit=stopAt?.();
+        if(Number.isFinite(limit)&&progress>=limit){progress=limit;elapsed=ms*limit;}
+        paint(progress);
         if(progress<1){if(!this.paused)frame=requestAnimationFrame(tick);}
         else{this.jobs.delete(job);resolve();}
       };

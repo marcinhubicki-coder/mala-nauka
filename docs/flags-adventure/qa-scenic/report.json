@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 48,
-  "total": 48,
+  "passed": 50,
+  "total": 50,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -27,9 +27,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -121,9 +121,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -179,8 +179,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
@@ -217,9 +217,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -275,8 +275,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
@@ -313,9 +313,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -371,8 +371,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 7,
-      "crop": "237.28 196.2 236.88 122.42",
+      "labels": 9,
+      "crop": "237.28 193.5 236.88 126.77",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": true,
@@ -409,9 +409,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -467,8 +467,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 7,
-      "crop": "237.28 196.2 236.88 122.42",
+      "labels": 9,
+      "crop": "237.28 193.5 236.88 126.77",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -505,9 +505,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -563,8 +563,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 4,
-      "crop": "250.92 221.84 260.87 100.52",
+      "labels": 7,
+      "crop": "231.52 221.84 250.92 100.52",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -601,9 +601,9 @@
       },
       "atlas": {
         "x": 19.34375,
-        "y": 205.03125,
+        "y": 197.578125,
         "w": 391.296875,
-        "h": 342.96875
+        "h": 350.421875
       },
       "answers": [
         {
@@ -659,8 +659,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "163.7 311.48 160 88.6",
+      "labels": 8,
+      "crop": "163.7 310.31 160 91.68",
       "captionFits": true,
       "capital": "Stolica: Berno",
       "swipeVisible": false,
@@ -697,9 +697,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -755,8 +755,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "154.2 290.73 160 82.69",
+      "labels": 6,
+      "crop": "154.2 288.91 160 85.63",
       "microstate": "marker",
       "captionFits": true,
       "capital": "Stolica: Vaduz",
@@ -794,9 +794,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -853,7 +853,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 3,
-      "crop": "210 365.65 160 82.69",
+      "crop": "210 364.19 160 85.63",
       "microstate": "marker",
       "captionFits": true,
       "capital": "Stolica: Watykan",
@@ -891,9 +891,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -950,7 +950,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 4,
-      "crop": "223.7 355.82 160 61.65",
+      "crop": "223.7 354.89 160 64.1",
       "captionFits": true,
       "capital": "Stolica: Sarajewo",
       "swipeVisible": true,
@@ -987,9 +987,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1046,7 +1046,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 5,
-      "crop": "7.59 156.12 303.12 156.66",
+      "crop": "12.78 156.12 292.73 156.66",
       "captionFits": true,
       "capital": "Stolica: Londyn",
       "swipeVisible": false,
@@ -1083,9 +1083,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -1141,8 +1141,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 5,
-      "crop": "296 374.32 160 61.65",
+      "labels": 7,
+      "crop": "296 373.1 160 64.1",
       "captionFits": true,
       "capital": "Stolica: Skopje",
       "swipeVisible": true,
@@ -1179,9 +1179,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1273,9 +1273,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 214.859375,
+        "y": 208.75,
         "w": 354.890625,
-        "h": 280.78125
+        "h": 286.875
       },
       "answers": [
         {
@@ -1330,9 +1330,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 4,
-      "crop": "258.6 221.75 236.88 100.69",
+      "neighbors": 10,
+      "labels": 8,
+      "crop": "247.08 197.08 272.88 121",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -1369,9 +1369,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1463,9 +1463,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1557,9 +1557,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1651,9 +1651,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1745,9 +1745,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1804,7 +1804,7 @@
       "highlight": true,
       "neighbors": 15,
       "labels": 8,
-      "crop": "77.57 217.22 274.68 141.96",
+      "crop": "83.97 217.22 265.26 141.96",
       "captionFits": true,
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
@@ -1841,9 +1841,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -1935,9 +1935,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -2029,9 +2029,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -2087,11 +2087,105 @@
       "activeCount": 41,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-paper-image-fallback",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 98.59375,
+        "y": 193.3435821533203,
+        "w": 226.25930786132812,
+        "h": 196.1427459716797
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
@@ -2125,9 +2219,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -2219,9 +2313,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.34375
       },
       "answers": [
         {
@@ -2277,8 +2371,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
@@ -2317,9 +2411,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -2411,9 +2505,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -2469,8 +2563,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
@@ -2507,9 +2601,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -2565,8 +2659,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
@@ -2603,9 +2697,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -2661,8 +2755,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 7,
-      "crop": "237.28 196.2 236.88 122.42",
+      "labels": 9,
+      "crop": "237.28 193.5 236.88 126.77",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": true,
@@ -2699,9 +2793,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -2757,8 +2851,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 7,
-      "crop": "237.28 196.2 236.88 122.42",
+      "labels": 9,
+      "crop": "237.28 193.5 236.88 126.77",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -2795,9 +2889,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -2853,8 +2947,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 9,
-      "labels": 4,
-      "crop": "250.92 221.84 260.87 100.52",
+      "labels": 7,
+      "crop": "231.52 221.84 250.92 100.52",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -2891,9 +2985,9 @@
       },
       "atlas": {
         "x": 19.34375,
-        "y": 205.03125,
+        "y": 197.578125,
         "w": 391.296875,
-        "h": 342.96875
+        "h": 350.421875
       },
       "answers": [
         {
@@ -2949,8 +3043,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "163.7 311.48 160 88.6",
+      "labels": 8,
+      "crop": "163.7 310.31 160 91.68",
       "captionFits": true,
       "capital": "Stolica: Berno",
       "swipeVisible": false,
@@ -2987,9 +3081,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3045,8 +3139,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "154.2 290.73 160 82.69",
+      "labels": 6,
+      "crop": "154.2 288.91 160 85.63",
       "microstate": "marker",
       "captionFits": true,
       "capital": "Stolica: Vaduz",
@@ -3084,9 +3178,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3143,7 +3237,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 3,
-      "crop": "210 365.65 160 82.69",
+      "crop": "210 364.19 160 85.63",
       "microstate": "marker",
       "captionFits": true,
       "capital": "Stolica: Watykan",
@@ -3181,9 +3275,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -3240,7 +3334,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 4,
-      "crop": "223.7 355.82 160 61.65",
+      "crop": "223.7 354.89 160 64.1",
       "captionFits": true,
       "capital": "Stolica: Sarajewo",
       "swipeVisible": true,
@@ -3277,9 +3371,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3336,7 +3430,7 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 5,
-      "crop": "7.59 156.12 303.12 156.66",
+      "crop": "12.78 156.12 292.73 156.66",
       "captionFits": true,
       "capital": "Stolica: Londyn",
       "swipeVisible": false,
@@ -3373,9 +3467,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 154,
+        "y": 148.390625,
         "w": 354.890625,
-        "h": 257.59375
+        "h": 263.1875
       },
       "answers": [
         {
@@ -3431,8 +3525,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 5,
-      "crop": "296 374.32 160 61.65",
+      "labels": 7,
+      "crop": "296 373.1 160 64.1",
       "captionFits": true,
       "capital": "Stolica: Skopje",
       "swipeVisible": true,
@@ -3469,9 +3563,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3532,7 +3626,7 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 1,
+      "animations": 0,
       "qa": {
         "enabled": "true"
       },
@@ -3563,9 +3657,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 214.84375,
+        "y": 208.75,
         "w": 354.890625,
-        "h": 280.765625
+        "h": 286.875
       },
       "answers": [
         {
@@ -3620,9 +3714,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 4,
-      "crop": "258.6 221.75 236.88 100.69",
+      "neighbors": 10,
+      "labels": 8,
+      "crop": "247.08 197.08 272.88 121",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -3659,9 +3753,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3722,7 +3816,7 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 0,
+      "animations": 1,
       "qa": {
         "enabled": "true"
       },
@@ -3753,9 +3847,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3847,9 +3941,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -3941,9 +4035,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4035,9 +4129,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4094,7 +4188,7 @@
       "highlight": true,
       "neighbors": 15,
       "labels": 8,
-      "crop": "77.57 217.22 274.68 141.96",
+      "crop": "83.97 217.22 265.26 141.96",
       "captionFits": true,
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
@@ -4131,9 +4225,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4225,9 +4319,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4319,9 +4413,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4377,11 +4471,105 @@
       "activeCount": 41,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-paper-image-fallback",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 98.59375,
+        "y": 193.3435821533203,
+        "w": 226.25930786132812,
+        "h": 196.1427459716797
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
@@ -4415,9 +4603,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4509,9 +4697,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 185.671875,
+        "y": 178.921875,
         "w": 354.890625,
-        "h": 310.578125
+        "h": 317.328125
       },
       "answers": [
         {
@@ -4567,8 +4755,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 7,
-      "labels": 4,
-      "crop": "264.01 186.87 200.2 103.47",
+      "labels": 6,
+      "crop": "264.01 185.03 200.2 107.14",
       "captionFits": true,
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,

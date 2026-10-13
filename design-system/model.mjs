@@ -14,6 +14,7 @@ import {COMPONENT_IDS} from './preview-model.mjs';
 import {validateProject,validateCopy} from './project-model.mjs';
 import {elementCSS,validateElementStyles} from '../shared/element-styles.mjs';
 import {validateHomeLayout} from '../shared/home-layout.mjs';
+import {validateTypeScale,typeScaleCSS} from '../shared/type-system.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);
@@ -57,6 +58,7 @@ export function validateConfig(config) {
   for(const [view,row]of Object.entries(resolved.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
   validateElementStyles(resolved);
   if(config.layoutOverrides)validateHomeLayout(config);
+  validateTypeScale(config);
   if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(p.hiddenInspectorGroups&&(!Array.isArray(p.hiddenInspectorGroups)||p.hiddenInspectorGroups.some(id=>!['geometry','animation','surface','text','colors','image','clip','shared','advanced','scope'].includes(id))))throw Error('Nieprawidłowa grupa panelu.');if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 
   if(config.effects)validateEffects(resolved.effects);if(config.scoring)validateScoring(config.scoring);
@@ -91,7 +93,7 @@ export function configCSS(config) {
   config=resolveBehaviorConfig(config);
   let css = `:root{${variables(config.tokens)}${variables(config.defaultTheme||{},'--ds-default-theme')}`;
   for (const [role, font] of Object.entries(config.typography)) css += `--ds-font-${role}:"${FONT_NAMES[font]}",ui-rounded,system-ui,sans-serif;`;
-  css += '}';
+  css += typeScaleCSS(config)+'}';
   for (const [mode, theme] of Object.entries(config.themes)) css += `#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(theme, '--ds-theme')}}`;
   for(const [mode,tokens]of Object.entries(config.familyTokens||{}))css+=`#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(tokens)}}`;
   for (const [view, overrides] of Object.entries(config.overrides || {})) {
@@ -118,7 +120,7 @@ export function changedViews(changes, registry) {
     if(change.path.startsWith('tokens.sliderResult.')||change.path.startsWith('tokens.resultText.'))return view.id==='spelling-results';
     if(/^tokens\.progress\.(duration|easePower|stretch|bounce|wobble|startKick|flash|finishDuration)$/.test(change.path))return view.id==='spelling-results';
     if(change.path.startsWith('recipes.'))return ATOMS[change.path.split('.')[1]]?.parents.some(p=>view.components.includes(p))||false;
-    if (change.path.startsWith('typography.')) return true;
+    if (change.path.startsWith('typography.')||change.path.startsWith('typeScale.')) return true;
     if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);
     const component = change.path.split('.')[1];
     return view.components.some(id => registry.components.find(item => item.id === id)?.tokenGroup === component);

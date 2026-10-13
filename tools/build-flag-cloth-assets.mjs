@@ -21,6 +21,7 @@ const OUT = join(ROOT, 'assets/flags/cloth-prebaked');
 const PILOT = ['pl', 'gb', 'ch', 'np', 'jp', 'cf'];
 const all = process.argv.includes('--all');
 const ids = all ? FLAGS.map(flag => flag.id).sort() : PILOT;
+if (all && ids.length !== 195) throw new Error('Expected exactly 195 countries, got '+ids.length);
 const available = new Set(FLAGS.map(flag => flag.id));
 const MAX_BYTES = 150 * 1024;
 const MIME = { '.mjs': 'text/javascript', '.js': 'text/javascript', '.html': 'text/html', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.json': 'application/json', '.css': 'text/css' };
@@ -85,17 +86,30 @@ try {
       if (canvas.dataset.clothReady !== 'true' || canvas.width === 0) {
         throw new Error('Canvas failed for ' + id + ': ' + canvas.dataset.clothReady);
       }
-      let quality = .94;
-      let data = '';
-      let bytes = Infinity;
-      do {
-        data = canvas.toDataURL('image/webp', quality);
-        if (!data.startsWith('data:image/webp;base64,')) throw new Error('Browser lacks WebP support');
-        bytes = Math.ceil((data.length - 'data:image/webp;base64,'.length) * 3 / 4);
-        quality -= .04;
-      } while (bytes > maxBytes && quality >= .69);
-      if (bytes > maxBytes) throw new Error('Asset exceeds limit for ' + id + ': ' + bytes);
-      return { data, width: canvas.width, height: canvas.height, quality: Number((quality + .04).toFixed(2)), buildMs: Number(canvas.dataset.clothBuildMs) };
+      // Keep the original texture geometry. Only adjust WebP compression;
+      // for exceptionally complex crests, reduce the final raster as a last resort.
+      let best=null;
+      for(const scale of [1,.92,.84,.8]){
+        const target = scale===1 ? canvas : document.createElement('canvas');
+        if(scale!==1){
+          target.width=Math.round(canvas.width*scale);
+          target.height=Math.round(canvas.height*scale);
+          target.getContext('2d').drawImage(canvas,0,0,target.width,target.height);
+        }
+        for(let q=94;q>=24;q-=4){
+          const quality=q/100;
+          const data=target.toDataURL('image/webp',quality);
+          if(!data.startsWith('data:image/webp;base64,')) throw new Error('Browser lacks WebP support');
+          const bytes=Math.ceil((data.length-'data:image/webp;base64,'.length)*3/4);
+          if(bytes<=maxBytes){
+            best={data,quality,width:target.width,height:target.height,bytes};
+            break;
+          }
+        }
+        if(best)break;
+      }
+      if(!best)throw new Error('Asset exceeds limit even with quality and size fallback for '+id);
+      return { ...best, buildMs: Number(canvas.dataset.clothBuildMs) };
     }, { id, maxBytes: MAX_BYTES });
     const binary = Buffer.from(result.data.split(',')[1], 'base64');
     const filename = id + '.webp';

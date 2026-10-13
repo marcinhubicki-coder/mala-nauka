@@ -2,7 +2,8 @@ import {inventorySnapshot,VIEW_SNAPSHOT_IDS} from '../design-system/view-invento
 import {readFileSync} from 'node:fs';
 // Headless Design Studio engine: controlled configuration edits, not source patches.
 // The visual editor writes these same elementStyles/elementOverrides/familyStyles.
-import {readFile,writeFile} from 'node:fs/promises';
+import {readFile,writeFile,rename,rm} from 'node:fs/promises';
+import {randomUUID} from 'node:crypto';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {viewContract,validateViewContract,inheritedMode} from '../shared/view-contracts.mjs';
@@ -99,6 +100,27 @@ export function inspectEditableBlock(config,{view,id}){
  if(!item)throw Error('Not a migrated editable block: '+view+'/'+id);
  return {...item,style:rawVisualValue(config,view,item)};
 }
+
+export function planDesignBatch(config,operations){
+ if(!Array.isArray(operations)||!operations.length||operations.length>100)throw Error('Batch requires 1-100 operations');
+ let next=structuredClone(config);const changes=[];
+ for(const [index,operation]of operations.entries()){
+  try{
+   if(!operation||Array.isArray(operation)||!['style','recipe','layout','route'].includes(operation.type))throw Error('Unknown edit operation');
+   const {type,...args}=operation;
+   const planned=type==='style'?planStyleEdit(next,args):type==='recipe'?planRecipeEdit(next,args):type==='layout'?planLayoutEdit(next,args):planRouteEdit(next,args);
+   next=planned.config;changes.push({step:index+1,type,...planned.change});
+  }catch(error){throw Error('Batch step '+(index+1)+' rejected: '+error.message);}
+ }
+ validateElementStyles(next);validateHomeLayout(next);if(next.navigation)validateNavigation(next.navigation);
+ return {config:next,changes};
+}
+async function saveConfigAtomic(filename,config){
+ const temp=filename+'.tmp-'+process.pid+'-'+randomUUID();
+ try{await writeFile(temp,JSON.stringify(config,null,2)+'\n','utf8');await rename(temp,filename);}
+ catch(error){await rm(temp,{force:true}).catch(()=>{});throw error;}
+}
+
 function option(argv,key){const i=argv.indexOf('--'+key);return i===-1?null:argv[i+1]??null;}
 function valueFromArg(raw){if(raw===null)throw Error('--value is required; use --reset to remove an override');try{return JSON.parse(raw);}catch{return raw;}}
 async function main(argv=process.argv.slice(2)){
@@ -107,20 +129,26 @@ async function main(argv=process.argv.slice(2)){
  const filename=resolve(option(argv,'config')||'design-system/config.json');
  const current=JSON.parse(await readFile(filename,'utf8'));
  if(command==='check'){validateViewContract('home');validateSpellingSettingsContract();validateElementStyles(current);validateHomeLayout(current);if(VIEW_SNAPSHOT_IDS.length!==VIEWS.size)throw Error('View inventory snapshot coverage incomplete');console.log('VALID: '+VIEW_SNAPSHOT_IDS.length+' inventoried screens, Home renderer contract, Ortografia settings and design styles');return;}
+ if(command==='batch'){
+  const source=option(argv,'changes');if(!source)throw Error('--changes is required');
+  const planned=planDesignBatch(current,JSON.parse(await readFile(resolve(source),'utf8')));
+  if(argv.includes('--apply'))await saveConfigAtomic(filename,planned.config);
+  console.log((argv.includes('--apply')?'APPLIED ':'DRY RUN ')+JSON.stringify(planned.changes));return;
+ }
  if(command==='inspect-recipe'){console.log(JSON.stringify(inspectRecipe(current,option(argv,'recipe')),null,2));return;}
  if(command==='inspect-layout'){console.log(JSON.stringify(inspectHomeLayout(current,option(argv,'id')),null,2));return;}
  if(command==='set-layout'){
   const geometry={};
   for(const key of ['x','y','w','h']){const raw=option(argv,key);if(raw!==null)geometry[key]=Number(raw);}
   const planned=planLayoutEdit(current,{id:option(argv,'id'),geometry,reset:argv.includes('--reset')});
-  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  if(argv.includes('--apply')){await saveConfigAtomic(filename,planned.config);console.log('APPLIED '+JSON.stringify(planned.change));}
   else console.log('DRY RUN '+JSON.stringify(planned.change));
   return;
  }
  if(command==='inspect-route'){console.log(JSON.stringify(inspectRoute(current,{from:option(argv,'from'),action:option(argv,'action'),mode:option(argv,'mode')||'spelling'}),null,2));return;}
  if(command==='set-route'){
   const planned=planRouteEdit(current,{from:option(argv,'from'),action:option(argv,'action'),to:option(argv,'to'),reset:argv.includes('--reset')});
-  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  if(argv.includes('--apply')){await saveConfigAtomic(filename,planned.config);console.log('APPLIED '+JSON.stringify(planned.change));}
   else console.log('DRY RUN '+JSON.stringify(planned.change));
   return;
  }
@@ -128,7 +156,7 @@ async function main(argv=process.argv.slice(2)){
   const reset=argv.includes('--reset'),property=option(argv,'property');
   if(!property)throw Error('--property is required');
   const planned=planRecipeEdit(current,{recipe:option(argv,'recipe'),property,mode:option(argv,'mode'),reset,value:reset?undefined:valueFromArg(option(argv,'value'))});
-  if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+  if(argv.includes('--apply')){await saveConfigAtomic(filename,planned.config);console.log('APPLIED '+JSON.stringify(planned.change));}
   else console.log('DRY RUN '+JSON.stringify(planned.change));
   return;
  }
@@ -140,7 +168,7 @@ async function main(argv=process.argv.slice(2)){
  if(!property)throw Error('--property is required');
  const reset=argv.includes('--reset');
  const planned=planStyleEdit(current,{view,id,property,scope,reset,value:reset?undefined:valueFromArg(option(argv,'value'))});
- if(argv.includes('--apply')){await writeFile(filename,JSON.stringify(planned.config,null,2)+'\n','utf8');console.log('APPLIED '+JSON.stringify(planned.change));}
+ if(argv.includes('--apply')){await saveConfigAtomic(filename,planned.config);console.log('APPLIED '+JSON.stringify(planned.change));}
  else console.log('DRY RUN (no files changed) '+JSON.stringify(planned.change));
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(error=>{console.error('DESIGN ENGINE ERROR: '+error.message);process.exitCode=1;});

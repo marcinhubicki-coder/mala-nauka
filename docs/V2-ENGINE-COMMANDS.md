@@ -59,3 +59,18 @@ npm run studio:engine -- set-layout --id home-mode-spelling --reset --apply
 ```
 
 Brak `--apply` oznacza suchy test. Silnik nie zapisze elementu wykraczającego poza artboard. Zmiany indywidualnych wystąpień są kontrolowane przez jawny model, bez doklejania CSS.
+
+## Pakiety zmian (transakcja)
+
+Silnik przyjmuje plik JSON zawierający tablicę 1–100 operacji typu `style`, `recipe`, `layout` lub `route`. Przykład:
+
+```json
+[{"type":"recipe","recipe":"button-back","property":"radius","value":23},{"type":"style","view":"spelling-results","id":"navigation-back-result-back","property":"radius","value":18}]
+```
+
+```bash
+npm run studio:engine -- batch --changes edits.json
+npm run studio:engine -- batch --changes edits.json --apply
+```
+
+Bez `--apply` jest tylko symulacja. Jeśli którakolwiek operacja jest błędna, cały pakiet jest odrzucany bez zapisu. Zatwierdzony pakiet zapisuje konfigurację atomowo przez plik tymczasowy. Po zapisie wymagany jest test regresyjny oraz sprawdzenie w przeglądarce.

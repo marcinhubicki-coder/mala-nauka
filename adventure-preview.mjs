@@ -12,25 +12,26 @@ country.value=records.has(params.get('country'))?params.get('country'):'pl';
 const paths={
   profiles:'profile-preview-frame.html',wizard:'ortografia/wizard-preview-frame.html',
   flags:'flagi/preview-frame.html','flag-material':'flagi/preview-frame.html?country=pl&scene=material',
-  'flag-question':'flagi/preview-frame.html?country=pl','flag-map':'flagi/preview-frame.html?country=pl&state=wrong',
+  'flag-question':'flagi/preview-frame.html?country=pl','flag-correct':'flagi/preview-frame.html?country=pl&state=correct','flag-wrong':'flagi/preview-frame.html?country=pl&state=wrong','flag-map':'flagi/preview-frame.html?country=pl&state=wrong',
   'flag-long':'flagi/preview-frame.html?country=cf&state=wrong','flag-nepal':'flagi/preview-frame.html?country=np',
   'flag-square':'flagi/preview-frame.html?country=ch','flag-country':'flagi/preview-frame.html?country=pl&variant=countries',
   'flag-capital':'flagi/preview-frame.html?country=lk&variant=capitals',progress:'progress-preview-frame.html'
 };
 function resize(){const [w,h]=device.value.split(',');phone.style.width=w+'px';phone.style.height=h+'px';}
 function change(){
-  const material=screen.value==='flag-material';country.hidden=countryLabel.hidden=!material;
+  const material=screen.value==='flag-material';
+  const flagScreens=['flag-material','flag-question','flag-correct','flag-wrong','flag-map'];
+  country.hidden=countryLabel.hidden=!flagScreens.includes(screen.value);
   const path=paths[screen.value]||'ortografia/result-preview-frame.html?case='+screen.value+'&animate=1';
   const url=new URL(path,location.href);
-  if(material)url.searchParams.set('country',country.value);
-  else if(['flag-question','flag-map'].includes(screen.value))url.searchParams.set('country',country.value);
+  if(flagScreens.includes(screen.value))url.searchParams.set('country',country.value);
   open.href=url.href;url.searchParams.set('safe','1');
   if(screen.value==='progress')url.searchParams.set('chrome','1');
   phone.src=url.href;resize();
 }
 screen.addEventListener('change',change);device.addEventListener('change',resize);
 country.addEventListener('change',()=>{
-  change();const url=new URL(location.href);url.searchParams.set('screen','flag-material');url.searchParams.set('country',country.value);history.replaceState(null,'',url);
+  change();const url=new URL(location.href);url.searchParams.set('screen',screen.value);url.searchParams.set('country',country.value);history.replaceState(null,'',url);
 });
 if([...screen.options].some(option=>option.value===params.get('screen')))screen.value=params.get('screen');
 change();

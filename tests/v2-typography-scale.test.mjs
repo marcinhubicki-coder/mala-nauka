@@ -16,7 +16,7 @@ test('Text has precisely H1-H9 and Body visual tokens, not extra HTML tags',()=>
  assert.equal(validateTypeScale({}),true);
 });
 test('Existing config stays valid and produces only opt-in type selectors',()=>{
- assert.equal(validateConfig(original),undefined);
+ assert.equal(validateConfig(original)?.revision,original.revision);
  const css=configCSS(original);
  assert.match(css,/--ds-type-h1-size:44px/);
  assert.match(css,/--ds-type-body-size:16px/);

@@ -1,6 +1,7 @@
 import { FLAGS } from '../data/flags.mjs';
 import { flagOnPole, paintFlags, prepareFlag } from './flag-on-pole.mjs?v=13-all-webp';
 import { fitLabel } from './text-fit.mjs?v=2';
+import { focusContinentMap, dissolveDrops } from './reveal-v2.mjs?v=1';
 
 const root=document.querySelector('#app'),records=new Map(FLAGS.map(record=>[record.id,record]));
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -84,34 +85,60 @@ function enhance(){
   }else if(variant==='capitals'&&!feedback){
     content.innerHTML=`<div class="flag-capital-pin" aria-hidden="true">${pin()}</div><small class="flag-capital-label">Czyja to stolica?</small><div class="flag-adventure-capital-question" data-fit-text="${esc(record.capital)}">${esc(record.capital)}</div>`;
   }else{
-    content.innerHTML=flagOnPole(record,{label:feedback?'Flaga: '+countryName(record):'Flaga do rozpoznania'})+
-      (feedback||reference?`<div class="flag-adventure-details"><div class="flag-adventure-name">${esc(countryName(record))}</div><div class="flag-adventure-capital">${pin()}<span data-fit-text="${esc(record.capital)}">${esc(record.capital)}</span></div></div>`:'');
+    // The main flag keeps its single WebP instance and visually detaches
+    // from the pole. The six reusable SVG continent maps form the atlas beneath.
+    content.innerHTML=flagOnPole(record,{label:feedback?'Flaga: '+countryName(record):'Flaga do rozpoznania'});
     if(feedback||reference){
       card.classList.add('flag-reveal-scene');
-      content.insertAdjacentHTML('beforeend',`<div class="flag-reveal-mask" aria-hidden="true"><div class="flag-adventure-map"><div data-adventure-map></div></div><span class="flag-scene-compass">${compass()}</span></div>`);
+      card.dataset.flagFeedback=wrong?'wrong':'correct';
+      content.insertAdjacentHTML('beforeend',`
+        <div class="flag-reveal-mask" aria-hidden="true">
+          <div class="flag-adventure-map"><div data-adventure-map></div></div>
+          <div class="flag-dissolve-curtain" aria-hidden="true">${dissolveDrops(record.id)}</div>
+          <div class="flag-map-aura" aria-hidden="true"></div>
+          <span class="flag-scene-compass" aria-hidden="true">${compass()}</span>
+          <span class="flag-map-sparkle flag-map-sparkle-a" aria-hidden="true">✦</span>
+          <span class="flag-map-sparkle flag-map-sparkle-b" aria-hidden="true">✧</span>
+          <span class="flag-map-sparkle flag-map-sparkle-c" aria-hidden="true">✦</span>
+          <div class="flag-adventure-details">
+            <div class="flag-adventure-name" data-fit-text="${esc(countryName(record))}">${esc(countryName(record))}</div>
+            <div class="flag-adventure-capital">${pin()}<span data-fit-text="${esc(record.capital)}">${esc(record.capital)}</span></div>
+          </div>
+        </div>`);
       const nextButton=root.querySelector('[data-action="next"]');
       const held=feedback&&!reference;
       const hold=value=>document.dispatchEvent(new CustomEvent('mala-nauka:flag-presentation',{detail:{held:value,countryId:record.id}}));
       if(held){hold(true);if(nextButton)nextButton.disabled=true;}
       card.dataset.flagScenePhase='preparing';
+      let finished=false;
       const ready=()=>{
-        if(!card.isConnected)return;
+        if(finished)return;finished=true;
+        if(!card.isConnected){if(held)hold(false);return;}
         card.dataset.flagScenePhase='revealed';
         if(nextButton)nextButton.disabled=false;
         if(held)hold(false);
       };
       const reveal=()=>{
-        if(!card.isConnected)return;
-        card.classList.add('is-revealed');card.dataset.flagScenePhase='revealing';
+        if(!card.isConnected){ready();return;}
+        card.classList.add('is-revealed');
+        card.dataset.flagScenePhase='revealing';
         if(reference||matchMedia('(prefers-reduced-motion: reduce)').matches)ready();
-        else setTimeout(ready,560);
+        else setTimeout(ready,760);
       };
-      // Mount already-preloaded vector geography under the closed mask.
-      const mounted=window.MalaNaukaContinentMap?.mount(content.querySelector('[data-adventure-map]'),{countryId:record.id,continent:record.continent,countryName:countryName(record),language:language(),showCopy:false,interactive:false});
-      const show=()=>requestAnimationFrame(()=>requestAnimationFrame(reveal));
-      Promise.resolve(mounted).then(show,show);
+      // Geography is mounted and focused before the cover begins dissolving.
+      // The reveal still proceeds if a map is unavailable (offline fallback).
+      const mounted=window.MalaNaukaContinentMap?.mount(
+        content.querySelector('[data-adventure-map]'),
+        {countryId:record.id,continent:record.continent,countryName:countryName(record),
+         language:language(),showCopy:false,interactive:false}
+      );
+      const show=result=>{
+        if(!card.isConnected){ready();return;}
+        if(result?.found)focusContinentMap(result,{zoom:1.23});
+        requestAnimationFrame(()=>requestAnimationFrame(reveal));
+      };
+      Promise.resolve(mounted).then(show,()=>show(null));
     }
-
   }
   root.querySelectorAll('.answers .answer').forEach(button=>{
     if(variant==='countries')flagAnswer(button,(button.textContent||'').trim().toLowerCase());

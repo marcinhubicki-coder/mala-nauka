@@ -47,6 +47,19 @@ try{
  const scores=await frame.locator('.round-summary-line').innerText();
  assert.match(scores,/10/);
  assert.equal(correct+wrong,10);
+
+ // The second independent results action must start an actual new round.
+ // Do not skip the slider's real accessibility path or dispatch a synthetic event.
+ const repeat=frame.locator('#app [data-ds-element=spelling-result-repeat]');
+ const history=frame.locator('#app [data-ds-element=spelling-result-history]');
+ assert.equal(await repeat.count(),1);
+ assert.equal(await history.getAttribute('data-action'),'history');
+ await repeat.focus();
+ for(let step=0;step<10;step++)await repeat.press('ArrowRight');
+ await frame.locator('#app[data-view=game]').waitFor({timeout:20000});
+ assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17,'Repeat round did not preserve the compiled game family');
+ assert.equal(await frame.locator('#app .answers .answer').count(),2);
+ assert.equal(await frame.locator('#app[data-state=playing]').count(),1,'Repeat round did not return to normal gameplay');
  assert.deepEqual(errors,[]);
- console.log(JSON.stringify({ok:true,completed:10,correct,wrong,results:true,jsErrors:0,summary:scores.slice(0,120)}));
+ console.log(JSON.stringify({ok:true,completed:10,correct,wrong,results:true,repeat:true,jsErrors:0,summary:scores.slice(0,120)}));
 }finally{await page?.close();await browser.close();}

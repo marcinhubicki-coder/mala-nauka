@@ -29,7 +29,7 @@ test('dissolve splashes are deterministic and have no interactive controls',()=>
   const a=dissolveDrops('pl'),b=dissolveDrops('pl'),c=dissolveDrops('np');
   assert.equal(a,b);
   assert.notEqual(a,c);
-  assert.equal((a.match(/class="flag-dissolve-drop"/g)||[]).length,9);
+  assert.equal((a.match(/class="flag-dissolve-drop"/g)||[]).length,11);
   assert.ok(!a.includes('<canvas'));
   assert.ok(!a.includes('onclick'));
 });

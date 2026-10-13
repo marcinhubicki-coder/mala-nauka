@@ -151,6 +151,36 @@ export function staticViewInventory(view){
 }
 // Convert an already-rendered component tree into a lightweight, declarative DOM.
 // Only contract IDs are accepted; design attributes never change the geometry.
+// Hydrate an already-mounted screen *without* innerHTML replacement. Used by
+// screens whose existing renderer owns stateful DOM nodes (jelly, sliders,
+// animations). O(n) over labelled components once per mount, not a DOM classifier.
+export function hydrateViewContract(root,view,{variant='create'}={}){
+ const items=viewContract(view);validateViewContract(view,items);
+ const nodes=[...root.querySelectorAll('[data-ds-key]')];
+ const byId=new Map();
+ for(const node of nodes){const id=node.dataset.dsKey;if(VIEW_INDEX[view].has(id)){if(byId.has(id))throw Error('Duplicate rendered component: '+id);byId.set(id,node);}}
+ if(byId.size!==items.length)throw Error('Incomplete mounted contract: '+view+' ('+byId.size+'/'+items.length+') missing: '+items.filter(x=>!byId.has(x.id)).map(x=>x.id).join(','));
+ for(const item of items){
+  const node=byId.get(item.id);
+  if(node.dataset.dsRecipe&&node.dataset.dsRecipe!==item.recipe)throw Error('Recipe mismatch: '+item.id);
+  if(node.dataset.dsKind&&node.dataset.dsKind!==item.kind)throw Error('Kind mismatch: '+item.id);
+  const action=item.variantActions?.[variant]||item.action;
+  if(item.variantActions&&!Object.hasOwn(item.variantActions,variant))throw Error('Unknown action variant: '+item.id+'/'+variant);
+  if(action&&node.dataset.action!==action)throw Error('Action mismatch: '+item.id+'/'+variant);
+ }
+ for(const item of items){
+  const node=byId.get(item.id);
+  node.dataset.dsElement=item.id;
+  node.dataset.dsRecipe=item.recipe;
+  node.dataset.dsKind=item.kind;
+  node.dataset.dsBlock='block-'+item.recipe;
+  node.dataset.dsContract='v2';
+  node.dataset.dsMode||=inheritedMode(view,item.id);
+  node.dataset.dsState||='default';
+  if(item.level==='atom'&&['button','icon','image','text'].includes(item.kind))node.dataset.dsAtomic='true';
+ }
+ return items.length;
+}
 export function compileViewMarkup(view,markup,{variant='create'}={}){
  const items=viewContract(view);validateViewContract(view,items);
  const byId=VIEW_INDEX[view],used=new Set();

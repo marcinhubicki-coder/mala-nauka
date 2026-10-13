@@ -30,7 +30,7 @@ Prawidłowa odpowiedź przechodzi automatycznie. Błędna czeka na pełne przeci
 
 Nowa **jedna** ilustracja `assets/flags/adventure/scenic-scene-v3.webp` zawiera chłopca, pieska i cały krajobraz. Tymczasowy pies SVG i wycinek chłopca z obcej sceny zostały usunięte. Rozdzielczość 1170 × 2532, WebP około 349 KiB. Nie wygenerowano żadnych flag ani obrazów osobnych państw.
 
-Ilustrację przygotowano narzędziem ImageGen z załączonego mockupu oraz istniejącego krajobrazu. Brief: zachować ciepły cinematic 3D storybook, jezioro, góry, zamek i wspólne oświetlenie; usunąć telefon i całe UI; osadzić obie postacie wyłącznie w dolnej ćwiartce; zachować wolny obszar dla HUD, flagi i odpowiedzi. Druga iteracja zmniejszyła postacie do około 65% pierwotnej wielkości i obniżyła ich głowy poniżej 75% wysokości.
+Ilustrację przygotowano wbudowanym narzędziem ImageGen z załączonego mockupu oraz istniejącego krajobrazu. Brief: zachować ciepły cinematic 3D storybook, jezioro, góry, zamek i wspólne oświetlenie; usunąć telefon i całe UI; osadzić obie postacie wyłącznie w dolnej ćwiartce; zachować wolny obszar dla HUD, flagi i odpowiedzi. Druga iteracja zmniejszyła postacie do około 65% pierwotnej wielkości i obniżyła ich głowy poniżej 75% wysokości.
 
 Jedyna mapa geograficzna: `assets/maps/europe-scenic.webp` (1360 × 1000), wygenerowana ze źródła `assets/maps/europe.svg` w tym samym układzie 680 × 500. Dzięki wspólnemu źródłu kształt i granice wyróżnienia zgadzają się z rastrem. Po załadowaniu WebP pozostaje tylko wybrane państwo i jego obrys. Etykiety są osobną lekką warstwą HTML; nie ma animacji innych krajów ani całego atlasu.
 
@@ -55,7 +55,16 @@ Piasek powstaje z próbek rzeczywistych kształtów starych liter, osiada w mał
 3. Pierwszy pełny przebieg Chromium/WebKit: **33/34**. Wszystkie scenariusze gry przeszły w obu silnikach. Jedyny timeout dotyczył pominięcia krótkiej fazy podczas wolniejszego zapisu screenshotu WebKit. Dodano sterowane zamrożenie czasu wyłącznie dla URL `qa=1`; nie zmienia ono fotografowanego UI.
 4. Powtórny pełny przebieg: **33/34**. Końcowa faza piasku WebKit nadal kończyła się między stwierdzeniem progu a osobnym żądaniem zatrzymania. Próg zamrożenia jest teraz uzbrajany przed wznowieniem osi czasu i zatrzymuje ją bezpośrednio w klatce Canvas, niezależnie od opóźnienia screenshotu.
 5. W przechwytywaniu WebKit ujawniono dodatkowo skok czasu rAF ponad końcówkę animacji po screenshotach. Oś czasu ogranicza postęp do uzbrojonego progu wyłącznie w trybie QA. Nazwę mikropaństwa odsunięto od znacznika, aby go nie zasłaniała.
-6. Końcowy przebieg po poprawie przechwytywania, ujednoliceniu zielonego fallbacku SVG, izolacji asynchronicznego wyniku mapy i odsunięciu komunikatu od głowy chłopca: wynik w `docs/flags-adventure/qa-scenic/report.json`. Obejmuje poprawną odpowiedź i automatyczne przejście, błędną odpowiedź i suwak, pauzę prezentacji i piasku, trzy kolejne pytania, restarty na granicach stanów, duże nazwy, ograniczony ruch, awarie flagi/WebP/SVG oraz opóźnione wczytanie atlasu. Osobne klatki otwierania i zamykania są ustawiane na rzeczywistej osi Web Animations przy 6%, 47% i 92%; klatki piasku pokazują spadanie, osiadanie, tworzenie liter i końcówkę.
+6. Końcowy przebieg: **34/34 scenariusze, 17/17 Chromium i 17/17 WebKit, zero błędów JS**. [Workflow 38392760594](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38392760594). Kod przebadany: `361e6b9160fd62778461053317d0481f79eae553`. Po poprawie przechwytywania, ujednoliceniu zielonego fallbacku SVG, izolacji asynchronicznego wyniku mapy i odsunięciu komunikatu od głowy chłopca: wynik w `docs/flags-adventure/qa-scenic/report.json`. Obejmuje poprawną odpowiedź i automatyczne przejście, błędną odpowiedź i suwak, pauzę prezentacji i piasku, trzy kolejne pytania, restarty na granicach stanów, duże nazwy, ograniczony ruch, awarie flagi/WebP/SVG oraz opóźnione wczytanie atlasu. Osobne klatki otwierania i zamykania są ustawiane na rzeczywistej osi Web Animations przy 6%, 47% i 92%; klatki piasku pokazują spadanie, osiadanie, tworzenie liter i końcówkę.
+
+## Materiał do oceny
+
+- [Trzy stany](flags-adventure/qa-scenic/scenic-stany.jpg) — pytanie, odpowiedź poprawna i błędna.
+- [Klatki pergaminu](flags-adventure/qa-scenic/scenic-pergamin-klatki.jpg) — otwieranie i zwijanie: początek, środek, koniec.
+- [Klatki piasku](flags-adventure/qa-scenic/scenic-piasek-klatki.jpg) — spadanie, osiadanie, tworzenie liter, nowe nazwy.
+- [Raport testów](flags-adventure/qa-scenic/report.json).
+
+Końcowe zestawy zostały obejrzane po udanym przebiegu. Zweryfikowano treść mapy na zagięciach, ujawnienie nowej flagi, kopczyki na linii tekstu, tworzenie nowych nazw, brak komunikatów na twarzach postaci i nieruchomy stan atlasu.
 
 ## Publikacja i granice weryfikacji
 

@@ -1,5 +1,6 @@
 import { createJellyV4 } from '../shared/jelly-v4.mjs?v=3';
 import {spellingAttrs} from '../shared/spelling-settings-contract.mjs';
+import {hydrateViewContract} from '../shared/view-contracts.mjs';
 import { dictationPacks, cleanDictationTag } from '../spelling/dictation.mjs?v=1';
 import { WORD_LIMITS, cleanRoundSettings } from '../spelling/round.mjs?v=1';
 
@@ -299,6 +300,8 @@ function install(){
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
  geometryObserver.disconnect();root.querySelectorAll('.spelling-segmented').forEach(container=>geometryObserver.observe(container));
+ hydrateViewContract(root,'spelling-settings');
+ delete root.dataset.dsContractPending;
  updateStartButton(false);syncPanel(false);syncHidden('force');requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 

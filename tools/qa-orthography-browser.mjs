@@ -102,6 +102,8 @@ try{
  await gameFrame.locator('#app[data-view="history"]').waitFor({timeout:13000});
  await page.close();
 
+ // Approved IMG_2949 vs IMG_2948: answering must not reflow the scene.
+ let approvedGameGeometry=null;
  const views=[
   ['spelling-settings','wizard','initial'],
   ['spelling-initial','game','initial'],
@@ -122,6 +124,33 @@ try{
   if(viewId==='spelling-settings')assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29);
   if(['spelling-initial','spelling-correct','spelling-wrong','spelling-hint','spelling-pause'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Incomplete gameplay contract: '+viewId);
   if(viewId==='spelling-initial')assert.equal(await page.locator('.answers .answer').count(),2);
+  if(['spelling-initial','spelling-correct','spelling-wrong'].includes(viewId)){
+   const geometry=await page.locator('#app').evaluate(root=>{
+    const selectors={header:'.game-bar',title:'.spelling-title',visual:'.spelling-visual',question:'.spelling-question-card',choices:'.answers',actions:'.spelling-action-row'};
+    return Object.fromEntries(Object.entries(selectors).map(([key,selector])=>{
+     const node=root.querySelector(selector);if(!node)throw Error('Missing '+selector);
+     const r=node.getBoundingClientRect();return [key,{x:r.x,y:r.y,w:r.width,h:r.height}];
+    }));
+   });
+   assert.ok(geometry.title.y>90&&geometry.title.y<230,'Title left the approved upper third: '+JSON.stringify(geometry.title));
+   assert.ok(geometry.visual.y>150&&geometry.visual.y<265,'Storybook picture shifted: '+JSON.stringify(geometry.visual));
+   assert.ok(geometry.choices.y>520&&geometry.choices.y<690,'Answer cards shifted: '+JSON.stringify(geometry.choices));
+   if(approvedGameGeometry){
+    const differences=Object.entries(geometry).flatMap(([part,rect])=>Object.entries(rect)
+     .filter(([axis,value])=>Math.abs(value-approvedGameGeometry[part][axis])>3)
+     .map(([axis,value])=>({part,axis,delta:Math.round((value-approvedGameGeometry[part][axis])*10)/10})));
+    assert.deepEqual(differences,[],'Gameplay layout changed between approved question states: '+viewId);
+   }else approvedGameGeometry=geometry;
+   if(viewId==='spelling-wrong'){
+    const rail=page.locator('.spelling-continue-rail'),handle=rail.locator('.continue-handle');
+    const [r,h]=await Promise.all([rail.boundingBox(),handle.boundingBox()]);
+    assert.ok(r&&h,'Wrong answer lacks a slider or handle');
+    assert.ok(Math.abs(h.width-h.height)<2,'Slider pearl is not circular: '+JSON.stringify(h));
+    assert.ok(r.y>=geometry.choices.y+geometry.choices.h-8,'Slider overlaps answer buttons');
+   }
+   console.log('[game-parity-'+viewId+'] '+JSON.stringify(geometry));
+  }
+
   if(['spelling-results','spelling-rule'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),18,'Results family incomplete: '+viewId);
   if(viewId==='spelling-results')assert.equal(await page.locator('.learning-stats-two .result-stat').count(),2);
   if(viewId==='spelling-rule'){

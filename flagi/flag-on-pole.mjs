@@ -23,6 +23,7 @@ export function paintFlags(root){
     const baked=cloth?.querySelector('.flag-cloth-prebaked');
     if(!baked){void renderFlagCloth(canvas);continue;}
     if(baked.dataset.loadState==='ready')continue;
+    if(baked.dataset.loadState==='fallback'){void renderFlagCloth(canvas);continue;}
     const fallback=()=>{
       if(baked.dataset.loadState==='fallback')return;
       baked.dataset.loadState='fallback';

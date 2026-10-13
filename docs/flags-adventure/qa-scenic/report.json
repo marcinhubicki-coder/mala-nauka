@@ -1,6 +1,6 @@
 {
   "phase": "full",
-  "passed": 32,
+  "passed": 40,
   "total": 40,
   "reports": [
     {
@@ -179,7 +179,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -274,7 +274,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -367,9 +367,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 12,
-      "labels": 6,
-      "crop": "229.09 214.66 210.61 114.88",
+      "neighbors": 9,
+      "labels": 5,
+      "crop": "242.26 221.84 184.29 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": true,
       "overflowX": false,
@@ -379,7 +379,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -463,9 +462,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 12,
-      "labels": 6,
-      "crop": "229.09 214.66 210.61 114.88",
+      "neighbors": 9,
+      "labels": 5,
+      "crop": "242.26 221.84 184.29 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -475,7 +474,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -559,9 +557,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 7,
-      "crop": "206.26 214.66 256.27 114.88",
+      "neighbors": 11,
+      "labels": 4,
+      "crop": "222.28 221.84 224.24 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -571,7 +569,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -1037,9 +1034,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 7,
-      "crop": "208.9 214.66 251 114.88",
+      "neighbors": 11,
+      "labels": 4,
+      "crop": "224.59 221.84 219.63 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -1049,7 +1046,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -1412,9 +1408,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 22,
+      "neighbors": 18,
       "labels": 9,
-      "crop": "115.63 207.08 297.44 162.24",
+      "crop": "134.22 217.22 260.26 141.96",
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
       "overflowX": false,
@@ -1695,7 +1691,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -1883,7 +1879,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -1921,9 +1917,9 @@
       },
       "atlas": {
         "x": 19.5,
-        "y": 181.453125,
+        "y": 0,
         "w": 351,
-        "h": 290.328125
+        "h": 14
       },
       "answers": [
         {
@@ -2073,7 +2069,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -2168,7 +2164,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -2261,9 +2257,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 12,
-      "labels": 6,
-      "crop": "229.09 214.66 210.61 114.88",
+      "neighbors": 9,
+      "labels": 5,
+      "crop": "242.26 221.84 184.29 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": true,
       "overflowX": false,
@@ -2273,7 +2269,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -2357,9 +2352,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 12,
-      "labels": 6,
-      "crop": "229.09 214.66 210.61 114.88",
+      "neighbors": 9,
+      "labels": 5,
+      "crop": "242.26 221.84 184.29 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -2369,7 +2364,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -2453,9 +2447,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 7,
-      "crop": "206.26 214.66 256.27 114.88",
+      "neighbors": 11,
+      "labels": 4,
+      "crop": "222.28 221.84 224.24 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -2465,7 +2459,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -2931,9 +2924,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 7,
-      "crop": "208.9 214.66 251 114.88",
+      "neighbors": 11,
+      "labels": 4,
+      "crop": "224.59 221.84 219.63 100.52",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -2943,7 +2936,6 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -3306,9 +3298,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 22,
+      "neighbors": 18,
       "labels": 9,
-      "crop": "115.63 207.08 297.44 162.24",
+      "crop": "134.22 217.22 260.26 141.96",
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
       "overflowX": false,
@@ -3589,7 +3581,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -3777,7 +3769,7 @@
       "highlight": true,
       "neighbors": 7,
       "labels": 4,
-      "crop": "289.59 178.29 221.12 120.61",
+      "crop": "289.91 178.47 220.48 120.26",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,

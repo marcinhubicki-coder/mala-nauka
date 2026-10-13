@@ -1,0 +1,41 @@
+name: Avatar geometry regression
+
+on:
+  pull_request:
+    paths:
+      - "assets/brand/avatars/**"
+      - "shared/profile-parts.mjs"
+      - "player-profiles.css"
+      - "shared/components.css"
+      - "tests/v2-avatar-consistency.test.mjs"
+      - "tools/qa-avatars-browser.mjs"
+      - ".github/workflows/avatar-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  avatars:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and run unit regression suite
+        run: npm test
+      - name: Install Chromium for isolated avatar QA
+        run: |
+          npm install --no-save --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Start local PWA
+        run: |
+          python3 -m http.server 8765 --directory dist > /tmp/avatars-http.log 2>&1 &
+          echo $! > /tmp/avatars-http.pid
+      - name: Verify avatar picker, PIN, profile save and editing
+        run: node tools/qa-avatars-browser.mjs http://127.0.0.1:8765
+      - name: Server logs on failure
+        if: failure()
+        run: cat /tmp/avatars-http.log || true

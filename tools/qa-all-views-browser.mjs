@@ -19,9 +19,11 @@ async function inspect(){
    await page.goto(base+view.route+'?'+params,{waitUntil:'domcontentloaded',timeout:18000});
    await page.waitForFunction(()=>document.querySelector('#app')?.dataset?.view,{timeout:10000});
    await page.waitForTimeout(450);
-   const info=await page.evaluate(()=>({name:document.documentElement.dataset.dsView,elements:document.querySelectorAll('[data-ds-element]').length,view:document.querySelector('#app')?.dataset.view}));
+   const info=await page.evaluate(()=>({name:document.documentElement.dataset.dsView,elements:document.querySelectorAll('[data-ds-element]').length,compiled:document.querySelectorAll('#app [data-ds-contract="v2"]').length,view:document.querySelector('#app')?.dataset.view}));
    assert.equal(info.name,view.id);
    assert.ok(info.elements>=2,'No declared or annotated components');
+   if(view.id==='player-create')assert.equal(info.compiled,25,'Player create family must be fully compiled');
+   if(view.id==='player-pin'||view.id==='player-unlock')assert.equal(info.compiled,8,'PIN family must be fully compiled: '+view.id);
    assert.deepEqual(jsErrors,[]);
    results.push({id:view.id,...info});
   }catch(error){errors.push({id:view.id,message:error.message.slice(0,280),jsErrors});}

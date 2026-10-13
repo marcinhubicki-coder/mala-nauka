@@ -55,3 +55,6 @@ Wyrównanie 390 × 844 z załączonym `IMG_2947` pokazuje przycisk startowy V2 o
 
 ## Rewizja konfiguracji Studio
 Po zatwierdzeniu nowego wyglądu ustawień podnosimy `design-system/config.json.revision` do 31. Wcześniejsze lokalne szkice o rewizji 30 wymagają świadomego odzyskania i scalenia, zamiast cichego zastąpienia zatwierdzonego modelu. Test migracji nie zakłada stałej liczby wyjątków — pilnuje, by korekta `spelling-start` była lokalna, a globalny atom zachował swoje parametry.
+
+## Naprawa rzeczywistego koloru slidera wyników
+Porównanie bitmapy i odczyt stylu po pełnym zakończeniu animacji potwierdziły, że różowy slider wyników nie otrzymywał swojej powierzchni: `getComputedStyle().backgroundImage = none` i `backgroundColor = rgb(182,84,115)` (`#B65473`). Wspólna klasa `.primary` nadpisywała wcześniejszy gradient `.result-again` przez kolejność wczytywania `app.css` i importu `shared/round-result.css`. Ortografia korzysta już wyłącznie z wyspecjalizowanych `result-again result-continue-rail`; inne moduły zachowują `.primary`. Zamiast niejawnego `!important`, usunięto konflikt semantyczny. E2E sprawdza obliczony gradient po ustabilizowaniu wyniku.

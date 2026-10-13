@@ -54,6 +54,12 @@ async function capture(page,viewId,reference){
       backgroundColor:styles.backgroundColor,disabled:node.hasAttribute('disabled'),
       entering:sheet?.classList.contains('result-entering'),fillOpacity:pseudo.opacity};
    }).catch(()=>null);
+   if(viewId.includes('results')){
+    assert.ok(paint?.background?.includes('gradient'),
+      'Results CTA lost approved pink glass gradient to the generic .primary rule: '+JSON.stringify(paint));
+    assert.notEqual(paint?.backgroundColor,'rgb(182, 84, 115)',
+      'Deprecated .primary background leaked into Ortografia results');
+   }
    frames.push({frame:frame.url(),geometry,paint});
   }
  }

@@ -2,6 +2,7 @@ import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
 import {overlayAttrs,hydrateSpellingOverlay} from './shared/spelling-overlays.mjs';
+import {hydratePinParts,pinAttrs} from './shared/pin-parts-contract.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
@@ -257,7 +258,7 @@ function playerCreatePage(){
 }
 function pinFieldsMarkup(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
- if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next')}`;
+ if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next',pinAttrs('pin-no-code-submit'))}`;
  return `<h3 class="pin-instruction">${deleting?'Potwierdź':creating||setting?'Ustaw':'Wpisz'} <strong>${deleting?'PIN':'4 cyfry'}</strong></h3><p>${deleting?'Wpisz PIN tego profilu, aby przejść do potwierdzenia usunięcia.':`PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}`}</p>${pinDotsMarkup(pinInput.length)}${pinKeypadMarkup(pinInput.length,deleting?'Potwierdź PIN':creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu')}`;
 }
 function renderPinError(){
@@ -279,7 +280,7 @@ function syncPinEntry(){
 }
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
- const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();renderPinError();if(animate)animateStateChange(card,oldHeight);
+ const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();hydratePinParts(card,{hasMode:Boolean(card.querySelector('.pin-mode')),hasKeypad:!card.classList.contains('pin-no-code')});renderPinError();if(animate)animateStateChange(card,oldHeight);
  if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
@@ -306,6 +307,7 @@ function playerPinPage(){
  const nav=pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView,backId:'pin-back',titleId:'pin-page-title'});
  const markup=nav+`<section ${attrs('pin-card')} class="pin-card ${noPin?'pin-no-code':''}"><div ${attrs('pin-profile')} class="pin-profile">${avatarMarkup(player,'player-avatar-large',attrs('pin-avatar'))}<h2 ${attrs('pin-nickname')} style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div ${attrs('pin-fields')} class="pin-fields">${pinFieldsMarkup()}</div></section><p ${attrs('pin-error')} class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
  root.innerHTML=compileViewMarkup(contractView,markup,{variant:purpose});
+ hydratePinParts(root.querySelector('.pin-card'),{hasMode:creating,hasKeypad:!noPin});
  const container=root.querySelector('.pin-mode');
  void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){

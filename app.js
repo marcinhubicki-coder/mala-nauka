@@ -372,7 +372,11 @@ function wizard() {
 }
 function spellingPoolNote(){
  if(selectedMode!=='spelling'||view!=='wizard')return;const note=root.querySelector('.wizard-note');if(!note)return;const c=configs.spelling,size=createSource('spelling',c,words).length;
- note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`:'Każde słowo raz w rundzie. Po pomyłce czas czeka.';
+ note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit
+   ?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`
+   :c.dyktando?'Ćwicz w swoim tempie, bez pośpiechu i bez powtórek.'
+   :c.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.'
+   :'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
 function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {

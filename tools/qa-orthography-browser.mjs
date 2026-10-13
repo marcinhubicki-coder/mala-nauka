@@ -81,6 +81,7 @@ try{
   return {card:get('.setup-card'),note:get('.wizard-note'),button:get('.start-button')};
  });
  assert.ok(wizardFooter.note?.text.length>12,'Missing educational note: '+JSON.stringify(wizardFooter));
+ assert.equal(wizardFooter.note.text,'Po pomyłce czas czeka, aż poznasz odpowiedź.','Wrong default educational copy');
  assert.ok(wizardFooter.note.height>=12&&wizardFooter.note.display!=='none'&&wizardFooter.note.visibility!=='hidden','Wizard note is invisible: '+JSON.stringify(wizardFooter));
  assert.ok(wizardFooter.note.top>=wizardFooter.card.bottom+8&&wizardFooter.note.bottom<wizardFooter.button.top,
   'Wizard note/CTA spacing does not match production: '+JSON.stringify(wizardFooter));

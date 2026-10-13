@@ -4,7 +4,7 @@ async function bitmap(src){const image=new Image();image.src=src;await image.dec
 function wrap(ctx,text,max){const lines=[''];for(const word of text.split(' ')){const i=lines.length-1,candidate=lines[i]?lines[i]+' '+word:word;if(ctx.measureText(candidate).width>max&&lines[i])lines.push(word);else lines[i]=candidate;}return lines;}
 // Three textured surfaces use slices of the actual prepared atlas, including
 // its top caption and flag. Opening never substitutes a blank sheet.
-export async function preparePaper(sheet,mapResult,record){
+export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={}){
  const inner=sheet.querySelector('.scenic-map-inner'),base=inner.getBoundingClientRect();
  const width=inner.clientWidth,height=inner.clientHeight,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
  canvas.width=width*2;canvas.height=height*2;ctx.scale(2,2);
@@ -30,6 +30,7 @@ export async function preparePaper(sheet,mapResult,record){
  }
  const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const r=flag.getBoundingClientRect();ctx.save();ctx.shadowColor='#55391450';ctx.shadowBlur=8;ctx.shadowOffsetY=3;ctx.drawImage(flag,r.left-base.left,r.top-base.top,r.width,r.height);ctx.restore();}catch{}
  const snapshot=canvas.toDataURL('image/webp',.93);
+ if(!isCurrent())return;
  for(const leaf of sheet.querySelectorAll('.scenic-fold-leaf'))leaf.style.backgroundImage=`url("${snapshot}")`;
 }
 
@@ -40,7 +41,9 @@ export async function foldPaper(sheet,{opening,timeline,reduced}){
  for(const [index,leaf] of leaves.entries()){
   const start=index*.23,end=Math.min(.99,start+.48),shift=index*100;
   const flat={transform:'translateY(0) rotateX(0deg)',opacity:1},closed={transform:`translateY(${shift}%) rotateX(${index%2?79:-79}deg)`,opacity:index?0:1};
-  const frames=[{...closed,offset:0},{...closed,offset:start,easing:'cubic-bezier(.25,.7,.22,1)'},{transform:'translateY(0) rotateX(3deg)',opacity:1,offset:end},{...flat,offset:1}];
+  // Paper stays opaque while turning. Only an edge-on, still hidden panel
+  // switches on; fading the paper itself made it look like a glass overlay.
+  const frames=[{...closed,offset:0},{...closed,offset:start,easing:'steps(1,end)'},{...closed,opacity:1,offset:start+.001,easing:'cubic-bezier(.25,.7,.22,1)'},{transform:'translateY(0) rotateX(3deg)',opacity:1,offset:end},{...flat,offset:1}];
   const shades=[{opacity:.65,offset:0},{opacity:.65,offset:start},{opacity:.18,offset:(start+end)/2},{opacity:.025,offset:end},{opacity:0,offset:1}];
   const lights=[{opacity:.1,offset:0},{opacity:.1,offset:start},{opacity:.7,offset:(start+end)/2},{opacity:.2,offset:end},{opacity:.07,offset:1}];
   const reverse=f=>opening?f:f.slice().reverse().map(x=>({...x,offset:1-x.offset}));

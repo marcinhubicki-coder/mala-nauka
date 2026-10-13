@@ -84,6 +84,7 @@ try{
     // cannot skip a fold; each frame has a precise fraction of the same opening.
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
      await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
+     const opacity=await page.locator('.scenic-fold-leaf').evaluateAll(nodes=>nodes.map(n=>Number(getComputedStyle(n).opacity)));assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');

@@ -113,7 +113,7 @@ async function respond(chosenId){
   }
   // Map decoding and the fold snapshot precede the entire learning interval.
   await document.fonts.ready;if(!alive(owner))return;
-  await preparePaper(sheet,mapResult,record);if(!alive(owner))return;
+  await preparePaper(sheet,mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
   await foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){

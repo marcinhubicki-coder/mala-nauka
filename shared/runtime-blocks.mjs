@@ -62,7 +62,21 @@ export function runtimeStack(view,selected,items){
 }
 
 export function semanticCatalog(records){
- const groups=new Map();
- for(const item of records){const part=PART_BY_ID[item.recipe],key=part?.id||item.id;let row=groups.get(key);if(!row){row={...item,id:key,registered:!!part,name:part?.name||item.name,level:part?.level||item.level,variants:[],uses:[]};groups.set(key,row)}row.variants.push(item.id);for(const use of item.uses)if(!row.uses.some(u=>u.view===use.view&&u.id===use.id))row.uses.push(use)}
- return [...groups.values()]
+ const groups=new Map(),canonical=new Map();
+ for(const item of records){
+  const part=PART_BY_ID[item.recipe],key=part?.id||item.id;
+  canonical.set(item.id,key);
+  let row=groups.get(key);
+  if(!row){row={...item,id:key,registered:Boolean(part),name:part?.name||item.name,level:part?.level||item.level,variants:[],children:[],uses:[]};groups.set(key,row);}
+  row.variants.push(item.id);
+  for(const use of item.uses)row.uses.push(use);
+ }
+ for(const item of records){
+  const row=groups.get(canonical.get(item.id));
+  for(const originalId of item.children){
+   const key=canonical.get(originalId);
+   if(key&&key!==row.id&&!row.children.includes(key))row.children.push(key);
+  }
+ }
+ return [...groups.values()];
 }

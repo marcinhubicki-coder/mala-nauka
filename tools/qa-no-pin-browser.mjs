@@ -22,6 +22,7 @@ try{
  assert.equal(await avatar.getAttribute('data-avatar'),'j');
  await page.locator('.pin-mode label').filter({hasText:'Bez PIN-u'}).click();
  await page.locator('.pin-card.pin-no-code').waitFor({timeout:10000});
+ assert.equal(await page.locator('.pin-card [data-ds-subcontract="pin-controls"]').count(),4,'No-PIN must have mode + one distinct continue action');
  assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),8,'PIN/none switch must keep eight shell blocks');
  assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-element="pin-fields"]')===element,noPinShell),true,'PIN toggle discarded PIN family');
  assert.equal(await page.locator('.pin-keypad').count(),0);

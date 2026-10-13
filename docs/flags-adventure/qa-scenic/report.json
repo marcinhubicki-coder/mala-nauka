@@ -837,7 +837,7 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 0,
+      "animations": 1,
       "foldImages": true,
       "errors": []
     },
@@ -2505,7 +2505,7 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 1,
+      "animations": 0,
       "foldImages": true,
       "errors": []
     },

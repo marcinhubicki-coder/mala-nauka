@@ -1,15 +1,20 @@
 /* Scenic Europe proof of concept: one prebaked map, one highlighted SVG country.
    All coordinates are registered to Natural Earth's 680 × 500 viewBox. */
 const EUROPE_IMAGE=new URL('assets/maps/europe-scenic.webp',document.baseURI).href;
+import {FLAGS} from '../data/flags.mjs';
+import {SCENIC} from './scenic-config.mjs';
+const records=new Map(FLAGS.map(r=>[r.id,r]));
 let imagePromise;
 function loadImage(){
  if(!imagePromise){
   imagePromise=new Promise((resolve,reject)=>{
-   const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=EUROPE_IMAGE;
+   const image=new Image(),timer=setTimeout(()=>{image.src='';reject(new Error('Map bitmap timeout'));},SCENIC.mapTimeoutMs);
+   image.onload=()=>{clearTimeout(timer);resolve(image)};image.onerror=()=>{clearTimeout(timer);reject(new Error('Map bitmap unavailable'))};image.src=EUROPE_IMAGE;
   }).catch(error=>{imagePromise=null;throw error});
  }
  return imagePromise;
 }
+export function preloadScenicEurope(){return Promise.all([loadImage(),window.MalaNaukaContinentMap?.preload('europe')]);}
 const boxOf=element=>{try{const b=element.getBBox();return {x:b.x,y:b.y,w:b.width,h:b.height,cx:b.x+b.width/2,cy:b.y+b.height/2}}catch{return null}};
 // Count genuinely visible neighbours, not countries grazing a crop's edge.
 const visibleFraction=(a,b)=>{
@@ -23,7 +28,7 @@ function cropNear(svg,selected,mapWidth,mapHeight){
  const original=svg.viewBox.baseVal,box=boxOf(selected);
  if(!box)return null;
  const base={x:original.x,y:original.y,w:original.width,h:original.height};
- const ratio=Math.max(.82,Math.min(1.65,(mapWidth||320)/(mapHeight||300)));
+ const ratio=Math.max(.82,Math.min(1.8,(mapWidth||320)/(mapHeight||300)));
  const peers=[...svg.querySelectorAll('.country')].filter(x=>x!==selected).map(boxOf).filter(Boolean);
  const centerX=box.cx,centerY=box.cy;
  let chosen=null,best=Infinity;
@@ -55,14 +60,18 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  const result=await map?.mount(node,{countryId:record.id,continent:'europe',countryName,language,interactive:false,showCopy:false});
  if(!result?.found||!result.svg||!result.active)return {found:false,reason:'unsupported-country'};
  const {svg,active}=result;
+ if(result.fallbackMarker){active.setAttribute('r','2.1');node.dataset.microstate='marker';}
  const crop=cropNear(svg,active,node.clientWidth,node.clientHeight);
+ const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country)})).filter(p=>p.box&&records.has(p.id));
  if(crop){
   svg.setAttribute('viewBox',[crop.x,crop.y,crop.w,crop.h].map(x=>+x.toFixed(2)).join(' '));
   svg.dataset.scenicZoom='true';
   svg.dataset.visibleNeighbors=String(crop.visible);
+  svg.setAttribute('preserveAspectRatio','none');
  }
+ let decodedImage;
  try{
-  await loadImage();
+  decodedImage=await loadImage();
   if(!node.isConnected)return {found:false,reason:'detached'};
   const image=document.createElementNS(n,'image');
   image.setAttribute('href',EUROPE_IMAGE);
@@ -89,5 +98,21 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   node.dataset.mapImage='vector-fallback';
  }
  node.dataset.countryId=record.id;
- return {found:true,svg,active,crop,bitmap:node.dataset.mapImage==='ready'};
+ if(crop){
+  const layer=document.createElement('div');layer.className='scenic-map-labels';
+  const accepted=[];
+  const candidates=labels.filter(p=>p.id===record.id||neighboring(crop,p.box)).sort((a,b)=>Number(b.id===record.id)-Number(a.id===record.id)||b.box.w*b.box.h-a.box.w*a.box.h);
+  for(const item of candidates){
+   const x=(item.box.cx-crop.x)/crop.w*node.clientWidth,y=(item.box.cy-crop.y)/crop.h*node.clientHeight;
+   const text=language==='en'?records.get(item.id).countryEn:records.get(item.id).country;
+   const half=Math.min(47,text.length*2.8);
+   if(x<half+3||x>node.clientWidth-half-3||y<10||y>node.clientHeight-10)continue;
+   if(accepted.some(p=>Math.abs(p.x-x)<p.half+half+4&&Math.abs(p.y-y)<15))continue;
+   const label=document.createElement('span');label.className='scenic-map-label'+(item.id===record.id?' is-selected':'');label.textContent=text;
+   label.style.left=(x/node.clientWidth*100)+'%';label.style.top=(y/node.clientHeight*100)+'%';layer.append(label);
+   accepted.push({x,y,half});if(accepted.length>=9)break;
+  }
+  node.append(layer);node.dataset.labelCount=String(accepted.length);
+ }
+ return {found:true,svg,active,crop,image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
 }

@@ -1,0 +1,10 @@
+// One timing source for the isolated scenic variant, also used by visual QA.
+export const SCENIC = Object.freeze({
+  seconds: 166, memoryMs: 3900, openMs: 1050, closeMs: 760,
+  sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
+  flagTimeoutMs: 5000, mapTimeoutMs: 6000, maxDpr: 2
+});
+export const seedOf = value => [...String(value)].reduce((n,c)=>(Math.imul(n,31)+c.charCodeAt(0))>>>0,13579);
+export function randomFrom(seed) {
+  return () => ((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+}

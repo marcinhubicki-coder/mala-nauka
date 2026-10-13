@@ -9,8 +9,8 @@ on:
       - 'tools/flags-scenic-qa.mjs'
       - 'flagi/scenic-preview.html'
       - 'flagi/scenic-preview.css'
-      - 'flagi/scenic-preview.mjs'
-      - 'flagi/scenic-europe.mjs'
+      - 'flagi/scenic-*.mjs'
+      - 'assets/flags/adventure/scenic-scene-v3.webp'
       - 'adventure-preview.mjs'
   workflow_dispatch:
 
@@ -35,17 +35,17 @@ jobs:
           node --check tools/build-scenic-europe.mjs
           node --check tools/flags-scenic-qa.mjs
           node --check flagi/scenic-europe.mjs
-          node --check flagi/scenic-preview.mjs
+          for file in flagi/scenic-*.mjs; do node --check "$file"; done
       - name: Install browser
         run: |
-          npm install --no-save --no-package-lock playwright
-          npx playwright install chromium
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
       - name: Generate geographical Europe artwork
         run: node tools/build-scenic-europe.mjs
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
         continue-on-error: true
-        run: node tools/flags-scenic-qa.mjs
+        run: SCENIC_QA_PHASE=layout node tools/flags-scenic-qa.mjs
       - name: Save generated atlas and screenshots on isolated branch
         if: always()
         run: |

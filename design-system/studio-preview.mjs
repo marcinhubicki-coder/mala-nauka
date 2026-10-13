@@ -1,4 +1,5 @@
 import {runtimeStack,BLOCK_LEVELS} from '../shared/runtime-blocks.mjs';
+import {ReferenceCalibration} from './reference-calibration.mjs';
 import {behaviorPicker} from './behavior-picker.mjs';
 import {isMotionToken,behaviorDefinition} from '../shared/behaviors.mjs';
 import {selectionStack,LEVEL_NAMES,PART_BY_ID,partStates} from '../shared/structure-model.mjs';
@@ -21,6 +22,7 @@ export class StudioPreview {
     Object.assign(this,options);
     this.viewId='spelling-settings';this.componentId='layout';this.scope='global';this.metricBase=new Map();
     this.editingMode='view';this.compare=false;this.compareViews=[];
+    this.references=new ReferenceCalibration(this);
     this.blockLevel='all';this.picking=false;this.highlight=true;this.showAbsent=false;this.search='';this.zoom='fit';this.wide=false;this.branches=new Map();
     this.scenarioStates=new Map();this.inventories=new Map();this.selections=new Map();
     this.workspace.addEventListener('click',event=>this.click(event));
@@ -32,6 +34,7 @@ export class StudioPreview {
     this.workspace.addEventListener('keydown',event=>{if(event.target.dataset.studioNav&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))this.keyboardNav=true;else this.returnNavFocus=null;});
     this.workspace.addEventListener('pointerdown',()=>{this.keyboardNav=false;this.returnNavFocus=null;});
     this.workspace.addEventListener('focusout',()=>this.endEdit?.());
+    this.references.bind();
     window.addEventListener('message',event=>this.receive(event));
   }
   get view(){return this.registry.views.find(row=>row.id===this.viewId)||this.registry.views[0];}
@@ -78,7 +81,7 @@ export class StudioPreview {
     mountJellies(toolbar,previous);
     if(focused)[...toolbar.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===focused.group&&input.value===focused.value)?.focus({preventScroll:true});
     this.workspace.querySelector('#preview-controls').innerHTML='<div id=compare-choices></div>';
-    this.renderPills();this.renderCompareChoices();
+    this.renderPills();this.renderCompareChoices();this.references.renderControls();
     this.workspace.querySelector('.component-layout').classList.toggle('wide-preview',this.wide);const edge=this.workspace.querySelector('.inspector-edge');if(edge){edge.innerHTML=this.wide?'›':'‹';edge.dataset.tooltip=this.wide?'Pokaż panel ustawień':'Schowaj panel ustawień';edge.title=edge.dataset.tooltip;edge.setAttribute('aria-label',edge.dataset.tooltip);}
   }
   renderPills(){
@@ -113,7 +116,7 @@ export class StudioPreview {
     for(const tile of gallery.querySelectorAll('.preview-tile'))if(!ids.includes(tile.dataset.tileView))tile.remove();
     for(const id of ids)if(!gallery.querySelector(`[data-tile-view='${id}']`))gallery.append(this.tile(this.registry.views.find(view=>view.id===id)));
     gallery.classList.toggle('comparison',this.compare);gallery.classList.toggle('native-size',this.zoom==='100');
-    this.updateActiveFrame();this.renderCompareChoices();
+    this.updateActiveFrame();this.renderCompareChoices();this.references.sync();
     this.resizePhone();
   }
   updateActiveFrame(){

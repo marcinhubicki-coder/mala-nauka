@@ -11,7 +11,14 @@ function loadImage(){
  return imagePromise;
 }
 const boxOf=element=>{try{const b=element.getBBox();return {x:b.x,y:b.y,w:b.width,h:b.height,cx:b.x+b.width/2,cy:b.y+b.height/2}}catch{return null}};
-const intersect=(a,b)=>a.x < b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y;
+// Count genuinely visible neighbours, not countries grazing a crop's edge.
+const visibleFraction=(a,b)=>{
+ const w=Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x));
+ const h=Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+ return a.w>0&&a.h>0?Math.min(1,(w*h)/(a.w*a.h)):0;
+};
+const neighboring=(frame,country)=>visibleFraction(frame,country)>.22 ||
+ (country.cx>frame.x&&country.cx<frame.x+frame.w&&country.cy>frame.y&&country.cy<frame.y+frame.h);
 function cropNear(svg,selected,mapWidth,mapHeight){
  const original=svg.viewBox.baseVal,box=boxOf(selected);
  if(!box)return null;
@@ -20,19 +27,19 @@ function cropNear(svg,selected,mapWidth,mapHeight){
  const peers=[...svg.querySelectorAll('.country')].filter(x=>x!==selected).map(boxOf).filter(Boolean);
  const centerX=box.cx,centerY=box.cy;
  let chosen=null,best=Infinity;
- for(let width=142;width<=440;width+=6){
+ for(let width=224;width<=460;width+=6){
   width=Math.max(width,box.w*1.66,box.h*ratio*1.6);
   const height=width/ratio;
   if(width>base.w||height>base.h)break;
   const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2));
   const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height/2));
   const frame={x,y,w:width,h:height};
-  const visible=peers.filter(p=>intersect(frame,p)).length;
+  const visible=peers.filter(p=>neighboring(frame,p)).length;
   // Smallest sensible crop containing roughly six to ten neighbours.
   const missing=Math.max(0,6-visible),extra=Math.max(0,visible-11);
   const score=missing*14+extra*9+Math.abs(visible-9)*1.6+width*.016;
   if(score<best){best=score;chosen={...frame,visible};}
-  if(visible>=9&&visible<=11)break;
+  if(visible>=8&&visible<=11)break;
  }
  if(!chosen){
   const w=Math.min(base.w,Math.max(200,box.w*2.2)),h=Math.min(base.h,w/ratio);

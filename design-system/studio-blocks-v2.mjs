@@ -1,4 +1,4 @@
-import {runtimeCatalog,runtimeStack,BLOCK_LEVELS} from '../shared/runtime-blocks.mjs';
+import {runtimeCatalog,semanticCatalog,runtimeStack,BLOCK_LEVELS} from '../shared/runtime-blocks.mjs';
 import {RuntimeCatalog} from './runtime-catalog.mjs';
 import {VISUAL_FIELDS,ICONS,rawVisualValue} from '../shared/element-system.mjs';
 import {behaviorPicker} from './behavior-picker.mjs';
@@ -7,16 +7,16 @@ import {html} from './preview-model.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
 
 export class StudioBlocksV2 {
- constructor(owner){this.owner=owner;this.scanner=new RuntimeCatalog(owner);this.scanner.subscribe(()=>this.refresh());this.level='family';this.viewFilter='';this.search='';this.part='';this.useIndex=0;this.isolated=true;this.scope='global';this.groups=new Map();window.addEventListener('message',e=>this.receive(e));}
+ constructor(owner){this.owner=owner;this.scanner=new RuntimeCatalog(owner);this.scanner.subscribe(()=>this.refresh());this.level='family';this.viewFilter='';this.search='';this.details=false;this.part='';this.useIndex=0;this.isolated=true;this.scope='global';this.groups=new Map();window.addEventListener('message',e=>this.receive(e));}
  get workspace(){return this.owner.workspace;}
  get config(){return this.owner.getDesign().config;}
  get open(){return Boolean(this.workspace.querySelector('[data-block-library-v2]'));}
- catalog(){return runtimeCatalog(this.owner.registry,this.owner.getInventories());}
+ catalog(){const rows=runtimeCatalog(this.owner.registry,this.owner.getInventories());return this.details?rows:semanticCatalog(rows);}
  get record(){return this.catalog().find(r=>r.id===this.part);}
  get use(){return this.record?.uses[this.useIndex]||this.record?.uses[0];}
  selectPart(id,context={}){
   const inventory=this.owner.getInventories().get(context.view)?.items||[],item=inventory.find(i=>i.id===context.id);
-  const record=this.catalog().find(r=>r.id===(context.blockId||item?.blockId||id)||r.recipe===id);
+  const record=this.catalog().find(r=>r.id===(context.blockId||item?.blockId||id)||r.recipe===item?.recipe||r.recipe===id||r.uses.some(use=>use.blockId===id));
   this.part=record?.id||id;this.level=record?.level||'family';this.useIndex=Math.max(0,record?.uses.findIndex(u=>u.view===context.view&&(!context.id||u.id===context.id))||0);this.scope='global';
  }
  path(key){const use=this.use;if(['background','textColor'].includes(key)&&['spelling','english','flags','reading','math'].includes(use.mode))return `familyStyles.${use.mode}.${this.part}.${key}`;return this.scope==='view'?`elementOverrides.${use.view}.${use.id}.${key}`:`elementStyles.${this.part}.${key}`;}
@@ -25,7 +25,7 @@ export class StudioBlocksV2 {
  sendDesign(){this.send('design',this.owner.getDesign());if(this.open&&!document.activeElement?.closest('.block-properties'))this.renderControls();}
  status(){const n=this.scanner.done.size,total=this.owner.registry.views.length;return this.scanner.complete?`Odczytano wszystkie ekrany (${total}/${total}).`:this.scanner.current?`Odczyt ekranów: ${n}/${total} · ${this.scanner.current.name}`:this.scanner.failures.size?`Nie udało się odczytać ${this.scanner.failures.size} ekranów.`:'Odczytywanie ekranów…';}
  render(){
-  this.workspace.innerHTML=`<div class=block-library-v2 data-block-library-v2><header class=block-library-heading><div><span class=section-kicker>DESIGN STUDIO V2</span><h2>Biblioteka klocków</h2><p>Te same rodziny, grupy i atomy co w Edytuj ekran.</p></div><span class=block-scan-status role=status>${html(this.status())}</span></header><div class=block-library-grid><aside class="panel block-catalog"><label class=form-field><span>Poziom</span><select data-block-level>${Object.entries(BLOCK_LEVELS).map(([id,name])=>`<option value=${id} ${id===this.level?'selected':''}>${name}</option>`).join('')}</select></label><label class=form-field><span>Ekran</span><select data-block-view><option value="">Wszystkie ekrany</option>${this.owner.registry.views.map(v=>`<option value=${v.id} ${v.id===this.viewFilter?'selected':''}>${html(v.name)}</option>`).join('')}</select></label><label class=form-field><span>Szukaj klocka</span><input data-block-search type=search value="${html(this.search)}"></label><div class=block-catalog-rows></div><div class=block-catalog-errors></div></aside><section class="panel block-preview"><div class=block-preview-heading></div><div class=block-preview-tools><button class=quiet-button data-block-isolate aria-pressed=${this.isolated}>Sam klocek</button><button class=quiet-button data-block-context aria-pressed=${!this.isolated}>Na ekranie</button><button class=quiet-button data-block-edit-screen>Edytuj ekran ↗</button></div><label class=form-field><span>Użycie · treść i theme z ekranu</span><select data-block-use></select></label><div class=block-runtime-stage><div class=block-runtime-crop></div></div><p class=block-preview-status role=status>Wybierz klocek z listy.</p></section><aside class="panel block-controls"><div class=block-properties></div></aside></div></div>`;
+  this.workspace.innerHTML=`<div class=block-library-v2 data-block-library-v2><header class=block-library-heading><div><span class=section-kicker>DESIGN STUDIO V2</span><h2>Biblioteka klocków</h2><p>Te same rodziny, grupy i atomy co w Edytuj ekran.</p></div><span class=block-scan-status role=status>${html(this.status())}</span></header><div class=block-library-grid><aside class="panel block-catalog"><label class=form-field><span>Zakres biblioteki</span><select data-block-details><option value=core ${!this.details?'selected':''}>Wspólne klocki</option><option value=all ${this.details?'selected':''}>Wszystkie szczegóły</option></select></label><label class=form-field><span>Poziom</span><select data-block-level>${Object.entries(BLOCK_LEVELS).map(([id,name])=>`<option value=${id} ${id===this.level?'selected':''}>${name}</option>`).join('')}</select></label><label class=form-field><span>Ekran</span><select data-block-view><option value="">Wszystkie ekrany</option>${this.owner.registry.views.map(v=>`<option value=${v.id} ${v.id===this.viewFilter?'selected':''}>${html(v.name)}</option>`).join('')}</select></label><label class=form-field><span>Szukaj klocka</span><input data-block-search type=search value="${html(this.search)}"></label><div class=block-catalog-rows></div><div class=block-catalog-errors></div></aside><section class="panel block-preview"><div class=block-preview-heading></div><div class=block-preview-tools><button class=quiet-button data-block-isolate aria-pressed=${this.isolated}>Sam klocek</button><button class=quiet-button data-block-context aria-pressed=${!this.isolated}>Na ekranie</button><button class=quiet-button data-block-edit-screen>Edytuj ekran ↗</button></div><label class=form-field><span>Użycie · treść i theme z ekranu</span><select data-block-use></select></label><div class=block-runtime-stage><div class=block-runtime-crop></div></div><p class=block-preview-status role=status>Wybierz klocek z listy.</p></section><aside class="panel block-controls"><div class=block-properties></div></aside></div></div>`;
   this.scanner.start();this.refresh();
   this.resize?.disconnect();this.resize=new ResizeObserver(()=>this.fit());this.resize.observe(this.workspace.querySelector('.block-runtime-stage'));
  }
@@ -33,7 +33,7 @@ export class StudioBlocksV2 {
   this.workspace.querySelector('.block-scan-status').textContent=this.status();this.renderRows();if(!document.activeElement?.closest('.block-properties'))this.renderControls();this.mount();
  }
  renderRows(){
-  const query=this.search.toLocaleLowerCase('pl'),records=this.catalog().filter(r=>r.level===this.level&&(!this.viewFilter||r.uses.some(u=>u.view===this.viewFilter))&&(!query||[r.name,...r.uses.map(u=>u.label)].join(' ').toLocaleLowerCase('pl').includes(query)));
+  const query=this.search.toLocaleLowerCase('pl'),records=this.catalog().filter(r=>(this.details||(r.registered&&(this.viewFilter?r.uses.some(u=>u.view===this.viewFilter):new Set(r.uses.map(u=>u.view)).size>=2)))&&r.level===this.level&&(!this.viewFilter||r.uses.some(u=>u.view===this.viewFilter))&&(!query||[r.name,...r.uses.map(u=>u.label)].join(' ').toLocaleLowerCase('pl').includes(query)));
   this.workspace.querySelector('.block-catalog-rows').innerHTML=records.map(r=>`<button class="block-catalog-row ${r.id===this.part?'active':''}" data-block-select="${r.id}" aria-pressed=${r.id===this.part}><strong>${html(r.name)}</strong><small>${BLOCK_LEVELS[r.level]} · ${r.uses.length} ${r.uses.length===1?'użycie':'użyć'}</small></button>`).join('')||'<p>Brak klocków w tym wyborze.</p>';
   this.workspace.querySelector('.block-catalog-errors').innerHTML=this.scanner.failures.size?`<p>${html(this.status())}</p>${[...this.scanner.failures.keys()].map(id=>`<p>${html(this.owner.registry.views.find(v=>v.id===id)?.name||id)}</p>`).join('')}<button class=quiet-button data-block-retry>Ponów odczyt</button>`:'';
  }
@@ -77,6 +77,7 @@ export class StudioBlocksV2 {
   if(event.type==='input'&&n.hasAttribute('data-block-search')){this.search=n.value;this.renderRows();}
   if(event.type==='input'&&n.dataset.blockNumber){const key=n.dataset.blockNumber,[min,max]=VISUAL_FIELDS[key],value=+n.value;if(Number.isFinite(value)&&value>=min&&value<=max)this.write(key,value);}
   if(event.type==='change'){
+   if(n.hasAttribute('data-block-details')){this.details=n.value==='all';this.part='';this.refresh();}
    if(n.hasAttribute('data-block-level')){this.level=n.value;this.renderRows();}
    if(n.hasAttribute('data-block-view')){this.viewFilter=n.value;this.renderRows();}
    if(n.hasAttribute('data-block-use')){this.useIndex=+n.value;this.ready=false;this.renderControls();this.mount();}

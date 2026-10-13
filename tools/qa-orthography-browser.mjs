@@ -70,8 +70,19 @@ try{
  assert.equal(await gameFrame.locator('#app .learning-stats-two [data-action="toggle-result"]').count(),2);
  // The result scene must actually load, not merely exist as unused CSS.
  const scene=gameFrame.locator('#app .result-scenery .result-hero');
- await scene.waitFor({timeout:9000});
- assert.equal(await scene.evaluate(async image=>{await image.decode();return image.naturalWidth>0;}),true,'Approved bunny artwork did not load');
+ await scene.waitFor({state:'attached',timeout:9000});
+ const sceneDiagnostic=await scene.evaluate(async image=>{
+  await image.decode();
+  const elements=[];let element=image;
+  for(let depth=0;depth<5&&element;depth++,element=element.parentElement){
+   const rect=element.getBoundingClientRect(),computed=getComputedStyle(element);
+   elements.push({tag:element.tagName,cls:String(element.className),width:rect.width,height:rect.height,visibility:computed.visibility,display:computed.display,opacity:computed.opacity});
+  }
+  return {naturalWidth:image.naturalWidth,elements};
+ });
+ console.log('Result scene geometry:',JSON.stringify(sceneDiagnostic));
+ assert.ok(sceneDiagnostic.naturalWidth>0,'Approved bunny artwork did not load');
+ assert.ok(sceneDiagnostic.elements[0].width>10&&sceneDiagnostic.elements[0].height>10,'Bunny has zero layout size: '+JSON.stringify(sceneDiagnostic));
  const pointsBounds=await gameFrame.locator('#app .result-points-bubble').evaluate(node=>{
   const rect=node.getBoundingClientRect();return {width:rect.width,height:rect.height};
  });

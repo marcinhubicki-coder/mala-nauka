@@ -19,6 +19,14 @@ try{
  await studio.locator('[data-block-details]').selectOption('all');
  const detailed=await studio.locator('.block-catalog-row').count();
  assert.ok(detailed>shared&&shared>0);
+ await studio.locator('[data-block-details]').selectOption('core');
+ assert.equal(await studio.locator('[data-block-atom] option').count(),14);
+ await studio.locator('[data-block-atom]').selectOption('button');
+ const buttons=await studio.locator('.block-catalog-row').count();
+ assert.ok(buttons>=5,'Shared Button atoms missing');
+ await studio.locator('[data-block-atom]').selectOption('text');
+ const texts=await studio.locator('.block-catalog-row').count();
+ assert.ok(texts>=5,'Shared Text atoms missing');
  assert.deepEqual(errors,[]);
  await studio.close();
 

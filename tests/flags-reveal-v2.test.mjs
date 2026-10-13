@@ -59,7 +59,7 @@ test('all three preview states and their CSS are wired',async()=>{
     assert.ok(css.includes(key),'missing '+key);
   for(const path of ['flagi/index.html','flagi/preview-frame.html']){
     const html=await get(path);
-    assert.ok(html.includes('reveal-v2.css?v=2'));
-    assert.ok(html.includes('adventure-game.mjs?v=19-atlas-reveal'));
+    assert.ok(html.includes('reveal-v2.css?v=3'));
+    assert.ok(html.includes('adventure-game.mjs?v=20-atlas-reveal'));
   }
 });

@@ -63,7 +63,7 @@ dialog:not(#studio-modal){border-radius:calc(var(--ds-popup-radius) * 1px);max-h
 #app[data-ds] .result-continue-rail{height:calc(var(--ds-slider-height) * var(--ds-u));border-radius:calc(var(--ds-slider-radius) * var(--ds-u))}
 #app[data-ds] :is(.round-progress,.math-round-progress){height:calc(var(--ds-progress-height) * var(--ds-u));border-radius:calc(var(--ds-progress-radius) * var(--ds-u))}
 #app[data-ds] :is(.round-progress,.math-round-progress)>span{border-radius:inherit}
-#app[data-ds] :is(.settings-card,.category-card,.result-sheet){border-radius:calc(var(--ds-card-radius) * var(--ds-u));padding:calc(var(--ds-card-padding-top) * var(--ds-u)) calc(var(--ds-card-padding-x) * var(--ds-u)) calc(var(--ds-card-padding-bottom) * var(--ds-u))}
+#app[data-ds] :is(.settings-card,.category-card){border-radius:calc(var(--ds-card-radius) * var(--ds-u));padding:calc(var(--ds-card-padding-top) * var(--ds-u)) calc(var(--ds-card-padding-x) * var(--ds-u)) calc(var(--ds-card-padding-bottom) * var(--ds-u))}
 #app[data-ds] .player-card{gap:calc(var(--ds-profile-gap) * var(--ds-u));grid-template-columns:auto minmax(0,1fr) 43px}
 #app[data-ds] .progress-achievement-list{gap:calc(var(--ds-trophy-gap) * var(--ds-u))}
 #app[data-ds] .spelling-result{--result-canvas:calc(var(--ds-layout-canvas-width) * 1px)}

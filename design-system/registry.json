@@ -31,7 +31,7 @@
       "id": "card",
       "name": "Kafel ustawień",
       "tokenGroup": "card",
-      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
+      "selector": ".setup-card,.settings-card,.category-card",
       "description": "Jedna geometria i powierzchnia dla czterech trybów.",
       "states": [
         "default"

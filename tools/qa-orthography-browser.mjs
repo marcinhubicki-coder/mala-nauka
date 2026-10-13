@@ -62,8 +62,26 @@ try{
   if(viewId==='spelling-settings')assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29);
   if(['spelling-initial','spelling-correct','spelling-wrong','spelling-hint','spelling-pause'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Incomplete gameplay contract: '+viewId);
   if(viewId==='spelling-initial')assert.equal(await page.locator('.answers .answer').count(),2);
+  if(['spelling-results','spelling-rule'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),18,'Results family incomplete: '+viewId);
   if(viewId==='spelling-results')assert.equal(await page.locator('.learning-stats-two .result-stat').count(),2);
-  if(viewId==='spelling-rule')assert.ok(await page.locator('.rule-dialog-head').count());
+  if(viewId==='spelling-rule'){
+   await page.locator('.result-rule-dialog').waitFor({timeout:10000});
+   assert.equal(await page.locator('[data-ds-subcontract="spelling-rule"]').count(),10,'Educational rule must declare all 10 semantic parts');
+   await page.locator('.result-rule-dialog .rule-close').click();
+   assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),18,'Closing a rule must preserve the results family');
+  }
+  if(viewId==='spelling-hint'){
+   await page.locator('.spelling-hint-sheet').waitFor({timeout:10000});
+   assert.equal(await page.locator('[data-ds-subcontract="spelling-hint"]').count(),5,'Hint dialog must declare all five parts');
+   await page.locator('.spelling-hint-sheet .hint-dismiss').click();
+   assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Closing a hint must preserve the gameplay family');
+  }
+  if(viewId==='spelling-pause'){
+   await page.locator('#modal[open]').waitFor({timeout:10000});
+   assert.equal(await page.locator('[data-ds-subcontract="spelling-pause"]').count(),5,'Pause dialog must declare all five parts');
+   await page.locator('#modal [data-action=resume]').click();
+   assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Resuming must preserve gameplay');
+  }
   await page.close();
  }
  assert.deepEqual(errors,[]);

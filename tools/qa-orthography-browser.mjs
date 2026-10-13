@@ -17,7 +17,28 @@ async function capture(page,viewId,reference){
  await page.evaluate(()=>document.fonts.ready);
  const file=viewId+'.png';
  await page.screenshot({path:join(visualDirectory,file),animations:'disabled',timeout:20000});
- screenshots.push({view:viewId,approvedReference:reference,file,viewport:'390x844',dpr:3});
+ const frames=[];
+ for(const frame of page.frames()){
+  if(!/\/ortografia\/|\/index\.html$/.test(frame.url()))continue;
+  const geometry=await frame.evaluate(()=>{
+   const selectors={
+    sheet:'.result-sheet',heading:'.result-heading',title:'.result-title-wrap h1',
+    intro:'.result-heading > p',summary:'.round-summary',score:'.round-summary-line',
+    progress:'.round-progress',stats:'.learning-stats-two',
+    details:'.result-details',panel:'.result-detail:not([hidden])',
+    rows:'.result-word-viewport',lastRow:'.result-word-row:last-child',
+    actions:'.result-actions',again:'.result-again',collection:'.result-collection'
+   };
+   const round=n=>Math.round(n*10)/10;
+   return Object.fromEntries(Object.entries(selectors).map(([key,sel])=>{
+    const node=document.querySelector('#app '+sel);if(!node)return [key,null];
+    const r=node.getBoundingClientRect(),css=getComputedStyle(node);
+    return [key,{x:round(r.left),y:round(r.top),w:round(r.width),h:round(r.height),display:css.display,overflow:css.overflow}];
+   }));
+  }).catch(()=>null);
+  if(geometry?.sheet)frames.push({frame:frame.url(),geometry});
+ }
+ screenshots.push({view:viewId,approvedReference:reference,file,viewport:'390x844',dpr:3,frames});
 }
 
 try{

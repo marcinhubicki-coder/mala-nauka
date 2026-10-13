@@ -31,6 +31,7 @@ async function metrics(page){return page.evaluate(()=>{
   answers:[...document.querySelectorAll('.scenic-answer')].map(n=>{const r=n.getBoundingClientRect();return {id:n.dataset.id,text:n.textContent,disabled:n.disabled,x:r.x,y:r.y,w:r.width,h:r.height,labelFits:n.querySelector('.scenic-answer-label').scrollWidth<=n.clientWidth&&n.querySelector('.scenic-answer-label').getBoundingClientRect().height<=n.clientHeight-8,lineCount:Math.round(n.querySelector('.scenic-answer-label').getBoundingClientRect().height/parseFloat(getComputedStyle(n.querySelector('.scenic-answer-label')).lineHeight)),icons:n.querySelectorAll('svg,img').length};}),
   raster:host?.dataset.mapImage,activeCount:svg?.querySelectorAll('.country').length||0,highlight:!!svg?.querySelector('.scenic-country-overlay'),
   neighbors:Number(svg?.dataset.visibleNeighbors),labels:Number(host?.dataset.labelCount),crop:svg?.getAttribute('viewBox'),microstate:host?.dataset.microstate,
+  captionFits:(()=>{const inner=document.querySelector('.scenic-map-inner').getBoundingClientRect(),title=document.querySelector('#scenic-country-name').getBoundingClientRect(),capital=document.querySelector('#scenic-country-capital').getBoundingClientRect(),map=document.querySelector('.scenic-europe-map').getBoundingClientRect();return title.top>=inner.top+3&&capital.bottom<=map.top+2&&document.querySelector('#scenic-country-name').scrollWidth<=document.querySelector('#scenic-country-name').clientWidth+1;})(),
   capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
   overflowX:document.documentElement.scrollWidth>innerWidth,overflowY:document.documentElement.scrollHeight>innerHeight,
   animations:document.getAnimations().filter(a=>a.playState==='running').length,sand:app.dataset.sandPhase,qa:{enabled:app.dataset.qa,at:app.dataset.qaCaptureAt,captured:app.dataset.qaCaptured,progress:app.dataset.sandProgress},
@@ -71,7 +72,7 @@ try{
    const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.icons===0&&b.h>=40&&b.y+b.h<sample.h));
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
    if(sample.mode!=='question'){
-    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);

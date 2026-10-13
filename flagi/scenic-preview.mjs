@@ -69,6 +69,12 @@ function showFlag(record){
   cloth.style.width=Math.min(hero.clientWidth*.70,hero.clientHeight*.94*ratio)+'px';paintFlags(flagHost);
   app.dataset.country=record.id;
 }
+function fitCaption(){
+  const title=$('scenic-country-name');if(!title.textContent)return;
+  title.style.removeProperty('font-size');
+  const available=title.clientWidth;if(!available)return;
+  if(title.scrollWidth>available){const size=parseFloat(getComputedStyle(title).fontSize);title.style.fontSize=Math.max(22,size*available/title.scrollWidth)+'px';}
+}
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect(),h=hero.getBoundingClientRect(),p=$('scenic-paper-row').getBoundingClientRect();
   const top=viewport.height*.215;sheet.style.top=top+'px';sheet.style.height=viewport.height*.344+'px';
@@ -102,7 +108,7 @@ async function respond(chosenId){
   $('scenic-map-flag').src=new URL('assets/flags/cloth-prebaked/'+record.id+'.webp',document.baseURI).href;
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent='Stolica: '+record.capital;
-  sheet.dataset.long=String(record.country.length>20);placeScroll();sheet.setAttribute('aria-hidden','false');
+  sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
   const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
   let timer,mapResult;
   try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs))]);}
@@ -112,7 +118,7 @@ async function respond(chosenId){
     mapHost.replaceChildren();const note=document.createElement('p');note.className='scenic-map-unavailable';note.textContent='Mapa jest chwilowo niedostępna.';mapHost.append(note);
   }
   // Map decoding and the fold snapshot precede the entire learning interval.
-  await document.fonts.ready;if(!alive(owner))return;
+  await document.fonts.ready;if(!alive(owner))return;fitCaption();
   await preparePaper(sheet,mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
   await foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
@@ -158,7 +164,7 @@ const ticker=setInterval(()=>{
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
 // Test-only capture bridge: freeze Canvas without changing the photographed UI.
 if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
-const observer=new ResizeObserver(()=>{fitFlag();placeScroll();});observer.observe($('scenic-stage'));
+const observer=new ResizeObserver(()=>{fitFlag();placeScroll();fitCaption();});observer.observe($('scenic-stage'));
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});

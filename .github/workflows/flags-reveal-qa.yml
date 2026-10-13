@@ -1,0 +1,59 @@
+name: Flags v2 atlas visual QA
+
+on:
+  push:
+    branches: [feature/flags-game-v2]
+    paths:
+      - 'flagi/reveal-v2.css'
+      - 'flagi/reveal-v2.mjs'
+      - 'flagi/adventure-game.mjs'
+      - 'flagi/preview-fixture.mjs'
+      - 'adventure-preview.mjs'
+      - 'tools/flags-reveal-qa.mjs'
+      - '.github/workflows/flags-reveal-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flags-reveal-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JS and 3-state logic
+        run: |
+          node --check flagi/reveal-v2.mjs
+          node --check flagi/adventure-game.mjs
+          node --check tools/flags-reveal-qa.mjs
+          node --test tests/flags-reveal-v2.test.mjs
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium
+      - name: Capture eight phone screenshots
+        id: visual
+        continue-on-error: true
+        run: node tools/flags-reveal-qa.mjs
+      - name: Commit screenshots and measured rectangles
+        if: always()
+        run: |
+          git add docs/flags-adventure/qa-reveal-v2/ || true
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' \
+                -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+                commit -m 'test(flags): capture atlas reveal screenshots [skip ci]'
+            git pull --rebase origin feature/flags-game-v2
+            git push origin HEAD:feature/flags-game-v2
+          fi
+      - name: Check visual QA result
+        if: steps.visual.outcome == 'failure'
+        run: exit 1

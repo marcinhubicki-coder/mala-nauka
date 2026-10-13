@@ -42,6 +42,14 @@ try{
    if(sample.state!=='question'){
     if(sample.state==='correct'||sample.state==='next')await page.locator('.scenic-answer[data-id="'+sample.country+'"]').click();
     else await page.locator('.scenic-answer[data-id="pl"]').click();
+    if(sample.name==='02-belarus-correct'){
+      // The clickable atlas should look like a folded object, not just a
+      // wipe mask. Capture three moments before the map is fully readable.
+      for(const [name,ms] of [['a-first',145],['b-crease',265],['c-flat',325]]){
+        await page.waitForTimeout(ms);
+        await page.screenshot({path:join(OUT,'unroll-'+name+'.jpg'),type:'jpeg',quality:83,fullPage:true});
+      }
+    }
     await page.waitForFunction(()=>document.querySelector('.scenic-map-scroll')?.classList.contains('is-open'),{timeout:15000});
     if(sample.state==='next'){
       const button=page.locator('.scenic-swipe-knob'); // correct has no manual button; use wrong case.
@@ -54,6 +62,8 @@ try{
       await page.mouse.down();
       await page.mouse.move(b.x+b.width-18,a.y+a.height/2,{steps:12});
       await page.mouse.up();
+      await page.waitForTimeout(300);
+      await page.screenshot({path:join(OUT,'rollup-in-flight.jpg'),type:'jpeg',quality:83,fullPage:true});
       await page.waitForFunction(()=>document.querySelector('#scenic-task')?.textContent==='Zadanie 2',{timeout:15000});
     }
    }

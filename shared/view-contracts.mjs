@@ -1,5 +1,6 @@
 // Declarative view contract. Editor and renderer share stable IDs; no DOM shape hashes.
 import {homeDecorationAtoms} from './home-atoms.mjs';
+import {SPELLING_SETTINGS_CONTRACT} from './spelling-settings-contract.mjs';
 
 const MODES=['spelling','math','english','flags','reading'];
 const row=(id,recipe,kind,parent,level='atom',action=null,mode=null)=>({id,recipe,kind,parent,level,...(action?{action}:{}),...(mode?{mode}:{})});
@@ -103,7 +104,12 @@ const pinFrame=backAction=>[
 const playerPin=pinFrame('edit-player');
 playerPin[0]={...playerPin[0],variantActions:Object.freeze({create:'edit-player',edit:'settings',delete:'settings'})};
 const playerUnlock=pinFrame('players');
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item)))});
+const spellingSettings=Object.values(SPELLING_SETTINGS_CONTRACT).map(item=>({
+ ...item,
+ ...(item.id==='spelling-back'?{action:'home'}:{}),
+ ...(item.id==='spelling-start'?{action:'submit-setup'}:{})
+}));
+export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item)))});
 // Build the immutable contract index once. Renderers reuse it instead of
 // repeatedly scanning up to 90 entries for each labelled component.
 const VIEW_INDEX=Object.freeze(Object.fromEntries(Object.entries(VIEW_CONTRACTS).map(([view,items])=>[view,new Map(items.map(item=>[item.id,item]))])));

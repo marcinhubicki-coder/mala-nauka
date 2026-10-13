@@ -73,7 +73,10 @@ function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
   title.style.removeProperty('font-size');
   const available=title.clientWidth;if(!available)return;
-  if(title.scrollWidth>available){const size=parseFloat(getComputedStyle(title).fontSize);title.style.fontSize=Math.max(22,size*available/title.scrollWidth)+'px';}
+  const caption=title.parentElement,style=getComputedStyle(title);
+  const height=caption.clientHeight-$('scenic-country-capital').getBoundingClientRect().height-2;
+  const scale=Math.min(1,available/title.scrollWidth,height/title.getBoundingClientRect().height);
+  if(scale<1)title.style.fontSize=Math.max(22,parseFloat(style.fontSize)*scale*.98)+'px';
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect(),h=hero.getBoundingClientRect(),p=$('scenic-paper-row').getBoundingClientRect();

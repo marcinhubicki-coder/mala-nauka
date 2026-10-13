@@ -39,7 +39,7 @@ async function metrics(page){return page.evaluate(()=>{
  });}
 async function check(name,browser,options,run){
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
- page.on('pageerror',e=>errors.push(e.message));page.on('console',msg=>{if(msg.type()==='error'&&msg.text().startsWith('[scenic]'))errors.push(msg.text());});
+ page.on('pageerror',e=>errors.push(e.message));page.on('crash',()=>errors.push('Browser renderer crashed'));page.on('console',msg=>{if(msg.type()==='error'&&msg.text().startsWith('[scenic]'))errors.push(msg.text());});
  try{await run(page);const result={name,...await metrics(page),errors};reports.push(result);assert.equal(errors.length,0,'JS errors');console.log(JSON.stringify({name,status:'PASS',state:result.state}));}
  catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,error.stack||String(error));}
  finally{await context.close();}
@@ -65,6 +65,9 @@ try{
    {id:'li',mode:'correct',w:390,h:844,name:'07-liechtenstein'},
    {id:'va',mode:'wrong',w:390,h:844,name:'08-vatican'},
    {id:'ba',mode:'wrong',w:390,h:700,name:'09-long-country'},
+   {id:'gb',mode:'correct',w:390,h:844,name:'13-two-word-title'},
+   {id:'mk',mode:'wrong',w:390,h:700,name:'14-two-word-title-short'},
+   {id:'li',mode:'question',w:390,h:844,name:'15-two-line-question'},
    {id:'pl',mode:'correct',w:390,h:844,safe:true,name:'10-pwa-safe-area'}
   ])await check(engine+'-'+sample.name,browser,{viewport:{width:sample.w,height:sample.h}},async page=>{
    await open(page,sample.id);if(sample.safe)await page.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px}'});

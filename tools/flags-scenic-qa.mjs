@@ -94,7 +94,7 @@ try{
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
-    const captures=[['falling',.10],['settled',.40],['forming',.76],['end',.93]];
+    const captures=[['falling',.10],['settled',.40],['forming',.84],['end',.93]];
     await page.evaluate(f=>document.querySelector('#scenic-screen').dataset.qaCaptureAt=String(f),captures[0][1]);
     await slide(page);
     for(let index=0;index<captures.length;index++){

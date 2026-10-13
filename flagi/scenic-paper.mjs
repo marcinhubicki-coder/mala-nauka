@@ -17,9 +17,12 @@ export async function preparePaper(sheet,mapResult,record){
   for(const path of svg.querySelectorAll('.country')){if(path.dataset.country!==record.id){path.setAttribute('fill','#b9d69c');continue;}path.setAttribute('fill','#087235');path.setAttribute('fill-opacity','.86');path.setAttribute('style','mix-blend-mode:multiply');path.setAttribute('stroke','#fff8d9');path.setAttribute('stroke-width','1.7');}
   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.setAttribute('fill','none');halo.setAttribute('stroke','#fffde0');halo.setAttribute('stroke-width','2.4');}
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
-  try{ctx.save();ctx.beginPath();ctx.roundRect(x,y,w,h,7);ctx.clip();ctx.drawImage(await bitmap(url),x,y,w,h);ctx.restore();}finally{URL.revokeObjectURL(url);}
-  ctx.font='850 10px ScenicBody';ctx.textAlign='center';
-  for(const label of inner.querySelectorAll('.scenic-map-label')){const r=label.getBoundingClientRect();ctx.fillStyle=label.classList.contains('is-selected')?'#fcffe4':'#284a38';ctx.fillText(label.textContent,r.left-base.left+r.width/2,r.top-base.top+r.height*.8);}
+  const surface=document.createElement('canvas');surface.width=w*2;surface.height=h*2;const ink=surface.getContext('2d');ink.scale(2,2);
+  try{ink.drawImage(await bitmap(url),0,0,w,h);}finally{URL.revokeObjectURL(url);}
+  ink.font='850 10px ScenicBody';ink.textAlign='center';
+  for(const label of inner.querySelectorAll('.scenic-map-label')){const r=label.getBoundingClientRect();ink.fillStyle=label.classList.contains('is-selected')?'#fcffe4':'#284a38';ink.fillText(label.textContent,r.left-mapRect.left+r.width/2,r.top-mapRect.top+r.height*.8);}
+  // Match the live atlas feathering, so the final frame has no hard-edge pop.
+  ink.save();ink.globalCompositeOperation='destination-in';ink.translate(w/2,h/2);ink.scale(w*.8,h*.78);const feather=ink.createRadialGradient(0,0,0,0,0,1);feather.addColorStop(.55,'#000');feather.addColorStop(.81,'#0009');feather.addColorStop(1,'#0000');ink.fillStyle=feather;ink.fillRect(-1,-1,2,2);ink.restore();ctx.drawImage(surface,x,y,w,h);
  }else{ctx.fillStyle='#456754';ctx.font='700 14px ScenicBody';ctx.textAlign='center';ctx.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.6,width-28);}
  for(const element of [inner.querySelector('.scenic-map-caption strong'),inner.querySelector('.scenic-map-caption span')]){
   const r=element.getBoundingClientRect(),style=getComputedStyle(element),size=parseFloat(style.fontSize);ctx.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;ctx.fillStyle=style.color;ctx.textAlign='left';
@@ -37,11 +40,11 @@ export async function foldPaper(sheet,{opening,timeline,reduced}){
  for(const [index,leaf] of leaves.entries()){
   const start=index*.23,end=Math.min(.99,start+.48),shift=index*100;
   const flat={transform:'translateY(0) rotateX(0deg)',opacity:1},closed={transform:`translateY(${shift}%) rotateX(${index%2?79:-79}deg)`,opacity:index?0:1};
-  const frames=[{...closed,offset:0},{...closed,offset:start},{transform:'translateY(0) rotateX(3deg)',opacity:1,offset:end},{...flat,offset:1}];
+  const frames=[{...closed,offset:0},{...closed,offset:start,easing:'cubic-bezier(.25,.7,.22,1)'},{transform:'translateY(0) rotateX(3deg)',opacity:1,offset:end},{...flat,offset:1}];
   const shades=[{opacity:.65,offset:0},{opacity:.65,offset:start},{opacity:.18,offset:(start+end)/2},{opacity:.025,offset:end},{opacity:0,offset:1}];
   const lights=[{opacity:.1,offset:0},{opacity:.1,offset:start},{opacity:.7,offset:(start+end)/2},{opacity:.2,offset:end},{opacity:.07,offset:1}];
   const reverse=f=>opening?f:f.slice().reverse().map(x=>({...x,offset:1-x.offset}));
-  const options={duration,fill:'both',easing:'cubic-bezier(.25,.7,.22,1)'};
+  const options={duration,fill:'both',easing:'linear'};
   operations.push(timeline.animate(leaf,reverse(frames),options),timeline.animate(leaf.querySelector('.scenic-fold-shade'),reverse(shades),options),timeline.animate(leaf.querySelector('.scenic-fold-light'),reverse(lights),options));
  }
  operations.push(timeline.animate(sheet.querySelector('.scenic-paper-shadow'),opening?[{opacity:.2,transform:'scaleX(.8) scaleY(.65)'},{opacity:.48,transform:'scaleX(1) scaleY(1.1)',offset:.45},{opacity:.25,transform:'scaleX(.96) scaleY(.65)'}]:[{opacity:.25,transform:'scaleX(.96) scaleY(.65)'},{opacity:.5,transform:'scaleX(1) scaleY(1.1)',offset:.6},{opacity:0,transform:'scaleX(.8) scaleY(.5)'}],{duration,fill:'both'}));

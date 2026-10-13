@@ -24,6 +24,9 @@ const updateView=(root,settings,view)=>{
  if(view==='home')applyHomeGeometry(root,settings);
  // One route can still have legacy and compiled renderers (e.g. Maths
  // standalone versus the shared game wizard). Never apply a foreign contract.
+ // The spelling wizard owns a synchronous DOM replacement during setup;
+ // skip legacy inspection until its 29 stable controls have mounted.
+ if(view==='spelling-settings'&&root.dataset.dsContractPending==='spelling-settings')return;
  if(!studioRuntime&&hasViewContract(view)){
   const declared=root.querySelectorAll('[data-ds-contract="v2"]').length;
   if(declared===viewContract(view).length)return applyCompiledView(root,settings,view);

@@ -16,3 +16,9 @@ test('round award remains a live points value inside a pearl bubble',()=>{
  assert.match(body,/scoreResult\(result\)/);
  assert.match(css,/height:calc\(82 \* var\(--result-u\)\)/);
 });
+
+test('bunny is scoped to spelling and stays in the offline bootstrap',()=>{
+ assert.match(body,/spelling \? '<div class="result-scenery"/);
+ const bootstrap=readFileSync(new URL('../tools/offline-cache-policy.mjs',import.meta.url),'utf8');
+ for(const name of ['result-hero-retina-v5.webp','result-meadow-retina-v4.webp'])assert.ok(bootstrap.includes(name));
+});

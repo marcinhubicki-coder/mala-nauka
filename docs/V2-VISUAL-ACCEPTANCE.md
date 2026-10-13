@@ -24,3 +24,10 @@ W V2 klasy `result-scenery`, `result-hero`, `result-meadow` były obecne w CSS, 
 3. Edycja w Design Studio oraz rezultat w PWA muszą pochodzić z tego samego modelu.
 4. Przywrócone ilustracje nie mogą zwiększać kosztu archiwum scen — są częścią małego zestawu UI.
 5. Test E2E i fizyczny iPhone/Safari przed promocją na `main`.
+
+## Pomiary układu Home ze screenshotu IMG_2946.png
+Pełny screenshot ma 946 × 2048 px. Kolorowe wnętrza kafli zaczynają się w przybliżeniu:
+- górny rząd: różowy (37,1389), niebieski (334,1386), żółty (628,1386);
+- dolny rząd: zielony (37,1671), fioletowy (482,1671).
+
+Aktualny model `HOME_TILES`, przeliczony na canvas 390 × 844, przewiduje początek górnego rzędu y≈1377 px i dolnego y≈1664 px. Różnice w obrębie 7–12 px mogą pochodzić z paddingu podkładów SVG i zaokrągleń. **Nie przestawiać całych rzędów na podstawie niezweryfikowanego podglądu**: najpierw overlay i stan faktyczny CSS.

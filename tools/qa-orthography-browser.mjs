@@ -13,32 +13,33 @@ try{
  await page.locator('[data-action="guest-player"]').click();
  await page.locator('#app[data-view="home"]').waitFor();
  await page.locator('[data-action="choose-mode"][data-mode="spelling"]').click();
- await page.locator('#app[data-view="wizard"][data-mode="spelling"]').waitFor();
- await page.locator('#app [data-spelling-wizard-v2="true"]').waitFor({timeout:8500}).catch(async error=>{
-  const diagnostic=await page.evaluate(()=>({url:location.href,view:document.querySelector('#app')?.dataset.view,mode:document.querySelector('#app')?.dataset.mode,pending:document.querySelector('#app')?.dataset.dsContractPending,card:document.querySelector('#app .setup-card')?.outerHTML.slice(0,180),html:document.querySelector('#app')?.innerHTML.slice(0,300)}));
-  throw new Error('Ortografia wizard was not hydrated: '+JSON.stringify({diagnostic,errors})+'; '+error.message.slice(0,80));
+ const gameFrame=page.frameLocator('iframe[data-mode-host="spelling"]');
+ await gameFrame.locator('#app[data-view="wizard"][data-mode="spelling"]').waitFor({timeout:11000});
+ await gameFrame.locator('#app [data-spelling-wizard-v2="true"]').waitFor({timeout:9000}).catch(async error=>{
+  const diagnostic=await gameFrame.locator('#app').evaluate(el=>({view:el.dataset.view,mode:el.dataset.mode,pending:el.dataset.dsContractPending,html:el.innerHTML.slice(0,500)})).catch(()=>({missingApp:true}));
+  throw new Error('Hosted Ortografia wizard did not hydrate: '+JSON.stringify({diagnostic,errors})+'; '+error.message.slice(0,80));
  });
- assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29,'Wizard has an incomplete component contract');
- const before=await page.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
+ assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),29,'Wizard has an incomplete component contract');
+ const before=await gameFrame.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);
- await page.locator('[data-ds-element="spelling-scope-categories"]').click();
- await page.locator('[data-ds-element="spelling-level-1"]').click();
- await page.locator('[data-ds-element="spelling-limit-count"]').click();
- await page.locator('[data-ds-element="spelling-word-limit-10"]').click();
- await page.waitForTimeout(90);
- assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),29,'Changing spelling options lost component identity');
- assert.equal(await page.evaluate(node=>node.isConnected&&document.querySelector('[data-ds-element="spelling-level-jelly"]')===node,before),true);
- assert.equal(await page.locator('input[name="wordLimit"]:checked').inputValue(),'10');
- await page.locator('#setup-form .start-button').click();
- await page.locator('#app[data-view="game"][data-mode="spelling"]').waitFor({timeout:13000});
- assert.equal(await page.locator('#app .answers .answer').count(),2);
- assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Gameplay must render exactly 17 contract pieces');
- assert.equal(await page.locator('#app .spelling-question-card').count(),1);
- await page.locator('#app .answers .answer').first().click();
- await page.waitForFunction(()=>/feedback/.test(document.querySelector('#app')?.dataset.state||''),{timeout:10000});
- const state=await page.locator('#app').getAttribute('data-state');
+ await gameFrame.locator('[data-ds-element="spelling-scope-categories"]').click();
+ await gameFrame.locator('[data-ds-element="spelling-level-1"]').click();
+ await gameFrame.locator('[data-ds-element="spelling-limit-count"]').click();
+ await gameFrame.locator('[data-ds-element="spelling-word-limit-10"]').click();
+ await page.waitForTimeout(100);
+ assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),29,'Changing spelling options lost component identity');
+ assert.equal(await gameFrame.locator('#app').evaluate((app,prior)=>prior.isConnected&&app.querySelector('[data-ds-element="spelling-level-jelly"]')===prior,before),true);
+ assert.equal(await gameFrame.locator('input[name="wordLimit"]:checked').inputValue(),'10');
+ await gameFrame.locator('#setup-form .start-button').click();
+ await gameFrame.locator('#app[data-view="game"][data-mode="spelling"]').waitFor({timeout:13000});
+ assert.equal(await gameFrame.locator('#app .answers .answer').count(),2);
+ assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),17,'Gameplay must render exactly 17 contract pieces');
+ assert.equal(await gameFrame.locator('#app .spelling-question-card').count(),1);
+ await gameFrame.locator('#app .answers .answer').first().click();
+ await gameFrame.locator('#app[data-state^="feedback"]').waitFor({timeout:10000});
+ const state=await gameFrame.locator('#app').getAttribute('data-state');
  assert.ok(['feedback-correct','feedback-wrong'].includes(state),state);
- assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),17,'Answer feedback replaced the game component tree');
+ assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),17,'Answer feedback replaced the game component tree');
  await page.close();
 
  const views=[

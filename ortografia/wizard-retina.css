@@ -112,11 +112,3 @@ body:has(#app[data-view="wizard"][data-mode="spelling"])::before { content:none;
 #app[data-mode="spelling"][data-view="wizard"] .wizard-note{position:relative;isolation:isolate;align-self:center;padding:calc(5 * var(--wizard-u)) calc(10 * var(--wizard-u));max-width:100%;margin-left:auto;margin-right:auto;line-height:1.25}
 #app[data-mode="spelling"][data-view="wizard"] .wizard-note::before{content:"";position:absolute;z-index:-1;inset:-2px -6px;border-radius:999px;background:radial-gradient(ellipse,#fffffff0 20%,#ffffffbb 60%,#ffffff00 100%);filter:blur(5px);pointer-events:none}
 #app[data-mode="spelling"][data-view="wizard"] .start-button{justify-content:center;text-align:center}
-
-/* The production screenshot includes this educational line between the
-   setup sheet and CTA. Its text survives hydration, but a competing recipe
-   used to make it display:none. Keep deliberate [hidden] intact. */
-#app[data-mode="spelling"][data-view="wizard"] .wizard-note:not([hidden]){
- display:block!important;
- font-weight:400;
-}

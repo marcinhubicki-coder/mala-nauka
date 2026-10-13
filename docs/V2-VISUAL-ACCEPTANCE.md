@@ -46,3 +46,6 @@ Po wybraniu widoku błędnej odpowiedzi Studio ma dwa warianty: `IMG_2948` (uchw
 
 ## Utrwalony gradient slidera
 Gest wykonywany klawiaturą i odtwarzany w Studio dotąd nie odsłaniał wypełnienia, bo CSS uzależniał jego widoczność od `.is-dragging` pochodzącego z dotyku/myszy. Wypełnienie jest teraz widoczne również przy `aria-valuenow` większym od zera; blisko końca znika tekst instrukcji, żeby nie nachodził na uchwyt. Studio odtwarza 50% i 99% bez zakończenia rundy.
+
+## Przywrócenie edukacyjnej informacji pod formularzem (13.10.2026)
+Zmierzyliśmy, że `.wizard-note` istniał w DOM, ale miał `display:none`. Przyczyną był zapis w **wspólnym modelu Design Studio**: `design-system/config.json → elementStyles.text-wizard-note.visibility = removed`. Nie nadpisujemy tego CSS `!important`; przywrócenie elementu odbywa się przez usunięcie niedozwolonego dla zatwierdzonego wzorca ukrycia z konfiguracji. Domyślną informacją przy rundzie na czas jest „Po pomyłce czas czeka, aż poznasz odpowiedź.”. Test sprawdza widoczność i odstępy po hydratacji w rzeczywistym PWA.

@@ -23,7 +23,74 @@ try{
  assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17);
  let wrong=0,correct=0;
  for(let question=1;question<=10;question++){
-  await frame.locator('.time-block .timer').getByText(question+'/10').waitFor({timeout:13000});
+  await frame.locator('.time-block .timer').filter({hasText:new RegExp('^'+question+'/10
+  await frame.locator('.answers .answer:not([disabled])').first().waitFor({timeout:13000});
+  await frame.locator('.answers .answer').first().click();
+  await frame.locator('#app[data-state^=feedback]').waitFor({timeout:12000});
+  const response=await frame.locator('#app').getAttribute('data-state');
+  assert.ok(['feedback-correct','feedback-wrong'].includes(response),'Unexpected feedback at '+question+': '+response);
+  assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17);
+  if(response==='feedback-wrong'){
+   wrong++;
+   const rail=frame.locator('.spelling-continue-rail');
+   await rail.focus();
+   for(let i=0;i<10;i++)await rail.press('ArrowRight');
+  }else correct++;
+  if(question<10){
+   await frame.locator('.time-block .timer').filter({hasText:new RegExp('^'+(question+1)+'/10
+  }
+ }
+ await frame.locator('#app[data-view=results]').waitFor({timeout:22000});
+ assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),18);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-repeat]').count(),1);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-history]').count(),1);
+ const scores=await frame.locator('.round-summary-line').innerText();
+ assert.match(scores,/10/);
+ assert.equal(correct+wrong,10);
+ assert.deepEqual(errors,[]);
+ console.log(JSON.stringify({ok:true,completed:10,correct,wrong,results:true,jsErrors:0,summary:scores.slice(0,120)}));
+}finally{await page?.close();await browser.close();}
+)}).waitFor({timeout:13000});
+  await frame.locator('.answers .answer:not([disabled])').first().waitFor({timeout:13000});
+  await frame.locator('.answers .answer').first().click();
+  await frame.locator('#app[data-state^=feedback]').waitFor({timeout:12000});
+  const response=await frame.locator('#app').getAttribute('data-state');
+  assert.ok(['feedback-correct','feedback-wrong'].includes(response),'Unexpected feedback at '+question+': '+response);
+  assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17);
+  if(response==='feedback-wrong'){
+   wrong++;
+   const rail=frame.locator('.spelling-continue-rail');
+   await rail.focus();
+   for(let i=0;i<10;i++)await rail.press('ArrowRight');
+  }else correct++;
+  if(question<10){
+   await frame.locator('.time-block .timer').getByText((question+1)+'/10').waitFor({timeout:13000});
+  }
+ }
+ await frame.locator('#app[data-view=results]').waitFor({timeout:22000});
+ assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),18);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-repeat]').count(),1);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-history]').count(),1);
+ const scores=await frame.locator('.round-summary-line').innerText();
+ assert.match(scores,/10/);
+ assert.equal(correct+wrong,10);
+ assert.deepEqual(errors,[]);
+ console.log(JSON.stringify({ok:true,completed:10,correct,wrong,results:true,jsErrors:0,summary:scores.slice(0,120)}));
+}finally{await page?.close();await browser.close();}
+)}).waitFor({timeout:13000});
+  }
+ }
+ await frame.locator('#app[data-view=results]').waitFor({timeout:22000});
+ assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),18);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-repeat]').count(),1);
+ assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-history]').count(),1);
+ const scores=await frame.locator('.round-summary-line').innerText();
+ assert.match(scores,/10/);
+ assert.equal(correct+wrong,10);
+ assert.deepEqual(errors,[]);
+ console.log(JSON.stringify({ok:true,completed:10,correct,wrong,results:true,jsErrors:0,summary:scores.slice(0,120)}));
+}finally{await page?.close();await browser.close();}
+)}).waitFor({timeout:13000});
   await frame.locator('.answers .answer:not([disabled])').first().waitFor({timeout:13000});
   await frame.locator('.answers .answer').first().click();
   await frame.locator('#app[data-state^=feedback]').waitFor({timeout:12000});

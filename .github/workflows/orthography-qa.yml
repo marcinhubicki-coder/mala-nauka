@@ -12,6 +12,8 @@ on:
       - "tools/qa-orthography-complete-browser.mjs"
       - "tools/qa-reference-studio-browser.mjs"
       - "design-system/reference-calibration.mjs"
+      - "tools/build-design.mjs"
+      - "tests/v2-offline-scene-cache.test.mjs"
       - "tests/v2-spelling-*.mjs"
       - "design-system/config.json"
       - "design-system/git-client.mjs"

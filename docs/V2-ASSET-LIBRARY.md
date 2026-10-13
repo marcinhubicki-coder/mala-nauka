@@ -23,3 +23,11 @@ Przy około 119 MB obrazów, 401 plików w `assets/scenes/` zajmuje 93,4 MB. Sce
 - Zmiany wyglądu można sprawdzić w bezpośrednim preview V2. Produkcja pozostaje nienaruszona.
 
 Ta migracja dotyczy **rozmiaru nowego deploymentu**, nie natychmiastowego usunięcia historycznej zajętości storage na koncie Vercel.
+
+## Trwały cache scen na iPhonie — październik 2026
+
+Zwykłe wydanie zmienia hash `mala-nauka-ds-…` i czyści starsze pliki kodu. **Pobrane podczas gry sceny** trafiają teraz do osobnego cache `mala-nauka-scenes-v1`, który przetrwa aktualizacje JavaScript, CSS i Design Studio. Wpisy mają ten sam URL w kolejnych wersjach, bo sceny są zamrożone w `assets/library-v1`.
+
+Przy każdym żądaniu z `/assets/scenes/` Service Worker najpierw szuka obrazu w trwałej pamięci, a nie pobiera go ponownie. Cache ma limit **160 ostatnio pobranych ilustracji** (liczba plików, nie gwarantowany rozmiar w MB). W razie braku miejsca obraz nadal ładuje się z sieci — cache nie może blokować rozgrywki. Ta strategia nie umożliwia korzystania offline z nigdy niepobranych zdjęć.
+
+Gdy zmieni się zawartość istniejących ścieżek, trzeba utworzyć nową wersję biblioteki i cache (np. `-v2`), a nie niejawnie nadpisywać stare pliki. Weryfikować Safari/PWA po aktualizacji i offline, nie tylko środowisko Chromium.

@@ -42,3 +42,9 @@ Pełna biblioteka dopiero po walidacji: node tools/build-flag-cloth-assets.mjs -
 Workflow .github/workflows/flags-assets-pilot.yml generuje pilotaż na izolowanej gałęzi. Nie zmienia main ani Design Studio.
 
 Warunki akceptacji: poprawne krawędzie Nepalu, kwadrat Szwajcarii, detale flag, wszystkie pliki do 150 KiB, brak Canvas przy trafieniu WebP, poprawne przejścia odpowiedzi, offline i pomiary na fizycznym iPhone 13 Pro. Tych testów nie wolno uznać za wykonane, zanim nie zostaną rzeczywiście potwierdzone.
+
+## Biblioteka WebP — 195 państw (2026-10-13)
+
+Generator ukończył 195/195 plików w assets/flags/cloth-prebaked/, łącznie 16,18 MiB. Żaden z plików nie przekracza 150 KiB. Manifest i lista offline w sw.js są zsynchronizowane. Aplikacja preferuje WebP dla wszystkich państw, a Canvas jest fallbackiem. Przy wdrożeniu należy sprawdzić widok flag w preview i offline; nie ma jeszcze potwierdzenia wydajności wszystkich krajów na fizycznym iPhone.
+
+Preview GitHub/Vercel: osobny branch feature/flags-game-v2; bez zmian na main. Ten commit aktualizuje dokumentację po wygenerowaniu zasobów i pozwala CI zbudować preview z pełną biblioteką.

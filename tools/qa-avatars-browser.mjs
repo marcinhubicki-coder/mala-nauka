@@ -93,6 +93,13 @@ try{
   assert.equal(await page.locator('.pin-dots > span.filled').count(),i+1);
   assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),i!==3);
  }
+ await page.locator('[data-action=pin-backspace]').click();
+ assert.equal(await page.locator('.pin-dots > span.filled').count(),3,'PIN backspace did not update existing dots');
+ assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),true,'PIN submit stayed enabled after backspace');
+ assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('.pin-keypad')===element,keypadHandle),true,'PIN backspace recreated the keyboard');
+ await page.locator('[data-action=pin-digit][data-digit="4"]').click();
+ assert.equal(await page.locator('.pin-dots > span.filled').count(),4);
+ assert.equal(await page.locator('.pin-keypad [data-action="submit-pin"]').isDisabled(),false);
  await page.locator('[data-action=submit-pin]').click();
  await page.locator('#app[data-view=home]').waitFor({timeout:15000});
  await page.locator('[data-action=settings]').click();

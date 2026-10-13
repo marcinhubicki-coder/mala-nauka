@@ -242,3 +242,6 @@ body:has(#app[data-view="results"]){background:transparent}
  0 calc(5 * var(--result-u)) calc(12 * var(--result-u)) #58468b1d;
 }
 #app[data-view="results"][data-mode="spelling"] .result-points-core strong{font-size:calc(29 * var(--result-u))}
+
+/* Paint cloud whitening OVER scenery, UNDER title and interactions. */
+#app[data-view="results"][data-mode="spelling"] .result-v4::before{z-index:1}

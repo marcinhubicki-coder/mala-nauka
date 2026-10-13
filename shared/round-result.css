@@ -32,7 +32,7 @@ html:has(#app[data-view="results"]),body:has(#app[data-view="results"]){height:1
 @keyframes result-points-pop{0%{opacity:0;transform:scale(.45)}56%{opacity:1;transform:scale(1.15)}78%{transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
 .result-entering .result-points-core{animation:result-points-pop 760ms cubic-bezier(.2,.78,.2,1) calc(var(--reveal-delay) + 160ms) both}
 .result-sheet{position:absolute;z-index:2;left:0;right:0;top:calc(202 * var(--result-u));bottom:max(calc(16 * var(--result-u)),calc(var(--result-safe-bottom) - 10px));display:grid;grid-template-rows:calc(114 * var(--result-u)) calc(75 * var(--result-u)) calc(68 * var(--result-u)) minmax(0,1fr) calc(107 * var(--result-u));gap:calc(8 * var(--result-u));padding:0 calc(16 * var(--result-u)) calc(14 * var(--result-u));background:none}
-.result-heading{min-width:0;min-height:0;padding-top:calc(24 * var(--result-u))}
+.result-heading{min-width:0;min-height:0;padding-top:calc(20 * var(--result-u))}
 .result-heading .eyebrow{display:block;color:#7289a9;font-family:var(--ds-font-body),sans-serif;font-size:calc(10 * var(--result-u));font-weight:950;letter-spacing:calc(2.5 * var(--result-u));line-height:1.2;white-space:nowrap}
 .result-title-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin-top:calc(7 * var(--result-u));max-width:100%}
 .result-title-wrap h1{margin:0;font-family:var(--ds-font-body),ui-rounded,sans-serif;font-size:calc(38 * var(--result-u));font-weight:950;line-height:1.08;letter-spacing:calc(-1 * var(--result-u));color:var(--result-ink);white-space:nowrap}
@@ -43,8 +43,10 @@ html:has(#app[data-view="results"]),body:has(#app[data-view="results"]){height:1
 .result-exclamation{color:#ffc930}
 .result-title-star{position:absolute;z-index:0;right:calc(100% - 9 * var(--result-u));top:calc(-19 * var(--result-u));width:calc(52 * var(--result-u));height:calc(55 * var(--result-u));object-fit:contain;mix-blend-mode:multiply;transform:rotate(-12deg);pointer-events:none}
 .result-high-score .result-rays-right{top:calc(6 * var(--result-u));margin-left:calc(0 * var(--result-u));transform:translateY(-45%) rotate(-12deg)}
-.result-heading>p{width:min(76cqw,100%);margin:calc(5 * var(--result-u)) auto 0;color:var(--result-muted);font-size:calc(14 * var(--result-u));font-weight:650;line-height:1.3;white-space:nowrap}
-.round-summary{min-height:0;text-align:left}
+.result-heading>p{width:min(76cqw,100%);margin:calc(-7 * var(--result-u)) auto 0;color:var(--result-muted);font-size:calc(14 * var(--result-u));font-weight:650;line-height:1.3;white-space:nowrap}
+/* The large DynaPuff ink box has deliberate optical space. Keep the
+   score row below the subtitle while preserving the stat/detail grid tracks. */
+.round-summary{position:relative;top:calc(30 * var(--result-u));min-height:0;text-align:left}
 .round-summary-line{display:grid;grid-template-columns:max-content minmax(0,1fr) max-content;align-items:center;min-width:0;height:calc(32 * var(--result-u));margin-top:calc(5 * var(--result-u));padding:0 calc(7 * var(--result-u));color:var(--result-muted)}
 .round-score{display:flex;align-items:baseline;gap:calc(5 * var(--result-u));white-space:nowrap}.round-score strong{font-family:var(--ds-font-body),ui-rounded,sans-serif;font-size:calc(26 * var(--result-u));font-weight:950;line-height:1;letter-spacing:calc(-.7 * var(--result-u));color:var(--result-ink)}.round-score>span{font-size:calc(12 * var(--result-u));font-weight:650}
 .round-summary-line em{font-family:var(--ds-font-body),ui-rounded,sans-serif;font-size:calc(27 * var(--result-u));line-height:1;font-style:normal;font-weight:950;color:var(--result-rose);letter-spacing:calc(-.6 * var(--result-u))}

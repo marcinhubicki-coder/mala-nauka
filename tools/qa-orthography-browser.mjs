@@ -195,6 +195,17 @@ try{
 
   if(['spelling-results','spelling-rule'].includes(viewId))assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),18,'Results family incomplete: '+viewId);
   if(viewId==='spelling-results')assert.equal(await page.locator('.learning-stats-two .result-stat').count(),2);
+  if(viewId==='spelling-results'){
+   const spacing=await page.locator('#app').evaluate(root=>{
+    const bounds=selector=>{const r=root.querySelector(selector).getBoundingClientRect();return {top:r.top,bottom:r.bottom};};
+    return {subtitle:bounds('.result-heading>p'),score:bounds('.round-summary-line'),
+      progress:bounds('.round-progress'),stats:bounds('.learning-stats-two'),
+      details:bounds('.result-details'),actions:bounds('.result-actions')};
+   });
+   assert.ok(spacing.subtitle.bottom+10<spacing.score.top,'Subtitle overlaps round score: '+JSON.stringify(spacing));
+   assert.ok(spacing.progress.bottom<spacing.stats.top,'Progress bar overlaps counters: '+JSON.stringify(spacing));
+   assert.ok(spacing.details.bottom<=spacing.actions.top+2,'Review panel is hidden behind results actions: '+JSON.stringify(spacing));
+  }
   if(viewId==='spelling-rule'){
    await page.locator('.result-rule-dialog').waitFor({timeout:10000});
    assert.equal(await page.locator('[data-ds-subcontract="spelling-rule"]').count(),10,'Educational rule must declare all 10 semantic parts');

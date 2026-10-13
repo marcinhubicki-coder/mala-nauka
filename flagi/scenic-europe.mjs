@@ -11,7 +11,7 @@ function loadImage(){
  return imagePromise;
 }
 const boxOf=element=>{try{const b=element.getBBox();return {x:b.x,y:b.y,w:b.width,h:b.height,cx:b.x+b.width/2,cy:b.y+b.height/2}}catch{return null}};
-const intersect=(a,b)=>a.x<a.x+a.w&&a.x < b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y;
+const intersect=(a,b)=>a.x < b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y;
 function cropNear(svg,selected,mapWidth,mapHeight){
  const original=svg.viewBox.baseVal,box=boxOf(selected);
  if(!box)return null;

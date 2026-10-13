@@ -43,7 +43,7 @@ export async function saveReference(view,file){
  return size;
 }
 export class ReferenceCalibration {
- constructor(studio){this.studio=studio;this.cache=new Map();this.pending=new Set();this.opacity=50;}
+ constructor(studio){this.studio=studio;this.cache=new Map();this.pending=new Set();this.loaded=new Set();this.opacity=50;}
  bind(){
   const root=this.studio.workspace;
   root.addEventListener('change',event=>{
@@ -83,8 +83,8 @@ export class ReferenceCalibration {
   if(output)output.textContent=this.opacity+'%';
  }
  async load(view){
-  if(this.pending.has(view)||this.cache.has(view))return;
-  this.pending.add(view);
+  if(this.pending.has(view)||this.loaded.has(view))return;
+  this.pending.add(view);this.loaded.add(view);
   try{
    const data=await readReference(view);
    if(data?.image)this.cache.set(view,{url:URL.createObjectURL(data.image),...referenceAspect(data.width,data.height)});

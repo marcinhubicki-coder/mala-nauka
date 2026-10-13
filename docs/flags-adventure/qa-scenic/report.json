@@ -1,7 +1,7 @@
 {
-  "phase": "animation",
-  "passed": 5,
-  "total": 10,
+  "phase": "full",
+  "passed": 33,
+  "total": 34,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -158,9 +158,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 8,
-      "crop": "288.15 159.75 224 157.71",
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
       "capital": "Stolica: Mińsk",
       "swipeVisible": false,
       "overflowX": false,
@@ -242,9 +242,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 8,
-      "crop": "288.15 159.75 224 157.71",
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
       "capital": "Stolica: Mińsk",
       "swipeVisible": true,
       "overflowX": false,
@@ -327,8 +327,8 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 11,
-      "labels": 8,
-      "crop": "222.4 209.88 224 124.44",
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
       "overflowX": false,
@@ -339,27 +339,424 @@
     },
     {
       "name": "chromium-05-swiss-max",
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "state": "feedback-correct",
+      "country": "ch",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 430,
+        "h": 932
+      },
+      "flag": {
+        "x": 75.765625,
+        "y": 215.5865478515625,
+        "w": 211.5107421875,
+        "h": 240.94281005859375
+      },
+      "paper": {
+        "x": 30.09375,
+        "y": 480.90625,
+        "w": 369.796875,
+        "h": 68.03125
+      },
+      "atlas": {
+        "x": 30.09375,
+        "y": 211.6875,
+        "w": 369.796875,
+        "h": 337.25
+      },
+      "answers": [
+        {
+          "id": "es",
+          "text": "Hiszpania",
+          "disabled": true,
+          "x": 30.09375,
+          "y": 562.921875,
+          "w": 180.390625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 219.484375,
+          "y": 562.921875,
+          "w": 180.40625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ru",
+          "text": "Rosja",
+          "disabled": true,
+          "x": 30.09375,
+          "y": 634.484375,
+          "w": 180.390625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 219.484375,
+          "y": 634.484375,
+          "w": 180.40625,
+          "h": 63.5625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "183.7 301.67 120 86.97",
+      "capital": "Stolica: Berno",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-07-liechtenstein",
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "state": "feedback-correct",
+      "country": "li",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "ie",
+          "text": "Irlandia",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 10,
+      "labels": 5,
+      "crop": "203 299.76 120 84.49",
+      "microstate": "marker",
+      "capital": "Stolica: Vaduz",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-08-vatican",
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "state": "feedback-wrong",
+      "country": "va",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 195.23800659179688,
+        "w": 191.1749267578125,
+        "h": 217.77377319335938
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "lt",
+          "text": "Litwa",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "va",
+          "text": "Watykan",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 3,
+      "crop": "218 356.31 144 101.38",
+      "microstate": "marker",
+      "capital": "Stolica: Watykan",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-09-long-country",
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "state": "feedback-wrong",
+      "country": "ba",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 160.1490478515625,
+        "w": 209.4691162109375,
+        "h": 182.47842407226562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 361.1875,
+        "w": 335.390625,
+        "h": 51.09375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 159.5,
+        "w": 335.390625,
+        "h": 252.78125
+      },
+      "answers": [
+        {
+          "id": "pt",
+          "text": "Portugalia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 422.796875,
+          "w": 163.1875,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 422.796875,
+          "w": 163.203125,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "se",
+          "text": "Szwecja",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 480.6875,
+          "w": 163.1875,
+          "h": 49.90625,
+          "labelFits": true
+        },
+        {
+          "id": "me",
+          "text": "Czarnogóra",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 480.6875,
+          "w": 163.203125,
+          "h": 49.90625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 10,
+      "labels": 5,
+      "crop": "272.5 345.92 120 66.67",
+      "capital": "Stolica: Sarajewo",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
       "name": "chromium-10-pwa-safe-area",
-      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 221.55609130859375,
+        "w": 228.80441284179688,
+        "h": 199.3271484375
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 440.703125,
+        "w": 335.390625,
+        "h": 55.6875
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 220.671875,
+        "w": 335.390625,
+        "h": 275.71875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 507.84375,
+          "w": 163.1875,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 507.84375,
+          "w": 163.203125,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 567.15625,
+          "w": 163.1875,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 567.15625,
+          "w": 163.203125,
+          "h": 51.3125,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "240.8 214.66 187.19 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
       "errors": []
     },
     {
@@ -441,6 +838,2007 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-correct-auto-and-pause",
+      "state": "playing",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-wrong-pause-slider-and-several-rounds",
+      "state": "feedback-wrong",
+      "country": "de",
+      "score": "0 pkt",
+      "task": "Zadanie 4",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "sk",
+          "text": "Słowacja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 18,
+      "labels": 9,
+      "crop": "149.13 207.08 230.44 162.24",
+      "capital": "Stolica: Berlin",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-restart-at-boundaries",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-reduced-motion-and-keyboard",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Sarajewo",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-image-fallback",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "vector-fallback",
+      "activeCount": 41,
+      "highlight": false,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-map-fetch-failure",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-memory-starts-after-slow-bitmap",
+      "state": "transition",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.5,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.21875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 3,
+      "sand": "falling",
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-01-belarus-question",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 0,
+        "w": 335.390625,
+        "h": 6
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 1,
+      "foldImages": false,
+      "errors": []
+    },
+    {
+      "name": "webkit-02-belarus-correct",
+      "state": "feedback-correct",
+      "country": "by",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-03-belarus-wrong",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-04-poland-short",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 160.1490478515625,
+        "w": 209.4691162109375,
+        "h": 182.47842407226562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 361.1875,
+        "w": 335.390625,
+        "h": 51.09375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 159.5,
+        "w": 335.390625,
+        "h": 252.78125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 422.796875,
+          "w": 163.1875,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 422.796875,
+          "w": 163.203125,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 480.6875,
+          "w": 163.1875,
+          "h": 49.90625,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 480.6875,
+          "w": 163.203125,
+          "h": 49.90625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "231.01 214.66 206.78 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-05-swiss-max",
+      "state": "feedback-correct",
+      "country": "ch",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 430,
+        "h": 932
+      },
+      "flag": {
+        "x": 75.765625,
+        "y": 215.5865478515625,
+        "w": 211.5107421875,
+        "h": 240.94277954101562
+      },
+      "paper": {
+        "x": 30.09375,
+        "y": 480.90625,
+        "w": 369.796875,
+        "h": 68.03125
+      },
+      "atlas": {
+        "x": 30.09375,
+        "y": 211.6875,
+        "w": 369.796875,
+        "h": 337.25
+      },
+      "answers": [
+        {
+          "id": "es",
+          "text": "Hiszpania",
+          "disabled": true,
+          "x": 30.09375,
+          "y": 562.921875,
+          "w": 180.390625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 219.484375,
+          "y": 562.921875,
+          "w": 180.40625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ru",
+          "text": "Rosja",
+          "disabled": true,
+          "x": 30.09375,
+          "y": 634.484375,
+          "w": 180.390625,
+          "h": 63.5625,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 219.484375,
+          "y": 634.484375,
+          "w": 180.40625,
+          "h": 63.5625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "183.7 301.67 120 86.97",
+      "capital": "Stolica: Berno",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-07-liechtenstein",
+      "state": "feedback-correct",
+      "country": "li",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "ie",
+          "text": "Irlandia",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 10,
+      "labels": 5,
+      "crop": "203 299.76 120 84.49",
+      "microstate": "marker",
+      "capital": "Stolica: Vaduz",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-08-vatican",
+      "state": "feedback-wrong",
+      "country": "va",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 195.23802185058594,
+        "w": 191.1749267578125,
+        "h": 217.7737579345703
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "lt",
+          "text": "Litwa",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "va",
+          "text": "Watykan",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 3,
+      "crop": "218 356.31 144 101.38",
+      "microstate": "marker",
+      "capital": "Stolica: Watykan",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-09-long-country",
+      "state": "feedback-wrong",
+      "country": "ba",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 160.1490478515625,
+        "w": 209.4691162109375,
+        "h": 182.47842407226562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 361.1875,
+        "w": 335.390625,
+        "h": 51.09375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 159.5,
+        "w": 335.390625,
+        "h": 252.78125
+      },
+      "answers": [
+        {
+          "id": "pt",
+          "text": "Portugalia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 422.796875,
+          "w": 163.1875,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 422.796875,
+          "w": 163.203125,
+          "h": 49.890625,
+          "labelFits": true
+        },
+        {
+          "id": "se",
+          "text": "Szwecja",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 480.6875,
+          "w": 163.1875,
+          "h": 49.90625,
+          "labelFits": true
+        },
+        {
+          "id": "me",
+          "text": "Czarnogóra",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 480.6875,
+          "w": 163.203125,
+          "h": 49.90625,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 10,
+      "labels": 5,
+      "crop": "272.5 345.92 120 66.67",
+      "capital": "Stolica: Sarajewo",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-10-pwa-safe-area",
+      "state": "feedback-correct",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 221.54046630859375,
+        "w": 228.80441284179688,
+        "h": 199.3271484375
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 440.6875,
+        "w": 335.390625,
+        "h": 55.6875
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 220.65625,
+        "w": 335.390625,
+        "h": 275.71875
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 507.828125,
+          "w": 163.1875,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 507.828125,
+          "w": 163.203125,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 567.140625,
+          "w": 163.1875,
+          "h": 51.3125,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 567.140625,
+          "w": 163.203125,
+          "h": 51.3125,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 6,
+      "crop": "240.8 214.66 187.19 114.88",
+      "capital": "Stolica: Warszawa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-animation-frames",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 1,
+      "foldImages": true,
+      "error": "TimeoutError: page.waitForFunction: Timeout 30000ms exceeded.",
+      "errors": []
+    },
+    {
+      "name": "webkit-correct-auto-and-pause",
+      "state": "playing",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-wrong-pause-slider-and-several-rounds",
+      "state": "feedback-wrong",
+      "country": "de",
+      "score": "0 pkt",
+      "task": "Zadanie 4",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "sk",
+          "text": "Słowacja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 18,
+      "labels": 9,
+      "crop": "149.13 207.08 230.44 162.24",
+      "capital": "Stolica: Berlin",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-restart-at-boundaries",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 1,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-reduced-motion-and-keyboard",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Sarajewo",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-image-fallback",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "vector-fallback",
+      "activeCount": 41,
+      "highlight": false,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-map-fetch-failure",
+      "state": "playing",
+      "country": "pl",
+      "score": "0 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": false,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": false,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-memory-starts-after-slow-bitmap",
+      "state": "transition",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 69.1875,
+        "y": 193.09878540039062,
+        "w": 252.4344482421875,
+        "h": 219.91299438476562
+      },
+      "paper": {
+        "x": 27.296875,
+        "y": 435.484375,
+        "w": 335.390625,
+        "h": 61.609375
+      },
+      "atlas": {
+        "x": 27.296875,
+        "y": 191.890625,
+        "w": 335.390625,
+        "h": 305.203125
+      },
+      "answers": [
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 509.765625,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 509.765625,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 27.296875,
+          "y": 574.953125,
+          "w": 163.1875,
+          "h": 57.1875,
+          "labelFits": true
+        },
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 199.484375,
+          "y": 574.953125,
+          "w": 163.203125,
+          "h": 57.1875,
+          "labelFits": true
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 6,
+      "crop": "305.79 172.17 188.72 132.87",
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 3,
+      "sand": "falling",
       "foldImages": true,
       "errors": []
     }

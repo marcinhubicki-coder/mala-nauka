@@ -14,6 +14,15 @@ if(visualDirectory)await mkdir(visualDirectory,{recursive:true});
 // PNGs are uploaded as short-lived CI artifacts, never bundled by Vercel.
 async function capture(page,viewId,reference){
  if(!visualDirectory)return;
+ // Compare a fully revealed result, not a frame from the 3-second counter,
+ // because an intermediate reveal can look faded or artificially dark.
+ if(viewId.includes('results'))for(const frame of page.frames()){
+  if(!/\/ortografia\//.test(frame.url()))continue;
+  await frame.waitForFunction(()=>{
+   const result=document.querySelector('#app[data-view="results"] .result-v4');
+   return Boolean(result&&!result.classList.contains('result-entering'));
+  },null,{timeout:12000});
+ }
  await page.evaluate(()=>document.fonts.ready);
  const file=viewId+'.png';
  await page.screenshot({path:join(visualDirectory,file),animations:'disabled',timeout:20000});
@@ -36,7 +45,17 @@ async function capture(page,viewId,reference){
     return [key,{x:round(r.left),y:round(r.top),w:round(r.width),h:round(r.height),display:css.display,overflow:css.overflow}];
    }));
   }).catch(()=>null);
-  if(geometry?.sheet)frames.push({frame:frame.url(),geometry});
+  if(geometry?.sheet){
+   const paint=await frame.evaluate(()=>{
+    const node=document.querySelector('#app .result-again'),sheet=document.querySelector('#app .result-v4');
+    if(!node)return null;
+    const styles=getComputedStyle(node),pseudo=getComputedStyle(node,'::before');
+    return {opacity:styles.opacity,filter:styles.filter,background:styles.backgroundImage,
+      backgroundColor:styles.backgroundColor,disabled:node.hasAttribute('disabled'),
+      entering:sheet?.classList.contains('result-entering'),fillOpacity:pseudo.opacity};
+   }).catch(()=>null);
+   frames.push({frame:frame.url(),geometry,paint});
+  }
  }
  screenshots.push({view:viewId,approvedReference:reference,file,viewport:'390x844',dpr:3,frames});
 }

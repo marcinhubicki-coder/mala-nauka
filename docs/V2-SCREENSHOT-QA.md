@@ -16,3 +16,6 @@ Renderowanie zachowuje artboard 390 × 844 CSS px, DPR 3 i `prefers-reduced-moti
 Pliki są artefaktem CI przechowywanym przez **7 dni**; nie trafiają do `dist/`, katalogu `assets/`, commita, ani Vercel. Nie używamy ich jako statycznych ilustracji aplikacji.
 
 Po sprawdzeniu różnic w Studio korygujemy jeden kontrakt UI i powtarzamy test, bez budowania zbędnych deploymentów. Publikacja V2 na Vercel dopiero po przejściu regresji i po odzyskaniu dostępności wdrożeń.
+
+## Stan animacji na screenshotach wyników
+Wyniki mają 3-sekundowe naliczanie i etap końcowy. CI przechwytuje `spelling-results` dopiero po zdjęciu klasy `result-entering` z aktualnego renderera, a w manifeście przechowuje komputerowo odczytane `background`, `opacity`, `filter` i stan `disabled` przycisku. Chroni to przed myleniem chwilowej, przygaszonej klatki animacji z błędnym kolorem produkcyjnym. Nie wymuszać palety CSS przed zweryfikowaniem gotowego stanu.

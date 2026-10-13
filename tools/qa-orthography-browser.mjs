@@ -71,7 +71,8 @@ try{
  // The approved results background is one canonical image, not an invisible duplicate DOM picture.
  const background=await gameFrame.locator('#app[data-view=results][data-mode=spelling]').evaluate(async root=>{
   const value=getComputedStyle(root).backgroundImage;
-  const url=value.match(/url\\(["']?([^"')]+)["']?\\)/)?.[1];
+  const at=value.indexOf('url(');
+  const url=at<0?'':value.slice(at+4).split(')')[0].trim().replaceAll('"','').replaceAll("'",'');
   const response=url?await fetch(url):null;
   return {value,status:response?.status||0};
  });

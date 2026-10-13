@@ -231,7 +231,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
         const progress=params.get('studio')==='1'?Number(params.get('sliderProgress')):NaN;
         // Only a Studio screenshot fixture may set a deterministic gesture
         // pose. Normal games always start at 0 and require a real drag.
-        if(Number.isFinite(progress)&&progress>=1&&progress<=95)
+        if(Number.isFinite(progress)&&progress>=1&&progress<=99)
           continueDrag?.setProgress(progress/100);
         else nodes.next.focus({ preventScroll: true });
       }

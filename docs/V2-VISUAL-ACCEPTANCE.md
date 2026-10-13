@@ -43,3 +43,6 @@ Testy generują zrzuty `spelling-initial` i `spelling-wrong`, ale nie raportują
 
 ## Odtwarzanie rzeczywistej pozycji suwaka w Studio
 Po wybraniu widoku błędnej odpowiedzi Studio ma dwa warianty: `IMG_2948` (uchwyt 50%) i `IMG_2949` (uchwyt 90%). Zmiana wariantu powoduje ponowne wczytanie wyłącznie tego iframe z parametrem testowym `sliderProgress`. Przeglądarka **nie symuluje pozycji przez zmiany CSS**: scenariusz testowy wywołuje `continueDrag.setProgress` z produkcyjnego kontrolera gestów. Parametr jest ignorowany w zwykłym PWA bez `studio=1`. Nie przyspiesza rundy i nie omija walidacji rzeczywistego gestu użytkownika.
+
+## Utrwalony gradient slidera
+Gest wykonywany klawiaturą i odtwarzany w Studio dotąd nie odsłaniał wypełnienia, bo CSS uzależniał jego widoczność od `.is-dragging` pochodzącego z dotyku/myszy. Wypełnienie jest teraz widoczne również przy `aria-valuenow` większym od zera; blisko końca znika tekst instrukcji, żeby nie nachodził na uchwyt. Studio odtwarza 50% i 99% bez zakończenia rundy.

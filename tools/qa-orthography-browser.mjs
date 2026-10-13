@@ -193,14 +193,17 @@ try{
     await rail.focus();
     for(let step=0;step<5;step++)await rail.press('ArrowRight');
     assert.equal(await rail.getAttribute('aria-valuenow'),'50','Half drag must be 50%');
+    const paintedFill=await rail.evaluate(el=>getComputedStyle(el,'::before').opacity);
+    assert.ok(Number(paintedFill)>.95,'Slider gradient must be visible with keyboard input, got '+paintedFill);
     const halfHandle=await handle.boundingBox();
     assert.ok(halfHandle.x>initialHandle.x+40,'Half drag did not move the bubble');
     await capture(page,'spelling-wrong-half','IMG_2948.png');
     for(let step=0;step<4;step++)await rail.press('ArrowRight');
     assert.equal(await rail.getAttribute('aria-valuenow'),'90','Near-end drag must be 90%');
+    assert.equal(await rail.evaluate(el=>el.classList.contains('is-near-end')),true,'Near-end slider must hide instructional copy');
     const endHandle=await handle.boundingBox();
     assert.ok(endHandle.x>halfHandle.x+35,'Near-end drag did not progress');
-    await capture(page,'spelling-wrong-near-end','IMG_2949.png');
+    await capture(page,'spelling-wrong-near-end',null);
     const after=await page.locator('#app').evaluate(root=>{
      return Object.fromEntries(['.game-bar','.spelling-title','.spelling-visual','.answers'].map(selector=>{
       const node=root.querySelector(selector),r=node.getBoundingClientRect();

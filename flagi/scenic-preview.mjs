@@ -5,7 +5,7 @@ import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-web
 import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs';
 import {SCENIC,seedOf} from './scenic-config.mjs';
 import {ScenicTimeline} from './scenic-timeline.mjs';
-import {preparePaper,foldPaper} from './scenic-paper.mjs';
+import {preparePaper,foldPaper,preloadPaper} from './scenic-paper.mjs';
 import {createSand} from './scenic-sand.mjs';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
@@ -79,8 +79,8 @@ function fitCaption(){
   if(scale<1)title.style.fontSize=Math.max(22,parseFloat(style.fontSize)*scale*.98)+'px';
 }
 function placeScroll(){
-  const viewport=$('scenic-stage').getBoundingClientRect(),h=hero.getBoundingClientRect(),p=$('scenic-paper-row').getBoundingClientRect();
-  const top=viewport.height*.215;sheet.style.top=top+'px';sheet.style.height=viewport.height*.344+'px';
+  const viewport=$('scenic-stage').getBoundingClientRect();
+  sheet.style.top=viewport.height*.22+'px';sheet.style.height=viewport.height*.368+'px';
 }
 async function warmFlag(record){
   if(!record)return;
@@ -104,10 +104,10 @@ async function playQuestion({prepared=false}={}){
 async function respond(chosenId){
   if(state!=='playing'||paused||visibilityPaused)return;
   const owner=timeline,record=current(),correct=chosenId===record.id;
-  setState('showing-map');app.classList.add('is-pending','is-presenting');
+  setState('showing-map');app.classList.add('is-pending');
   game.answer(chosenId);game.setPresentationHold(true);updateHud();
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
-  feedback.innerHTML=correct?'<strong>Świetnie!</strong><small>Zapamiętaj kraj i jego stolicę.</small>':'<strong>Spokojnie, zapamiętaj odpowiedź.</strong><small>Czas czeka na Ciebie.</small>';
+  feedback.innerHTML=correct?'<strong>Świetnie!</strong><small>Zapamiętaj kraj i stolicę.</small>':'<strong>Zapamiętaj kraj i jego stolicę.</strong>';
   $('scenic-map-flag').src=new URL('assets/flags/cloth-prebaked/'+record.id+'.webp',document.baseURI).href;
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent='Stolica: '+record.capital;
@@ -123,6 +123,7 @@ async function respond(chosenId){
   // Map decoding and the fold snapshot precede the entire learning interval.
   await document.fonts.ready;if(!alive(owner))return;fitCaption();
   await preparePaper(sheet,mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
+  app.classList.add('is-presenting');
   await foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
@@ -172,6 +173,6 @@ window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});
 caught((async()=>{
-  await document.fonts.ready;await playQuestion();
+  await Promise.all([document.fonts.ready,preloadPaper()]);await playQuestion();
   const fixture=query.get('state');if(['correct','wrong'].includes(fixture))fixtureTimer=setTimeout(()=>caught(respond(fixture==='correct'?current().id:optionsFor(current()).find(x=>x.id!==current().id).id)),100);
 })());

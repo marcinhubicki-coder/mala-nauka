@@ -115,6 +115,16 @@ try{
    });
   }
   if(phase==='full'){
+   await check(engine+'-stable-scene-and-answer-geometry',browser,{},async page=>{
+    await open(page);const before=await metrics(page);
+    const scenery=()=>page.locator('#scenic-screen').evaluate(n=>({background:getComputedStyle(n).backgroundImage,foreground:getComputedStyle(n.querySelector('.scenic-foreground')).opacity,replacement:n.querySelectorAll('.scenic-feedback-scene').length,vectorCompass:n.querySelectorAll('.scenic-paper-row svg,.scenic-atlas-compass').length}));
+    const first=await scenery();assert.equal(first.vectorCompass,0);assert.equal(first.replacement,0);assert.equal(first.foreground,'1');
+    await choose(page,false);await page.waitForTimeout(180);await capture(page,engine+'-click-early');await state(page,'feedback-wrong');
+    const after=await metrics(page);assert.deepEqual(await scenery(),first);
+    for(let i=0;i<4;i++)for(const key of ['x','y','w','h'])assert(Math.abs(before.answers[i][key]-after.answers[i][key])<1,'Answer tiles must not move after an answer');
+    await slide(page);await state(page,'playing');assert.deepEqual(await scenery(),first);
+    const next=await metrics(page);for(let i=0;i<4;i++)for(const key of ['x','y','w','h'])assert(Math.abs(before.answers[i][key]-next.answers[i][key])<1,'Answer tiles must not move during the next question');
+   });
    await check(engine+'-two-line-sand-and-production-slider',browser,{},async page=>{
     await open(page,'ba');const before=await metrics(page);assert(before.answers.some(b=>b.lineCount===2));assert(before.answers.every(b=>b.lineCount<=2&&b.labelFits));
     await choose(page,false);await state(page,'feedback-wrong');

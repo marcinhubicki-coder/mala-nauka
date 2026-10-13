@@ -1,6 +1,11 @@
 import {SCENIC} from './scenic-config.mjs';
 
 async function bitmap(src){const image=new Image();image.src=src;await image.decode();return image;}
+let paperImage;
+export async function preloadPaper(){
+ paperImage??=bitmap(new URL('assets/flags/adventure/scenic-atlas-paper-v6.webp',document.baseURI)).catch(()=>null);
+ await Promise.all([paperImage,bitmap(new URL('assets/flags/adventure/scenic-question-paper-v6.webp',document.baseURI)).catch(()=>null)]);
+}
 function wrap(ctx,text,max){const lines=[''];for(const word of text.split(' ')){const i=lines.length-1,candidate=lines[i]?lines[i]+' '+word:word;if(ctx.measureText(candidate).width>max&&lines[i])lines.push(word);else lines[i]=candidate;}return lines;}
 // Three textured surfaces use slices of the actual prepared atlas, including
 // its top caption and flag. Opening never substitutes a blank sheet.
@@ -8,8 +13,9 @@ export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={
  const inner=sheet.querySelector('.scenic-map-inner'),base=inner.getBoundingClientRect();
  const width=inner.clientWidth,height=inner.clientHeight,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
  canvas.width=width*2;canvas.height=height*2;ctx.scale(2,2);
- const paper=ctx.createRadialGradient(width*.25,height*.1,0,width*.5,height*.5,width);paper.addColorStop(0,'#fff7dc');paper.addColorStop(1,'#eed4a1');ctx.fillStyle=paper;ctx.fillRect(0,0,width,height);
- try{ctx.globalAlpha=.75;ctx.drawImage(await bitmap(new URL('assets/flags/adventure/paper-v3-detail.svg',document.baseURI)),0,0,width,height);ctx.globalAlpha=1;}catch{ctx.globalAlpha=1;}
+ await preloadPaper();const paper=await paperImage;
+ if(paper)ctx.drawImage(paper,0,0,width,height);
+ else{ctx.fillStyle='#fff0cf';ctx.fillRect(0,0,width,height);}
  const map=inner.querySelector('.scenic-europe-map'),mapRect=map.getBoundingClientRect(),x=mapRect.left-base.left,y=mapRect.top-base.top,w=map.clientWidth,h=map.clientHeight;
  if(mapResult?.svg){
   const svg=mapResult.svg.cloneNode(true);svg.setAttribute('width',w*2);svg.setAttribute('height',h*2);
@@ -29,6 +35,7 @@ export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={
   wrap(ctx,element.textContent,r.width).forEach((line,i)=>ctx.fillText(line,r.left-base.left,r.top-base.top+size*.86+i*parseFloat(style.lineHeight),r.width));
  }
  const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const r=flag.getBoundingClientRect();ctx.save();ctx.shadowColor='#55391450';ctx.shadowBlur=8;ctx.shadowOffsetY=3;ctx.drawImage(flag,r.left-base.left,r.top-base.top,r.width,r.height);ctx.restore();}catch{}
+ const footer=document.getElementById('scenic-feedback');ctx.font='800 13px ScenicBody';ctx.fillStyle='#24432e';ctx.textAlign='center';ctx.fillText(footer.textContent,width/2,height-14,width-32);
  const snapshot=canvas.toDataURL('image/webp',.93);
  if(!isCurrent())return;
  for(const leaf of sheet.querySelectorAll('.scenic-fold-leaf'))leaf.style.backgroundImage=`url("${snapshot}")`;
@@ -38,17 +45,23 @@ export async function foldPaper(sheet,{opening,timeline,reduced}){
  sheet.classList.remove('is-open','is-opening','is-closing');sheet.classList.add(opening?'is-opening':'is-closing');
  if(reduced){sheet.classList.toggle('is-open',opening);sheet.classList.remove('is-opening','is-closing');return;}
  const duration=opening?SCENIC.openMs:SCENIC.closeMs,leaves=[...sheet.querySelectorAll('.scenic-fold-leaf')],operations=[];
+ // The top of one panel is the bottom hinge of the next. Precomputed
+ // keyframes preserve that joint in 3D; no panels slide across the landscape.
+ const ease=(p,start,end)=>{const t=Math.max(0,Math.min(1,(p-start)/(end-start)));return t*t*(3-2*t);};
+ const angles=p=>[75*(1-ease(p,0,.44)),-75*(1-ease(p,.18,.73)),75*(1-ease(p,.40,.97))];
+ const h=sheet.clientHeight/3;
  for(const [index,leaf] of leaves.entries()){
-  const start=index*.23,end=Math.min(.99,start+.48),shift=index*100;
-  const flat={transform:'translateY(0) rotateX(0deg)',opacity:1},closed={transform:`translateY(${shift}%) rotateX(${index%2?79:-79}deg)`,opacity:index?0:1};
-  // Paper stays opaque while turning. Only an edge-on, still hidden panel
-  // switches on; fading the paper itself made it look like a glass overlay.
-  const frames=[{...closed,offset:0},{...closed,offset:start,easing:'steps(1,end)'},{...closed,opacity:1,offset:start+.001,easing:'cubic-bezier(.25,.7,.22,1)'},{transform:'translateY(0) rotateX(3deg)',opacity:1,offset:end},{...flat,offset:1}];
-  const shades=[{opacity:.65,offset:0},{opacity:.65,offset:start},{opacity:.18,offset:(start+end)/2},{opacity:.025,offset:end},{opacity:0,offset:1}];
-  const lights=[{opacity:.1,offset:0},{opacity:.1,offset:start},{opacity:.7,offset:(start+end)/2},{opacity:.2,offset:end},{opacity:.07,offset:1}];
-  const reverse=f=>opening?f:f.slice().reverse().map(x=>({...x,offset:1-x.offset}));
+  const frames=[],shades=[],lights=[];
+  for(let frame=0;frame<=60;frame++){
+   const offset=frame/60,p=opening?offset:1-offset,a=angles(p);let y=0,z=0;
+   for(let joint=0;joint<index;joint++){const r=a[joint]*Math.PI/180;y-=h*Math.cos(r);z-=h*Math.sin(r);}
+   const tilt=Math.sin(Math.abs(a[index])*Math.PI/180);
+   frames.push({offset,transform:`translate3d(0,${y+index*h}px,${z}px) rotateX(${a[index]}deg)`,opacity:1});
+   shades.push({offset,opacity:tilt*.32});
+   lights.push({offset,opacity:tilt*(index%2?.22:.52)});
+  }
   const options={duration,fill:'both',easing:'linear'};
-  operations.push(timeline.animate(leaf,reverse(frames),options),timeline.animate(leaf.querySelector('.scenic-fold-shade'),reverse(shades),options),timeline.animate(leaf.querySelector('.scenic-fold-light'),reverse(lights),options));
+  operations.push(timeline.animate(leaf,frames,options),timeline.animate(leaf.querySelector('.scenic-fold-shade'),shades,options),timeline.animate(leaf.querySelector('.scenic-fold-light'),lights,options));
  }
  operations.push(timeline.animate(sheet.querySelector('.scenic-paper-shadow'),opening?[{opacity:.2,transform:'scaleX(.8) scaleY(.65)'},{opacity:.48,transform:'scaleX(1) scaleY(1.1)',offset:.45},{opacity:.25,transform:'scaleX(.96) scaleY(.65)'}]:[{opacity:.25,transform:'scaleX(.96) scaleY(.65)'},{opacity:.5,transform:'scaleX(1) scaleY(1.1)',offset:.6},{opacity:0,transform:'scaleX(.8) scaleY(.5)'}],{duration,fill:'both'}));
  await Promise.all(operations);sheet.classList.remove('is-opening','is-closing');sheet.classList.toggle('is-open',opening);

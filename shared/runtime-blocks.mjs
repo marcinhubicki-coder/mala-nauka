@@ -60,3 +60,9 @@ export function runtimeStack(view,selected,items){
  while(item&&!seen.has(item.id)){seen.add(item.id);result.unshift({...item,level:runtimeLevel(item,items),libraryId:item.blockId||(item.id==='layout-root'?'screen-'+view.id:item.recipe)});item=items.find(row=>row.id===item.parent);}
  return result;
 }
+
+export function semanticCatalog(records){
+ const groups=new Map();
+ for(const item of records){const part=PART_BY_ID[item.recipe],key=part?.id||item.id;let row=groups.get(key);if(!row){row={...item,id:key,registered:!!part,name:part?.name||item.name,level:part?.level||item.level,variants:[],uses:[]};groups.set(key,row)}row.variants.push(item.id);for(const use of item.uses)if(!row.uses.some(u=>u.view===use.view&&u.id===use.id))row.uses.push(use)}
+ return [...groups.values()]
+}

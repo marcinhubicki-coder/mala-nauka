@@ -89,7 +89,7 @@ try{
  await gameFrame.locator('#app[data-view="game"][data-mode="spelling"]').waitFor({timeout:13000});
  assert.equal(await gameFrame.locator('#app .answers .answer').count(),2);
  assert.equal(await gameFrame.locator('#app [data-ds-contract="v2"]').count(),17,'Gameplay must render exactly 17 contract pieces');
- await capture(page,'spelling-game-live','IMG_2949.png');
+ await capture(page,'spelling-game-live',null);
  assert.equal(await gameFrame.locator('#app .spelling-question-card').count(),1);
  await gameFrame.locator('#app .answers .answer').first().click();
  await gameFrame.locator('#app[data-state^="feedback"]').waitFor({timeout:10000});
@@ -189,6 +189,27 @@ try{
     assert.ok(r&&h,'Wrong answer lacks a slider or handle');
     assert.ok(Math.abs(h.width-h.height)<2,'Slider pearl is not circular: '+JSON.stringify(h));
     assert.ok(r.y>=geometry.choices.y+geometry.choices.h-8,'Slider overlaps answer buttons');
+    const initialHandle=await handle.boundingBox();
+    await rail.focus();
+    for(let step=0;step<5;step++)await rail.press('ArrowRight');
+    assert.equal(await rail.getAttribute('aria-valuenow'),'50','Half drag must be 50%');
+    const halfHandle=await handle.boundingBox();
+    assert.ok(halfHandle.x>initialHandle.x+40,'Half drag did not move the bubble');
+    await capture(page,'spelling-wrong-half','IMG_2948.png');
+    for(let step=0;step<4;step++)await rail.press('ArrowRight');
+    assert.equal(await rail.getAttribute('aria-valuenow'),'90','Near-end drag must be 90%');
+    const endHandle=await handle.boundingBox();
+    assert.ok(endHandle.x>halfHandle.x+35,'Near-end drag did not progress');
+    await capture(page,'spelling-wrong-near-end','IMG_2949.png');
+    const after=await page.locator('#app').evaluate(root=>{
+     return Object.fromEntries(['.game-bar','.spelling-title','.spelling-visual','.answers'].map(selector=>{
+      const node=root.querySelector(selector),r=node.getBoundingClientRect();
+      return [selector,{x:r.x,y:r.y,w:r.width,h:r.height}];
+     }));
+    });
+    for(const [selector,baseline] of Object.entries({'.game-bar':geometry.header,'.spelling-title':geometry.title,'.spelling-visual':geometry.visual,'.answers':geometry.choices}))
+     for(const [key,current] of Object.entries(after[selector]))
+      assert.ok(Math.abs(current-baseline[key])<3,'Dragging slider reflowed '+selector+' '+key);
    }
    console.log('[game-parity-'+viewId+'] '+JSON.stringify(geometry));
   }

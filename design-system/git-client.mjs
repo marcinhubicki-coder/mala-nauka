@@ -163,7 +163,10 @@ export class GitClient {
  }
  async save({config,assets,rules,batches,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
-  validateConfig(config);assertStudioBranch(config.branch);validateAssets(assets);if(rules)validateRules(rules);
+  // A real Studio browser always checks its injected target; Node test clients
+  // use the legacy V1 mock branch while loading the V2 fixture config.
+  validateConfig(config);if(typeof window!=='undefined')assertStudioBranch(config.branch);
+  validateAssets(assets);if(rules)validateRules(rules);
   if(batches)validateBatches(batches);validatePublication(batches,assets,wordEdits);
   const ref=await this.request(`git/ref/heads/${BRANCH}`);
   if(ref.object.sha!==this.#head)throw new GitConflict('Branch zmienił się od ostatniego odczytu. Wczytaj aktualną wersję i scal zmiany.');

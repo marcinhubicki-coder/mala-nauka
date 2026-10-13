@@ -10,6 +10,8 @@ on:
       - "shared/structure-model.mjs"
       - "tools/qa-orthography-browser.mjs"
       - "tools/qa-orthography-complete-browser.mjs"
+      - "tools/qa-reference-studio-browser.mjs"
+      - "design-system/reference-calibration.mjs"
       - "tests/v2-spelling-*.mjs"
       - ".github/workflows/orthography-qa.yml"
   workflow_dispatch:
@@ -38,6 +40,8 @@ jobs:
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
       - name: Natural completion of a ten-word Orthography round
         run: node tools/qa-orthography-complete-browser.mjs http://127.0.0.1:8765
+      - name: Studio V2 approved screenshot batch import and persistence
+        run: node tools/qa-reference-studio-browser.mjs http://127.0.0.1:8765
       - name: Report server diagnostics
         if: failure()
         run: tail -180 /tmp/orthography-http.log || true

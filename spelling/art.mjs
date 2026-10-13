@@ -8,6 +8,7 @@ import {createConfiguredBubble} from './bubble-renderer.mjs';
 import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
+import {compileViewMarkup,viewAttrs} from '../shared/view-contracts.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
 export function createSpellingArt(app, { onContinue } = {}) {
@@ -69,23 +70,23 @@ export function createSpellingArt(app, { onContinue } = {}) {
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
     const statusBlock=game.untimed
-      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pytanie w rundzie"></span><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Postęp rundy"></progress></div>`
-      : `<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
-    app.innerHTML = `
-      <header class="game-bar">
-        <button type="button" class="icon" data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+      ? `<div class="time-block dictation-count" ${viewAttrs('spelling-initial','spelling-game-clock')}><span ${viewAttrs('spelling-initial','spelling-game-timer')} class="timer" aria-label="Pytanie w rundzie"></span><progress ${viewAttrs('spelling-initial','spelling-game-progress')} max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Postęp rundy"></progress></div>`
+      : `<div class="time-block" ${viewAttrs('spelling-initial','spelling-game-clock')}><span ${viewAttrs('spelling-initial','spelling-game-timer')} class="timer" aria-label="Pozostały czas"></span><progress ${viewAttrs('spelling-initial','spelling-game-progress')} max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
+    app.innerHTML = compileViewMarkup('spelling-initial', `
+      <header class="game-bar" ${viewAttrs('spelling-initial','spelling-game-hud')}>
+        <button type="button" class="icon" ${viewAttrs('spelling-initial','spelling-game-exit')} data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
         ${statusBlock}
-        <button type="button" class="icon" data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+        <button type="button" class="icon" ${viewAttrs('spelling-initial','spelling-game-pause')} data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
       </header>
-      <h1 class="spelling-title">Jak jest poprawnie?</h1>
-      <div class="spelling-visual" aria-hidden="true"></div>
-      <section class="spelling-question-card" aria-label="Uzupełnij słowo"><div class="question-content"></div></section>
-      <div class="answers count-2">
-        <button type="button" class="answer" data-action="answer" data-index="0"><span class="answer-ink"></span></button>
-        <button type="button" class="answer" data-action="answer" data-index="1"><span class="answer-ink"></span></button>
+      <h1 class="spelling-title" ${viewAttrs('spelling-initial','spelling-game-title')}>Jak jest poprawnie?</h1>
+      <div class="spelling-visual" ${viewAttrs('spelling-initial','spelling-game-visual')} aria-hidden="true"></div>
+      <section class="spelling-question-card" ${viewAttrs('spelling-initial','spelling-game-question')} aria-label="Uzupełnij słowo"><div class="question-content" ${viewAttrs('spelling-initial','spelling-game-word')}></div></section>
+      <div class="answers count-2" ${viewAttrs('spelling-initial','spelling-game-answers')}>
+        <button type="button" class="answer" ${viewAttrs('spelling-initial','spelling-game-answer-0')} data-action="answer" data-index="0"><span class="answer-ink"></span></button>
+        <button type="button" class="answer" ${viewAttrs('spelling-initial','spelling-game-answer-1')} data-action="answer" data-index="1"><span class="answer-ink"></span></button>
       </div>
-      <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
-      <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
+      <div class="spelling-action-row" ${viewAttrs('spelling-initial','spelling-game-actions')}><button type="button" ${viewAttrs('spelling-initial','spelling-game-hint')} data-action="spelling-hint" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" ${viewAttrs('spelling-initial','spelling-game-next')} role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
+      <div class="feedback" ${viewAttrs('spelling-initial','spelling-game-feedback')} role="status" aria-live="polite" aria-atomic="true"></div>`);
     atmosphere=createScreenAtmosphere(app,effectConfig());
     comboGlobal=createComboGlobalEffects(app);
     nodes = {

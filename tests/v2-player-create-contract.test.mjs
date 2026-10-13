@@ -27,12 +27,16 @@ test('Shared avatar atom can receive trusted instance identity without duplicati
  assert.match(markup,/src="\/assets\/brand\/avatars\/k\.webp"/);
  assert.match(markup,/class="player-avatar-image"/);
 });
-test('Existing edit flow retains its separate back destination and form submission',()=>{
+test('Editing and creating share one compiled form family with different validated navigation actions',()=>{
  const source=readFileSync(new URL('../app.js',import.meta.url),'utf8');
  assert.match(source,/const editing=editingProfile&&activePlayer/);
- assert.match(source,/const attrs=id=>editing\?'':viewAttrs\('player-create',id\)/);
- assert.match(source,/root\.innerHTML=editing\?markup:compileViewMarkup\('player-create',markup\)/);
- assert.match(source,/const navigation=editing\?pageHead\(title,back\)/);
+ assert.match(source,/const attrs=id=>viewAttrs\('player-create',id\)/);
+ assert.match(source,/root\.innerHTML=compileViewMarkup\('player-create',markup,\{variant:editing\?'edit':'create'\}\)/);
+ assert.deepEqual(blocks.find(row=>row.id==='create-back').variantActions,{create:'players',edit:'settings'});
+ const html=blocks.map(item=>'<div '+viewAttrs('player-create',item.id)+(item.action?' data-action="'+(item.id==='create-back'?'settings':item.action)+'"':'')+'></div>').join('');
+ assert.equal((compileViewMarkup('player-create',html,{variant:'edit'}).match(/data-ds-contract="v2"/g)||[]).length,25);
+ assert.throws(()=>compileViewMarkup('player-create',html,{variant:'create'}),/Action mismatch/);
+ assert.throws(()=>compileViewMarkup('player-create',html,{variant:'delete'}),/Unknown action variant/);
  assert.match(source,/data-action="submit-player-form"/);
  assert.match(source,/root\.addEventListener\('submit',async e=>/);
 });

@@ -16,6 +16,9 @@ test('remote scene manifest detects missing and altered published content',()=>{
  const scene=same.assets.find(a=>a.group==='scenes');scene.sha='0'.repeat(64);
  assert.match(libraryIndexReport(current,same,current).issues.join('\n'),/Inna wersja sceny/);
  same.assets=same.assets.filter(a=>a.path!==scene.path);
+ // The archive fixture remains internally valid; only its published scene
+ // listing diverges from the current library (which the audit must detect).
+ same.words=Object.fromEntries(Object.entries(same.words).filter(([,row])=>row.path!==scene.path));
  assert.match(libraryIndexReport(current,same,current).issues.join('\n'),/Scena niedostępna/);
 });
 test('published and current index are read independently without copying images',async()=>{

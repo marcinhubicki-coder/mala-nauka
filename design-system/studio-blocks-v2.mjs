@@ -7,11 +7,11 @@ import {html} from './preview-model.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
 
 export class StudioBlocksV2 {
- constructor(owner){this.owner=owner;this.scanner=new RuntimeCatalog(owner);this.scanner.subscribe(()=>this.refresh());this.level='family';this.viewFilter='';this.search='';this.details=false;this.part='';this.useIndex=0;this.isolated=true;this.scope='global';this.groups=new Map();window.addEventListener('message',e=>this.receive(e));}
+ constructor(owner){this.owner=owner;this.scanner=new RuntimeCatalog(owner);this.scanner.subscribe(()=>{this.libraryCache=null;this.refresh();});this.level='family';this.viewFilter='';this.search='';this.details=false;this.part='';this.useIndex=0;this.isolated=true;this.scope='global';this.groups=new Map();window.addEventListener('message',e=>this.receive(e));}
  get workspace(){return this.owner.workspace;}
  get config(){return this.owner.getDesign().config;}
  get open(){return Boolean(this.workspace.querySelector('[data-block-library-v2]'));}
- catalog(){const rows=runtimeCatalog(this.owner.registry,this.owner.getInventories());return this.details?rows:semanticCatalog(rows);}
+ catalog(){if(!this.libraryCache){const raw=runtimeCatalog(this.owner.registry,this.owner.getInventories());this.libraryCache={raw,shared:semanticCatalog(raw)};}return this.details?this.libraryCache.raw:this.libraryCache.shared;}
  visibleRecords(){return this.catalog().filter(r=>this.details||(r.registered&&(this.viewFilter?r.uses.some(u=>u.view===this.viewFilter):new Set(r.uses.map(u=>u.view)).size>=2)));}
  get record(){return this.catalog().find(r=>r.id===this.part);}
  get use(){return this.record?.uses[this.useIndex]||this.record?.uses[0];}

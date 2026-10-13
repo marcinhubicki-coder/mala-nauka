@@ -48,3 +48,12 @@ Pierwszy test sprawdza przejście od kreatora do gry, poprawny i błędny stan o
 - Przyszły projekt/wydanie/preview dla wszystkich innych trybów.
 
 To są osobne kontrole jakości, **nie powód do przepisywania działającej logiki na kolejne wyjątki CSS**. Jeżeli któryś krok nie przechodzi testu, przywracamy poprzedni działający kontrakt i naprawiamy powód na poziomie właściciela komponentu.
+
+## Zaakceptowany wynik CI (13.10.2026)
+
+- **377/377 testów Node, 0 błędów**.
+- Pełna regresja PWA i wszystkich **41 scenariuszy** w Chromium: avatar, profil, PIN z/bez, typografia, komponenty i Ortografia — **success**: [GitHub Actions #38347168622](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38347168622).
+- Osiem stanów Ortografii, kontrakty 29/17/18, podpowiedź/pauza/zasada, nawigacja i wyniki — **success**.
+- Dodatkowo osobny test zagrał **10/10 słów do naturalnego zakończenia**: 5 poprawnych i 5 błędnych, obsłużył slider po błędzie, uzyskał wynik **5/10 = 50%**, 0 błędów JavaScriptu — [GitHub Actions #38347168628](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38347168628).
+- Testy poprzednich ekranów przeszły po optymalizacji kontraktów rodzica i dzieci (nadrzędny ekran PIN i wewnętrzne klawisze / Jelly).
+- **Ważne:** sukces CI potwierdza renderowanie i interakcje w Chromium, ale nie jest równoznaczny z ręcznym zatwierdzeniem wyglądu ani wydajności PWA na fizycznym iPhone/Safari. Brak nowego zweryfikowanego URL Vercel z tym SHA z powodu wcześniejszego limitu deploy.

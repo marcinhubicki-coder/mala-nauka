@@ -80,7 +80,7 @@ function fitCaption(){
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
-  sheet.style.top=viewport.height*.22+'px';sheet.style.height=viewport.height*.368+'px';
+  sheet.style.top=viewport.height*.212+'px';sheet.style.height=viewport.height*.376+'px';
 }
 async function warmFlag(record){
   if(!record)return;
@@ -97,6 +97,8 @@ function clearPresentation(){
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');
   const record=current();renderButtons(optionsFor(record),{disabled:true});
+  const material=await preloadPaper();if(!alive(owner))return;
+  app.dataset.questionPaper=material.question?'ready':'fallback';
   if(!prepared)await warmFlag(record);if(!alive(owner))return;
   showFlag(record);for(const b of answers.children)b.disabled=false;game.setPresentationHold(false);setState('playing');updateHud();
   void warmFlag(records.get(queue[(step+1)%queue.length]));void preloadScenicEurope().catch(()=>{});
@@ -173,6 +175,6 @@ window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});
 caught((async()=>{
-  await Promise.all([document.fonts.ready,preloadPaper()]);await playQuestion();
+  const owner=timeline;await Promise.all([document.fonts.ready,preloadPaper()]);if(!alive(owner))return;await playQuestion();
   const fixture=query.get('state');if(['correct','wrong'].includes(fixture))fixtureTimer=setTimeout(()=>caught(respond(fixture==='correct'?current().id:optionsFor(current()).find(x=>x.id!==current().id).id)),100);
 })());

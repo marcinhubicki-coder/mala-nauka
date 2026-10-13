@@ -72,7 +72,7 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   const left=Math.max(crop.x,b.x),top=Math.max(crop.y,b.y),w=Math.min(crop.x+crop.w,b.x+b.w)-left,h=Math.min(crop.y+crop.h,b.y+b.h)-top;
   let distance=Infinity;
   if(w>0&&h>0)for(let ix=0;ix<7;ix++)for(let iy=0;iy<7;iy++){
-   const x=left+w*(ix+.5)/7,y=top+h*(iy+.5)/7,d=(x-b.cx)**2+(y-b.cy)**2;
+   const x=left+w*(ix+.5)/7,y=top+h*(iy+.5)/7,d=(x-left-w/2)**2+(y-top-h/2)**2;
    if(d<distance&&inside(x,y)){distance=d;item.point={x,y};}
   }
  }

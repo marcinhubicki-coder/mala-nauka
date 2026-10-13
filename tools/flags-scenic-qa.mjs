@@ -84,6 +84,7 @@ try{
    await check(engine+'-animation-frames',browser,{},async page=>{
     await open(page);await choose(page,false);
     await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-opening'));
+    assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','Opening paper must cover the flag progressively');
     // Pause and seek the actual Web Animations timeline. Screenshot overhead
     // cannot skip a fold; each frame has a precise fraction of the same opening.
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
@@ -92,6 +93,7 @@ try{
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
+    assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'hidden','A settled atlas must not expose the old pole');
     await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
      await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
@@ -169,6 +171,14 @@ try{
     await page.route('**/assets/maps/europe-scenic.webp',route=>route.abort());await page.route('**/assets/flags/cloth-prebaked/by.webp',route=>route.abort());
     await open(page);assert(await page.locator('.flag-cloth-fallback').evaluate(n=>n.complete&&n.naturalWidth>0));
     await choose(page,false);await state(page,'feedback-wrong');assert.equal((await metrics(page)).raster,'vector-fallback');assert((await metrics(page)).highlight);assert((await metrics(page)).activeCount>1);await capture(page,engine+'-image-fallback');
+   });
+   await check(engine+'-paper-image-fallback',browser,{},async page=>{
+    await page.route('**/assets/flags/adventure/scenic-*-v6.webp',route=>route.abort());
+    await open(page);assert.equal(await page.locator('#scenic-screen').getAttribute('data-question-paper'),'fallback');
+    assert.notEqual(await page.locator('#scenic-paper-row').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
+    await choose(page,false);await state(page,'feedback-wrong');assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-material-ready'),'false');
+    assert.notEqual(await page.locator('.scenic-map-inner').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
+    assert((await metrics(page)).captionFits);await capture(page,engine+'-paper-image-fallback');await slide(page);await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');
    });
    await check(engine+'-map-fetch-failure',browser,{},async page=>{
     await page.route('**/assets/maps/europe.svg',route=>route.abort());await open(page);await choose(page,false);await state(page,'feedback-wrong');assert((await page.locator('.scenic-map-unavailable').textContent()).includes('niedostępna'));

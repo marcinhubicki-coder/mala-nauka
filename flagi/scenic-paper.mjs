@@ -1,10 +1,15 @@
 import {SCENIC} from './scenic-config.mjs';
 
-async function bitmap(src){const image=new Image();image.src=src;await image.decode();return image;}
-let paperImage;
+async function bitmap(src){
+ const image=new Image();image.src=src;let timer;
+ try{await Promise.race([image.decode(),new Promise((_,reject)=>{timer=setTimeout(()=>{image.src='';reject(new Error('Paper bitmap unavailable'));},SCENIC.flagTimeoutMs);})]);return image;}
+ finally{clearTimeout(timer);}
+}
+let paperImage,questionImage;
 export async function preloadPaper(){
  paperImage??=bitmap(new URL('assets/flags/adventure/scenic-atlas-paper-v6.webp',document.baseURI)).catch(()=>null);
- await Promise.all([paperImage,bitmap(new URL('assets/flags/adventure/scenic-question-paper-v6.webp',document.baseURI)).catch(()=>null)]);
+ questionImage??=bitmap(new URL('assets/flags/adventure/scenic-question-paper-v6.webp',document.baseURI)).catch(()=>null);
+ const [atlas,question]=await Promise.all([paperImage,questionImage]);return {atlas,question};
 }
 function wrap(ctx,text,max){const lines=[''];for(const word of text.split(' ')){const i=lines.length-1,candidate=lines[i]?lines[i]+' '+word:word;if(ctx.measureText(candidate).width>max&&lines[i])lines.push(word);else lines[i]=candidate;}return lines;}
 // Three textured surfaces use slices of the actual prepared atlas, including
@@ -14,6 +19,7 @@ export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={
  const width=inner.clientWidth,height=inner.clientHeight,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
  canvas.width=width*2;canvas.height=height*2;ctx.scale(2,2);
  await preloadPaper();const paper=await paperImage;
+ if(isCurrent())sheet.dataset.materialReady=String(!!paper);
  if(paper)ctx.drawImage(paper,0,0,width,height);
  else{ctx.fillStyle='#fff0cf';ctx.fillRect(0,0,width,height);}
  const map=inner.querySelector('.scenic-europe-map'),mapRect=map.getBoundingClientRect(),x=mapRect.left-base.left,y=mapRect.top-base.top,w=map.clientWidth,h=map.clientHeight;

@@ -38,6 +38,7 @@ import {GitClient,mergeDraft,mergeCatalog,mergeWordPack,BRANCH,REPOSITORY} from 
 import {applyDesign,designReady} from '../shared/design-runtime.mjs';
 import {studioIcon as iconSVG,NAV_ICONS} from './studio-ui.mjs';
 import {configureAssets,assetUrl,loadWords,previewAssets} from '../shared/asset-loader.mjs';
+import {fetchLibraryIndexes,libraryIndexReport} from './library-index.mjs';
 await designReady;
 let contentOrigin=window.__DS_CONTENT_ORIGIN__||new URL('../',import.meta.url).href,remoteAssetPaths=[];
 const read=async path=>{const response=await fetch(new URL('design-system/'+path,contentOrigin),{cache:'no-cache'});if(!response.ok)throw Error(`Nie udało się wczytać ${path}.`);const value=await response.json();return path==='config.json'?migrateBehaviors(migrateAtomicConfig(value)):value;};
@@ -223,6 +224,7 @@ workspace.addEventListener('click',async event=>{
  if(button.dataset.mergeFont){const from=button.dataset.mergeFont,to=workspace.querySelector(`[data-font-target="${from}"]`).value;checkpoint();for(const role of Object.keys(config.typography))if(config.typography[role]===from)config.typography[role]=to;sendDesign();renderFonts();toast(`Role ${from} korzystają teraz z ${to}. Zapisz commit po sprawdzeniu widoków.`);}
  if(button.id==='upload-asset'||button.dataset.uploadWord)openUpload(button.dataset.uploadWord||'');
 
+ if(button.id==='check-image-source')await checkImageSource();
  if(button.id==='asset-inventory')openInventory();
  if(button.dataset.doc){event.preventDefault();docSection=button.dataset.doc;renderDocs();}
  if(button.id==='undo-change')await undoChange();
@@ -276,6 +278,18 @@ function openUpload(word=''){
  modal.querySelector('form').onsubmit=async event=>{event.preventDefault();try{if(!staged)throw Error('Najpierw wybierz grafikę.');const label=modal.querySelector('#upload-word').value.trim();const candidate=batchWords(batches).find(r=>r.word===label);if(label&&!words.some(row=>row.word===label)&&!candidate)throw Error('Wybierz słowo z bazy lub kolejki batchy.');if(candidate&&batches.batches.find(b=>b.words.includes(candidate)).stage==='published')throw Error('Edytuj ilustrację zaakceptowanego hasła w bazie słów.');if(label&&Math.abs(staged.width/staged.height-1)>.04)throw Error('Ilustracja słowa powinna mieć proporcję 1:1.');const existing=assets.assets.find(asset=>asset.sha===staged.sha),path=existing?.path||staged.path;checkpoint();if(!existing){const {bytes,file,...metadata}=staged;assets.assets.push(metadata);uploads.push({path,bytes});objectURLs.set(path,URL.createObjectURL(file));}if(existing){existing.width=staged.width;existing.height=staged.height;}if(candidate){candidate.assetPath=path;}else if(label){const previous=assets.words[label],record=words.find(row=>row.word===label);assets.words[label]={path,source:previous?.source||sourceFor(record),masked:record.masked,manual:true};}await persistContent();sendDesign();modal.close();render();toast('Asset dodany do szkicu. Zapisz commit, aby udostępnić go branchom.');}catch(error){modal.querySelector('#upload-error').textContent=error.message;}};
 }
 function sourceFor(word){return audit.wordSources?.[word.word]||'data/words-01.json';}
+async function checkImageSource(){
+ const button=workspace.querySelector('#check-image-source');
+ if(button)button.disabled=true;
+ try{
+  const remote=await fetchLibraryIndexes();
+  const report=libraryIndexReport(remote.current,remote.archive,baseAssets);
+  const status=report.issues.length?'Wymagana synchronizacja':'Indeksy zgodne';
+  showDialog(`<h2>Biblioteka grafik — indeks online</h2><p><strong>${status}</strong>. To kontrola odczytu; nie usuwa i nie przepisuje plików ani Twojego szkicu.</p><div class="summary-strip"><div class="summary-card"><b>${report.total}</b><span>unikalnych grafik</span></div><div class="summary-card"><b>${report.scenes}</b><span>scen w archiwum</span></div><div class="summary-card"><b>${report.aliases}</b><span>aliasów historycznych</span></div></div><p>Indeks bieżący: ${report.currentRevision}. Archiwum: ${report.archiveRevision}. W szkicu: ${uploads.length} jeszcze nieopublikowanych plików.</p><p role="status">${report.issues.length?report.issues.slice(0,8).map(escape).join(' · '):'Brak zduplikowanych hashy i brak rozbieżności scen.'}</p><div class="modal-actions"><button class="quiet-button" data-close>Zamknij</button><button class="solid-button" id="library-sync-source">Wczytaj aktualny GitHub</button></div>`);
+  modal.querySelector('#library-sync-source').onclick=async()=>{modal.close();if(!git.connected){openConnect();return;}await refreshGit();};
+ }catch(error){toast('Nie udało się sprawdzić indeksów online: '+error.message);}
+ finally{if(button)button.disabled=false;}
+}
 function openInventory(){showDialog(`<h2>Rejestr assetów</h2><p>${assets.assets.length} unikalnych plików. Hash i odwołania pozwalają sprawdzić użycie przed usunięciem.</p><div class="change-list" style="max-height:52vh"><table class="table"><thead><tr><th>Plik</th><th>Rozmiar</th><th>Odwołania</th></tr></thead><tbody>${assets.assets.map(asset=>`<tr><td>${escape(asset.path)}</td><td>${(asset.size/1024).toFixed(1)} kB</td><td>${asset.references?.length||0}</td></tr>`).join('')}</tbody></table></div><div class="modal-actions"><button class="quiet-button" data-close>Zamknij</button><button class="solid-button" id="export-assets">Pobierz rejestr JSON</button></div>`);modal.querySelector('#export-assets').onclick=()=>downloadJSON(assets,'mala-nauka-assets.json');}
 window.addEventListener('beforeunload',event=>{if(uploads.length||wordEdits.size){event.preventDefault();event.returnValue='';}});
 const barObserver=new ResizeObserver(entries=>document.documentElement.style.setProperty('--studio-bar-height',entries[0].target.getBoundingClientRect().height+'px'));barObserver.observe(document.querySelector('.studio-topbar'));

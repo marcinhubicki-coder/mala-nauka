@@ -20,7 +20,7 @@ permissions:
 
 concurrency:
   group: flags-prebake-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   prebake:
@@ -37,6 +37,7 @@ jobs:
         run: |
           node --check tools/build-flag-cloth-assets.mjs
           node --check flagi/flag-on-pole.mjs
+          node --check tools/sync-flags-offline-cache.mjs
           node --test tests/flags-prebaked.test.mjs
       - name: Install browser generator
         run: |
@@ -49,9 +50,11 @@ jobs:
           else
             node tools/build-flag-cloth-assets.mjs
           fi
+      - name: Validate assets and update PWA offline cache
+        run: node tools/sync-flags-offline-cache.mjs
       - name: Commit assets to the isolated branch
         run: |
-          git add assets/flags/cloth-prebaked/
+          git add assets/flags/cloth-prebaked/ sw.js
           if git diff --cached --quiet; then
             echo 'All assets unchanged'
           else

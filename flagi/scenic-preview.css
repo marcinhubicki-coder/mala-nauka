@@ -144,8 +144,9 @@ button{font:inherit}
   animation:scenic-atlas-inner-depart 790ms ease-in both;
 }
 @keyframes scenic-atlas-inner-arrival{
-  0%,33%{opacity:0}
-  62%{opacity:.65}
+  0%{opacity:0}
+  24%{opacity:.36}
+  51%{opacity:.86}
   83%,100%{opacity:1}
 }
 @keyframes scenic-atlas-inner-depart{
@@ -189,34 +190,34 @@ button{font:inherit}
 .scenic-map-scroll.is-opening .scenic-fold-leaf-b{animation:scenic-fold-b-in 1120ms ease both}
 .scenic-map-scroll.is-opening .scenic-fold-leaf-c{animation:scenic-fold-c-in 1120ms ease both}
 @keyframes scenic-fold-a-in{
-  0%{transform:rotateX(-88deg)}
-  24%{transform:rotateX(3deg)}
-  38%,100%{transform:rotateX(0)}
+  0%{transform:rotateX(-88deg);opacity:1}
+  24%{transform:rotateX(3deg);opacity:1}
+  38%,100%{transform:rotateX(0);opacity:0}
 }
 @keyframes scenic-fold-b-in{
-  0%,19%{transform:rotateX(-88deg)}
-  49%{transform:rotateX(7deg)}
-  65%,100%{transform:rotateX(0)}
+  0%,19%{transform:rotateX(-88deg);opacity:1}
+  49%{transform:rotateX(7deg);opacity:1}
+  65%,100%{transform:rotateX(0);opacity:0}
 }
 @keyframes scenic-fold-c-in{
-  0%,47%{transform:rotateX(-88deg)}
-  77%{transform:rotateX(5deg)}
-  93%,100%{transform:rotateX(0)}
+  0%,47%{transform:rotateX(-88deg);opacity:1}
+  77%{transform:rotateX(5deg);opacity:1}
+  93%,100%{transform:rotateX(0);opacity:0}
 }
 .scenic-map-scroll.is-closing .scenic-fold-leaf-a{animation:scenic-fold-a-out 790ms ease both}
 .scenic-map-scroll.is-closing .scenic-fold-leaf-b{animation:scenic-fold-b-out 790ms ease both}
 .scenic-map-scroll.is-closing .scenic-fold-leaf-c{animation:scenic-fold-c-out 790ms ease both}
 @keyframes scenic-fold-a-out{
-  0%,65%{transform:rotateX(0)}
-  100%{transform:rotateX(-88deg)}
+  0%,65%{transform:rotateX(0);opacity:0}
+  100%{transform:rotateX(-88deg);opacity:1}
 }
 @keyframes scenic-fold-b-out{
-  0%,32%{transform:rotateX(0)}
-  82%,100%{transform:rotateX(-88deg)}
+  0%,32%{transform:rotateX(0);opacity:0}
+  82%,100%{transform:rotateX(-88deg);opacity:1}
 }
 @keyframes scenic-fold-c-out{
-  0%{transform:rotateX(0)}
-  47%,100%{transform:rotateX(-88deg)}
+  0%{transform:rotateX(0);opacity:0}
+  47%,100%{transform:rotateX(-88deg);opacity:1}
 }
 .scenic-fold-seam{
   position:absolute;bottom:-1px;left:0;right:0;height:13px;

@@ -1,0 +1,62 @@
+name: Flags scenic Europe preview
+
+on:
+  push:
+    branches: [feature/flags-scenic-preview-v1]
+    paths:
+      - '.github/workflows/flags-scenic-preview.yml'
+      - 'tools/build-scenic-europe.mjs'
+      - 'tools/flags-scenic-qa.mjs'
+      - 'flagi/scenic-preview.html'
+      - 'flagi/scenic-preview.css'
+      - 'flagi/scenic-preview.mjs'
+      - 'flagi/scenic-europe.mjs'
+      - 'adventure-preview.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flags-scenic-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  europe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript modules
+        run: |
+          node --check tools/build-scenic-europe.mjs
+          node --check tools/flags-scenic-qa.mjs
+          node --check flagi/scenic-europe.mjs
+          node --check flagi/scenic-preview.mjs
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install chromium
+      - name: Generate geographical Europe artwork
+        run: node tools/build-scenic-europe.mjs
+      - name: Capture phone gameplay and verify SVG-only active border
+        id: qa
+        continue-on-error: true
+        run: node tools/flags-scenic-qa.mjs
+      - name: Save generated atlas and screenshots on isolated branch
+        if: always()
+        run: |
+          git add assets/maps/europe-scenic.webp docs/flags-adventure/qa-scenic/ 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' \
+                -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+                commit -m 'build(flags-scenic): update Europe map asset and phone screenshots'
+            git pull --rebase origin feature/flags-scenic-preview-v1
+            git push origin HEAD:feature/flags-scenic-preview-v1
+          fi
+      - name: Require visual QA success
+        if: steps.qa.outcome == 'failure'
+        run: exit 1

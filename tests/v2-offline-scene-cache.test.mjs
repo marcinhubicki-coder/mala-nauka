@@ -16,3 +16,12 @@ test('persistent image cache is bounded and never blocks network image loading',
  assert.match(worker,/keys\.length-SCENE_LIMIT/);
  assert.match(worker,/catch\{\/\* Storage quotas must not block the illustration/);
 });
+
+test('SVG flags and their alpha-preserving cloth source have a distinct persistent cache',()=>{
+ assert.match(worker,/const FLAG_CACHE='mala-nauka-flags-v1'/);
+ assert.match(worker,/const FLAG_LIMIT=260/);
+ assert.match(worker,/name!==CACHE&&name!==SCENE_CACHE&&name!==FLAG_CACHE/);
+ assert.match(worker,/url\.pathname\.startsWith\('\/assets\/flags\/'\)/);
+ assert.match(worker,/keys\.length-FLAG_LIMIT/);
+ assert.match(worker,/Storage quota must not block flag rendering/);
+});

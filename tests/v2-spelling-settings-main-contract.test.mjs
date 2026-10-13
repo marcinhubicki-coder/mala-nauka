@@ -30,7 +30,7 @@ test('DOM hydration preserves existing jelly controls rather than remounting the
  const without=nodes.filter(x=>x.dataset.dsKey!=='spelling-start');
  assert.throws(()=>hydrateViewContract({querySelectorAll:()=>without},'spelling-settings'),/Incomplete mounted contract/);
 });
-test('Spelling's runtime never loads a DOM classifier while the jelly form is mounting',()=>{
+test("Spelling runtime avoids DOM classification while the jelly form mounts",()=>{
  const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
  const wizard=readFileSync(new URL('../ortografia/wizard-v2.mjs',import.meta.url),'utf8');
  const runtime=readFileSync(new URL('../shared/design-runtime.mjs',import.meta.url),'utf8');

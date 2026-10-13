@@ -110,7 +110,7 @@ try{
 
  await page.locator('[data-action=edit-profile]').click();
  await page.locator('#app[data-view=player-create]').waitFor();
- assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),0,'Existing edit renderer remains separate until explicitly migrated');
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),25,'Editing must use the shared 25-block compiled contract');
  assert.equal(await page.locator('#app [data-action="settings"]').count(),1,'Edit profile must return to Settings');
  const editor=await measure();
  assert.equal(editor.choices.length,12);

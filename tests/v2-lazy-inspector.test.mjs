@@ -9,7 +9,8 @@ test('Home runtime never statically imports the DOM scanner',()=>{
  }
  const runtime=source('shared/design-runtime.mjs');
  assert.match(runtime,/inspectorLoader\?\?=import\('\.\/element-system\.mjs'\)/);
- assert.match(runtime,/hasViewContract\(view\)\)return applyCompiledView/);
+ assert.match(runtime,/hasViewContract\(view\)\)/);
+ assert.match(runtime,/declared===viewContract\(view\)\.length/);
 });
 test('Legacy view adapter checks for stale revision before attaching inspector effects',()=>{
  const src=source('shared/design-runtime.mjs');

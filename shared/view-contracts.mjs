@@ -73,7 +73,7 @@ const mathSettings=[
  row('math-start','button-game-start','button','layout-root','atom','start-game')
 ];
 const playerCreate=[
- row('create-back','button-back','button','layout-root','atom','players'),
+ {...row('create-back','button-back','button','layout-root','atom','players'),variantActions:Object.freeze({create:'players',edit:'settings'})},
  row('create-page-title','text-player-title','text','layout-root'),
  row('create-card','container-player-form-card','container','layout-root','family'),
  row('create-preview','image-player-avatar-art','image','create-card'),
@@ -103,6 +103,9 @@ export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
   if(!/^[a-z0-9-]+$/.test(item.id)||ids.has(item.id))throw Error('Duplicate/invalid component ID: '+item.id);
   if(!item.recipe||!item.kind||!['atom','group','family'].includes(item.level))throw Error('Invalid component contract: '+item.id);
   if(item.kind==='button'&&!item.action)throw Error('Button has no explicit action: '+item.id);
+  if(item.variantActions){
+   if(item.kind!=='button'||!Object.keys(item.variantActions).length||Object.values(item.variantActions).some(action=>typeof action!=='string'||!action))throw Error('Invalid action variants: '+item.id);
+  }
   ids.set(item.id,item);
  }
  for(const item of items){
@@ -124,7 +127,7 @@ export function staticViewInventory(view){
 }
 // Convert an already-rendered component tree into a lightweight, declarative DOM.
 // Only contract IDs are accepted; design attributes never change the geometry.
-export function compileViewMarkup(view,markup){
+export function compileViewMarkup(view,markup,{variant='create'}={}){
  const items=viewContract(view);validateViewContract(view,items);
  const byId=new Map(items.map(item=>[item.id,item])),used=new Set();
  const result=markup.replace(/<([a-z][\w-]*)([^>]*\sdata-ds-key="([^"]+)"[^>]*)>/gi,(whole,tag,attrs,id)=>{
@@ -134,7 +137,9 @@ export function compileViewMarkup(view,markup){
   used.add(id);
   if(!attrs.includes('data-ds-recipe="'+component.recipe+'"'))throw Error('Recipe mismatch: '+id);
   if(!attrs.includes('data-ds-kind="'+component.kind+'"'))throw Error('Kind mismatch: '+id);
-  if(component.action&&!attrs.includes('data-action="'+component.action+'"'))throw Error('Action mismatch: '+id);
+  const expectedAction=component.variantActions?.[variant]||component.action;
+  if(component.variantActions&&!Object.hasOwn(component.variantActions,variant))throw Error('Unknown action variant: '+id+'/'+variant);
+  if(expectedAction&&!attrs.includes('data-action="'+expectedAction+'"'))throw Error('Action mismatch: '+id+'/'+variant);
   const atomic=component.level==='atom'&&['button','icon','image','text'].includes(component.kind)?' data-ds-atomic="true"':'';
   const mode=!attrs.includes('data-ds-mode=')?' data-ds-mode="'+inheritedMode(view,id)+'"':'';
   return '<'+tag+attrs+' data-ds-contract="v2" data-ds-element="'+id+'" data-ds-block="block-'+component.recipe+'" data-ds-state="default"'+mode+(attrs.includes('data-ds-atomic=')?'':atomic)+'>';

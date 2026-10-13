@@ -18,7 +18,14 @@ async function inspect(){
    const params=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});
    await page.goto(base+view.route+'?'+params,{waitUntil:'domcontentloaded',timeout:18000});
    await page.waitForFunction(()=>document.querySelector('#app')?.dataset?.view,{timeout:10000});
-   await page.waitForTimeout(450);
+   // A new Studio fixture may briefly expose the previous/default state.
+   // Wait for the requested viewId AND hydrated elements, rather than relying
+   // on an arbitrary 450ms timeout. Persistent mismatch still fails.
+   await page.waitForFunction(expected=>{
+     const root=document.querySelector('#app');
+     return document.documentElement.dataset.dsView===expected &&
+       root?.dataset.view && root.querySelectorAll('[data-ds-element]').length>=2;
+   },view.id,{timeout:12000});
    const info=await page.evaluate(()=>({name:document.documentElement.dataset.dsView,elements:document.querySelectorAll('[data-ds-element]').length,compiled:document.querySelectorAll('#app [data-ds-contract="v2"]').length,view:document.querySelector('#app')?.dataset.view}));
    assert.equal(info.name,view.id);
    assert.ok(info.elements>=2,'No declared or annotated components');

@@ -74,6 +74,16 @@ try{
  assert.ok(Math.abs(setupBounds.x-14)<9,'Wizard sheet changed its horizontal reference position: '+JSON.stringify(setupBounds));
  assert.ok(Math.abs(setupBounds.y-223)<12,'Wizard sheet changed its vertical reference position: '+JSON.stringify(setupBounds));
  assert.ok(Math.abs(setupBounds.width-362)<14,'Wizard sheet no longer matches the approved side margins: '+JSON.stringify(setupBounds));
+ // Approved production design has a visible educational line between the
+ // options card and pink CTA. Check it in the *hosted PWA*, not just Studio.
+ const wizardFooter=await gameFrame.locator('#setup-form').evaluate(form=>{
+  const get=sel=>{const el=form.querySelector(sel),r=el?.getBoundingClientRect(),css=el?getComputedStyle(el):null;return el?{text:el.textContent.trim(),top:r.top,bottom:r.bottom,height:r.height,width:r.width,display:css.display,visibility:css.visibility,opacity:css.opacity,color:css.color}:null;};
+  return {card:get('.setup-card'),note:get('.wizard-note'),button:get('.start-button')};
+ });
+ assert.ok(wizardFooter.note?.text.length>12,'Missing educational note: '+JSON.stringify(wizardFooter));
+ assert.ok(wizardFooter.note.height>=12&&wizardFooter.note.display!=='none'&&wizardFooter.note.visibility!=='hidden','Wizard note is invisible: '+JSON.stringify(wizardFooter));
+ assert.ok(wizardFooter.note.top>=wizardFooter.card.bottom+8&&wizardFooter.note.bottom<wizardFooter.button.top,
+  'Wizard note/CTA spacing does not match production: '+JSON.stringify(wizardFooter));
  await capture(page,'spelling-settings-live','IMG_2947.png');
  const before=await gameFrame.locator('[data-ds-element="spelling-level-jelly"]').elementHandle();
  assert.ok(before);

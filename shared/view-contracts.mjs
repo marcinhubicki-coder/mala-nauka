@@ -118,7 +118,7 @@ const spellingGame=[
  row('spelling-game-pause','button-spelling-pause','button','spelling-game-hud','atom','pause','spelling'),
  row('spelling-game-title','text-spelling-title','text','layout-root','atom',null,'spelling'),
  row('spelling-game-visual','container-spelling-visual','container','layout-root','group',null,'spelling'),
- row('spelling-game-question','container-spelling-question','container','layout-root','group',null,'spelling'),
+ row('spelling-game-question','group-spelling-question','container','layout-root','group',null,'spelling'),
  row('spelling-game-word','container-spelling-word','container','spelling-game-question','group',null,'spelling'),
  row('spelling-game-answers','group-spelling-answers','container','layout-root','group',null,'spelling'),
  row('spelling-game-answer-0','button-answer','button','spelling-game-answers','atom','answer','spelling'),

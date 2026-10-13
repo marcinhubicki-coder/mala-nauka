@@ -29,7 +29,7 @@ function glyphs(answers,origin,rand) {
 
 export function createSand(canvas,app,answers) {
   const ctx=canvas.getContext('2d',{alpha:true});
-  const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
+  const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete app.dataset.qaCaptured;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
   async function transition({timeline,reduced,seed,replace}) {
     clear();if(reduced){replace();return;}
     const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);
@@ -72,6 +72,11 @@ export function createSand(canvas,app,answers) {
         if(alpha<=0)continue;ctx.globalAlpha=alpha;ctx.fillStyle=g.color;ctx.fillRect(x,y,g.size,g.size);
       }
       ctx.globalAlpha=1;
+      // Capture target is armed before resuming: no screenshot/IPC timing race.
+      if(app.dataset.qa==='true'&&app.dataset.qaCaptureAt!==undefined){
+        const target=Number(app.dataset.qaCaptureAt);
+        if(t>=target){delete app.dataset.qaCaptureAt;app.dataset.qaCaptured=String(target);timeline.setPaused(true);}
+      }
     });}finally{clear();}
   }
   return {transition,clear};

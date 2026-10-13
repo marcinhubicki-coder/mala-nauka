@@ -92,12 +92,17 @@ try{
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
+    const captures=[['falling',.10],['settled',.40],['forming',.76],['end',.93]];
+    await page.evaluate(f=>document.querySelector('#scenic-screen').dataset.qaCaptureAt=String(f),captures[0][1]);
     await slide(page);
-    for(const [label,fraction] of [['falling',.10],['settled',.40],['forming',.76],['end',.93]]){
-     await page.waitForFunction(f=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=f,fraction);
-     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:true})));
+    for(let index=0;index<captures.length;index++){
+     const [label,fraction]=captures[index];
+     await page.waitForFunction(f=>document.querySelector('#scenic-screen').dataset.qaCaptured===String(f),fraction);
      await capture(page,engine+'-sand-'+label);
-     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));
+     await page.evaluate(next=>{
+      if(next!==null)document.querySelector('#scenic-screen').dataset.qaCaptureAt=String(next);
+      window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false}));
+     },captures[index+1]?.[1]??null);
     }
     await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
    });

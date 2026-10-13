@@ -27,7 +27,7 @@ export class ScenicTimeline {
       const tick=now=>{
         if(last)elapsed+=now-last;last=now;
         const progress=Math.min(1,elapsed/ms);paint(progress);
-        if(progress<1)frame=requestAnimationFrame(tick);
+        if(progress<1){if(!this.paused)frame=requestAnimationFrame(tick);}
         else{this.jobs.delete(job);resolve();}
       };
       const job={

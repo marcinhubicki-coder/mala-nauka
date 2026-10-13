@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 39,
-  "total": 40,
+  "passed": 46,
+  "total": 46,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -961,6 +961,292 @@
         "enabled": "true"
       },
       "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-13-two-word-title",
+      "state": "feedback-correct",
+      "country": "gb",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.859375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "bg",
+          "text": "Bułgaria",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "gb",
+          "text": "Wielka Brytania",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "va",
+          "text": "Watykan",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ua",
+          "text": "Ukraina",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 5,
+      "crop": "15.55 156.12 287.21 156.66",
+      "captionFits": true,
+      "capital": "Stolica: Londyn",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-14-two-word-title-short",
+      "state": "feedback-wrong",
+      "country": "mk",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09320068359375
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
+      },
+      "answers": [
+        {
+          "id": "mt",
+          "text": "Malta",
+          "disabled": true,
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "at",
+          "text": "Austria",
+          "disabled": true,
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "no",
+          "text": "Norwegia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "316 378.25 120 53.79",
+      "captionFits": true,
+      "capital": "Stolica: Skopje",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "chromium-15-two-line-question",
+      "state": "playing",
+      "country": "li",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23678588867188
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 425.375,
+        "w": 351,
+        "h": 75.109375
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": false,
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "ie",
+          "text": "Irlandia",
+          "disabled": false,
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": false,
       "errors": []
     },
     {
@@ -2874,6 +3160,292 @@
       "errors": []
     },
     {
+      "name": "webkit-13-two-word-title",
+      "state": "feedback-correct",
+      "country": "gb",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 476.84375,
+        "w": 351,
+        "h": 38.8125
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "bg",
+          "text": "Bułgaria",
+          "disabled": true,
+          "x": 19.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "gb",
+          "text": "Wielka Brytania",
+          "disabled": true,
+          "x": 198.5,
+          "y": 518.203125,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "va",
+          "text": "Watykan",
+          "disabled": true,
+          "x": 19.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ua",
+          "text": "Ukraina",
+          "disabled": true,
+          "x": 198.5,
+          "y": 589.640625,
+          "w": 172,
+          "h": 64.4375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 5,
+      "crop": "15.55 156.12 287.21 156.66",
+      "captionFits": true,
+      "capital": "Stolica: Londyn",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-14-two-word-title-short",
+      "state": "feedback-wrong",
+      "country": "mk",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 159.92620849609375,
+        "w": 212.36773681640625,
+        "h": 184.09317016601562
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 395.5,
+        "w": 351,
+        "h": 32.1875
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 150.5,
+        "w": 351,
+        "h": 240.796875
+      },
+      "answers": [
+        {
+          "id": "mt",
+          "text": "Malta",
+          "disabled": true,
+          "x": 19.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 198.5,
+          "y": 429.796875,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "at",
+          "text": "Austria",
+          "disabled": true,
+          "x": 19.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "no",
+          "text": "Norwegia",
+          "disabled": true,
+          "x": 198.5,
+          "y": 489.640625,
+          "w": 172,
+          "h": 52.84375,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "316 378.25 120 53.79",
+      "captionFits": true,
+      "capital": "Stolica: Skopje",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "errors": []
+    },
+    {
+      "name": "webkit-15-two-line-question",
+      "state": "playing",
+      "country": "li",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "li",
+          "text": "Liechtenstein",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ba",
+          "text": "Bośnia i Hercegowina",
+          "disabled": false,
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "ie",
+          "text": "Irlandia",
+          "disabled": false,
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": false,
+      "errors": []
+    },
+    {
       "name": "webkit-10-pwa-safe-area",
       "state": "feedback-correct",
       "country": "pl",
@@ -3159,7 +3731,96 @@
     },
     {
       "name": "webkit-correct-auto-and-pause",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "playing",
+      "country": "pl",
+      "score": "1 pkt",
+      "task": "Zadanie 2",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 102.03125,
+        "y": 193.04415893554688,
+        "w": 243.67120361328125,
+        "h": 211.23681640625
+      },
+      "paper": {
+        "x": 19.5,
+        "y": 425.359375,
+        "w": 351,
+        "h": 75.109375
+      },
+      "atlas": {
+        "x": 19.5,
+        "y": 181.453125,
+        "w": 351,
+        "h": 290.328125
+      },
+      "answers": [
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
+          "x": 19.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
+          "x": 198.5,
+          "y": 508.921875,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 19.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
+          "x": 198.5,
+          "y": 576.140625,
+          "w": 172,
+          "h": 60.21875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
       "errors": []
     },
     {

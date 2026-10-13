@@ -13,6 +13,11 @@ on:
       - "shared/view-contracts.mjs"
       - "app.js"
       - "tests/v2-player-create-contract.test.mjs"
+      - "tests/v2-pin-family-contract.test.mjs"
+      - "shared/navigation-parts.mjs"
+      - "shared/design-runtime.mjs"
+      - "tools/qa-typography-browser.mjs"
+      - "tools/qa-all-views-browser.mjs"
       - ".github/workflows/avatar-qa.yml"
   workflow_dispatch:
 

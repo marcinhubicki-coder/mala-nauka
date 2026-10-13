@@ -54,3 +54,31 @@ Każdy etap musi przejść:
 5. Cofnięcie do poprzedniego punktu kontrolnego i ograniczenie nadmiarowych kosztów przed następnym etapem.
 
 Pełne kontrakty rendererów nadal trzeba rozszerzać na pozostałe 40 widoków; obecny skompresowany inwentarz nie jest ich zamiennikiem.
+
+## 4. Odkrywanie atomów i kontrola przeglądarkowa
+
+Studio umożliwia wybór bazowego **Typu atomu** w katalogu wspólnych klocków, a następnie wskazanie konkretnej receptury i wystąpienia. Te same rodzaje można znaleźć z terminala:
+
+```bash
+npm run studio:engine -- search --query "powrot" --atom button
+npm run studio:engine -- list --view spelling-results --atom text
+```
+
+Zmiany typograficzne i hierarchii kontrolujemy również za pomocą dwóch powtarzalnych testów przeglądarkowych, niezależnych od zestawu testów Node:
+
+```bash
+# Opcjonalna zależność tylko dla testowania — nie trafia do pakietu gry
+npm install --no-save playwright
+npx playwright install chromium
+
+# W drugim terminalu, po npm test:
+cd dist && python3 -m http.server 8765
+
+# Następnie w katalogu repozytorium:
+node tools/qa-typography-browser.mjs http://127.0.0.1:8765
+node tools/qa-all-views-browser.mjs http://127.0.0.1:8765
+```
+
+Pierwszy test weryfikuje zapis H2, aktualizację zmiennej CSS, brak wpływu na inny tekst oraz przełączanie uproszczonego/szczegółowego katalogu. Drugi odwiedza wszystkie 41 prawdziwych scenariuszy, sprawdza obecność komponentów i błędy JavaScriptu. Nie zastępują pomiaru wydajności i testu dotykowego w Safari na iPhonie.
+
+Do kompilowanego motywu dodano około **1,45 KB** nazwanych zmiennych typograficznych. To niewielki narzut; celowo nie dodano drugiego renderera tekstu ani osobnych plików dla H1–H9.

@@ -1,6 +1,6 @@
 {
   "phase": "full",
-  "passed": 33,
+  "passed": 34,
   "total": 34,
   "reports": [
     {
@@ -82,6 +82,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": false,
       "errors": []
     },
@@ -166,6 +169,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -250,6 +256,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -334,6 +343,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -418,6 +430,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -503,6 +518,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -588,6 +606,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -672,6 +693,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -756,6 +780,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -837,7 +864,10 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 1,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -920,6 +950,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1004,6 +1037,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1086,6 +1122,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1168,6 +1207,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1252,6 +1294,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1334,6 +1379,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1419,6 +1467,10 @@
       "overflowY": false,
       "animations": 3,
       "sand": "falling",
+      "qa": {
+        "enabled": "true",
+        "progress": "0.000"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1501,6 +1553,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 1,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": false,
       "errors": []
     },
@@ -1585,6 +1640,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1669,6 +1727,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1753,6 +1814,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1837,6 +1901,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -1922,6 +1989,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2007,6 +2077,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2091,6 +2164,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2175,6 +2251,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2257,8 +2336,10 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 1,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
-      "error": "TimeoutError: page.waitForFunction: Timeout 30000ms exceeded.",
       "errors": []
     },
     {
@@ -2340,6 +2421,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2424,6 +2508,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2506,6 +2593,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2588,6 +2678,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2672,6 +2765,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2754,6 +2850,9 @@
       "overflowX": false,
       "overflowY": false,
       "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
       "foldImages": true,
       "errors": []
     },
@@ -2839,6 +2938,10 @@
       "overflowY": false,
       "animations": 3,
       "sand": "falling",
+      "qa": {
+        "enabled": "true",
+        "progress": "0.000"
+      },
       "foldImages": true,
       "errors": []
     }

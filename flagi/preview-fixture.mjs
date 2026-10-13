@@ -11,7 +11,7 @@ export function flagsPreviewSession(params){
  // still use the ordinary running clock and the same Session state machine.
  const session=new Session(()=>flagQuestion(record,options,config,()=>.4,record.difficulty),180,()=>0,()=>.4);
  if(type==='flags'&&params.get('scene')==='material')session.options=[options[1].country,options[2].country,record.country,options[3].country];
- session.mode='flags';session.config=config;session.feedbackMs=4000;session.remaining=145000;session.correct=1;session.question=2;
+ session.mode='flags';session.config=config;session.feedbackMs=4000;session.remaining=164000;session.correct=0;session.question=1;
  if(params.get('state')==='wrong')session.answer(session.options.find(option=>option!==session.current.answer));
  if(params.get('state')==='correct')session.answer(session.current.answer);
  return session;

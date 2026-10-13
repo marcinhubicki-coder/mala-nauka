@@ -52,3 +52,6 @@ Zmierzyliśmy, że `.wizard-note` istniał w DOM, ale miał `display:none`. Przy
 
 ## Lokalna korekta położenia przycisku
 Wyrównanie 390 × 844 z załączonym `IMG_2947` pokazuje przycisk startowy V2 około 15 px niżej niż w produkcji. Globalny atom `button-game-start` ma `offsetY:18`, używany także w innych modułach, więc nie zmieniamy jego definicji. W `elementOverrides['spelling-settings']['spelling-start']` ustawiamy lokalne `offsetY:3`; model Studio i PWA wyliczają ten sam wynik. Test E2E mierzy rzeczywistą pozycję CTA i pilnuje, aby pozostał pod notatką i w obszarze widocznym na iPhone 13 Pro.
+
+## Rewizja konfiguracji Studio
+Po zatwierdzeniu nowego wyglądu ustawień podnosimy `design-system/config.json.revision` do 31. Wcześniejsze lokalne szkice o rewizji 30 wymagają świadomego odzyskania i scalenia, zamiast cichego zastąpienia zatwierdzonego modelu. Test migracji nie zakłada stałej liczby wyjątków — pilnuje, by korekta `spelling-start` była lokalna, a globalny atom zachował swoje parametry.

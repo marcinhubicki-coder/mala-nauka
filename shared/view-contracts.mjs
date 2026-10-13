@@ -220,12 +220,14 @@ export function hydrateViewContract(root,view,{variant='create'}={}){
  }
  return items.length;
 }
-export function compileViewMarkup(view,markup,{variant='create'}={}){
+export function compileViewMarkup(view,markup,{variant='create',childIds=[]}={}){
  const items=viewContract(view);validateViewContract(view,items);
- const byId=VIEW_INDEX[view],used=new Set();
+ const byId=VIEW_INDEX[view],used=new Set(),allowedChildren=childIds instanceof Set?childIds:new Set(childIds);
  const result=markup.replace(/<([a-z][\w-]*)([^>]*\sdata-ds-key="([^"]+)"[^>]*)>/gi,(whole,tag,attrs,id)=>{
   const component=byId.get(id);
-  if(!component)throw Error('Renderer emitted an undeclared component: '+id);
+  // A nested family is validated separately by its own contract; preserve it
+  // untouched. All unregistered keys still fail, never silently swallowed.
+  if(!component){if(allowedChildren.has(id))return whole;throw Error('Renderer emitted an undeclared component: '+id);}
   if(used.has(id))throw Error('Renderer emitted duplicate component ID: '+id);
   used.add(id);
   if(!attrs.includes('data-ds-recipe="'+component.recipe+'"'))throw Error('Recipe mismatch: '+id);

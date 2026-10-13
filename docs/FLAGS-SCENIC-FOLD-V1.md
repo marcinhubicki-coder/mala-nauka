@@ -1,77 +1,74 @@
-# Flagi — Scenic Preview v2
+# Flagi — scenic preview po uwagach do mockupu, 13.10.2026
 
-Gałąź: `feature/flags-scenic-preview-v1`. Wariant odrębny od produkcji i Design Studio. Bez scalenia do `main`.
+Zmiany pozostają na `feature/flags-scenic-preview-v1`. Nie zmieniono kodu produkcyjnej Ortografii, Design Studio, produkcyjnych Flag ani main.
 
-## Uruchomienie
+## Układ i assety
 
-- `flagi/scenic-preview.html?country=by` — pełna rozgrywka, wszystkie europejskie państwa z istniejącej bazy.
-- `?country=by&state=correct&freeze=1` — poprawna odpowiedź bez automatycznego przejścia, do oceny wizualnej.
-- `?country=by&state=wrong&freeze=1` — błędna odpowiedź, mapa i suwak.
-- `adventure-preview.html?screen=flag-scenic` — dotychczasowy selektor telefonu.
-- `node tools/flags-scenic-qa.mjs` — pełna weryfikacja w Chromium i WebKit. Wymaga Playwright 1.56.1 oraz obu silników. Workflow `.github/workflows/flags-scenic-preview.yml` uruchamia ją na izolowanej gałęzi i zapisuje obrazy z raportem w `docs/flags-adventure/qa-scenic/`.
+Dwa dostarczone mockupy są wzorcami: duża flaga/chłopiec/pies w pytaniu, duży nagłówek kraju ze stolicą i flagą nad mapą po odpowiedzi. Widoki poprawnej i błędnej odpowiedzi mają ten sam układ. Stan błędny nie dokłada ikon na odpowiedziach; również dekoracyjne obrazki kafelków zastępuje neutralna faktura.
 
-## Odpowiedzialności i konfiguracja
+- `scenic-mockup-v5.webp`: pejzaż opracowany z pierwszego mockupu, z ciągłą półką skalną połączoną z lewym zboczem.
+- `scenic-foreground-v4.webp`: pełny przezroczysty kadr z chłopcem i psem. Ten sam układ współrzędnych co tło, wspólne skalowanie. Włosy zachodzą na dolną krawędź kafelka; warstwa nie przyjmuje zdarzeń dotyku.
+- `scenic-pole-v4.webp`: drewniany maszt ze złotym zakończeniem. Nie używa dekoracji wektorowego masztu z produkcyjnego komponentu.
+- `scenic-rock-base-v5.webp`: kamienie i roślinność zakrywające stopę masztu; cień styku łączy maszt z podłożem. Skalna półka w tle łączy ten punkt z resztą krajobrazu.
+- `scenic-atlas-scene-v4.webp`: scena z zamkiem, balonem i stołem, opracowana z drugiego mockupu.
 
-| Plik | Odpowiedzialność |
-| --- | --- |
-| `scenic-preview.mjs` | stan gry, HUD, punktacja, suwak i preładowanie następnej flagi |
-| `scenic-europe.mjs` | wspólny WebP, wyróżnienie SVG, kadrowanie i etykiety sąsiadów |
-| `scenic-paper.mjs` | trzy zagięcia zawierające fragmenty przygotowanego atlasu |
-| `scenic-sand.mjs` | próbkowanie liter i jeden Canvas: spadanie, odbicie, osiadanie, formowanie nowych liter |
-| `scenic-timeline.mjs` | pauza oraz anulowanie wszystkich oczekiwań i animacji po restarcie |
-| `scenic-config.mjs` | jedyne źródło czasów i liczby ziaren |
-| `scenic-preview.css` | jeden zestaw reguł układu i stanów, bez wcześniejszych sprzecznych nadpisań |
+Wszystkie flagi pochodzą z istniejącej biblioteki WebP. Nie wygenerowano ilustracji nowych krajów ani map osobnych państw.
 
-Czas otwarcia: 1050 ms; zamknięcia: 760 ms; piasku: 1550 ms; zapamiętania: pełne 3900 ms **po** przygotowaniu i całkowitym otwarciu mapy. Ziarna: 15 na niepustą literę, maksymalny DPR Canvas: 2. Pętla Canvas istnieje tylko w czasie przejścia. Końcowy atlas nie ma działających animacji.
+## Mechanika zgodna z Ortografią
 
-Prawidłowa odpowiedź przechodzi automatycznie. Błędna czeka na pełne przeciągnięcie suwaka; Enter, Spacja, ArrowRight i End zapewniają dostęp klawiaturą. Pauza zachowuje pozostały czas prezentacji i zatrzymuje Web Animations oraz Canvas. Restart rozstrzyga odrzucone obietnice, usuwa piasek, resetuje przeciąganie i stan pauzy. Kolejna flaga jest przygotowywana przed zamknięciem mapy. Odpowiedzi pozostają zablokowane do zakończenia obu efektów.
+Preview importuje istniejący `Session` z `game.mjs` i `createContinueDrag` z `spelling/continue-drag.mjs`. Pliki tych modułów nie zostały zmienione.
 
-## Scena i geometria
+Suwak zaczyna gest wyłącznie na uchwycie, wymaga co najmniej 96% drogi i 24 px ruchu, odrzucony/niepełny gest wraca na początek. Kliknięcie toru oraz Enter/Spacja nie przechodzą dalej. Strzałki przesuwają po 10%. Pauza i restart zerują gest. Czas jest zatrzymany w prezentacji i przejściach. Po dobrej odpowiedzi następuje pełne 3900 ms utrwalania po przygotowaniu i rozłożeniu mapy, następnie automatyczne przejście. Błąd czeka na suwak.
 
-Nowa **jedna** ilustracja `assets/flags/adventure/scenic-scene-v3.webp` zawiera chłopca, pieska i cały krajobraz. Tymczasowy pies SVG i wycinek chłopca z obcej sceny zostały usunięte. Rozdzielczość 1170 × 2532, WebP około 349 KiB. Nie wygenerowano żadnych flag ani obrazów osobnych państw.
+## Wskazane wzorce animacji
 
-Ilustrację przygotowano wbudowanym narzędziem ImageGen z załączonego mockupu oraz istniejącego krajobrazu. Brief: zachować ciepły cinematic 3D storybook, jezioro, góry, zamek i wspólne oświetlenie; usunąć telefon i całe UI; osadzić obie postacie wyłącznie w dolnej ćwiartce; zachować wolny obszar dla HUD, flagi i odpowiedzi. Druga iteracja zmniejszyła postacie do około 65% pierwotnej wielkości i obniżyła ich głowy poniżej 75% wysokości.
-
-Jedyna mapa geograficzna: `assets/maps/europe-scenic.webp` (1360 × 1000), wygenerowana ze źródła `assets/maps/europe.svg` w tym samym układzie 680 × 500. Dzięki wspólnemu źródłu kształt i granice wyróżnienia zgadzają się z rastrem. Po załadowaniu WebP pozostaje tylko wybrane państwo i jego obrys. Etykiety są osobną lekką warstwą HTML; nie ma animacji innych krajów ani całego atlasu.
-
-Kadrowanie liczy rzeczywistą widoczną część **sąsiada**, a nie jej procent całego okna. Minimalna szerokość okna wynosi 120 jednostek źródłowych; dla dużych państw powiększa się, aby zachować kształt i otoczenie. Cel: około 6–10 sąsiadów; w gęstym obszarze i na niskim ekranie dopuszczalnych jest 11. Etykiety nie nakładają się i nie uciekają poza krawędzie.
-
-Natural Earth 1:110m nie zawiera granic najdrobniejszych państw. Korzystamy z istniejącego `map-microstates.js`; Liechtenstein i Watykan mają znacznik położenia, a nie sztucznie powiększony obszar. To ograniczenie źródła geografii, zachowane jawnie w raporcie.
-
-## Zagięcia i inspiracje
+Lista wejściowa użytkownika:
 
 - https://freefrontend.com/css-3d-transforms/#2026-06-18-3d-folding-paper-receipt-card-l
 - https://freefrontend.com/css-3d-transforms/#2025-12-08-treasure-map-l
 - https://freefrontend.com/css-3d-transforms/#2025-10-24-cards-with-parallax-tilt-effect-l
 
-Przygotowany atlas jest raz rasteryzowany wraz z wyróżnieniem i podpisami do obrazu używanego na trzech wielokrotnie używanych powierzchniach. Każda pokazuje swoją trzecią część karty. Zagięcia rozkładają się kolejno od dolnej osi; pokazują geografię podczas ruchu, bez pustych osłon oraz skalowania całego arkusza do cienkiego prostokąta. Po rozłożeniu widoczna jest nieruchoma warstwa rzeczywistej mapy. Zamknięcie stosuje odwrotną sekwencję. Oba efekty używają transformacji i opacity przez Web Animations.
+## Papier i światło
 
-Piasek powstaje z próbek rzeczywistych kształtów starych liter, osiada w małych kopczykach na linii tekstu, a potem przemieszcza się do próbek liter nowych odpowiedzi. Ziarna mają zróżnicowane opóźnienia, rozrzut, odbicie i kolor. Losowanie zależy od państwa i numeru przejścia. Nowy tekst pojawia się dopiero w końcowych 9% animacji.
+Trzy powierzchnie niosą raster rzeczywiście przygotowanego atlasu: mapa, wyróżnienie, etykiety, nazwa, stolica i flaga. Zagięcia otwierają się kolejno z osobnym easingiem każdego etapu. Ciepły refleks z góry/lewej i cień zależą od fazy obrotu. Ruch używa transformacji i opacity trzech niewielkich warstw światła/cienia. Sam papier jest nieprzezroczysty podczas obracania — poprzedni półprzezroczysty efekt ujawnił się dopiero w oglądanych klatkach i został usunięty.
 
-## Przebiegi QA
+Maska miękkich brzegów mapy jest taka sama w przygotowanym obrazie zagięć i w końcowym atlasie. Koniec animacji nie przełącza ostrego prostokąta na miękką mapę. Przygotowanie z poprzedniej sesji nie może nadpisać obrazu po restarcie.
 
-1. Pierwsza iteracja układu wykryła brak identyfikatora HUD i brak zakończenia inicjalizacji. Poprawiono połączenie HTML/JS oraz zbieranie obsłużonych błędów konsoli.
-2. Druga iteracja: 5/10 scenariuszy. Trzy stany Białorusi, niski ekran Polski i przejście animacji działały. Szwajcaria, mikropaństwa, długa nazwa i safe-area ujawniły zbyt szerokie kadry. Obrazy wszystkich tych scen oraz sześć klatek otwierania/piasku zostały rzeczywiście obejrzane. Poprawiono licznik widocznej części sąsiada i minimalny kadr, wzmocniono czytelność pergaminu.
-3. Pierwszy pełny przebieg Chromium/WebKit: **33/34**. Wszystkie scenariusze gry przeszły w obu silnikach. Jedyny timeout dotyczył pominięcia krótkiej fazy podczas wolniejszego zapisu screenshotu WebKit. Dodano sterowane zamrożenie czasu wyłącznie dla URL `qa=1`; nie zmienia ono fotografowanego UI.
-4. Powtórny pełny przebieg: **33/34**. Końcowa faza piasku WebKit nadal kończyła się między stwierdzeniem progu a osobnym żądaniem zatrzymania. Próg zamrożenia jest teraz uzbrajany przed wznowieniem osi czasu i zatrzymuje ją bezpośrednio w klatce Canvas, niezależnie od opóźnienia screenshotu.
-5. W przechwytywaniu WebKit ujawniono dodatkowo skok czasu rAF ponad końcówkę animacji po screenshotach. Oś czasu ogranicza postęp do uzbrojonego progu wyłącznie w trybie QA. Nazwę mikropaństwa odsunięto od znacznika, aby go nie zasłaniała.
-6. Końcowy przebieg: **34/34 scenariusze, 17/17 Chromium i 17/17 WebKit, zero błędów JS**. [Workflow 38392760594](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38392760594). Kod przebadany: `361e6b9160fd62778461053317d0481f79eae553`. Po poprawie przechwytywania, ujednoliceniu zielonego fallbacku SVG, izolacji asynchronicznego wyniku mapy i odsunięciu komunikatu od głowy chłopca: wynik w `docs/flags-adventure/qa-scenic/report.json`. Obejmuje poprawną odpowiedź i automatyczne przejście, błędną odpowiedź i suwak, pauzę prezentacji i piasku, trzy kolejne pytania, restarty na granicach stanów, duże nazwy, ograniczony ruch, awarie flagi/WebP/SVG oraz opóźnione wczytanie atlasu. Osobne klatki otwierania i zamykania są ustawiane na rzeczywistej osi Web Animations przy 6%, 47% i 92%; klatki piasku pokazują spadanie, osiadanie, tworzenie liter i końcówkę.
+## Dwie linie i piasek
+
+Wysokie kafelki zachowują czytelny rozmiar liter. Długie nazwy zawijają się w dwóch liniach, bez dawnego zmniejszania fontu do 13 px. Próbki ziaren są pobierane z rzeczywistych pozycji każdej litery. Każda linia ma własną linię bazową i kopczyk. Podczas tworzenia następnej nazwy część ziaren może poruszać się w górę, część w dół. Jeden Canvas pracuje tylko podczas przejścia. Małe górne refleksy i dolne cienie ziaren odpowiadają światłu sceny.
+
+## Geografia
+
+Jeden WebP Europy i SVG wybranego kraju nadal mają wspólne źródło Natural Earth w układzie 680 × 500. Kadr ma proporcje rzeczywistego pola mapy; nie rozciąga geografii na niskim ekranie. Zmniejszony minimalny margines kraju zapobiega pokazaniu 12–14 sąsiadów Polski przy szerokim polu. Minimalna szerokość okna nadal wynosi 120 jednostek, żeby nie powiększać mikropaństw. Natural Earth 1:110m nie zawiera dokładnych granic części mikropaństw; istniejące znaczniki położenia są zachowane.
+
+## Iteracje
+
+1. Nowy układ i assety, wspólna mechanika: workflow 38405784595, kod `99340cc8f05ef1ceb29604312d1074e3109a1e92`, 40/40 Chromium/WebKit. Obejrzano trzy stany, Polskę z drugiego mockupu, długą nazwę, klatki pergaminu i piasku, działający preview. Widzoczne problemy: wiszący maszt, zbyt wczesne wyprostowanie zagięć i różnica maski mapy.
+2. Skałki, połączony teren, etapowy easing, miękkie brzegi, neutralne kafelki po odpowiedzi: workflow 38408029588, kod `e3c7c7aa6f1f157d429c442a91f2ab712220105a`, 32/40. Wszystkie scenariusze mechaniki przeszły; osiem asercji ujawniło zbyt szerokie otoczenie Polski po zachowaniu prawdziwych proporcji mapy. Oglądanie klatek ujawniło półprzezroczysty papier — testy mechaniki tego nie wykrywały.
+3. Nieprzezroczyste zagięcia, właściwy margines kraju, ochrona przed późnym przygotowaniem starej mapy: workflow 38410440971, kod `998cc993b6d246bc727f91e9c8bf7b59da83a91d`. Wynik: 40/40, 20/20 Chromium i 20/20 WebKit, bez błędów JS. Obejrzano początek/środek/koniec otwierania i zwijania oraz fazy piasku. Papier nie przepuszcza już flagi. W oglądanym zrzucie niskiego ekranu pozostał obcięty nagłówek Bośni — automatyczne testy rozgrywki go wcześniej nie wykrywały.
+
+4. Dopasowanie tytułu atlasu na podstawie rzeczywistej szerokości, wcześniejsze przełączenie dwuliniowego nagłówka i nowe sprawdzenie granic nazwy/stolicy: kod `78b9c208e7dd42d2ce04746c2bd68ab20e4abc00`. Wynik: 39/40. Wszystkie nowe sprawdzenia nagłówków przeszły. WebKit raz zakończył oczekiwanie po pauzie timeoutem; nie udało się pobrać stanu ani screenshotu tego okna, nie zgłoszono błędu JS. Uruchomiono powtórny job i dodano rejestrowanie awarii renderera do kolejnego przebiegu.
+
+5. Dopasowanie nagłówka według szerokości i wysokości, test Wielkiej Brytanii/Macedonii oraz dwuliniowej odpowiedzi w stanie pytania; kod `422213fc6439425de39828fb4e5b7c3339403e11`. Workflow [38413930908](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38413930908): **46/46, 23/23 Chromium i 23/23 WebKit, zero błędów JavaScript i zero zarejestrowanych awarii renderera**. Obejrzano końcowe trzy stany, długie i dwuwyrazowe nagłówki, dwie linie odpowiedzi także pod włosami, otwieranie/zwijanie oraz piasek w obu silnikach. Poprzedni jednorazowy timeout po pauzie nie powtórzył się. Testy obejmują poprawną odpowiedź/auto, błąd/suwak/niepełny gest/klik toru, pauzę/zachowanie czasu/wznowienie, trzy kolejne pytania, restart na granicach, reduced motion/klawiaturę, awarie obrazów/SVG, opóźnione ładowanie, safe-area i niski/większy ekran.
 
 ## Materiał do oceny
 
-- [Trzy stany](flags-adventure/qa-scenic/scenic-stany.jpg) — pytanie, odpowiedź poprawna i błędna.
-- [Klatki pergaminu](flags-adventure/qa-scenic/scenic-pergamin-klatki.jpg) — otwieranie i zwijanie: początek, środek, koniec.
-- [Klatki piasku](flags-adventure/qa-scenic/scenic-piasek-klatki.jpg) — spadanie, osiadanie, tworzenie liter, nowe nazwy.
-- [Raport testów](flags-adventure/qa-scenic/report.json).
-
-Końcowe zestawy zostały obejrzane po udanym przebiegu. Zweryfikowano treść mapy na zagięciach, ujawnienie nowej flagi, kopczyki na linii tekstu, tworzenie nowych nazw, brak komunikatów na twarzach postaci i nieruchomy stan atlasu.
+- [Trzy stany gry](flags-adventure/qa-scenic/scenic-stany.jpg).
+- [Początek, środek i koniec otwierania oraz zwijania](flags-adventure/qa-scenic/scenic-pergamin-klatki.jpg).
+- [Rozsypanie, kopczyki, formowanie i nowe pytanie](flags-adventure/qa-scenic/scenic-piasek-klatki.jpg).
+- [Dwie linie odpowiedzi i piasku](flags-adventure/qa-scenic/scenic-dwie-linie.jpg).
+- [Porównanie z dwoma dostarczonymi wzorcami](flags-adventure/qa-scenic/scenic-porownanie-mockup.jpg); wzorce mają inne proporcje, więc plansza porównawcza dopasowuje je do formatu testowego.
+- [Pełny raport 46/46](flags-adventure/qa-scenic/report.json).
 
 ## Publikacja i granice weryfikacji
 
-Preview v2: https://mala-nauka-aw9mi0y4c-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by
+Aktualny interaktywny podgląd: https://mala-nauka-5p43d457f-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by
 
-Deployment `dpl_RbFGWBa3PbwXHXSnvGETLvM7g5tj`, źródło `git`, status **READY**, commit wydania `d082f65488b626416d62fbff1198f0afc6dc549d`. Wdrożony HTML aplikacji i moduł piasku zwracają HTTP 200 i są zgodne z obejrzanym kodem; Vercel dopisuje jedynie własny skrypt paska podglądu. Wdrożony raport potwierdza 34/34.
+Deployment `dpl_Bxe2gxoN3BppfEEubssK5jqiXMw4`, **READY**, źródło `git`, target preview, gałąź `feature/flags-scenic-preview-v1`. Commit opublikowanego i przebadanego kodu: `422213fc6439425de39828fb4e5b7c3339403e11`. Końcowy raport i surowe zrzuty zapisał CI w commicie `2cc8ceef7db22d3e6d94e5f2350c00debf8a22e5`; nie zmienia on kodu gry.
 
-Ręczne API publikacji 2026-10-13 dwukrotnie zgłosiło HTTP 402, `api-deployments-free-per-day`, limit ponad 100 deploymentów dziennie, `retryAfter: 86400`. Mimo tego istniejąca integracja Git ukończyła deployment powyższego commita na osobnym preview. Nie opublikowano przez `main`, nie zmieniono ochrony deploymentów ani planu.
+Wdrożony kontroler gry oraz moduł pergaminu zwracają HTTP 200 i są identyczne bajtowo z lokalnym kodem końcowego przebiegu QA. Otworzono też ten deployment w przeglądarce i sprawdzono rzeczywisty ekran pytania. Wcześniejszą opublikowaną iterację sprawdzono interaktywnie przez błąd i pełny suwak do nowej flagi.
 
-Chromium i desktopowy WebKit nie potwierdzają wydajności GPU telefonu ani zachowania rzeczywistego Safari/PWA. Pozostaje fizyczny test iPhone 13 Pro: płynność, dotyk, bezpieczne obszary, pamięć przy długiej sesji i powrót z tła. Nie deklarujemy zmierzonego 60 FPS ani pełnego trybu offline. Wariant obsługuje awarie pojedynczych grafik, ale nie instaluje oddzielnego service workera.
+W trakcie pracy Vercel odrzucał część commitów limitem `Deployment rate limited — retry in 24 hours`. Mimo tego zwykła integracja Git opublikowała powyższy commit kodu. Nie zmieniano planu, zabezpieczeń, produkcyjnych aliasów ani main i nie używano produkcyjnego deploymentu jako obejścia. Commit z samym raportem QA może nie mieć własnego deploymentu; dowodem aktualności UI jest weryfikacja kodu na wskazanym, niezmiennym URL.
+
+Pozostaje fizyczny test iPhone 13 Pro: FPS/temperatura, pamięć, gest dotykowy i Safari/PWA przy prawdziwych safe-area. WebKit na runnerze i zrzuty nie zastępują takiego pomiaru. Zrekonstruowane assety i adaptacja do różnych proporcji ekranu nie są deklarowane jako pikselowo identyczna kopia bitmap mockupów.

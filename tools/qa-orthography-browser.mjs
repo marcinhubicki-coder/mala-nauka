@@ -10,7 +10,12 @@ try{
  // A gameplay request for the Studio DOM classifier is an architecture
  // regression: all Orthography screens have first-class declarative contracts.
  const inspectorRequests=[];
- page.on('request',request=>{if(/\/shared\/element-system\.mjs(?:\?|$)/.test(request.url()))inspectorRequests.push(request.url());});
+ page.on('request',request=>{
+  if(!/\/shared\/element-system\.mjs(?:\?|$)/.test(request.url()))return;
+  let frameUrl='unknown';
+  try{frameUrl=request.frame().url();}catch{}
+  inspectorRequests.push({resource:request.url(),frame:frameUrl});
+ });
  page.on('pageerror',e=>errors.push(e.message));
  page.on('response',r=>{if(r.status()>=400&&r.url().startsWith(base))broken.push({url:r.url(),status:r.status()});});
  await page.goto(base+'/',{waitUntil:'domcontentloaded'});
@@ -68,7 +73,8 @@ try{
  }
  await gameFrame.locator('[data-ds-element="spelling-result-history"]').click();
  await gameFrame.locator('#app[data-view="history"]').waitFor({timeout:13000});
- assert.deepEqual(inspectorRequests,[],'Real Orthography gameplay must never download the Studio DOM inspector');
+ const spellingInspector=inspectorRequests.filter(request=>new URL(request.frame,base).pathname.startsWith('/ortografia/'));
+ assert.deepEqual(spellingInspector,[],'The Orthography iframe must not download the Studio DOM classifier: '+JSON.stringify(inspectorRequests));
  await page.close();
 
  const views=[

@@ -54,6 +54,7 @@ Jeden WebP Europy i SVG wybranego kraju nadal mają wspólne źródło Natural E
 
 ## Materiał do oceny
 
+- [Zrzut działającego Vercela w przeglądarce, 480 × 936](flags-adventure/qa-scenic/scenic-live-vercel.jpg).
 - [Trzy stany gry](flags-adventure/qa-scenic/scenic-stany.jpg).
 - [Początek, środek i koniec otwierania oraz zwijania](flags-adventure/qa-scenic/scenic-pergamin-klatki.jpg).
 - [Rozsypanie, kopczyki, formowanie i nowe pytanie](flags-adventure/qa-scenic/scenic-piasek-klatki.jpg).

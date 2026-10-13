@@ -1,5 +1,6 @@
 import {prepareScreenChange} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
+import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
 import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
@@ -357,11 +358,14 @@ function home() {
 function wizard() {
  if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
- root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color} mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
+ if(selectedMode==='spelling')root.dataset.dsContractPending='spelling-settings';
+ root.innerHTML=(selectedMode==='spelling'
+  ?pageHeading(mode.name,{action:'home',titleRecipe:'text-player-title',contractView:'spelling-settings',backId:'spelling-back',titleId:'spelling-page-title'})
+  :pageHead(mode.name))+`<section class="wizard-intro ${mode.color} mission-card" ${selectedMode==='spelling'?spellingAttrs('mission'):'data-ds-key="mission" data-ds-recipe="container-mission"'}>${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
  <fieldset><legend><span class="step-dot">2</span>${selectedMode==='reading'?'Co czytamy?':'Wybierz poziom'}</legend><div class="choices levels ${selectedMode==='spelling'?'four':''}">${mode.levels.map((label,index)=>{const value=selectedMode==='spelling'?index:index+1;return `<label class="choice"><input type="radio" name="difficulty" value="${value}" ${config.difficulty===value?'checked':''}><span>${label}</span></label>`;}).join('')}</div></fieldset>
  <fieldset><legend><span class="step-dot">3</span>Ile mamy czasu?</legend><div class="choices four">${DURATIONS.map(d=>`<label class="choice"><input type="radio" name="duration" value="${d}" ${config.duration===d?'checked':''}><span>${minutes(d)}</span></label>`).join('')}</div></fieldset></section>
- <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
+ <p class="wizard-note" ${selectedMode==='spelling'?spellingAttrs('note'):''}>${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" ${selectedMode==='spelling'?spellingAttrs('start')+' data-action="submit-setup"':''} type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
 }
 function spellingPoolNote(){
  if(selectedMode!=='spelling'||view!=='wizard')return;const note=root.querySelector('.wizard-note');if(!note)return;const c=configs.spelling,size=createSource('spelling',c,words).length;

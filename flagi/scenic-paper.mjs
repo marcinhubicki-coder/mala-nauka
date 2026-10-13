@@ -20,8 +20,8 @@ export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={
  if(mapResult?.svg){
   const svg=mapResult.svg.cloneNode(true);svg.setAttribute('width',w*2);svg.setAttribute('height',h*2);
   const raster=svg.querySelector('image');if(raster&&mapResult.image){const c=document.createElement('canvas');c.width=mapResult.image.naturalWidth;c.height=mapResult.image.naturalHeight;c.getContext('2d').drawImage(mapResult.image,0,0);raster.setAttribute('href',c.toDataURL('image/png'));}
-  for(const path of svg.querySelectorAll('.country')){if(path.dataset.country!==record.id){path.setAttribute('fill','#b9d69c');continue;}path.setAttribute('fill','#087235');path.setAttribute('fill-opacity','.86');path.setAttribute('style','mix-blend-mode:multiply');path.setAttribute('stroke','#fff8d9');path.setAttribute('stroke-width','1.7');}
-  const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.setAttribute('fill','none');halo.setAttribute('stroke','#fffde0');halo.setAttribute('stroke-width','2.4');}
+  for(const path of svg.querySelectorAll('.country')){if(path.dataset.country!==record.id){path.setAttribute('fill','#b9d69c');continue;}path.setAttribute('fill','#087235');path.setAttribute('fill-opacity','.80');path.setAttribute('style','mix-blend-mode:multiply');path.setAttribute('stroke','#fff8d9');path.setAttribute('stroke-width','1');}
+  const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.setAttribute('fill','none');halo.setAttribute('stroke','#fffde0');halo.setAttribute('stroke-width','2');}
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
   const surface=document.createElement('canvas');surface.width=w*2;surface.height=h*2;const ink=surface.getContext('2d');ink.scale(2,2);
   try{ink.drawImage(await bitmap(url),0,0,w,h);}finally{URL.revokeObjectURL(url);}
@@ -35,7 +35,7 @@ export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={
   wrap(ctx,element.textContent,r.width).forEach((line,i)=>ctx.fillText(line,r.left-base.left,r.top-base.top+size*.86+i*parseFloat(style.lineHeight),r.width));
  }
  const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const r=flag.getBoundingClientRect();ctx.save();ctx.shadowColor='#55391450';ctx.shadowBlur=8;ctx.shadowOffsetY=3;ctx.drawImage(flag,r.left-base.left,r.top-base.top,r.width,r.height);ctx.restore();}catch{}
- const footer=document.getElementById('scenic-feedback');ctx.font='800 13px ScenicBody';ctx.fillStyle='#24432e';ctx.textAlign='center';ctx.fillText(footer.textContent,width/2,height-14,width-32);
+ for(const item of document.querySelectorAll('#scenic-feedback strong,#scenic-feedback small')){const r=item.getBoundingClientRect(),style=getComputedStyle(item),size=parseFloat(style.fontSize);ctx.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;ctx.fillStyle=style.color;ctx.textAlign='left';ctx.fillText(item.textContent,r.left-base.left,r.top-base.top+size*.9,r.width);}
  const snapshot=canvas.toDataURL('image/webp',.93);
  if(!isCurrent())return;
  for(const leaf of sheet.querySelectorAll('.scenic-fold-leaf'))leaf.style.backgroundImage=`url("${snapshot}")`;

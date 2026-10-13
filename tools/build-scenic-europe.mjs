@@ -13,6 +13,7 @@ import {fileURLToPath} from 'node:url';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const DEST=join(ROOT,'assets/maps/europe-scenic.webp');
 const original=await readFile(join(ROOT,'assets/maps/europe.svg'),'utf8');
+const paper='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/flags/adventure/scenic-atlas-paper-v6.webp'))).toString('base64');
 const server=createServer(async(req,res)=>{
  const p=new URL(req.url,'http://localhost').pathname;
  if(p==='/__render__'){res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Europe raster</title>');return;}
@@ -27,7 +28,7 @@ try{
  browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
  const page=await browser.newPage({viewport:{width:1360,height:1000},deviceScaleFactor:1});
  await page.goto('http://127.0.0.1:'+server.address().port+'/__render__');
- const encoded=await page.evaluate(async source=>{
+ const encoded=await page.evaluate(async ({source,paper})=>{
    const doc=new DOMParser().parseFromString(source,'image/svg+xml');
    const svg=doc.documentElement;
    if(!svg||svg.nodeName==='parsererror')throw Error('Invalid Natural Earth SVG');
@@ -38,7 +39,8 @@ try{
     <linearGradient id="sea" x2=".92" y2="1"><stop stop-color="#b1e6e5"/><stop offset=".47" stop-color="#85cfe0"/><stop offset="1" stop-color="#61b7d7"/></linearGradient>
     <linearGradient id="ground" x2=".72" y2="1"><stop stop-color="#c7dd91"/><stop offset=".45" stop-color="#a9c98b"/><stop offset="1" stop-color="#89b98b"/></linearGradient>
     <radialGradient id="sunlight"><stop stop-color="#fffbe1" stop-opacity=".85"/><stop offset="1" stop-color="#fffbe1" stop-opacity="0"/></radialGradient>
-    <pattern id="waves" width="43" height="33" patternUnits="userSpaceOnUse"><path d="M2 12q9-5 18 0t18 0" fill="none" stroke="#f1ffff" stroke-width=".9" opacity=".32"/></pattern>
+    <pattern id="waves" width="43" height="33" patternUnits="userSpaceOnUse"><path d="M2 12q9-5 18 0t18 0" fill="none" stroke="#f1ffff" stroke-width=".55" opacity=".16"/></pattern>
+    <filter id="coast-depth" x="-5%" y="-5%" width="110%" height="110%"><feDropShadow dx="0" dy=".5" stdDeviation=".5" flood-color="#3b705b" flood-opacity=".20"/></filter>
     <filter id="noise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed="14" stitchTiles="stitch" result="grain"/><feColorMatrix in="grain" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".1"/></feComponentTransfer></filter>
    `;
    svg.insertBefore(defs,svg.firstChild);
@@ -49,10 +51,10 @@ try{
    const ids=[...svg.querySelectorAll('path.country')];
    for(const p of ids){
      let hash=0;for(const c of p.dataset.country||'xx')hash=(hash*33+c.charCodeAt(0))|0;
-     const shades=['#b3cc8a','#b9d69c','#94c78a','#c7d3a0','#9fc58d','#d4d4a1','#b8d2a1'];
+     const shades=['#b8cc96','#c0d5a5','#a3c697','#c9d4ab','#adc69a','#d1d5ad','#b8cfa5'];
      p.setAttribute('fill',shades[Math.abs(hash)%shades.length]);
      p.setAttribute('stroke','#f7f3d5');
-     p.setAttribute('stroke-width','1.6');
+     p.setAttribute('stroke-width','.8');
      p.setAttribute('stroke-linejoin','round');
      p.removeAttribute('class');
      p.removeAttribute('id');
@@ -61,6 +63,12 @@ try{
    countries.removeAttribute('fill');
    countries.removeAttribute('stroke');
    countries.removeAttribute('stroke-width');
+   countries.setAttribute('filter','url(#coast-depth)');
+   const clip=doc.createElementNS(ns,'clipPath');clip.setAttribute('id','land-paper');
+   for(const path of ids){const shape=path.cloneNode(true);shape.removeAttribute('stroke');shape.removeAttribute('filter');clip.append(shape);}defs.append(clip);
+   // Bitmap paper supplies the material; every geographic edge still comes
+   // exclusively from the registered Natural Earth paths.
+   const material=doc.createElementNS(ns,'image');material.setAttribute('href',paper);material.setAttribute('x','-227');material.setAttribute('y','-108');material.setAttribute('width','1133');material.setAttribute('height','833');material.setAttribute('preserveAspectRatio','none');material.setAttribute('clip-path','url(#land-paper)');material.setAttribute('style','mix-blend-mode:soft-light');material.setAttribute('opacity','.45');svg.append(material);
    const top=rect('url(#sunlight)',{x:'0',y:'-30',width:'680',height:'500',style:'mix-blend-mode:soft-light;pointer-events:none'});
    svg.append(top);
    svg.append(rect('#ffffff',{filter:'url(#noise)',opacity:'.45'}));
@@ -78,7 +86,7 @@ try{
      if(!data.startsWith('data:image/webp;base64,'))throw Error('WebP unsupported');
      return data;
    }finally{URL.revokeObjectURL(url);}
- },original);
+ },{source:original,paper});
  const bytes=Buffer.from(encoded.split(',')[1],'base64');
  await mkdir(dirname(DEST),{recursive:true});
  await writeFile(DEST,bytes);

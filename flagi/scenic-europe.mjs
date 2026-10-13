@@ -32,7 +32,7 @@ function cropNear(svg,selected,mapWidth,mapHeight){
  const peers=[...svg.querySelectorAll('.country')].filter(x=>x!==selected).map(boxOf).filter(Boolean);
  const centerX=box.cx,centerY=box.cy;
  let chosen=null,best=Infinity;
- const minimum=Math.max(120,box.w*1.48,box.h*ratio*1.4);
+ const minimum=Math.max(160,box.w*2.8,box.h*ratio*1.4);
  for(let width=minimum;width<=460;width+=6){
   const height=width/ratio;
   if(width>base.w||height>base.h)break;

@@ -140,8 +140,8 @@ async function toNext(){
   // The decoded next cloth sits beneath the paper before the folds close.
   showFlag(next);
   await Promise.all([
-    foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}),
-    sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>{app.classList.add('is-transitioning');renderButtons(optionsFor(next),{disabled:true});}})
+    foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}).then(()=>{if(alive(owner))app.classList.add('is-transitioning');}),
+    sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>renderButtons(optionsFor(next),{disabled:true})})
   ]);
   if(!alive(owner))return;
   game.next();game.options=optionsFor(next).map(x=>x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;

@@ -51,8 +51,9 @@ export function createSand(canvas,app,answers) {
     canvas.dataset.grains=String(grains.length);
     try{await timeline.tween(SCENIC.sandMs,t=>{
       ctx.clearRect(0,0,origin.width,origin.height);
-      app.dataset.sandProgress=t.toFixed(3);
-      app.dataset.sandPhase=t<SCENIC.sandFall?'falling':t<SCENIC.sandSettle?'settled':'forming';
+      if(app.dataset.qa==='true')app.dataset.sandProgress=t.toFixed(3);
+      const phase=t<SCENIC.sandFall?'falling':t<SCENIC.sandSettle?'settled':'forming';
+      if(app.dataset.sandPhase!==phase)app.dataset.sandPhase=phase;
       // Solid letters take over only after the grains reach their new silhouettes.
       answers.style.setProperty('--ink-opacity',String(Math.max(0,(t-.91)/.09)));
       for(const g of grains){

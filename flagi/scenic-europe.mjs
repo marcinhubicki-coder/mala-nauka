@@ -69,6 +69,9 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   svg.dataset.visibleNeighbors=String(crop.visible);
   svg.setAttribute('preserveAspectRatio','none');
  }
+ const halo=active.cloneNode(true);
+ halo.removeAttribute('id');halo.removeAttribute('data-country');halo.setAttribute('aria-hidden','true');halo.setAttribute('class','scenic-country-halo');
+ active.before(halo);active.classList.add('scenic-country-overlay');
  let decodedImage;
  try{
   decodedImage=await loadImage();
@@ -85,13 +88,7 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   for(const country of [...svg.querySelectorAll('.country')]){
    if(country!==active)country.remove();
   }
-  const halo=active.cloneNode(true);
-  halo.removeAttribute('id');
-  halo.removeAttribute('data-country');
-  halo.setAttribute('aria-hidden','true');
-  halo.setAttribute('class','scenic-country-halo');
-  active.before(halo);
-  active.classList.add('scenic-country-overlay');
+
   node.dataset.mapImage='ready';
  }catch(e){
   // Still usable offline before raster has been installed: native vector atlas.

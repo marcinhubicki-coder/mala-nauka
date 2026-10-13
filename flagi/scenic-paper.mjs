@@ -33,6 +33,7 @@ export async function preparePaper(sheet,mapResult,record) {
       const r=label.getBoundingClientRect();ctx.fillText(label.textContent,r.left-base.left+r.width/2,r.top-base.top+r.height*.8);
     }
   }
+  if(!mapResult?.svg){ctx.fillStyle='#456754';ctx.font='700 14px ScenicBody';ctx.textAlign='center';ctx.fillText('Mapa jest chwilowo niedostępna.',width/2,height/2,width-28);}
   ctx.fillStyle='#fff1d8';ctx.fillRect(0,height-65,width,65);
   ctx.textAlign='left';ctx.fillStyle='#17503c';ctx.font='650 23px ScenicRound';
   ctx.fillText(record.country,14,height-36,width-28);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {chromium,webkit} from 'playwright';
 import {createServer} from 'node:http';
-import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {readFile,mkdir,writeFile,readdir,unlink} from 'node:fs/promises';
 import {dirname,extname,resolve,join,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {once} from 'node:events';
@@ -15,7 +15,10 @@ const server=createServer(async(req,res)=>{
  try{const data=await readFile(file);res.writeHead(200,{'Content-Type':types[extname(file)]||'application/octet-stream'}).end(data);}
  catch{res.writeHead(404).end();}
 });
-await mkdir(OUT,{recursive:true});server.listen(0,'127.0.0.1');await once(server,'listening');
+await mkdir(OUT,{recursive:true});
+// This folder is generated evidence: keep each run free of stale frames.
+for(const file of await readdir(OUT))if(file.endsWith('.jpg')||file==='report.json')await unlink(join(OUT,file));
+server.listen(0,'127.0.0.1');await once(server,'listening');
 const base='http://127.0.0.1:'+server.address().port,reports=[],failures=[];
 const phase=process.env.SCENIC_QA_PHASE||'full';
 async function state(page,value){await page.waitForFunction(s=>document.querySelector('#scenic-screen').dataset.state===s,value,{timeout:20000});}
@@ -40,7 +43,7 @@ async function check(name,browser,options,run){
  catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,String(error));}
  finally{await context.close();}
 }
-async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
+async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?qa=1&country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
 async function choose(page,correct=true){const id=await page.locator('#scenic-screen').getAttribute('data-country');const button=correct?page.locator(`.scenic-answer[data-id="${id}"]`):page.locator(`.scenic-answer:not([data-id="${id}"])`).first();await button.click();}
 async function slide(page){
  const a=await page.locator('#scenic-swipe-knob').boundingBox(),b=await page.locator('#scenic-swipe').boundingBox();
@@ -89,12 +92,14 @@ try{
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
-    await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.sandPhase==='falling');
-    await capture(page,engine+'-sand-falling');
-    await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.sandPhase==='settled');
-    await capture(page,engine+'-sand-settled');
-    await page.waitForFunction(()=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=.76);
-    await capture(page,engine+'-sand-forming');await page.waitForFunction(()=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=.93);await capture(page,engine+'-sand-end');await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
+    await slide(page);
+    for(const [label,fraction] of [['falling',.10],['settled',.40],['forming',.76],['end',.93]]){
+     await page.waitForFunction(f=>Number(document.querySelector('#scenic-screen').dataset.sandProgress)>=f,fraction);
+     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:true})));
+     await capture(page,engine+'-sand-'+label);
+     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));
+    }
+    await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
    });
   }
   if(phase==='full'){
@@ -130,7 +135,7 @@ try{
    await check(engine+'-image-fallback',browser,{},async page=>{
     await page.route('**/assets/maps/europe-scenic.webp',route=>route.abort());await page.route('**/assets/flags/cloth-prebaked/by.webp',route=>route.abort());
     await open(page);assert(await page.locator('.flag-cloth-fallback').evaluate(n=>n.complete&&n.naturalWidth>0));
-    await choose(page,false);await state(page,'feedback-wrong');assert.equal((await metrics(page)).raster,'vector-fallback');assert((await metrics(page)).activeCount>1);await capture(page,engine+'-image-fallback');
+    await choose(page,false);await state(page,'feedback-wrong');assert.equal((await metrics(page)).raster,'vector-fallback');assert((await metrics(page)).highlight);assert((await metrics(page)).activeCount>1);await capture(page,engine+'-image-fallback');
    });
    await check(engine+'-map-fetch-failure',browser,{},async page=>{
     await page.route('**/assets/maps/europe.svg',route=>route.abort());await open(page);await choose(page,false);await state(page,'feedback-wrong');assert((await page.locator('.scenic-map-unavailable').textContent()).includes('niedostępna'));

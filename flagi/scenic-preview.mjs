@@ -11,9 +11,10 @@ const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe
 const query=new URLSearchParams(location.search),records=new Map(FLAGS.map(x=>[x.id,x])),europe=FLAGS.filter(x=>x.continent==='europe');
 const initial=records.get(query.get('country'))?.continent==='europe'?query.get('country'):'by';
 const queue=[initial,'pl','ch','de','fr','cz','hu','it','lt','ua','at','sk','es','no','gb','ro','pt','se',...europe.map(x=>x.id)].filter((id,i,all)=>records.has(id)&&all.indexOf(id)===i);
+app.dataset.qa=String(query.has('qa'));
 const motion=matchMedia('(prefers-reduced-motion:reduce)');
 let step=0,points=0,seconds=SCENIC.seconds,state='loading',timeline=new ScenicTimeline(),round=0,paused=false,visibilityPaused=false;
-let readyForNext=false,mapResult=null,swipePointer=null,slideMax=0,dragStart=0,dragX=0,fixtureTimer;
+let readyForNext=false,swipePointer=null,slideMax=0,dragStart=0,dragX=0,fixtureTimer;
 const sand=createSand($('scenic-sand-canvas'),app,answers);
 const escape=value=>String(value??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const caught=task=>void task.catch(error=>{if(error.name!=='AbortError'){console.error('[scenic]',error);feedback.textContent='Coś poszło nie tak. Uruchom grę ponownie.';}});
@@ -69,7 +70,7 @@ function resetSwipe(){
 }
 function clearPresentation(){
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');
-  mapHost.replaceChildren();mapResult=null;feedback.textContent='';feedback.classList.remove('is-ended');
+  mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');
   swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();
 }
 async function playQuestion({prepared=false}={}){
@@ -85,11 +86,11 @@ async function respond(chosenId){
   setState('showing-map');app.classList.add('is-pending','is-presenting');
   if(correct)points++;updateHud();
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
-  feedback.textContent=correct?'✦ Świetnie!':'Zapamiętaj, to '+record.country+'.';
+  feedback.textContent=correct?'✦ Świetnie!':'Zapamiętaj odpowiedź.';
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent='Stolica: '+record.capital;
   sheet.dataset.long=String(record.country.length>20);placeScroll();sheet.setAttribute('aria-hidden','false');
   const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
-  let timer;
+  let timer,mapResult;
   try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs))]);}
   finally{clearTimeout(timer);}
   if(!alive(owner))return;
@@ -152,6 +153,8 @@ const ticker=setInterval(()=>{
   if(!seconds){setState('ended');for(const b of answers.children)b.disabled=true;feedback.textContent='Dobra robota! Zdobywasz '+points+' pkt.';feedback.classList.add('is-ended');}
 },1000);
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
+// Test-only capture bridge: freeze Canvas without changing the photographed UI.
+if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
 const observer=new ResizeObserver(()=>{fitFlag();placeScroll();});observer.observe($('scenic-stage'));
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();sand.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});

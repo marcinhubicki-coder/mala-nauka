@@ -4,7 +4,8 @@ const avatars='abcdefghijkl';
 export function profileAvatar(player={},extra='',assetURL=path=>path){
  let key=player.avatarId;
  if(typeof key!=='string'||key.length!==1||!avatars.includes(key)){const sum=[...String(player.id||player.nickname||'a')].reduce((n,c)=>n+c.charCodeAt(0),0);key=avatars[sum%4];}
- const src=escape(assetURL('assets/brand/avatars/'+key+'.webp'));
+ const path=assetURL('assets/brand/avatars/'+key+'.webp');
+ const src=escape(path.startsWith('assets/')?'/'+path:path);
  // Use a real image, never CSS background URL resolution (which is relative to
  // the stylesheet and broke when components.css moved under /styles/).
  return `<span class="player-avatar-art ${escape(extra)}" data-avatar="${key}" aria-hidden="true"><img class="player-avatar-image" src="${src}" width="384" height="384" alt="" decoding="async" draggable="false"></span>`;

@@ -73,11 +73,16 @@ try{
  await page.locator('#player-nickname').fill('TestAda');
  await page.locator('#player-create-form button[type=submit]').click();
  await page.locator('#app[data-view=player-pin]').waitFor();
+ assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),8,'PIN entry must compile its eight-part family');
+ assert.equal(await page.locator('#app [data-ds-element=pin-back][data-action=edit-player]').count(),1);
+ const shellHandle=await page.locator('#app [data-ds-element=pin-fields]').elementHandle();
+ assert.ok(shellHandle);
  const pin=(await measure()).pin[0];
  isSquare(pin,'PIN setup');
  assert.equal(pin.id,'l');
  assert.ok(Math.abs(pin.w-previewSizes[0])<0.3,'PIN avatar changed size from the profile preview');
 
+ assert.equal(await page.evaluate(element=>element.isConnected&&document.querySelector('[data-ds-element="pin-fields"]')===element,shellHandle),true);
  const keypadHandle=await page.locator('.pin-keypad').elementHandle();
  const dotsHandle=await page.locator('.pin-dots').elementHandle();
  assert.ok(keypadHandle&&dotsHandle,'PIN controls missing');

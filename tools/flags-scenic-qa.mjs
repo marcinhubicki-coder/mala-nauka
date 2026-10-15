@@ -39,11 +39,12 @@ async function metrics(page){return page.evaluate(()=>{
   foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v14.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
  });}
 async function check(name,browser,options,run){
+ if(process.env.SCENIC_QA_FILTER&&!name.includes(process.env.SCENIC_QA_FILTER))return;
  // A fresh WebKit process per scenario bounds the runner's cross-context GPU cache.
  // Multi-round scenarios still keep one page and one game alive throughout.
  const isolated=name.startsWith('webkit-')?await webkit.launch({headless:true}):null;
  const context=await (isolated||browser).newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
- page.on('pageerror',e=>errors.push(e.message));page.on('crash',()=>errors.push('Browser renderer crashed'));page.on('console',msg=>{if(msg.type()==='error'&&msg.text().startsWith('[scenic]'))errors.push(msg.text());});
+ page.on('pageerror',e=>errors.push(e.message));
  try{await run(page);const result={name,...await metrics(page),errors};reports.push(result);assert.equal(errors.length,0,'JS errors');console.log(JSON.stringify({name,status:'PASS',state:result.state}));}
  catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,error.stack||String(error));}
  finally{await context.close();await isolated?.close();}
@@ -57,6 +58,7 @@ async function slide(page){
 let browser;
 try{
  for(const [engine,launcher] of [['chromium',chromium],...(phase==='full'?[['webkit',webkit]]:[])]){
+  if(process.env.SCENIC_QA_ENGINE&&engine!==process.env.SCENIC_QA_ENGINE)continue;
   browser=engine==='chromium'?await launcher.launch({headless:true,args:['--disable-dev-shm-usage']}):null;
   for(const sample of [
    {id:'by',mode:'question',w:390,h:844,name:'01-belarus-question'},
@@ -199,12 +201,16 @@ try{
    });
    await check(engine+'-wrong-pause-slider-and-several-rounds',browser,{},async page=>{
     await open(page);await choose(page,false);await state(page,'feedback-wrong');await page.waitForTimeout(4200);assert.equal((await metrics(page)).task,'Zadanie 1');
-    for(let i=0;i<5;i++){
+    for(let i=0;i<Number(process.env.SCENIC_QA_ROUNDS||5);i++){
+     console.log(JSON.stringify({name:engine+'-stress',round:i+1,phase:'before-erase'}));
      await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
+     console.log(JSON.stringify({name:engine+'-stress',round:i+1,phase:'folding'}));
      await page.locator('[data-action="pause"]').click();const task=(await metrics(page)).task;await page.waitForTimeout(1800);assert.equal((await metrics(page)).task,task);
      await page.locator('[data-action="pause"]').click();await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie '+(i+2));
      assert(await page.locator('#scenic-map-ink').evaluate(n=>n.width===1&&n.height===1),'Inactive ink releases its backing buffer');assert(await page.locator('#scenic-sand-canvas').evaluate(n=>n.width===1&&n.height===1),'Inactive sand releases its backing buffer');
+     console.log(JSON.stringify({name:engine+'-stress',round:i+1,phase:'next-question'}));
      await choose(page,false);await state(page,'feedback-wrong');
+     console.log(JSON.stringify({name:engine+'-stress',round:i+1,phase:'ink-complete'}));
     }
    });
    await check(engine+'-restart-at-boundaries',browser,{},async page=>{

@@ -1,11 +1,113 @@
 {
   "phase": "full",
-  "passed": 0,
+  "passed": 1,
   "total": 1,
   "reports": [
     {
       "name": "webkit-wrong-pause-slider-and-several-rounds",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "state": "feedback-wrong",
+      "country": "at",
+      "score": "0 pkt",
+      "task": "Zadanie 11",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "at",
+          "text": "Austria",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hr",
+          "text": "Chorwacja",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 12,
+      "labels": 9,
+      "crop": "237.05 251.32 160 135.54",
+      "captionFits": true,
+      "capital": "Wiedeń",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 2,
+      "inkFrames": 81,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
       "errors": []
     }
   ]

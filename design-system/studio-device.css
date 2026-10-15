@@ -11,6 +11,9 @@
 .studio-main:has(>.workspace>.component-layout)>.studio-topbar,.studio-main:has(>.workspace>.component-layout)>.studio-context{flex:none}
 .studio-main:has(>.workspace>.component-layout)>.workspace{flex:1;min-height:0;overflow:hidden}
 #workspace>.component-layout{height:100%;min-height:0}
+@media(min-width:691px){
+ .component-layout>.preview-column{grid-template-rows:auto auto auto minmax(360px,1fr);overflow-y:auto}
+}
 html[data-preview-device=desktop] :is(.phone-outer,.motion-phone,.effect-phone){width:var(--preview-frame-width)!important;height:var(--preview-frame-height)!important;border-radius:14px}
 html[data-preview-device=desktop] :is(.phone-inner,.effect-phone>iframe){width:var(--preview-screen-width)!important;height:var(--preview-screen-height)!important;border-radius:6px;left:12px;top:32px}
 html[data-preview-device=desktop] :is(.phone-inner iframe,.device-frame,.motion-phone iframe,.effect-phone iframe){width:var(--preview-screen-width)!important;height:var(--preview-screen-height)!important;border-radius:6px}

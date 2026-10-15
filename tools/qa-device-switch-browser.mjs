@@ -34,6 +34,11 @@ try{
  }
  await select('Desktop',[1440,900]);
  console.log('device-qa: desktop viewport verified');
+ await page.setViewportSize({width:1280,height:720});
+ await page.waitForFunction(()=>document.querySelector('#preview-gallery').clientHeight>=360);
+ assert.ok(await page.locator('.phone-outer').evaluate(e=>e.getBoundingClientRect().height>=150));
+ assert.ok(await page.locator('.preview-column').evaluate(e=>e.scrollHeight>e.clientHeight&&getComputedStyle(e).overflowY==='auto'));
+ await page.setViewportSize({width:1440,height:1000});
  assert.equal(await page.locator('#reference-upload').count(),0);
  const output=process.env.V2_SCREENSHOT_DIR;
  if(output){await mkdir(output,{recursive:true});await page.screenshot({path:join(output,'studio-desktop.png')});}

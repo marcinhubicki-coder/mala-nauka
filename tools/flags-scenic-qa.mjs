@@ -21,6 +21,7 @@ for(const file of await readdir(OUT))if(file.endsWith('.jpg')||file==='report.js
 server.listen(0,'127.0.0.1');await once(server,'listening');
 const base='http://127.0.0.1:'+server.address().port,reports=[],failures=[];
 const phase=process.env.SCENIC_QA_PHASE||'full';
+const canonicalEurope=await readFile(join(ROOT,'assets/maps/europe.svg'),'utf8');
 async function state(page,value){await page.waitForFunction(s=>document.querySelector('#scenic-screen').dataset.state===s,value,{timeout:20000});}
 async function capture(page,name){await page.screenshot({path:join(OUT,name+'.jpg'),type:'jpeg',quality:87});}
 async function metrics(page){return page.evaluate(()=>{
@@ -35,7 +36,7 @@ async function metrics(page){return page.evaluate(()=>{
   capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
   overflowX:document.documentElement.scrollWidth>innerWidth,overflowY:document.documentElement.scrollHeight>innerHeight,
   animations:document.getAnimations().filter(a=>a.playState==='running').length,sand:app.dataset.sandPhase,qa:{enabled:app.dataset.qa,at:app.dataset.qaCaptureAt,captured:app.dataset.qaCaptured,progress:app.dataset.sandProgress},
-  foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v10.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),compass:rect('.scenic-compass')};
+  foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v10.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
  });}
 async function check(name,browser,options,run){
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
@@ -75,14 +76,15 @@ try{
    const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.icons===0&&b.h>=40&&b.y+b.h<sample.h));
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
    if(sample.mode!=='question'){
-    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
+    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
   });
   if(phase!=='layout'){
    await check(engine+'-animation-frames',browser,{},async page=>{
-    await open(page);await choose(page,false);
+    await open(page);const fixedBottom=await page.locator('.scenic-paper-bottom').boundingBox();await choose(page,false);
     await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-opening'));
     const compassSize=await page.locator('.scenic-compass').boundingBox();
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','Opening paper must cover the flag progressively');
@@ -91,6 +93,7 @@ try{
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
      await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-top,.scenic-compass,.scenic-prompt')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
      const opacity=await page.locator('.scenic-fold-leaf').evaluateAll(nodes=>nodes.map(n=>Number(getComputedStyle(n).opacity)));
+     const bottomNow=await page.locator('.scenic-paper-bottom').boundingBox();assert(Math.abs(bottomNow.y-fixedBottom.y)<.1&&Math.abs(bottomNow.height-fixedBottom.height)<.1,'Lower paper and engraving remain fixed');
      const compassNow=await page.locator('.scenic-compass').boundingBox();assert(Math.abs(compassSize.width-compassNow.width)<.1&&Math.abs(compassSize.height-compassNow.height)<.1,'Compass has a constant size throughout unfolding');
      assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),null,'Ink must wait for the entire unfolding');assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
      await capture(page,engine+'-unroll-'+label);
@@ -122,7 +125,7 @@ try{
   }
   if(phase!=='layout')await check(engine+'-ink-passes-and-continuous-material',browser,{},async page=>{
    await open(page);const compass=await page.locator('.scenic-compass').boundingBox(),bottom=await page.locator('.scenic-paper-bottom').boundingBox();
-   assert.equal(await page.locator('#scenic-score').isVisible(),false);
+   assert.equal(await page.locator('#scenic-score').isVisible(),false);assert.equal(await page.locator('#scenic-compass').evaluate(n=>n.parentElement.id),'scenic-stage','Compass sits outside the folding 3D context');
    const sign=await page.locator('#scenic-task').boundingBox(),bar=await page.locator('#scenic-progress').boundingBox();assert(sign.x>195);assert(sign.y<bar.y+bar.height&&sign.y+sign.height>bar.y+bar.height,'Task sign hangs across the timer bar');
    await page.evaluate(()=>document.querySelector('#scenic-screen').dataset.qaInkAt='0.12');await choose(page,false);
    for(const [index,fraction] of [.12,.43,.73,.97].entries()){
@@ -137,6 +140,13 @@ try{
    await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'playing');
   });
   if(phase==='full'){
+   await check(engine+'-pause-and-restart-during-ink',browser,{},async page=>{
+    await open(page);await choose(page,false);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').dataset.inkPhase==='drawing');
+    await page.locator('[data-action="pause"]').click();const pixels=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(650);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),pixels,'Pause freezes every ink grain and mask pixel');
+    await page.locator('[data-action="pause"]').click();await state(page,'feedback-wrong');await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').dataset.inkPhase==='erasing');
+    await page.locator('[data-action="pause"]').click();const erased=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(450);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),erased);
+    await page.locator('[data-action="restart"]').click();await state(page,'playing');await page.waitForTimeout(SCENIC.inkDrawMs+SCENIC.openMs+200);const m=await metrics(page);assert.equal(m.task,'Zadanie 1');assert.equal(m.state,'playing');assert.equal(m.inkPhase,undefined);assert.equal(m.animations,0);
+   });
    await check(engine+'-stable-scene-and-answer-geometry',browser,{},async page=>{
     await open(page);const before=await metrics(page);
     const scenery=()=>page.locator('#scenic-screen').evaluate(n=>({background:getComputedStyle(n).backgroundImage,foreground:getComputedStyle(n.querySelector('.scenic-foreground')).opacity,replacement:n.querySelectorAll('.scenic-feedback-scene').length,vectorCompass:n.querySelectorAll('.scenic-paper-row svg,.scenic-atlas-compass').length}));

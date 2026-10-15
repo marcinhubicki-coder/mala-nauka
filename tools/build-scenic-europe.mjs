@@ -51,7 +51,7 @@ try{
   document.body.replaceChildren(document.importNode(svg,true));
   const mounted=document.querySelector('svg'),names=new Map(records.map(r=>[r.id,r.country])),taken=[];
   const sorted=[...mounted.querySelectorAll('path.country')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>b.b.width*b.b.height-a.b.width*a.b.height);
-  const fixed={ru:[505,160],no:[278,126],se:[315,162],fi:[382,113],gb:[152,251],fr:[203,348],it:[290,385],hr:[322,365],gr:[368,459],ua:[455,302]};
+  const fixed={ru:[505,160],no:[278,126],se:[315,162],fi:[382,113],gb:[152,251],fr:[203,348],it:[290,385],hr:[322,365],gr:[368,459],ua:[435,287]};
   for(const {p,b} of sorted){
    const id=p.dataset.country,text=names.get(id);if(!text)continue;
    let x=b.x+b.width/2,y=b.y+b.height/2;
@@ -60,7 +60,7 @@ try{
    const node=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x,y,fill:'#634a2c','font-family':'Georgia,serif','font-size':size,'font-weight':'600','text-anchor':'middle','paint-order':'stroke',stroke:'#f1e4c5','stroke-width':'.8','stroke-linejoin':'round'}))node.setAttribute(k,v);node.textContent=text;mounted.append(node);
    taken.push(id);
   }
-  for(const [id,points] of Object.entries({ru:[[455,226],[504,307]],ua:[[422,282]],se:[[315,210]]}))for(const [x,y] of points){
+  for(const [id,points] of Object.entries({ru:[[438,222],[504,307]],se:[[315,210]]}))for(const [x,y] of points){
    const path=mounted.querySelector('[data-country="'+id+'"]');if(!path?.isPointInFill(new DOMPoint(x,y)))continue;
    const label=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x,y,fill:'#634a2c','font-family':'Georgia,serif','font-size':'6','font-weight':'600','text-anchor':'middle','paint-order':'stroke',stroke:'#f1e4c5','stroke-width':'.8'}))label.setAttribute(k,v);label.textContent=names.get(id);mounted.append(label);
   }

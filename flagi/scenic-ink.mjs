@@ -8,7 +8,7 @@ async function decode(src){const image=new Image();image.src=src;await image.dec
 export function createMapInk(canvas,sheet,app){
  const ctx=canvas.getContext('2d'),mask=surface(1,1),masked=surface(1,1);
  let target,width,height,dpr,field,maskPixels,grains=[];
- function clear(){ctx.clearRect(0,0,canvas.width,canvas.height);delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;grains=[];masked.width=mask.width=1;masked.height=mask.height=1;}
+ function clear(){ctx.clearRect(0,0,canvas.width,canvas.height);delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;grains=[];masked.width=mask.width=1;masked.height=mask.height=1;}
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr)),paint=art.getContext('2d');paint.scale(dpr,dpr);
@@ -22,7 +22,9 @@ export function createMapInk(canvas,sheet,app){
     path.removeAttribute('style');path.setAttribute('style','animation:none;transform:none;mix-blend-mode:multiply');
     path.setAttribute('fill',path.dataset.country===record.id?'#a27437':'#d9c79e');path.setAttribute('fill-opacity',path.dataset.country===record.id?'.58':'1');path.setAttribute('stroke','#70471f');path.setAttribute('stroke-width','.85');
    }
-   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.removeAttribute('style');halo.setAttribute('fill','none');halo.setAttribute('stroke','#ffe6ac');halo.setAttribute('stroke-width','2.1');halo.setAttribute('vector-effect','non-scaling-stroke');}
+   const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs');defs.innerHTML='<radialGradient id="atlas-selected-wash" cx=".32" cy=".26" r=".85"><stop stop-color="#d0a65e"/><stop offset=".65" stop-color="#ad7f40"/><stop offset="1" stop-color="#82552c"/></radialGradient><filter id="atlas-country-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy=".6" stdDeviation=".65" flood-color="#6a411c" flood-opacity=".35"/></filter>';svg.prepend(defs);
+   const chosen=svg.querySelector('.scenic-country-overlay');if(chosen){chosen.setAttribute('fill','url(#atlas-selected-wash)');chosen.setAttribute('fill-opacity','.66');}
+   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.removeAttribute('style');halo.setAttribute('fill','none');halo.setAttribute('stroke','#ffe6ac');halo.setAttribute('stroke-width','2.1');halo.setAttribute('vector-effect','non-scaling-stroke');halo.setAttribute('filter','url(#atlas-country-glow)');}
    const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
    const geo=surface(Math.round(r.width*dpr),Math.round(r.height*dpr)),ink=geo.getContext('2d');ink.scale(dpr,dpr);
    try{ink.drawImage(await decode(url),0,0,r.width,r.height);}finally{URL.revokeObjectURL(url);}
@@ -30,7 +32,7 @@ export function createMapInk(canvas,sheet,app){
    ink.globalCompositeOperation='destination-in';
    const feather=ink.createRadialGradient(r.width/2,r.height/2,r.height*.24,r.width/2,r.height/2,r.width*.64);
    feather.addColorStop(0,'#000');feather.addColorStop(.6,'#000');feather.addColorStop(1,'#0000');ink.fillStyle=feather;ink.fillRect(0,0,r.width,r.height);
-   for(const [vertical,reverse] of [[true,false],[true,true],[false,false],[false,true]]){const length=vertical?r.height:r.width,fade=ink.createLinearGradient(0,0,vertical?0:r.width,vertical?r.height:0);fade.addColorStop(0,reverse?'#000':'#0000');fade.addColorStop(reverse?.86:.14,'#000');fade.addColorStop(1,reverse?'#0000':'#000');ink.fillStyle=fade;ink.fillRect(0,0,r.width,r.height);}
+   for(const [vertical,reverse] of [[true,false],[true,true],[false,false],[false,true]]){const length=vertical?r.height:r.width,fade=ink.createLinearGradient(0,0,vertical?0:r.width,vertical?r.height:0);fade.addColorStop(0,reverse?'#000':'#0000');fade.addColorStop(reverse?.92:.08,'#000');fade.addColorStop(1,reverse?'#0000':'#000');ink.fillStyle=fade;ink.fillRect(0,0,r.width,r.height);}
    paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);
   }else{paint.fillStyle='#705332';paint.font='700 14px ScenicBody';paint.textAlign='center';paint.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.56,width-36);}
   for(const node of inner.querySelectorAll('.scenic-map-caption strong,.scenic-map-caption span')){
@@ -96,10 +98,10 @@ export function createMapInk(canvas,sheet,app){
   if(!target)return;
   sheet.dataset.inkPhase=erasing?'erasing':'drawing';
   if(reduced){if(erasing)ctx.clearRect(0,0,canvas.width,canvas.height);else{ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(target,0,0);}}
-  else await timeline.tween(erasing?SCENIC.inkEraseMs:SCENIC.inkDrawMs,t=>{
-   draw(t,erasing);
+  else {const costs=[];await timeline.tween(erasing?SCENIC.inkEraseMs:SCENIC.inkDrawMs,t=>{
+   const started=app.dataset.qa==='true'?performance.now():0;draw(t,erasing);if(started)costs.push(performance.now()-started);
    if(app.dataset.qa==='true'&&app.dataset.qaInkAt!==undefined&&t>=Number(app.dataset.qaInkAt)){const at=app.dataset.qaInkAt;delete app.dataset.qaInkAt;app.dataset.qaInkCaptured=at;timeline.setPaused(true);}
-  },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaInkAt===undefined?undefined:Number(app.dataset.qaInkAt)}:{});
+  },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaInkAt===undefined?undefined:Number(app.dataset.qaInkAt)}:{});if(costs.length){costs.sort((a,b)=>a-b);sheet.dataset.inkPaintP95=costs[Math.floor(costs.length*.95)].toFixed(2);sheet.dataset.inkFrames=String(costs.length);}}
   sheet.dataset.inkPhase=erasing?'empty':'complete';
  }
  return {prepare,reveal:options=>animate(options),erase:options=>animate({...options,erasing:true}),clear};

@@ -20,7 +20,7 @@ export function placePaper(sheet){
  const g=geometry(sheet,sheet.classList.contains('is-open')?1:0);
  sheet.style.setProperty('--paper-height',g.height+'px');sheet.style.setProperty('--paper-bottom',g.bottom+'px');sheet.style.setProperty('--paper-top',g.top+'px');
  [...sheet.querySelectorAll('.scenic-fold-leaf')].forEach((leaf,i)=>{leaf.style.height=g.h+1+'px';leaf.style.backgroundPosition=`center ${-(g.height-g.bottom-(i+1)*g.h)}px`;leaf.style.transform=g.panels[i].transform;});
- sheet.querySelector('.scenic-paper-top').style.transform=g.cap;sheet.querySelector('.scenic-compass').style.transform=g.compass;
+ sheet.querySelector('.scenic-paper-top').style.transform=g.cap;document.querySelector('.scenic-compass').style.transform=g.compass;
  sheet.dataset.paperProgress=sheet.classList.contains('is-open')?'1':'0';
 }
 // The very same top, four middle folds and engraved bottom remain mounted.
@@ -35,7 +35,7 @@ export async function foldPaper(sheet,{opening,timeline,reduced}){
    operations.push(timeline.animate(leaf,frames.map(({offset,g})=>({offset,transform:g.panels[i].transform})),opts));
    for(const [selector,property] of [['.scenic-fold-shade','shade'],['.scenic-fold-light','light']])operations.push(timeline.animate(leaf.querySelector(selector),frames.map(({offset,g})=>({offset,opacity:g.panels[i][property]})),opts));
   });
-  for(const [selector,key] of [['.scenic-paper-top','cap'],['.scenic-compass','compass']])operations.push(timeline.animate(sheet.querySelector(selector),frames.map(({offset,g})=>({offset,transform:g[key]})),{duration,fill:'both',easing:'linear'}));
+  for(const [selector,key] of [['.scenic-paper-top','cap'],['.scenic-compass','compass']])operations.push(timeline.animate(selector==='.scenic-compass'?document.querySelector(selector):sheet.querySelector(selector),frames.map(({offset,g})=>({offset,transform:g[key]})),{duration,fill:'both',easing:'linear'}));
   const prompt=document.querySelector('.scenic-prompt');
   operations.push(timeline.animate(prompt,opening?[{opacity:1},{opacity:0,offset:.2},{opacity:0}]:[{opacity:0},{opacity:0,offset:.76},{opacity:1}],{duration,fill:'both'}));
  }

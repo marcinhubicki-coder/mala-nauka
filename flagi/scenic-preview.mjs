@@ -83,6 +83,7 @@ function fitCaption(){
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
   sheet.style.top=viewport.height*.212+'px';sheet.style.height=viewport.height*.376+'px';
+  $('scenic-compass').style.top=(viewport.height*.212-24)+'px';
   if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
 async function warmFlag(record){
@@ -93,7 +94,7 @@ async function warmFlag(record){
 }
 function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
-  sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');
+  sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
   mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');
   swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placePaper(sheet);
 }
@@ -109,7 +110,7 @@ async function playQuestion({prepared=false}={}){
 async function respond(chosenId){
   if(state!=='playing'||paused||visibilityPaused)return;
   const owner=timeline,record=current(),correct=chosenId===record.id;
-  setState('showing-map');app.classList.add('is-pending');
+  setState('showing-map');app.classList.add('is-pending');$('scenic-paper-row').setAttribute('aria-hidden','true');
   game.answer(chosenId);game.setPresentationHold(true);updateHud();
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
   feedback.innerHTML=correct?'<strong>Świetnie!</strong><small>Zapamiętaj kraj i stolicę.</small>':'<strong>Zapamiętaj kraj i jego stolicę.</strong>';

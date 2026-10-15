@@ -15,6 +15,7 @@ import {studioIcon as iconSVG,MODE_ICONS,CATEGORY_ICONS,viewIcon,previewScale} f
 import {html,number,componentName,effectiveValue,savedMarker,rangeFor,FIELD_LABELS,MODE_NAMES,STATE_NAMES,relatedViews,compareSelection} from './preview-model.mjs';
 import {CATEGORIES,componentCategories,VISUAL_FIELDS,ICONS,ELEMENT_FAMILIES,ELEMENT_KINDS,visualValue,rawVisualValue} from '../shared/element-system.mjs';
 import {dynamicRange} from './dynamic-range.mjs';
+import {previewDevice} from './preview-device.mjs';
 import {tokenBounds} from './validation.mjs';
 
 export class StudioPreview {
@@ -62,7 +63,7 @@ export class StudioPreview {
   }
   resizePhone(){
     const gallery=this.workspace.querySelector('#preview-gallery');if(!gallery||this.zoom==='100')return;
-    const scale=previewScale(this.compare?414+24:gallery.clientWidth,gallery.clientHeight,{paddingY:this.compare?56:24});
+    const scale=previewScale(this.compare?previewDevice().width+24:gallery.clientWidth,gallery.clientHeight,{paddingY:this.compare?56:24});
     gallery.style.setProperty('--preview-phone-scale',String(scale));
     gallery.style.setProperty('--mobile-preview-scale',String(scale));
   }

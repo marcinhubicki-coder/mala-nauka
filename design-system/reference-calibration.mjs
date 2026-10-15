@@ -54,6 +54,7 @@ export async function saveReference(view,file){
  await request('readwrite',store=>store.put({image:file,...size,updatedAt:Date.now()},view));
  return size;
 }
+import {previewDevice} from './preview-device.mjs';
 export class ReferenceCalibration {
  constructor(studio){this.studio=studio;this.cache=new Map();this.pending=new Set();this.loaded=new Set();this.opacity=50;this.wrongVariant='mid';}
  selectedKey(view){return referenceStorageKey(view,this.wrongVariant);}
@@ -87,6 +88,7 @@ export class ReferenceCalibration {
  renderControls(){
   const node=this.studio.workspace.querySelector('#preview-controls');
   if(!node||node.querySelector('.reference-calibration'))return;
+  if(previewDevice().id!=='iphone'){node.insertAdjacentHTML('beforeend','<p class="reference-calibration">Wzorce iPhone są dostępne po przełączeniu podglądu na iPhone.</p>');return;}
   node.insertAdjacentHTML('beforeend',`<section class="reference-calibration" aria-label="Porównanie ze wzorcem">
    <div class="reference-heading"><strong>Porównaj z produkcją</strong><span id="reference-status" role="status">Wczytaj wzorzec ekranu</span></div>
    <div class="reference-actions">
@@ -118,6 +120,7 @@ export class ReferenceCalibration {
   finally{this.pending.delete(view);this.sync();this.status();}
  }
  sync(){
+  if(previewDevice().id!=='iphone'){for(const image of this.studio.workspace.querySelectorAll('.studio-reference-image'))image.remove();return;}
   for(const tile of this.studio.workspace.querySelectorAll('.preview-tile')){
    const view=tile.dataset.tileView,phone=tile.querySelector('.phone-outer');
    if(!phone)continue;

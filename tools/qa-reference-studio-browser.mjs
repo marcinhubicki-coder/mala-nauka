@@ -53,6 +53,12 @@ try{
  await page.reload({waitUntil:'domcontentloaded'});
  await page.locator('#reference-status').filter({hasText:'Wzorzec wyrównany do telefonu'}).waitFor({timeout:16000});
  assert.equal(await page.locator('.preview-tile .studio-reference-image').count(),1);
+ await page.getByRole('radio',{name:'Desktop',exact:true}).check();
+ await page.waitForFunction(()=>document.documentElement.dataset.previewDevice==='desktop');
+ assert.equal(await page.locator('.studio-reference-image').count(),0);
+ await page.getByRole('radio',{name:'iPhone',exact:true}).check();
+ await page.locator('#reference-status').filter({hasText:'Wzorzec wyrównany do telefonu'}).waitFor({timeout:16000});
+ assert.equal(await page.locator('.preview-tile .studio-reference-image').count(),1);
  // Compare mode uses the *real* slider renderer at 50% and 90%.
  for(const percentage of [50,99]){
   await page.goto(base+'/ortografia/?studio=1&mode=spelling&screen=game&state=wrong&viewId=spelling-wrong&sliderProgress='+percentage,{waitUntil:'domcontentloaded'});
@@ -62,5 +68,5 @@ try{
   assert.equal(await rail.getAttribute('aria-valuenow'),String(percentage));
  }
  assert.deepEqual(errors,[]);
- console.log(JSON.stringify({ok:true,imported:names.length,persisted:true,aligned:true,pageErrors:0}));
+ console.log(JSON.stringify({ok:true,imported:names.length,persisted:true,aligned:true,deviceRoundtrip:true,pageErrors:0}));
 }finally{await page?.close();await browser.close();}

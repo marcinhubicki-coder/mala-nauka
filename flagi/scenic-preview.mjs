@@ -95,7 +95,7 @@ function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
   mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');
-  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placePaper(sheet);
+  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placeScroll();
 }
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');

@@ -75,6 +75,9 @@ try{
    if(sample.mode!=='question'){await choose(page,sample.mode==='correct');await state(page,'feedback-'+sample.mode);}
    const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.icons===0&&b.h>=40&&b.y+b.h<sample.h));
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
+   if(sample.mode==='question'){
+    const bottom=await page.locator('.scenic-paper-bottom').boundingBox(),top=await page.locator('.scenic-paper-top').boundingBox(),compass=await page.locator('.scenic-compass').boundingBox();assert(Math.abs(bottom.y+bottom.height-m.paper.y-m.paper.h)<2,'Closed paper must be placed before answers unlock');assert(Math.abs(top.y-m.paper.y)<2,'Top edge starts at the question banner');assert(compass.y>m.paper.y-35&&compass.y<m.paper.y,'Compass starts beside the question, never near HUD');
+   }
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
     assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');

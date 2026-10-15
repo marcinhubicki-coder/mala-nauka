@@ -60,13 +60,15 @@ try{
   }
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(mounted)],{type:'image/svg+xml'}));
   try{const img=new Image();img.src=url;await img.decode();const c=document.createElement('canvas');c.width=2040;c.height=1500;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);const frame=ctx.getImageData(0,0,c.width,c.height),px=frame.data;
+    const hash=(x,y)=>{let n=Math.imul(x,374761393)^Math.imul(y,668265263);n=Math.imul(n^(n>>>13),1274126177);return (n>>>0)/4294967295;};
+    const noise=(x,y)=>{const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);return (hash(ix,iy)*(1-sx)+hash(ix+1,iy)*sx)*(1-sy)+(hash(ix,iy+1)*(1-sx)+hash(ix+1,iy+1)*sx)*sy;};
     for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){
      const k=(y*c.width+x)*4,luma=px[k]*.3+px[k+1]*.59+px[k+2]*.11;
      // Keep engraved borders and lettering. The light wash has real paper holes.
      if(luma<145)continue;
-     const grain=(Math.sin(x*.41+y*.27)+Math.sin(x*.13-y*.37)+Math.sin(x*.073+y*.081))/3;
-     if(grain>.22&&luma>174)px[k+3]=0;
-     else px[k+3]=Math.round(px[k+3]*(.48+(1-grain)*.24));
+     const grain=noise(x*.055,y*.17)*.65+noise(x*.22+73,y*.31+29)*.35;
+     if(grain>.62&&luma>178)px[k+3]=0;
+     else px[k+3]=Math.round(px[k+3]*(.40+(1-grain)*.65));
     }
     ctx.putImageData(frame,0,0);return c.toDataURL('image/webp',.94);}finally{URL.revokeObjectURL(url);}
  },{source:original,pigment,records:FLAGS});

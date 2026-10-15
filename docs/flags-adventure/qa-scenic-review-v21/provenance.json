@@ -1,0 +1,33 @@
+{
+  "sourceCommit": "3f3d672c15f38d9be00c7c5ab3e66a49d3c48423",
+  "qaCommit": "64e58cfbe980e344c288e9af913cd16cd62af9f7",
+  "workflowRun": 38786525577,
+  "passed": 62,
+  "total": 62,
+  "errors": 0,
+  "playwright": "1.64.1",
+  "engines": [
+    "chromium",
+    "webkit"
+  ],
+  "extraStressRun": 38785872726,
+  "extraStressRounds": 10,
+  "mapBlob": "7ad318352dff2b54211833c8bd1dde3d511ace93",
+  "previewUrl": "https://mala-nauka-1j6o3xxd0-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by",
+  "deployment": "dpl_5LqWTtuMo2uP5gDqkTLKNANC65yK",
+  "deploymentTarget": "preview",
+  "browserVerification": "Vercel login blocks direct review; no new share link was created after auto-review rejected it",
+  "captureSource": "one clean final CI run, manually reviewed",
+  "paintP95Ms": [
+    2,
+    8.7
+  ],
+  "physicalIPhoneTested": false,
+  "boards": {
+    "trzy-stany.jpg": "2bb79f96041cf8814963989c25b9464534bde93f70ab979b2115a567c3d80af8",
+    "pergamin-klatki.jpg": "643be06bc4f1473fbb837dc3b8bc750211385243c48595b82f02f28068a82add",
+    "geografia-i-ekrany.jpg": "283bfdb08ef28a343eb035a59611d802ddb53f30109f413f29bbc9b448fff7f7",
+    "atlas-atrament-klatki.jpg": "d6a5074eeb9aa3a38a2105fb615e1f7018c417645bc035b9014b7042d2b3d5ac",
+    "piasek-klatki.jpg": "fa98fd7d747e3ec3ca89bbcd73436014209f9ab5932aa7b1b609fa106e61b8ae"
+  }
+}

@@ -1,3 +1,5 @@
+> Aktualna wersja usuwa drobiny i tło mapy oraz scala scenę z masztem: [TRANSPARENT-V14](FLAGS-SCENIC-TRANSPARENT-V14.md). Poniżej zapis poprzedniej iteracji.
+
 # Flagi scenic — ciągły pergamin i atramentowy atlas, 15.10.2026
 
 Zakres: wyłącznie `feature/flags-scenic-preview-v1`. Kontynuacja istniejącego preview, bez zmian `main`, Ortografii, Design Studio i produkcyjnych Flag.

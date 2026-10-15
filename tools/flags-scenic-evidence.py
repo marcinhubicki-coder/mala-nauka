@@ -67,5 +67,11 @@ board('geografia-i-ekrany.jpg', [
     ('webkit-07-liechtenstein', 'Liechtenstein'),
     ('webkit-08-vatican', 'Watykan'),
     ('webkit-09-long-country', 'Długi kraj · WebKit'),
-    ('webkit-10-pwa-safe-area', 'PWA · safe area')], width=300)
+    ('webkit-10-pwa-safe-area', 'PWA · safe area'),
+    ('webkit-13-two-word-title', 'Cała Wielka Brytania'),
+    ('webkit-14-two-word-title-short', 'Macedonia · niski ekran'),
+    ('webkit-11-poland-mockup-wrong', 'Polska · obszar pod tytułem'),
+    ('webkit-16-finland-north', 'Finlandia · cały kraj'),
+    ('webkit-17-norway-north', 'Norwegia · cały kraj'),
+    ('webkit-18-russia-wide', 'Rosja · szeroki kadr Europy')], width=300)
 print(f'{report["passed"]}/{report["total"]}: review boards in {args.output}')

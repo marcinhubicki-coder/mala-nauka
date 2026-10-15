@@ -1,4 +1,4 @@
-> Aktualizacja 15.10.2026: bieżąca implementacja używa jednego ciągłego pergaminu i atramentowego ujawniania atlasu. Opis i wyniki: [CONTINUOUS-V10](FLAGS-SCENIC-CONTINUOUS-V10.md). Poniżej zapis wersji z 13.10.2026.
+> Aktualizacja 15.10.2026: bieżący wariant ma jedną scenę z masztem i kamieniami, ciągły pergamin oraz prześwitujący atlas bez drobin i rozmytego tła. Opis, prompty i wyniki: [TRANSPARENT-V14](FLAGS-SCENIC-TRANSPARENT-V14.md). Poprzednia animacja: [CONTINUOUS-V10](FLAGS-SCENIC-CONTINUOUS-V10.md). Poniżej zapis wersji z 13.10.2026.
 
 # Flagi — scenic preview: jedna scena i materiały rastrowe, 13.10.2026
 

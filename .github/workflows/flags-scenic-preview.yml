@@ -39,12 +39,14 @@ jobs:
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
       - name: Install browser
         run: |
-          npm install --no-save --no-package-lock playwright@1.56.1
+          npm install --no-save --no-package-lock playwright@1.64.1
           npx playwright install --with-deps chromium webkit
       - name: Generate geographical Europe artwork
         run: node tools/build-scenic-europe.mjs
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
+        env:
+          DEBUG: pw:browser
         continue-on-error: true
         run: SCENIC_QA_PHASE=full SCENIC_QA_ENGINE=webkit SCENIC_QA_FILTER=wrong-pause-slider-and-several-rounds SCENIC_QA_ROUNDS=10 node tools/flags-scenic-qa.mjs
       - name: Save generated atlas and screenshots on isolated branch

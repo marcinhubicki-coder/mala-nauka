@@ -30,6 +30,7 @@ export function createMapInk(canvas,sheet,app){
    ink.globalCompositeOperation='destination-in';
    const feather=ink.createRadialGradient(r.width/2,r.height/2,r.height*.24,r.width/2,r.height/2,r.width*.64);
    feather.addColorStop(0,'#000');feather.addColorStop(.6,'#000');feather.addColorStop(1,'#0000');ink.fillStyle=feather;ink.fillRect(0,0,r.width,r.height);
+   for(const [vertical,reverse] of [[true,false],[true,true],[false,false],[false,true]]){const length=vertical?r.height:r.width,fade=ink.createLinearGradient(0,0,vertical?0:r.width,vertical?r.height:0);fade.addColorStop(0,reverse?'#000':'#0000');fade.addColorStop(reverse?.86:.14,'#000');fade.addColorStop(1,reverse?'#0000':'#000');ink.fillStyle=fade;ink.fillRect(0,0,r.width,r.height);}
    paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);
   }else{paint.fillStyle='#705332';paint.font='700 14px ScenicBody';paint.textAlign='center';paint.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.56,width-36);}
   for(const node of inner.querySelectorAll('.scenic-map-caption strong,.scenic-map-caption span')){
@@ -82,7 +83,7 @@ export function createMapInk(canvas,sheet,app){
    let x=from.x+(to.x-from.x)*travel+Math.sin(q*16+g.phase)*g.swirl*wave;
    let y=from.y+(to.y-from.y)*travel+Math.cos(q*13+g.phase)*g.swirl*wave+8*Math.sin(q*Math.PI);
    // Soft reflected wall, never a grain outside the paper's useful margin.
-   const reflect=(n,max)=>{n=Math.abs(n-5);const span=max-10;return 5+Math.abs((n+span)%(2*span)-span)};
+   const reflect=(n,max)=>{n=Math.abs(n-14);const span=max-28;return 14+Math.abs((n+span)%(2*span)-span)};
    x=reflect(x,width);y=reflect(y,height);
    if(x<0||y<0||x>width||y>height)outside++;
    const alpha=Math.sin(q*Math.PI)*.62*(erasing?1:.8);

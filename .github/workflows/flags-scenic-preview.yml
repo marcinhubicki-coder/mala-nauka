@@ -11,6 +11,7 @@ on:
       - 'flagi/scenic-preview.css'
       - 'flagi/scenic-*.mjs'
       - 'assets/flags/adventure/scenic-*'
+      - 'assets/maps/europe-pigment-*'
       - 'adventure-preview.mjs'
   workflow_dispatch:
 

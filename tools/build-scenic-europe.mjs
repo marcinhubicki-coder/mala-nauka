@@ -13,17 +13,18 @@ import {FLAGS} from '../data/flags.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const original=await readFile(join(ROOT,'assets/maps/europe.svg'),'utf8');
 const paper='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/flags/adventure/scenic-paper-v10.webp'))).toString('base64');
+const pigment='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/maps/europe-pigment-v11.webp'))).toString('base64');
 const server=createServer((req,res)=>res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Antique Europe</title>'));
 server.listen(0,'127.0.0.1');await once(server,'listening');let browser;
 try{
  browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
  const page=await browser.newPage({viewport:{width:2040,height:1500}});await page.goto('http://127.0.0.1:'+server.address().port);
- const encoded=await page.evaluate(async({source,paper,records})=>{
+ const encoded=await page.evaluate(async({source,paper,pigment,records})=>{
   const doc=new DOMParser().parseFromString(source,'image/svg+xml'),svg=doc.documentElement,ns='http://www.w3.org/2000/svg';
   svg.setAttribute('width','2040');svg.setAttribute('height','1500');
   const defs=doc.createElementNS(ns,'defs');defs.innerHTML=`
    <linearGradient id="sea" x2=".7" y2="1"><stop stop-color="#e6d9b6"/><stop offset=".55" stop-color="#d7c79f"/><stop offset="1" stop-color="#c3b78c"/></linearGradient>
-   <radialGradient id="land-wash"><stop stop-color="#eee0b9"/><stop offset=".65" stop-color="#dac89c"/><stop offset="1" stop-color="#c0aa7e"/></radialGradient>
+   <radialGradient id="land-wash"><stop stop-color="#eee2c1"/><stop offset=".65" stop-color="#e5d6b1"/><stop offset="1" stop-color="#d6c49e"/></radialGradient>
    <pattern id="sea-engraving" width="24" height="16" patternUnits="userSpaceOnUse"><path d="M2 6q4-1.4 8 0t8 0 M10 13q3-1 6 0" fill="none" stroke="#7e7054" stroke-width=".28" opacity=".25"/></pattern>
    <pattern id="etched-land" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0v2M3 4v1" stroke="#7a5b35" stroke-width=".25" opacity=".12"/></pattern>
    <filter id="coast"><feDropShadow dx=".6" dy="1.3" stdDeviation="1.5" flood-color="#795e34" flood-opacity=".24"/></filter>
@@ -38,6 +39,7 @@ try{
    path.setAttribute('fill','url(#land-wash)');path.setAttribute('stroke','#896b44');path.setAttribute('stroke-opacity','.7');path.setAttribute('stroke-width','.48');path.setAttribute('stroke-dasharray','1.4 .65');
   }
   const clip=doc.createElementNS(ns,'clipPath');clip.id='land';for(const p of paths){const c=p.cloneNode(true);c.removeAttribute('id');c.removeAttribute('stroke');clip.append(c);}defs.append(clip);
+  const wash=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:pigment,x:0,y:0,width:680,height:500,'preserveAspectRatio':'none','clip-path':'url(#land)',style:'mix-blend-mode:multiply',opacity:'.40'}))wash.setAttribute(k,v);svg.append(wash);
   svg.append(rect('url(#etched-land)',{'clip-path':'url(#land)'}));
   const material=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:paper,x:-220,y:-180,width:1120,height:900,'preserveAspectRatio':'none','style':'mix-blend-mode:multiply',opacity:'.20'}))material.setAttribute(k,v);svg.append(material);
   // Small irregular sepia washes supply depth without introducing false relief.
@@ -58,6 +60,10 @@ try{
    const node=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x,y,fill:'#634a2c','font-family':'Georgia,serif','font-size':size,'font-weight':'600','text-anchor':'middle','paint-order':'stroke',stroke:'#f1e4c5','stroke-width':'.8','stroke-linejoin':'round'}))node.setAttribute(k,v);node.textContent=text;mounted.append(node);
    taken.push(id);
   }
+  for(const [id,points] of Object.entries({ru:[[455,226],[504,307]],ua:[[422,282]],se:[[315,210]]}))for(const [x,y] of points){
+   const path=mounted.querySelector('[data-country="'+id+'"]');if(!path?.isPointInFill(new DOMPoint(x,y)))continue;
+   const label=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x,y,fill:'#634a2c','font-family':'Georgia,serif','font-size':'6','font-weight':'600','text-anchor':'middle','paint-order':'stroke',stroke:'#f1e4c5','stroke-width':'.8'}))label.setAttribute(k,v);label.textContent=names.get(id);mounted.append(label);
+  }
   const micros={ad:[176,397],li:[263,342],mc:[251,384],sm:[298,389],va:[290,407],mt:[303,488]};
   for(const [id,[x,y]] of Object.entries(micros)){
    const dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',x);dot.setAttribute('cy',y);dot.setAttribute('r','.85');dot.setAttribute('fill','#76512a');mounted.append(dot);
@@ -66,6 +72,6 @@ try{
   }
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(mounted)],{type:'image/svg+xml'}));
   try{const img=new Image();img.src=url;await img.decode();const c=document.createElement('canvas');c.width=2040;c.height=1500;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/webp',.92);}finally{URL.revokeObjectURL(url);}
- },{source:original,paper,records:FLAGS});
+ },{source:original,paper,pigment,records:FLAGS});
  const bytes=Buffer.from(encoded.split(',')[1],'base64');await writeFile(join(ROOT,'assets/maps/europe-scenic.webp'),bytes);console.log('Antique Europe: '+bytes.length+' bytes, 2040×1500, exact 680×500 registration; baked country names.');
 }finally{await browser?.close();await new Promise(done=>server.close(done));}

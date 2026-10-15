@@ -13,13 +13,14 @@ function geometry(sheet,p){
  const angles=[0,.09,.18,.27].map(start=>Math.PI/2*(1-smooth((p-start)/.73)));
  let rise=0,depth=0;
  const panels=angles.map((a,i)=>{const angle=a*(i%2?-1:1);const y=height-bottom-rise-h;const z=depth;rise+=h*Math.cos(angle);depth-=h*Math.sin(angle);return {transform:`translate3d(0,${y}px,${z}px) rotateX(${angle*180/Math.PI}deg)`,shade:Math.sin(a)*.29,light:Math.sin(a)*(i%2?.12:.35)};});
- return {panels,cap:`translate3d(0,${height-bottom-rise-top}px,${depth}px)`,bottom,top,h,height};
+ const capY=height-bottom-rise-top,projectedY=height+(capY-height)*2400/(2400-depth);
+ return {panels,cap:`translate3d(0,${capY}px,${depth}px)`,compass:`translate3d(0,${projectedY}px,0)`,bottom,top,h,height};
 }
 export function placePaper(sheet){
  const g=geometry(sheet,sheet.classList.contains('is-open')?1:0);
  sheet.style.setProperty('--paper-height',g.height+'px');sheet.style.setProperty('--paper-bottom',g.bottom+'px');sheet.style.setProperty('--paper-top',g.top+'px');
- [...sheet.querySelectorAll('.scenic-fold-leaf')].forEach((leaf,i)=>{leaf.style.height=g.h+.35+'px';leaf.style.backgroundPosition=`center ${-(g.height-g.bottom-(i+1)*g.h)}px`;leaf.style.transform=g.panels[i].transform;});
- sheet.querySelector('.scenic-paper-top').style.transform=g.cap;sheet.querySelector('.scenic-compass').style.transform=g.cap;
+ [...sheet.querySelectorAll('.scenic-fold-leaf')].forEach((leaf,i)=>{leaf.style.height=g.h+1+'px';leaf.style.backgroundPosition=`center ${-(g.height-g.bottom-(i+1)*g.h)}px`;leaf.style.transform=g.panels[i].transform;});
+ sheet.querySelector('.scenic-paper-top').style.transform=g.cap;sheet.querySelector('.scenic-compass').style.transform=g.compass;
  sheet.dataset.paperProgress=sheet.classList.contains('is-open')?'1':'0';
 }
 // The very same top, four middle folds and engraved bottom remain mounted.
@@ -34,7 +35,7 @@ export async function foldPaper(sheet,{opening,timeline,reduced}){
    operations.push(timeline.animate(leaf,frames.map(({offset,g})=>({offset,transform:g.panels[i].transform})),opts));
    for(const [selector,property] of [['.scenic-fold-shade','shade'],['.scenic-fold-light','light']])operations.push(timeline.animate(leaf.querySelector(selector),frames.map(({offset,g})=>({offset,opacity:g.panels[i][property]})),opts));
   });
-  for(const el of [sheet.querySelector('.scenic-paper-top'),sheet.querySelector('.scenic-compass')])operations.push(timeline.animate(el,frames.map(({offset,g})=>({offset,transform:g.cap})),{duration,fill:'both',easing:'linear'}));
+  for(const [selector,key] of [['.scenic-paper-top','cap'],['.scenic-compass','compass']])operations.push(timeline.animate(sheet.querySelector(selector),frames.map(({offset,g})=>({offset,transform:g[key]})),{duration,fill:'both',easing:'linear'}));
   const prompt=document.querySelector('.scenic-prompt');
   operations.push(timeline.animate(prompt,opening?[{opacity:1},{opacity:0,offset:.2},{opacity:0}]:[{opacity:0},{opacity:0,offset:.76},{opacity:1}],{duration,fill:'both'}));
  }

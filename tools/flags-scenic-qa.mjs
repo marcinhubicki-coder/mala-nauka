@@ -84,12 +84,14 @@ try{
    await check(engine+'-animation-frames',browser,{},async page=>{
     await open(page);await choose(page,false);
     await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-opening'));
+    const compassSize=await page.locator('.scenic-compass').boundingBox();
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','Opening paper must cover the flag progressively');
     // Pause and seek the actual Web Animations timeline. Screenshot overhead
     // cannot skip a fold; each frame has a precise fraction of the same opening.
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
      await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-top,.scenic-compass,.scenic-prompt')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
      const opacity=await page.locator('.scenic-fold-leaf').evaluateAll(nodes=>nodes.map(n=>Number(getComputedStyle(n).opacity)));
+     const compassNow=await page.locator('.scenic-compass').boundingBox();assert(Math.abs(compassSize.width-compassNow.width)<.1&&Math.abs(compassSize.height-compassNow.height)<.1,'Compass has a constant size throughout unfolding');
      assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),null,'Ink must wait for the entire unfolding');assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
      await capture(page,engine+'-unroll-'+label);
     }

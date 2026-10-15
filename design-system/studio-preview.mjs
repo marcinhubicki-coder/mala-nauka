@@ -86,6 +86,13 @@ export class StudioPreview {
     this.workspace.querySelector('.component-layout').classList.toggle('wide-preview',this.wide);const edge=this.workspace.querySelector('.inspector-edge');if(edge){edge.innerHTML=this.wide?'›':'‹';edge.dataset.tooltip=this.wide?'Pokaż panel ustawień':'Schowaj panel ustawień';edge.title=edge.dataset.tooltip;edge.setAttribute('aria-label',edge.dataset.tooltip);}
   }
   renderPills(){
+    // Removing a focused field can synchronously emit change/blur. Coalesce
+    // refreshes outside that event so they cannot replace the same DOM twice.
+    if(this.pillsRenderPending)return;
+    this.pillsRenderPending=true;
+    queueMicrotask(()=>{this.pillsRenderPending=false;this.renderPillsNow();});
+  }
+  renderPillsNow(){
     const strip=this.workspace.querySelector('#component-strip');if(!strip)return;
     const inventory=this.inventories.get(this.viewId),tree=componentTree(inventory?.items),selected=this.activeSelection();
     const selectedId=tree.byId.has(selected?.id)?selected.id:'layout-root';let branch=tree.byId.has(this.branches.get(this.viewId))?this.branches.get(this.viewId):'layout-root';

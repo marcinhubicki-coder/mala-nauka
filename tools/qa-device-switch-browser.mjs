@@ -8,7 +8,7 @@ const browser=await chromium.launch({headless:true,...(process.env.CHROME_EXECUT
 try{
  const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage(),errors=[];
  page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(30000);
- page.on('pageerror',error=>errors.push(error.message));
+ page.on('pageerror',error=>{errors.push(error.message);console.error(error.stack||error.message);});
  await page.goto(base+'/design-system/#components');
  await page.locator('#device-frame').waitFor();
  console.log('device-qa: editor ready');

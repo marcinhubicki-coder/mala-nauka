@@ -13,27 +13,34 @@ import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {visualValue} from './element-styles.mjs';
 import {hasViewContract,viewContract} from './view-contracts.mjs';
+import {BOUND_VIEW_CONTRACTS} from './view-bindings.mjs';
 import {applyCompiledView} from './compiled-runtime.mjs';
 import {applyHomeGeometry} from './home-layout.mjs';
 const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
-const studioRuntime=new URLSearchParams(location.search).has('studio');
 let inspectorLoader;
+function currentViewId(app){
+ const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
+ const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
+ return viewIdFor({view:app.dataset.view,mode:app.dataset.mode||'spelling',state,hasPlayers:Boolean(app.querySelector('.player-card')),pinPurpose:app.dataset.pinPurpose,historyState:app.dataset.historyState|| (app.querySelector('.progress-achievement-list')?'achievements':app.querySelector('.progress-category-list')?'categories':app.querySelector('.rules-views')?'rules':app.querySelector('.collection-word-grid')?'collection':'dashboard'),popup});
+}
 const updateView=(root,settings,view)=>{
- if(!root||!view)return;
+ if(!root||!view||currentViewId(root)!==view)return;
  if(view==='home')applyHomeGeometry(root,settings);
- // One route can still have legacy and compiled renderers (e.g. Maths
- // standalone versus the shared game wizard). Never apply a foreign contract.
- // The spelling wizard owns a synchronous DOM replacement during setup;
- // skip legacy inspection until its 29 stable controls have mounted.
- if(view==='spelling-settings'&&root.dataset.dsContractPending==='spelling-settings')return;
- if(!studioRuntime&&hasViewContract(view)){
+ // Stateful setup renderers publish only after completing their mount.
+ // Every registered view uses its explicit contract in Studio and the PWA.
+ // The persistent audio owner delegates the entire screen to its mode iframe.
+ // That document mounts and validates its own contract.
+ if(root.querySelector(':scope > iframe[data-mode-host]'))return;
+ if(root.dataset.scenarioPending||root.dataset.dsContractPending||root.querySelector('.loading')||!root.children.length)return;
+ if(BOUND_VIEW_CONTRACTS[view])return applyCompiledView(root,settings,view);
+ if(hasViewContract(view)){
   const declared=root.querySelectorAll('[data-ds-contract="v2"]').length;
   if(declared===viewContract(view).length)return applyCompiledView(root,settings,view);
-  if(declared>0)throw Error('Incomplete compiled screen: '+view+' ('+declared+'/'+viewContract(view).length+')');
+  throw Error('Incomplete compiled screen: '+view+' ('+declared+'/'+viewContract(view).length+')');
  }
- // Legacy views migrate gradually. The editor classifier downloads only when
- // an unported view (or Studio inspection) genuinely needs it.
+ // Only routes outside the 41-view registry may use the historical adapter.
+ // A missing or malformed registered contract always fails above.
  inspectorLoader??=import('./element-system.mjs').then(module=>module.annotateElements);
  void inspectorLoader.then(annotate=>{
   // Navigations may occur while import is in flight; never annotate a stale
@@ -90,9 +97,7 @@ export async function initDesign() {
       if(mathView&&app.dataset.view!==mathView)app.dataset.view=mathView;
     }
     if(app.dataset.view){
-      const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
-      const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
-      const id=viewIdFor({view:app.dataset.view,mode:app.dataset.mode||'spelling',state,hasPlayers:Boolean(app.querySelector('.player-card')),pinPurpose:app.dataset.pinPurpose,historyState:app.dataset.historyState|| (app.querySelector('.progress-achievement-list')?'achievements':app.querySelector('.progress-category-list')?'categories':app.querySelector('.rules-views')?'rules':app.querySelector('.collection-word-grid')?'collection':'dashboard'),popup});
+      const id=currentViewId(app);
       if(document.documentElement.dataset.dsView!==id)document.documentElement.dataset.dsView=id;
     }
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
@@ -123,7 +128,7 @@ export async function initDesign() {
         annotate();animatePresence(batch);
       });
     }
-  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','open']});
+  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','data-scenario-pending','open']});
   if(app)app.addEventListener('change',event=>{const label=event.target.closest?.('label');if(!label)return;for(const node of label.parentElement.children)if(node.dataset.dsElement)syncElementMotion(node,visualValue(config,document.documentElement.dataset.dsView,{id:node.dataset.dsElement,recipe:node.dataset.dsRecipe,kind:node.dataset.dsKind}));});
   if(app)app.addEventListener('click',event=>{if(event.target.closest('[data-action=answer],.math-answer,.answer'))queueMicrotask(()=>triggerSurfaceEffects(app,'answer'));});
   annotate();

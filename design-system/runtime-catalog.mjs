@@ -5,7 +5,7 @@ export class RuntimeCatalog {
  constructor(owner){this.owner=owner;this.pending=[];this.done=new Set();this.failures=new Map();this.listeners=new Set();window.addEventListener('message',e=>this.receive(e));}
  subscribe(fn){this.listeners.add(fn);return()=>this.listeners.delete(fn);}
  notify(){for(const fn of this.listeners)fn();}
- start(){if(this.started)return;this.started=true;this.pending=[];for(const view of this.owner.registry.views){const rows=hasViewContract(view.id)?staticViewInventory(view.id):inventorySnapshot(view);if(rows?.length){this.owner.acceptInventory(view.id,rows);this.done.add(view.id);}else this.pending.push(view.id);}this.next();}
+ start(){if(this.started)return;this.started=true;this.pending=[];for(const view of this.owner.registry.views){const rows=inventorySnapshot(view)||(hasViewContract(view.id)?staticViewInventory(view.id):null);if(rows?.length){this.owner.acceptInventory(view.id,rows);this.done.add(view.id);}else this.pending.push(view.id);}this.next();}
  url(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:view.state,viewId:view.id});return url.href;}
  next(){
   clearTimeout(this.timeout);this.frame?.remove();this.frame=null;

@@ -8,7 +8,7 @@ const browser=await chromium.launch({headless:true,...(process.env.CHROME_EXECUT
 try{
  const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage(),errors=[];
  page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(30000);
- page.on('pageerror',error=>errors.push(error.message));
+ page.on('pageerror',error=>{errors.push(error.message);console.error(error.stack||error.message);});
  await page.goto(base+'/design-system/#components');
  await page.locator('#device-frame').waitFor();
  console.log('device-qa: editor ready');
@@ -18,8 +18,10 @@ try{
  const gap=page.getByRole('spinbutton',{name:'Odstęp między elementami w pikselach',exact:true});
  const initialGap=Number(await gap.inputValue()),editedGap=String(initialGap<120?initialGap+1:initialGap-1);
  await gap.fill(editedGap);
- await page.getByRole('spinbutton',{name:'Odstęp między elementami w pikselach',exact:true}).press('Tab');
  await page.waitForFunction(()=>Number.parseInt(document.querySelector('#draft-status').textContent)>0);
+ assert.equal(await gap.inputValue(),editedGap);
+ assert.ok(await gap.evaluate(e=>document.activeElement===e));
+ await gap.press('Tab');
  const changed=await page.locator('#draft-status').innerText();
  console.log('device-qa: draft edited');
  async function select(name,size){
@@ -34,6 +36,11 @@ try{
  }
  await select('Desktop',[1440,900]);
  console.log('device-qa: desktop viewport verified');
+ await page.setViewportSize({width:1280,height:720});
+ await page.waitForFunction(()=>document.querySelector('#preview-gallery').clientHeight>=360);
+ assert.ok(await page.locator('.phone-outer').evaluate(e=>e.getBoundingClientRect().height>=150));
+ assert.ok(await page.locator('.preview-column').evaluate(e=>e.scrollHeight>e.clientHeight&&getComputedStyle(e).overflowY==='auto'));
+ await page.setViewportSize({width:1440,height:1000});
  assert.equal(await page.locator('#reference-upload').count(),0);
  const output=process.env.V2_SCREENSHOT_DIR;
  if(output){await mkdir(output,{recursive:true});await page.screenshot({path:join(output,'studio-desktop.png')});}

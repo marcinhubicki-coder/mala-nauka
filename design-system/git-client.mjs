@@ -20,7 +20,7 @@ const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.repl
 export class GitConflict extends Error{constructor(message,paths=[]){super(message);this.name='GitConflict';this.paths=paths;}}
 export class GitClient {
  #token=''; #head='';
- constructor(fetcher=globalThis.fetch.bind(globalThis)){this.fetcher=fetcher;}
+ constructor(fetcher=globalThis.fetch.bind(globalThis),{catalogAttempts=30,catalogDelay=2000}={}){this.fetcher=fetcher;this.catalogAttempts=catalogAttempts;this.catalogDelay=catalogDelay;}
  get connected(){return Boolean(this.#token);}
  get head(){return this.#head;}
  disconnect(){this.#token='';this.#head='';}
@@ -200,7 +200,7 @@ export class GitClient {
   // The branch alias may lag behind the Git commit while Vercel deploys it.
   // Never write a new PWA reference until its content hash is publicly served.
   let detail='';
-  for(let attempt=0;attempt<30;attempt++){
+  for(let attempt=0;attempt<this.catalogAttempts;attempt++){
    try{
     const url=new URL(ASSET_CATALOG_URL);url.searchParams.set('v',archiveSha);url.searchParams.set('attempt',String(attempt));
     const response=await this.fetcher(url.href,{cache:'no-store'});
@@ -211,7 +211,7 @@ export class GitClient {
      detail='Indeks CDN nie zawiera jeszcze opublikowanych plików.';
     }else detail='HTTP '+response.status;
    }catch(error){detail=error.message;}
-   if(attempt<29)await new Promise(resolve=>setTimeout(resolve,2000));
+   if(attempt<this.catalogAttempts-1)await new Promise(resolve=>setTimeout(resolve,this.catalogDelay));
   }
   throw Error('Plik jest zapisany w bibliotece, ale nie jest jeszcze dostępny na CDN ('+detail+'). Szkic bez zmian; ponów zapis po ukończeniu deploymentu grafik.');
  }

@@ -11,11 +11,11 @@ const sha=[...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).joi
 const path='assets/managed/'+sha+'.webp';
 const row={id:sha.slice(0,16),sha,path,size:bytes.length,width:1254,height:1254,type:'webp',group:'managed',references:[]};
 const appHead='a'.repeat(40),libHead='b'.repeat(40),libCommit='c'.repeat(40),appCommit='d'.repeat(40),treeSha='e'.repeat(40);
-const BASE_PATH='https://api.github.com/repos/marcinhubicki-coder/mala-nauka/';
+const BASE_PATH='https://api.github.com/repos/marcinhubicki-coder/mala-nauka';
 function mock({already=false,served=true}={}){
  const calls=[];
  const fetcher=async(url,options={})=>{
-  const api=url.startsWith(BASE_PATH),route=api?url.slice(BASE_PATH.length):url,method=options.method||'GET',data=options.body?JSON.parse(options.body):null;
+  const api=url===BASE_PATH||url.startsWith(BASE_PATH+'/'),route=api?url.slice(BASE_PATH.length).replace(/^\//,''):url,method=options.method||'GET',data=options.body?JSON.parse(options.body):null;
   calls.push({route,method,data});
   if(!api)return {ok:served,status:served?200:503,json:async()=>({schemaVersion:1,sourceCommit:libCommit,files:served?[{path,sha256:sha,size:bytes.length}]:[]})};
   let answer;

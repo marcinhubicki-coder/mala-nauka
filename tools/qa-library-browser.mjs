@@ -100,6 +100,7 @@ try{
   if(path&&appFiles.has(path))await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(appFiles.get(path))});else await route.abort();
  });
  const page=await context.newPage();await page.goto(base+'/design-system/#assets');
+ await page.locator('#upload-asset').waitFor();
  await page.locator('#connect-git').click();await page.locator('#git-token').fill('isolated-fixture-session');await page.locator('#git-form [type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('#connect-git')?.textContent==='GitHub połączony',null,{timeout:20000});
  await page.locator('#upload-asset').click();
@@ -114,7 +115,7 @@ try{
  await page.locator('#upload-preview img').waitFor();await page.locator('#upload-word').fill('żaba');await page.locator('#upload-form [type=submit]').click();
  await page.waitForFunction(()=>!document.querySelector('#studio-modal')?.open);
  failIndex=false;
- await page.reload();await page.locator('#save-git').waitFor();
+ await page.reload();await page.locator('#upload-asset').waitFor();
  // Reload proves the actual image bytes survived IndexedDB draft recovery.
  await page.locator('#connect-git').click();await page.locator('#git-token').fill('isolated-fixture-session');await page.locator('#git-form [type=submit]').click();
  await page.waitForFunction(()=>document.querySelector('#connect-git')?.textContent==='GitHub połączony',null,{timeout:20000});

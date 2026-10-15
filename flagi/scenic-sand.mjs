@@ -31,7 +31,7 @@ function glyphs(answers,origin,rand) {
 
 export function createSand(canvas,app,answers) {
   const ctx=canvas.getContext('2d',{alpha:true});
-  const clear=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete app.dataset.qaCaptured;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
+  const clear=()=>{canvas.width=canvas.height=1;delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete app.dataset.qaCaptured;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
   async function transition({timeline,reduced,seed,replace}) {
     clear();if(reduced){replace();return;}
     const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);

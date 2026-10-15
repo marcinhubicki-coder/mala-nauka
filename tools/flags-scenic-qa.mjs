@@ -69,6 +69,9 @@ try{
    {id:'gb',mode:'correct',w:390,h:844,name:'13-two-word-title'},
    {id:'mk',mode:'wrong',w:390,h:700,name:'14-two-word-title-short'},
    {id:'li',mode:'question',w:390,h:844,name:'15-two-line-question'},
+   {id:'fi',mode:'correct',w:390,h:844,name:'16-finland-north'},
+   {id:'no',mode:'wrong',w:390,h:700,name:'17-norway-north'},
+   {id:'ru',mode:'correct',w:390,h:844,name:'18-russia-wide'},
    {id:'pl',mode:'correct',w:390,h:844,safe:true,name:'10-pwa-safe-area'}
   ])await check(engine+'-'+sample.name,browser,{viewport:{width:sample.w,height:sample.h}},async page=>{
    await open(page,sample.id);if(sample.safe)await page.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px}'});
@@ -80,7 +83,7 @@ try{
    }
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
-    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=(sample.id==='ba'?12:11),'Geographic context stays bounded; dense Balkans retain the minimum crop');assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=(sample.id==='ru'?45:sample.id==='ba'?12:11),'Geographic context stays bounded; dense Balkans retain the minimum crop');assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
@@ -193,10 +196,11 @@ try{
    });
    await check(engine+'-wrong-pause-slider-and-several-rounds',browser,{},async page=>{
     await open(page);await choose(page,false);await state(page,'feedback-wrong');await page.waitForTimeout(4200);assert.equal((await metrics(page)).task,'Zadanie 1');
-    for(let i=0;i<3;i++){
+    for(let i=0;i<5;i++){
      await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
      await page.locator('[data-action="pause"]').click();const task=(await metrics(page)).task;await page.waitForTimeout(1800);assert.equal((await metrics(page)).task,task);
      await page.locator('[data-action="pause"]').click();await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie '+(i+2));
+     assert(await page.locator('#scenic-map-ink').evaluate(n=>n.width===1&&n.height===1),'Inactive ink releases its backing buffer');assert(await page.locator('#scenic-sand-canvas').evaluate(n=>n.width===1&&n.height===1),'Inactive sand releases its backing buffer');
      await choose(page,false);await state(page,'feedback-wrong');
     }
    });

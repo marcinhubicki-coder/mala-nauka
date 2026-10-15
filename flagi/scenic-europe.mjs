@@ -35,10 +35,10 @@ function cropNear(svg,selected,mapWidth,mapHeight,protectedTop=.25){
  const minimum=Math.max(160,box.w*1.8,box.h*ratio/(.92-protectedTop));
  for(let width=minimum;width<=460;width+=6){
   const height=width/ratio;
-  if(width>base.w||height>base.h)break;
+  if(width>base.w)break;
   for(const dx of [0,-.09,.09,-.18,.18,-.27,.27])for(const dy of [0,-.06,.06,-.12,.12]){
    const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2+dx*width));
-   const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height*(protectedTop+.92)/2+dy*height));
+   const y=Math.max(base.y-height*protectedTop,Math.min(base.y+base.h-height+height*.15,centerY-height*(protectedTop+.92)/2+dy*height));
    // Keep the complete country and breathing room. Slightly shifting the
    // camera can avoid a crowded Balkan/Benelux corner without excessive zoom.
    if(box.x<x+width*.08||box.x+box.w>x+width*.92||box.y<y+height*protectedTop||box.y+box.h>y+height*.92)continue;
@@ -50,8 +50,11 @@ function cropNear(svg,selected,mapWidth,mapHeight,protectedTop=.25){
   if(chosen?.visible>=7&&chosen.visible<=10)break;
  }
  if(!chosen){
-  const w=Math.min(base.w,Math.max(200,box.w*2.2)),h=Math.min(base.h,w/ratio);
-  chosen={x:Math.max(base.x,Math.min(base.x+base.w-w,centerX-w/2)),y:Math.max(base.y,Math.min(base.y+base.h-h,centerY-h/2)),w,h,visible:0};
+  // Very large countries use a wider view, including transparent space outside
+  // the continental raster. Both the bitmap and SVG keep the same coordinates.
+  const w=Math.max(200,minimum),h=w/ratio;
+  chosen={x:centerX-w/2,y:centerY-h*(protectedTop+.92)/2,w,h};
+  chosen.visible=peers.filter(p=>neighboring(chosen,p)).length;
  }
  return chosen;
 }

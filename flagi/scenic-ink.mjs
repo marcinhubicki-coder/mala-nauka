@@ -2,40 +2,39 @@ import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs';
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
 const surface=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
-async function decode(src){const image=new Image();image.src=src;await image.decode();return image;}
 // One persistent Canvas owns the dry atlas ink through drawing, rest and erasing.
 // The target is prepared once, never exchanged for live HTML at completion.
 export function createMapInk(canvas,sheet,app){
  const ctx=canvas.getContext('2d'),mask=surface(1,1),masked=surface(1,1);
  let target,width,height,dpr,field,maskPixels;
- function clear(){ctx.clearRect(0,0,canvas.width,canvas.height);delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
+ function clear(){if(target)target.width=target.height=1;canvas.width=canvas.height=1;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr)),paint=art.getContext('2d');paint.scale(dpr,dpr);
   const origin=sheet.getBoundingClientRect(),inner=sheet.querySelector('.scenic-map-inner'),map=inner.querySelector('.scenic-europe-map'),r=map.getBoundingClientRect();
   if(result?.svg){
-   const svg=result.svg.cloneNode(true);svg.setAttribute('width',r.width*dpr);svg.setAttribute('height',r.height*dpr);
-   svg.querySelectorAll('style').forEach(n=>n.remove());
-   const raster=svg.querySelector('image');
-   // The bitmap goes directly to Canvas; the SVG contains only its registered highlight.
-   if(raster)raster.remove();
-   for(const path of svg.querySelectorAll('.country')){
-    path.removeAttribute('style');path.setAttribute('style','animation:none;transform:none;mix-blend-mode:multiply');
-    path.setAttribute('fill',path.dataset.country===record.id?'#a27437':'#d9c79e');path.setAttribute('fill-opacity',path.dataset.country===record.id?'.20':'.28');path.setAttribute('stroke','#70471f');path.setAttribute('stroke-width','.9');
-   }
-   const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs');defs.innerHTML='<radialGradient id="atlas-selected-wash" cx=".32" cy=".26" r=".85"><stop stop-color="#d0a65e"/><stop offset=".65" stop-color="#ad7f40"/><stop offset="1" stop-color="#82552c"/></radialGradient>';svg.prepend(defs);
-   const chosen=svg.querySelector('.scenic-country-overlay');if(chosen){chosen.setAttribute('fill','url(#atlas-selected-wash)');chosen.setAttribute('fill-opacity','.24');}
-   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.removeAttribute('style');halo.setAttribute('fill','none');halo.setAttribute('stroke','#f8d590');halo.setAttribute('stroke-width','2.3');halo.setAttribute('vector-effect','non-scaling-stroke');halo.removeAttribute('filter');}
-   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
+   const svg=result.svg,[vx,vy,vw,vh]=svg.getAttribute('viewBox').split(/\s+/).map(Number);
    const geo=surface(Math.round(r.width*dpr),Math.round(r.height*dpr)),ink=geo.getContext('2d');ink.scale(dpr,dpr);
-   try{
-    if(result.image){
-     const [x,y,w,h]=svg.getAttribute('viewBox').split(/\s+/).map(Number),sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;
-     ink.drawImage(result.image,x*sx,y*sy,w*sx,h*sy,0,0,r.width,r.height);
-    }
-    ink.save();ink.globalCompositeOperation='multiply';ink.shadowColor='#6a411c45';ink.shadowBlur=1.4*dpr;ink.shadowOffsetY=.7*dpr;
-    ink.drawImage(await decode(url),0,0,r.width,r.height);ink.restore();
-   }finally{URL.revokeObjectURL(url);}
+   if(result.image){
+    const sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;
+    ink.drawImage(result.image,vx*sx,vy*sy,vw*sx,vh*sy,0,0,r.width,r.height);
+   }
+   // Trace the canonical SVG path directly. No per-question SVG image decoder,
+   // Blob or duplicate raster; both layers share exactly the same viewBox.
+   const scale=r.width/vw;
+   ink.save();ink.scale(r.width/vw,r.height/vh);ink.translate(-vx,-vy);ink.lineJoin='round';
+   for(const node of svg.querySelectorAll('.country')){
+    let path;if(node.tagName.toLowerCase()==='circle'){path=new Path2D();path.arc(Number(node.getAttribute('cx')),Number(node.getAttribute('cy')),Number(node.getAttribute('r')),0,Math.PI*2);}else path=new Path2D(node.getAttribute('d'));
+    const selected=node.dataset.country===record.id;
+    if(selected){
+     ink.strokeStyle='#f8d590';ink.lineWidth=2.3/scale;ink.stroke(path);
+     const box=node.getBBox(),wash=ink.createRadialGradient(box.x+box.width*.32,box.y+box.height*.26,0,box.x+box.width*.5,box.y+box.height*.5,Math.max(box.width,box.height)*.85);
+     wash.addColorStop(0,'#d0a65e');wash.addColorStop(.65,'#ad7f40');wash.addColorStop(1,'#82552c');
+     ink.save();ink.globalCompositeOperation='multiply';ink.globalAlpha=.24;ink.fillStyle=wash;ink.fill(path);ink.restore();
+     ink.strokeStyle='#70471f';ink.lineWidth=.9;ink.stroke(path);
+    }else{ink.fillStyle='#d9c79e47';ink.fill(path);ink.strokeStyle='#896b448c';ink.lineWidth=.48;ink.stroke(path);}
+   }
+   ink.restore();
    // Dry, irregular crop edges, with actual holes instead of a blurred vignette.
    const edgePixels=ink.getImageData(0,0,geo.width,geo.height),ep=edgePixels.data;
    for(let y=0;y<geo.height;y++)for(let x=0;x<geo.width;x++){
@@ -44,7 +43,7 @@ export function createMapInk(canvas,sheet,app){
     if(edge<ridge)ep[(y*geo.width+x)*4+3]=0;
    }
    ink.putImageData(edgePixels,0,0);
-   paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);
+   paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);geo.width=geo.height=1;
   }else{paint.fillStyle='#705332';paint.font='700 14px ScenicBody';paint.textAlign='center';paint.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.56,width-36);}
   // An ivory cartouche protects the heading while geography fills the whole sheet.
   const caption=inner.querySelector('.scenic-map-caption'),cb=caption.getBoundingClientRect();
@@ -65,7 +64,7 @@ export function createMapInk(canvas,sheet,app){
   paint.beginPath();paint.moveTo(1,6);paint.lineTo(7,1);paint.lineTo(13,6);paint.closePath();paint.stroke();
   paint.strokeRect(2,7,10,7);for(const x of [4,7,10]){paint.beginPath();paint.moveTo(x,8);paint.lineTo(x,13);paint.stroke();}paint.beginPath();paint.moveTo(0,15);paint.lineTo(14,15);paint.stroke();paint.restore();
   const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const box=flag.getBoundingClientRect();paint.save();paint.translate(box.left-origin.left+box.width/2,box.top-origin.top+box.height/2);paint.rotate(6*Math.PI/180);paint.globalAlpha=.93;paint.drawImage(flag,-box.width/2,-box.height/2,box.width,box.height);paint.restore();}catch{}
-  if(!isCurrent())return;
+  if(!isCurrent()){art.width=art.height=1;return;}
   target=art;canvas.width=art.width;canvas.height=art.height;masked.width=art.width;masked.height=art.height;
   // Coarse ink field is independent of device DPR: bounded CPU work on iPhone.
   mask.width=Math.ceil(width*.8);mask.height=Math.ceil(height*.8);
@@ -82,6 +81,7 @@ export function createMapInk(canvas,sheet,app){
    field[k*5+2]=clamp(fx*.24+(1-fy)*.58+ridge+(rand()-.5)*.17);
    field[k*5+3]=darkness;field[k*5+4]=clamp((1-fx)*.36+fy*.4+ridge+rand()*.17);
   }
+  sample.width=sample.height=1;
   sheet.dataset.inkGrains='0';sheet.dataset.inkBounds='contained';sheet.dataset.inkPasses='3';
  }
  function draw(t,erasing){

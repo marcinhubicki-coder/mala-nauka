@@ -20,6 +20,8 @@ on:
       - "design-system/reference-calibration.mjs"
       - "tools/build-design.mjs"
       - "tools/build-asset-library.mjs"
+      - "tools/serve-preview.mjs"
+      - "tests/pwa-release.test.mjs"
       - "tools/qa-library-browser.mjs"
       - "design-system/library-*.mjs"
       - "shared/asset-loader.mjs"
@@ -53,7 +55,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Serve isolated preview
         run: |
-          python3 -m http.server 8765 --directory dist > /tmp/orthography-http.log 2>&1 &
+          node tools/serve-preview.mjs 8765 > /tmp/orthography-http.log 2>&1 &
           echo $! > /tmp/orthography-http.pid
       - name: Spell settings, full quiz, results, rule and eight preview variants
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765

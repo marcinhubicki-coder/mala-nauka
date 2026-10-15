@@ -21,6 +21,12 @@ on:
       - "tools/build-design.mjs"
       - "tools/build-asset-library.mjs"
       - "tools/serve-preview.mjs"
+      - "tools/qa-device-switch-browser.mjs"
+      - "design-system/preview-device.mjs"
+      - "design-system/studio-device.css"
+      - "design-system/studio-preview.mjs"
+      - "design-system/studio-version.mjs"
+      - "design-system/index.html"
       - "tests/pwa-release.test.mjs"
       - "tools/qa-library-browser.mjs"
       - "design-system/library-*.mjs"
@@ -67,6 +73,10 @@ jobs:
         run: node tools/qa-reference-studio-browser.mjs http://127.0.0.1:8765
       - name: Isolated Studio upload, library index, PWA rendering and offline cache
         run: node tools/qa-library-browser.mjs
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2
+      - name: iPhone and desktop previews retain the same view and draft
+        run: node tools/qa-device-switch-browser.mjs http://127.0.0.1:8765
         env:
           V2_SCREENSHOT_DIR: .design-qa/visual-v2
       - name: Preserve V2 visual proof (7 days, not a Vercel deployment)

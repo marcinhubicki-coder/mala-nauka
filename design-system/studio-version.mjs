@@ -5,15 +5,16 @@ if(tag){
  const version=document.createElement('small');version.className='studio-build-version';version.setAttribute('aria-label','Wersja Studio');link.insertAdjacentElement('afterend',version);
  fetch(new URL('deployment.json',import.meta.url),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   if(!data)return;
-  const isV2=data.branch?.startsWith('refactor/v2-')||data.branch==='design/system-v2';
+  const branch=data.studioBranch||data.branch;
+  const isV2=branch?.startsWith('refactor/v2-')||branch==='design/system-v2';
   if(isV2){
-   tag.innerHTML='<span></span>V2 · '+data.branch.replaceAll('<','&lt;')+' · PREVIEW';
+   tag.innerHTML='<span></span>V2 · '+branch.replaceAll('<','&lt;')+' · PREVIEW';
    const brand=document.querySelector('.studio-brand small');if(brand)brand.textContent='Design Studio V2';
    const breadcrumb=document.querySelector('.breadcrumb');if(breadcrumb)breadcrumb.textContent='Design Studio V2 · Preview';
    document.title='Mała Nauka · Design Studio V2 (Preview)';
-   const github=document.querySelector('.sidebar-bottom a[href*="github.com"]');if(github)github.href='https://github.com/marcinhubicki-coder/mala-nauka/tree/'+data.branch;
+   const github=document.querySelector('.sidebar-bottom a[href*="github.com"]');if(github)github.href='https://github.com/marcinhubicki-coder/mala-nauka/tree/'+branch;
    // The HTML build injects the verified branch before Studio scripts load.
-   if(window.__DS_STUDIO_BRANCH__!==data.branch){
+   if(window.__DS_STUDIO_BRANCH__!==branch){
     const save=document.getElementById('save-git');if(save)save.disabled=true;
     const connect=document.getElementById('connect-git');if(connect)connect.disabled=true;
     version.textContent='Błąd wersji gałęzi — zapis zablokowany';

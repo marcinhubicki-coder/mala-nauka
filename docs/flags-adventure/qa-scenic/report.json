@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 54,
-  "total": 54,
+  "passed": 52,
+  "total": 56,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -14,10 +14,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -118,10 +118,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -188,11 +188,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -202,10 +202,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.1,
-      "inkFrames": 127,
+      "inkPaintP95": 3.9,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -225,10 +225,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -295,11 +295,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -309,10 +309,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 128,
+      "inkPaintP95": 4.6,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -332,10 +332,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -402,11 +402,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
+      "neighbors": 12,
       "labels": 9,
-      "crop": "273.49 215.47 190.35 113.26",
+      "crop": "273.49 191.48 190.35 161.24",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -416,9 +416,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.1,
+      "inkPaintP95": 4,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -426,6 +426,7 @@
         "w": 58,
         "h": 58
       },
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -439,10 +440,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -509,11 +510,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
+      "neighbors": 12,
       "labels": 9,
-      "crop": "273.49 215.47 190.35 113.26",
+      "crop": "273.49 191.48 190.35 161.24",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -523,16 +524,17 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 127,
+      "inkPaintP95": 3.8,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
         "w": 58,
         "h": 58
       },
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -546,10 +548,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09320068359375
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -617,10 +619,10 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "256.36 227.33 190.35 89.54",
+      "labels": 8,
+      "crop": "273.49 191.62 190.35 129.81",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -630,9 +632,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3.5,
+      "inkPaintP95": 3.9,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -653,10 +655,10 @@
         "h": 932
       },
       "flag": {
-        "x": 107.6875,
-        "y": 214.15940856933594,
-        "w": 212.57296752929688,
-        "h": 243.27284240722656
+        "x": 123.828125,
+        "y": 260.72637939453125,
+        "w": 176.70074462890625,
+        "h": 202.2276611328125
       },
       "paper": {
         "x": 19.34375,
@@ -725,9 +727,9 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 6,
-      "crop": "149.3 282.91 160 100.39",
+      "crop": "134.9 276.83 160 136.64",
       "captionFits": true,
-      "capital": "Stolica: Berno",
+      "capital": "Berno",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -737,10 +739,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.9,
-      "inkFrames": 128,
+      "inkPaintP95": 4.7,
+      "inkFrames": 127,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -760,10 +762,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -830,12 +832,12 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 6,
-      "crop": "154.2 305.82 160 95.2",
+      "neighbors": 10,
+      "labels": 7,
+      "crop": "154.2 290.5 160 135.54",
       "microstate": "marker",
       "captionFits": true,
-      "capital": "Stolica: Vaduz",
+      "capital": "Vaduz",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -845,10 +847,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.3,
-      "inkFrames": 128,
+      "inkPaintP95": 4.7,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -868,10 +870,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.93914794921875,
-        "w": 192.57308959960938,
-        "h": 220.38714599609375
+        "x": 112.3125,
+        "y": 236.11000061035156,
+        "w": 159.7603759765625,
+        "h": 182.83131408691406
       },
       "paper": {
         "x": 17.546875,
@@ -940,10 +942,10 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 3,
-      "crop": "210 359.4 160 95.2",
+      "crop": "195.6 355.5 160 135.54",
       "microstate": "marker",
       "captionFits": true,
-      "capital": "Stolica: Watykan",
+      "capital": "Watykan",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -953,7 +955,7 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4.1,
       "inkFrames": 128,
@@ -976,10 +978,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09320068359375
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -1046,11 +1048,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 4,
-      "crop": "223.7 353.3 160 68.29",
+      "neighbors": 11,
+      "labels": 8,
+      "crop": "223.7 337.79 160 109.11",
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -1060,9 +1062,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3.5,
+      "inkPaintP95": 3.8,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -1083,10 +1085,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1153,11 +1155,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "86.93 167.31 225.67 134.28",
+      "neighbors": 7,
+      "labels": 5,
+      "crop": "64.15 153.98 190 160.95",
       "captionFits": true,
-      "capital": "Stolica: Londyn",
+      "capital": "Londyn",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1167,7 +1169,7 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4.5,
       "inkFrames": 128,
@@ -1190,10 +1192,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09320068359375
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -1260,11 +1262,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "296 371.01 160 68.29",
+      "neighbors": 9,
+      "labels": 8,
+      "crop": "296 363.69 160 109.11",
       "captionFits": true,
-      "capital": "Stolica: Skopje",
+      "capital": "Skopje",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -1274,10 +1276,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3.5,
-      "inkFrames": 128,
+      "inkPaintP95": 3.6,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1297,10 +1299,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1401,10 +1403,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 221.4060821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.07730102539062,
+        "w": 219.0279541015625,
+        "h": 189.86309814453125
       },
       "paper": {
         "x": 17.546875,
@@ -1471,11 +1473,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "239.23 224.36 190.35 95.47",
+      "neighbors": 11,
+      "labels": 9,
+      "crop": "273.49 200.21 190.35 143.78",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1485,9 +1487,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.3,
+      "inkPaintP95": 3.6,
       "inkFrames": 127,
       "compass": {
         "x": 15.546875,
@@ -1508,10 +1510,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1580,7 +1582,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1612,10 +1614,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1684,7 +1686,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1706,6 +1708,113 @@
       "errors": []
     },
     {
+      "name": "chromium-transparent-atlas-and-editorial-heading",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
+      "captionFits": true,
+      "capital": "Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 3.8,
+      "inkFrames": 128,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
       "name": "chromium-pause-and-restart-during-ink",
       "state": "playing",
       "country": "by",
@@ -1716,10 +1825,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1788,7 +1897,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1820,10 +1929,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1892,7 +2001,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -1924,10 +2033,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -1996,7 +2105,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2028,10 +2137,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2100,7 +2209,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2132,10 +2241,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2204,9 +2313,9 @@
       "highlight": true,
       "neighbors": 11,
       "labels": 9,
-      "crop": "125.29 227.36 204.5 121.68",
+      "crop": "150.37 217.2 167.63 141.99",
       "captionFits": true,
-      "capital": "Stolica: Berlin",
+      "capital": "Berlin",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -2216,9 +2325,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3.3,
+      "inkPaintP95": 3.5,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -2239,10 +2348,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2311,7 +2420,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2343,10 +2452,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2415,7 +2524,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2447,10 +2556,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2517,11 +2626,11 @@
       "raster": "vector-fallback",
       "activeCount": 41,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -2531,9 +2640,9 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.6,
+      "inkPaintP95": 3.9,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -2554,10 +2663,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2626,7 +2735,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2658,10 +2767,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2730,7 +2839,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2762,10 +2871,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2832,11 +2941,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -2848,10 +2957,10 @@
       },
       "foldImages": true,
       "inkPhase": "empty",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3.2,
-      "inkFrames": 65,
+      "inkPaintP95": 3.5,
+      "inkFrames": 64,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2871,10 +2980,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -2884,9 +2993,9 @@
       },
       "atlas": {
         "x": 17.546875,
-        "y": 178.921875,
+        "y": 0,
         "w": 354.890625,
-        "h": 317.328125
+        "h": 0
       },
       "answers": [
         {
@@ -2958,7 +3067,7 @@
       "inkFrames": null,
       "compass": {
         "x": 15.546875,
-        "y": 399.921875,
+        "y": 82.921875,
         "w": 58,
         "h": 58
       },
@@ -2975,10 +3084,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -3045,11 +3154,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -3059,10 +3168,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 78,
+      "inkPaintP95": 2,
+      "inkFrames": 94,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3082,10 +3191,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -3152,11 +3261,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -3166,10 +3275,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 3,
-      "inkFrames": 81,
+      "inkFrames": 97,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3189,10 +3298,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -3259,11 +3368,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
+      "neighbors": 12,
       "labels": 9,
-      "crop": "273.49 215.47 190.35 113.26",
+      "crop": "273.49 191.48 190.35 161.24",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -3273,16 +3382,17 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 82,
+      "inkPaintP95": 2,
+      "inkFrames": 95,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
         "w": 58,
         "h": 58
       },
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -3296,10 +3406,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -3366,11 +3476,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 10,
+      "neighbors": 12,
       "labels": 9,
-      "crop": "273.49 215.47 190.35 113.26",
+      "crop": "273.49 191.48 190.35 161.24",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -3380,16 +3490,17 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 81,
+      "inkPaintP95": 2,
+      "inkFrames": 98,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
         "w": 58,
         "h": 58
       },
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(m.neighbors>=6&&m.neighbors<=11)\n",
       "errors": []
     },
     {
@@ -3403,10 +3514,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09317016601562
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -3474,10 +3585,10 @@
       "activeCount": 1,
       "highlight": true,
       "neighbors": 8,
-      "labels": 4,
-      "crop": "256.36 227.33 190.35 89.54",
+      "labels": 8,
+      "crop": "273.49 191.62 190.35 129.81",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -3487,10 +3598,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 95,
+      "inkPaintP95": 2,
+      "inkFrames": 114,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -3510,10 +3621,10 @@
         "h": 932
       },
       "flag": {
-        "x": 107.6875,
-        "y": 214.15940856933594,
-        "w": 212.57296752929688,
-        "h": 243.27284240722656
+        "x": 123.828125,
+        "y": 260.72637939453125,
+        "w": 176.70074462890625,
+        "h": 202.2276611328125
       },
       "paper": {
         "x": 19.34375,
@@ -3582,9 +3693,9 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 6,
-      "crop": "149.3 282.91 160 100.39",
+      "crop": "134.9 276.83 160 136.64",
       "captionFits": true,
-      "capital": "Stolica: Berno",
+      "capital": "Berno",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -3594,10 +3705,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 68,
+      "inkPaintP95": 3,
+      "inkFrames": 81,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -3617,10 +3728,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -3687,12 +3798,12 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 6,
-      "crop": "154.2 305.82 160 95.2",
+      "neighbors": 10,
+      "labels": 7,
+      "crop": "154.2 290.5 160 135.54",
       "microstate": "marker",
       "captionFits": true,
-      "capital": "Stolica: Vaduz",
+      "capital": "Vaduz",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -3702,10 +3813,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 3,
-      "inkFrames": 83,
+      "inkFrames": 92,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3725,10 +3836,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.93914794921875,
-        "w": 192.57308959960938,
-        "h": 220.38714599609375
+        "x": 112.3125,
+        "y": 236.11000061035156,
+        "w": 159.7603759765625,
+        "h": 182.83131408691406
       },
       "paper": {
         "x": 17.546875,
@@ -3797,10 +3908,10 @@
       "highlight": true,
       "neighbors": 8,
       "labels": 3,
-      "crop": "210 359.4 160 95.2",
+      "crop": "195.6 355.5 160 135.54",
       "microstate": "marker",
       "captionFits": true,
-      "capital": "Stolica: Watykan",
+      "capital": "Watykan",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -3810,10 +3921,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 81,
+      "inkPaintP95": 2,
+      "inkFrames": 98,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3833,10 +3944,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09317016601562
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -3903,11 +4014,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 4,
-      "crop": "223.7 353.3 160 68.29",
+      "neighbors": 11,
+      "labels": 8,
+      "crop": "223.7 337.79 160 109.11",
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -3917,10 +4028,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 94,
+      "inkPaintP95": 2,
+      "inkFrames": 114,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -3940,10 +4051,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4010,11 +4121,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "86.93 167.31 225.67 134.28",
+      "neighbors": 7,
+      "labels": 5,
+      "crop": "64.15 153.98 190 160.95",
       "captionFits": true,
-      "capital": "Stolica: Londyn",
+      "capital": "Londyn",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4024,10 +4135,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 79,
+      "inkPaintP95": 2,
+      "inkFrames": 93,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4047,10 +4158,10 @@
         "h": 700
       },
       "flag": {
-        "x": 98.59375,
-        "y": 159.92620849609375,
-        "w": 212.36773681640625,
-        "h": 184.09317016601562
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
       },
       "paper": {
         "x": 17.546875,
@@ -4117,11 +4228,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "296 371.01 160 68.29",
+      "neighbors": 9,
+      "labels": 8,
+      "crop": "296 363.69 160 109.11",
       "captionFits": true,
-      "capital": "Stolica: Skopje",
+      "capital": "Skopje",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -4131,10 +4242,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 91,
+      "inkPaintP95": 2,
+      "inkFrames": 104,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -4154,10 +4265,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4258,10 +4369,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 221.3904571533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.07730102539062,
+        "w": 219.0279541015625,
+        "h": 189.86309814453125
       },
       "paper": {
         "x": 17.546875,
@@ -4328,11 +4439,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "239.23 224.36 190.35 95.47",
+      "neighbors": 11,
+      "labels": 9,
+      "crop": "273.49 200.21 190.35 143.78",
       "captionFits": true,
-      "capital": "Stolica: Warszawa",
+      "capital": "Warszawa",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4342,10 +4453,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 87,
+      "inkPaintP95": 2,
+      "inkFrames": 101,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -4365,10 +4476,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4437,7 +4548,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4469,10 +4580,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4541,7 +4652,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4563,6 +4674,113 @@
       "errors": []
     },
     {
+      "name": "webkit-transparent-atlas-and-editorial-heading",
+      "state": "feedback-wrong",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
+      "captionFits": true,
+      "capital": "Mińsk",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 2,
+      "inkFrames": 94,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
       "name": "webkit-pause-and-restart-during-ink",
       "state": "playing",
       "country": "by",
@@ -4573,10 +4791,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4645,7 +4863,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4677,10 +4895,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4749,7 +4967,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4781,10 +4999,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4853,7 +5071,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4885,10 +5103,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -4957,7 +5175,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -4989,10 +5207,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5061,9 +5279,9 @@
       "highlight": true,
       "neighbors": 11,
       "labels": 9,
-      "crop": "125.29 227.36 204.5 121.68",
+      "crop": "150.37 217.2 167.63 141.99",
       "captionFits": true,
-      "capital": "Stolica: Berlin",
+      "capital": "Berlin",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -5073,10 +5291,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 80,
+      "inkPaintP95": 2,
+      "inkFrames": 97,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5096,10 +5314,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5168,7 +5386,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -5200,10 +5418,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5272,7 +5490,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Sarajewo",
+      "capital": "Sarajewo",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -5304,10 +5522,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5374,11 +5592,11 @@
       "raster": "vector-fallback",
       "activeCount": 41,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -5388,10 +5606,10 @@
       },
       "foldImages": true,
       "inkPhase": "complete",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4,
-      "inkFrames": 42,
+      "inkFrames": 44,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5411,10 +5629,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5483,7 +5701,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -5515,10 +5733,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5587,7 +5805,7 @@
       "neighbors": null,
       "labels": null,
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -5619,10 +5837,10 @@
         "h": 844
       },
       "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
       },
       "paper": {
         "x": 17.546875,
@@ -5689,11 +5907,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 8,
-      "labels": 6,
-      "crop": "270.35 195.44 190.88 113.57",
+      "neighbors": 7,
+      "labels": 7,
+      "crop": "319.71 186.81 160.88 136.28",
       "captionFits": true,
-      "capital": "Stolica: Mińsk",
+      "capital": "Mińsk",
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
@@ -5705,13 +5923,13 @@
       },
       "foldImages": true,
       "inkPhase": "empty",
-      "inkGrains": 1500,
+      "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 41,
+      "inkPaintP95": 4,
+      "inkFrames": 44,
       "compass": {
         "x": 15.546875,
-        "y": 154.54397583007812,
+        "y": 154.48948669433594,
         "w": 58,
         "h": 58
       },

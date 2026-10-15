@@ -18,8 +18,10 @@ try{
  const gap=page.getByRole('spinbutton',{name:'Odstęp między elementami w pikselach',exact:true});
  const initialGap=Number(await gap.inputValue()),editedGap=String(initialGap<120?initialGap+1:initialGap-1);
  await gap.fill(editedGap);
- await page.getByRole('spinbutton',{name:'Odstęp między elementami w pikselach',exact:true}).press('Tab');
  await page.waitForFunction(()=>Number.parseInt(document.querySelector('#draft-status').textContent)>0);
+ assert.equal(await gap.inputValue(),editedGap);
+ assert.ok(await gap.evaluate(e=>document.activeElement===e));
+ await gap.press('Tab');
  const changed=await page.locator('#draft-status').innerText();
  console.log('device-qa: draft edited');
  async function select(name,size){

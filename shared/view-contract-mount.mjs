@@ -81,6 +81,9 @@ export function mountedViewContract(root,view){
  const known=Object.fromEntries([...Object.values(PIN_PARTS).flat(),...Object.values(SPELLING_OVERLAYS).flat()].map(row=>[row.id,row]));
  for(const node of root.ownerDocument.querySelectorAll('[data-ds-subcontract]')){
   if(node.dataset.dsSubcontract==='view-parts')continue;
+  // A closed pause/hint dialog can remain in the document after navigation.
+  // Only parts owned by this screen or an open dialog belong to its inventory.
+  if(!root.contains(node)&&!node.closest('dialog[open]'))continue;
   const item=known[node.dataset.dsElement];if(!item)throw Error('Undeclared nested contract '+node.dataset.dsElement);
   if(ids.has(item.id))throw Error('Duplicate nested component '+item.id);
   if(node.dataset.dsRecipe!==item.recipe||node.dataset.dsKind!==item.kind)throw Error('Nested recipe mismatch '+item.id);

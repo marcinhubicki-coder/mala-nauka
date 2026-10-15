@@ -50,6 +50,11 @@ try{
   await game.locator(mode==='math'?'#back':'[data-action="exit"]').tap();
   await game.locator(mode==='math'?'[data-math-exit]':'[data-action="exit-confirm"]').tap();
   await game.locator('#app[data-view="results"] h1').waitFor({timeout:15000});
+  await gameFrame.waitForFunction(()=>{const root=document.querySelector('#app');return root.dataset.dsContractReady===root.dataset.mode+'-results'&&document.documentElement.dataset.dsView===root.dataset.dsContractReady;},{timeout:15000});
+  assert.deepEqual(await gameFrame.evaluate(async()=>{
+   const {mountedViewContract}=await import('/shared/view-contract-mount.mjs'),root=document.querySelector('#app');
+   return mountedViewContract(root,document.documentElement.dataset.dsView).filter(item=>!root.contains(item.node)&&!item.node.closest('dialog[open]')).map(item=>item.id);
+  }),[],'Closed dialogs must not leak components into the next screen');
   await game.locator('[data-action="history"]').tap();
   await game.locator('#app[data-view="history"]').waitFor({timeout:15000});
   if(await game.locator('[data-progress="collection"]').count())await game.locator('[data-progress="collection"]').first().tap();

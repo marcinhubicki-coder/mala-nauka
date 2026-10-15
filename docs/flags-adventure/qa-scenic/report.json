@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 52,
-  "total": 52,
+  "passed": 51,
+  "total": 54,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -97,6 +97,8 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -202,6 +204,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4.3,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -307,6 +311,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4.1,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -412,6 +418,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.6,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -517,6 +525,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.3,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -606,9 +616,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 7,
-      "crop": "246.79 221.84 213.69 100.52",
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "256.36 227.33 190.35 89.54",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -622,6 +632,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.1,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -727,6 +739,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 6.6,
+      "inkFrames": 128,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -833,6 +847,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.7,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -939,6 +955,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.9,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1044,6 +1062,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.1,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1133,9 +1153,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
+      "neighbors": 8,
       "labels": 6,
-      "crop": "51.2 156.12 263.29 156.66",
+      "crop": "86.93 167.31 225.67 134.28",
       "captionFits": true,
       "capital": "Stolica: Londyn",
       "swipeVisible": false,
@@ -1149,6 +1169,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 5.6,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1254,6 +1276,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3.4,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1356,6 +1380,8 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -1445,9 +1471,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 7,
-      "crop": "234.19 221.84 200.42 100.52",
+      "neighbors": 8,
+      "labels": 6,
+      "crop": "239.23 224.36 190.35 95.47",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -1461,6 +1487,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 2.9,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -1562,7 +1590,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -1664,13 +1694,120 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
         "w": 58,
         "h": 58
       },
+      "errors": []
+    },
+    {
+      "name": "chromium-pause-and-restart-during-ink",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 98.59375,
+        "y": 193.3435821533203,
+        "w": 226.25930786132812,
+        "h": 196.1427459716797
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 1,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkGrains": null,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
+      "compass": {
+        "x": 15.546875,
+        "y": 399.921875,
+        "w": 58,
+        "h": 58
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n",
       "errors": []
     },
     {
@@ -1766,7 +1903,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -1868,7 +2007,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -1970,7 +2111,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -2060,9 +2203,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 8,
-      "crop": "102.11 217.22 238.58 141.96",
+      "neighbors": 11,
+      "labels": 9,
+      "crop": "125.29 227.36 204.5 121.68",
       "captionFits": true,
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
@@ -2076,6 +2219,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2177,7 +2322,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -2280,6 +2427,8 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -2385,6 +2534,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2486,7 +2637,9 @@
       },
       "foldImages": false,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -2588,7 +2741,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -2696,6 +2851,8 @@
       "inkPhase": "empty",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 5.8,
+      "inkFrames": 65,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2798,9 +2955,11 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
-        "y": -96,
+        "y": 82.921875,
         "w": 58,
         "h": 58
       },
@@ -2903,6 +3062,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 78,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3008,6 +3169,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 81,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3113,6 +3276,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 81,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3218,6 +3383,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 81,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3307,9 +3474,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 7,
-      "crop": "246.79 221.84 213.69 100.52",
+      "neighbors": 8,
+      "labels": 4,
+      "crop": "256.36 227.33 190.35 89.54",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -3323,6 +3490,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 92,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -3428,6 +3597,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 68,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -3534,6 +3705,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 5,
+      "inkFrames": 78,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3640,6 +3813,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 80,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3745,6 +3920,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 93,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -3834,9 +4011,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
+      "neighbors": 8,
       "labels": 6,
-      "crop": "51.2 156.12 263.29 156.66",
+      "crop": "86.93 167.31 225.67 134.28",
       "captionFits": true,
       "capital": "Stolica: Londyn",
       "swipeVisible": false,
@@ -3850,6 +4027,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 81,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3955,6 +4134,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 89,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -4057,6 +4238,8 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -4146,9 +4329,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 9,
-      "labels": 7,
-      "crop": "234.19 221.84 200.42 100.52",
+      "neighbors": 8,
+      "labels": 6,
+      "crop": "239.23 224.36 190.35 95.47",
       "captionFits": true,
       "capital": "Stolica: Warszawa",
       "swipeVisible": false,
@@ -4162,6 +4345,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 83,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -4263,7 +4448,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -4365,13 +4552,120 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
         "w": 58,
         "h": 58
       },
+      "errors": []
+    },
+    {
+      "name": "webkit-pause-and-restart-during-ink",
+      "state": "playing",
+      "country": "by",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 98.59375,
+        "y": 193.3435821533203,
+        "w": 226.25930786132812,
+        "h": 196.1427459716797
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "by",
+          "text": "Białoruś",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "de",
+          "text": "Niemcy",
+          "disabled": false,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hu",
+          "text": "Węgry",
+          "disabled": false,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
+      "captionFits": true,
+      "capital": "Stolica: Mińsk",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 1,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkGrains": null,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
+      "compass": {
+        "x": 15.546875,
+        "y": 399.921875,
+        "w": 58,
+        "h": 58
+      },
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n",
       "errors": []
     },
     {
@@ -4467,7 +4761,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -4569,7 +4865,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -4580,105 +4878,10 @@
     },
     {
       "name": "webkit-correct-auto-and-pause",
-      "state": "playing",
-      "country": "pl",
-      "score": "1 pkt",
-      "task": "Zadanie 2",
-      "viewport": {
-        "w": 390,
-        "h": 844
-      },
-      "flag": {
-        "x": 98.59375,
-        "y": 193.3435821533203,
-        "w": 226.25930786132812,
-        "h": 196.1427459716797
-      },
-      "paper": {
-        "x": 17.546875,
-        "y": 424.515625,
-        "w": 354.890625,
-        "h": 71.734375
-      },
-      "atlas": {
-        "x": 17.546875,
-        "y": 178.921875,
-        "w": 354.890625,
-        "h": 317.328125
-      },
-      "answers": [
-        {
-          "id": "is",
-          "text": "Islandia",
-          "disabled": false,
-          "x": 17.546875,
-          "y": 503.84375,
-          "w": 173.9375,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "ch",
-          "text": "Szwajcaria",
-          "disabled": false,
-          "x": 198.484375,
-          "y": 503.84375,
-          "w": 173.953125,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "pl",
-          "text": "Polska",
-          "disabled": false,
-          "x": 17.546875,
-          "y": 571.484375,
-          "w": 173.9375,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "rs",
-          "text": "Serbia",
-          "disabled": false,
-          "x": 198.484375,
-          "y": 571.484375,
-          "w": 173.953125,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        }
-      ],
-      "activeCount": 0,
-      "highlight": false,
-      "neighbors": null,
-      "labels": null,
-      "captionFits": true,
-      "capital": "Stolica: Mińsk",
-      "swipeVisible": false,
-      "overflowX": false,
-      "overflowY": false,
-      "animations": 0,
-      "qa": {
-        "enabled": "true"
-      },
-      "foldImages": true,
-      "inkGrains": null,
-      "inkOutside": 0,
-      "compass": {
-        "x": 15.546875,
-        "y": 399.921875,
-        "w": 58,
-        "h": 58
-      },
-      "errors": []
+      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "errors": [
+        "Browser renderer crashed"
+      ]
     },
     {
       "name": "webkit-wrong-pause-slider-and-several-rounds",
@@ -4761,9 +4964,9 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 14,
-      "labels": 8,
-      "crop": "102.11 217.22 238.58 141.96",
+      "neighbors": 11,
+      "labels": 9,
+      "crop": "125.29 227.36 204.5 121.68",
       "captionFits": true,
       "capital": "Stolica: Berlin",
       "swipeVisible": true,
@@ -4777,6 +4980,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 82,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4878,7 +5083,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -4981,6 +5188,8 @@
       "foldImages": true,
       "inkGrains": null,
       "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -5086,6 +5295,8 @@
       "inkPhase": "complete",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 46,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5187,7 +5398,9 @@
       },
       "foldImages": false,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -5289,7 +5502,9 @@
       },
       "foldImages": true,
       "inkGrains": null,
-      "inkOutside": 0,
+      "inkOutside": null,
+      "inkPaintP95": null,
+      "inkFrames": null,
       "compass": {
         "x": 15.546875,
         "y": 399.921875,
@@ -5397,9 +5612,11 @@
       "inkPhase": "empty",
       "inkGrains": 1500,
       "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 43,
       "compass": {
         "x": 15.546875,
-        "y": 154.50900268554688,
+        "y": 154.50411987304688,
         "w": 58,
         "h": 58
       },

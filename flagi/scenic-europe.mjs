@@ -24,7 +24,7 @@ const visibleFraction=(a,b)=>{
 };
 const neighboring=(frame,country)=>visibleFraction(frame,country)>.22 ||
  (country.cx>frame.x&&country.cx<frame.x+frame.w&&country.cy>frame.y&&country.cy<frame.y+frame.h);
-function cropNear(svg,selected,mapWidth,mapHeight){
+function cropNear(svg,selected,mapWidth,mapHeight,protectedTop=.25){
  const original=svg.viewBox.baseVal,box=boxOf(selected);
  if(!box)return null;
  const base={x:original.x,y:original.y,w:original.width,h:original.height};
@@ -32,16 +32,16 @@ function cropNear(svg,selected,mapWidth,mapHeight){
  const peers=[...svg.querySelectorAll('.country')].filter(x=>x!==selected).map(boxOf).filter(Boolean);
  const centerX=box.cx,centerY=box.cy;
  let chosen=null,best=Infinity;
- const minimum=Math.max(160,box.w*1.8,box.h*ratio*1.2);
+ const minimum=Math.max(160,box.w*1.8,box.h*ratio/(.92-protectedTop));
  for(let width=minimum;width<=460;width+=6){
   const height=width/ratio;
   if(width>base.w||height>base.h)break;
-  for(const dx of [0,-.09,.09,-.18,.18])for(const dy of [0,-.12,.12]){
+  for(const dx of [0,-.09,.09,-.18,.18,-.27,.27])for(const dy of [0,-.06,.06,-.12,.12]){
    const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2+dx*width));
-   const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height/2+dy*height));
+   const y=Math.max(base.y,Math.min(base.y+base.h-height,centerY-height*(protectedTop+.92)/2+dy*height));
    // Keep the complete country and breathing room. Slightly shifting the
    // camera can avoid a crowded Balkan/Benelux corner without excessive zoom.
-   if(box.x<x+width*.08||box.x+box.w>x+width*.92||box.y<y+height*.08||box.y+box.h>y+height*.92)continue;
+   if(box.x<x+width*.08||box.x+box.w>x+width*.92||box.y<y+height*protectedTop||box.y+box.h>y+height*.92)continue;
    const frame={x,y,w:width,h:height},visible=peers.filter(p=>neighboring(frame,p)).length;
    const missing=Math.max(0,6-visible),extra=Math.max(0,visible-10);
    const score=missing*14+extra*9+Math.abs(visible-8)*1.6+width*.016+(Math.abs(dx)+Math.abs(dy))*4;
@@ -64,7 +64,9 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  if(!result?.found||!result.svg||!result.active)return {found:false,reason:'unsupported-country'};
  const {svg,active}=result;
  if(result.fallbackMarker){active.setAttribute('r','2.1');node.dataset.microstate='marker';}
- const crop=cropNear(svg,active,node.clientWidth,node.clientHeight);
+ const caption=node.closest('.scenic-map-inner')?.querySelector('.scenic-map-caption'),mapRect=node.getBoundingClientRect();
+ const protectedTop=caption?Math.min(.38,Math.max(.20,(caption.getBoundingClientRect().bottom+7-mapRect.top)/mapRect.height)):.25;
+ const crop=cropNear(svg,active,node.clientWidth,node.clientHeight,protectedTop);
  const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country),shape:country})).filter(p=>p.box&&records.has(p.id));
  if(crop)for(const item of labels){
   const b=item.box,inside=(x,y)=>{try{return item.shape.isPointInFill(new DOMPoint(x,y));}catch{return true;}};

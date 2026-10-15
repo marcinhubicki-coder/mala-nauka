@@ -80,14 +80,14 @@ try{
    }
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
-    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=(sample.id==='ba'?12:11),'Geographic context stays bounded; dense Balkans retain the minimum crop');assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
   });
   if(phase!=='layout'){
    await check(engine+'-animation-frames',browser,{},async page=>{
-    await open(page);const fixedBottom=await page.locator('.scenic-paper-bottom').boundingBox();await choose(page,false);
+    await open(page);const closedTop=await page.locator('.scenic-paper-top').boundingBox(),closedCompass=await page.locator('.scenic-compass').boundingBox(),fixedBottom=await page.locator('.scenic-paper-bottom').boundingBox();await choose(page,false);
     await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-opening'));
     const compassSize=await page.locator('.scenic-compass').boundingBox();
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','Opening paper must cover the flag progressively');
@@ -110,6 +110,7 @@ try{
      await capture(page,engine+'-rollup-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
+    for(const [selector,before] of [['.scenic-paper-top',closedTop],['.scenic-compass',closedCompass]]){const after=await page.locator(selector).boundingBox();for(const key of ['x','y','width','height'])assert(Math.abs(after[key]-before[key])<.2,'The fold endpoint must exactly match the initial question material');}
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
     const captures=[['falling',.10],['settled',.40],['forming',.84],['end',.93]];
     await page.evaluate(f=>document.querySelector('#scenic-screen').dataset.qaCaptureAt=String(f),captures[0][1]);

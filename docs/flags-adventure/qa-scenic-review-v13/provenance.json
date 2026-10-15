@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "fb6007dda9bdc9a5fbfcbd126c0a4fa2d8e37f9c",
+  "qaCommit": "cbe54f39c23ddc2cd955723cafe966f551b679fc",
+  "workflow": 38742175831,
+  "passed": 54,
+  "total": 54,
+  "errors": 0,
+  "mapBlob": "e46ca9726dd9993a17028b272076fea2594b2703",
+  "deployment": "dpl_79dc972G8MSvD7veFNZfXTKCThnG",
+  "preview": "https://mala-nauka-pi2068fin-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by"
+}

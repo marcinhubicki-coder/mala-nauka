@@ -1,3 +1,5 @@
+> Aktualizacja 15.10.2026: bieżąca implementacja używa jednego ciągłego pergaminu i atramentowego ujawniania atlasu. Opis i wyniki: [CONTINUOUS-V10](FLAGS-SCENIC-CONTINUOUS-V10.md). Poniżej zapis wersji z 13.10.2026.
+
 # Flagi — scenic preview: jedna scena i materiały rastrowe, 13.10.2026
 
 Zmiany pozostają na `feature/flags-scenic-preview-v1`. Nie zmieniono kodu produkcyjnej Ortografii, Design Studio, produkcyjnych Flag ani main.

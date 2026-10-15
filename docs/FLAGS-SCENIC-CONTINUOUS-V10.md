@@ -69,3 +69,19 @@ Iteracja 3, commit `a9a9da8a1189c29ed9097594762fd056924f4b87`, workflow `3874036
 Iteracja 4 usuwa ponowne kodowanie całego WebP do PNG/base64 i osadzanie go wewnątrz SVG przy każdym pytaniu. Wspólny WebP jest rysowany bezpośrednio na Canvas z dokładnie tym samym viewBox; mały przezroczysty SVG zawiera tylko wybrany kraj. Usunięto runtime filtr SVG, statyczny miękki cień powstaje podczas jednego rysowania Canvas. Zmniejsza to liczbę dużych pośrednich obrazów i obciążenie dekodera Safari. Dokładna przyczyna pojedynczej awarii renderera nie została potwierdzona; końcowa runda ponawia cały scenariusz. Pomiar P95 malowania Canvas z poprzedniej rundy: 2,9–6,6 ms na runnerze, nie jest to wynik FPS fizycznego telefonu.
 
 Ręcznie sprawdzono upływ całych 166 sekund w działającym preview: 0:00, wynik i cztery zablokowane odpowiedzi. Po obejrzeniu tego stanu dopasowano również końcowy komunikat do rastrowych kafelków z zaokrągleniem.
+
+## Wynik końcowy, 15.10.2026
+
+- Przetestowany i wdrożony kod: `fb6007dda9bdc9a5fbfcbd126c0a4fa2d8e37f9c`.
+- Końcowy workflow: [38742175831](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38742175831), **54/54**, Chromium i WebKit, **0 błędów JS/renderera**. Awaria renderera nie powtórzyła się po uproszczeniu kompozycji.
+- Commit dowodów QA: `cbe54f39c23ddc2cd955723cafe966f551b679fc`.
+- Wspólny raster w działającym preview i w końcowej rundzie ma identyczny Git blob `e46ca9726dd9993a17028b272076fea2594b2703`.
+- P95 malowania pojedynczej klatki Canvas w runnerze: **3–4,9 ms**. To pomiar pracy efektu na desktopie, nie wynik FPS telefonu.
+- Preview: https://mala-nauka-pi2068fin-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=by — Vercel READY, target preview (`null`), wyłącznie wskazany branch.
+- Cztery pliki wdrożenia (`scenic-ink`, `scenic-paper`, kontroler, CSS) pobrano z Vercela: HTTP 200, bajtowo zgodne z lokalnym przetestowanym kodem.
+- Ręczna ścieżka w tym deploymentcie: błędna Białoruś → pełny suwak → Polska → poprawna odpowiedź → automatyczna Szwajcaria, zadanie 3, punkt 1. Ręczny test czasu doszedł również do 0:00 i zablokowanych odpowiedzi. Końcowy deployment zakończył następnie sesję na zadaniu 3 z wynikiem 1 pkt; obejrzano i zapisano ten stan.
+- Obejrzano końcowe klatki w obu silnikach: kompas jest w całości przed papierem, dolny brzeg jest stały, atlas znika przed zagięciem, nowa flaga i nazwy pojawiają się pod tym samym materiałem. Długie nazwy, niski/duży ekran i obszar bezpieczny PWA mieszczą się w kadrze.
+
+Zestawy do przeglądu: [trzy stany](flags-adventure/qa-scenic-review-v13/trzy-stany.jpg), [pergamin](flags-adventure/qa-scenic-review-v13/pergamin-klatki.jpg), [atrament](flags-adventure/qa-scenic-review-v13/atlas-atrament-klatki.jpg), [piasek](flags-adventure/qa-scenic-review-v13/piasek-klatki.jpg), [geografia i ekrany](flags-adventure/qa-scenic-review-v13/geografia-i-ekrany.jpg), [działający Vercel](flags-adventure/qa-scenic-review-v13/live-preview.jpg).
+
+Ograniczenia: fizyczny iPhone 13 Pro jest potrzebny do oceny płynności przy obciążeniu, temperatury, pamięci Safari/PWA oraz dotyku i dynamicznych pasków Safari. Źródłowe Natural Earth 1:110m nie zawiera poligonów części mikropaństw; zachowano dotychczasowe znaczniki i minimalny kadr 160 jednostek zamiast sztucznego powiększania. Main, produkcyjne Flagi, Ortografia i Design Studio nie zostały zmienione.

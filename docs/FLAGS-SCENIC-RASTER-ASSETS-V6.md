@@ -1,3 +1,5 @@
+> Aktualne rastry papieru, osobnego kompasu i pigmentu atlasu: [CONTINUOUS-V10](FLAGS-SCENIC-CONTINUOUS-V10.md). Poniższe zestawienie dokumentuje wcześniejszą wersję.
+
 # Scenic — materiały rastrowe v6
 
 Użyto wbudowanego narzędzia `image_gen` i skillu imagegen. Referencje to fragmenty mockupu użytkownika. Pliki wynikowe mają przezroczystość; po generowaniu wykonano tylko skalowanie i zapis WebP do repo. Nie generowano flag ani geografii. Dane i granice mapy pochodzą z istniejącego SVG Natural Earth, a raster papieru dostarcza wyłącznie materiału.

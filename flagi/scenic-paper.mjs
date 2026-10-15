@@ -1,5 +1,5 @@
 import {SCENIC} from './scenic-config.mjs';
-const MATERIAL='assets/flags/adventure/scenic-paper-v10.webp';
+const MATERIAL='assets/flags/adventure/scenic-paper-v14.webp';
 let material;
 export function preloadPaper(){
  material??=new Promise(resolve=>{const image=new Image(),timer=setTimeout(()=>resolve(null),SCENIC.flagTimeoutMs);image.onload=()=>{clearTimeout(timer);resolve(image)};image.onerror=()=>{clearTimeout(timer);resolve(null)};image.src=new URL(MATERIAL,document.baseURI).href;});

@@ -12,41 +12,29 @@ import {fileURLToPath} from 'node:url';
 import {FLAGS} from '../data/flags.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const original=await readFile(join(ROOT,'assets/maps/europe.svg'),'utf8');
-const paper='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/flags/adventure/scenic-paper-v10.webp'))).toString('base64');
 const pigment='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/maps/europe-pigment-v11.webp'))).toString('base64');
 const server=createServer((req,res)=>res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Antique Europe</title>'));
 server.listen(0,'127.0.0.1');await once(server,'listening');let browser;
 try{
  browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
  const page=await browser.newPage({viewport:{width:2040,height:1500}});await page.goto('http://127.0.0.1:'+server.address().port);
- const encoded=await page.evaluate(async({source,paper,pigment,records})=>{
+ const encoded=await page.evaluate(async({source,pigment,records})=>{
   const doc=new DOMParser().parseFromString(source,'image/svg+xml'),svg=doc.documentElement,ns='http://www.w3.org/2000/svg';
   svg.setAttribute('width','2040');svg.setAttribute('height','1500');
   const defs=doc.createElementNS(ns,'defs');defs.innerHTML=`
-   <linearGradient id="sea" x2=".7" y2="1"><stop stop-color="#e6d9b6"/><stop offset=".55" stop-color="#d7c79f"/><stop offset="1" stop-color="#c3b78c"/></linearGradient>
-   <radialGradient id="land-wash"><stop stop-color="#eee2c1"/><stop offset=".65" stop-color="#e5d6b1"/><stop offset="1" stop-color="#d6c49e"/></radialGradient>
-   <pattern id="sea-engraving" width="24" height="16" patternUnits="userSpaceOnUse"><path d="M2 6q4-1.4 8 0t8 0 M10 13q3-1 6 0" fill="none" stroke="#7e7054" stroke-width=".28" opacity=".25"/></pattern>
-   <pattern id="etched-land" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0v2M3 4v1" stroke="#7a5b35" stroke-width=".25" opacity=".12"/></pattern>
-   <filter id="coast"><feDropShadow dx=".6" dy="1.3" stdDeviation="1.5" flood-color="#795e34" flood-opacity=".24"/></filter>
-   <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="3" seed="14"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".17"/></feComponentTransfer></filter>
-   <radialGradient id="stain"><stop stop-color="#806035" stop-opacity=".13"/><stop offset="1" stop-color="#806035" stop-opacity="0"/></radialGradient>`;
+   <pattern id="etched-land" width="9" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><path d="M0 0v3M3 5v1.5M7 8v2" stroke="#715532" stroke-width=".3" opacity=".22"/></pattern>`;
   svg.prepend(defs);
   const rect=(fill,attrs={})=>{const e=doc.createElementNS(ns,'rect');for(const [k,v] of Object.entries({x:0,y:0,width:680,height:500,fill,...attrs}))e.setAttribute(k,v);return e;};
   const countries=svg.querySelector('#countries'),paths=[...countries.querySelectorAll('path')];
-  countries.before(rect('url(#sea)'),rect('url(#sea-engraving)'));
-  countries.setAttribute('filter','url(#coast)');countries.removeAttribute('stroke');countries.removeAttribute('fill');
-  for(const path of paths){
-   path.setAttribute('fill','url(#land-wash)');path.setAttribute('stroke','#896b44');path.setAttribute('stroke-opacity','.7');path.setAttribute('stroke-width','.48');path.setAttribute('stroke-dasharray','1.4 .65');
+  countries.removeAttribute('stroke');countries.removeAttribute('fill');
+  const palette=['#b9b88d','#cdb487','#b7bd9c','#d4b69d','#c2ba97','#c5c19b','#d2bd8d'];
+  for(const [i,path] of paths.entries()){
+   const wash=doc.createElementNS(ns,'radialGradient');wash.id='country-wash-'+i;wash.setAttribute('cx','.38');wash.setAttribute('cy','.32');wash.setAttribute('r','.8');wash.innerHTML=`<stop stop-color="${palette[i%palette.length]}" stop-opacity=".26"/><stop offset=".68" stop-color="${palette[i%palette.length]}" stop-opacity=".48"/><stop offset="1" stop-color="#947644" stop-opacity=".63"/>`;defs.append(wash);
+   path.setAttribute('fill','url(#country-wash-'+i+')');path.setAttribute('stroke','#82633d');path.setAttribute('stroke-opacity','.78');path.setAttribute('stroke-width','.52');path.setAttribute('stroke-dasharray','1.5 .55');
   }
   const clip=doc.createElementNS(ns,'clipPath');clip.id='land';for(const p of paths){const c=p.cloneNode(true);c.removeAttribute('id');c.removeAttribute('stroke');clip.append(c);}defs.append(clip);
-  const wash=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:pigment,x:0,y:0,width:680,height:500,'preserveAspectRatio':'none','clip-path':'url(#land)',style:'mix-blend-mode:multiply',opacity:'.40'}))wash.setAttribute(k,v);svg.append(wash);
+  const wash=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:pigment,x:0,y:0,width:680,height:500,'preserveAspectRatio':'none','clip-path':'url(#land)',style:'mix-blend-mode:multiply',opacity:'.30'}))wash.setAttribute(k,v);svg.append(wash);
   svg.append(rect('url(#etched-land)',{'clip-path':'url(#land)'}));
-  const material=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:paper,x:-220,y:-180,width:1120,height:900,'preserveAspectRatio':'none','style':'mix-blend-mode:multiply',opacity:'.20'}))material.setAttribute(k,v);svg.append(material);
-  // Small irregular sepia washes supply depth without introducing false relief.
-  for(const [x,y,w,h] of [[155,340,90,120],[310,370,110,60],[420,190,120,75],[300,150,70,160],[525,350,90,110]]){
-   const stain=doc.createElementNS(ns,'ellipse');for(const [k,v] of Object.entries({cx:x,cy:y,rx:w,ry:h,fill:'url(#stain)','clip-path':'url(#land)'}))stain.setAttribute(k,v);svg.append(stain);
-  }
-  svg.append(rect('#705635',{filter:'url(#grain)',opacity:'.48'}));
   // Names are baked once into this same raster. No extra country map assets.
   document.body.replaceChildren(document.importNode(svg,true));
   const mounted=document.querySelector('svg'),names=new Map(records.map(r=>[r.id,r.country])),taken=[];
@@ -71,7 +59,16 @@ try{
    const text=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x:x+3,y:y+2,fill:'#725636','font-family':'Georgia,serif','font-size':'3.7','paint-order':'stroke',stroke:'#eee0bb','stroke-width':'.65'}))text.setAttribute(k,v);text.textContent=names.get(id);mounted.append(text);
   }
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(mounted)],{type:'image/svg+xml'}));
-  try{const img=new Image();img.src=url;await img.decode();const c=document.createElement('canvas');c.width=2040;c.height=1500;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/webp',.92);}finally{URL.revokeObjectURL(url);}
- },{source:original,paper,pigment,records:FLAGS});
- const bytes=Buffer.from(encoded.split(',')[1],'base64');await writeFile(join(ROOT,'assets/maps/europe-scenic.webp'),bytes);console.log('Antique Europe: '+bytes.length+' bytes, 2040×1500, exact 680×500 registration; baked country names.');
+  try{const img=new Image();img.src=url;await img.decode();const c=document.createElement('canvas');c.width=2040;c.height=1500;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);const frame=ctx.getImageData(0,0,c.width,c.height),px=frame.data;
+    for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){
+     const k=(y*c.width+x)*4,luma=px[k]*.3+px[k+1]*.59+px[k+2]*.11;
+     // Keep engraved borders and lettering. The light wash has real paper holes.
+     if(luma<145)continue;
+     const grain=(Math.sin(x*.41+y*.27)+Math.sin(x*.13-y*.37)+Math.sin(x*.073+y*.081))/3;
+     if(grain>.22&&luma>174)px[k+3]=0;
+     else px[k+3]=Math.round(px[k+3]*(.48+(1-grain)*.24));
+    }
+    ctx.putImageData(frame,0,0);return c.toDataURL('image/webp',.94);}finally{URL.revokeObjectURL(url);}
+ },{source:original,pigment,records:FLAGS});
+ const bytes=Buffer.from(encoded.split(',')[1],'base64');await writeFile(join(ROOT,'assets/maps/europe-scenic.webp'),bytes);console.log('Antique Europe: '+bytes.length+' bytes, 2040×1500, transparent sea and dry ink wash; exact 680×500 registration; baked country names.');
 }finally{await browser?.close();await new Promise(done=>server.close(done));}

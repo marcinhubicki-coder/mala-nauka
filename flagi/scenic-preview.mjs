@@ -60,16 +60,15 @@ function updateHud(){
 function fitFlag(){
   app.querySelector('.scenic-ios-status').hidden=$('scenic-stage').offsetTop>0;
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
-  const ratio=(current()?.id==='ch'||current()?.id==='va'?1:4/3)/1.15;
-  cloth.style.width=Math.min(hero.clientWidth*.65,hero.clientHeight*.94*ratio)+'px';
+  const ratio=(app.dataset.country==='ch'||app.dataset.country==='va'?1:4/3)/1.15;
+  const stage=$('scenic-stage'),top=app.clientHeight*SCENIC.mast.attachY-stage.offsetTop;
+  cloth.style.left=(app.clientWidth*SCENIC.mast.attachX)+'px';cloth.style.top=top+'px';
+  cloth.style.width=Math.min(app.clientWidth*.61,Math.max(80,$('scenic-paper-row').offsetTop-top-6)*ratio)+'px';
 }
 function showFlag(record){
   flagHost.innerHTML=flagOnPole(record,{label:'Flaga do rozpoznania'});
-  const pole=flagHost.querySelector('.flag-pole');pole.replaceChildren();
-  const poleImage=document.createElement('img');poleImage.src='assets/flags/adventure/scenic-pole-v4.webp';poleImage.alt='';poleImage.decoding='async';pole.append(poleImage);
-  const cloth=flagHost.querySelector('.flag-cloth'),ratio=(record.id==='ch'||record.id==='va'?1:4/3)/1.15;
-  cloth.style.width=Math.min(hero.clientWidth*.65,hero.clientHeight*.94*ratio)+'px';paintFlags(flagHost);
-  app.dataset.country=record.id;
+  flagHost.querySelector('.flag-pole')?.remove();
+  app.dataset.country=record.id;fitFlag();paintFlags(flagHost);
 }
 function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
@@ -113,10 +112,10 @@ async function respond(chosenId){
   setState('showing-map');app.classList.add('is-pending');$('scenic-paper-row').setAttribute('aria-hidden','true');
   game.answer(chosenId);game.setPresentationHold(true);updateHud();
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
-  feedback.innerHTML=correct?'<strong>Świetnie!</strong><small>Zapamiętaj kraj i stolicę.</small>':'<strong>Zapamiętaj kraj i jego stolicę.</strong>';
+  feedback.textContent=correct?'Poprawna odpowiedź.':'Poprawna odpowiedź: '+record.country+'.';
   $('scenic-map-flag').src=new URL('assets/flags/cloth-prebaked/'+record.id+'.webp',document.baseURI).href;
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
-  $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent='Stolica: '+record.capital;
+  $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent=record.capital;
   sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
   app.classList.add('is-presenting');
   const opening=foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});

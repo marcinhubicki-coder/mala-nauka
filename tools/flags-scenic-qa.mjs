@@ -32,11 +32,11 @@ async function metrics(page){return page.evaluate(()=>{
   answers:[...document.querySelectorAll('.scenic-answer')].map(n=>{const r=n.getBoundingClientRect();return {id:n.dataset.id,text:n.textContent,disabled:n.disabled,x:r.x,y:r.y,w:r.width,h:r.height,labelFits:n.querySelector('.scenic-answer-label').scrollWidth<=n.clientWidth&&n.querySelector('.scenic-answer-label').getBoundingClientRect().height<=n.clientHeight-8,lineCount:Math.round(n.querySelector('.scenic-answer-label').getBoundingClientRect().height/parseFloat(getComputedStyle(n.querySelector('.scenic-answer-label')).lineHeight)),icons:n.querySelectorAll('svg,img').length};}),
   raster:host?.dataset.mapImage,activeCount:svg?.querySelectorAll('.country').length||0,highlight:!!svg?.querySelector('.scenic-country-overlay'),
   neighbors:Number(svg?.dataset.visibleNeighbors),labels:Number(host?.dataset.labelCount),crop:svg?.getAttribute('viewBox'),microstate:host?.dataset.microstate,
-  captionFits:(()=>{const inner=document.querySelector('.scenic-map-inner').getBoundingClientRect(),title=document.querySelector('#scenic-country-name').getBoundingClientRect(),capital=document.querySelector('#scenic-country-capital').getBoundingClientRect(),map=document.querySelector('.scenic-europe-map').getBoundingClientRect();return title.top>=inner.top+3&&capital.bottom<=map.top+2&&document.querySelector('#scenic-country-name').scrollWidth<=document.querySelector('#scenic-country-name').clientWidth+1;})(),
+  captionFits:(()=>{const inner=document.querySelector('.scenic-map-inner').getBoundingClientRect(),caption=document.querySelector('.scenic-map-caption').getBoundingClientRect(),title=document.querySelector('#scenic-country-name').getBoundingClientRect(),capital=document.querySelector('#scenic-country-capital').getBoundingClientRect();return title.top>=inner.top+3&&capital.bottom<=caption.bottom+1&&caption.right<=inner.right-10&&document.querySelector('#scenic-country-name').scrollWidth<=document.querySelector('#scenic-country-name').clientWidth+1;})(),
   capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
   overflowX:document.documentElement.scrollWidth>innerWidth,overflowY:document.documentElement.scrollHeight>innerHeight,
   animations:document.getAnimations().filter(a=>a.playState==='running').length,sand:app.dataset.sandPhase,qa:{enabled:app.dataset.qa,at:app.dataset.qaCaptureAt,captured:app.dataset.qaCaptured,progress:app.dataset.sandProgress},
-  foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v10.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
+  foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v14.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
  });}
 async function check(name,browser,options,run){
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
@@ -77,7 +77,7 @@ try{
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
-    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the protected cartouche');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
@@ -99,7 +99,7 @@ try{
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
-    assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'hidden','A settled atlas must not expose the old pole');
+    assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','The flag stays underneath the paper without a visibility jump');
     await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-closing'));
     assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),'empty','Map dissolves before paper folds');
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
@@ -130,7 +130,7 @@ try{
    await page.evaluate(()=>document.querySelector('#scenic-screen').dataset.qaInkAt='0.12');await choose(page,false);
    for(const [index,fraction] of [.12,.43,.73,.97].entries()){
     await page.waitForFunction(f=>document.querySelector('#scenic-screen').dataset.qaInkCaptured===String(f),fraction);
-    const m=await metrics(page);assert.equal(m.inkPhase,'drawing');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert(Math.abs(m.compass.w-compass.width)<.1&&Math.abs(m.compass.h-compass.height)<.1,'Compass must not scale');
+    const m=await metrics(page);assert.equal(m.inkPhase,'drawing');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert(Math.abs(m.compass.w-compass.width)<.1&&Math.abs(m.compass.h-compass.height)<.1,'Compass must not scale');
     assert.equal(await page.locator('#scenic-map-scroll').evaluate(n=>n.classList.contains('is-open')),true);const now=await page.locator('.scenic-paper-bottom').boundingBox();assert(Math.abs(now.y-bottom.y)<.1,'Engraved bottom stays fixed');
     await capture(page,engine+'-ink-pass-'+(index+1));
     await page.evaluate(next=>{if(next!==null)document.querySelector('#scenic-screen').dataset.qaInkAt=String(next);window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false}));},[.43,.73,.97,null][index]);
@@ -140,9 +140,17 @@ try{
    await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'playing');
   });
   if(phase==='full'){
+   await check(engine+'-transparent-atlas-and-editorial-heading',browser,{},async page=>{
+    await open(page);await choose(page,false);await state(page,'feedback-wrong');
+    const atlas=await page.locator('.scenic-europe-map image').evaluate(async n=>{const im=new Image();im.src=n.getAttribute('href');await im.decode();const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const cx=c.getContext('2d');cx.drawImage(im,0,0);const px=cx.getImageData(0,0,c.width,c.height).data;let empty=0,partial=0;for(let i=3;i<px.length;i+=4){if(!px[i])empty++;else if(px[i]<245)partial++;}return {empty:empty/(px.length/4),partial:partial/(px.length/4),corner:px[3]};});
+    assert.equal(atlas.corner,0,'The atlas has no sea rectangle');assert(atlas.empty>.3&&atlas.partial>.08,'Real transparent holes and dry wash must survive in the shared WebP');
+    assert.equal(await page.locator('.scenic-europe-map').evaluate(n=>getComputedStyle(n).maskImage),'none','No blurred map vignette');
+    assert.equal((await metrics(page)).inkGrains,0);assert(!(await page.locator('#scenic-country-capital').textContent()).includes('Stolica:'));assert.equal(await page.locator('.scenic-capital-icon').count(),1);
+    assert(await page.locator('#scenic-feedback').evaluate(n=>getComputedStyle(n).clipPath==='inset(50%)'),'Answer feedback does not occupy atlas space');
+   });
    await check(engine+'-pause-and-restart-during-ink',browser,{},async page=>{
     await open(page);await choose(page,false);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').dataset.inkPhase==='drawing');
-    await page.locator('[data-action="pause"]').click();const pixels=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(650);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),pixels,'Pause freezes every ink grain and mask pixel');
+    await page.locator('[data-action="pause"]').click();const pixels=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(650);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),pixels,'Pause freezes every ink mask pixel');
     await page.locator('[data-action="pause"]').click();await state(page,'feedback-wrong');await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').dataset.inkPhase==='erasing');
     await page.locator('[data-action="pause"]').click();const erased=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(450);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),erased);
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await page.waitForTimeout(SCENIC.inkDrawMs+SCENIC.openMs+200);const m=await metrics(page);assert.equal(m.task,'Zadanie 1');assert.equal(m.state,'playing');assert.equal(m.inkPhase,undefined);
@@ -153,6 +161,8 @@ try{
     await open(page);const before=await metrics(page);
     const scenery=()=>page.locator('#scenic-screen').evaluate(n=>({background:getComputedStyle(n).backgroundImage,foreground:getComputedStyle(n.querySelector('.scenic-foreground')).opacity,replacement:n.querySelectorAll('.scenic-feedback-scene').length,vectorCompass:n.querySelectorAll('.scenic-paper-row svg,.scenic-atlas-compass').length}));
     const first=await scenery();assert.equal(first.vectorCompass,0);assert.equal(first.replacement,0);assert.equal(first.foreground,'1');
+    assert.equal(await page.locator('.flag-pole,.scenic-rock-base,.scenic-land-shadow').count(),0,'Mast and rocks belong to one scene image');
+    assert(await page.locator('.scenic-foreground').evaluate(n=>getComputedStyle(n).backgroundImage===getComputedStyle(n.closest('main')).backgroundImage),'Hair overlap uses the very same scene');
     await choose(page,false);await page.waitForTimeout(180);await capture(page,engine+'-click-early');await state(page,'feedback-wrong');
     const after=await metrics(page);assert.deepEqual(await scenery(),first);
     for(let i=0;i<4;i++)for(const key of ['x','y','w','h'])assert(Math.abs(before.answers[i][key]-after.answers[i][key])<1,'Answer tiles must not move after an answer');
@@ -205,7 +215,7 @@ try{
     await choose(page,false);await state(page,'feedback-wrong');assert.equal((await metrics(page)).raster,'vector-fallback');assert((await metrics(page)).highlight);assert((await metrics(page)).activeCount>1);await capture(page,engine+'-image-fallback');
    });
    await check(engine+'-paper-image-fallback',browser,{},async page=>{
-    await page.route('**/assets/flags/adventure/scenic-paper-v10.webp',route=>route.abort());
+    await page.route('**/assets/flags/adventure/scenic-paper-v14.webp',route=>route.abort());
     await open(page);assert.equal(await page.locator('#scenic-screen').getAttribute('data-question-paper'),'fallback');
     assert.notEqual(await page.locator('.scenic-paper-bottom').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
     await choose(page,false);await state(page,'feedback-wrong');assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-material-ready'),'false');

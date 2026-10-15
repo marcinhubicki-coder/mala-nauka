@@ -110,6 +110,7 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  node.dataset.countryId=record.id;
  if(crop){
   const layer=document.createElement('div');layer.className='scenic-map-labels';
+  if(decodedImage)layer.hidden=true; // Country names are already engraved in the shared bitmap.
   const accepted=[];
   const candidates=labels.filter(p=>p.id===record.id||neighboring(crop,p.box)).sort((a,b)=>Number(b.id===record.id)-Number(a.id===record.id)||b.box.w*b.box.h-a.box.w*a.box.h);
   for(const item of candidates){

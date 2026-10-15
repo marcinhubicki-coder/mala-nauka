@@ -1,74 +1,43 @@
 import {SCENIC} from './scenic-config.mjs';
-
-async function bitmap(src){
- const image=new Image();image.src=src;let timer;
- try{await Promise.race([image.decode(),new Promise((_,reject)=>{timer=setTimeout(()=>{image.src='';reject(new Error('Paper bitmap unavailable'));},SCENIC.flagTimeoutMs);})]);return image;}
- finally{clearTimeout(timer);}
+const MATERIAL='assets/flags/adventure/scenic-paper-v10.webp';
+let material;
+export function preloadPaper(){
+ material??=new Promise(resolve=>{const image=new Image(),timer=setTimeout(()=>resolve(null),SCENIC.flagTimeoutMs);image.onload=()=>{clearTimeout(timer);resolve(image)};image.onerror=()=>{clearTimeout(timer);resolve(null)};image.src=new URL(MATERIAL,document.baseURI).href;});
+ return material.then(question=>({question,atlas:question}));
 }
-let paperImage,questionImage;
-export async function preloadPaper(){
- paperImage??=bitmap(new URL('assets/flags/adventure/scenic-atlas-paper-v6.webp',document.baseURI)).catch(()=>null);
- questionImage??=bitmap(new URL('assets/flags/adventure/scenic-question-paper-v6.webp',document.baseURI)).catch(()=>null);
- const [atlas,question]=await Promise.all([paperImage,questionImage]);return {atlas,question};
+const clamp=n=>Math.max(0,Math.min(1,n));
+const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
+function geometry(sheet,p){
+ const height=sheet.clientHeight,closed=document.querySelector('#scenic-paper-row').clientHeight;
+ const bottom=closed*.62,top=closed-bottom,h=(height-closed)/4;
+ const angles=[0,.09,.18,.27].map(start=>Math.PI/2*(1-smooth((p-start)/.73)));
+ let rise=0,depth=0;
+ const panels=angles.map((a,i)=>{const angle=a*(i%2?-1:1);const y=height-bottom-rise-h;const z=depth;rise+=h*Math.cos(angle);depth-=h*Math.sin(angle);return {transform:`translate3d(0,${y}px,${z}px) rotateX(${angle*180/Math.PI}deg)`,shade:Math.sin(a)*.29,light:Math.sin(a)*(i%2?.12:.35)};});
+ return {panels,cap:`translate3d(0,${height-bottom-rise-top}px,${depth}px)`,bottom,top,h,height};
 }
-function wrap(ctx,text,max){const lines=[''];for(const word of text.split(' ')){const i=lines.length-1,candidate=lines[i]?lines[i]+' '+word:word;if(ctx.measureText(candidate).width>max&&lines[i])lines.push(word);else lines[i]=candidate;}return lines;}
-// Three textured surfaces use slices of the actual prepared atlas, including
-// its top caption and flag. Opening never substitutes a blank sheet.
-export async function preparePaper(sheet,mapResult,record,{isCurrent=()=>true}={}){
- const inner=sheet.querySelector('.scenic-map-inner'),base=inner.getBoundingClientRect();
- const width=inner.clientWidth,height=inner.clientHeight,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
- canvas.width=width*2;canvas.height=height*2;ctx.scale(2,2);
- await preloadPaper();const paper=await paperImage;
- if(isCurrent())sheet.dataset.materialReady=String(!!paper);
- if(paper)ctx.drawImage(paper,0,0,width,height);
- else{ctx.fillStyle='#fff0cf';ctx.fillRect(0,0,width,height);}
- const map=inner.querySelector('.scenic-europe-map'),mapRect=map.getBoundingClientRect(),x=mapRect.left-base.left,y=mapRect.top-base.top,w=map.clientWidth,h=map.clientHeight;
- if(mapResult?.svg){
-  const svg=mapResult.svg.cloneNode(true);svg.setAttribute('width',w*2);svg.setAttribute('height',h*2);
-  const raster=svg.querySelector('image');if(raster&&mapResult.image){const c=document.createElement('canvas');c.width=mapResult.image.naturalWidth;c.height=mapResult.image.naturalHeight;c.getContext('2d').drawImage(mapResult.image,0,0);raster.setAttribute('href',c.toDataURL('image/png'));}
-  for(const path of svg.querySelectorAll('.country')){if(path.dataset.country!==record.id){path.setAttribute('fill','#b9d69c');continue;}path.setAttribute('fill','#087235');path.setAttribute('fill-opacity','.80');path.setAttribute('style','mix-blend-mode:multiply');path.setAttribute('stroke','#fff8d9');path.setAttribute('stroke-width','1');}
-  const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.setAttribute('fill','none');halo.setAttribute('stroke','#fffde0');halo.setAttribute('stroke-width','2');}
-  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
-  const surface=document.createElement('canvas');surface.width=w*2;surface.height=h*2;const ink=surface.getContext('2d');ink.scale(2,2);
-  try{ink.drawImage(await bitmap(url),0,0,w,h);}finally{URL.revokeObjectURL(url);}
-  ink.font='850 10px ScenicBody';ink.textAlign='center';
-  for(const label of inner.querySelectorAll('.scenic-map-label')){const r=label.getBoundingClientRect();ink.fillStyle=label.classList.contains('is-selected')?'#fcffe4':'#284a38';ink.fillText(label.textContent,r.left-mapRect.left+r.width/2,r.top-mapRect.top+r.height*.8);}
-  // Match the live atlas feathering, so the final frame has no hard-edge pop.
-  ink.save();ink.globalCompositeOperation='destination-in';ink.translate(w/2,h/2);ink.scale(w*.8,h*.78);const feather=ink.createRadialGradient(0,0,0,0,0,1);feather.addColorStop(.55,'#000');feather.addColorStop(.81,'#0009');feather.addColorStop(1,'#0000');ink.fillStyle=feather;ink.fillRect(-1,-1,2,2);ink.restore();ctx.drawImage(surface,x,y,w,h);
- }else{ctx.fillStyle='#456754';ctx.font='700 14px ScenicBody';ctx.textAlign='center';ctx.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.6,width-28);}
- for(const element of [inner.querySelector('.scenic-map-caption strong'),inner.querySelector('.scenic-map-caption span')]){
-  const r=element.getBoundingClientRect(),style=getComputedStyle(element),size=parseFloat(style.fontSize);ctx.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;ctx.fillStyle=style.color;ctx.textAlign='left';
-  wrap(ctx,element.textContent,r.width).forEach((line,i)=>ctx.fillText(line,r.left-base.left,r.top-base.top+size*.86+i*parseFloat(style.lineHeight),r.width));
- }
- const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const r=flag.getBoundingClientRect();ctx.save();ctx.shadowColor='#55391450';ctx.shadowBlur=8;ctx.shadowOffsetY=3;ctx.drawImage(flag,r.left-base.left,r.top-base.top,r.width,r.height);ctx.restore();}catch{}
- for(const item of document.querySelectorAll('#scenic-feedback strong,#scenic-feedback small')){const r=item.getBoundingClientRect(),style=getComputedStyle(item),size=parseFloat(style.fontSize);ctx.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;ctx.fillStyle=style.color;ctx.textAlign='left';ctx.fillText(item.textContent,r.left-base.left,r.top-base.top+size*.9,r.width);}
- const snapshot=canvas.toDataURL('image/webp',.93);
- if(!isCurrent())return;
- for(const leaf of sheet.querySelectorAll('.scenic-fold-leaf'))leaf.style.backgroundImage=`url("${snapshot}")`;
+export function placePaper(sheet){
+ const g=geometry(sheet,sheet.classList.contains('is-open')?1:0);
+ sheet.style.setProperty('--paper-height',g.height+'px');sheet.style.setProperty('--paper-bottom',g.bottom+'px');sheet.style.setProperty('--paper-top',g.top+'px');
+ [...sheet.querySelectorAll('.scenic-fold-leaf')].forEach((leaf,i)=>{leaf.style.height=g.h+.35+'px';leaf.style.backgroundPosition=`center ${-(g.height-g.bottom-(i+1)*g.h)}px`;leaf.style.transform=g.panels[i].transform;});
+ sheet.querySelector('.scenic-paper-top').style.transform=g.cap;sheet.querySelector('.scenic-compass').style.transform=g.cap;
+ sheet.dataset.paperProgress=sheet.classList.contains('is-open')?'1':'0';
 }
-
+// The very same top, four middle folds and engraved bottom remain mounted.
+// Nothing is photographed, replaced, rescaled or cross-faded at a fold boundary.
 export async function foldPaper(sheet,{opening,timeline,reduced}){
- sheet.classList.remove('is-open','is-opening','is-closing');sheet.classList.add(opening?'is-opening':'is-closing');
- if(reduced){sheet.classList.toggle('is-open',opening);sheet.classList.remove('is-opening','is-closing');return;}
+ sheet.classList.remove('is-opening','is-closing');sheet.classList.add(opening?'is-opening':'is-closing');
  const duration=opening?SCENIC.openMs:SCENIC.closeMs,leaves=[...sheet.querySelectorAll('.scenic-fold-leaf')],operations=[];
- // The top of one panel is the bottom hinge of the next. Precomputed
- // keyframes preserve that joint in 3D; no panels slide across the landscape.
- const ease=(p,start,end)=>{const t=Math.max(0,Math.min(1,(p-start)/(end-start)));return t*t*(3-2*t);};
- const angles=p=>[75*(1-ease(p,0,.44)),-75*(1-ease(p,.18,.73)),75*(1-ease(p,.40,.97))];
- const h=sheet.clientHeight/3;
- for(const [index,leaf] of leaves.entries()){
-  const frames=[],shades=[],lights=[];
-  for(let frame=0;frame<=60;frame++){
-   const offset=frame/60,p=opening?offset:1-offset,a=angles(p);let y=0,z=0;
-   for(let joint=0;joint<index;joint++){const r=a[joint]*Math.PI/180;y-=h*Math.cos(r);z-=h*Math.sin(r);}
-   const tilt=Math.sin(Math.abs(a[index])*Math.PI/180);
-   frames.push({offset,transform:`translate3d(0,${y+index*h}px,${z}px) rotateX(${a[index]}deg)`,opacity:1});
-   shades.push({offset,opacity:tilt*.32});
-   lights.push({offset,opacity:tilt*(index%2?.22:.52)});
-  }
-  const options={duration,fill:'both',easing:'linear'};
-  operations.push(timeline.animate(leaf,frames,options),timeline.animate(leaf.querySelector('.scenic-fold-shade'),shades,options),timeline.animate(leaf.querySelector('.scenic-fold-light'),lights,options));
+ if(!reduced){
+  const frames=Array.from({length:61},(_,i)=>({offset:i/60,g:geometry(sheet,opening?i/60:1-i/60)}));
+  leaves.forEach((leaf,i)=>{
+   const opts={duration,fill:'both',easing:'linear'};
+   operations.push(timeline.animate(leaf,frames.map(({offset,g})=>({offset,transform:g.panels[i].transform})),opts));
+   for(const [selector,property] of [['.scenic-fold-shade','shade'],['.scenic-fold-light','light']])operations.push(timeline.animate(leaf.querySelector(selector),frames.map(({offset,g})=>({offset,opacity:g.panels[i][property]})),opts));
+  });
+  for(const el of [sheet.querySelector('.scenic-paper-top'),sheet.querySelector('.scenic-compass')])operations.push(timeline.animate(el,frames.map(({offset,g})=>({offset,transform:g.cap})),{duration,fill:'both',easing:'linear'}));
+  const prompt=document.querySelector('.scenic-prompt');
+  operations.push(timeline.animate(prompt,opening?[{opacity:1},{opacity:0,offset:.2},{opacity:0}]:[{opacity:0},{opacity:0,offset:.76},{opacity:1}],{duration,fill:'both'}));
  }
- operations.push(timeline.animate(sheet.querySelector('.scenic-paper-shadow'),opening?[{opacity:.2,transform:'scaleX(.8) scaleY(.65)'},{opacity:.48,transform:'scaleX(1) scaleY(1.1)',offset:.45},{opacity:.25,transform:'scaleX(.96) scaleY(.65)'}]:[{opacity:.25,transform:'scaleX(.96) scaleY(.65)'},{opacity:.5,transform:'scaleX(1) scaleY(1.1)',offset:.6},{opacity:0,transform:'scaleX(.8) scaleY(.5)'}],{duration,fill:'both'}));
- await Promise.all(operations);sheet.classList.remove('is-opening','is-closing');sheet.classList.toggle('is-open',opening);
+ await Promise.all(operations);
+ sheet.classList.remove('is-opening','is-closing');sheet.classList.toggle('is-open',opening);placePaper(sheet);
 }

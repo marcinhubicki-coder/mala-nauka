@@ -1,94 +1,71 @@
 #!/usr/bin/env node
-/**
- * Generate ONE geographically registered Europe artwork.
- * We rasterize the existing Natural Earth SVG; borders stay perfectly aligned
- * to the single selected country path at runtime. No map per country.
+/** ONE antique Europe raster, derived from the canonical 680×500 SVG.
+ * Texture and engraved shading are decorative; no geographic path is redrawn.
+ * Every country border and runtime highlight use identical source coordinates.
  */
 import {chromium} from 'playwright';
-import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {readFile,writeFile} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import {once} from 'node:events';
-import {dirname,resolve,join,sep} from 'node:path';
+import {dirname,resolve,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {FLAGS} from '../data/flags.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const DEST=join(ROOT,'assets/maps/europe-scenic.webp');
 const original=await readFile(join(ROOT,'assets/maps/europe.svg'),'utf8');
-const paper='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/flags/adventure/scenic-atlas-paper-v6.webp'))).toString('base64');
-const server=createServer(async(req,res)=>{
- const p=new URL(req.url,'http://localhost').pathname;
- if(p==='/__render__'){res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Europe raster</title>');return;}
- const path=resolve(ROOT,'.'+p);
- if(!path.startsWith(ROOT+sep)){res.writeHead(403).end();return;}
- try{const b=await readFile(path);res.writeHead(200,{'Content-Type':p.endsWith('.svg')?'image/svg+xml':'text/plain'}).end(b);}
- catch{res.writeHead(404).end();}
-});
-server.listen(0,'127.0.0.1');await once(server,'listening');
-let browser;
+const paper='data:image/webp;base64,'+(await readFile(join(ROOT,'assets/flags/adventure/scenic-paper-v10.webp'))).toString('base64');
+const server=createServer((req,res)=>res.writeHead(200,{'Content-Type':'text/html'}).end('<!doctype html><title>Antique Europe</title>'));
+server.listen(0,'127.0.0.1');await once(server,'listening');let browser;
 try{
  browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage']});
- const page=await browser.newPage({viewport:{width:1360,height:1000},deviceScaleFactor:1});
- await page.goto('http://127.0.0.1:'+server.address().port+'/__render__');
- const encoded=await page.evaluate(async ({source,paper})=>{
-   const doc=new DOMParser().parseFromString(source,'image/svg+xml');
-   const svg=doc.documentElement;
-   if(!svg||svg.nodeName==='parsererror')throw Error('Invalid Natural Earth SVG');
-   svg.setAttribute('width','1360');svg.setAttribute('height','1000');
-   const ns='http://www.w3.org/2000/svg';
-   const defs=doc.createElementNS(ns,'defs');
-   defs.innerHTML=`
-    <linearGradient id="sea" x2=".92" y2="1"><stop stop-color="#b1e6e5"/><stop offset=".47" stop-color="#85cfe0"/><stop offset="1" stop-color="#61b7d7"/></linearGradient>
-    <linearGradient id="ground" x2=".72" y2="1"><stop stop-color="#c7dd91"/><stop offset=".45" stop-color="#a9c98b"/><stop offset="1" stop-color="#89b98b"/></linearGradient>
-    <radialGradient id="sunlight"><stop stop-color="#fffbe1" stop-opacity=".85"/><stop offset="1" stop-color="#fffbe1" stop-opacity="0"/></radialGradient>
-    <pattern id="waves" width="43" height="33" patternUnits="userSpaceOnUse"><path d="M2 12q9-5 18 0t18 0" fill="none" stroke="#f1ffff" stroke-width=".55" opacity=".16"/></pattern>
-    <filter id="coast-depth" x="-5%" y="-5%" width="110%" height="110%"><feDropShadow dx="0" dy=".5" stdDeviation=".5" flood-color="#3b705b" flood-opacity=".20"/></filter>
-    <filter id="noise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed="14" stitchTiles="stitch" result="grain"/><feColorMatrix in="grain" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".1"/></feComponentTransfer></filter>
-   `;
-   svg.insertBefore(defs,svg.firstChild);
-   const rect=(fill,attrs={})=>{const e=doc.createElementNS(ns,'rect');for(const [k,v] of Object.entries({x:'0',y:'0',width:'680',height:'500',fill,...attrs}))e.setAttribute(k,v);return e;};
-   const countries=svg.querySelector('#countries');
-   svg.insertBefore(rect('url(#sea)'),countries);
-   svg.insertBefore(rect('url(#waves)'),countries);
-   const ids=[...svg.querySelectorAll('path.country')];
-   for(const p of ids){
-     let hash=0;for(const c of p.dataset.country||'xx')hash=(hash*33+c.charCodeAt(0))|0;
-     const shades=['#b8cc96','#c0d5a5','#a3c697','#c9d4ab','#adc69a','#d1d5ad','#b8cfa5'];
-     p.setAttribute('fill',shades[Math.abs(hash)%shades.length]);
-     p.setAttribute('stroke','#f7f3d5');
-     p.setAttribute('stroke-width','.8');
-     p.setAttribute('stroke-linejoin','round');
-     p.removeAttribute('class');
-     p.removeAttribute('id');
-     p.removeAttribute('data-country');
-   }
-   countries.removeAttribute('fill');
-   countries.removeAttribute('stroke');
-   countries.removeAttribute('stroke-width');
-   countries.setAttribute('filter','url(#coast-depth)');
-   const clip=doc.createElementNS(ns,'clipPath');clip.setAttribute('id','land-paper');
-   for(const path of ids){const shape=path.cloneNode(true);shape.removeAttribute('stroke');shape.removeAttribute('filter');clip.append(shape);}defs.append(clip);
-   // Bitmap paper supplies the material; every geographic edge still comes
-   // exclusively from the registered Natural Earth paths.
-   const material=doc.createElementNS(ns,'image');material.setAttribute('href',paper);material.setAttribute('x','-227');material.setAttribute('y','-108');material.setAttribute('width','1133');material.setAttribute('height','833');material.setAttribute('preserveAspectRatio','none');material.setAttribute('clip-path','url(#land-paper)');material.setAttribute('style','mix-blend-mode:soft-light');material.setAttribute('opacity','.45');svg.append(material);
-   const top=rect('url(#sunlight)',{x:'0',y:'-30',width:'680',height:'500',style:'mix-blend-mode:soft-light;pointer-events:none'});
-   svg.append(top);
-   svg.append(rect('#ffffff',{filter:'url(#noise)',opacity:'.45'}));
-   document.body.replaceChildren(document.importNode(svg,true));
-   const loaded=new XMLSerializer().serializeToString(document.querySelector('svg'));
-   const image=new Image();
-   const blob=new Blob([loaded],{type:'image/svg+xml'});
-   const url=URL.createObjectURL(blob);
-   try{
-     await new Promise((ok,no)=>{image.onload=ok;image.onerror=no;image.src=url;});
-     const canvas=document.createElement('canvas');
-     canvas.width=1360;canvas.height=1000;
-     canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
-     let data=canvas.toDataURL('image/webp',.88);
-     if(!data.startsWith('data:image/webp;base64,'))throw Error('WebP unsupported');
-     return data;
-   }finally{URL.revokeObjectURL(url);}
- },{source:original,paper});
- const bytes=Buffer.from(encoded.split(',')[1],'base64');
- await mkdir(dirname(DEST),{recursive:true});
- await writeFile(DEST,bytes);
- console.log('Europe atlas artwork:',bytes.length,'bytes,1360x1000, viewport 680x500');
+ const page=await browser.newPage({viewport:{width:2040,height:1500}});await page.goto('http://127.0.0.1:'+server.address().port);
+ const encoded=await page.evaluate(async({source,paper,records})=>{
+  const doc=new DOMParser().parseFromString(source,'image/svg+xml'),svg=doc.documentElement,ns='http://www.w3.org/2000/svg';
+  svg.setAttribute('width','2040');svg.setAttribute('height','1500');
+  const defs=doc.createElementNS(ns,'defs');defs.innerHTML=`
+   <linearGradient id="sea" x2=".7" y2="1"><stop stop-color="#e6d9b6"/><stop offset=".55" stop-color="#d7c79f"/><stop offset="1" stop-color="#c3b78c"/></linearGradient>
+   <radialGradient id="land-wash"><stop stop-color="#eee0b9"/><stop offset=".65" stop-color="#dac89c"/><stop offset="1" stop-color="#c0aa7e"/></radialGradient>
+   <pattern id="sea-engraving" width="24" height="16" patternUnits="userSpaceOnUse"><path d="M2 6q4-1.4 8 0t8 0 M10 13q3-1 6 0" fill="none" stroke="#7e7054" stroke-width=".28" opacity=".25"/></pattern>
+   <pattern id="etched-land" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0v2M3 4v1" stroke="#7a5b35" stroke-width=".25" opacity=".12"/></pattern>
+   <filter id="coast"><feDropShadow dx=".6" dy="1.3" stdDeviation="1.5" flood-color="#795e34" flood-opacity=".24"/></filter>
+   <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="3" seed="14"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".17"/></feComponentTransfer></filter>
+   <radialGradient id="stain"><stop stop-color="#806035" stop-opacity=".13"/><stop offset="1" stop-color="#806035" stop-opacity="0"/></radialGradient>`;
+  svg.prepend(defs);
+  const rect=(fill,attrs={})=>{const e=doc.createElementNS(ns,'rect');for(const [k,v] of Object.entries({x:0,y:0,width:680,height:500,fill,...attrs}))e.setAttribute(k,v);return e;};
+  const countries=svg.querySelector('#countries'),paths=[...countries.querySelectorAll('path')];
+  countries.before(rect('url(#sea)'),rect('url(#sea-engraving)'));
+  countries.setAttribute('filter','url(#coast)');countries.removeAttribute('stroke');countries.removeAttribute('fill');
+  for(const path of paths){
+   path.setAttribute('fill','url(#land-wash)');path.setAttribute('stroke','#896b44');path.setAttribute('stroke-opacity','.7');path.setAttribute('stroke-width','.48');path.setAttribute('stroke-dasharray','1.4 .65');
+  }
+  const clip=doc.createElementNS(ns,'clipPath');clip.id='land';for(const p of paths){const c=p.cloneNode(true);c.removeAttribute('id');c.removeAttribute('stroke');clip.append(c);}defs.append(clip);
+  svg.append(rect('url(#etched-land)',{'clip-path':'url(#land)'}));
+  const material=doc.createElementNS(ns,'image');for(const [k,v] of Object.entries({href:paper,x:-220,y:-180,width:1120,height:900,'preserveAspectRatio':'none','style':'mix-blend-mode:multiply',opacity:'.20'}))material.setAttribute(k,v);svg.append(material);
+  // Small irregular sepia washes supply depth without introducing false relief.
+  for(const [x,y,w,h] of [[155,340,90,120],[310,370,110,60],[420,190,120,75],[300,150,70,160],[525,350,90,110]]){
+   const stain=doc.createElementNS(ns,'ellipse');for(const [k,v] of Object.entries({cx:x,cy:y,rx:w,ry:h,fill:'url(#stain)','clip-path':'url(#land)'}))stain.setAttribute(k,v);svg.append(stain);
+  }
+  svg.append(rect('#705635',{filter:'url(#grain)',opacity:'.48'}));
+  // Names are baked once into this same raster. No extra country map assets.
+  document.body.replaceChildren(document.importNode(svg,true));
+  const mounted=document.querySelector('svg'),names=new Map(records.map(r=>[r.id,r.country])),taken=[];
+  const sorted=[...mounted.querySelectorAll('path.country')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>b.b.width*b.b.height-a.b.width*a.b.height);
+  const fixed={ru:[505,160],no:[278,126],se:[315,162],fi:[382,113],gb:[152,251],fr:[203,348],it:[290,385],hr:[322,365],gr:[368,459],ua:[455,302]};
+  for(const {p,b} of sorted){
+   const id=p.dataset.country,text=names.get(id);if(!text)continue;
+   let x=b.x+b.width/2,y=b.y+b.height/2;
+   if(fixed[id]){[x,y]=fixed[id];}else if(!p.isPointInFill(new DOMPoint(x,y))){let best=Infinity;for(let ix=0;ix<9;ix++)for(let iy=0;iy<9;iy++){const nx=b.x+b.width*(ix+.5)/9,ny=b.y+b.height*(iy+.5)/9,d=(nx-x)**2+(ny-y)**2;if(d<best&&p.isPointInFill(new DOMPoint(nx,ny))){best=d;x=nx;y=ny;}}}
+   const size=b.width>90?7:b.width>40?6:4.7;
+   const node=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x,y,fill:'#634a2c','font-family':'Georgia,serif','font-size':size,'font-weight':'600','text-anchor':'middle','paint-order':'stroke',stroke:'#f1e4c5','stroke-width':'.8','stroke-linejoin':'round'}))node.setAttribute(k,v);node.textContent=text;mounted.append(node);
+   taken.push(id);
+  }
+  const micros={ad:[176,397],li:[263,342],mc:[251,384],sm:[298,389],va:[290,407],mt:[303,488]};
+  for(const [id,[x,y]] of Object.entries(micros)){
+   const dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',x);dot.setAttribute('cy',y);dot.setAttribute('r','.85');dot.setAttribute('fill','#76512a');mounted.append(dot);
+   if(taken.includes(id))continue;
+   const text=document.createElementNS(ns,'text');for(const [k,v] of Object.entries({x:x+3,y:y+2,fill:'#725636','font-family':'Georgia,serif','font-size':'3.7','paint-order':'stroke',stroke:'#eee0bb','stroke-width':'.65'}))text.setAttribute(k,v);text.textContent=names.get(id);mounted.append(text);
+  }
+  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(mounted)],{type:'image/svg+xml'}));
+  try{const img=new Image();img.src=url;await img.decode();const c=document.createElement('canvas');c.width=2040;c.height=1500;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/webp',.92);}finally{URL.revokeObjectURL(url);}
+ },{source:original,paper,records:FLAGS});
+ const bytes=Buffer.from(encoded.split(',')[1],'base64');await writeFile(join(ROOT,'assets/maps/europe-scenic.webp'),bytes);console.log('Antique Europe: '+bytes.length+' bytes, 2040×1500, exact 680×500 registration; baked country names.');
 }finally{await browser?.close();await new Promise(done=>server.close(done));}

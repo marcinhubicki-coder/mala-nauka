@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {once} from 'node:events';
 import assert from 'node:assert/strict';
 import {SCENIC} from '../flagi/scenic-config.mjs';
-const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),OUT=join(ROOT,'docs/flags-adventure/qa-scenic');
+const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),OUT=process.env.SCENIC_QA_OUT||join(ROOT,'docs/flags-adventure/qa-scenic');
 const types={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.json':'application/json','.woff':'font/woff'};
 const server=createServer(async(req,res)=>{
  const path=new URL(req.url,'http://localhost').pathname,file=resolve(ROOT,'.'+path+(path.endsWith('/')?'index.html':''));
@@ -35,7 +35,7 @@ async function metrics(page){return page.evaluate(()=>{
   capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
   overflowX:document.documentElement.scrollWidth>innerWidth,overflowY:document.documentElement.scrollHeight>innerHeight,
   animations:document.getAnimations().filter(a=>a.playState==='running').length,sand:app.dataset.sandPhase,qa:{enabled:app.dataset.qa,at:app.dataset.qaCaptureAt,captured:app.dataset.qaCaptured,progress:app.dataset.sandProgress},
-  foldImages:[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>n.style.backgroundImage.includes('data:image/webp'))};
+  foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v10.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),compass:rect('.scenic-compass')};
  });}
 async function check(name,browser,options,run){
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
@@ -75,7 +75,7 @@ try{
    const m=await metrics(page);assert.equal(m.overflowX,false);assert.equal(m.overflowY,false);assert.equal(m.answers.length,4);assert(m.answers.every(b=>b.labelFits&&b.icons===0&&b.h>=40&&b.y+b.h<sample.h));
    assert(m.flag.y+m.flag.h<=m.paper.y+5,'Flag hits question paper');
    if(sample.mode!=='question'){
-    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);assert(m.captionFits,'country and capital must fit above map');assert(m.highlight);assert(m.neighbors>=6&&m.neighbors<=11);assert(m.labels>=3);assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
@@ -88,15 +88,17 @@ try{
     // Pause and seek the actual Web Animations timeline. Screenshot overhead
     // cannot skip a fold; each frame has a precise fraction of the same opening.
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
-     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
-     const opacity=await page.locator('.scenic-fold-leaf').evaluateAll(nodes=>nodes.map(n=>Number(getComputedStyle(n).opacity)));assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
+     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-top,.scenic-compass,.scenic-prompt')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.openMs});
+     const opacity=await page.locator('.scenic-fold-leaf').evaluateAll(nodes=>nodes.map(n=>Number(getComputedStyle(n).opacity)));
+     assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),null,'Ink must wait for the entire unfolding');assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
      await capture(page,engine+'-unroll-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'hidden','A settled atlas must not expose the old pole');
-    await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');
+    await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-closing'));
+    assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),'empty','Map dissolves before paper folds');
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
-     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-shadow')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
+     await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-top,.scenic-compass,.scenic-prompt')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
      await capture(page,engine+'-rollup-'+label);
     }
     await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
@@ -116,6 +118,22 @@ try{
     await state(page,'playing');assert.equal(await page.locator('#scenic-task').textContent(),'Zadanie 2');await capture(page,'06-sand-next-'+engine);
    });
   }
+  if(phase!=='layout')await check(engine+'-ink-passes-and-continuous-material',browser,{},async page=>{
+   await open(page);const compass=await page.locator('.scenic-compass').boundingBox(),bottom=await page.locator('.scenic-paper-bottom').boundingBox();
+   assert.equal(await page.locator('#scenic-score').isVisible(),false);
+   const sign=await page.locator('#scenic-task').boundingBox(),bar=await page.locator('#scenic-progress').boundingBox();assert(sign.x>195);assert(sign.y<bar.y+bar.height&&sign.y+sign.height>bar.y+bar.height,'Task sign hangs across the timer bar');
+   await page.evaluate(()=>document.querySelector('#scenic-screen').dataset.qaInkAt='0.12');await choose(page,false);
+   for(const [index,fraction] of [.12,.43,.73,.97].entries()){
+    await page.waitForFunction(f=>document.querySelector('#scenic-screen').dataset.qaInkCaptured===String(f),fraction);
+    const m=await metrics(page);assert.equal(m.inkPhase,'drawing');assert.equal(m.inkGrains,1500);assert.equal(m.inkOutside,0);assert(Math.abs(m.compass.w-compass.width)<.1&&Math.abs(m.compass.h-compass.height)<.1,'Compass must not scale');
+    assert.equal(await page.locator('#scenic-map-scroll').evaluate(n=>n.classList.contains('is-open')),true);const now=await page.locator('.scenic-paper-bottom').boundingBox();assert(Math.abs(now.y-bottom.y)<.1,'Engraved bottom stays fixed');
+    await capture(page,engine+'-ink-pass-'+(index+1));
+    await page.evaluate(next=>{if(next!==null)document.querySelector('#scenic-screen').dataset.qaInkAt=String(next);window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false}));},[.43,.73,.97,null][index]);
+   }
+   await state(page,'feedback-wrong');await page.evaluate(()=>document.querySelector('#scenic-screen').dataset.qaInkAt='0.46');await slide(page);
+   await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.qaInkCaptured==='0.46');assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),'erasing');assert.equal(await page.locator('#scenic-map-scroll').evaluate(n=>n.classList.contains('is-open')),true);await capture(page,engine+'-ink-erasing');
+   await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'playing');
+  });
   if(phase==='full'){
    await check(engine+'-stable-scene-and-answer-geometry',browser,{},async page=>{
     await open(page);const before=await metrics(page);
@@ -173,11 +191,11 @@ try{
     await choose(page,false);await state(page,'feedback-wrong');assert.equal((await metrics(page)).raster,'vector-fallback');assert((await metrics(page)).highlight);assert((await metrics(page)).activeCount>1);await capture(page,engine+'-image-fallback');
    });
    await check(engine+'-paper-image-fallback',browser,{},async page=>{
-    await page.route('**/assets/flags/adventure/scenic-*-v6.webp',route=>route.abort());
+    await page.route('**/assets/flags/adventure/scenic-paper-v10.webp',route=>route.abort());
     await open(page);assert.equal(await page.locator('#scenic-screen').getAttribute('data-question-paper'),'fallback');
-    assert.notEqual(await page.locator('#scenic-paper-row').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
+    assert.notEqual(await page.locator('.scenic-paper-bottom').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
     await choose(page,false);await state(page,'feedback-wrong');assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-material-ready'),'false');
-    assert.notEqual(await page.locator('.scenic-map-inner').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
+    assert.notEqual(await page.locator('.scenic-paper-bottom').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');
     assert((await metrics(page)).captionFits);await capture(page,engine+'-paper-image-fallback');await slide(page);await state(page,'playing');assert.equal((await metrics(page)).task,'Zadanie 2');
    });
    await check(engine+'-map-fetch-failure',browser,{},async page=>{

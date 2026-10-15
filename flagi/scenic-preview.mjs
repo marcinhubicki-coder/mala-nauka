@@ -5,8 +5,9 @@ import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-web
 import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs';
 import {SCENIC,seedOf} from './scenic-config.mjs';
 import {ScenicTimeline} from './scenic-timeline.mjs';
-import {preparePaper,foldPaper,preloadPaper} from './scenic-paper.mjs';
+import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs';
 import {createSand} from './scenic-sand.mjs';
+import {createMapInk} from './scenic-ink.mjs';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
@@ -19,6 +20,7 @@ let step=0,points=0,seconds=SCENIC.seconds,state='loading',timeline=new ScenicTi
 let readyForNext=false,fixtureTimer,game=createSession();
 const continueDrag=createContinueDrag(swipe,{canContinue:()=>state==='feedback-wrong'&&readyForNext&&!paused&&!visibilityPaused,onComplete:()=>caught(toNext())});
 const sand=createSand($('scenic-sand-canvas'),app,answers);
+const mapInk=createMapInk($('scenic-map-ink'),sheet,app);
 const escape=value=>String(value??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const caught=task=>void task.catch(error=>{if(error.name!=='AbortError'){console.error('[scenic]',error);feedback.textContent='Coś poszło nie tak. Uruchom grę ponownie.';}});
 const current=()=>records.get(queue[step]);
@@ -81,6 +83,7 @@ function fitCaption(){
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
   sheet.style.top=viewport.height*.212+'px';sheet.style.height=viewport.height*.376+'px';
+  if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
 async function warmFlag(record){
   if(!record)return;
@@ -92,13 +95,13 @@ function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');
   mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');
-  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();
+  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placePaper(sheet);
 }
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');
   const record=current();renderButtons(optionsFor(record),{disabled:true});
   const material=await preloadPaper();if(!alive(owner))return;
-  app.dataset.questionPaper=material.question?'ready':'fallback';
+  app.dataset.questionPaper=material.question?'ready':'fallback';sheet.dataset.materialReady=String(!!material.question);
   if(!prepared)await warmFlag(record);if(!alive(owner))return;
   showFlag(record);for(const b of answers.children)b.disabled=false;game.setPresentationHold(false);setState('playing');updateHud();
   void warmFlag(records.get(queue[(step+1)%queue.length]));void preloadScenicEurope().catch(()=>{});
@@ -114,6 +117,10 @@ async function respond(chosenId){
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent='Stolica: '+record.capital;
   sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
+  app.classList.add('is-presenting');
+  const opening=foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});
+  // Cancellation may happen while the independent asset preparation is pending.
+  void opening.catch(()=>{});
   const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
   let timer,mapResult;
   try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs))]);}
@@ -122,11 +129,11 @@ async function respond(chosenId){
   if(!mapResult?.found){
     mapHost.replaceChildren();const note=document.createElement('p');note.className='scenic-map-unavailable';note.textContent='Mapa jest chwilowo niedostępna.';mapHost.append(note);
   }
-  // Map decoding and the fold snapshot precede the entire learning interval.
+  // Paper opens while geography decodes. Ink starts only once both are ready.
   await document.fonts.ready;if(!alive(owner))return;fitCaption();
-  await preparePaper(sheet,mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
-  app.classList.add('is-presenting');
-  await foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});if(!alive(owner))return;
+  await mapInk.prepare(mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
+  await opening;if(!alive(owner))return;
+  await mapInk.reveal({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
     hint.hidden=false;
@@ -138,6 +145,7 @@ async function toNext(){
   const owner=timeline;readyForNext=false;setState('preparing-next');hint.hidden=true;swipe.hidden=true;
   const nextStep=(step+1)%queue.length,next=records.get(queue[nextStep]);
   await warmFlag(next);if(!alive(owner))return;
+  await mapInk.erase({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
   setState('transition');feedback.textContent='';
   // The decoded next cloth sits beneath the paper before the folds close.
   showFlag(next);
@@ -171,7 +179,7 @@ document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidd
 // Test-only capture bridge: freeze Canvas without changing the photographed UI.
 if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
 const observer=new ResizeObserver(()=>{fitFlag();placeScroll();fitCaption();});observer.observe($('scenic-stage'));
-window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();});
+window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();mapInk.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});
 caught((async()=>{

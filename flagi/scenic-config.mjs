@@ -1,6 +1,6 @@
 // One timing source for the isolated scenic variant, also used by visual QA.
 export const SCENIC = Object.freeze({
-  seconds: 166, memoryMs: 3900, openMs: 1050, closeMs: 760,
+  seconds: 166, memoryMs: 3900, openMs: 880, closeMs: 860, inkDrawMs: 2100, inkEraseMs: 1050, inkGrains: 1500,
   sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
   flagTimeoutMs: 5000, mapTimeoutMs: 6000, maxDpr: 2
 });

@@ -12,6 +12,9 @@ export function assertStudioBranch(configBranch,writeBranch=BRANCH){
  return true;
 }
 export const PRODUCTION_BRANCH='main';
+export const ASSET_BRANCH='assets/library-v1';
+export const ASSET_CATALOG_URL='https://mala-nauka-assets.vercel.app/asset-catalog.json';
+const MANAGED_ASSET_PATH=/^assets\/managed\/([0-9a-f]{64})\.(png|jpe?g|webp|avif)$/;
 const bytesToBase64 = bytes => {let text='';for(let offset=0;offset<bytes.length;offset+=32768)text+=String.fromCharCode(...bytes.subarray(offset,offset+32768));return btoa(text);};
 const decode = value => new TextDecoder().decode(Uint8Array.from(atob(value.replace(/\s/g,'')),char=>char.charCodeAt(0)));
 export class GitConflict extends Error{constructor(message,paths=[]){super(message);this.name='GitConflict';this.paths=paths;}}
@@ -161,6 +164,57 @@ export class GitClient {
   catch{throw new GitConflict('Równoległa zmiana Test PWA. Spróbuj ponownie, bez nadpisywania historii.');}
   return {sha:commit.sha,branch:TEST_PWA_BRANCH,sourceSha,report,githubUrl:`https://github.com/${REPOSITORY}/tree/${TEST_PWA_BRANCH}`};
  }
+
+ // Stage image bytes on the dedicated archive branch before V2 references
+ // them. Retry is idempotent: an interrupted publish reuses the same path.
+ async publishLibraryUploads(uploads){
+  if(!uploads.length)return {newFiles:0,reused:0,archiveSha:null};
+  if(!BRANCH.startsWith('refactor/v2-'))throw Error('Zewnętrzna biblioteka wymaga gałęzi V2.');
+  const libraryRef=await this.request('git/ref/heads/'+ASSET_BRANCH),head=libraryRef.object.sha;
+  const snapshot=await this.request('git/trees/'+head+'?recursive=1');
+  if(snapshot.truncated)throw Error('Niepełne drzewo biblioteki. Publikacja przerwana.');
+  const existing=new Set(snapshot.tree.filter(file=>file.type==='blob').map(file=>file.path));
+  const additions=[],expected=[],seen=new Set();
+  for(const upload of uploads){
+   const match=MANAGED_ASSET_PATH.exec(upload.path);
+   if(!match||seen.has(upload.path))throw Error('Nieprawidłowa lub powtórzona ścieżka grafiki: '+upload.path);
+   seen.add(upload.path);
+   const bytes=upload.bytes instanceof Uint8Array?upload.bytes:new Uint8Array(upload.bytes);
+   const digest=await crypto.subtle.digest('SHA-256',bytes);
+   const sha=[...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('');
+   if(sha!==match[1])throw Error('SHA-256 grafiki nie zgadza się z nazwą pliku: '+upload.path);
+   expected.push({path:upload.path,sha,size:bytes.length});
+   if(existing.has(upload.path))continue;
+   const blob=await this.request('git/blobs','POST',{content:bytesToBase64(bytes),encoding:'base64'});
+   additions.push({path:upload.path,mode:'100644',type:'blob',sha:blob.sha});
+  }
+  let archiveSha=head;
+  if(additions.length){
+   const parent=await this.request('git/commits/'+head);
+   const tree=await this.request('git/trees','POST',{base_tree:parent.tree.sha,tree:additions});
+   const commit=await this.request('git/commits','POST',{message:'Biblioteka grafik: '+additions.length+' unikalnych plików',tree:tree.sha,parents:[head]});
+   try{await this.request('git/refs/heads/'+ASSET_BRANCH,'PATCH',{sha:commit.sha,force:false});}
+   catch(error){if(error.status===422)throw new GitConflict('Biblioteka grafik zmieniła się podczas zapisu. Odśwież i ponów.');throw error;}
+   archiveSha=commit.sha;
+  }
+  // The branch alias may lag behind the Git commit while Vercel deploys it.
+  // Never write a new PWA reference until its content hash is publicly served.
+  let detail='';
+  for(let attempt=0;attempt<30;attempt++){
+   try{
+    const url=new URL(ASSET_CATALOG_URL);url.searchParams.set('v',archiveSha);url.searchParams.set('attempt',String(attempt));
+    const response=await this.fetcher(url.href,{cache:'no-store'});
+    if(response.ok){
+     const catalog=await response.json(),indexed=new Map((catalog.files||[]).map(file=>[file.path,file]));
+     if(expected.every(file=>indexed.get(file.path)?.sha256===file.sha&&indexed.get(file.path)?.size===file.size))
+      return {newFiles:additions.length,reused:expected.length-additions.length,archiveSha};
+     detail='Indeks CDN nie zawiera jeszcze opublikowanych plików.';
+    }else detail='HTTP '+response.status;
+   }catch(error){detail=error.message;}
+   if(attempt<29)await new Promise(resolve=>setTimeout(resolve,2000));
+  }
+  throw Error('Plik jest zapisany w bibliotece, ale nie jest jeszcze dostępny na CDN ('+detail+'). Szkic bez zmian; ponów zapis po ukończeniu deploymentu grafik.');
+ }
  async save({config,assets,rules,batches,uploads=[],wordEdits=[],message='Design system: aktualizacja komponentów'}){
   if(!this.connected)throw Error('Połącz GitHub, aby zapisać commit.');
   // A real Studio browser always checks its injected target; Node test clients
@@ -170,12 +224,18 @@ export class GitClient {
   if(batches)validateBatches(batches);validatePublication(batches,assets,wordEdits);
   const ref=await this.request(`git/ref/heads/${BRANCH}`);
   if(ref.object.sha!==this.#head)throw new GitConflict('Branch zmienił się od ostatniego odczytu. Wczytaj aktualną wersję i scal zmiany.');
+  if(uploads.length&&BRANCH.startsWith('refactor/v2-'))await this.publishLibraryUploads(uploads);
+  if(uploads.length){
+   const latest=await this.request('git/ref/heads/'+BRANCH);
+   if(latest.object.sha!==this.#head)throw new GitConflict('Podczas publikacji zdjęć zmieniła się gałąź V2. Scal szkic przed zapisem.');
+  }
   const parent=await this.request(`git/commits/${this.#head}`);
   const tree=[{path:'design-system/config.json',mode:'100644',type:'blob',content:JSON.stringify(config,null,2)+'\n'},{path:'design-system/assets.json',mode:'100644',type:'blob',content:JSON.stringify(assets,null,2)+'\n'}];
   if(rules)tree.push({path:'design-system/rules.json',mode:'100644',type:'blob',content:JSON.stringify(rules,null,2)+'\n'});
   if(batches)tree.push({path:'design-system/word-batches.json',mode:'100644',type:'blob',content:JSON.stringify(batches,null,2)+'\n'});
-  for(const upload of uploads){
-   if(!/^assets\/managed\/[0-9a-f]{64}\.(png|jpe?g|webp|avif)$/.test(upload.path))throw Error('Nieprawidłowa ścieżka assetu.');
+  // V2 commits metadata only. V1 retains its original upload behavior.
+  if(!BRANCH.startsWith('refactor/v2-'))for(const upload of uploads){
+   if(!MANAGED_ASSET_PATH.test(upload.path))throw Error('Nieprawidłowa ścieżka assetu.');
    const blob=await this.request('git/blobs','POST',{content:bytesToBase64(upload.bytes),encoding:'base64'});
    tree.push({path:upload.path,mode:'100644',type:'blob',sha:blob.sha});
   }

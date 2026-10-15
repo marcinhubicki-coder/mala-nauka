@@ -1,12 +1,12 @@
 # Biblioteka grafik V2 — zapis i publikacja
 
-Stan na 15.10.2026: **implementacja przygotowana, pełny E2E na GitHubie/Vercelu pozostaje niezakończony**. Nie traktować przejścia testów izolowanych jako dowodu publikacji online.
+Stan na 15.10.2026: **rzeczywisty upload → biblioteka → indeks → PWA przeszedł na opublikowanym Preview**. Poniżej są identyfikatory i zakres dowodów; test izolowany pozostaje osobną regresją.
 
 ## Zastana architektura
 
 Punktem odniesienia jest `4e1ecf0`, a aktualna gałąź `refactor/v2-parity-first` zawiera dodatkowo commity `d507d63`–`78cacb4` z pierwszym zapisem do biblioteki. Ich trzy ostatnie wdrożenia Vercel kończą się błędem: publiczne żądanie `https://mala-nauka-assets.vercel.app/asset-catalog.json` otrzymuje **302 do logowania Vercela**, a build próbował interpretować HTML jako JSON.
 
-`assets/library-v1` jest oddzielną gałęzią zasobów w tym samym repozytorium, nie osobnym repozytorium. Dotychczasowy alias biblioteki wskazuje wdrożenie Preview projektu PWA z commita `e9e4f8f7a1140cce3b347e7778c490ed929afa21`. Samo dopisanie obrazu na gałęzi nie gwarantuje przesunięcia ręcznie przypisanego aliasu. Oba problemy muszą być rozwiązane przed uruchomieniem zapisu online.
+`assets/library-v1` jest oddzielną gałęzią zasobów w tym samym repozytorium, nie osobnym repozytorium. Zastany alias biblioteki wskazywał chronione wdrożenie Preview projektu PWA z commita `e9e4f8f7a1140cce3b347e7778c490ed929afa21`. Obecnie należy do osobnego projektu biblioteki i automatycznie śledzi jego środowisko Production.
 
 Audyt przez podłączony GitHub: wszystkie **667** rekordów z katalogów scen, grafik zarządzanych i flag mają zgodne bajty w bibliotece: 373 sceny, 35 grafik zarządzanych, 259 plików flag (w tym 256 SVG/WebP i 3 pliki tekstowe/licencyjne). Brak brakujących ścieżek i rozbieżnych SHA-256/Git blob SHA. Cały istniejący release biblioteki zawiera 783 pliki, 124 552 268 bajtów.
 
@@ -18,7 +18,7 @@ Audyt przez podłączony GitHub: wszystkie **667** rekordów z katalogów scen, 
 4. Asset-only build ponownie oblicza SHA-256 i rozmiar z rzeczywistych bajtów, sprawdza zgodność indeksu, zachowuje wymiary i publikuje wyłącznie `assets/` oraz publiczny `asset-catalog.json`. Nie publikuje kodu Studio/PWA.
 5. Studio czeka na publiczny indeks, a następnie pobiera obraz przez publiczny URL i sprawdza jego **faktyczny rozmiar oraz SHA-256**. Wpis JSON bez dostępnego obrazu nie wystarcza. Błąd lub timeout zachowuje szkic i blokuje commit aplikacji.
 6. Po ponownym sprawdzeniu głowy V2 osobny commit aplikacji zapisuje wygląd, zasady, batchy i przypisania słów. **Żadna ścieżka binarna `assets/*` nie wchodzi do tego commita.**
-7. PWA odczytuje przypisanie z manifestu treści i pobiera obraz przez rewrite do biblioteki. Hosted build sprawdza zgodność scen, grafik zarządzanych i flag z publicznym indeksem i nie dołącza ich do paczki aplikacji. Lokalne testy zachowują historyczne pliki do testów bez infrastruktury Vercel.
+7. PWA odczytuje przypisanie z manifestu treści i pobiera obraz przez rewrite do biblioteki. Hosted build sprawdza zgodność scen, grafik zarządzanych i flag z publicznym indeksem i nie dołącza ich do paczki aplikacji. Lokalne testy zachowują historyczne pliki, a `node tools/serve-preview.mjs 8765` przekazuje brakujące ilustracje do tej samej biblioteki, bez kopiowania ich do źródeł ani lokalnej paczki aplikacji. Kontrola wydania sprawdza hash i bajty brakującego lokalnie obrazu w publicznej bibliotece.
 
 `design-system/assets.json` na V2 pozostaje manifestem przypisań treści. `asset-catalog.json` w bibliotece jest rejestrem bajtów. Są to dwa różne kontrakty; nie powstaje drugi magazyn obrazów.
 
@@ -38,13 +38,22 @@ Adres źródła treści jest oddzielony od adresu obrazów. Po zapisie Studio us
 
 Uruchomienie: `npm test`, a po instalacji Playwright/Chromium `node tools/qa-library-browser.mjs`. Ten test uruchamia własne serwery lokalne i nie wymaga tokenu GitHuba.
 
-## Brakująca bramka online
+## Hosting i rzeczywisty E2E
 
-Proponowana konfiguracja: osobny projekt Vercel `mala-nauka-library`, wyłącznie asset-only build gałęzi `assets/library-v1`, z automatycznym publikowaniem jej zmian. Dopiero po sprawdzeniu anonimowego HTTP 200, JSON, CORS i obrazu można skierować `mala-nauka-assets.vercel.app` do tej biblioteki. Ochrona podglądów aplikacji pozostaje osobną konfiguracją.
+Projekt Vercel `mala-nauka-library` (`prj_cmBnutecSKqwRk0dy7gBdJiAGwLg`) działa w istniejącym zespole na planie **Hobby**. Nie włączono płatnego planu ani dodatków. Production śledzi wyłącznie `assets/library-v1`; Preview jest wyłączone, a warunek pomijania buildów to `test "$VERCEL_GIT_COMMIT_REF" != "assets/library-v1"`. Build: `node tools/build-asset-library.mjs`, katalog `dist`.
 
-Automatyczna kontrola odrzuciła utworzenie projektu jako trwałej konfiguracji o możliwych kosztach buildów. Oczekuje na wyraźną zgodę użytkownika na ten konkretny projekt i podłączenie adresu. Projekt nie został utworzony, alias nie został zmieniony.
+`mala-nauka-assets.vercel.app` jest domeną **Production** nowego projektu (`gitBranch: null`), nie przypiętym ręcznie Preview. Pierwsza publikacja z `e9e4f8f` zwróciła anonimowe HTTP 200, JSON i CORS `*`. Rzeczywisty zapis Studio utworzył `deaaed3eb576ce39e8f82376437492adba39cfa7`; GitHub sam uruchomił deployment `dpl_aUeEMAuZrW1pK1dMSb8KyJmKLVzW`, a ten sam publiczny adres przesunął się do indeksu 784 plików. Ochrony Preview projektu aplikacji nie zmieniono.
 
-Po uzyskaniu zgody trzeba wdrożyć aktualizację buildera i indeksu na gałęzi biblioteki, sprawdzić automatyczne przesunięcie jej publicznego adresu, uruchomić nowe Studio V2 i wykonać **rzeczywisty upload → commit biblioteki → publiczny indeks i bajty → commit przypisania bez obrazu → gotowy Preview PWA → widoczny obraz w grze**. Sprawdzić ponowny upload bez nowego blobu oraz zachowanie szkicu przy błędzie. Zapisać SHA obu commitów, URL wdrożenia, hash pobranego obrazu i dowód renderowania. Bez tych dowodów zadanie pozostaje otwarte.
+Test korzystał z lokalnie skompilowanego interfejsu Studio PR #19 oraz prawdziwych usług GitHub/Vercel. Transport autoryzacji GitHuba był przekazany do podłączonego konektora; nie używano PAT użytkownika ani atrap danych/repozytorium/CDN. Konektor zwraca zdekodowane pliki JSON, więc adapter testowy odtwarzał kopertę Contents API. Normalny interfejs Studio nadal obsługuje istniejący token GitHuba.
+
+- Plik testowy: PNG 128 × 128, 4336 bajtów, `assets/managed/e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684.png`. Nazwa jest zgodna z SHA-256 rzeczywistych bajtów CDN.
+- Commit biblioteki `deaaed3e` dodał obraz i źródłowy indeks razem. Pierwsza próba testowego adaptera błędnie zinterpretowała tekstowe potwierdzenie konektora po udanym zapisie. Wznowienie odnalazło ten sam plik w bibliotece i **nie utworzyło kolejnego blobu ani commita biblioteki**.
+- Commit przypisania `92ecb9d12f8f61042dd6e913a0961cacea206820` zmienił tylko `design-system/assets.json`, `config.json`, `rules.json`. Obrazu nie ma w drzewie aplikacji.
+- Rzeczywisty deploy wykrył stary test wymagający lokalnego pliku źródłowego. Poprawka zastąpiła ten warunek sprawdzeniem indeksu i bajtów CDN; 413/413 testów przeszło również z nowym obrazem istniejącym wyłącznie w bibliotece.
+- Gotowy Preview `1919638fc87bd862db26f008339ddbc1d978d47a`, deployment `dpl_2apPkZP7NaG1LMA8t7hZPy5k6hGK`: `https://mala-nauka-e3db230qq-nzckzxw2x6-4792s-projects.vercel.app/ortografia/?studio=1&mode=spelling&screen=game&state=initial&word=%C5%BCaba`. Przeglądarka pokazała nowy obraz w bańce gry, `data-image-state=ready`, a SVG `image` wskazywał ścieżkę `/assets/managed/e586c23c…png` na domenie PWA, obsługiwaną przez rewrite biblioteki.
+- PR #20 z builderem i źródłowym indeksem został scalony jako `724a4546a1f90f19b421f34d0f42abb8a7c41256`; zachowuje wszystkie 784 pliki i 66 znanych wymiarów.
+
+Dowód lokalny: `.design-qa/live/live-image-in-deployed-pwa.png`, `.design-qa/live/library-domain-settings.png` i ślad rzeczywistych operacji konektora. Zrzuty nie są częścią paczki PWA. Obraz testowy pozostaje niezmiennym zasobem biblioteki; jego tymczasowe przypisanie można przywrócić bez usuwania pliku.
 
 ## Wycofanie
 

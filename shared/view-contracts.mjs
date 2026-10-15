@@ -1,6 +1,9 @@
 // Declarative view contract. Editor and renderer share stable IDs; no DOM shape hashes.
 import {homeDecorationAtoms} from './home-atoms.mjs';
 import {SPELLING_SETTINGS_CONTRACT} from './spelling-settings-contract.mjs';
+import {BOUND_VIEW_CONTRACTS,VIEW_COMPANIONS,resultBindings} from './view-bindings.mjs';
+import {PIN_PARTS} from './pin-parts-contract.mjs';
+import {SPELLING_OVERLAYS} from './spelling-overlays.mjs';
 
 const MODES=['spelling','math','english','flags','reading'];
 const row=(id,recipe,kind,parent,level='atom',action=null,mode=null)=>({id,recipe,kind,parent,level,...(action?{action}:{}),...(mode?{mode}:{})});
@@ -148,7 +151,8 @@ const spellingResults=[
  row('spelling-result-repeat','container-result-continue-rail','container','spelling-result-sheet','group',null,'spelling'),
  row('spelling-result-history','button-main','button','spelling-result-sheet','atom','history','spelling')
 ];
-export const VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item))),'spelling-initial':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-correct':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-wrong':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-hint':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-pause':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-results':Object.freeze(spellingResults.map(item=>Object.freeze(item))),'spelling-rule':Object.freeze(spellingResults.map(item=>Object.freeze(item)))});
+const BASE_VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item))),'spelling-initial':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-correct':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-wrong':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-hint':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-pause':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-results':Object.freeze(spellingResults.map(item=>Object.freeze(item))),'spelling-rule':Object.freeze(spellingResults.map(item=>Object.freeze(item)))});
+export const VIEW_CONTRACTS=Object.freeze({...BASE_VIEW_CONTRACTS,...BOUND_VIEW_CONTRACTS,...Object.fromEntries(['english','flags','reading','math'].map(mode=>[mode+'-results',Object.freeze(resultBindings(spellingResults,mode).map(Object.freeze))]))});
 // Build the immutable contract index once. Renderers reuse it instead of
 // repeatedly scanning up to 90 entries for each labelled component.
 const VIEW_INDEX=Object.freeze(Object.fromEntries(Object.entries(VIEW_CONTRACTS).map(([view,items])=>[view,new Map(items.map(item=>[item.id,item]))])));
@@ -180,6 +184,30 @@ export function validateViewContract(view,items=VIEW_CONTRACTS[view]){
  return true;
 }
 export function viewContract(view){return VIEW_CONTRACTS[view]||[];}
+export function viewContractFingerprint(){
+ let hash=2166136261;
+ for(const char of JSON.stringify([VIEW_CONTRACTS,VIEW_COMPANIONS,PIN_PARTS,SPELLING_OVERLAYS])){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619);}
+ return (hash>>>0).toString(16).padStart(8,'0');
+}
+export function canonicalViewPartId(view,id){
+ if(id==='navigation-back-result-back'&&view.endsWith('-results'))return view.replace('-results','-result-back');
+ if(id==='navigation-back-home'&&BOUND_VIEW_CONTRACTS[view])return view==='progress'?'progress-back':'page-back';
+ return id;
+}
+export function resolveDeclaredPart(view,id){
+ id=canonicalViewPartId(view,id);
+ const nested=view.startsWith('player-')?Object.values(PIN_PARTS).flat():view.startsWith('spelling-')||['rules','collection'].includes(view)?Object.values(SPELLING_OVERLAYS).flat():[];
+ const rows=[...viewContract(view),...(VIEW_COMPANIONS[view]||[]),...nested];
+ const exact=rows.find(row=>row.id===id&&!row.scopeOnly);if(exact)return exact;
+ for(const row of rows){
+  if(row.repeatKey&&!row.scopeOnly&&new RegExp('^'+row.id+'-k(?:[0-9a-f]{2})+$').test(id))return {...row,id};
+  if(row.within&&id.endsWith('-'+row.id)){
+   const parent=id.slice(0,-row.id.length-1),scope=rows.find(item=>item.id===row.within);
+   if(scope?.repeatKey&&new RegExp('^'+scope.id+'-k(?:[0-9a-f]{2})+$').test(parent)||scope?.scopeOnly&&viewContract(view).some(item=>item.id===parent))return {...row,id,parent};
+  }
+ }
+ return null;
+}
 export function viewKey(view,id){const item=VIEW_INDEX[view]?.get(id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'"';}
 export function viewAttrs(view,id){const item=VIEW_INDEX[view]?.get(id);if(!item)throw Error('Unknown component in view: '+view+'/'+id);return 'data-ds-key="'+id+'" data-ds-recipe="'+item.recipe+'" data-ds-kind="'+item.kind+'"';}
 export function staticViewInventory(view){

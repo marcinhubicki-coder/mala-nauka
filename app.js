@@ -361,7 +361,7 @@ function home() {
 function wizard() {
  if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
- if(selectedMode==='spelling')root.dataset.dsContractPending='spelling-settings';
+ if(['spelling','english','reading','flags'].includes(selectedMode))root.dataset.dsContractPending=selectedMode+'-settings';
  root.innerHTML=(selectedMode==='spelling'
   ?pageHeading(mode.name,{action:'home',titleRecipe:'text-player-title',contractView:'spelling-settings',backId:'spelling-back',titleId:'spelling-page-title'})
   :pageHead(mode.name))+`<section class="wizard-intro ${mode.color} mission-card" ${selectedMode==='spelling'?spellingAttrs('mission'):'data-ds-key="mission" data-ds-recipe="container-mission"'}>${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
@@ -828,8 +828,12 @@ load();registerOffline();
 
 // Studio scenarios use the real renderers and Session, with a stopped clock.
 // No profile, score, backup or offline-cache writes happen in this mode.
+let studioScenarioEpoch=0;
 async function renderStudioScenario(stateOverride=null){
+ const epoch=++studioScenarioEpoch;root.dataset.scenarioPending=String(epoch);
+ try{
  const {exampleProgress}=await import('./progress-example.mjs?v=1');
+ if(epoch!==studioScenarioEpoch)return;
  const query=new URLSearchParams(location.search);
  const screen=query.get('screen')||'wizard',state=stateOverride||query.get('state')||'initial';
  selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
@@ -859,15 +863,17 @@ async function renderStudioScenario(stateOverride=null){
   return;
  }
  const {createStudioGame}=await import('./design-system/scenarios.mjs');
+ if(epoch!==studioScenarioEpoch)return;
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
- view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();if(epoch!==studioScenarioEpoch)return;
  if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:undefined});}
  if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
  if(state==='pause')pause();
  if(query.has('effectLab'))installEffectLab();
+ }finally{if(epoch===studioScenarioEpoch){delete root.dataset.scenarioPending;document.dispatchEvent(new CustomEvent('mala-nauka:scenario-ready'));}}
 }
 
 let effectLabInstalled=false,effectLabPending=null,effectLabMeasurement=()=>{};

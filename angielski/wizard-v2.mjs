@@ -442,6 +442,7 @@ function install(){
  updateStartButton(false);
  syncEditorUI(false,{resetAction:true});
  syncHidden(true);
+ delete root.dataset.dsContractPending;
  requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 

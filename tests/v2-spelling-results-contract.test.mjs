@@ -25,9 +25,9 @@ test('Results action hierarchy is independent; one can be styled or moved withou
  assert.notEqual(items.find(x=>x.id==='spelling-result-history').parent,'spelling-result-repeat');
  assert.throws(()=>compileViewMarkup('spelling-results',html.replace('data-action="history"','data-action="repeat"')),/Action mismatch/);
 });
-test('Result renderer uses one compiled family and preserves legacy rendering for other modes',()=>{
+test('Every game result uses the shared compiled family',()=>{
  const src=readFileSync(new URL('../ortografia/result-screen.mjs',import.meta.url),'utf8');
- assert.match(src,/root\.innerHTML=spelling\?compileViewMarkup\('spelling-results',resultMarkup\):resultMarkup/);
+ assert.match(src,/root\.innerHTML=compileViewMarkup\(resultView,resultMarkup\)/);
  for(const id of ['spelling-result-root','spelling-result-back','spelling-result-review-panel','spelling-result-retained','spelling-result-review','spelling-result-repeat','spelling-result-history']){
   assert.ok(src.includes(id),id);
  }

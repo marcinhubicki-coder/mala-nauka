@@ -64,6 +64,7 @@ function collect() {
   for(const item of result.values()){
     item.order=order++;
     if(item.id==='layout-root'){item.kind='container';item.label='Cały ekran';continue;}
+    if(item.parent!==undefined)continue;
     let parent=item.node.parentElement;
     while(parent&&(!byNode.has(parent)||PART_BY_ID[byNode.get(parent)?.recipe]?.level==='atom'))parent=parent.parentElement;
     item.parent=byNode.get(parent)?.id||'layout-root';
@@ -72,7 +73,7 @@ function collect() {
     item.depth=0;const seen=new Set([item.id]);let parent=result.get(item.parent);
     while(parent&&!seen.has(parent.id)){seen.add(parent.id);item.depth++;parent=result.get(parent.parent);}
   }
-  for(const item of result.values())item.level=runtimeLevel(item,[...result.values()]);
+  for(const item of result.values())item.level||=runtimeLevel(item,[...result.values()]);
   return result;
 }
 
@@ -152,7 +153,7 @@ function report() {
   applyVisibility();
   paintHighlight();
   if(libraryTarget)presentLibrary();
-  emit({type:'inventory',schemaVersion:2,screen:app()?.dataset.view,viewId:document.documentElement.dataset.dsView,rendered:Boolean(runtimeRendererReady(app())&&document.fonts.status==='loaded'&&app()?.querySelector('button,input,dialog')),items:[...items.values()].map(({node,...item})=>({...item,metrics:itemMetrics(node),editableText:item.kind==='text'&&[...node.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim()).length===1?(node.dataset.dsOriginalText||node.textContent.trim()):null,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
+  emit({type:'inventory',schemaVersion:2,screen:app()?.dataset.view,viewId:document.documentElement.dataset.dsView,rendered:Boolean(!app()?.dataset.scenarioPending&&app()?.dataset.dsContractReady===document.documentElement.dataset.dsView&&runtimeRendererReady(app())&&document.fonts.status==='loaded'&&app()?.querySelector('button,input,dialog')),items:[...items.values()].map(({node,...item})=>({...item,metrics:itemMetrics(node),editableText:item.kind==='text'&&[...node.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim()).length===1?(node.dataset.dsOriginalText||node.textContent.trim()):null,layoutGap:parseFloat(getComputedStyle(node).gap)||0,visible:visible(node)&&!blockedByDialog(node),revealable:revealable(node),temporary:temporaryVisibility.get(item.id)||temporaryVisibility.get('component:'+item.component)||'visible',configuredVisibility:visualValue(window.__MALA_NAUKA_DESIGN__||{},document.documentElement.dataset.dsView,item).visibility||'visible'})),selection:selectedDetails()});
 }
 function scheduleReport() {
   clearTimeout(reportTimer);
@@ -242,6 +243,7 @@ if (studio) {
   },true);
   document.addEventListener('click',scheduleReport);
   document.addEventListener('change',scheduleReport);
+  document.addEventListener('mala-nauka:scenario-ready',scheduleReport);
   document.addEventListener('scroll',paintHighlight,true);
   window.addEventListener('resize',scheduleReport);
   window.addEventListener('message',async event=>{

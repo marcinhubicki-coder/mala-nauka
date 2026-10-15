@@ -34,7 +34,7 @@ test("Spelling runtime avoids DOM classification while the jelly form mounts",()
  const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
  const wizard=readFileSync(new URL('../ortografia/wizard-v2.mjs',import.meta.url),'utf8');
  const runtime=readFileSync(new URL('../shared/design-runtime.mjs',import.meta.url),'utf8');
- assert.match(app,/dsContractPending='spelling-settings'/);
+ assert.match(app,/dsContractPending=selectedMode\+'-settings'/);
  assert.match(wizard,/hydrateViewContract\(root,'spelling-settings'\)/);
- assert.match(runtime,/root\.dataset\.dsContractPending==='spelling-settings'\)return/);
+ assert.match(runtime,/if\(root\.dataset\.scenarioPending\|\|root\.dataset\.dsContractPending\|\|/);
 });

@@ -182,6 +182,13 @@ export const PARTS=[
  atom('meter-round-progress-fill','Wypełnienie postępu','meter','.round-progress-fill'),
  atom('text-progress-value','Wartość postępu','text','[data-reel=percent]')
 ];
+// The new view families retain the established shared recipe cascade.
+PARTS.push(
+ group('container-game-content','Treść pytania','.question-content',[]),
+ group('family-game-setup','Ustawienia przygody','#setup-form',['container-card','button-game-start'],{level:'family',inherits:'container-setup-form'}),
+ group('family-game-question','Pytanie w grze','.question-card',['container-game-content'],{level:'family',inherits:'container-card'}),
+ atom('text-mission-copy','Opis misji','text','.wizard-intro p',{inherits:'text-mission-hint',variantAxis:'mode',modes:['english','flags','reading']})
+);
 const explicitUses={'text-pin-error':['player-pin','player-unlock'],'text-math-setup-title':['math-settings'],'text-spelling-word':['spelling-initial','spelling-correct','spelling-wrong'],'button-game-hint':['spelling-initial','spelling-correct','spelling-wrong'],'jelly-option':['spelling-settings','english-settings','flags-settings','reading-settings','math-settings']};
 for(const [id,views]of Object.entries(explicitUses)){const p=PARTS.find(p=>p.id===id);if(p)p.views=views;}
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));

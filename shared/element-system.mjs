@@ -7,6 +7,8 @@ import {syncElementSurface,syncScreenSurface} from './surface-effects.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {assetUrl} from './asset-loader.mjs';
 import {ELEMENT_KINDS,iconSVG,visualValue} from './element-styles.mjs';
+import {hasViewContract} from './view-contracts.mjs';
+import {compiledInventory} from './compiled-runtime.mjs';
 export {ELEMENT_KINDS,ELEMENT_FAMILIES,ICONS,iconSVG,VISUAL_FIELDS,STYLE_FIELDS,validateElementStyles,recipeDefaults,recipeStyleValue,rawVisualValue,visualValue,declarations,elementCSS} from './element-styles.mjs';
 function kindOf(node){
  if(node.dataset.dsKind)return node.dataset.dsKind;
@@ -33,6 +35,7 @@ const definedPart=node=>PART_BY_ID[node.dataset.dsRecipe]||PARTS.find(p=>!['cont
 const automaticAtoms=new WeakSet();
 export function annotateElements(root,config,view){
  if(!root||!runtimeRendererReady(root))return[];
+ if(hasViewContract(view))return compiledInventory(root,config,view);
  // A numbered field's plain text is a real label atom, not an anonymous node.
  for(const title of root.querySelectorAll('fieldset legend,.field-title'))for(const text of [...title.childNodes].filter(n=>n.nodeType===3&&n.textContent.trim())){const label=root.ownerDocument.createElement('span');label.dataset.dsRecipe='text-field-label';label.dataset.dsKind='text';label.textContent=text.textContent;text.replaceWith(label);}
  const template=templateForView({id:view,screen:root.dataset.view});root.dataset.dsTemplate=template.id;const state=componentState(root);if(root.ownerDocument.documentElement.dataset.dsComponentState!==state)root.ownerDocument.documentElement.dataset.dsComponentState=state;root.dataset.dsElement='layout-root';root.dataset.dsKind='container';root.dataset.dsRecipe='layout';root.dataset.dsBlock='screen-'+view;const rootStyle=visualValue(config,view,{id:'layout-root',kind:'container',recipe:'layout',blockId:'screen-'+view});syncElementMotion(root,rootStyle);syncElementSurface(root,rootStyle);syncScreenSurface(root,config,view);const counts=new Map(),usedIds=new Set(),candidatesInView=[...root.querySelectorAll(candidates),...root.ownerDocument.querySelectorAll('body>.spelling-screen-bg'),...[...root.ownerDocument.querySelectorAll('body>dialog')].flatMap(dialog=>[dialog,...dialog.querySelectorAll(candidates)])];

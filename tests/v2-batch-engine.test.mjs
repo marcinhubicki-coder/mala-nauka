@@ -16,8 +16,8 @@ test('Batch can change five independent controls in one plan',()=>{
  const initial={elementStyles:{},elementOverrides:{},layoutOverrides:{home:{}},navigation:{routes:{}}};
  const x=planDesignBatch(initial,steps);
  assert.equal(x.changes.length,5);assert.equal(x.config.elementStyles['button-back'].radius,23);
- assert.equal(x.config.elementOverrides['spelling-results']['navigation-back-result-back'].radius,18);
- assert.equal(x.config.elementOverrides['english-settings']['navigation-back-home'].radius,20);
+ assert.equal(x.config.elementOverrides['spelling-results']['spelling-result-back'].radius,18);
+ assert.equal(x.config.elementOverrides['english-settings']['page-back'].radius,20);
  assert.equal(x.config.layoutOverrides.home['home-mode-spelling'].x,34);
  assert.equal(x.config.navigation.routes['players--enter-player'],'progress');
  assert.deepEqual(initial.elementOverrides,{});

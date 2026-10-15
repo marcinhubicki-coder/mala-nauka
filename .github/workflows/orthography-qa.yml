@@ -6,6 +6,20 @@ on:
       - "spelling/**"
       - "shared/spelling-*.mjs"
       - "shared/view-contracts.mjs"
+      - "shared/view-bindings.mjs"
+      - "shared/view-contract-mount.mjs"
+      - "shared/element-*.mjs"
+      - "app.js"
+      - "progress-screen.mjs"
+      - "angielski/wizard-v2.mjs"
+      - "czytanie/wizard-v2.mjs"
+      - "flagi/adaptive-difficulty.mjs"
+      - "design-system/view-inventory-snapshots.mjs"
+      - "tools/qa-all-view-contracts-browser.mjs"
+      - "tools/qa-view-variants-browser.mjs"
+      - "tools/verify-screen-readiness.mjs"
+      - "tools/snapshot-view-contracts.mjs"
+      - "tests/v2-all-view-contracts.test.mjs"
       - "shared/compiled-runtime.mjs"
       - "shared/components.css"
       - "shared/round-result.css"
@@ -47,7 +61,7 @@ permissions:
 jobs:
   orthography:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -63,6 +77,14 @@ jobs:
         run: |
           node tools/serve-preview.mjs 8765 > /tmp/orthography-http.log 2>&1 &
           echo $! > /tmp/orthography-http.pid
+      - name: All 41 contracts in iPhone and desktop production renderers
+        run: node tools/qa-all-view-contracts-browser.mjs http://127.0.0.1:8765
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2/all41
+      - name: Data-dependent view variants and reversible layout editing
+        run: node tools/qa-view-variants-browser.mjs http://127.0.0.1:8765
+      - name: Five real PWA flows, results, collection and shared audio owner
+        run: node tools/verify-screen-readiness.mjs chromium http://127.0.0.1:8765
       - name: Spell settings, full quiz, results, rule and eight preview variants
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
         env:

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 29,
+  "revision": 30,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -8584,10 +8584,9 @@
       "masked": "p_epis"
     },
     "żaba": {
-      "path": "assets/managed/e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684.png",
+      "path": "assets/scenes/zaba.avif",
       "source": "data/words-05.json",
-      "masked": "_aba",
-      "manual": true
+      "masked": "_aba"
     },
     "żółtko": {
       "path": "assets/scenes/zoltko.jpg",

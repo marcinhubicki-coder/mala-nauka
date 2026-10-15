@@ -53,7 +53,11 @@ Test korzystał z lokalnie skompilowanego interfejsu Studio PR #19 oraz prawdziw
 - Gotowy Preview `1919638fc87bd862db26f008339ddbc1d978d47a`, deployment `dpl_2apPkZP7NaG1LMA8t7hZPy5k6hGK`: `https://mala-nauka-e3db230qq-nzckzxw2x6-4792s-projects.vercel.app/ortografia/?studio=1&mode=spelling&screen=game&state=initial&word=%C5%BCaba`. Przeglądarka pokazała nowy obraz w bańce gry, `data-image-state=ready`, a SVG `image` wskazywał ścieżkę `/assets/managed/e586c23c…png` na domenie PWA, obsługiwaną przez rewrite biblioteki.
 - PR #20 z builderem i źródłowym indeksem został scalony jako `724a4546a1f90f19b421f34d0f42abb8a7c41256`; zachowuje wszystkie 784 pliki i 66 znanych wymiarów.
 
-Dowód lokalny: `.design-qa/live/live-image-in-deployed-pwa.png`, `.design-qa/live/library-domain-settings.png` i ślad rzeczywistych operacji konektora. Zrzuty nie są częścią paczki PWA. Obraz testowy pozostaje niezmiennym zasobem biblioteki; jego tymczasowe przypisanie można przywrócić bez usuwania pliku.
+Po scaleniu PR #19 jako `e47b313a0dc505b215d6802228192065e2d619e8` docelowe wdrożenie V2 `dpl_ov74iQcTGGKfrhZsMibnJWWgFYNp` osiągnęło READY. Pod stałym adresem `https://mala-nauka-v2.vercel.app/` przeglądarka ponownie pokazała testową ilustrację w grze, stan `ready` i ścieżkę biblioteki w elemencie SVG. Dodatkowe regresje po dołączeniu rzeczywistego uploadu: 8 etapów/29 bloków Ortografii, ukończona runda 10 słów, 5 importów referencji Studio, brak błędów JS i nieudanych żądań lokalnych. GitHub CI dla `1919638` zakończyło Orthography E2E i Avatar regression sukcesem.
+
+Po zapisaniu dowodów przywrócono przypisanie „żaba” do `assets/scenes/zaba.avif` i zwiększono rewizję manifestu. Obraz diagnostyczny pozostaje niezmiennym, nieprzypisanym zasobem biblioteki; nie zmienia treści lekcji. Nie usunięto żadnych plików.
+
+Dowód lokalny: `.design-qa/live/live-image-in-deployed-pwa.png`, `.design-qa/live/live-image-in-canonical-v2.png`, `.design-qa/live/library-domain-settings.png` i ślad rzeczywistych operacji konektora. Zrzuty nie są częścią paczki PWA.
 
 ## Wycofanie
 

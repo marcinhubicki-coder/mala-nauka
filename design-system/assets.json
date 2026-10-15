@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 28,
+  "revision": 29,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -3260,6 +3260,17 @@
       "type": "jpg",
       "group": "managed",
       "references": []
+    },
+    {
+      "path": "assets/managed/e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684.png",
+      "sha": "e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684",
+      "id": "e586c23cf8916af5",
+      "size": 4336,
+      "type": "png",
+      "group": "managed",
+      "references": [],
+      "width": 128,
+      "height": 128
     },
     {
       "path": "assets/managed/ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a.jpg",
@@ -8573,9 +8584,10 @@
       "masked": "p_epis"
     },
     "żaba": {
-      "path": "assets/scenes/zaba.avif",
+      "path": "assets/managed/e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684.png",
       "source": "data/words-05.json",
-      "masked": "_aba"
+      "masked": "_aba",
+      "manual": true
     },
     "żółtko": {
       "path": "assets/scenes/zoltko.jpg",

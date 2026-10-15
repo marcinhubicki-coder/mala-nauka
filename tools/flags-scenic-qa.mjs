@@ -39,11 +39,14 @@ async function metrics(page){return page.evaluate(()=>{
   foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v14.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
  });}
 async function check(name,browser,options,run){
- const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
+ // A fresh WebKit process per scenario bounds the runner's cross-context GPU cache.
+ // Multi-round scenarios still keep one page and one game alive throughout.
+ const isolated=name.startsWith('webkit-')?await webkit.launch({headless:true}):null;
+ const context=await (isolated||browser).newContext({viewport:{width:390,height:844},deviceScaleFactor:2,...options}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('crash',()=>errors.push('Browser renderer crashed'));page.on('console',msg=>{if(msg.type()==='error'&&msg.text().startsWith('[scenic]'))errors.push(msg.text());});
  try{await run(page);const result={name,...await metrics(page),errors};reports.push(result);assert.equal(errors.length,0,'JS errors');console.log(JSON.stringify({name,status:'PASS',state:result.state}));}
  catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,error.stack||String(error));}
- finally{await context.close();}
+ finally{await context.close();await isolated?.close();}
 }
 async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?qa=1&country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
 async function choose(page,correct=true){const id=await page.locator('#scenic-screen').getAttribute('data-country');const button=correct?page.locator(`.scenic-answer[data-id="${id}"]`):page.locator(`.scenic-answer:not([data-id="${id}"])`).first();await button.click();}
@@ -54,7 +57,7 @@ async function slide(page){
 let browser;
 try{
  for(const [engine,launcher] of [['chromium',chromium],...(phase==='full'?[['webkit',webkit]]:[])]){
-  browser=await launcher.launch({headless:true,...(engine==='chromium'?{args:['--disable-dev-shm-usage']}:{} )});
+  browser=engine==='chromium'?await launcher.launch({headless:true,args:['--disable-dev-shm-usage']}):null;
   for(const sample of [
    {id:'by',mode:'question',w:390,h:844,name:'01-belarus-question'},
    {id:'by',mode:'correct',w:390,h:844,name:'02-belarus-correct'},
@@ -240,7 +243,7 @@ try{
     await page.waitForFunction(()=>document.querySelector('#scenic-screen').dataset.state==='transition');assert(Date.now()-started>=SCENIC.memoryMs-150);
    });
   }
-  await browser.close();browser=null;
+  await browser?.close();browser=null;
  }
 }finally{
  await browser?.close();await new Promise(done=>server.close(done));

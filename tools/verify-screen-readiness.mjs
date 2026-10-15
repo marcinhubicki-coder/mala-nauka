@@ -23,6 +23,7 @@ try{
   await page.locator('[data-studio-nav=mode][value='+mode+']').locator('..').click();
   await page.locator('[data-studio-nav=view][value='+mode+'-settings]').locator('..').click();
   const frame=page.frameLocator('#device-frame');
+  await frame.locator('#app[data-ds-contract-ready="'+mode+'-settings"]').waitFor({timeout:15000});
   await frame.locator('#app[data-view="wizard"] .mission-illustration').waitFor({state:'attached',timeout:15000});
   assert.ok(await frame.locator('.mission-illustration').evaluate(n=>n.getBoundingClientRect().width)>300);
   const app=frame.locator('#app');assert.ok(await app.locator('[data-ds-element]').count()>10);

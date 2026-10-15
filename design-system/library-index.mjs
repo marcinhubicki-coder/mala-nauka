@@ -1,38 +1,53 @@
 import {validateAssets} from './validation.mjs';
 
-// Read-only check. The archive is intentionally immutable in migration stage 1.
-// V2 is currently the live assignment index; archive serves large scene files.
+// The CDN catalog is regenerated FROM actual archive bytes on every asset
+// release. It is the authoritative binary index; V2 tracks word assignments.
+export const LIBRARY_CATALOG_URL='https://mala-nauka-assets.vercel.app/asset-catalog.json';
 const REPO='marcinhubicki-coder/mala-nauka';
-const URLS=Object.freeze({
- current:'https://raw.githubusercontent.com/'+REPO+'/refactor/v2-parity-first/design-system/assets.json',
- archive:'https://raw.githubusercontent.com/'+REPO+'/assets/library-v1/design-system/assets.json'
-});
+const CURRENT_URL='https://raw.githubusercontent.com/'+REPO+'/refactor/v2-parity-first/design-system/assets.json';
+export function validatePublishedCatalog(value){
+ if(value?.schemaVersion!==1||!Array.isArray(value.files))throw Error('Nieprawidłowy opublikowany indeks grafik.');
+ const paths=new Set(),hashes=new Set();
+ for(const file of value.files){
+  if(!/^assets\/[a-zA-Z0-9._/-]+$/.test(file.path)||paths.has(file.path)||!/^[0-9a-f]{64}$/.test(file.sha256)||!Number.isFinite(file.size)||file.size<0)throw Error('Nieprawidłowy plik w indeksie CDN.');
+  paths.add(file.path);
+  // The asset archive may include historical aliases with the same bytes.
+  // Each canonical manifest entry in Studio still has exactly one hash.
+  if(/^assets\/managed\//.test(file.path)){
+   if(hashes.has(file.sha256))throw Error('Zdublowany upload zarządzany: '+file.path);
+   hashes.add(file.sha256);
+  }
+ }
+ return value;
+}
 export async function fetchLibraryIndexes(fetcher=globalThis.fetch.bind(globalThis)){
- const read=async key=>{
-  const url=new URL(URLS[key]);url.searchParams.set('check',String(Date.now()));
-  const response=await fetcher(url.href,{cache:'no-store'});
-  if(!response.ok)throw Error('Źródło '+key+' nie odpowiada: HTTP '+response.status);
-  return validateAssets(await response.json());
+ const get=async url=>{
+  const fresh=new URL(url);fresh.searchParams.set('check',String(Date.now()));
+  const response=await fetcher(fresh.href,{cache:'no-store'});
+  if(!response.ok)throw Error('Indeks '+fresh.hostname+' nie odpowiada: HTTP '+response.status);
+  return response.json();
  };
- const [current,archive]=await Promise.all([read('current'),read('archive')]);
- return {current,archive};
+ const [current,archive]=await Promise.all([get(CURRENT_URL),get(LIBRARY_CATALOG_URL)]);
+ return {current:validateAssets(current),archive:validatePublishedCatalog(archive)};
 }
 export function libraryIndexReport(current,archive,local){
- validateAssets(current);validateAssets(archive);if(local)validateAssets(local);
- const issues=[],published=new Map(archive.assets.filter(a=>a.group==='scenes').map(a=>[a.path,a.sha]));
- for(const asset of current.assets.filter(a=>a.group==='scenes')){
-  if(!published.has(asset.path))issues.push('Scena niedostępna w archiwum: '+asset.path);
-  else if(published.get(asset.path)!==asset.sha)issues.push('Inna wersja sceny: '+asset.path);
+ validateAssets(current);validatePublishedCatalog(archive);if(local)validateAssets(local);
+ const published=new Map(archive.files.map(file=>[file.path,file]));
+ const issues=[];
+ for(const asset of current.assets.filter(a=>/^(assets\/(scenes|managed|flags)\/)/.test(a.path))){
+  const file=published.get(asset.path);
+  if(!file)issues.push('Brak opublikowanego pliku: '+asset.path);
+  else if(file.sha256!==asset.sha||file.size!==asset.size)issues.push('Niezgodna zawartość na CDN: '+asset.path);
  }
- // Local index revision may be stale while the Studio draft is kept intact.
  if(local&&(local.revision!==current.revision||
   JSON.stringify(local.assets.map(a=>[a.path,a.sha]))!==JSON.stringify(current.assets.map(a=>[a.path,a.sha]))||
   JSON.stringify(local.aliases)!==JSON.stringify(current.aliases)||
   JSON.stringify(local.words)!==JSON.stringify(current.words)))
-  issues.push('Lokalny indeks różni się od GitHuba. Wczytaj i scal zmiany przed publikacją.');
- return {
-  total:current.assets.length,scenes:current.assets.filter(a=>a.group==='scenes').length,
-  aliases:Object.keys(current.aliases).length,currentRevision:current.revision,
-  archiveRevision:archive.revision,issues
- };
+   issues.push('Indeks w szkicu różni się od GitHuba. Odśwież i scal zmiany przed publikacją.');
+ return {total:current.assets.length,
+  scenes:current.assets.filter(a=>a.path.startsWith('assets/scenes/')).length,
+  managed:current.assets.filter(a=>a.path.startsWith('assets/managed/')).length,
+  aliases:Object.keys(current.aliases).length,
+  currentRevision:current.revision,archiveRevision:archive.sourceCommit?.slice(0,10)||'opublikowany',
+  issues};
 }

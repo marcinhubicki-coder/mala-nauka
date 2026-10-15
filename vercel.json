@@ -55,6 +55,10 @@
     {
       "source": "/assets/flags/:path*",
       "destination": "https://mala-nauka-assets.vercel.app/assets/flags/:path*"
+    },
+    {
+      "source": "/assets/managed/:path*",
+      "destination": "https://mala-nauka-assets.vercel.app/assets/managed/:path*"
     }
   ]
 }

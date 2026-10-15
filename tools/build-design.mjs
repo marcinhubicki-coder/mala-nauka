@@ -38,7 +38,22 @@ if(externalFlagLibrary){
  // Never ship a missing flag behind an optimistic Vercel rewrite.
  assertFlagArchive(JSON.parse(files.get('design-system/assets.json').toString()),await response.json());
 }
+// Immutable managed graphics are released on the asset branch before their
+// V2 metadata commit. Verify the actual CDN catalog at build time.
+if(externalSceneLibrary){
+ const url='https://mala-nauka-assets.vercel.app/asset-catalog.json';
+ const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(20000)});
+ if(!response.ok)throw Error('Indeks asset CDN jest niedostępny: HTTP '+response.status);
+ const archive=await response.json(),published=new Map((archive.files||[]).map(file=>[file.path,file]));
+ const current=JSON.parse(files.get('design-system/assets.json').toString());
+ for(const item of current.assets.filter(asset=>asset.path.startsWith('assets/managed/'))){
+  const file=published.get(item.path);
+  if(!file||file.sha256!==item.sha||file.size!==item.size)
+   throw Error('Nieopublikowana grafika zarządzana: '+item.path);
+ }
+}
 if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/scenes/'))files.delete(path);
+if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/managed/'))files.delete(path);
 if(externalFlagLibrary)for(const path of [...files.keys()])if(isFrozenFlagFile(path))files.delete(path);
 files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,builtAt:new Date().toISOString(),sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,consumer,contentSource:consumer?source:null,deploymentUrl:process.env.VERCEL_URL||null,branchUrl:process.env.VERCEL_BRANCH_URL||null})));
 const localSource=process.env.DS_SOURCE_DIR;

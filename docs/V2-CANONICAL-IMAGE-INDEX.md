@@ -22,3 +22,11 @@ Kolejność zapisu:
 4. Każdy obraz przechowywany tylko raz; edycje UI tworzą commit kodu/modelu bez kopiowania plików. Panel Studio może dalej obsługiwać batche, wybór istniejących miniatur, zamianę ilustracji i relacje wiele słów → jedna ilustracja.
 
 Nie przełączać zapisów na nową bibliotekę, dopóki nie mamy działającej autoryzowanej publikacji, walidacji, migracji wszystkich istniejących plików oraz zweryfikowanego rollbacku. Do czasu zakończenia etapu 2 źródło zapisu pozostaje V2, a archiwum scen jest tylko do odczytu.
+
+## Wdrożenie zapisu do zewnętrznej biblioteki (etap 2)
+
+Design Studio zapisuje binaria na `assets/library-v1` jako `assets/managed/<sha256>.<ext>` **przed** commitem przypisań V2. Najpierw porównuje drzewo gałęzi z nazwami plików; istniejącego SHA nie wysyła ponownie. Sprawdza hash bytes lokalnie. Po wysłaniu binariów czeka, aż `https://mala-nauka-assets.vercel.app/asset-catalog.json` pokaże konkretny SHA-256 i rozmiar. Dopiero wtedy tworzy commit na `refactor/v2-parity-first` zawierający indeks słów, ale bez binariów. Jeśli hosting nie jest jeszcze gotowy, szkic pozostaje bez zmian i można ponowić publikację: plik w archiwum nie powstaje drugi raz.
+
+PWA V2 rozwiązuje `/assets/managed/*` przez Vercel rewrite na bibliotekę. Build Vercel odrzuca publikację, gdy choć jedna zarządzana ilustracja z aktywnego katalogu nie zgadza się z rzeczywistym indeksem CDN. Lokalne CI nadal ma fizyczne pliki do testów offline; historycznych kopii na gałęzi V2 nie usuwamy przed pełnym audytem. Każdy commit UI pomija grafiki archiwalne.
+
+Design Studio odczytuje ten sam mały `asset-catalog.json` bez pobierania zdjęć. Przypisania słów pozostają w `design-system/assets.json` na V2, więc nie tracimy istniejących funkcji edycji. Docelowe uproszczenie przypisań w jednym indeksie jest oddzielną migracją danych i wymaga testów kompatybilności.

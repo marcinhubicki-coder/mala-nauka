@@ -1,7 +1,7 @@
 {
   "phase": "full",
-  "passed": 55,
-  "total": 56,
+  "passed": 61,
+  "total": 62,
   "reports": [
     {
       "name": "chromium-01-belarus-question",
@@ -204,8 +204,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5.1,
-      "inkFrames": 128,
+      "inkPaintP95": 5.2,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -311,7 +311,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5.9,
+      "inkPaintP95": 5.3,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -418,7 +418,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5.1,
+      "inkPaintP95": 5.9,
       "inkFrames": 127,
       "compass": {
         "x": 15.546875,
@@ -525,7 +525,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5,
+      "inkPaintP95": 5.9,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -632,7 +632,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.3,
+      "inkPaintP95": 7.2,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -739,8 +739,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 7.2,
-      "inkFrames": 127,
+      "inkPaintP95": 9,
+      "inkFrames": 128,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -847,7 +847,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 6,
+      "inkPaintP95": 6.1,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -955,8 +955,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5,
-      "inkFrames": 127,
+      "inkPaintP95": 5.3,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1062,7 +1062,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.2,
+      "inkPaintP95": 4.4,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -1169,7 +1169,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 6,
+      "inkPaintP95": 8.8,
       "inkFrames": 127,
       "compass": {
         "x": 15.546875,
@@ -1276,8 +1276,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.2,
-      "inkFrames": 128,
+      "inkPaintP95": 6.5,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1391,6 +1391,327 @@
       "errors": []
     },
     {
+      "name": "chromium-16-finland-north",
+      "state": "feedback-correct",
+      "country": "fi",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "pt",
+          "text": "Portugalia",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "fi",
+          "text": "Finlandia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "se",
+          "text": "Szwecja",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "me",
+          "text": "Czarnogóra",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 7,
+      "crop": "138.83 -43.44 309.59 262.25",
+      "captionFits": true,
+      "capital": "Helsinki",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 7.8,
+      "inkFrames": 127,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "chromium-17-norway-north",
+      "state": "feedback-wrong",
+      "country": "no",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 352.09375,
+        "w": 354.890625,
+        "h": 59.5
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 148.390625,
+        "w": 354.890625,
+        "h": 263.1875
+      },
+      "answers": [
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 417.890625,
+          "w": 173.9375,
+          "h": 49.6875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "no",
+          "text": "Norwegia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 417.890625,
+          "w": 173.953125,
+          "h": 49.6875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "cz",
+          "text": "Czechy",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 474.578125,
+          "w": 173.9375,
+          "h": 49.703125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 474.578125,
+          "w": 173.953125,
+          "h": 49.703125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 7,
+      "crop": "13.46 -60.14 410.73 280.1",
+      "captionFits": true,
+      "capital": "Oslo",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 6.9,
+      "inkFrames": 127,
+      "compass": {
+        "x": 15.546875,
+        "y": 124.390625,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "chromium-18-russia-wide",
+      "state": "feedback-correct",
+      "country": "ru",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.53125,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.34375
+      },
+      "answers": [
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.859375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "ru",
+          "text": "Rosja",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.859375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.5,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hr",
+          "text": "Chorwacja",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.5,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 29,
+      "labels": 9,
+      "crop": "183.47 -116.2 587.56 497.72",
+      "captionFits": true,
+      "capital": "Moskwa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 5.1,
+      "inkFrames": 128,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
       "name": "chromium-10-pwa-safe-area",
       "state": "feedback-correct",
       "country": "pl",
@@ -1487,7 +1808,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 7.9,
+      "inkPaintP95": 4.8,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -1802,7 +2123,7 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5.2,
+      "inkPaintP95": 5.1,
       "inkFrames": 128,
       "compass": {
         "x": 15.546875,
@@ -2231,9 +2552,9 @@
     {
       "name": "chromium-wrong-pause-slider-and-several-rounds",
       "state": "feedback-wrong",
-      "country": "de",
+      "country": "cz",
       "score": "0 pkt",
-      "task": "Zadanie 4",
+      "task": "Zadanie 6",
       "viewport": {
         "w": 390,
         "h": 844
@@ -2258,20 +2579,20 @@
       },
       "answers": [
         {
-          "id": "ba",
-          "text": "Bośnia i Hercegowina",
+          "id": "se",
+          "text": "Szwecja",
           "disabled": true,
           "x": 17.546875,
           "y": 503.859375,
           "w": 173.9375,
           "h": 60.640625,
           "labelFits": true,
-          "lineCount": 2,
+          "lineCount": 1,
           "icons": 0
         },
         {
-          "id": "de",
-          "text": "Niemcy",
+          "id": "cz",
+          "text": "Czechy",
           "disabled": true,
           "x": 198.484375,
           "y": 503.859375,
@@ -2282,8 +2603,8 @@
           "icons": 0
         },
         {
-          "id": "li",
-          "text": "Liechtenstein",
+          "id": "ch",
+          "text": "Szwajcaria",
           "disabled": true,
           "x": 17.546875,
           "y": 571.5,
@@ -2294,8 +2615,8 @@
           "icons": 0
         },
         {
-          "id": "sk",
-          "text": "Słowacja",
+          "id": "cy",
+          "text": "Cypr",
           "disabled": true,
           "x": 198.484375,
           "y": 571.5,
@@ -2311,9 +2632,9 @@
       "highlight": true,
       "neighbors": 11,
       "labels": 9,
-      "crop": "139.73 196.08 183.26 155.24",
+      "crop": "227.35 207.61 160 135.54",
       "captionFits": true,
-      "capital": "Berlin",
+      "capital": "Praga",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -2325,8 +2646,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.6,
-      "inkFrames": 128,
+      "inkPaintP95": 4.9,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2640,8 +2961,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 5,
-      "inkFrames": 127,
+      "inkPaintP95": 7,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2957,8 +3278,8 @@
       "inkPhase": "empty",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4.8,
-      "inkFrames": 64,
+      "inkPaintP95": 5.7,
+      "inkFrames": 65,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3168,8 +3489,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 61,
+      "inkPaintP95": 3,
+      "inkFrames": 53,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3275,8 +3596,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 62,
+      "inkPaintP95": 5,
+      "inkFrames": 58,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3382,8 +3703,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 63,
+      "inkPaintP95": 5,
+      "inkFrames": 58,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3490,7 +3811,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4,
-      "inkFrames": 62,
+      "inkFrames": 58,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3597,7 +3918,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 3,
-      "inkFrames": 72,
+      "inkFrames": 66,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -3703,8 +4024,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 54,
+      "inkPaintP95": 5,
+      "inkFrames": 50,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -3811,8 +4132,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 61,
+      "inkPaintP95": 3,
+      "inkFrames": 57,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3920,7 +4241,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4,
-      "inkFrames": 62,
+      "inkFrames": 58,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4027,7 +4348,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 3,
-      "inkFrames": 73,
+      "inkFrames": 67,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -4134,7 +4455,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4,
-      "inkFrames": 63,
+      "inkFrames": 57,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4240,8 +4561,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 73,
+      "inkPaintP95": 4,
+      "inkFrames": 67,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -4355,6 +4676,327 @@
       "errors": []
     },
     {
+      "name": "webkit-16-finland-north",
+      "state": "feedback-correct",
+      "country": "fi",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "pt",
+          "text": "Portugalia",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "fi",
+          "text": "Finlandia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "se",
+          "text": "Szwecja",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "me",
+          "text": "Czarnogóra",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 7,
+      "crop": "138.83 -43.44 309.6 262.26",
+      "captionFits": true,
+      "capital": "Helsinki",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 5,
+      "inkFrames": 58,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "webkit-17-norway-north",
+      "state": "feedback-wrong",
+      "country": "no",
+      "score": "0 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 700
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 195.10121154785156,
+        "w": 174.023681640625,
+        "h": 150.8606414794922
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 352.09375,
+        "w": 354.890625,
+        "h": 59.5
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 148.390625,
+        "w": 354.890625,
+        "h": 263.1875
+      },
+      "answers": [
+        {
+          "id": "gr",
+          "text": "Grecja",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 417.890625,
+          "w": 173.9375,
+          "h": 49.6875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "no",
+          "text": "Norwegia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 417.890625,
+          "w": 173.953125,
+          "h": 49.6875,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "cz",
+          "text": "Czechy",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 474.578125,
+          "w": 173.9375,
+          "h": 49.703125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "si",
+          "text": "Słowenia",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 474.578125,
+          "w": 173.953125,
+          "h": 49.703125,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 8,
+      "labels": 7,
+      "crop": "13.46 -60.14 410.73 280.1",
+      "captionFits": true,
+      "capital": "Oslo",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 4,
+      "inkFrames": 68,
+      "compass": {
+        "x": 15.546875,
+        "y": 124.390625,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
+      "name": "webkit-18-russia-wide",
+      "state": "feedback-correct",
+      "country": "ru",
+      "score": "1 pkt",
+      "task": "Zadanie 1",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "mk",
+          "text": "Macedonia Północna",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 2,
+          "icons": 0
+        },
+        {
+          "id": "ru",
+          "text": "Rosja",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "is",
+          "text": "Islandia",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "hr",
+          "text": "Chorwacja",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 29,
+      "labels": 9,
+      "crop": "183.46 -116.21 587.57 497.73",
+      "captionFits": true,
+      "capital": "Moskwa",
+      "swipeVisible": false,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 56,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
+    },
+    {
       "name": "webkit-10-pwa-safe-area",
       "state": "feedback-correct",
       "country": "pl",
@@ -4451,8 +5093,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 3,
-      "inkFrames": 68,
+      "inkPaintP95": 4,
+      "inkFrames": 61,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -4548,7 +5190,7 @@
       "swipeVisible": false,
       "overflowX": false,
       "overflowY": false,
-      "animations": 0,
+      "animations": 1,
       "qa": {
         "enabled": "true"
       },
@@ -4567,107 +5209,10 @@
     },
     {
       "name": "webkit-ink-passes-and-continuous-material",
-      "state": "playing",
-      "country": "pl",
-      "score": "0 pkt",
-      "task": "Zadanie 2",
-      "viewport": {
-        "w": 390,
-        "h": 844
-      },
-      "flag": {
-        "x": 112.3125,
-        "y": 235.1986541748047,
-        "w": 211.97146606445312,
-        "h": 183.75828552246094
-      },
-      "paper": {
-        "x": 17.546875,
-        "y": 424.515625,
-        "w": 354.890625,
-        "h": 71.734375
-      },
-      "atlas": {
-        "x": 17.546875,
-        "y": 178.921875,
-        "w": 354.890625,
-        "h": 317.328125
-      },
-      "answers": [
-        {
-          "id": "is",
-          "text": "Islandia",
-          "disabled": false,
-          "x": 17.546875,
-          "y": 503.84375,
-          "w": 173.9375,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "ch",
-          "text": "Szwajcaria",
-          "disabled": false,
-          "x": 198.484375,
-          "y": 503.84375,
-          "w": 173.953125,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "pl",
-          "text": "Polska",
-          "disabled": false,
-          "x": 17.546875,
-          "y": 571.484375,
-          "w": 173.9375,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        },
-        {
-          "id": "rs",
-          "text": "Serbia",
-          "disabled": false,
-          "x": 198.484375,
-          "y": 571.484375,
-          "w": 173.953125,
-          "h": 60.640625,
-          "labelFits": true,
-          "lineCount": 1,
-          "icons": 0
-        }
-      ],
-      "activeCount": 0,
-      "highlight": false,
-      "neighbors": null,
-      "labels": null,
-      "captionFits": true,
-      "capital": "Mińsk",
-      "swipeVisible": false,
-      "overflowX": false,
-      "overflowY": false,
-      "animations": 0,
-      "qa": {
-        "enabled": "true"
-      },
-      "foldImages": true,
-      "inkGrains": null,
-      "inkOutside": null,
-      "inkPaintP95": null,
-      "inkFrames": null,
-      "compass": {
-        "x": 15.546875,
-        "y": 399.921875,
-        "w": 58,
-        "h": 58
-      },
-      "errors": []
+      "error": "Error: page.waitForFunction: Target page, context or browser has been closed",
+      "errors": [
+        "Browser renderer crashed"
+      ]
     },
     {
       "name": "webkit-transparent-atlas-and-editorial-heading",
@@ -4766,8 +5311,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 4,
-      "inkFrames": 64,
+      "inkPaintP95": 5,
+      "inkFrames": 57,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5194,10 +5739,110 @@
     },
     {
       "name": "webkit-wrong-pause-slider-and-several-rounds",
-      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
-      "errors": [
-        "Browser renderer crashed"
-      ]
+      "state": "feedback-wrong",
+      "country": "cz",
+      "score": "0 pkt",
+      "task": "Zadanie 6",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "flag": {
+        "x": 112.3125,
+        "y": 235.1986541748047,
+        "w": 211.97146606445312,
+        "h": 183.75828552246094
+      },
+      "paper": {
+        "x": 17.546875,
+        "y": 424.515625,
+        "w": 354.890625,
+        "h": 71.734375
+      },
+      "atlas": {
+        "x": 17.546875,
+        "y": 178.921875,
+        "w": 354.890625,
+        "h": 317.328125
+      },
+      "answers": [
+        {
+          "id": "se",
+          "text": "Szwecja",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 503.84375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "cz",
+          "text": "Czechy",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 503.84375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": true,
+          "x": 17.546875,
+          "y": 571.484375,
+          "w": 173.9375,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        },
+        {
+          "id": "cy",
+          "text": "Cypr",
+          "disabled": true,
+          "x": 198.484375,
+          "y": 571.484375,
+          "w": 173.953125,
+          "h": 60.640625,
+          "labelFits": true,
+          "lineCount": 1,
+          "icons": 0
+        }
+      ],
+      "raster": "ready",
+      "activeCount": 1,
+      "highlight": true,
+      "neighbors": 11,
+      "labels": 9,
+      "crop": "227.35 207.61 160 135.54",
+      "captionFits": true,
+      "capital": "Praga",
+      "swipeVisible": true,
+      "overflowX": false,
+      "overflowY": false,
+      "animations": 0,
+      "qa": {
+        "enabled": "true"
+      },
+      "foldImages": true,
+      "inkPhase": "complete",
+      "inkGrains": 0,
+      "inkOutside": 0,
+      "inkPaintP95": 3,
+      "inkFrames": 57,
+      "compass": {
+        "x": 15.546875,
+        "y": 154.921875,
+        "w": 58,
+        "h": 58
+      },
+      "errors": []
     },
     {
       "name": "webkit-restart-at-boundaries",
@@ -5504,8 +6149,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 6,
-      "inkFrames": 28,
+      "inkPaintP95": 8,
+      "inkFrames": 25,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5821,11 +6466,11 @@
       "inkPhase": "empty",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 7,
-      "inkFrames": 33,
+      "inkPaintP95": 4,
+      "inkFrames": 29,
       "compass": {
         "x": 15.546875,
-        "y": 155.26531982421875,
+        "y": 154.98263549804688,
         "w": 58,
         "h": 58
       },

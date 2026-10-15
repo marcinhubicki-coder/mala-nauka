@@ -4,6 +4,7 @@ import { readFile, access } from 'node:fs/promises';
 import { validateWords } from '../game.mjs';
 import { sceneFor } from '../spelling/scenes.mjs';
 import {configureAssets,playableWords} from '../shared/asset-loader.mjs';
+import {readPublishedCatalog,assertPublishedAssets,verifyPublishedImages} from '../design-system/library-publish.mjs';
 
 test('every offline precache request resolves to an existing file or entry directory', async () => {
   const sw = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
@@ -40,9 +41,17 @@ test('all words retain learning data while only illustrated words enter the game
   assert.equal(words.length, new Set(words.map(row=>row.word)).size);
   for(const word of words)assert.ok(word.learning,word.word);
   const ready=playableWords(words);assert.equal(ready.length,Object.keys(assets.words).length);
+  const external=[];
   for (const word of ready) {
     const scene = sceneFor(word.masked, word.word);
     assert.ok(scene, word.word);
-    await access(new URL('../'+(scene.asset.startsWith('assets/')?scene.asset:'assets/scenes/'+scene.asset), import.meta.url));
+    const path=scene.asset.startsWith('assets/')?scene.asset:'assets/scenes/'+scene.asset;
+    try{await access(new URL('../'+path,import.meta.url));}
+    catch(error){
+      if(error.code!=='ENOENT'||!/^assets\/(managed|scenes|flags)\//.test(path))throw error;
+      const record=assets.assets.find(asset=>asset.path===path);assert.ok(record,'Missing image metadata: '+path);
+      external.push({path,sha:record.sha,size:record.size});
+    }
   }
+  if(external.length){assertPublishedAssets(external,await readPublishedCatalog());await verifyPublishedImages(external);}
 });

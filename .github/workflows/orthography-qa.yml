@@ -19,6 +19,15 @@ on:
       - "tools/qa-reference-studio-browser.mjs"
       - "design-system/reference-calibration.mjs"
       - "tools/build-design.mjs"
+      - "tools/build-asset-library.mjs"
+      - "tools/serve-preview.mjs"
+      - "tests/pwa-release.test.mjs"
+      - "tools/qa-library-browser.mjs"
+      - "design-system/library-*.mjs"
+      - "shared/asset-loader.mjs"
+      - "shared/design-runtime.mjs"
+      - "tests/v2-library-*.test.mjs"
+      - "tests/v2-external-asset-publish.test.mjs"
       - "tests/v2-offline-scene-cache.test.mjs"
       - "tests/v2-spelling-*.mjs"
       - "design-system/config.json"
@@ -46,7 +55,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Serve isolated preview
         run: |
-          python3 -m http.server 8765 --directory dist > /tmp/orthography-http.log 2>&1 &
+          node tools/serve-preview.mjs 8765 > /tmp/orthography-http.log 2>&1 &
           echo $! > /tmp/orthography-http.pid
       - name: Spell settings, full quiz, results, rule and eight preview variants
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
@@ -56,6 +65,10 @@ jobs:
         run: node tools/qa-orthography-complete-browser.mjs http://127.0.0.1:8765
       - name: Studio V2 approved screenshot batch import and persistence
         run: node tools/qa-reference-studio-browser.mjs http://127.0.0.1:8765
+      - name: Isolated Studio upload, library index, PWA rendering and offline cache
+        run: node tools/qa-library-browser.mjs
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2
       - name: Preserve V2 visual proof (7 days, not a Vercel deployment)
         if: always()
         uses: actions/upload-artifact@v4

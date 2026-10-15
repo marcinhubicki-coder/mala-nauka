@@ -9,8 +9,9 @@ export function validatePublishedCatalog(value){
  if(value?.schemaVersion!==1||!Array.isArray(value.files))throw Error('Nieprawidłowy opublikowany indeks grafik.');
  const paths=new Set(),hashes=new Set();
  for(const file of value.files){
-  if(!/^assets\/[a-zA-Z0-9._/-]+$/.test(file.path)||paths.has(file.path)||!/^[0-9a-f]{64}$/.test(file.sha256)||!Number.isFinite(file.size)||file.size<0)throw Error('Nieprawidłowy plik w indeksie CDN.');
+  if(!/^assets\/[a-zA-Z0-9._/-]+$/.test(file.path)||file.path.split('/').some(part=>!part||part==='.'||part==='..')||paths.has(file.path)||!/^[0-9a-f]{64}$/.test(file.sha256)||!Number.isSafeInteger(file.size)||file.size<0)throw Error('Nieprawidłowy plik w indeksie CDN.');
   paths.add(file.path);
+  if((file.width!==undefined||file.height!==undefined)&&(!Number.isSafeInteger(file.width)||file.width<1||file.width>32768||!Number.isSafeInteger(file.height)||file.height<1||file.height>32768))throw Error('Nieprawidłowe wymiary pliku w indeksie CDN.');
   // The asset archive may include historical aliases with the same bytes.
   // Each canonical manifest entry in Studio still has exactly one hash.
   if(/^assets\/managed\//.test(file.path)){
@@ -19,6 +20,26 @@ export function validatePublishedCatalog(value){
   }
  }
  return value;
+}
+
+// Reuse images uploaded by another Studio, including an interrupted publish.
+// Word assignments remain in the content manifest and are never inferred.
+export function mergePublishedImages(catalog,published){
+ validateAssets(catalog);validatePublishedCatalog(published);
+ const next=structuredClone(catalog),paths=new Set([...next.assets.map(a=>a.path),...Object.keys(next.aliases)]),hashes=new Map(next.assets.map(a=>[a.sha,a]));
+ for(const file of published.files){
+  if(paths.has(file.path)||!/^assets\/.*\.(png|jpe?g|webp|avif|svg)$/i.test(file.path))continue;
+  const same=hashes.get(file.sha256);
+  if(same)next.aliases[file.path]=same.path;
+  else{
+   const record={path:file.path,sha:file.sha256,id:file.sha256.slice(0,16),size:file.size,type:file.path.split('.').at(-1).toLowerCase(),group:file.path.split('/')[1],references:[]};
+   if(file.width&&file.height)Object.assign(record,{width:file.width,height:file.height});
+   next.assets.push(record);hashes.set(record.sha,record);
+  }
+  paths.add(file.path);
+ }
+ next.assets.sort((a,b)=>a.path.localeCompare(b.path));
+ return validateAssets(next);
 }
 export async function fetchLibraryIndexes(fetcher=globalThis.fetch.bind(globalThis)){
  const get=async url=>{

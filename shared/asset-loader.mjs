@@ -3,7 +3,10 @@ import {resolveRules,configureRules,ruleLibrary} from './rules-library.mjs';
 import {validateAssets} from '../design-system/validation.mjs';
 const projectRoot = new URL('../', import.meta.url);
 let manifest = {assets:[], aliases:{}, words:{}, revision:'unloaded'}, origin = projectRoot.href;
-let index = new Map(), previewURLs={};
+let index = new Map(), previewURLs={}, libraryOrigin=null;
+// Kept separate from the word/content origin. After a Studio save that origin
+// points at an app commit which deliberately contains no new image bytes.
+export function configureAssetLibrary(base=null){libraryOrigin=base?new URL(base,projectRoot).href:null;}
 export function configureAssets(value, base = projectRoot.href) {
   validateAssets(value);
   manifest = value; origin = base.endsWith('/') ? base : `${base}/`;
@@ -13,7 +16,8 @@ export function assetUrl(path) {
   if (!path) return '';
   const clean = String(path).replace(/^.*?\/assets\//, 'assets/').replace(/^\.\.\//,'').replace(/^\//,'').split('?')[0];
   const canonical = manifest.aliases[clean] || clean;
-  return previewURLs[canonical] || new URL(canonical, origin).href;
+  const base=libraryOrigin&&/^assets\/(managed|scenes|flags)\//.test(canonical)?libraryOrigin:origin;
+  return previewURLs[canonical] || new URL(canonical, base).href;
 }
 export function wordAsset(word, fallback = '') { return assetUrl(manifest.words[word]?.path || fallback); }
 export function assetInfo(path) { return index.get(manifest.aliases[path] || path); }

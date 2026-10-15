@@ -8,7 +8,7 @@ import {triggerSurfaceEffects} from './surface-effects.mjs';
 import {animateScreen,DEFAULT_MOTION,transitionMotion} from './screen-motion.mjs';
 import {configureRules} from './rules-library.mjs';
 import {configCSS,viewIdFor} from '../design-system/model.mjs';
-import {configureAssets, observeAssets, assetUrl} from './asset-loader.mjs';
+import {configureAssets, configureAssetLibrary, observeAssets, assetUrl} from './asset-loader.mjs';
 import {configureScreenCopy,applyScreenCopy} from './screen-copy.mjs';
 import {syncElementMotion} from './element-motion.mjs';
 import {visualValue} from './element-styles.mjs';
@@ -71,6 +71,7 @@ export async function initDesign() {
     return response.json();
   }));
   configureRules(rules);
+  configureAssetLibrary(settings.branch?.startsWith('refactor/v2-')?base.href:null);
   configureAssets(catalog, window.__DS_ASSET_ORIGIN__ || base.href);
   let fonts = document.getElementById('ds-font-faces');
   if (!fonts) {fonts = document.createElement('style'); fonts.id = 'ds-font-faces'; document.head.append(fonts);}

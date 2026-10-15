@@ -145,7 +145,9 @@ try{
     await page.locator('[data-action="pause"]').click();const pixels=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(650);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),pixels,'Pause freezes every ink grain and mask pixel');
     await page.locator('[data-action="pause"]').click();await state(page,'feedback-wrong');await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').dataset.inkPhase==='erasing');
     await page.locator('[data-action="pause"]').click();const erased=await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL());await page.waitForTimeout(450);assert.equal(await page.locator('#scenic-map-ink').evaluate(n=>n.toDataURL()),erased);
-    await page.locator('[data-action="restart"]').click();await state(page,'playing');await page.waitForTimeout(SCENIC.inkDrawMs+SCENIC.openMs+200);const m=await metrics(page);assert.equal(m.task,'Zadanie 1');assert.equal(m.state,'playing');assert.equal(m.inkPhase,undefined);assert.equal(m.animations,0);
+    await page.locator('[data-action="restart"]').click();await state(page,'playing');await page.waitForTimeout(SCENIC.inkDrawMs+SCENIC.openMs+200);const m=await metrics(page);assert.equal(m.task,'Zadanie 1');assert.equal(m.state,'playing');assert.equal(m.inkPhase,undefined);
+    assert.equal(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running'&&a.effect?.target?.id!=='scenic-progress-fill').length),0,'Only the game clock progress may animate after restart');
+    assert(await page.locator('#scenic-map-ink').evaluate(n=>!n.getContext('2d').getImageData(0,0,n.width,n.height).data.some((v,i)=>i%4===3&&v!==0)),'Restart clears every ink pixel');
    });
    await check(engine+'-stable-scene-and-answer-geometry',browser,{},async page=>{
     await open(page);const before=await metrics(page);

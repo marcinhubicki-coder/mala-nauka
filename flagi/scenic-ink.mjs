@@ -17,22 +17,30 @@ export function createMapInk(canvas,sheet,app){
    const svg=result.svg.cloneNode(true);svg.setAttribute('width',r.width*dpr);svg.setAttribute('height',r.height*dpr);
    svg.querySelectorAll('style').forEach(n=>n.remove());
    const raster=svg.querySelector('image');
-   if(raster&&result.image){const c=surface(result.image.naturalWidth,result.image.naturalHeight);c.getContext('2d').drawImage(result.image,0,0);raster.setAttribute('href',c.toDataURL('image/png'));}
+   // The bitmap goes directly to Canvas; the SVG contains only its registered highlight.
+   if(raster)raster.remove();
    for(const path of svg.querySelectorAll('.country')){
     path.removeAttribute('style');path.setAttribute('style','animation:none;transform:none;mix-blend-mode:multiply');
     path.setAttribute('fill',path.dataset.country===record.id?'#a27437':'#d9c79e');path.setAttribute('fill-opacity',path.dataset.country===record.id?'.58':'1');path.setAttribute('stroke','#70471f');path.setAttribute('stroke-width','.85');
    }
-   const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs');defs.innerHTML='<radialGradient id="atlas-selected-wash" cx=".32" cy=".26" r=".85"><stop stop-color="#d0a65e"/><stop offset=".65" stop-color="#ad7f40"/><stop offset="1" stop-color="#82552c"/></radialGradient><filter id="atlas-country-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy=".6" stdDeviation=".65" flood-color="#6a411c" flood-opacity=".35"/></filter>';svg.prepend(defs);
+   const ns='http://www.w3.org/2000/svg',defs=document.createElementNS(ns,'defs');defs.innerHTML='<radialGradient id="atlas-selected-wash" cx=".32" cy=".26" r=".85"><stop stop-color="#d0a65e"/><stop offset=".65" stop-color="#ad7f40"/><stop offset="1" stop-color="#82552c"/></radialGradient>';svg.prepend(defs);
    const chosen=svg.querySelector('.scenic-country-overlay');if(chosen){chosen.setAttribute('fill','url(#atlas-selected-wash)');chosen.setAttribute('fill-opacity','.66');}
-   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.removeAttribute('style');halo.setAttribute('fill','none');halo.setAttribute('stroke','#ffe6ac');halo.setAttribute('stroke-width','2.1');halo.setAttribute('vector-effect','non-scaling-stroke');halo.setAttribute('filter','url(#atlas-country-glow)');}
+   const halo=svg.querySelector('.scenic-country-halo');if(halo){halo.removeAttribute('style');halo.setAttribute('fill','none');halo.setAttribute('stroke','#ffe6ac');halo.setAttribute('stroke-width','2.1');halo.setAttribute('vector-effect','non-scaling-stroke');halo.removeAttribute('filter');}
    const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
    const geo=surface(Math.round(r.width*dpr),Math.round(r.height*dpr)),ink=geo.getContext('2d');ink.scale(dpr,dpr);
-   try{ink.drawImage(await decode(url),0,0,r.width,r.height);}finally{URL.revokeObjectURL(url);}
+   try{
+    if(result.image){
+     const [x,y,w,h]=svg.getAttribute('viewBox').split(/\s+/).map(Number),sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;
+     ink.drawImage(result.image,x*sx,y*sy,w*sx,h*sy,0,0,r.width,r.height);
+    }
+    ink.save();ink.globalCompositeOperation='multiply';ink.shadowColor='#6a411c45';ink.shadowBlur=3*dpr;ink.shadowOffsetY=dpr;
+    ink.drawImage(await decode(url),0,0,r.width,r.height);ink.restore();
+   }finally{URL.revokeObjectURL(url);}
    // Transparent, softly irregular margins let the atlas become part of vellum.
    ink.globalCompositeOperation='destination-in';
    const feather=ink.createRadialGradient(r.width/2,r.height/2,r.height*.24,r.width/2,r.height/2,r.width*.64);
    feather.addColorStop(0,'#000');feather.addColorStop(.6,'#000');feather.addColorStop(1,'#0000');ink.fillStyle=feather;ink.fillRect(0,0,r.width,r.height);
-   for(const [vertical,reverse] of [[true,false],[true,true],[false,false],[false,true]]){const length=vertical?r.height:r.width,fade=ink.createLinearGradient(0,0,vertical?0:r.width,vertical?r.height:0);fade.addColorStop(0,reverse?'#000':'#0000');fade.addColorStop(reverse?.92:.08,'#000');fade.addColorStop(1,reverse?'#0000':'#000');ink.fillStyle=fade;ink.fillRect(0,0,r.width,r.height);}
+   for(const [vertical,reverse] of [[true,false],[true,true],[false,false],[false,true]]){const fade=ink.createLinearGradient(0,0,vertical?0:r.width,vertical?r.height:0);fade.addColorStop(0,reverse?'#000':'#0000');fade.addColorStop(reverse?.92:.08,'#000');fade.addColorStop(1,reverse?'#0000':'#000');ink.fillStyle=fade;ink.fillRect(0,0,r.width,r.height);}
    paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);
   }else{paint.fillStyle='#705332';paint.font='700 14px ScenicBody';paint.textAlign='center';paint.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.56,width-36);}
   for(const node of inner.querySelectorAll('.scenic-map-caption strong,.scenic-map-caption span')){
@@ -60,7 +68,7 @@ export function createMapInk(canvas,sheet,app){
   }
   grains=Array.from({length:SCENIC.inkGrains},()=>{
    const target=dark[Math.floor(rand()*dark.length)]||{x:width/2,y:height/2},side=Math.floor(rand()*4),t=rand();
-   const edge=side===0?{x:3,y:3+t*(height-6)}:side===1?{x:width-3,y:3+t*(height-6)}:side===2?{x:3+t*(width-6),y:3}:{x:3+t*(width-6),y:height-3};
+   const edge=side===0?{x:14,y:14+t*(height-28)}:side===1?{x:width-14,y:14+t*(height-28)}:side===2?{x:14+t*(width-28),y:14}:{x:14+t*(width-28),y:height-14};
    return {target,edge,delay:rand()*.43,duration:.31+rand()*.2,phase:rand()*Math.PI*2,swirl:9+rand()*27,size:.48+rand()*.52};
   });
   sheet.dataset.inkGrains=String(grains.length);sheet.dataset.inkBounds='contained';

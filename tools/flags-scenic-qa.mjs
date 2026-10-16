@@ -7,6 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {once} from 'node:events';
 import assert from 'node:assert/strict';
 import {SCENIC} from '../flagi/scenic-config.mjs';
+import {FLAGS} from '../data/flags.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),OUT=process.env.SCENIC_QA_OUT||join(ROOT,'docs/flags-adventure/qa-scenic');
 const types={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.json':'application/json','.woff':'font/woff'};
 const server=createServer(async(req,res)=>{
@@ -99,6 +100,15 @@ try{
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
+  });
+  if(phase==='full')await check(engine+'-all-europe-title-layout',browser,{reducedMotion:'reduce'},async page=>{
+   let first;
+   for(const record of FLAGS.filter(x=>x.continent==='europe')){
+    await open(page,record.id);await choose(page,false);await state(page,'feedback-wrong');
+    const title=await page.locator('#scenic-country-name').evaluate(n=>({name:n.getAttribute('aria-label'),size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
+    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([30,34,36].includes(title.size));assert.equal(title.name,record.country);
+    const viewport=await page.locator('.scenic-europe-map').boundingBox();if(first)assert.deepEqual(viewport,first,'All European names share the same map viewport');else first=viewport;
+   }
   });
   await check(engine+'-missing-watercolor-mask',browser,{},async page=>{
    await page.route('**/europe-edge-v22.webp',route=>route.abort());

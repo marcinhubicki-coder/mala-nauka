@@ -1,0 +1,102 @@
+{
+  "method": "Built-in imagegen: nine overlapping detail reconstructions of the original v26 atlas, assembled once with feathered overlap; one shared runtime bitmap.",
+  "width": 3658,
+  "height": 2688,
+  "bytes": 4381650,
+  "sha256": "c6e7cd5094027ef0a3859bdc3419c303e482136c2a8f1fd8ded0eaad97cee2ed",
+  "quality": 96,
+  "original": {
+    "width": 1463,
+    "height": 1075,
+    "file": "europe-painted-v26.webp",
+    "sha256": "be515a6c29f92243d494352b242d9aaa0bccca950e1ab4d94614e7738b2dfc9a"
+  },
+  "tileSourceExtent": {
+    "width": 1463,
+    "height": 1075
+  },
+  "tiles": [
+    {
+      "id": 0,
+      "x": 0,
+      "y": 0,
+      "w": 585,
+      "h": 430,
+      "file": "exec-4b24cb9e-9dc0-4c4e-b724-343252026b09.png",
+      "sha256": "d3f91be1916ab6fac91a7b89e5617c1d765d32d5fea81beedd8181560889067f"
+    },
+    {
+      "id": 1,
+      "x": 439,
+      "y": 0,
+      "w": 585,
+      "h": 430,
+      "file": "exec-b07260eb-1cef-4aa5-afb0-8a4e6f312cba.png",
+      "sha256": "6869a501e6824a42221bab9e1179422ec8a331b8e3d6bea21570e87c62490746"
+    },
+    {
+      "id": 2,
+      "x": 878,
+      "y": 0,
+      "w": 585,
+      "h": 430,
+      "file": "exec-2f7f3364-1a58-4607-9194-0d81bc883634.png",
+      "sha256": "9af3f0d6dad4bbac43ece09698ec2bbf3019f01ec4fa52ce0c813825b45e1b10"
+    },
+    {
+      "id": 3,
+      "x": 0,
+      "y": 323,
+      "w": 585,
+      "h": 430,
+      "file": "exec-23ac81e3-ffc4-4e5b-a4fa-67e36fdced69.png",
+      "sha256": "28d55ac3fa7683bc777044f86d39eabf883e2064475dae297dd4548b376d7e16"
+    },
+    {
+      "id": 4,
+      "x": 439,
+      "y": 323,
+      "w": 585,
+      "h": 430,
+      "file": "exec-352d4c0c-eb19-48f9-8fbc-5c1aa8c5f7de.png",
+      "sha256": "1eea6e294086d1ac2d46c5d5d65caed2c3e028c69979097d2c8c411b26a21c4d"
+    },
+    {
+      "id": 5,
+      "x": 878,
+      "y": 323,
+      "w": 585,
+      "h": 430,
+      "file": "exec-080cfe63-3a8d-41c9-a686-389593ec9262.png",
+      "sha256": "f58f67a5a788d7476df4503e15cc7c7b38ddf1cadde254563001882ac293aa5e"
+    },
+    {
+      "id": 6,
+      "x": 0,
+      "y": 645,
+      "w": 585,
+      "h": 430,
+      "file": "exec-74f5eb6c-a753-437c-bb3f-cc00abe34e83.png",
+      "sha256": "dcae5dcfebf3f76eb859308ab15229125ff299268124d49279c55751cae4630e"
+    },
+    {
+      "id": 7,
+      "x": 439,
+      "y": 645,
+      "w": 585,
+      "h": 430,
+      "file": "exec-6e68ebe9-20bd-46e3-b4bf-590b2996a745.png",
+      "sha256": "80b4b00f278e8393217e851e82ae386c7c750aafab95c09b405174c75251cb81"
+    },
+    {
+      "id": 8,
+      "x": 878,
+      "y": 645,
+      "w": 585,
+      "h": 430,
+      "file": "exec-70c79d5c-cb3b-4f04-a706-6cb4fdf59f73.png",
+      "sha256": "fb0a0eb5b8ff9af354569188abe31c06b8b55ea0159e26e9b2eca0cb24e81faf"
+    }
+  ],
+  "prompt": "This is an exact rectangular tile cropped from one registered geographic storybook watercolor atlas. EDIT TARGET: the attached crop. Reconstruct this SAME tile at the highest native resolution (about 1500x1100 or larger, same aspect ratio), with genuinely crisp small painted details for 3x zoom. Keep EXACT composition, exact crop, coastlines at exactly the same normalized pixel positions, same framing and palette. Keep every existing tree group, mountain range, sea wave and visible sailing boat part at its original location; improve their fine brushwork, tiny distinct needles/leaves, rock edges, canvas pigment detail. Do not zoom, pan, expand the crop, shift coastlines, move objects or add objects. Retain the complete continuous paint at all four edges because these edges overlap adjacent atlas tiles. No white margin, no border, no fading edge, no labels, flags, text, buildings or people. This is high resolution detail reconstruction of the exact existing art, not a redesigned map. Maintain the original coastlines and feature placement especially carefully.\n"
+}

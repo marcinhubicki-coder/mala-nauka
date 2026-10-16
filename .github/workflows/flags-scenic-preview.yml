@@ -14,6 +14,10 @@ on:
       - 'assets/maps/europe-pigment-*'
       - 'assets/maps/europe-terrain-*'
       - 'assets/maps/europe-edge-*'
+      - 'assets/maps/europe-atlas-v26.*'
+      - 'assets/maps/europe-painted-v27.*'
+      - 'tests/scenic-atlas-labels.test.mjs'
+      - 'tools/assemble-scenic-atlas-hd.mjs'
       - 'adventure-preview.mjs'
   workflow_dispatch:
 
@@ -39,12 +43,16 @@ jobs:
           node --check tools/flags-scenic-qa.mjs
           node --check flagi/scenic-europe.mjs
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
+          node --test tests/scenic-atlas-labels.test.mjs
       - name: Install browser
         run: |
           npm install --no-save --no-package-lock playwright@1.64.1
           npx playwright install --with-deps chromium webkit
-      - name: Generate geographical Europe artwork
-        run: node tools/build-scenic-europe.mjs
+      - name: Check registered atlas assets
+        run: |
+          test -s assets/maps/europe-painted-v27.webp
+          test -s assets/maps/europe-atlas-v26.svg
+          node --input-type=module -e "import fs from 'node:fs'; const atlas=JSON.parse(fs.readFileSync('assets/maps/europe-atlas-v26.json')); if(atlas.features.filter(x=>x.capital).length<45) throw Error('Missing capital geography');"
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
         continue-on-error: true

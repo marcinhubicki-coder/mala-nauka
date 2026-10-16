@@ -74,7 +74,7 @@ function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
   // Named size tiers, never a per-frame scale-to-fit loop. Both lines have a
   // permanent slot, so the geography camera does not move for long names.
-  const record=current(),spec=SCENIC.atlas.titles[record.id]||{size:record.country.length>10?30:record.country.length>7?34:36,lines:record.country.split(' ')};
+  const record=current(),spec=SCENIC.atlas.titles[record.id]||{size:record.country.length>10?32:record.country.length>7?38:44,lines:record.country.split(' ')};
   title.style.fontSize=spec.size+'px';title.parentElement.style.setProperty('--title-size',spec.size+'px');title.parentElement.style.setProperty('--title-lines',spec.lines.length);title.setAttribute('aria-label',record.country);
   title.replaceChildren(...spec.lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
 }
@@ -113,7 +113,7 @@ async function respond(chosenId){
   game.answer(chosenId);game.setPresentationHold(true);updateHud();
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
   feedback.textContent=correct?'Poprawna odpowiedź.':'Poprawna odpowiedź: '+record.country+'.';
-  $('scenic-map-flag').src=new URL('assets/flags/cloth-prebaked/'+record.id+'.webp',document.baseURI).href;
+  $('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent=record.capital;
   sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
@@ -128,6 +128,13 @@ async function respond(chosenId){
   if(!alive(owner))return;
   if(!mapResult?.found){
     mapHost.replaceChildren();const note=document.createElement('p');note.className='scenic-map-unavailable';note.textContent='Mapa jest chwilowo niedostępna.';mapHost.append(note);
+  }
+  const desktop=$('scenic-desktop-neighbors');desktop.replaceChildren();
+  if(mapResult?.found){
+    const title=document.createElement('h3');title.textContent='Sąsiedzi: '+record.country;desktop.append(title);
+    const list=document.createElement('ul');
+    for(const id of mapResult.neighbors){const neighbor=records.get(id);if(!neighbor)continue;const item=document.createElement('li'),image=document.createElement('img'),name=document.createElement('span');image.src=new URL(neighbor.flagSvg,document.baseURI).href;image.alt='';image.width=24;image.height=16;name.textContent=neighbor.country;item.append(image,name);list.append(item);}
+    if(list.children.length)desktop.append(list);else{const note=document.createElement('p');note.textContent='Państwo wyspiarskie — bez sąsiadów lądowych.';desktop.append(note);}
   }
   // Paper opens while geography decodes. Ink starts only once both are ready.
   await document.fonts.ready;if(!alive(owner))return;fitCaption();

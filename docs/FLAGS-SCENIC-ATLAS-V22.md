@@ -41,3 +41,19 @@ References: attached `Polish Geography Quiz: Europe and Neighbours.png`, `image(
 - Local constrained Chromium is an npm-packaged headless binary; CI uses pinned Playwright 1.64.1 Chromium/WebKit. No local browser binaries or node_modules are committed.
 - Physical iPhone 13 Pro Safari/PWA FPS, thermal behavior and memory pressure remain device verification; Linux WebKit is not physical iOS Safari.
 - Protected Vercel previews may require owner login. No deployment protection is disabled or bypassed by these changes.
+
+## Final reviewed result
+
+- Tested/deployed source: `efae33efc9f46266bc5392a224352a065c914e2f`. Raw final QA commit: `3d42c3e6a6b96fcbb564a5ede6102de5e8d9c0ba`. Game code and assets are identical between these commits.
+- [Full CI run](https://github.com/marcinhubicki-coder/mala-nauka/actions/runs/38834127156): **74/74 Chromium + WebKit**, zero JavaScript errors. Both engines inspect all 45 European title layouts and keep the geographic viewport fixed. Each continuous-game scenario completes five rounds on one page with pauses and slider transitions.
+- Local final source: **37/37**, zero JavaScript errors. Separate earlier camera interruption diagnostic: **3/3** on source `1056b53` (pause/resume, interruption by slider, interruption by restart); final suite also checks globe/near switching.
+- Iteration history is retained: initial source `1056b53` passed 72/72 before visual review exposed sparse overview labels. A global-only label fix then exposed empty labels on low/PWA crops; readable near anchors now blend smoothly to global anchors. Exhaustive title inspection found the Luxembourg tier issue. Final suite includes those regressions.
+- [Interactive preview](https://mala-nauka-4gvh8tsrl-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=pl): **READY**, source `efae33e`. Opening the protected host in the cloud browser reached owner login; no live hosted gameplay verification is claimed. No authentication bypass was created.
+- Final contact sheets under `docs/flags-adventure/qa-scenic-review-v25/` were generated from this single successful CI run and actually viewed: `trzy-stany.jpg`, `typografia.jpg`, `dwa-kadry.jpg`, `pergamin-klatki.jpg`, `atlas-atrament-klatki.jpg`, `piasek-klatki.jpg`, `geografia-i-ekrany.jpg`. Per-file hashes and provenance are in `provenance.json`.
+- Ink paint P95 on the CI runner: 3–8.7 ms; this is Canvas paint time, not measured iPhone FPS. Physical iPhone 13 Pro Safari/PWA memory, heat and frame pacing remain a device check.
+
+Saved project assets (built-in imagegen materials, then code-based geographic composition):
+
+- `/workspace/scratch/9bcf3bf1b990/mala-nauka/assets/maps/europe-terrain-v22.webp`
+- `/workspace/scratch/9bcf3bf1b990/mala-nauka/assets/maps/europe-edge-v22.webp`
+- `/workspace/scratch/9bcf3bf1b990/mala-nauka/assets/maps/europe-scenic.webp`

@@ -1,0 +1,45 @@
+{
+  "source_commit": "efae33efc9f46266bc5392a224352a065c914e2f",
+  "raw_qa_commit": "3d42c3e6a6b96fcbb564a5ede6102de5e8d9c0ba",
+  "workflow_run": 38834127156,
+  "engines": [
+    "Chromium",
+    "WebKit"
+  ],
+  "passed": 74,
+  "total": 74,
+  "js_errors": 0,
+  "european_title_records_per_engine": 45,
+  "consecutive_rounds_per_engine": 5,
+  "local_final_result": {
+    "passed": 37,
+    "total": 37
+  },
+  "map_git_blob": "ead407078e47758e1cf13b67935d447b4a6f1800",
+  "ink_paint_p95_runner_range_ms": [
+    3,
+    8.7
+  ],
+  "preview": "https://mala-nauka-4gvh8tsrl-nzckzxw2x6-4792s-projects.vercel.app/flagi/scenic-preview.html?country=pl",
+  "preview_state": "READY",
+  "manual_host_check": "Vercel owner login required. No protection change or share bypass performed. Frames are CI browser captures of identical source/assets.",
+  "physical_iphone": "Safari/PWA FPS, memory and thermal behavior still require a physical iPhone 13 Pro.",
+  "reviewed": [
+    "question/correct/wrong",
+    "all five specified title layouts",
+    "near/full Europe",
+    "opening/closing at 6,47,92 percent",
+    "ink drawing at 12,43,73,97 percent and erasing at 46 percent",
+    "sand falling,settling,forming and next question",
+    "low/large/PWA/microstate/northern cases"
+  ],
+  "files": {
+    "atlas-atrament-klatki.jpg": "ac15e370336f6cb4b6534296e41384528cee3ce43e060429fce1f2f9adc06f9b",
+    "dwa-kadry.jpg": "d62a748fa964b6f9056a36ea577e658f068070c6f2a2d53eb8b70fc467beea4d",
+    "geografia-i-ekrany.jpg": "cf071298e91359e9e0b9097c7c52097e677df2dc7738d58fef65d09904f66a65",
+    "pergamin-klatki.jpg": "1de4caaad7059e68e67f533e41a06e74c39b5ecbd86bb89b826a698f1da0c79f",
+    "piasek-klatki.jpg": "d40a233f04e98c3173d3ed862bee522a504e4ac9f10eb7c38d75e06cc8b9c7c8",
+    "trzy-stany.jpg": "9a454fe7c623183f1ea33193a386db5407ec46717666ed127218724521de7b91",
+    "typografia.jpg": "b0b7cc374b38e2d57b2d823cb0d817aa1c028db12b6b9598b6d2234150d529f0"
+  }
+}

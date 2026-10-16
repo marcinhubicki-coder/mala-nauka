@@ -1893,11 +1893,19 @@
     "answer": "ó",
     "difficulty": 2,
     "learning": {
-      "type": "memory",
-      "title": "Zapamiętaj „ó”",
-      "explanation": "Słowo „sokół” zapisujemy przez ó. Jeśli nie pomaga prosta wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ó wymienia się na o",
+      "explanation": "Ó wymienia się na o. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "sokół",
+          "to": "sokoła",
+          "change": "ó ↔ o"
+        }
+      ],
+      "relatedWords": [
+        "sokoła"
+      ],
       "forms": [
         "sokoła",
         "sokoły",
@@ -2067,17 +2075,17 @@
     "learning": {
       "type": "exchange",
       "title": "Ó wymienia się na o",
-      "explanation": "W słowie „nóżka” pomaga forma lub wyraz „noże”: ó wymienia się na o.",
+      "explanation": "W pisowni słowa nóżka pomaga wyraz noga: ó wymienia się na o.",
       "examples": [
         {
-          "from": "nóż",
-          "to": "noże",
+          "from": "nóżka",
+          "to": "noga",
           "change": "ó ↔ o"
         }
       ],
       "relatedWords": [
-        "nóż",
-        "noże"
+        "noga",
+        "nóżki"
       ],
       "forms": [
         "nóżki",
@@ -2435,9 +2443,9 @@
       "dyktando"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapamiętaj „ó”",
-      "explanation": "Słowo „Kraków” zapisujemy przez ó. Jeśli nie pomaga prosta wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "type": "pattern",
+      "title": "Ó w zakończeniu -ów",
+      "explanation": "W zakończeniu -ów piszemy ó. Zobacz: kotów, Kraków. W innych formach tych wyrazów może pojawić się o.",
       "examples": [],
       "relatedWords": [],
       "forms": [
@@ -2776,12 +2784,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2804,12 +2817,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Zapis przez ó warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2832,12 +2850,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2862,12 +2885,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „ó”",
+      "explanation": "Zapis przez ó warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2890,12 +2918,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2922,12 +2955,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2954,12 +2992,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis u/ó",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „u”",
+      "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   }
 ]

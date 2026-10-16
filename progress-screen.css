@@ -1,3 +1,4 @@
+@import './shared/journey.css';
 /* Progress dashboard: 390 × 844 CSS px, iPhone 13 Pro.
    All artwork, slots and arrow centers use the same phone-width unit. */
 html:has(#app[data-view="history"]),

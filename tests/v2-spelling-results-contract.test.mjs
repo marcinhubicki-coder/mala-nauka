@@ -14,7 +14,7 @@ test('Results and educational rule modal reuse one 18-piece results family',()=>
  }
  assert.equal(base.filter(x=>x.level==='family').length,1);
  assert.equal(base.find(x=>x.id==='spelling-result-repeat').kind,'container');
- assert.equal(base.find(x=>x.id==='spelling-result-history').action,'history');
+ assert.equal(base.find(x=>x.id==='spelling-result-history').action,'forge');
  assert.equal(base.filter(x=>x.action==='toggle-result').length,2);
 });
 test('Results action hierarchy is independent; one can be styled or moved without remounting the other',()=>{
@@ -23,7 +23,7 @@ test('Results action hierarchy is independent; one can be styled or moved withou
  assert.equal((compileViewMarkup('spelling-results',html).match(/data-ds-contract="v2"/g)||[]).length,18);
  assert.notEqual(items.find(x=>x.id==='spelling-result-repeat').parent,'spelling-result-history');
  assert.notEqual(items.find(x=>x.id==='spelling-result-history').parent,'spelling-result-repeat');
- assert.throws(()=>compileViewMarkup('spelling-results',html.replace('data-action="history"','data-action="repeat"')),/Action mismatch/);
+ assert.throws(()=>compileViewMarkup('spelling-results',html.replace('data-action="forge"','data-action="repeat"')),/Action mismatch/);
 });
 test('Every game result uses the shared compiled family',()=>{
  const src=readFileSync(new URL('../ortografia/result-screen.mjs',import.meta.url),'utf8');

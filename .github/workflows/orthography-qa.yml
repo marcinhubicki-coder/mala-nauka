@@ -77,7 +77,7 @@ jobs:
         run: |
           node tools/serve-preview.mjs 8765 > /tmp/orthography-http.log 2>&1 &
           echo $! > /tmp/orthography-http.pid
-      - name: All 41 contracts in iPhone and desktop production renderers
+      - name: All 45 contracts in iPhone and desktop production renderers
         run: node tools/qa-all-view-contracts-browser.mjs http://127.0.0.1:8765
         env:
           V2_SCREENSHOT_DIR: .design-qa/visual-v2/all41

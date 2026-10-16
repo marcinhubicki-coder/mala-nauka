@@ -35,6 +35,6 @@ test('Grouping does not drop use-level edit identities or independent actions',(
  assert.equal(grouped.filter(x=>x.recipe==='button-back').length,1);
  const vocab=countDesignConcepts(grouped);
  assert.equal(vocab.atomVocabulary,13);
- assert.ok(vocab.sharedBuildingBlocks>=40&&vocab.sharedBuildingBlocks<=90);
+ assert.ok(vocab.sharedBuildingBlocks>=40&&vocab.sharedBuildingBlocks<=110);
  assert.ok(vocab.groups>0&&vocab.families>0);
 });

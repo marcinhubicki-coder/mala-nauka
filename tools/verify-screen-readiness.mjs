@@ -56,11 +56,9 @@ try{
    const {mountedViewContract}=await import('/shared/view-contract-mount.mjs'),root=document.querySelector('#app');
    return mountedViewContract(root,document.documentElement.dataset.dsView).filter(item=>!root.contains(item.node)&&!item.node.closest('dialog[open]')).map(item=>item.id);
   }),[],'Closed dialogs must not leak components into the next screen');
-  await game.locator('[data-action="history"]').tap();
-  await game.locator('#app[data-view="history"]').waitFor({timeout:15000});
-  if(await game.locator('[data-progress="collection"]').count())await game.locator('[data-progress="collection"]').first().tap();
-  await game.locator('[data-progress="dashboard"]').tap();
-  await game.locator('[data-action="return-results"]').tap();
+  await game.locator('[data-action="forge"]').tap();
+  await game.locator('.journey-forge').waitFor({timeout:15000});
+  await game.locator('[data-progress="return-results"]').tap();
   await game.locator('[data-action="result-back"]').tap();
   await game.locator('[data-action="home"]').tap();
   await page.locator('.home-canvas').waitFor({timeout:15000});

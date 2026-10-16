@@ -481,9 +481,9 @@
     "answer": "ch",
     "difficulty": 1,
     "learning": {
-      "type": "memory",
-      "title": "Zapamiętaj „ch”",
-      "explanation": "Słowo „schody” zapisujemy przez ch. Jeśli nie pomaga prosta wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
+      "type": "pattern",
+      "title": "Ch po literze s",
+      "explanation": "W słowach schody, schować i wschód po s zapisujemy ch. Zapamiętaj wspólny fragment sch.",
       "examples": [],
       "relatedWords": [],
       "forms": [
@@ -1570,11 +1570,19 @@
     "answer": "ch",
     "difficulty": 1,
     "learning": {
-      "type": "memory",
-      "title": "Zapamiętaj „ch”",
-      "explanation": "Słowo „cicho” zapisujemy przez ch. Jeśli nie pomaga prosta wymiana, najlepiej zapamiętać poprawny zapis i skojarzyć go z obrazkiem.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ch wymienia się na sz",
+      "explanation": "Ch wymienia się na sz. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "cicho",
+          "to": "cisza",
+          "change": "ch ↔ sz"
+        }
+      ],
+      "relatedWords": [
+        "cisza"
+      ],
       "forms": [],
       "sources": [
         {

@@ -6,7 +6,7 @@ export function ruleGroups(words,category){
     const learning=word.learning,key=learning.type+'|'+learning.title;
     if(!groups.has(key))groups.set(key,{key,title:learning.title,type:learning.type,explanation:learning.explanation,examples:[],words:[]});
     const group=groups.get(key);
-    if(group.words.length<10)group.words.push(word);
+    group.words.push(word);
     for(const example of learning.examples){
       if(group.examples.length<10&&!group.examples.some(item=>item.from===example.from&&item.to===example.to))group.examples.push(example);
     }

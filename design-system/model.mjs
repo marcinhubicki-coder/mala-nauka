@@ -1,3 +1,4 @@
+import {validateProgression} from '../shared/progression.mjs';
 import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {validateBehaviors} from './behaviors-model.mjs';
 import {validateNavigation} from '../shared/navigation.mjs';
@@ -61,6 +62,8 @@ export function validateConfig(config) {
   validateTypeScale(config);
   if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(p.hiddenInspectorGroups&&(!Array.isArray(p.hiddenInspectorGroups)||p.hiddenInspectorGroups.some(id=>!['geometry','animation','surface','text','colors','image','clip','shared','advanced','scope'].includes(id))))throw Error('Nieprawidłowa grupa panelu.');if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 
+  if(config.progression)validateProgression(config.progression);
+  if(config.testing&&typeof config.testing.includeProfiles!=='boolean')throw Error('Nieprawidłowa opcja profili testowych.');
   if(config.effects)validateEffects(resolved.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(resolved.tokens);

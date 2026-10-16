@@ -12,11 +12,11 @@ import {CENTRAL_DESIGN_BRANCH,pinnedContentSource} from '../tools/content-source
 const registry=JSON.parse(readFileSync(new URL('../design-system/registry.json',import.meta.url)));
 const base=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url)));
 test('Every registered V2 view has a validated source-owned renderer contract',()=>{
- assert.equal(registry.views.length,41);
+ assert.equal(registry.views.length,45);
  assert.deepEqual(new Set(Object.keys(VIEW_CONTRACTS)),new Set(registry.views.map(v=>v.id)));
  for(const view of registry.views){assert.ok(validateViewContract(view.id));assert.ok(viewContract(view.id).length>=8,view.id);}
 });
-test('All 41 view edits survive project publication and PWA export without a second design draft',()=>{
+test('All registered view edits survive project publication and PWA export without a second design draft',()=>{
  for(const {id:view} of registry.views){
   const item=viewContract(view).find(item=>item.kind==='button'&&!item.repeatKey&&!item.within);
   assert.ok(item,view);

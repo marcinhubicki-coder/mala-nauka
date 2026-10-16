@@ -5,12 +5,20 @@ Od tej zmiany zapis Studio zawiera aktywne ustawienia wyglądu. Nie ma drugiego,
 ## Praca i publikacja
 
 1. Komponenty, Animacje oraz Efekty korzystają z `design-system/config.json` i prawdziwych rendererów gry.
-2. Zmiany pozostają lokalnym szkicem do użycia „Zapisz na GitHub”. Ten zapis aktualizuje `design/system-v1` i jego Preview. Nie publikuje automatycznie na `main`.
+2. Zmiany pozostają lokalnym szkicem do użycia „Zapisz na GitHub”. W Studio V2 ten zapis aktualizuje `refactor/v2-parity-first` i jego Preview. Nie publikuje automatycznie na `main`.
 3. „Test PWA” korzysta z całego drzewa źródłowego tego commita Studio. Eksport nie podmienia silnika bańki, nie nakłada osobnego CSS i nie wybiera alternatywnego pliku konfiguracji.
 4. Po testach można promować zapisany commit do produkcji. Geometria, widoczność, kolejność oraz animacje są częścią tego samego kontraktu.
 5. Gdy użytkownik prosi agenta o eksport do PWA, należy użyć kontraktu i źródeł Studio oraz `optimizedTestConfig`; nie dopisywać efektów wyłącznie na gałęzi testowej.
 
 `elementOrder[view][parent]` przechowuje identyfikatory rodzeństwa. Przeciąganie zapisuje kolejność. Tło nie jest przeciągane, elementy nie zmieniają rodziców. Przy odrzuceniu zmiany wraca pierwotna kolejność DOM. Ukrycie zachowuje miejsce (`hidden`), usunięcie z układu zwalnia miejsce (`removed`).
+
+## Kontrakty wszystkich widoków V2
+
+Wszystkie 41 widoków rejestru używa jawnego kontraktu z `shared/view-contracts.mjs`. Nowe wiązania rzeczywistych rendererów są w `shared/view-bindings.mjs`; montowanie i walidacja są wspólne dla Studio i PWA. Niepełny kontrakt zatrzymuje montowanie zamiast przełączać ekran na historyczny klasyfikator DOM.
+
+Listy graczy, słów, zasad, sesji i odpowiedzi mają identyfikatory oparte na kluczu rekordu. Zmiana kolejności nie przenosi wyjątku wyglądu na inny rekord. Dynamiczny tekst i dekoracje pozostają wewnątrz zadeklarowanych części.
+
+Biblioteka Studio czyta zweryfikowany, pochodny spis 41 przykładów. Odcisk kontraktów unieważnia nieaktualny spis; build blokuje brak widoku lub obcy identyfikator. Ten spis przyspiesza uruchomienie edytora, a PWA stosuje bezpośrednio kontrakty rendererów. Szczegóły i testy: `docs/V2-ALL-VIEW-CONTRACTS.md`.
 
 ## Animacje i panel
 

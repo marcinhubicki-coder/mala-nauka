@@ -33,10 +33,10 @@ test('the only saved profile can be deleted and leaves an empty profile list',as
  const only=await service.createPlayer({nickname:'Maja',pinEnabled:false});await service.useCreatedPlayer(only.id);
  await service.deletePlayer(only.id);assert.deepEqual(await service.listPlayers(),[]);assert.equal(await service.getSessionPlayer(),null);
 });
-test('rules use existing explanations with bounded distinct illustrated examples',async()=>{
+test('rules use existing explanations with all distinct words and bounded explanatory pairs',async()=>{
  const words=(await Promise.all(Array.from({length:8},(_,i)=>readFile(new URL(`../data/words-0${i+1}.json`,import.meta.url),'utf8').then(JSON.parse)))).flat();
  for(const category of new Set(words.map(w=>w.category))){
   const groups=ruleGroups(words,category);assert.ok(groups.length);
-  for(const group of groups){assert.ok(group.words.length<=10);assert.ok(group.examples.length<=10);assert.equal(new Set(group.words.map(w=>w.word)).size,group.words.length);assert.ok(words.some(w=>w.learning.explanation===group.explanation));assert.ok(group.words.every(w=>w.category===category&&w.learning.title===group.title));}
+  for(const group of groups){assert.ok(group.words.length<=words.length);assert.ok(group.examples.length<=10);assert.equal(new Set(group.words.map(w=>w.word)).size,group.words.length);assert.ok(words.some(w=>w.learning.explanation===group.explanation));assert.ok(group.words.every(w=>w.category===category&&w.learning.title===group.title));}
  }
 });

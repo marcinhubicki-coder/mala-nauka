@@ -16,12 +16,6 @@
     "particleBudget": 55,
     "ambientSoftness": 0.15
   },
-  "hidden": [
-    {
-      "scope": "global",
-      "family": "text-wizard-note",
-      "mode": "removed"
-    }
-  ],
-  "sourceCommit": "6291ed30236dce554368477a296623db1d52d7cf"
+  "hidden": [],
+  "sourceCommit": "e48f1c9f495448388a41c543c4f8bdceb914b1f2"
 }

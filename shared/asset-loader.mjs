@@ -3,7 +3,10 @@ import {resolveRules,configureRules,ruleLibrary} from './rules-library.mjs';
 import {validateAssets} from '../design-system/validation.mjs';
 const projectRoot = new URL('../', import.meta.url);
 let manifest = {assets:[], aliases:{}, words:{}, revision:'unloaded'}, origin = projectRoot.href;
-let index = new Map(), previewURLs={};
+let index = new Map(), previewURLs={}, libraryOrigin=null;
+// Kept separate from the word/content origin. After a Studio save that origin
+// points at an app commit which deliberately contains no new image bytes.
+export function configureAssetLibrary(base=null){libraryOrigin=base?new URL(base,projectRoot).href:null;}
 export function configureAssets(value, base = projectRoot.href) {
   validateAssets(value);
   manifest = value; origin = base.endsWith('/') ? base : `${base}/`;
@@ -13,7 +16,8 @@ export function assetUrl(path) {
   if (!path) return '';
   const clean = String(path).replace(/^.*?\/assets\//, 'assets/').replace(/^\.\.\//,'').replace(/^\//,'').split('?')[0];
   const canonical = manifest.aliases[clean] || clean;
-  return previewURLs[canonical] || new URL(canonical, origin).href;
+  const base=libraryOrigin&&/^assets\/.+\.(?:png|jpe?g|webp|avif|svg)$/i.test(canonical)?libraryOrigin:origin;
+  return previewURLs[canonical] || new URL(canonical, base).href;
 }
 export function wordAsset(word, fallback = '') { return assetUrl(manifest.words[word]?.path || fallback); }
 export function assetInfo(path) { return index.get(manifest.aliases[path] || path); }
@@ -62,3 +66,19 @@ export async function loadWords({raw=false}={}) {
 }
 
 export function previewAssets(urls={}){previewURLs=urls;}
+
+// A deferred library deliberately does not install the entire photo bank.
+// Offline rounds use illustrations already fetched by this PWA.
+export async function offlinePlayableWords(rows,{online=globalThis.navigator?.onLine!==false,cacheStorage=globalThis.caches}={}){
+ if(online)return rows;if(!cacheStorage)return [];
+ const cached=await cachedGraphicPaths(cacheStorage);
+ return rows.filter(row=>{const path=wordAsset(row.word);return path&&cached.has(new URL(path,projectRoot).pathname);});
+}
+export async function cachedGraphicPaths(cacheStorage=globalThis.caches){
+ const cached=new Set();if(!cacheStorage)return cached;
+ for(const name of await cacheStorage.keys()){
+  const cache=await cacheStorage.open(name);
+  for(const request of await cache.keys())cached.add(new URL(request.url,projectRoot).pathname);
+ }
+ return cached;
+}

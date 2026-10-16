@@ -1,4 +1,5 @@
 import {pageHeading} from '../shared/navigation-parts.mjs';
+import {compileViewMarkup,viewAttrs} from '../shared/view-contracts.mjs';
 import {missionIllustration} from '../shared/mission-parts.mjs';
 import {transitionToResult} from '../ortografia/result-motion.mjs';
 import {gameSound} from '../shared/sound-runtime.mjs';
@@ -84,7 +85,8 @@ function makeAnswers(correct, pool = [], min = 0, max = 100) {
   return [...values].sort((a, b) => a - b);
 }
 
-function makeQuestion(mode) {
+function makeQuestion(mode){return {...generateQuestion(mode),roundQuestionId:crypto.randomUUID()};}
+function generateQuestion(mode) {
   if (mode === 'add') {
     let a = randomInt(2, 60);
     let b = randomInt(2, 60);
@@ -126,7 +128,7 @@ function makeQuestion(mode) {
   };
 }
 
-function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title'});}
+function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title',contractView:'math-settings',backId:'math-back',titleId:'math-heading'});}
 
 function gameTopbar() {
   return `
@@ -151,26 +153,26 @@ function renderCategories() {
   state.question = null;
   resetAttemptState();
 
-  app.innerHTML = `
+  app.innerHTML = compileViewMarkup('math-settings',`
     ${setupTopbar()}
     <section class="screen math-setup-screen">
 
 
-      <section class="wizard-intro mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration('math')}<div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
-      <section class="math-duration-setup" aria-label="Czas rozgrywki">
+      <section class="wizard-intro mission-card" ${viewAttrs('math-settings','math-mission')}>${missionIllustration('math')}<div><h2 ${viewAttrs('math-settings','math-mission-title')}>Twoja mała misja</h2><p ${viewAttrs('math-settings','math-mission-hint')}>Policz i odkryj odpowiedź.</p></div></section>
+      <section class="math-duration-setup" ${viewAttrs('math-settings','math-duration')} aria-label="Czas rozgrywki">
         <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Wybierz czas rundy">
           ${DURATIONS.map(duration => `
-            <button type="button" class="math-duration-choice ${duration === state.duration ? 'is-selected' : ''}" data-duration="${duration}">
+            <button type="button" class="math-duration-choice ${duration === state.duration ? 'is-selected' : ''}" ${viewAttrs('math-settings','math-duration-'+duration)} data-action="choose-duration" data-duration="${duration}">
               ${duration / 60} min
             </button>
           `).join('')}
         </div>
       </section>
 
-      <div class="category-grid" aria-label="Kategorie matematyki">
+      <div class="category-grid" ${viewAttrs('math-settings','math-categories')} aria-label="Kategorie matematyki">
         ${categoryItems.map(item => `
-          <button class="category-card ${state.selectedMode === item.key ? 'active is-selected-mode' : ''}" type="button" data-category="${item.key}">
+          <button class="category-card ${state.selectedMode === item.key ? 'active is-selected-mode' : ''}" ${viewAttrs('math-settings','math-category-'+item.key)} type="button" data-action="choose-category" data-category="${item.key}">
             <span class="category-symbol" aria-hidden="true">${item.symbol}</span>
             <span class="category-name">${item.label}</span>
           </button>
@@ -178,12 +180,12 @@ function renderCategories() {
       </div>
 
       <div class="math-start-panel">
-        <button type="button" class="math-start-button" data-start>
+        <button type="button" class="math-start-button" ${viewAttrs('math-settings','math-start')} data-action="start-game" data-start>
           Rozpocznij <span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
-  `;
+  `);
 
   app.querySelectorAll('[data-duration]').forEach(button => {
     button.addEventListener('click', () => {
@@ -277,7 +279,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
 
   app.innerHTML = `
     ${gameTopbar()}
-    <section class="screen quiz-screen" data-math-quiz data-operation="${q.mode}" data-correct-answer="${q.correct}">
+    <section class="screen quiz-screen" data-math-quiz data-question-id="${q.roundQuestionId}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
       <div class="quiz-stage ${showExplainer ? 'has-explainer' : ''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>

@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {PIN_PARTS,pinAttrs,validatePinParts,hydratePinParts} from '../shared/pin-parts-contract.mjs';
+import {pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from '../shared/profile-parts.mjs';
+import {readFileSync} from 'node:fs';
+test('PIN inner family has 3 mode controls, 4 individual dots and 12 independent keys',()=>{
+ assert.equal(validatePinParts(),true);
+ assert.equal(PIN_PARTS.mode.length,3);
+ assert.equal(PIN_PARTS.code.length,18);
+ assert.equal(PIN_PARTS.none.length,1);
+ assert.equal(PIN_PARTS.code.filter(x=>x.kind==='key').length,12);
+ assert.equal(PIN_PARTS.code.filter(x=>x.recipe==='icon-pin-dot').length,4);
+ const keypad=pinKeypadMarkup(3,'Zapisz profil');
+ assert.equal((keypad.match(/data-ds-key="pin-key-/g)||[]).length,12);
+ assert.equal((keypad.match(/data-action="pin-digit"/g)||[]).length,10);
+ assert.equal((keypad.match(/data-action="pin-backspace"/g)||[]).length,1);
+ assert.equal((keypad.match(/data-action="submit-pin"/g)||[]).length,1);
+ assert.equal((pinDotsMarkup(2).match(/data-ds-key="pin-dot-/g)||[]).length,4);
+ assert.equal((pinModeMarkup(true).match(/data-ds-key="pin-option-/g)||[]).length,2);
+ assert.match(pinAttrs('pin-key-back'),/control-pin-key/);
+});
+test('Declarative PIN hydration preserves key/dot node identities and checks actions',()=>{
+ const rows=[...PIN_PARTS.mode,...PIN_PARTS.code];
+ const nodes=rows.map(row=>({dataset:{dsKey:row.id,dsRecipe:row.recipe,dsKind:row.kind,...(row.action?{action:row.action}:{})}}));
+ const card={querySelectorAll:()=>nodes};
+ assert.equal(hydratePinParts(card,{hasMode:true,hasKeypad:true}),21);
+ const before=[...nodes];
+ assert.equal(hydratePinParts(card,{hasMode:true,hasKeypad:true}),21);
+ assert.ok(nodes.every((node,i)=>node===before[i]&&node.dataset.dsSubcontract==='pin-controls'));
+ nodes.find(x=>x.dataset.dsKey==='pin-key-submit').dataset.action='bad';
+ assert.throws(()=>hydratePinParts(card,{hasMode:true,hasKeypad:true}),/PIN action mismatch/);
+ const onlyMode=[...PIN_PARTS.mode,...PIN_PARTS.none].map(row=>({dataset:{dsKey:row.id,dsRecipe:row.recipe,dsKind:row.kind,...(row.action?{action:row.action}:{})}}));
+ assert.equal(hydratePinParts({querySelectorAll:()=>onlyMode},{hasMode:true,hasKeypad:false}),4);
+});
+test('Real profile flows hydrate PIN on initial screen and on toggling code/none',()=>{
+ const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
+ assert.match(app,/hydratePinParts\(root\.querySelector\('\.pin-card'\)/);
+ assert.match(app,/fields\.innerHTML=pinFieldsMarkup\(\);hydratePinParts\(card/);
+ assert.match(app,/pinAttrs\('pin-no-code-submit'\)/);
+});

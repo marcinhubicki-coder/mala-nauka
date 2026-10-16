@@ -20,11 +20,8 @@
 .player-card.is-selected { background-color:var(--profile-accent-soft); box-shadow:0 12px 26px #3b76b81c; }
 .player-card:active:not(:disabled) { transform:scale(.99); }
 .player-card strong { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:650 clamp(32px,10.6vw,46px)/1.05 var(--ds-font-body),ui-rounded,system-ui,sans-serif; color:var(--player-navy); letter-spacing:-.6px; }
-.player-avatar-art { display:block; width:106px; height:106px; flex:0 0 106px; border-radius:50%; background-image:url("assets/brand/player-avatars-3d.webp"); background-size:200% 200%; background-repeat:no-repeat; filter:drop-shadow(0 4px 5px #6d80a516); }
-.player-avatar-art[data-avatar="a"] { background-position:0 0; }
-.player-avatar-art[data-avatar="b"] { background-position:100% 0; }
-.player-avatar-art[data-avatar="c"] { background-position:0 100%; }
-.player-avatar-art[data-avatar="d"] { background-position:100% 100%; }
+.player-avatar-art { display:block; width:106px; height:106px; flex:0 0 auto; box-sizing:border-box; aspect-ratio:1 / 1; min-width:0; min-height:0; border-radius:50%; overflow:hidden; filter:drop-shadow(0 4px 5px #6d80a516); }
+.player-avatar-image { display:block; width:100%; height:100%; aspect-ratio:1 / 1; object-fit:contain; border-radius:50%; max-width:100%; max-height:100%; pointer-events:none; user-select:none; -webkit-user-drag:none; }
 .player-select-mark { display:grid; place-items:center; width:43px; height:43px; justify-self:end; }
 .player-select-mark .empty-check { display:block; width:39px; height:39px; border:2.5px solid #9aa4c6; border-radius:50%; background:#fff8; }
 .player-select-mark .check { display:grid; place-items:center; width:43px; height:43px; border-radius:50%; background-color:var(--profile-accent); background-image:radial-gradient(circle at 35% 24%,#ffffff4f,transparent 48%); box-shadow:0 0 0 7px var(--profile-accent-soft),inset 0 1px 1px #ffffff60; color:#fff; transition:background-color var(--profile-color-ms) cubic-bezier(.22,.75,.22,1),box-shadow var(--profile-color-ms) cubic-bezier(.22,.75,.22,1); }
@@ -94,8 +91,8 @@
 .player-form-card h2,.pin-card h2{margin:9px 0 6px;font-family:var(--ds-font-body),ui-rounded,system-ui,sans-serif;font-size:24px;color:var(--player-navy)}
 .player-form-card>p,.pin-card>p{margin:0;color:#7080a4;font-size:12px;line-height:1.4}
 .create-avatar-preview{display:grid;place-items:center;height:82px}
-.player-avatar-large{width:80px;height:80px;flex:0 0 80px;aspect-ratio:1}
-.settings-avatar{width:44px;height:44px;flex:0 0 44px;filter:none}
+.player-avatar-large{width:80px;height:80px;flex:0 0 auto;aspect-ratio:1 / 1}
+.settings-avatar{width:44px;height:44px;flex:0 0 auto;filter:none}
 
 #player-create-form{display:flex;flex-direction:column;gap:9px;margin-top:18px;text-align:left}
 #player-create-form label,.avatar-label{font-size:11px;font-weight:800;color:#60728a;padding-left:3px}
@@ -136,9 +133,7 @@
 .nickname-error{display:none!important}
 .avatar-picker{gap:8px}
 .avatar-choice .player-avatar-art{max-width:none;max-height:none;aspect-ratio:1}
-.player-avatar-art:is([data-avatar="e"],[data-avatar="f"],[data-avatar="g"],[data-avatar="h"],[data-avatar="i"],[data-avatar="j"],[data-avatar="k"],[data-avatar="l"]){background-image:url('assets/brand/player-avatars-extra-v1.webp');background-size:400% 200%}
-.player-avatar-art[data-avatar="e"]{background-position:0 0}.player-avatar-art[data-avatar="f"]{background-position:33.3333% 0}.player-avatar-art[data-avatar="g"]{background-position:66.6667% 0}.player-avatar-art[data-avatar="h"]{background-position:100% 0}
-.player-avatar-art[data-avatar="i"]{background-position:0 100%}.player-avatar-art[data-avatar="j"]{background-position:33.3333% 100%}.player-avatar-art[data-avatar="k"]{background-position:66.6667% 100%}.player-avatar-art[data-avatar="l"]{background-position:100% 100%}
+/* All twelve avatars use one centered 384px crop instead of mixed 2×2 and 4×2 sprite rules. */
 .pin-profile{display:flex;gap:16px;align-items:center;margin-bottom:17px;text-align:left}
 .pin-profile h2{margin:0;font-size:clamp(24px,calc(min(224px,100vw - 166px) / var(--nickname-length,6)),40px);line-height:1.1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.4px}
 .pin-instruction{font-size:23px;font-weight:500;margin:16px 0 8px;color:var(--player-navy);white-space:nowrap}.pin-instruction strong{font-weight:700}
@@ -156,7 +151,7 @@
 .keyboard-open .player-form-card{padding-top:10px}.keyboard-open .player-form-card h2{font-size:22px}
 .player-title h1,#app[data-view="player-create"] .page-head h1,#app[data-view="player-pin"] .page-head h1,.player-form-card h2,.pin-profile h2{font-family:var(--ds-font-display),var(--ds-font-body),sans-serif;font-weight:700}
 .player-form-card h2{font-size:23px}.player-title h1{font-size:clamp(35px,11.3vw,48px)}
-.player-avatar-extra{background:none!important;overflow:hidden}.player-avatar-extra svg{display:block;width:100%;height:100%;overflow:hidden}
+/* No overlaid SVG portraits: all avatars are rendered through the same surface atom. */
 
 /* Eight widest letters fit at 390 px, without squeezing the avatar. */
 .player-card{grid-template-columns:84px minmax(0,1fr) 30px;gap:12px;padding:8px 12px}

@@ -35,6 +35,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     const running=animation;
     running.finished.catch(()=>{}).then(()=>{if(animation===running){animation=null;try{running.cancel();}catch{}}});
   };
+  const markProgress = fraction => rail.classList.toggle('is-near-end',fraction>=.82);
   const draw = (x,amount=0,direction=1) => {
     current = x;
     handle.style.transform = transform(x,amount,direction);
@@ -42,7 +43,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
   const complete=(travel=gesture?.travel??current)=>{
     rail.dispatchEvent(new CustomEvent('mala-nauka:continue-sound',{bubbles:true}));
     const from=handle.style.transform||transform(current),duration=Math.max(120,Math.min(settings.fillDuration,settings.springDuration));
-    completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');
+    completed=true;gesture=null;rail.classList.remove('is-dragging');rail.classList.add('is-complete');markProgress(1);rail.style.setProperty('--drag-progress',1);rail.setAttribute('aria-valuenow','100');
     current=travel;handle.style.transform=transform(travel);
     if(!preference.matches&&typeof handle.animate==='function')settleAnimation([
       {transform:from,easing:'cubic-bezier(.18,.76,.22,1)'},
@@ -56,7 +57,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     refresh();
     gesture = null;
     animation?.cancel();animation = null;
-    rail.classList.remove('is-dragging','is-complete');
+    rail.classList.remove('is-dragging','is-complete','is-near-end');
     rail.style.setProperty('--drag-progress',0);
     rail.setAttribute('aria-valuenow','0');
     const from = handle.style.transform||transform(current),distance=current;
@@ -89,7 +90,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     const speed=Math.min(1,Math.abs(delta)/elapsed*Math.max(1,jelly.inertia??1)),between=Math.sin(Math.PI*gesture.fraction);
     draw(x,Math.min(1,between*.68+speed*.34),gesture.direction);
     gesture.lastX=x;gesture.lastTime=now;
-    rail.style.setProperty('--drag-progress',gesture.fraction);
+    rail.style.setProperty('--drag-progress',gesture.fraction);markProgress(gesture.fraction);
     rail.setAttribute('aria-valuenow',String(Math.round(gesture.fraction*100)));
   };
   const up = event => {
@@ -107,7 +108,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
     refresh();
     const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;
     const x=event.key==='Home'?0:Math.max(0,Math.min(travel,current+(event.key==='ArrowRight'?1:-1)*travel/10));
-    const direction=Math.sign(x-current)||1,from=handle.style.transform||transform(current);draw(x);rail.style.setProperty('--drag-progress',travel?x/travel:0);rail.setAttribute('aria-valuenow',String(Math.round(x/travel*100)));
+    const direction=Math.sign(x-current)||1,from=handle.style.transform||transform(current);draw(x);rail.style.setProperty('--drag-progress',travel?x/travel:0);markProgress(travel?x/travel:0);rail.setAttribute('aria-valuenow',String(Math.round(x/travel*100)));
     if(x>=travel-1)complete(travel);
     else if(!preference.matches&&typeof handle.animate==='function')settleAnimation([{transform:from},{transform:transform(x,.54,direction),offset:.64},{transform:transform(x)}],Math.min(220,settings.springDuration));
   };
@@ -117,7 +118,7 @@ export function createContinueDrag(rail, { canContinue, onComplete, completionDe
   rail.addEventListener('pointercancel',cancel);
   rail.addEventListener('lostpointercapture',cancel);
   rail.addEventListener('keydown',key);
-  return {setProgress:fraction=>{clearTimeout(completionTimer);completed=false;reset(false);const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;if(fraction>=1)complete(travel);else{draw(Math.max(0,Math.min(1,fraction))*travel);rail.style.setProperty('--drag-progress',fraction);rail.setAttribute('aria-valuenow',String(Math.round(fraction*100)));}},reset:()=>{clearTimeout(completionTimer);completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
+  return {setProgress:fraction=>{clearTimeout(completionTimer);completed=false;reset(false);const travel=rail.clientWidth-handle.offsetWidth-2*handle.offsetLeft;if(fraction>=1)complete(travel);else{draw(Math.max(0,Math.min(1,fraction))*travel);rail.style.setProperty('--drag-progress',fraction);markProgress(fraction);rail.setAttribute('aria-valuenow',String(Math.round(fraction*100)));}},reset:()=>{clearTimeout(completionTimer);completed=false;rail.style.removeProperty('--drag-progress');reset(false);},destroy:()=>{
     clearTimeout(completionTimer);animation?.cancel();
     rail.removeEventListener('pointerdown',down);rail.removeEventListener('pointermove',move);
     rail.removeEventListener('pointerup',up);rail.removeEventListener('pointercancel',cancel);

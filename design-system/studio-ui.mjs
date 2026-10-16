@@ -60,10 +60,11 @@ export function librarySections(catalog,level){
  ].filter(section=>section.rows.length);
 }
 
-export const PREVIEW_DEVICE={width:414,height:876,screenWidth:390,screenHeight:844};
-export function previewScale(width,height,{paddingX=24,paddingY=24,columns=1,gap=18}={}){
+import {previewDevice,PREVIEW_DEVICES} from './preview-device.mjs';
+export const PREVIEW_DEVICE=PREVIEW_DEVICES.iphone;
+export function previewScale(width,height,{paddingX=24,paddingY=24,columns=1,gap=18,device=previewDevice()}={}){
  const availableWidth=Math.max(0,(width-paddingX-(columns-1)*gap)/columns);
- return Math.min(1,availableWidth/PREVIEW_DEVICE.width,Math.max(0,height-paddingY)/PREVIEW_DEVICE.height);
+ return Math.min(1,availableWidth/device.width,Math.max(0,height-paddingY)/device.height);
 }
 
 export function mapViewIcon(view={}){

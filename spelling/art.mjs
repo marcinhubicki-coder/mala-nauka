@@ -1,3 +1,4 @@
+const escapeHint=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 import {burstFireworks} from './fireworks.mjs';
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
 import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effect-model.mjs';
@@ -8,6 +9,8 @@ import {createConfiguredBubble} from './bubble-renderer.mjs';
 import {createWordParticles} from './word-particles.mjs';
 import { createWord, revealWord, flowInk } from './word-reveal.mjs?v=9-simple-text';
 import { RULES, lightbulbSvg } from './hints.mjs';
+import {compileViewMarkup,viewAttrs} from '../shared/view-contracts.mjs';
+import {overlayAttrs,hydrateSpellingOverlay} from '../shared/spelling-overlays.mjs';
 
 // One session owns one scene. Only its picture and ink change between questions.
 export function createSpellingArt(app, { onContinue } = {}) {
@@ -50,8 +53,10 @@ export function createSpellingArt(app, { onContinue } = {}) {
     session.hintUsed=true;session.pause(); bubble.setPaused(true);wordParticles?.setPaused(true);
     app.classList.add('spelling-hint-open');
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
+    hint.dataset.dsKey='hint-shell';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
-    hint.innerHTML = `<div class="hint-sheet-head">${lightbulbSvg()}<h2 id="spelling-hint-title">Mała podpowiedź</h2><button type="button" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p>${RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hint.innerHTML = `<div class="hint-sheet-head" ${overlayAttrs('hint','hint-head')}>${lightbulbSvg()}<h2 ${overlayAttrs('hint','hint-title')} id="spelling-hint-title">Mała podpowiedź</h2><button type="button" ${overlayAttrs('hint','hint-dismiss')} data-action="dismiss-hint" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p ${overlayAttrs('hint','hint-copy')}>${session.current.learning?.explanation?escapeHint(session.current.learning.explanation):RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hydrateSpellingOverlay(hint,'hint');
     hint.querySelector('button').addEventListener('click', closeHint);
     hint.addEventListener('cancel', event => { event.preventDefault(); closeHint(); });
     hint.addEventListener('keydown', event => event.stopPropagation());
@@ -69,23 +74,23 @@ export function createSpellingArt(app, { onContinue } = {}) {
     background.decoding = 'async'; background.fetchPriority = 'high';
     document.body.prepend(background);
     const statusBlock=game.untimed
-      ? `<div class="time-block dictation-count"><span class="timer" aria-label="Pytanie w rundzie"></span><progress max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Postęp rundy"></progress></div>`
-      : `<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><progress max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
-    app.innerHTML = `
-      <header class="game-bar">
-        <button type="button" class="icon" data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+      ? `<div class="time-block dictation-count" ${viewAttrs('spelling-initial','spelling-game-clock')}><span ${viewAttrs('spelling-initial','spelling-game-timer')} class="timer" aria-label="Pytanie w rundzie"></span><progress ${viewAttrs('spelling-initial','spelling-game-progress')} max="${game.questionLimit||80}" value="${game.questionsRemaining()??game.questionLimit??80}" aria-label="Postęp rundy"></progress></div>`
+      : `<div class="time-block" ${viewAttrs('spelling-initial','spelling-game-clock')}><span ${viewAttrs('spelling-initial','spelling-game-timer')} class="timer" aria-label="Pozostały czas"></span><progress ${viewAttrs('spelling-initial','spelling-game-progress')} max="${game.duration * 1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress></div>`;
+    app.innerHTML = compileViewMarkup('spelling-initial', `
+      <header class="game-bar" ${viewAttrs('spelling-initial','spelling-game-hud')}>
+        <button type="button" class="icon" ${viewAttrs('spelling-initial','spelling-game-exit')} data-action="exit" aria-label="Wyjdź z rundy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
         ${statusBlock}
-        <button type="button" class="icon" data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+        <button type="button" class="icon" ${viewAttrs('spelling-initial','spelling-game-pause')} data-action="pause" aria-label="Pauza"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
       </header>
-      <h1 class="spelling-title">Jak jest poprawnie?</h1>
-      <div class="spelling-visual" aria-hidden="true"></div>
-      <section class="spelling-question-card" aria-label="Uzupełnij słowo"><div class="question-content"></div></section>
-      <div class="answers count-2">
-        <button type="button" class="answer" data-action="answer" data-index="0"><span class="answer-ink"></span></button>
-        <button type="button" class="answer" data-action="answer" data-index="1"><span class="answer-ink"></span></button>
+      <h1 class="spelling-title" ${viewAttrs('spelling-initial','spelling-game-title')}>Jak jest poprawnie?</h1>
+      <div class="spelling-visual" ${viewAttrs('spelling-initial','spelling-game-visual')} aria-hidden="true"></div>
+      <section class="spelling-question-card" ${viewAttrs('spelling-initial','spelling-game-question')} aria-label="Uzupełnij słowo"><div class="question-content" ${viewAttrs('spelling-initial','spelling-game-word')}></div></section>
+      <div class="answers count-2" ${viewAttrs('spelling-initial','spelling-game-answers')}>
+        <button type="button" class="answer" ${viewAttrs('spelling-initial','spelling-game-answer-0')} data-action="answer" data-index="0"><span class="answer-ink"></span></button>
+        <button type="button" class="answer" ${viewAttrs('spelling-initial','spelling-game-answer-1')} data-action="answer" data-index="1"><span class="answer-ink"></span></button>
       </div>
-      <div class="spelling-action-row"><button type="button" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
-      <div class="feedback" role="status" aria-live="polite" aria-atomic="true"></div>`;
+      <div class="spelling-action-row" ${viewAttrs('spelling-initial','spelling-game-actions')}><button type="button" ${viewAttrs('spelling-initial','spelling-game-hint')} data-action="spelling-hint" class="spelling-hint">${lightbulbSvg()}<span>Potrzebujesz podpowiedzi?</span></button><div class="spelling-next spelling-continue-rail" ${viewAttrs('spelling-initial','spelling-game-next')} role="slider" tabindex="0" aria-label="Przesuń od początku do końca, aby przejść dalej" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="continue-handle" aria-hidden="true"></span><span class="continue-chevrons" aria-hidden="true">› › ›</span><span class="continue-copy">Przesuń, aby przejść dalej</span></div></div>
+      <div class="feedback" ${viewAttrs('spelling-initial','spelling-game-feedback')} role="status" aria-live="polite" aria-atomic="true"></div>`);
     atmosphere=createScreenAtmosphere(app,effectConfig());
     comboGlobal=createComboGlobalEffects(app);
     nodes = {
@@ -181,15 +186,11 @@ export function createSpellingArt(app, { onContinue } = {}) {
 
     const pictureChange = bubble.transitionToScene(pictureUrl, scene, first);
     const inkChange = animateInk('in');
-    // If WebKit suspends an animation while changing scenes, never leave
-    // answers disabled forever. The most expensive scene has 4.2 seconds.
-    let deadline;
-    try {
-      await Promise.race([
-        Promise.all([inkChange, pictureChange]),
-        new Promise(resolve => { deadline = setTimeout(resolve, 4200); })
-      ]);
-    } finally { clearTimeout(deadline); }
+    // WebKit can suspend an animation after backgrounding. A timeout prevents
+    // permanently disabled answers while preserving normal scene timings.
+    let timer;
+    try{await Promise.race([Promise.all([inkChange,pictureChange]),new Promise(resolve=>{timer=setTimeout(resolve,8000);})]);}
+    finally{clearTimeout(timer);}
     if (token !== generation || session !== game) return;
 
     game.setPresentationHold(false); app.classList.remove('ink-changing');
@@ -218,14 +219,23 @@ export function createSpellingArt(app, { onContinue } = {}) {
       const rays='<svg class="feedback-rays" viewBox="0 0 30 42" fill="none" aria-hidden="true"><path d="m24 11-10-6M19 21H7m17 10-10 6" stroke="#ffd43b" stroke-width="5.5" stroke-linecap="round"/><path d="m24 10-9-5M18 20H7m16 10-9 6" stroke="#ffe879" stroke-width="1.2" stroke-linecap="round"/></svg>';
       nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
-      const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
+      const effects=effectConfig(),combo=correct&&!game.hintUsed&&game.streak>0&&game.streak%effects.comboEvery===0;
       bubble?.react(combo?'combo':correct?'correct':'wrong');
       const preset=effects.presets[effectPreview?.id]||pickEffect(effects).preset;stopFireworks?.();stopFireworks=null;stopComboGlobal();
       if(combo&&effects.comboGlobal?.enabled!==false){comboGlobal?.play(effects);}
       else if(correct&&effects.enabled&&effects.correctStyle==='production'&&(!effectPreview?.id||effectPreview.id==='confetti'))stopFireworks=burstFireworks(app.querySelector('.spelling-visual'));
       else stopFireworks=playResponseEffect(app.querySelector('.spelling-visual'),{config:effects,preset,event:correct?'correct':'wrong',combo:false,target:app.querySelector('.soap-svg')||app.querySelector('.mn-soap-shell'),onMetrics:effectPreview?.onMetrics});
       if(combo)nodes.feedback.querySelector('.feedback-copy').textContent=`Świetna seria ×${game.streak}!`;
-      if(!correct){continueDrag?.reset();nodes.next.focus({ preventScroll: true });}
+      if(!correct){
+        continueDrag?.reset();
+        const params=new URLSearchParams(location.search);
+        const progress=params.get('studio')==='1'?Number(params.get('sliderProgress')):NaN;
+        // Only a Studio screenshot fixture may set a deterministic gesture
+        // pose. Normal games always start at 0 and require a real drag.
+        if(Number.isFinite(progress)&&progress>=1&&progress<=99)
+          continueDrag?.setProgress(progress/100);
+        else nodes.next.focus({ preventScroll: true });
+      }
     }
   }
   function setPaused(paused) {

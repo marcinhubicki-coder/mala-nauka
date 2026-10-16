@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 28,
+  "revision": 31,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -88,6 +88,138 @@
       "type": "webp",
       "group": "brand",
       "references": []
+    },
+    {
+      "path": "assets/brand/avatars/a.webp",
+      "size": 24614,
+      "sha": "c05239816214a63f98060a5c4dbe14bf0af842053132012063634afcbc8aa208",
+      "id": "c05239816214a63f",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/b.webp",
+      "size": 23640,
+      "sha": "624b2eaaca363b68569933d2a2511be797922df85792a78e7879aabb395dd54a",
+      "id": "624b2eaaca363b68",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/c.webp",
+      "size": 24152,
+      "sha": "22685cb379ebc25d9b56ba2f806872e94d13ef5a0c439e50208de4fb19953563",
+      "id": "22685cb379ebc25d",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/d.webp",
+      "size": 25232,
+      "sha": "b4c182942b5557723823e5d512e70776d257f38749818c205c72e68f405564e0",
+      "id": "b4c182942b555772",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/e.webp",
+      "size": 21600,
+      "sha": "9fa2a5345fe7b99957d9fa1742f9017b53a9ad479b86d318b297ea8ae44c1f50",
+      "id": "9fa2a5345fe7b999",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/f.webp",
+      "size": 23304,
+      "sha": "09bd556cdbb546a219383e9b963e3665216dbe2b30632770befb0988138436bb",
+      "id": "09bd556cdbb546a2",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/g.webp",
+      "size": 22654,
+      "sha": "53cd0417a4a8227a0f529a6fa2f14aa9c392bd4838ed5f3bc310d7f6e56fd241",
+      "id": "53cd0417a4a8227a",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/h.webp",
+      "size": 24266,
+      "sha": "88d65b50e22db63a90afbeee28e2e8c7d717d29f7e555b5a5fc5c61b31a2897b",
+      "id": "88d65b50e22db63a",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/i.webp",
+      "size": 22762,
+      "sha": "cd58820f7e0fe8305e398c14a1794b596238add9b2aa9596255ad14d044c45e8",
+      "id": "cd58820f7e0fe830",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/j.webp",
+      "size": 21516,
+      "sha": "5f65f7e7f17c02e7158e355faae6e13a0e489b744a04fad9c2a491629d14a6c2",
+      "id": "5f65f7e7f17c02e7",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/k.webp",
+      "size": 21666,
+      "sha": "077186418e72cd760102e1f1bdfd448b793fe07bbed10b40b7ed2ac8b64874dc",
+      "id": "077186418e72cd76",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
+    },
+    {
+      "path": "assets/brand/avatars/l.webp",
+      "size": 21546,
+      "sha": "358f9b1082944193c67a2f5d7d3324ef9876d913c78c5e512a0bfc8e909a96a5",
+      "id": "358f9b1082944193",
+      "type": "webp",
+      "group": "brand",
+      "references": [
+        "shared/profile-parts.mjs"
+      ]
     },
     {
       "path": "assets/brand/home-adventure-3d.webp",
@@ -3128,6 +3260,17 @@
       "type": "jpg",
       "group": "managed",
       "references": []
+    },
+    {
+      "path": "assets/managed/e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684.png",
+      "sha": "e586c23cf8916af5b4bd0024f64b1a97383363b2b8538f8341ae8fd9d7cb7684",
+      "id": "e586c23cf8916af5",
+      "size": 4336,
+      "type": "png",
+      "group": "managed",
+      "references": [],
+      "width": 128,
+      "height": 128
     },
     {
       "path": "assets/managed/ec0aa05dd4e310f92353dc5cc22e3bc66207c9d3fdefe8985ae13fc2b7c7cd1a.jpg",
@@ -7136,6 +7279,84 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json"
+      ]
+    },
+    {
+      "path": "assets/managed/0ffa5566b0bc933b0befd4059f940cf512ff1cf31fb66aa4cfea9c6ebd8ac16a.webp",
+      "size": 706336,
+      "sha": "0ffa5566b0bc933b0befd4059f940cf512ff1cf31fb66aa4cfea9c6ebd8ac16a",
+      "width": 2000,
+      "height": 1200,
+      "id": "0ffa5566b0bc933b",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/6e64375621ee637ff26aa6b7def33dfdadd62d5348e3e25b0ac08778aa52f664.webp",
+      "size": 389294,
+      "sha": "6e64375621ee637ff26aa6b7def33dfdadd62d5348e3e25b0ac08778aa52f664",
+      "width": 2000,
+      "height": 1200,
+      "id": "6e64375621ee637f",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/7a25085fde8fc4b125029187a4e682845cff45c343cc1085394860905b99b9a0.webp",
+      "size": 674084,
+      "sha": "7a25085fde8fc4b125029187a4e682845cff45c343cc1085394860905b99b9a0",
+      "width": 2000,
+      "height": 1200,
+      "id": "7a25085fde8fc4b1",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/7ebc3b79c01827a5a5812dddf7dc7113647be074a4a6bb75e4b570146bce8332.webp",
+      "size": 597792,
+      "sha": "7ebc3b79c01827a5a5812dddf7dc7113647be074a4a6bb75e4b570146bce8332",
+      "width": 2000,
+      "height": 1200,
+      "id": "7ebc3b79c01827a5",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/fa229c32a7ac22ac04730095aa6bf1681e836e2ba536e48155fa979734d8d5b6.webp",
+      "size": 696930,
+      "sha": "fa229c32a7ac22ac04730095aa6bf1681e836e2ba536e48155fa979734d8d5b6",
+      "width": 2000,
+      "height": 1200,
+      "id": "fa229c32a7ac22ac",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/fbef6b4740c20d82a2e809c0951c9509c5231d067fbcf92b37ba8ecf41875bae.webp",
+      "size": 680792,
+      "sha": "fbef6b4740c20d82a2e809c0951c9509c5231d067fbcf92b37ba8ecf41875bae",
+      "width": 2000,
+      "height": 1200,
+      "id": "fbef6b4740c20d82",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
       ]
     }
   ],

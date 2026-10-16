@@ -2,8 +2,8 @@ export const WORD_LIMITS = Object.freeze([10, 20, 40, 80]);
 
 export function cleanRoundSettings(value) {
   return {
-    limitMode: value?.limitMode === 'count' ? 'count' : 'time',
-    wordLimit: WORD_LIMITS.includes(Number(value?.wordLimit)) ? Number(value.wordLimit) : 20
+    limitMode: value?.limitMode === 'time' ? 'time' : 'count',
+    wordLimit: WORD_LIMITS.includes(Number(value?.wordLimit)) ? Number(value.wordLimit) : 10
   };
 }
 

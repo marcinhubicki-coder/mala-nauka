@@ -91,7 +91,10 @@ test('shared scale and shared state styles reach composed children, preserving e
 test('migration removes obsolete artwork tuning and promotes known instance tuning once',()=>{
  const old=structuredClone(config);old.elementOverrides={'spelling-settings':{primary:{offsetY:18},'spelling-mission-art':{imageScale:1.05},'spacer-muwfhj4u':{width:215}},'spelling-results':{'strong-5':{text:'Zachowaj mnie'}}};
  const next=migrateAtomicConfig(old);assert.deepEqual(migrateAtomicConfig(next),next);assert.equal(next.elementStyles['button-game-start'].offsetY,18);assert.deepEqual(next.elementOverrides,{'spelling-results':{'strong-5':{text:'Zachowaj mnie'}}});
- assert.equal(Object.values(config.elementOverrides).reduce((n,row)=>n+Object.keys(row).length,0),3);validateConfig(next);
+ assert.equal(config.elementOverrides?.['spelling-settings']?.['spelling-start']?.offsetY,3,
+  'The approved screen correction must be scoped to spelling, not the shared atom');
+ assert.equal(config.elementStyles?.['button-game-start']?.offsetY,18,'Shared start atom must remain unchanged');
+ validateConfig(next);
 });
 test('return routes and results use blobs at 1x, speed zero skips and speed two halves time',()=>{
  for(const from of modes.map(m=>m+'-settings').concat('progress')){const motion=transitionMotion(config.motion,from,'home');assert.equal(motion.style,'blob');assert.equal(motion.speed,1);}

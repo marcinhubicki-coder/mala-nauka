@@ -2,20 +2,12 @@
 // Coordinates use the design's 853 × 1844 canvas; iOS draws its own system bars.
 import {homeTileSurface,homeDecorationAtoms,HOME_TILE_SIZES,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeStatIcon} from './shared/home-atoms.mjs';
 import {composeTemplate} from './shared/structure-model.mjs';
+import {compileViewMarkup} from './shared/view-contracts.mjs';
 import {assetUrl} from './shared/asset-loader.mjs';
-const WIDTH=853, TOP=100, CONTENT_HEIGHT=1670;
-const SETTINGS=[709,122,103,103], STATS=[22,954,810,184];
-export const HOME_MODES_BOUNDS=[32,1248,789,507],HOME_WELCOME_BOUNDS=[22,220,810,918];
-const TILES={
- spelling:[32,1248,257,245],
- math:[301,1248,253,245],
- english:[566,1248,255,245],
- flags:[32,1505,386,250],
- reading:[434,1505,386,250]
-};
+import {HOME_SETTINGS as SETTINGS,HOME_STATS as STATS,HOME_TILES as TILES,homePosition} from './shared/home-layout.mjs';
+export {HOME_MODES_BOUNDS,HOME_WELCOME_BOUNDS} from './shared/home-layout.mjs';
+const layout=()=>globalThis.__MALA_NAUKA_DESIGN__||{};
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const position=([x,y,w,h])=>`left:${x/WIDTH*100}%;top:${(y-TOP)/CONTENT_HEIGHT*100}%;width:${w/WIDTH*100}%;height:${h/CONTENT_HEIGHT*100}%`;
-const relativePosition=([x,y,w,h],[bx,by,bw,bh])=>`left:${(x-bx)/bw*100}%;top:${(y-by)/bh*100}%;width:${w/bw*100}%;height:${h/bh*100}%`;
 
 const homeRecipes={'home-tile-surface':'icon-home-tile-surface','home-badge-surface':'icon-home-badge-surface','home-mode-glyph':'icon-home-mode-glyph'};
 const vector=(key,label,art,cls='home-vector')=>`<span class="${cls}" data-ds-recipe="${homeRecipes[cls]||'icon-home-chevron'}" aria-hidden="true" data-ds-vector="true" data-ds-key="${key}" data-ds-kind="icon" data-ds-label="${label}">${art}</span>`;
@@ -44,7 +36,7 @@ export function renderHomeHero(nickname='Odkrywco',style=''){
  <p class="home-hero-copy" data-ds-recipe="text-home-subtitle" data-ds-kind="text" data-ds-key="home-subtitle">Świetnie Ci idzie, co dalej?</p></section>`;
 }
 export function renderHomeAdventures(style=''){
- return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Wybierz swoją przygodę</h2><p data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
+ return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-kind="text" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Wybierz swoją przygodę</h2><p data-ds-kind="text" data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
 }
 export function renderHomeDecoration(mode){
  const [w,h]=HOME_TILE_SIZES[mode];
@@ -65,20 +57,20 @@ export function renderHomeModeCard(mode,name,style=''){
  </button>`;
 }
 export function renderHomeModes(modes,modeIds=Object.keys(TILES),style=''){
- return `<nav class="home-game-buttons" aria-labelledby="home-modes-title" data-ds-kind="container" data-ds-recipe="family-home-modes" data-ds-key="home-modes" data-ds-label="Pięć przygód" style="${style}">${modeIds.map(mode=>renderHomeModeCard(mode,modes[mode].name,relativePosition(TILES[mode],HOME_MODES_BOUNDS))).join('')}</nav>`;
+ return `<nav class="home-game-buttons" aria-labelledby="home-modes-title" data-ds-kind="container" data-ds-recipe="family-home-modes" data-ds-key="home-modes" data-ds-label="Pięć przygód" style="${style}">${modeIds.map(mode=>renderHomeModeCard(mode,modes[mode].name,homePosition(layout(),'home-mode-'+mode))).join('')}</nav>`;
 }
 export function renderHomeWelcome({nickname='Odkrywco',today=0,lastScore='0 pkt',lastLabel='Zagraj pierwszą rundę'}={},style=''){
- return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,relativePosition([22,220,810,820],HOME_WELCOME_BOUNDS))}${renderHomeProgress({today,lastScore,lastLabel},relativePosition(STATS,HOME_WELCOME_BOUNDS))}</section>`;
+ return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,homePosition(layout(),'home-hero'))}${renderHomeProgress({today,lastScore,lastLabel},homePosition(layout(),'home-stats'))}</section>`;
 }
 
 export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds}){
  const slots={
  'background-home':'<span class="home-background" data-ds-kind="background" data-ds-recipe="background-home" data-ds-key="home-background" aria-hidden="true"></span>',
- 'image-home-logo-art':renderHomeLogo(position([26,102,180,140])),
- 'button-home-settings':renderHomeSettings(position(SETTINGS)),
- 'family-home-welcome':renderHomeWelcome({nickname,today,lastScore,lastLabel},position(HOME_WELCOME_BOUNDS)),
- 'container-home-adventures':renderHomeAdventures(position([26,1162,801,68])),
- 'family-home-modes':renderHomeModes(modes,modeIds,position(HOME_MODES_BOUNDS))
+ 'image-home-logo-art':renderHomeLogo(homePosition(layout(),'home-logo')),
+ 'button-home-settings':renderHomeSettings(homePosition(layout(),'home-settings')),
+ 'family-home-welcome':renderHomeWelcome({nickname,today,lastScore,lastLabel},homePosition(layout(),'home-welcome')),
+ 'container-home-adventures':renderHomeAdventures(homePosition(layout(),'home-adventures')),
+ 'family-home-modes':renderHomeModes(modes,modeIds,homePosition(layout(),'home-modes'))
  };
- return `<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka">${composeTemplate('home',slots)}</section>`;
+ return compileViewMarkup('home',`<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka">${composeTemplate('home',slots)}</section>`);
 }

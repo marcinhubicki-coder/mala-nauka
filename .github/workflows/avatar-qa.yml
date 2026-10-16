@@ -1,0 +1,72 @@
+name: Avatar geometry regression
+
+on:
+  pull_request:
+    paths:
+      - "assets/brand/avatars/**"
+      - "shared/profile-parts.mjs"
+      - "player-profiles.css"
+      - "shared/components.css"
+      - "tests/v2-avatar-consistency.test.mjs"
+      - "tools/qa-avatars-browser.mjs"
+      - "tools/qa-no-pin-browser.mjs"
+      - "shared/view-contracts.mjs"
+      - "app.js"
+      - "tests/v2-player-create-contract.test.mjs"
+      - "tests/v2-pin-inner-atoms.test.mjs"
+      - "shared/pin-parts-contract.mjs"
+      - "shared/profile-parts.mjs"
+      - "tests/v2-pin-family-contract.test.mjs"
+      - "shared/navigation-parts.mjs"
+      - "shared/design-runtime.mjs"
+      - "tools/qa-typography-browser.mjs"
+      - "tools/qa-all-views-browser.mjs"
+      - "ortografia/**"
+      - "spelling/**"
+      - "shared/spelling-settings-contract.mjs"
+      - "tools/qa-orthography-browser.mjs"
+      - "tests/v2-spelling-settings-main-contract.test.mjs"
+      - "tests/v2-spelling-game-contract.test.mjs"
+      - "shared/view-contracts.mjs"
+      - "shared/structure-model.mjs"
+      - "design-system/config.json"
+      - "design-system/git-client.mjs"
+      - "tests/v2-studio-git-branch.test.mjs"
+      - ".github/workflows/avatar-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  avatars:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and run unit regression suite
+        run: npm test
+      - name: Install Chromium for isolated avatar QA
+        run: |
+          npm install --no-save --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Start local PWA
+        run: |
+          python3 -m http.server 8765 --directory dist > /tmp/avatars-http.log 2>&1 &
+          echo $! > /tmp/avatars-http.pid
+      - name: Verify avatar picker, PIN, profile save and editing
+        run: node tools/qa-avatars-browser.mjs http://127.0.0.1:8765
+      - name: Verify profile without PIN and preserved avatar
+        run: node tools/qa-no-pin-browser.mjs http://127.0.0.1:8765
+      - name: Recheck Studio typography and shared component library
+        run: node tools/qa-typography-browser.mjs http://127.0.0.1:8765
+      - name: Recheck all 41 registered view renderers
+        run: node tools/qa-all-views-browser.mjs http://127.0.0.1:8765
+      - name: Orthography settings, quiz and eight Studio views
+        run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
+      - name: Server logs on failure
+        if: failure()
+        run: cat /tmp/avatars-http.log || true

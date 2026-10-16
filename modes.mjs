@@ -402,13 +402,16 @@ export function createSource(mode, config, words, random = Math.random) {
  }
  if(mode==='flags') {
   const normalized=cleanConfig('flags',config);
-  const region=selectedFlagRegion(normalized);
+  const allowed=Array.isArray(config.offlineFlagIds)?new Set(config.offlineFlagIds):null;
+  const region=selectedFlagRegion(normalized).filter(flag=>!allowed||allowed.has(flag.id));
+  if(allowed&&!region.length)throw Error('Połącz się z internetem, aby wczytać flagi dla tej podróży.');
+  if(allowed&&normalized.flagGameType==='countries'&&region.length<4)throw Error('Ta podróż potrzebuje co najmniej czterech wcześniej wczytanych flag. Połącz się na chwilę z internetem.');
   return session=>{
-   const picked=normalized.flagScope==='world'
+   const picked=normalized.flagScope==='world'&&!allowed
     ? pickWorldCurriculumFlag(session,random)
     : pickRegionalCurriculumFlag(session,region,random);
    const flag=picked.flag;
-   const options=distractorRegion(flag,region,normalized);
+   const options=allowed&&normalized.flagGameType==='countries'?region:distractorRegion(flag,region,normalized);
    const difficulty=normalized.flagScope==='world'?flag.difficulty:regionalDifficulty(flag,region);
    return flagQuestion(flag,options,normalized,random,difficulty,{
     distanceJump:picked.isDistanceJump,

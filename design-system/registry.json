@@ -31,7 +31,7 @@
       "id": "card",
       "name": "Kafel ustawień",
       "tokenGroup": "card",
-      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
+      "selector": ".setup-card,.settings-card,.category-card",
       "description": "Jedna geometria i powierzchnia dla czterech trybów.",
       "states": [
         "default"
@@ -1444,6 +1444,102 @@
       "route": "/",
       "components": [
         "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "forge",
+      "name": "Kuźnia mocy",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "forge",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "rule-details",
+      "name": "Karta reguły",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "rule-details",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "trophy-base",
+      "name": "Wybór podstawy pucharu",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "trophy-base",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "trophy-evolution",
+      "name": "Trwały wybór ozdoby pucharu",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "trophy-evolution",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
         "atom-container",
         "atom-text",
         "atom-icon",

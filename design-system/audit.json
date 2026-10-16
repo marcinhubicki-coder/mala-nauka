@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-12T13:39:25.363Z",
-  "sourceCommit": "6088fed8b0c2c08d96e2bcf493a48d000fd724bb",
+  "date": "2026-10-16T14:01:06.779Z",
+  "sourceCommit": "cee5059612adec80d3f94d1a42dd9038b0921b5c",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -1121,6 +1121,46 @@
       "role": "body"
     },
     {
+      "file": "shared/journey.css",
+      "selector": ".journey-forge,.journey-awards",
+      "role": "body"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".forge-intro h2,.journey-awards h2",
+      "role": "display"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".power-card h3",
+      "role": "display"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".trophy-evolution h3",
+      "role": "display"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".learning-rule h3",
+      "role": "display"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".learning-rule-dialog",
+      "role": "body"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".rule-dialog-copy h2",
+      "role": "display"
+    },
+    {
+      "file": "shared/journey.css",
+      "selector": ".round-rewards h2",
+      "role": "display"
+    },
+    {
       "file": "shared/mission-parts.css",
       "selector": "#app[data-view=wizard] .mission-card h2,.live-component .mission-card h2",
       "role": "ui"
@@ -1419,18 +1459,34 @@
     "sessions": [
       "body",
       "display"
+    ],
+    "forge": [
+      "body",
+      "display"
+    ],
+    "rule-details": [
+      "body",
+      "display"
+    ],
+    "trophy-base": [
+      "body",
+      "display"
+    ],
+    "trophy-evolution": [
+      "body",
+      "display"
     ]
   },
-  "cssBytes": 483113,
-  "jsBytes": 1008787,
+  "cssBytes": 495003,
+  "jsBytes": 1200963,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 81435
+      "bytes": 93409
     },
     {
       "path": "shared/round-result.css",
-      "bytes": 40272
+      "bytes": 41586
     },
     {
       "path": "spelling/bubble.mjs",
@@ -1441,16 +1497,20 @@
       "bytes": 39019
     },
     {
-      "path": "shared/element-system.mjs",
-      "bytes": 33592
+      "path": "shared/structure-model.mjs",
+      "bytes": 33904
     },
     {
       "path": "shared/sound-library.mjs",
       "bytes": 32848
     },
     {
+      "path": "shared/view-bindings.mjs",
+      "bytes": 32073
+    },
+    {
       "path": "player-profiles.css",
-      "bytes": 28779
+      "bytes": 27957
     },
     {
       "path": "sw.js",
@@ -1458,51 +1518,59 @@
     },
     {
       "path": "ortografia/wizard-v2.mjs",
-      "bytes": 24628
-    },
-    {
-      "path": "shared/structure-model.mjs",
-      "bytes": 24365
+      "bytes": 25915
     },
     {
       "path": "spelling-art.css",
-      "bytes": 24145
+      "bytes": 24424
     },
     {
       "path": "progress-screen.css",
-      "bytes": 24005
+      "bytes": 24037
     },
     {
       "path": "matematyka/app.js",
-      "bytes": 23178
+      "bytes": 23926
     },
     {
       "path": "app.css",
       "bytes": 22200
     },
     {
+      "path": "shared/view-contracts.mjs",
+      "bytes": 21325
+    },
+    {
+      "path": "progress-screen.mjs",
+      "bytes": 21186
+    },
+    {
       "path": "angielski/wizard-v2.mjs",
-      "bytes": 21143
+      "bytes": 21183
     },
     {
       "path": "spelling/word-particles.mjs",
       "bytes": 20697
     },
     {
+      "path": "modes.mjs",
+      "bytes": 20215
+    },
+    {
       "path": "ortografia/wizard-v2.css",
       "bytes": 20196
     },
     {
+      "path": "spelling/art.mjs",
+      "bytes": 20162
+    },
+    {
+      "path": "shared/element-system.mjs",
+      "bytes": 20134
+    },
+    {
       "path": "flagi/feedback-transition.js",
       "bytes": 20063
-    },
-    {
-      "path": "modes.mjs",
-      "bytes": 19709
-    },
-    {
-      "path": "progress-screen.mjs",
-      "bytes": 19240
     }
   ],
   "fonts": [

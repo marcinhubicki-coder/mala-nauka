@@ -38,7 +38,8 @@ export function runtimeCatalog(registry,inventories=new Map()){
   const items=inventories.get(view.id)?.items||[];
   // Match Edit Screen: include painted/revealable blocks and deliberate hidden
   // overrides, plus their actual ancestors. Dormant loaders are not samples.
-  const byId=new Map(items.map(item=>[item.id,item])),included=new Set();
+  const byId=new Map(items.map(item=>[item.id,item])),included=new Set(),children=new Map();
+  for(const item of items){if(!children.has(item.parent))children.set(item.parent,[]);children.get(item.parent).push(item);}
   for(const item of items)if(item.id==='layout-root'||item.visible!==false||item.revealable||['hidden','removed'].includes(item.configuredVisibility)){
    let current=item;const seen=new Set();while(current&&!seen.has(current.id)){seen.add(current.id);included.add(current.id);current=byId.get(current.parent);}
   }
@@ -49,7 +50,7 @@ export function runtimeCatalog(registry,inventories=new Map()){
    if(!record){record={id,recipe:item.recipe||'layout',kind:item.kind||'container',name:item.id==='layout-root'?view.name:PART_BY_ID[item.recipe]?.name||item.label,level:runtimeLevel(item,items),children:[],uses:[]};records.set(id,record);}
    const use={view:view.id,id:item.id,blockId:id,label:item.label,mode:item.mode||view.mode,state:item.state||'default',visible:item.visible,revealable:item.revealable};
    if(!record.uses.some(u=>u.view===use.view&&u.id===use.id))record.uses.push(use);
-   for(const child of items.filter(row=>row.parent===item.id&&included.has(row.id))){const childId=child.blockId||child.recipe;if(childId&&!record.children.includes(childId))record.children.push(childId);}
+   for(const child of (children.get(item.id)||[]).filter(row=>included.has(row.id))){const childId=child.blockId||child.recipe;if(childId&&!record.children.includes(childId))record.children.push(childId);}
   }
  }
  return [...records.values()];
@@ -58,4 +59,24 @@ export function runtimeStack(view,selected,items){
  const result=[],seen=new Set();let item=items.find(row=>row.id===selected?.id)||selected;
  while(item&&!seen.has(item.id)){seen.add(item.id);result.unshift({...item,level:runtimeLevel(item,items),libraryId:item.blockId||(item.id==='layout-root'?'screen-'+view.id:item.recipe)});item=items.find(row=>row.id===item.parent);}
  return result;
+}
+
+export function semanticCatalog(records){
+ const groups=new Map(),canonical=new Map();
+ for(const item of records){
+  const part=PART_BY_ID[item.recipe],key=part?.id||item.id;
+  canonical.set(item.id,key);
+  let row=groups.get(key);
+  if(!row){row={...item,id:key,registered:Boolean(part),name:part?.name||item.name,level:part?.level||item.level,variants:[],children:[],uses:[]};groups.set(key,row);}
+  row.variants.push(item.id);
+  for(const use of item.uses)row.uses.push(use);
+ }
+ for(const item of records){
+  const row=groups.get(canonical.get(item.id));
+  for(const originalId of item.children){
+   const key=canonical.get(originalId);
+   if(key&&key!==row.id&&!row.children.includes(key))row.children.push(key);
+  }
+ }
+ return [...groups.values()];
 }

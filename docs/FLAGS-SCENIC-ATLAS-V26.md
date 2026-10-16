@@ -144,3 +144,13 @@ more zoom detail. Main/production stays untouched.
 The Linux WebKit run exposed wider system-serif metrics for Liechtenstein and
 Hercegowina. Liechtenstein keeps two explicit lines at 32 px; the Bosnian title
 uses a fixed 30 px tier. Other enlarged headings remain unchanged.
+
+Heading layout chooses once among the fixed 44/38/32/30 px tiers using the actual
+platform font's DOM and Canvas widths. This handles Linux serif fallbacks without
+a per-frame scaling loop. Canvas tracking matches the measured DOM title. The
+map viewport and two-line slot remain fixed.
+
+Fold-frame QA freezes the existing presentation timeline synchronously when the
+fold class appears, then seeks real Web Animations frames. This removes remote
+capture latency from the ordering assertion while retaining the requirement
+that ink cannot start before the entire paper unfolding finishes.

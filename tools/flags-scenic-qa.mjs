@@ -52,6 +52,15 @@ async function check(name,browser,options,run){
 }
 async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?qa=1&country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
 async function choose(page,correct=true){const id=await page.locator('#scenic-screen').getAttribute('data-country');const button=correct?page.locator(`.scenic-answer[data-id="${id}"]`):page.locator(`.scenic-answer:not([data-id="${id}"])`).first();await button.click();}
+async function freezeFold(page,opening){
+ // Freeze in the same browser task that starts the fold. Remote screenshot
+ // calls can otherwise arrive after a short animation on a busy CI machine.
+ await page.evaluate(opening=>{
+  const sheet=document.querySelector('#scenic-map-scroll'),phase=opening?'is-opening':'is-closing';
+  const observer=new MutationObserver(()=>{if(!sheet.classList.contains(phase))return;observer.disconnect();window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:true}));});
+  observer.observe(sheet,{attributes:true,attributeFilter:['class']});
+ },opening);
+}
 async function slide(page){
  const a=await page.locator('#scenic-swipe-knob').boundingBox(),b=await page.locator('#scenic-swipe').boundingBox();
  await page.mouse.move(a.x+a.width/2,a.y+a.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width-20,a.y+a.height/2,{steps:15});await page.mouse.up();
@@ -95,7 +104,7 @@ try{
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
     assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the fixed heading');
-    const tier={pl:44,ch:38,li:32,ba:30,mk:32}[sample.id];if(tier){const typography=await page.locator('#scenic-country-name').evaluate(n=>({size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));assert.equal(typography.size,tier);assert.equal(typography.lines,['li','ba','mk'].includes(sample.id)?2:1);assert.equal(typography.slot,82);assert(typography.fit,'Explicit title lines fit without shrinking');}
+    const tier={pl:44,ch:38,li:32,ba:30,mk:32}[sample.id];if(tier){const typography=await page.locator('#scenic-country-name').evaluate(n=>({size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));if(sample.id==='pl')assert.equal(typography.size,tier);else assert([30,32,38,44].includes(typography.size)&&typography.size<=tier,'Heading uses a readable fixed tier suited to the actual platform font');assert.equal(typography.lines,['li','ba','mk'].includes(sample.id)?2:1);assert.equal(typography.slot,82);assert(typography.fit,'Explicit title lines fit without shrinking');}
     assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=3&&m.neighbors<=75,'Geographic camera includes surrounding countries');assert(m.labels>=1&&m.labels<=8,'Visible labels have bounded density');assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
@@ -179,7 +188,7 @@ try{
   });
   if(phase!=='layout'){
    await check(engine+'-animation-frames',browser,{},async page=>{
-    await open(page);const closedTop=await page.locator('.scenic-paper-top').boundingBox(),closedCompass=await page.locator('.scenic-compass').boundingBox(),fixedBottom=await page.locator('.scenic-paper-bottom').boundingBox();await choose(page,false);
+    await open(page);const closedTop=await page.locator('.scenic-paper-top').boundingBox(),closedCompass=await page.locator('.scenic-compass').boundingBox(),fixedBottom=await page.locator('.scenic-paper-bottom').boundingBox();await freezeFold(page,true);await choose(page,false);
     await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-opening'));
     const compassSize=await page.locator('.scenic-compass').boundingBox();
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','Opening paper must cover the flag progressively');
@@ -193,15 +202,15 @@ try{
      assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),null,'Ink must wait for the entire unfolding');assert(opacity.every(x=>x===0||x===1),'paper surfaces must stay opaque');
      await capture(page,engine+'-unroll-'+label);
     }
-    await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'feedback-wrong');
+    await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'feedback-wrong');
     assert.equal(await page.locator('#scenic-hero').evaluate(n=>getComputedStyle(n).visibility),'visible','The flag stays underneath the paper without a visibility jump');
-    await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-closing'));
+    await freezeFold(page,false);await slide(page);await page.waitForFunction(()=>document.querySelector('#scenic-map-scroll').classList.contains('is-closing'));
     assert.equal(await page.locator('#scenic-map-scroll').getAttribute('data-ink-phase'),'empty','Map dissolves before paper folds');
     for(const [label,fraction] of [['start',.06],['middle',.47],['end',.92]]){
      await page.evaluate(({fraction,duration})=>{for(const a of document.getAnimations())if(a.effect?.target?.matches('.scenic-fold-leaf,.scenic-fold-shade,.scenic-fold-light,.scenic-paper-top,.scenic-compass,.scenic-prompt')){a.pause();a.currentTime=duration*fraction;}},{fraction,duration:SCENIC.closeMs});
      await capture(page,engine+'-rollup-'+label);
     }
-    await page.evaluate(()=>document.getAnimations().forEach(a=>a.play()));await state(page,'playing');
+    await page.evaluate(()=>window.dispatchEvent(new CustomEvent('scenic-qa-pause',{detail:false})));await state(page,'playing');
     for(const [selector,before] of [['.scenic-paper-top',closedTop],['.scenic-compass',closedCompass]]){const after=await page.locator(selector).boundingBox();for(const key of ['x','y','width','height'])assert(Math.abs(after[key]-before[key])<.2,'The fold endpoint must exactly match the initial question material');}
     await page.locator('[data-action="restart"]').click();await state(page,'playing');await choose(page,false);await state(page,'feedback-wrong');
     const captures=[['falling',.10],['settled',.40],['forming',.84],['end',.93]];

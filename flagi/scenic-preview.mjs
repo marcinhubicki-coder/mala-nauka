@@ -11,6 +11,7 @@ import {createMapInk} from './scenic-ink.mjs';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
+const captionMeasure=document.createElement('canvas').getContext('2d');
 const query=new URLSearchParams(location.search),records=new Map(FLAGS.map(x=>[x.id,x])),europe=FLAGS.filter(x=>x.continent==='europe');
 const initial=records.get(query.get('country'))?.continent==='europe'?query.get('country'):'by';
 const queue=[initial,'pl','ch','de','fr','cz','hu','it','lt','ua','at','sk','es','no','gb','ro','pt','se',...europe.map(x=>x.id)].filter((id,i,all)=>records.has(id)&&all.indexOf(id)===i);
@@ -72,11 +73,17 @@ function showFlag(record){
 }
 function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
-  // Named size tiers, never a per-frame scale-to-fit loop. Both lines have a
-  // permanent slot, so the geography camera does not move for long names.
+  // Choose a fixed tier once for the actual platform font. The permanent slot
+  // keeps the map steady; no continuous scaling or animation-frame fitting.
   const record=current(),spec=SCENIC.atlas.titles[record.id]||{size:record.country.length>10?32:record.country.length>7?38:44,lines:record.country.split(' ')};
-  title.style.fontSize=spec.size+'px';title.parentElement.style.setProperty('--title-size',spec.size+'px');title.parentElement.style.setProperty('--title-lines',spec.lines.length);title.setAttribute('aria-label',record.country);
+  title.parentElement.style.setProperty('--title-lines',spec.lines.length);title.setAttribute('aria-label',record.country);
   title.replaceChildren(...spec.lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
+  const parentStyle=getComputedStyle(title.parentElement),available=title.parentElement.clientWidth-parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight);
+  for(const size of [spec.size,...[44,38,32,30].filter(size=>size<spec.size)]){
+    title.style.fontSize=size+'px';title.parentElement.style.setProperty('--title-size',size+'px');
+    const style=getComputedStyle(title);captionMeasure.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';
+    if([...title.children].every(line=>line.scrollWidth<=title.clientWidth+1&&captionMeasure.measureText(line.textContent).width<=available+1))break;
+  }
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();

@@ -103,7 +103,7 @@ export function createMapInk(canvas,sheet,app){
   // backing is needed: the original parchment supplies natural contrast.
   for(const node of inner.querySelectorAll('.scenic-title-line,#scenic-country-capital')){
    const box=node.getBoundingClientRect(),style=getComputedStyle(node),size=parseFloat(style.fontSize);
-   paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.fillStyle=style.color;paint.textAlign='left';
+   paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';paint.fillStyle=style.color;paint.textAlign='left';
    paint.fillText(node.textContent,box.left-origin.left,box.top-origin.top+size*.86);
   }
   const city=inner.querySelector('.scenic-capital-icon').getBoundingClientRect();

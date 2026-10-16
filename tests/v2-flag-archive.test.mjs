@@ -25,7 +25,7 @@ test('archive gate blocks missing, changed and unexpected flag assets',()=>{
 });
 test('hosted V2 rewrites SVG and transparent material to immutable archive',()=>{
  const routes=JSON.parse(readFileSync(new URL('../vercel.json',import.meta.url),'utf8')).rewrites;
- assert.ok(routes.some(x=>x.source==='/assets/flags/:path*'&&x.destination==='https://mala-nauka-assets.vercel.app/assets/flags/:path*'));
+ assert.ok(routes.some(x=>x.source==='/assets/:path*'&&x.destination==='https://mala-nauka-assets.vercel.app/assets/:path*'));
  assert.equal(isFrozenFlagFile('assets/flags/svg/np.svg'),true);
  assert.equal(isFrozenFlagFile('assets/flags/adventure/cloth-light-v1.webp'),true);
  assert.equal(isFrozenFlagFile('assets/flags/svg/LICENSE.txt'),false);

@@ -78,7 +78,7 @@ try{
   let path=decodeURIComponent(new URL(req.url,'http://localhost').pathname).slice(1);
   if(!path||path.endsWith('/'))path+='index.html';
   if(appFiles.has(path)){res.writeHead(200,{'content-type':'application/json','cache-control':'no-cache'});res.end(JSON.stringify(appFiles.get(path)));return;}
-  if(/^assets\/(managed|scenes|flags)\//.test(path)){
+  if(/^assets\//.test(path)){
    void fetch(libraryURL+'/'+path).then(async response=>{res.writeHead(response.status,{'content-type':response.headers.get('content-type')||'application/octet-stream'});res.end(Buffer.from(await response.arrayBuffer()));});return;
   }
   if(resolve(root,'dist',path).startsWith(join(root,'dist')+'/'))void sendFile(res,join(root,'dist',path));else{res.writeHead(400);res.end();}

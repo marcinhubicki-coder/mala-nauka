@@ -1,357 +1,784 @@
 {
   "schemaVersion": 1,
-  "revision": 23,
+  "revision": 24,
   "rules": {
     "rule-7a2b6ca06348": {
       "title": "Zapamiętaj „ó”",
       "category": "u/ó",
       "type": "memory",
       "explanation": "Zapis przez ó warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-52297ad0d10a": {
       "title": "Ó wymienia się na o",
       "category": "u/ó",
       "type": "exchange",
       "explanation": "Ó wymienia się na o. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-622c398b69a8": {
       "title": "Ó wymienia się na e",
       "category": "u/ó",
       "type": "exchange",
       "explanation": "Ó wymienia się na e. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-4e98d3e3541a": {
       "title": "Ó wymienia się na a",
       "category": "u/ó",
       "type": "exchange",
       "explanation": "Ó wymienia się na a. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-cf40bda3f6f8": {
       "title": "Ó w zakończeniu -ówka",
       "category": "u/ó",
       "type": "pattern",
       "explanation": "Piszemy ó w zakończeniu -ówka. To częsty wzór, który pomaga zapamiętać pisownię.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-963b4bc6ac64": {
       "title": "Ó w zakończeniu -ów",
       "category": "u/ó",
       "type": "pattern",
-      "explanation": "Zakończenie -ów zapisujemy przez ó.",
-      "edited": false
+      "explanation": "W zakończeniu -ów piszemy ó. Zobacz: kotów, Kraków. W innych formach tych wyrazów może pojawić się o.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-9466bdebc5dd": {
       "title": "Zapamiętaj „u”",
       "category": "u/ó",
       "type": "memory",
       "explanation": "Zapis przez u warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-9964569033a5": {
       "title": "U na początku wyrazu",
       "category": "u/ó",
       "type": "pattern",
       "explanation": "Na początku wyrazów zwykle piszemy u; najczęstsze szkolne wyjątki to m.in. ósemka, ósmy, ów i ówczesny.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-f55d066ad7a8": {
       "title": "Rz po spółgłosce „d”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „d”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-06771f6a98b1": {
       "title": "Zapamiętaj „rz”",
       "category": "rz/ż",
       "type": "memory",
       "explanation": "Zapis przez rz warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-80e197379ad3": {
       "title": "Rz po spółgłosce „g”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „g”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-c89378cb52cf": {
       "title": "Rz po spółgłosce „b”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „b”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-b9b42559239a": {
       "title": "Rz po spółgłosce „k”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „k”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-8b3d6f94ff3a": {
       "title": "Rz po spółgłosce „w”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „w”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-e0dc4eec9907": {
       "title": "U w zakończeniu -ura",
       "category": "u/ó",
       "type": "pattern",
       "explanation": "Zapisujemy u w zakończeniu -ura. Ten wzór pomaga zapamiętać wiele podobnych wyrazów.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-76cb2ead5477": {
       "title": "U w zakończeniu -unek",
       "category": "u/ó",
       "type": "pattern",
       "explanation": "Zapisujemy u w zakończeniu -unek. Ten wzór pomaga zapamiętać wiele podobnych wyrazów.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-6782ac4aa375": {
       "title": "U w zakończeniach -uję, -ujesz, -ujemy, -ujecie",
       "category": "u/ó",
       "type": "pattern",
       "explanation": "W cząstce -uj- w tych zakończeniach czasowników zawsze piszemy u.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-d18a02e126f9": {
-      "title": "Wyjątek od zakończenia -ówka",
+      "title": "U w skuwce, wsuwce i zasuwce",
       "category": "u/ó",
       "type": "exception",
-      "explanation": "W słowach skuwka, wsuwka i zasuwka piszemy u. Zapamiętaj te wyjątki od zasady dotyczącej zakończenia -ówka.",
-      "edited": false
+      "explanation": "Skuwka pochodzi od skuwać, a wsuwka i zasuwka od wsuwać i zasuwać. Zachowujemy u z tych czasowników. To nie jest przyrostek -ówka, jak w słowie żarówka.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-20811d4fde25": {
       "title": "Rz po spółgłosce „t”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „t”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-dcfaafc3803e": {
       "title": "Rz po spółgłosce „p”",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "Rz po spółgłosce „p”. Po b, p, d, t, g, k, ch, j i w zwykle zapisujemy rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-813fd49c10b8": {
-      "title": "Zakończenie -arz",
+      "title": "Wyrazy zakończone na -arz",
       "category": "rz/ż",
       "type": "pattern",
-      "explanation": "W nazwach osób wykonujących zawód lub czynność zakończenie -arz zapisujemy przez rz.",
-      "edited": false
+      "explanation": "Wiele nazw osób, np. lekarz i malarz, kończy się na -arz. Taki sam zapis końcówki mają kalendarz, cmentarz i korytarz. Zwróć uwagę na rz w tych wyrazach.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-e5068451a5f2": {
       "title": "Zakończenie -erz",
       "category": "rz/ż",
       "type": "pattern",
       "explanation": "W wielu rzeczownikach rodzaju męskiego zakończenie -erz zapisujemy przez rz.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-d89178cfe657": {
       "title": "Rodzina wyrazów z „rz”",
       "category": "rz/ż",
       "type": "memory",
       "explanation": "W tej rodzinie wyrazów zachowujemy zapis przez rz. Pomocne słowa znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-6edfc8693dd8": {
       "title": "Zapamiętaj „ż”",
       "category": "rz/ż",
       "type": "memory",
       "explanation": "Zapis przez ż warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-7f9f48cf3be9": {
       "title": "Ż wymienia się na g",
       "category": "rz/ż",
       "type": "exchange",
       "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-fc14f1344b73": {
       "title": "Ż wymienia się na s",
       "category": "rz/ż",
       "type": "exchange",
       "explanation": "Ż wymienia się na s. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-585df4f063e8": {
       "title": "Ż wymienia się na h",
       "category": "rz/ż",
       "type": "exchange",
       "explanation": "Ż wymienia się na h. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-6c7aca4cf9ac": {
       "title": "Zapamiętaj „ch”",
       "category": "ch/h",
       "type": "memory",
       "explanation": "Zapis przez ch warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-fabfda1ad713": {
       "title": "Ch wymienia się na sz",
       "category": "ch/h",
       "type": "exchange",
       "explanation": "Ch wymienia się na sz. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-cb15c7a8b263": {
       "title": "Zapamiętaj „h”",
       "category": "ch/h",
       "type": "memory",
       "explanation": "Zapis przez h warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-fafff27b4091": {
       "title": "H wymienia się na ż",
       "category": "ch/h",
       "type": "exchange",
       "explanation": "H wymienia się na ż. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-38b408ee320a": {
-      "title": "„ci” przed samogłoską",
+      "title": "„ci” przed inną samogłoską",
       "category": "ć/ci",
       "type": "pattern",
-      "explanation": "Miękką głoskę „ć” zapisujemy przez „ci”, ponieważ po niej występuje samogłoska.",
-      "edited": false
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ć zapisujemy jako ci. Litera i jest tutaj znakiem zmiękczenia.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-490b50efad90": {
       "title": "„ć” przed spółgłoską lub na końcu",
       "category": "ć/ci",
       "type": "pattern",
       "explanation": "Miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-75efae8f2a87": {
-      "title": "„si” przed samogłoską",
+      "title": "„si” przed inną samogłoską",
       "category": "ś/si",
       "type": "pattern",
-      "explanation": "Miękką głoskę „ś” zapisujemy przez „si”, ponieważ po niej występuje samogłoska.",
-      "edited": false
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-fd8b898dfda5": {
       "title": "„ś” przed spółgłoską lub na końcu",
       "category": "ś/si",
       "type": "pattern",
       "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-583e3ea10e7f": {
-      "title": "„zi” przed samogłoską",
+      "title": "„zi” przed inną samogłoską",
       "category": "ź/zi",
       "type": "pattern",
-      "explanation": "Miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
-      "edited": false
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ź zapisujemy jako zi. Litera i jest tutaj znakiem zmiękczenia.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-6f79a48d47aa": {
       "title": "„ź” przed spółgłoską lub na końcu",
       "category": "ź/zi",
       "type": "pattern",
       "explanation": "Miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-c9cdc93fc8ea": {
-      "title": "„ni” przed samogłoską",
+      "title": "„ni” przed inną samogłoską",
       "category": "ń/ni",
       "type": "pattern",
-      "explanation": "Miękką głoskę „ń” zapisujemy przez „ni”, ponieważ po niej występuje samogłoska.",
-      "edited": false
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ń zapisujemy jako ni. Litera i jest tutaj znakiem zmiękczenia.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-e387eac01ece": {
       "title": "„ń” przed spółgłoską lub na końcu",
       "category": "ń/ni",
       "type": "pattern",
       "explanation": "Miękką głoskę „ń” zapisujemy znakiem „ń”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-ef3c6ae8ce82": {
-      "title": "„dzi” przed samogłoską",
+      "title": "„dzi” przed inną samogłoską",
       "category": "dź/dzi",
       "type": "pattern",
-      "explanation": "Miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
-      "edited": false
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę dź zapisujemy jako dzi. Litera i jest tutaj znakiem zmiękczenia.",
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-23e21c044e0b": {
       "title": "„dź” przed spółgłoską lub na końcu",
       "category": "dź/dzi",
       "type": "pattern",
       "explanation": "Miękką głoskę „dź” zapisujemy znakiem „dź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
-      "edited": false
+      "edited": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000001": {
       "category": "u/ó",
       "type": "memory",
       "title": "Zapis u/ó",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór u lub ó. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000002": {
       "category": "rz/ż",
       "type": "memory",
       "title": "Zapis rz/ż",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000003": {
       "category": "ch/h",
       "type": "memory",
       "title": "Zapis ch/h",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ch lub h. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000004": {
       "category": "ć/ci",
       "type": "memory",
       "title": "Zapis ć/ci",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000005": {
       "category": "ś/si",
       "type": "memory",
       "title": "Zapis ś/si",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000006": {
       "category": "ź/zi",
       "type": "memory",
       "title": "Zapis ź/zi",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ź lub zi. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000007": {
       "category": "ń/ni",
       "type": "memory",
       "title": "Zapis ń/ni",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ń lub ni. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     },
     "rule-000000000008": {
       "category": "dź/dzi",
       "type": "memory",
       "title": "Zapis dź/dzi",
       "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
-      "edited": false,
-      "poolDefault": true
+      "edited": true,
+      "poolDefault": true,
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
+    },
+    "rule-347d4dda54c5": {
+      "category": "ć/ci",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — ci",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy ci. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż ci przed a, e, o czy u.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "ZPE: funkcje litery i",
+          "url": "https://zpe.gov.pl/a/wsrod-liter-glosek-i-sylab/D1411aqT6"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
+    },
+    "rule-5a112108f923": {
+      "category": "ś/si",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "ZPE: funkcje litery i",
+          "url": "https://zpe.gov.pl/a/wsrod-liter-glosek-i-sylab/D1411aqT6"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
+    },
+    "rule-e9d0c18fef93": {
+      "category": "ź/zi",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — zi",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy zi. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż zi przed a, e, o czy u.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "ZPE: funkcje litery i",
+          "url": "https://zpe.gov.pl/a/wsrod-liter-glosek-i-sylab/D1411aqT6"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
+    },
+    "rule-c0cc9e50b7f1": {
+      "category": "ń/ni",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — ni",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy ni. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż ni przed a, e, o czy u.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "ZPE: funkcje litery i",
+          "url": "https://zpe.gov.pl/a/wsrod-liter-glosek-i-sylab/D1411aqT6"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
+    },
+    "rule-31bd0d7a1ed8": {
+      "category": "dź/dzi",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — dzi",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy dzi. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż dzi przed a, e, o czy u.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "ZPE: funkcje litery i",
+          "url": "https://zpe.gov.pl/a/wsrod-liter-glosek-i-sylab/D1411aqT6"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
+    },
+    "rule-b4a6c4691d50": {
+      "category": "ch/h",
+      "type": "pattern",
+      "title": "Ch po literze s",
+      "explanation": "W słowach schody, schować i wschód po s zapisujemy ch. Zapamiętaj wspólny fragment sch.",
+      "edited": true,
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ],
+      "reviewedAt": "2026-10-16"
     }
   },
   "assignments": {
@@ -766,7 +1193,7 @@
       ]
     },
     "sokół": {
-      "primary": "rule-7a2b6ca06348",
+      "primary": "rule-52297ad0d10a",
       "additional": [],
       "families": [
         "u/ó"
@@ -875,7 +1302,7 @@
       ]
     },
     "Kraków": {
-      "primary": "rule-7a2b6ca06348",
+      "primary": "rule-963b4bc6ac64",
       "additional": [],
       "families": [
         "u/ó"
@@ -1927,14 +2354,14 @@
       ]
     },
     "zasuwka": {
-      "primary": "rule-9466bdebc5dd",
+      "primary": "rule-d18a02e126f9",
       "additional": [],
       "families": [
         "u/ó"
       ]
     },
     "wsuwka": {
-      "primary": "rule-9466bdebc5dd",
+      "primary": "rule-d18a02e126f9",
       "additional": [],
       "families": [
         "u/ó"
@@ -2330,12 +2757,9 @@
       ]
     },
     "zmarznąć": {
-      "primary": "rule-d89178cfe657",
-      "additional": [
-        "rule-000000000004"
-      ],
+      "primary": "rule-490b50efad90",
+      "additional": [],
       "families": [
-        "rz/ż",
         "ć/ci"
       ]
     },
@@ -2897,7 +3321,7 @@
       ]
     },
     "schody": {
-      "primary": "rule-6c7aca4cf9ac",
+      "primary": "rule-b4a6c4691d50",
       "additional": [],
       "families": [
         "ch/h"
@@ -2960,7 +3384,7 @@
       ]
     },
     "wschód": {
-      "primary": "rule-6c7aca4cf9ac",
+      "primary": "rule-b4a6c4691d50",
       "additional": [
         "rule-000000000001"
       ],
@@ -3187,7 +3611,7 @@
       ]
     },
     "cicho": {
-      "primary": "rule-6c7aca4cf9ac",
+      "primary": "rule-fabfda1ad713",
       "additional": [
         "rule-000000000004"
       ],
@@ -3815,7 +4239,7 @@
       ]
     },
     "zima": {
-      "primary": "rule-583e3ea10e7f",
+      "primary": "rule-e9d0c18fef93",
       "additional": [],
       "families": [
         "ź/zi"
@@ -3987,7 +4411,7 @@
       ]
     },
     "dzik": {
-      "primary": "rule-ef3c6ae8ce82",
+      "primary": "rule-31bd0d7a1ed8",
       "additional": [],
       "families": [
         "dź/dzi"
@@ -4049,7 +4473,7 @@
       ]
     },
     "ciśnienie": {
-      "primary": "rule-000000000004",
+      "primary": "rule-347d4dda54c5",
       "additional": [
         "rule-000000000005"
       ],
@@ -4059,7 +4483,7 @@
       ]
     },
     "ciśnieniomierz": {
-      "primary": "rule-000000000002",
+      "primary": "rule-06771f6a98b1",
       "additional": [
         "rule-000000000004",
         "rule-000000000005",
@@ -4073,7 +4497,7 @@
       ]
     },
     "ciuch": {
-      "primary": "rule-000000000001",
+      "primary": "rule-9466bdebc5dd",
       "additional": [
         "rule-000000000003",
         "rule-000000000004"
@@ -4085,35 +4509,35 @@
       ]
     },
     "znaleźć": {
-      "primary": "rule-000000000006",
+      "primary": "rule-6f79a48d47aa",
       "additional": [],
       "families": [
         "ź/zi"
       ]
     },
     "część": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "dziś": {
-      "primary": "rule-000000000008",
+      "primary": "rule-31bd0d7a1ed8",
       "additional": [],
       "families": [
         "dź/dzi"
       ]
     },
     "garść": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "gąsienica": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [
         "rule-000000000007"
       ],
@@ -4123,21 +4547,21 @@
       ]
     },
     "gdzieś": {
-      "primary": "rule-000000000008",
+      "primary": "rule-ef3c6ae8ce82",
       "additional": [],
       "families": [
         "dź/dzi"
       ]
     },
     "kiść": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "leśniczy": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4147,14 +4571,14 @@
       ]
     },
     "liść": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "ośnieżony": {
-      "primary": "rule-000000000002",
+      "primary": "rule-7f9f48cf3be9",
       "additional": [
         "rule-000000000005",
         "rule-000000000007"
@@ -4166,7 +4590,7 @@
       ]
     },
     "paśnik": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4176,14 +4600,14 @@
       ]
     },
     "pieśń": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "rówieśnik": {
-      "primary": "rule-000000000001",
+      "primary": "rule-7a2b6ca06348",
       "additional": [
         "rule-000000000005"
       ],
@@ -4193,21 +4617,21 @@
       ]
     },
     "siać": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "sieć": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "siedemdziesiąt": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [
         "rule-000000000008"
       ],
@@ -4217,7 +4641,7 @@
       ]
     },
     "siedzisko": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [
         "rule-000000000008"
       ],
@@ -4227,28 +4651,28 @@
       ]
     },
     "sierp": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "siew": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "siewnik": {
-      "primary": "rule-000000000005",
+      "primary": "rule-75efae8f2a87",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "silnik": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [
         "rule-000000000007"
       ],
@@ -4258,21 +4682,21 @@
       ]
     },
     "silny": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "siła": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "siłownia": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [
         "rule-000000000007"
       ],
@@ -4282,28 +4706,28 @@
       ]
     },
     "siny": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "sitko": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "sito": {
-      "primary": "rule-000000000005",
+      "primary": "rule-5a112108f923",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "ścieg": {
-      "primary": "rule-000000000004",
+      "primary": "rule-38b408ee320a",
       "additional": [
         "rule-000000000005"
       ],
@@ -4313,7 +4737,7 @@
       ]
     },
     "ścisk": {
-      "primary": "rule-000000000004",
+      "primary": "rule-347d4dda54c5",
       "additional": [
         "rule-000000000005"
       ],
@@ -4323,35 +4747,35 @@
       ]
     },
     "śledź": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "ślina": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "śliwa": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "ślizg": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "ślub": {
-      "primary": "rule-000000000001",
+      "primary": "rule-9466bdebc5dd",
       "additional": [
         "rule-000000000005"
       ],
@@ -4361,14 +4785,14 @@
       ]
     },
     "śmiać": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "śmietnik": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4378,14 +4802,14 @@
       ]
     },
     "śniadanie": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "śnić": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4395,7 +4819,7 @@
       ]
     },
     "śniegowy": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4405,7 +4829,7 @@
       ]
     },
     "śnieżka": {
-      "primary": "rule-000000000002",
+      "primary": "rule-7f9f48cf3be9",
       "additional": [
         "rule-000000000005",
         "rule-000000000007"
@@ -4417,7 +4841,7 @@
       ]
     },
     "śnieżny": {
-      "primary": "rule-000000000002",
+      "primary": "rule-7f9f48cf3be9",
       "additional": [
         "rule-000000000005",
         "rule-000000000007"
@@ -4429,7 +4853,7 @@
       ]
     },
     "śnieżyca": {
-      "primary": "rule-000000000002",
+      "primary": "rule-7f9f48cf3be9",
       "additional": [
         "rule-000000000005",
         "rule-000000000007"
@@ -4441,7 +4865,7 @@
       ]
     },
     "śnieżynka": {
-      "primary": "rule-000000000002",
+      "primary": "rule-7f9f48cf3be9",
       "additional": [
         "rule-000000000005",
         "rule-000000000007"
@@ -4453,7 +4877,7 @@
       ]
     },
     "śródziemny": {
-      "primary": "rule-000000000001",
+      "primary": "rule-7a2b6ca06348",
       "additional": [
         "rule-000000000005",
         "rule-000000000008"
@@ -4465,7 +4889,7 @@
       ]
     },
     "śruba": {
-      "primary": "rule-000000000001",
+      "primary": "rule-9466bdebc5dd",
       "additional": [
         "rule-000000000005"
       ],
@@ -4475,7 +4899,7 @@
       ]
     },
     "świnia": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],
@@ -4485,21 +4909,21 @@
       ]
     },
     "świt": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "treść": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "uśmiechać": {
-      "primary": "rule-000000000001",
+      "primary": "rule-9466bdebc5dd",
       "additional": [
         "rule-000000000003",
         "rule-000000000004",
@@ -4513,7 +4937,7 @@
       ]
     },
     "uśmiechnięty": {
-      "primary": "rule-000000000001",
+      "primary": "rule-9466bdebc5dd",
       "additional": [
         "rule-000000000003",
         "rule-000000000005",
@@ -4527,14 +4951,14 @@
       ]
     },
     "wieść": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [],
       "families": [
         "ś/si"
       ]
     },
     "wiśnia": {
-      "primary": "rule-000000000005",
+      "primary": "rule-fd8b898dfda5",
       "additional": [
         "rule-000000000007"
       ],

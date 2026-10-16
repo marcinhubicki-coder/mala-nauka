@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 30,
+  "revision": 31,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -7279,6 +7279,84 @@
       "group": "scenes",
       "references": [
         "assets/scenes/generated-batch-v26.json"
+      ]
+    },
+    {
+      "path": "assets/managed/0ffa5566b0bc933b0befd4059f940cf512ff1cf31fb66aa4cfea9c6ebd8ac16a.webp",
+      "size": 706336,
+      "sha": "0ffa5566b0bc933b0befd4059f940cf512ff1cf31fb66aa4cfea9c6ebd8ac16a",
+      "width": 2000,
+      "height": 1200,
+      "id": "0ffa5566b0bc933b",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/6e64375621ee637ff26aa6b7def33dfdadd62d5348e3e25b0ac08778aa52f664.webp",
+      "size": 389294,
+      "sha": "6e64375621ee637ff26aa6b7def33dfdadd62d5348e3e25b0ac08778aa52f664",
+      "width": 2000,
+      "height": 1200,
+      "id": "6e64375621ee637f",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/7a25085fde8fc4b125029187a4e682845cff45c343cc1085394860905b99b9a0.webp",
+      "size": 674084,
+      "sha": "7a25085fde8fc4b125029187a4e682845cff45c343cc1085394860905b99b9a0",
+      "width": 2000,
+      "height": 1200,
+      "id": "7a25085fde8fc4b1",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/7ebc3b79c01827a5a5812dddf7dc7113647be074a4a6bb75e4b570146bce8332.webp",
+      "size": 597792,
+      "sha": "7ebc3b79c01827a5a5812dddf7dc7113647be074a4a6bb75e4b570146bce8332",
+      "width": 2000,
+      "height": 1200,
+      "id": "7ebc3b79c01827a5",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/fa229c32a7ac22ac04730095aa6bf1681e836e2ba536e48155fa979734d8d5b6.webp",
+      "size": 696930,
+      "sha": "fa229c32a7ac22ac04730095aa6bf1681e836e2ba536e48155fa979734d8d5b6",
+      "width": 2000,
+      "height": 1200,
+      "id": "fa229c32a7ac22ac",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/fbef6b4740c20d82a2e809c0951c9509c5231d067fbcf92b37ba8ecf41875bae.webp",
+      "size": 680792,
+      "sha": "fbef6b4740c20d82a2e809c0951c9509c5231d067fbcf92b37ba8ecf41875bae",
+      "width": 2000,
+      "height": 1200,
+      "id": "fbef6b4740c20d82",
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/reward-assets.mjs"
       ]
     }
   ],

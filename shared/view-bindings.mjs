@@ -136,7 +136,7 @@ const progress=[...progressBase(),group('progress-hero','group-progress-hero','p
  repeat('progress-stat','container-progress-stat','button','progress-stats','.progress-stat','data-filter',{min:3,max:3,action:'collection',...progressAction,level:'group'}),
  within('stat-icon','icon-progress-stat','icon','progress-stat','.progress-stat-icon'),within('stat-value','text-progress-stat','text','progress-stat','b'),within('stat-label','text-progress-stat-label','text','progress-stat','small'),
  group('progress-links','group-progress-links','progress-content','.progress-links'),
- button('progress-collection','container-progress-collection','progress-links','[data-progress="collection"]:not(.progress-stat)','collection',{...progressAction,level:'group'}),
+ button('progress-collection','container-progress-collection','progress-links','[data-progress="forge"]','forge',{...progressAction,level:'group'}),
  b('progress-collection-art','background-progress-collection','background','progress-collection','.progress-collection-art'),
  text('progress-collection-title','progress-collection','.progress-collection-title'),
  button('progress-categories','container-progress-categories','progress-links','[data-progress="categories"]','categories',progressAction),
@@ -156,12 +156,37 @@ const collection=[...progressBase(true),group('collection-content','family-colle
  ...['all','mastered','learning','review'].map(key=>button('collection-filter-'+key,'button-collection-filter','collection-filters',`[data-progress="filter"][data-filter="${key}"]`,'filter',progressAction)),
  group('collection-grid','container-collection-grid','collection-content','.collection-word-grid',optional),
  repeat('collection-word','container-collection-word','button','collection-grid','.collection-word','data-word',{action:'rule',...progressAction,level:'group'}),
- within('word-image','image-collection-word','image','collection-word','img'),within('word-title','text-collection-word','text','collection-word','strong'),within('word-state','text-collection-state','text','collection-word','small'),
+ within('word-image','image-collection-word','image','collection-word','img'),within('word-title','text-collection-word','text','collection-word','strong'),within('word-state','text-collection-state','text','collection-word','small:not(.word-star)'),within('word-stars','text-card-stars','text','collection-word','.word-star',optional),
  group('collection-empty','group-progress-empty','collection-content','.progress-empty',optional),text('collection-empty-title','collection-empty','.progress-empty h2',optional),text('collection-empty-copy','collection-empty','.progress-empty p',optional),
  button('collection-practice','button-main','collection-empty','[data-progress="practice"]','practice',{...progressAction,...optional})
 ];
-const trophies=[...progressBase(true),text('trophies-copy','progress-canvas','.progress-subtitle'),group('trophies-list','group-trophies','progress-canvas','.progress-achievement-list'),
- repeat('trophy','container-achievement','container','trophies-list','.progress-achievement-list > article','data-achievement',{min:5,max:5}),within('trophy-art','image-trophy','image','trophy','svg'),within('trophy-title','text-trophy-title','text','trophy','h2'),within('trophy-copy','text-trophy-copy','text','trophy','p')];
+const trophies=[...progressBase(true),
+ group('awards-content','family-awards','progress-canvas','.journey-awards',{level:'family'}),
+ text('awards-heading','awards-content','.journey-awards-intro h2'),text('awards-copy','awards-content','.journey-awards-intro p'),
+ group('trophy-evolution','group-trophy-evolution','awards-content','.trophy-evolution'),
+ b('trophy-art','image-reward-sprite','image','trophy-evolution','.trophy-evolution > .reward-sprite'),text('trophy-name','trophy-evolution','.trophy-evolution > h3:first-of-type'),text('trophy-status','trophy-evolution','.trophy-evolution > p:first-of-type'),
+ group('trophy-milestones','group-trophy-milestones','trophy-evolution','.trophy-milestones'),repeat('trophy-milestone','text-trophy-milestone','text','trophy-milestones','.trophy-milestones > span','data-milestone',{min:6,max:6}),
+ text('trophy-choice-title','trophy-evolution','.trophy-evolution > h3:nth-of-type(2)',optional),
+ repeat('trophy-base','button-trophy-choice','button','trophy-evolution','[data-progress="trophy-base"]','data-family',{action:'trophy-base',...progressAction,level:'group'}),
+ within('trophy-base-art','image-reward-sprite','image','trophy-base','.reward-sprite'),within('trophy-base-label','text-trophy-choice-label','text','trophy-base',':scope > span:not(.reward-sprite)'),within('trophy-base-permanent','text-trophy-permanent','text','trophy-base','small'),
+ repeat('trophy-choice','button-trophy-choice','button','trophy-evolution','[data-progress="trophy-choice"]','data-choice',{action:'trophy-choice',...progressAction,level:'group'}),
+ within('trophy-choice-art','image-reward-sprite','image','trophy-choice','.reward-sprite'),within('trophy-choice-label','text-trophy-choice-label','text','trophy-choice','strong'),within('trophy-choice-permanent','text-trophy-permanent','text','trophy-choice','small'),
+ text('medals-title','awards-content','[data-award-heading=medals]'),text('goals-title','awards-content','[data-award-heading=goals]'),group('achievement-goals','group-achievement-goals','awards-content','.achievement-goals'),repeat('achievement-goal','container-achievement-goal','container','achievement-goals','.achievement-goals > article','data-goal'),within('goal-title','text-achievement-goal','text','achievement-goal','strong'),within('goal-progress','text-achievement-progress','text','achievement-goal','p'),
+ group('medals','group-medals','awards-content','.medal-grid'),
+ repeat('medal','container-medal','container','medals','.medal-card','data-mode',{min:5,max:5}),
+ within('medal-art','image-reward-sprite','image','medal','.reward-sprite'),within('medal-title','text-medal-title','text','medal','h3'),within('medal-copy','text-medal-copy','text','medal','p')];
+const forge=[...progressBase(true).map(row=>row.id==='progress-back'?{...row,actions:['dashboard','return-results']}:row),group('forge-content','family-forge','progress-canvas','.journey-forge',{level:'family'}),
+ text('forge-title','forge-content','.forge-intro h2'),text('forge-description','forge-content','.forge-intro p'),text('forge-wallet','forge-content','.spark-wallet'),
+ text('forge-note','forge-content','.journey-note'),text('forge-feedback','forge-content','.journey-feedback'),
+ group('power-meter','group-power-meter','forge-content','.power-charge'),text('power-meter-title','power-meter','.power-charge h3'),b('power-charge','meter-power-charge','meter','power-meter','progress'),text('power-meter-value','power-meter','.power-charge strong'),text('power-meter-copy','power-meter','.power-charge p'),
+ group('powers','group-powers','forge-content','.power-grid'),repeat('power','container-power-card','container','powers','.power-card','data-power',{min:4,max:4}),
+ within('power-icon','icon-power','icon','power','.power-icon'),within('power-title','text-power-title','text','power','h3'),within('power-copy','text-power-copy','text','power','p'),within('power-tier','text-power-tier','text','power',':scope > small'),within('power-owned','text-power-owned','text','power','.power-owned',optional),
+ within('power-forge','button-forge','button','power','button',{action:'forge-power',...progressAction,optional:true})];
+const ruleDetails=[group('rule-dialog','family-rule-card-dialog','layout-root','.learning-rule-dialog',{level:'family'}),
+ button('rule-close','button-popup-close','rule-dialog','.rule-dialog-close','close-rule-card'),
+ b('rule-hero','image-rule-hero','image','rule-dialog','.rule-hero img'),group('rule-body','group-rule-body','rule-dialog','.rule-dialog-copy'),
+ text('rule-heading','rule-body','.rule-dialog-copy h2'),text('rule-explanation','rule-body','.rule-dialog-copy > p:first-of-type'),
+ group('rule-examples','group-rule-examples','rule-body','.rule-examples-grid'),repeat('rule-example','text-rule-example','text','rule-examples','.rule-examples-grid > span','data-word')];
 const categories=[...progressBase(true),text('categories-copy','progress-canvas','.progress-subtitle'),group('categories-list','group-progress-categories','progress-canvas','.progress-category-list'),
  repeat('category','button-practice-category','button','categories-list','.progress-category-list > button','data-category',{min:8,max:8,action:'practice',...progressAction,level:'group'}),within('category-pair','text-category-pair','text','category','.category-pair'),within('category-copy','text-category-copy','text','category',':scope > span')];
 const rules=[...progressBase(true),b('rules-views','control-jelly','toggle','progress-canvas','.rules-views',{level:'group'}),
@@ -169,14 +194,14 @@ const rules=[...progressBase(true),b('rules-views','control-jelly','toggle','pro
  group('rules-content','group-rules-content','progress-canvas','[data-rules-content]'),group('rules-categories','group-rules-categories','rules-content','.rules-categories'),
  repeat('rules-category','button-rule-category','button','rules-categories','[data-progress="rules-category"]','data-category',{min:8,max:8,action:'rules-category',...progressAction}),
  group('rules-list','group-learning-rules','rules-content','.learning-rule-list',optional),
- repeat('rule','container-learning-rule','container','rules-list','.learning-rule','data-rule',{level:'group'}),within('rule-title','text-rule-title','text','rule','summary'),within('rule-copy','text-rule-copy','text','rule','.learning-rule-body > p'),
+ repeat('rule','container-learning-rule','button','rules-list','.learning-rule','data-rule',{level:'group',action:'open-rule-card',...progressAction}),within('rule-title','text-rule-title','text','rule','h3'),within('rule-copy','text-rule-copy','text','rule','p'),
  group('rules-word-grid','container-collection-grid','rules-content','.collection-word-grid',optional),
  repeat('rule-word','container-collection-word','button','rules-word-grid','.collection-word','data-word',{action:'rule',...progressAction,level:'group'}),within('rule-word-image','image-collection-word','image','rule-word','img'),within('rule-word-title','text-collection-word','text','rule-word','strong')];
 const sessions=[...progressBase(true),text('sessions-copy','progress-canvas','.progress-subtitle'),group('sessions-list','group-progress-sessions','progress-canvas','.progress-session-list',optional),
  repeat('session','container-session','container','sessions-list','.progress-session-list > article','data-session'),within('session-title','text-session-title','text','session','h2'),within('session-copy','text-session-copy','text','session','p'),within('session-duration','text-session-duration','text','session','small'),
  group('sessions-empty','group-progress-empty','progress-canvas','.progress-empty',optional),text('sessions-empty-title','sessions-empty','.progress-empty h2',optional),text('sessions-empty-copy','sessions-empty','.progress-empty p',optional)];
 
-const views={players,settings,progress,collection,trophies,categories,rules,sessions};
+const views={players,settings,progress,collection,trophies,'trophy-base':trophies,'trophy-evolution':trophies,categories,rules,sessions,forge,'rule-details':ruleDetails};
 for(const mode of ['english','flags','reading']){
  views[mode+'-settings']=wizard(mode);
  for(const state of ['initial','correct','wrong'])views[mode+'-'+state]=game(mode);
@@ -193,6 +218,8 @@ const companions={};
 for(const mode of ['spelling','english','flags','reading','math']){
  const prefix=mode+'-result-';
  const parts=[
+  group('round-rewards','family-round-rewards',prefix+'sheet','.round-rewards',optional),
+  text('round-rewards-title','round-rewards','.round-rewards h2',optional),
   group('result-line','container-result-line',prefix+'summary','.round-summary-line'),
   text('result-mode','result-line','.round-mode-pill',{recipe:'text-result-mode'}),
   b('result-progress-fill','meter-round-progress-fill','meter',prefix+'progress','.round-progress-fill'),
@@ -221,6 +248,7 @@ for(const state of ['initial','correct','wrong','hint','pause'])companions['spel
  b('continue-handle','icon-continue-handle','icon','spelling-game-next','.continue-handle',optional),
  b('continue-copy','text-continue-copy','text','spelling-game-next','.continue-copy',optional)
 ];
+for(const mode of ['spelling','english','reading','flags','math'])for(const state of ['initial','correct','wrong']){const key=mode+'-'+state;companions[key]||=[];companions[key].push(group('power-game-hud','group-power-game-hud','layout-root','.power-game-hud',optional),within('hud-sparks','text-hud-sparks','text','power-game-hud','span:first-child'),within('hud-combo','text-hud-combo','text','power-game-hud','b'),within('hud-charge','meter-power-charge','meter','power-game-hud','meter'),within('hud-power','text-hud-power','text','power-game-hud','span:last-child'));}
 companions['spelling-settings']=[
  b('mission-illustration','image-mission','image','spelling-mission','.mission-illustration'),
  b('mission-title','text-mission-title','text','spelling-mission','.mission-card h2'),

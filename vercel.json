@@ -49,16 +49,8 @@
   ],
   "rewrites": [
     {
-      "source": "/assets/scenes/:path*",
-      "destination": "https://mala-nauka-assets.vercel.app/assets/scenes/:path*"
-    },
-    {
-      "source": "/assets/flags/:path*",
-      "destination": "https://mala-nauka-assets.vercel.app/assets/flags/:path*"
-    },
-    {
-      "source": "/assets/managed/:path*",
-      "destination": "https://mala-nauka-assets.vercel.app/assets/managed/:path*"
+      "source": "/assets/:path*",
+      "destination": "https://mala-nauka-assets.vercel.app/assets/:path*"
     }
   ]
 }

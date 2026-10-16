@@ -189,6 +189,37 @@ PARTS.push(
  group('family-game-question','Pytanie w grze','.question-card',['container-game-content'],{level:'family',inherits:'container-card'}),
  atom('text-mission-copy','Opis misji','text','.wizard-intro p',{inherits:'text-mission-hint',variantAxis:'mode',modes:['english','flags','reading']})
 );
+PARTS.push(
+ atom('image-reward-sprite','Puchar lub medal z atlasu','image','.reward-sprite',{states:['default','growing','earned']}),
+ atom('icon-power','Symbol mocy','icon','.power-icon'),
+ atom('meter-power-charge','Miernik naładowania mocy','meter','.power-charge progress'),
+ atom('text-power-title','Nazwa mocy','text','.power-card h3'),atom('text-power-copy','Opis mocy','text','.power-card p'),
+ atom('button-forge','Wykuj moc','button','[data-progress="forge-power"]',{inherits:'button-main',states:['default','disabled']}),
+ atom('button-trophy-choice','Trwały wybór pucharu','button','[data-progress="trophy-base"],[data-progress="trophy-choice"]',{inherits:'button-main'}),
+ group('container-power-card','Karta mocy','.power-card',['icon-power','text-power-title','text-power-copy','button-forge'],{inherits:'container-card'}),
+ group('group-powers','Karty mocy','.power-grid',['container-power-card']),
+ group('group-power-meter','Energia mocy','.power-charge',['meter-power-charge']),
+ group('family-forge','Kuźnia mocy','.journey-forge',['group-power-meter','group-powers'],{level:'family'}),
+ group('group-trophy-evolution','Rozwój pucharu','.trophy-evolution',['image-reward-sprite','button-trophy-choice']),
+ atom('text-medal-title','Nazwa medalu','text','.medal-card h3'),atom('text-medal-copy','Postęp medalu','text','.medal-card p'),
+ group('container-medal','Medal za zadanie','.medal-card',['image-reward-sprite','text-medal-title','text-medal-copy']),
+ group('group-medals','Medale z przygód','.medal-grid',['container-medal']),
+ group('family-awards','Puchary i medale','.journey-awards',['group-trophy-evolution','group-medals'],{level:'family'}),
+ atom('image-rule-hero','Ilustracja reguły','image','.rule-hero img'),atom('text-rule-example','Przykład reguły','text','.rule-examples-grid > span'),
+ group('group-rule-examples','Przykłady reguły','.rule-examples-grid',['text-rule-example']),
+ group('group-rule-body','Treść karty reguły','.rule-dialog-copy',['group-rule-examples']),
+ group('family-rule-card-dialog','Okno karty reguły','.learning-rule-dialog',['image-rule-hero','group-rule-body','button-popup-close'],{level:'family',inherits:'family-education-popup'}),
+ group('family-round-rewards','Odkrycia i nagrody po rundzie','.round-rewards',[],{level:'family'}),
+ group('group-power-game-hud','Moc i combo w grze','.power-game-hud',[])
+);
+for(const [id,name]of Object.entries({
+ 'text-forge-title':'Tytuł kuźni','text-forge-description':'Opis kuźni','text-forge-wallet':'Portfel iskier','text-forge-note':'Zasady mocy','text-forge-feedback':'Potwierdzenie wykucia',
+ 'text-power-meter-title':'Tytuł energii','text-power-meter-value':'Wartość energii','text-power-meter-copy':'Opis ładowania','text-power-tier':'Rzadkość mocy','text-power-owned':'Posiadana moc',
+ 'text-awards-heading':'Tytuł pucharów','text-awards-copy':'Opis pucharów','text-trophy-name':'Nazwa pucharu','text-trophy-status':'Postęp pucharu','text-trophy-milestone':'Próg osiągnięcia','text-trophy-choice-title':'Nagłówek trwałego wyboru','text-trophy-choice-label':'Nazwa ozdoby','text-trophy-permanent':'Informacja o trwałości wyboru',
+ 'text-medals-title':'Tytuł medali','text-goals-title':'Tytuł osiągnięć','text-achievement-goal':'Cel osiągnięcia','text-achievement-progress':'Postęp osiągnięcia','text-rule-heading':'Tytuł reguły','text-rule-explanation':'Wyjaśnienie reguły',
+ 'text-card-stars':'Gwiazdka karty','text-hud-sparks':'Iskry podczas rundy','text-hud-combo':'Mnożnik combo','text-hud-power':'Aktywna moc'
+}))PARTS.push(atom(id,name,'text','[data-ds-recipe="'+id+'"]'));
+PARTS.push(group('group-trophy-milestones','Etapy pucharu','.trophy-milestones',['text-trophy-milestone']),group('group-achievement-goals','Cele kolekcji','.achievement-goals',['container-achievement-goal']),group('container-achievement-goal','Cel i licznik','[data-goal]',['text-achievement-goal','text-achievement-progress']));
 const explicitUses={'text-pin-error':['player-pin','player-unlock'],'text-math-setup-title':['math-settings'],'text-spelling-word':['spelling-initial','spelling-correct','spelling-wrong'],'button-game-hint':['spelling-initial','spelling-correct','spelling-wrong'],'jelly-option':['spelling-settings','english-settings','flags-settings','reading-settings','math-settings']};
 for(const [id,views]of Object.entries(explicitUses)){const p=PARTS.find(p=>p.id===id);if(p)p.views=views;}
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));

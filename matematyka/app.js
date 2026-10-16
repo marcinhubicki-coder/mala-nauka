@@ -85,7 +85,8 @@ function makeAnswers(correct, pool = [], min = 0, max = 100) {
   return [...values].sort((a, b) => a - b);
 }
 
-function makeQuestion(mode) {
+function makeQuestion(mode){return {...generateQuestion(mode),roundQuestionId:crypto.randomUUID()};}
+function generateQuestion(mode) {
   if (mode === 'add') {
     let a = randomInt(2, 60);
     let b = randomInt(2, 60);
@@ -278,7 +279,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
 
   app.innerHTML = `
     ${gameTopbar()}
-    <section class="screen quiz-screen" data-math-quiz data-operation="${q.mode}" data-correct-answer="${q.correct}">
+    <section class="screen quiz-screen" data-math-quiz data-question-id="${q.roundQuestionId}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
       <div class="quiz-stage ${showExplainer ? 'has-explainer' : ''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>

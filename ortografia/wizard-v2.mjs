@@ -106,7 +106,7 @@ function limitChoices(){
 function syncRoundChoice(){
  root.querySelectorAll('[data-round-options]').forEach(container=>{
   const active=container.dataset.roundOptions===state.limitMode;
-  container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
+  container.hidden=!active;container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando||root.dataset.tutorial==='true';});
  });
  const note=root.querySelector('.wizard-note');
  if(note)note.textContent=state.dyktando?(packs.find(pack=>pack.tag===state.dictationTag)?.count||0)+' słów, bez pośpiechu i bez powtórek.':state.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.':'Po pomyłce czas czeka, aż poznasz odpowiedź.';
@@ -193,7 +193,7 @@ function syncTimeMode(container,animate=false){
  const indicatorNode=jellyV4.ensurePrepared(container,Number(container.dataset.activeIndex??index));if(!indicatorNode)return;
  const wasDyktando=container.classList.contains('is-dyktando');
  container.classList.toggle('is-dyktando',state.dyktando);
- container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando;});
+ container.querySelectorAll('input').forEach(input=>{input.disabled=state.dyktando||root.dataset.tutorial==='true';});
 
  if(!state.dyktando && !wasDyktando){
   jellyV4.update(container,index,{animate});return;
@@ -284,7 +284,7 @@ function install(){
  if(!root||root.dataset.mode!=='spelling'||root.dataset.view!=='wizard')return;
  const card=root.querySelector('.setup-card');if(!card||card.dataset.spellingWizardV2==='true')return;
  const fallback={category:card.querySelector('[name="category"]')?.value||'all',difficulty:Number(card.querySelector('[name="difficulty"]:checked')?.value)||0,duration:Number(card.querySelector('[name="duration"]:checked')?.value)||180};
- state=readState(fallback);if(!packs.some(pack=>pack.tag===state.dictationTag))state.dictationTag=packs[0]?.tag||'dyktando';card.dataset.spellingWizardV2='true';card.classList.add('spelling-wizard-v2');
+ state=readState(fallback);if(root.dataset.tutorial==='true')Object.assign(state,{scope:'all',dyktando:false,difficulty:0,limitMode:'count',wordLimit:10});if(!packs.some(pack=>pack.tag===state.dictationTag))state.dictationTag=packs[0]?.tag||'dyktando';card.dataset.spellingWizardV2='true';card.classList.add('spelling-wizard-v2');
  card.innerHTML=
   '<input id="category" type="hidden" name="category" value="'+esc(state.scope==='categories'?state.categories.join(','):'all')+'">'+
   '<input type="hidden" name="selectedDictationTag" value="'+esc(state.dictationTag)+'">'+
@@ -302,7 +302,7 @@ function install(){
  geometryObserver.disconnect();root.querySelectorAll('.spelling-segmented').forEach(container=>geometryObserver.observe(container));
  hydrateViewContract(root,'spelling-settings');
  delete root.dataset.dsContractPending;
- updateStartButton(false);syncPanel(false);syncHidden('force');requestAnimationFrame(()=>{syncSegments(false);installDrag();});
+ updateStartButton(false);syncPanel(false);syncHidden('force');if(root.dataset.tutorial==='true'){root.querySelectorAll('.setup-card input:not([type=hidden]),.setup-card select').forEach(input=>input.disabled=true);const note=root.querySelector('.wizard-note');if(note)note.textContent='Pierwsza przygoda: 10 losowych słów, bez stopera. Potem samodzielnie wybierzesz misję.';}requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }
 
 root?.addEventListener('click',event=>{

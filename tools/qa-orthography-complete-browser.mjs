@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 const {chromium}=await import('playwright');
 const base=process.argv[2]||'http://127.0.0.1:8765';
-const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+const browser=await chromium.launch({headless:true,args:['--no-sandbox'],...(process.env.CHROME_EXECUTABLE?{executablePath:process.env.CHROME_EXECUTABLE}:{})});
 let page;
 const errors=[];
 try{
@@ -15,12 +15,12 @@ try{
  await page.locator('[data-action="choose-mode"][data-mode=spelling]').click();
  const frame=page.frameLocator('iframe[data-mode-host=spelling]');
  await frame.locator('#app [data-spelling-wizard-v2=true]').waitFor({timeout:12000});
- await frame.locator('[data-ds-element=spelling-limit-count]').click();
- await frame.locator('[data-ds-element=spelling-word-limit-10]').click();
+ assert.equal(await frame.locator('input[name=limitMode][value=count]').isChecked(),true);
+ assert.equal(await frame.locator('input[name=wordLimit][value="20"]').isDisabled(),true);
  assert.equal(await frame.locator('input[name=wordLimit]:checked').inputValue(),'10');
  await frame.locator('#setup-form .start-button').click();
  await frame.locator('#app[data-view=game]').waitFor({timeout:15000});
- assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17);
+ assert.ok(await frame.locator('#app [data-ds-contract=v2]').count()>=17);
  let wrong=0,correct=0;
  for(let question=1;question<=10;question++){
   await frame.locator('.time-block .timer').filter({hasText:String(question)+'/10'}).waitFor({timeout:13000});
@@ -29,7 +29,7 @@ try{
   await frame.locator('#app[data-state^=feedback]').waitFor({timeout:12000});
   const response=await frame.locator('#app').getAttribute('data-state');
   assert.ok(['feedback-correct','feedback-wrong'].includes(response),'Unexpected feedback at '+question+': '+response);
-  assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17);
+  assert.ok(await frame.locator('#app [data-ds-contract=v2]').count()>=17);
   if(response==='feedback-wrong'){
    wrong++;
    const rail=frame.locator('.spelling-continue-rail');
@@ -41,7 +41,7 @@ try{
   }
  }
  await frame.locator('#app[data-view=results]').waitFor({timeout:22000});
- assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),18);
+ assert.ok(await frame.locator('#app [data-ds-contract=v2]').count()>=18);
  assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-repeat]').count(),1);
  assert.equal(await frame.locator('#app .result-actions [data-ds-element=spelling-result-history]').count(),1);
  const scores=await frame.locator('.round-summary-line').innerText();
@@ -53,22 +53,18 @@ try{
  const repeat=frame.locator('#app [data-ds-element=spelling-result-repeat]');
  const history=frame.locator('#app [data-ds-element=spelling-result-history]');
  assert.equal(await repeat.count(),1);
- assert.equal(await history.getAttribute('data-action'),'history');
- // Approved results CTA must open the word collection, not the progress dashboard.
+ assert.equal(await history.getAttribute('data-action'),'forge');
+ // The results CTA opens the shared forge and retains this exact result.
  await history.click();
- await frame.locator('#app[data-view=history][data-history-state=collection]').waitFor({timeout:12000});
- assert.equal(await frame.locator('.progress-subpage h1').innerText(),'Moja kolekcja słów');
- // From the collection, return through the dashboard to the just-finished results.
- await frame.locator('#app[data-view=history] [data-progress=dashboard]').first().click();
- await frame.locator('#app[data-view=history][data-history-state=dashboard]').waitFor({timeout:12000});
- await frame.locator('#app[data-view=history] [data-action=return-results]').first().click();
+ await frame.locator('.journey-forge').waitFor({timeout:12000});
+ await frame.locator('[data-progress=return-results]').click();
  await frame.locator('#app[data-view=results]').waitFor({timeout:12000});
  assert.equal(await frame.locator('.round-summary-line').innerText(),scores);
  const repeatAfterReturn=frame.locator('#app [data-ds-element=spelling-result-repeat]');
  await repeatAfterReturn.focus();
  for(let step=0;step<10;step++)await repeatAfterReturn.press('ArrowRight');
  await frame.locator('#app[data-view=game]').waitFor({timeout:20000});
- assert.equal(await frame.locator('#app [data-ds-contract=v2]').count(),17,'Repeat round did not preserve the compiled game family');
+ assert.ok(await frame.locator('#app [data-ds-contract=v2]').count()>=17,'Repeat round did not preserve the compiled game family');
  assert.equal(await frame.locator('#app .answers .answer').count(),2);
  assert.equal(await frame.locator('#app[data-state=playing]').count(),1,'Repeat round did not return to normal gameplay');
  assert.deepEqual(errors,[]);

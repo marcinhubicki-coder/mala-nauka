@@ -21,6 +21,7 @@ export function scoreAttempts(attempts,settings=DEFAULT_SCORING){
  return {total,base,hintDiscount:Math.round(hintDiscount*100)/100,penalty,combo,bestStreak,correct,wrong:attempts.length-correct,accuracy:attempts.length?Math.round(correct/attempts.length*100):0,rows};
 }
 export function scoreResult(result){
+ if(result.progressionRules&&Number.isFinite(result.rewards?.sparks))return {total:Math.round(result.rewards.sparks*10)/10,currency:'sparks',rows:result.attempts||[]};
  const attempts=Array.isArray(result.attempts)?result.attempts:[];
  if(!result.scoring)return {total:result.correct||0,base:result.correct||0,hintDiscount:0,penalty:0,combo:0,accuracy:result.correct+result.wrong?Math.round(result.correct/(result.correct+result.wrong)*100):0,rows:[]};
  try{return scoreAttempts(attempts,result.scoring);}catch{return {total:result.correct||0,base:result.correct||0,hintDiscount:0,penalty:0,combo:0,rows:[]};}

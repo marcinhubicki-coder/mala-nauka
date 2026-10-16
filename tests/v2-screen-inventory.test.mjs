@@ -5,8 +5,8 @@ import {VIEW_SNAPSHOT_IDS,inventorySnapshot} from '../design-system/view-invento
 import {viewContract} from '../shared/view-contracts.mjs';
 import {findEditableBlock,planStyleEdit} from '../tools/studio-engine.mjs';
 const registry=JSON.parse(readFileSync(new URL('../design-system/registry.json',import.meta.url),'utf8'));
-test('All 41 renderer contracts have a derived, deterministic fixture inventory',()=>{
- assert.equal(VIEW_SNAPSHOT_IDS.length,41);
+test('All registered renderer contracts have a derived, deterministic fixture inventory',()=>{
+ assert.equal(VIEW_SNAPSHOT_IDS.length,45);
  assert.deepEqual(new Set(VIEW_SNAPSHOT_IDS),new Set(registry.views.map(v=>v.id)));
  let count=0;
  for(const v of registry.views){

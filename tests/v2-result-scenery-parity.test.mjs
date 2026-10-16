@@ -1,3 +1,4 @@
+import {defaultTarget} from '../shared/navigation.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
@@ -23,10 +24,10 @@ test('one unified results background is precached without duplicate image resour
  assert.ok(!bootstrap.includes('result-meadow-retina-v4.webp'));
 });
 
-test('result collection CTA opens the actual word collection and preserves return to result',()=>{
- assert.ok(body.includes('Moja kolekcja</button>'));
- assert.ok(body.includes('data-history-screen="collection"'));
+test('result CTA opens the forge and preserves return to the result',()=>{
+ assert.ok(body.includes('Kuźnia mocy</button>'));
+ assert.ok(body.includes('data-action="forge"'));
  const app=readFileSync(new URL('../app.js',import.meta.url),'utf8');
- assert.ok(app.includes("button.dataset.historyScreen==='collection'"));
- assert.ok(app.includes("root.querySelector('[data-progress=\"collection\"]')?.click()"));
+ assert.equal(defaultTarget('spelling-results','forge','spelling'),'forge');assert.equal(defaultTarget('forge','return-results','spelling'),'spelling-results');
+ assert.ok(app.includes("backAction:collectionReturn?'return-results':'home'"));
 });

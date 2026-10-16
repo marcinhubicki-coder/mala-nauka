@@ -4864,5 +4864,66 @@
       "#fe7b06"
     ],
     "soundInParent": false
+  },
+  "progression": {
+    "version": 1,
+    "pack": "base-v1",
+    "stars": [
+      5,
+      15,
+      30
+    ],
+    "starBonus": [
+      0,
+      0.02,
+      0.04,
+      0.06
+    ],
+    "mastery": {
+      "recallDays": 3,
+      "spanDays": 7,
+      "consolidateDays": 2
+    },
+    "ruleDiscovery": 3,
+    "combo": {
+      "thresholds": [
+        3,
+        6,
+        10
+      ],
+      "multipliers": [
+        1.25,
+        1.5,
+        2
+      ]
+    },
+    "meter": {
+      "capacity": 100,
+      "answer": 5,
+      "correct": 5
+    },
+    "modes": {
+      "spelling": {
+        "questionsPerMinute": 8
+      },
+      "math": {
+        "questionsPerMinute": 12
+      },
+      "english": {
+        "questionsPerMinute": 8
+      },
+      "flags": {
+        "questionsPerMinute": 16
+      },
+      "reading": {
+        "questionsPerMinute": 6
+      }
+    },
+    "activeDayAnswers": 10,
+    "balanceTolerance": 0.15,
+    "ruleCompleteBonus": 5
+  },
+  "testing": {
+    "includeProfiles": false
   }
 }

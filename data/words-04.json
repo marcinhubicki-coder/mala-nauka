@@ -1529,23 +1529,22 @@
   },
   {
     "word": "zmarznąć",
-    "masked": "zma_nąć",
-    "category": "rz/ż",
+    "masked": "zmarzną_",
+    "category": "ć/ci",
     "options": [
-      "rz",
-      "ż"
+      "ć",
+      "ci"
     ],
-    "answer": "rz",
+    "answer": "ć",
     "difficulty": 2,
     "learning": {
-      "type": "memory",
-      "title": "Rodzina wyrazów z „rz”",
-      "explanation": "Zmarznąć i marznąć zapisujemy przez rz. Zapamiętaj ten zapis razem z rodziną wyrazów związaną z mrozem.",
+      "type": "pattern",
+      "title": "„ć” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ć” zapisujemy znakiem „ć”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [
         "marznąć",
-        "zmarznięty",
-        "mróz"
+        "zmarznięty"
       ],
       "forms": [
         "zmarznę",
@@ -1562,7 +1561,10 @@
           "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
         }
       ]
-    }
+    },
+    "practiceCategories": [
+      "ć/ci"
+    ]
   },
   {
     "word": "przedszkole",
@@ -1720,12 +1722,17 @@
     ],
     "learning": {
       "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "title": "Zapamiętaj „rz”",
+      "explanation": "Zapis przez rz warto zapamiętać i skojarzyć z obrazkiem oraz rodziną wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1749,13 +1756,26 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "ośnieżony",
+          "to": "śnieg",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "śnieg"
+      ],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1779,13 +1799,26 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "śnieżka",
+          "to": "śnieg",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "śnieg"
+      ],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1809,13 +1842,26 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "śnieżny",
+          "to": "śnieg",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "śnieg"
+      ],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1839,13 +1885,26 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "śnieżyca",
+          "to": "śnieg",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "śnieg"
+      ],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1869,13 +1928,26 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis rz/ż",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
-      "examples": [],
-      "relatedWords": [],
+      "type": "exchange",
+      "title": "Ż wymienia się na g",
+      "explanation": "Ż wymienia się na g. Pomocną formę lub wyraz z tej samej rodziny znajdziesz w przykładach.",
+      "examples": [
+        {
+          "from": "śnieżynka",
+          "to": "śnieg",
+          "change": "ż ↔ g"
+        }
+      ],
+      "relatedWords": [
+        "śnieg"
+      ],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   }
 ]

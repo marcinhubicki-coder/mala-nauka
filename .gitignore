@@ -1,3 +1,6 @@
 dist/
 node_modules/
 .design-qa/
+
+# New immutable illustrations are committed only to assets/library-v1.
+/assets/managed/

@@ -1,3 +1,4 @@
+const escapeHint=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 import {burstFireworks} from './fireworks.mjs';
 import { createContinueDrag } from './continue-drag.mjs?v=4-jelly-motion';
 import {DEFAULT_EFFECTS,createEffectPicker,normalizeEffectsConfig} from './effect-model.mjs';
@@ -54,7 +55,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
     hint = document.createElement('dialog'); hint.className = 'spelling-hint-sheet';
     hint.dataset.dsKey='hint-shell';
     hint.setAttribute('aria-labelledby', 'spelling-hint-title');
-    hint.innerHTML = `<div class="hint-sheet-head" ${overlayAttrs('hint','hint-head')}>${lightbulbSvg()}<h2 ${overlayAttrs('hint','hint-title')} id="spelling-hint-title">Mała podpowiedź</h2><button type="button" ${overlayAttrs('hint','hint-dismiss')} data-action="dismiss-hint" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p ${overlayAttrs('hint','hint-copy')}>${RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
+    hint.innerHTML = `<div class="hint-sheet-head" ${overlayAttrs('hint','hint-head')}>${lightbulbSvg()}<h2 ${overlayAttrs('hint','hint-title')} id="spelling-hint-title">Mała podpowiedź</h2><button type="button" ${overlayAttrs('hint','hint-dismiss')} data-action="dismiss-hint" class="hint-dismiss" aria-label="Zamknij podpowiedź">×</button></div><p ${overlayAttrs('hint','hint-copy')}>${session.current.learning?.explanation?escapeHint(session.current.learning.explanation):RULES[session.current.category] || 'Spróbuj przypomnieć sobie podobny wyraz i porównać jego zapis.'}</p>`;
     hydrateSpellingOverlay(hint,'hint');
     hint.querySelector('button').addEventListener('click', closeHint);
     hint.addEventListener('cancel', event => { event.preventDefault(); closeHint(); });
@@ -218,7 +219,7 @@ export function createSpellingArt(app, { onContinue } = {}) {
       const rays='<svg class="feedback-rays" viewBox="0 0 30 42" fill="none" aria-hidden="true"><path d="m24 11-10-6M19 21H7m17 10-10 6" stroke="#ffd43b" stroke-width="5.5" stroke-linecap="round"/><path d="m24 10-9-5M18 20H7m16 10-9 6" stroke="#ffe879" stroke-width="1.2" stroke-linecap="round"/></svg>';
       nodes.feedback.innerHTML=correct?`${rays}<span class="feedback-copy">Pięknie!</span>${rays}`:'';
       app.classList.toggle('spelling-correct-feedback',correct);
-      const effects=effectConfig(),combo=correct&&game.streak>0&&game.streak%effects.comboEvery===0;
+      const effects=effectConfig(),combo=correct&&!game.hintUsed&&game.streak>0&&game.streak%effects.comboEvery===0;
       bubble?.react(combo?'combo':correct?'correct':'wrong');
       const preset=effects.presets[effectPreview?.id]||pickEffect(effects).preset;stopFireworks?.();stopFireworks=null;stopComboGlobal();
       if(combo&&effects.comboGlobal?.enabled!==false){comboGlobal?.play(effects);}

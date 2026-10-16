@@ -1,6 +1,6 @@
 {
   "phase": "full",
-  "passed": 78,
+  "passed": 80,
   "total": 80,
   "reports": [
     {
@@ -204,8 +204,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 20.2,
-      "inkFrames": 119,
+      "inkPaintP95": 15.4,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -311,8 +311,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 21.6,
-      "inkFrames": 114,
+      "inkPaintP95": 14.9,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -418,8 +418,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 19.8,
-      "inkFrames": 121,
+      "inkPaintP95": 17.7,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -525,8 +525,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 17.5,
-      "inkFrames": 125,
+      "inkPaintP95": 17.1,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -632,8 +632,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 14,
-      "inkFrames": 127,
+      "inkPaintP95": 15.5,
+      "inkFrames": 125,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -739,8 +739,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 23.2,
-      "inkFrames": 111,
+      "inkPaintP95": 22.5,
+      "inkFrames": 109,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -847,8 +847,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 21.5,
-      "inkFrames": 111,
+      "inkPaintP95": 18.8,
+      "inkFrames": 123,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -954,8 +954,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 19.8,
-      "inkFrames": 110,
+      "inkPaintP95": 18.6,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1061,8 +1061,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 22.3,
-      "inkFrames": 109,
+      "inkPaintP95": 18.7,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1168,8 +1168,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 23.9,
-      "inkFrames": 111,
+      "inkPaintP95": 18,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1276,8 +1276,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 20.4,
-      "inkFrames": 109,
+      "inkPaintP95": 16.8,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1383,8 +1383,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 14.9,
-      "inkFrames": 128,
+      "inkPaintP95": 16.1,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1490,8 +1490,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 21.4,
-      "inkFrames": 109,
+      "inkPaintP95": 16.4,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1597,8 +1597,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 17.3,
-      "inkFrames": 125,
+      "inkPaintP95": 16.3,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -1808,8 +1808,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 20.3,
-      "inkFrames": 113,
+      "inkPaintP95": 19.6,
+      "inkFrames": 124,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -1915,8 +1915,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 17.9,
-      "inkFrames": 125,
+      "inkPaintP95": 15.2,
+      "inkFrames": 128,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -2022,8 +2022,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 20.3,
-      "inkFrames": 113,
+      "inkPaintP95": 18.1,
+      "inkFrames": 124,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2129,8 +2129,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 19.2,
-      "inkFrames": 116,
+      "inkPaintP95": 17.4,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -2343,8 +2343,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 22.1,
-      "inkFrames": 108,
+      "inkPaintP95": 18.3,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2450,8 +2450,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 21.9,
-      "inkFrames": 114,
+      "inkPaintP95": 17,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -2557,8 +2557,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 27.5,
-      "inkFrames": 83,
+      "inkPaintP95": 23.7,
+      "inkFrames": 103,
       "compass": {
         "x": 379.59375,
         "y": 166.796875,
@@ -2771,8 +2771,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 21.2,
-      "inkFrames": 109,
+      "inkPaintP95": 19.4,
+      "inkFrames": 124,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3086,8 +3086,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 20.8,
-      "inkFrames": 109,
+      "inkPaintP95": 18.6,
+      "inkFrames": 124,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3609,8 +3609,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 18.5,
-      "inkFrames": 112,
+      "inkPaintP95": 16.8,
+      "inkFrames": 127,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -3924,8 +3924,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 18.7,
-      "inkFrames": 117,
+      "inkPaintP95": 17.2,
+      "inkFrames": 126,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4235,13 +4235,13 @@
       "sand": "falling",
       "qa": {
         "enabled": "true",
-        "progress": "0.000"
+        "progress": "0.011"
       },
       "foldImages": true,
       "inkPhase": "empty",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 17.9,
+      "inkPaintP95": 18.4,
       "inkFrames": 63,
       "compass": {
         "x": 15.546875,
@@ -4452,8 +4452,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 11,
-      "inkFrames": 25,
+      "inkPaintP95": 7,
+      "inkFrames": 39,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4559,8 +4559,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 11,
-      "inkFrames": 29,
+      "inkPaintP95": 7,
+      "inkFrames": 46,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4666,8 +4666,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 9,
-      "inkFrames": 29,
+      "inkPaintP95": 6,
+      "inkFrames": 42,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4773,8 +4773,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 15,
-      "inkFrames": 30,
+      "inkPaintP95": 7,
+      "inkFrames": 40,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -4880,8 +4880,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 30,
+      "inkPaintP95": 5,
+      "inkFrames": 47,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -4987,8 +4987,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 12,
-      "inkFrames": 27,
+      "inkPaintP95": 5,
+      "inkFrames": 42,
       "compass": {
         "x": 17.34375,
         "y": 173.578125,
@@ -5095,8 +5095,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 12,
-      "inkFrames": 28,
+      "inkPaintP95": 5,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5202,8 +5202,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 12,
-      "inkFrames": 29,
+      "inkPaintP95": 7,
+      "inkFrames": 43,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5309,8 +5309,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 29,
+      "inkPaintP95": 5,
+      "inkFrames": 43,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5416,8 +5416,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 11,
-      "inkFrames": 33,
+      "inkPaintP95": 6,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5524,8 +5524,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 11,
-      "inkFrames": 33,
+      "inkPaintP95": 4,
+      "inkFrames": 47,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5631,8 +5631,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 37,
+      "inkPaintP95": 5,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -5738,8 +5738,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 9,
-      "inkFrames": 34,
+      "inkPaintP95": 7,
+      "inkFrames": 40,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -5845,8 +5845,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 36,
+      "inkPaintP95": 5,
+      "inkFrames": 52,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -6056,8 +6056,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 33,
+      "inkPaintP95": 6,
+      "inkFrames": 48,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -6163,8 +6163,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 12,
-      "inkFrames": 37,
+      "inkPaintP95": 3,
+      "inkFrames": 53,
       "compass": {
         "x": 15.546875,
         "y": 124.390625,
@@ -6270,8 +6270,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 8,
-      "inkFrames": 32,
+      "inkPaintP95": 4,
+      "inkFrames": 47,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -6377,8 +6377,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 8,
-      "inkFrames": 34,
+      "inkPaintP95": 3,
+      "inkFrames": 51,
       "compass": {
         "x": 15.546875,
         "y": 184.75,
@@ -6390,7 +6390,7 @@
     {
       "name": "webkit-all-europe-title-layout",
       "state": "feedback-wrong",
-      "country": "me",
+      "country": "is",
       "score": "0 pkt",
       "task": "Zadanie 1",
       "viewport": {
@@ -6417,8 +6417,8 @@
       },
       "answers": [
         {
-          "id": "va",
-          "text": "Watykan",
+          "id": "lv",
+          "text": "Łotwa",
           "disabled": true,
           "x": 17.546875,
           "y": 535.9375,
@@ -6429,8 +6429,8 @@
           "icons": 0
         },
         {
-          "id": "me",
-          "text": "Czarnogóra",
+          "id": "is",
+          "text": "Islandia",
           "disabled": true,
           "x": 198.484375,
           "y": 535.9375,
@@ -6441,8 +6441,8 @@
           "icons": 0
         },
         {
-          "id": "pl",
-          "text": "Polska",
+          "id": "no",
+          "text": "Norwegia",
           "disabled": true,
           "x": 17.546875,
           "y": 590.0625,
@@ -6453,8 +6453,8 @@
           "icons": 0
         },
         {
-          "id": "it",
-          "text": "Włochy",
+          "id": "mt",
+          "text": "Malta",
           "disabled": true,
           "x": 198.484375,
           "y": 590.0625,
@@ -6468,11 +6468,11 @@
       "raster": "ready",
       "activeCount": 1,
       "highlight": true,
-      "neighbors": 12,
-      "labels": 4,
-      "crop": "306.04 318.41 160 100.54",
-      "captionFits": false,
-      "capital": "Podgorica",
+      "neighbors": 7,
+      "labels": 3,
+      "crop": "0 31.97 304 191.03",
+      "captionFits": true,
+      "capital": "Reykjavík",
       "swipeVisible": true,
       "overflowX": false,
       "overflowY": false,
@@ -6492,7 +6492,6 @@
         "w": 58,
         "h": 58
       },
-      "error": "AssertionError [ERR_ASSERTION]: Czarnogóra title overflows",
       "errors": []
     },
     {
@@ -6592,8 +6591,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 8,
-      "inkFrames": 34,
+      "inkPaintP95": 6,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -6699,8 +6698,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 8,
-      "inkFrames": 34,
+      "inkPaintP95": 5,
+      "inkFrames": 47,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -6806,8 +6805,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 12,
-      "inkFrames": 24,
+      "inkPaintP95": 9,
+      "inkFrames": 36,
       "compass": {
         "x": 379.59375,
         "y": 166.796875,
@@ -7020,8 +7019,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 13,
-      "inkFrames": 29,
+      "inkPaintP95": 5,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -7032,10 +7031,10 @@
     },
     {
       "name": "webkit-animation-frames",
-      "state": "showing-map",
-      "country": "by",
+      "state": "playing",
+      "country": "pl",
       "score": "0 pkt",
-      "task": "Zadanie 1",
+      "task": "Zadanie 2",
       "viewport": {
         "w": 390,
         "h": 844
@@ -7060,9 +7059,9 @@
       },
       "answers": [
         {
-          "id": "pl",
-          "text": "Polska",
-          "disabled": true,
+          "id": "is",
+          "text": "Islandia",
+          "disabled": false,
           "x": 17.546875,
           "y": 535.9375,
           "w": 173.9375,
@@ -7072,9 +7071,9 @@
           "icons": 0
         },
         {
-          "id": "by",
-          "text": "Białoruś",
-          "disabled": true,
+          "id": "ch",
+          "text": "Szwajcaria",
+          "disabled": false,
           "x": 198.484375,
           "y": 535.9375,
           "w": 173.953125,
@@ -7084,9 +7083,9 @@
           "icons": 0
         },
         {
-          "id": "de",
-          "text": "Niemcy",
-          "disabled": true,
+          "id": "pl",
+          "text": "Polska",
+          "disabled": false,
           "x": 17.546875,
           "y": 590.0625,
           "w": 173.9375,
@@ -7096,9 +7095,9 @@
           "icons": 0
         },
         {
-          "id": "hu",
-          "text": "Węgry",
-          "disabled": true,
+          "id": "rs",
+          "text": "Serbia",
+          "disabled": false,
           "x": 198.484375,
           "y": 590.0625,
           "w": 173.953125,
@@ -7108,12 +7107,10 @@
           "icons": 0
         }
       ],
-      "raster": "ready",
-      "activeCount": 1,
-      "highlight": true,
-      "neighbors": 8,
-      "labels": 5,
-      "crop": "295.89 181.35 160 100.54",
+      "activeCount": 0,
+      "highlight": false,
+      "neighbors": null,
+      "labels": null,
       "captionFits": true,
       "capital": "Mińsk",
       "swipeVisible": false,
@@ -7124,18 +7121,16 @@
         "enabled": "true"
       },
       "foldImages": true,
-      "inkPhase": "drawing",
-      "inkGrains": 0,
-      "inkOutside": 0,
+      "inkGrains": null,
+      "inkOutside": null,
       "inkPaintP95": null,
       "inkFrames": null,
       "compass": {
         "x": 15.546875,
-        "y": 154.921875,
+        "y": 428.921875,
         "w": 58,
         "h": 58
       },
-      "error": "AssertionError [ERR_ASSERTION]: Ink must wait for the entire unfolding\n\n'drawing' !== null\n",
       "errors": []
     },
     {
@@ -7339,8 +7334,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 10,
-      "inkFrames": 29,
+      "inkPaintP95": 6,
+      "inkFrames": 45,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -7863,7 +7858,7 @@
       "inkGrains": 0,
       "inkOutside": 0,
       "inkPaintP95": 4,
-      "inkFrames": 33,
+      "inkFrames": 46,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -8177,8 +8172,8 @@
       "inkPhase": "complete",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 6,
-      "inkFrames": 40,
+      "inkPaintP95": 3,
+      "inkFrames": 60,
       "compass": {
         "x": 15.546875,
         "y": 154.921875,
@@ -8494,11 +8489,11 @@
       "inkPhase": "empty",
       "inkGrains": 0,
       "inkOutside": 0,
-      "inkPaintP95": 8,
-      "inkFrames": 23,
+      "inkPaintP95": 3,
+      "inkFrames": 35,
       "compass": {
         "x": 15.546875,
-        "y": 154.8605194091797,
+        "y": 154.3325958251953,
         "w": 58,
         "h": 58
       },

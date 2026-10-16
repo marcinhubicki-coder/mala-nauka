@@ -12,6 +12,8 @@ on:
       - 'flagi/scenic-*.mjs'
       - 'assets/flags/adventure/scenic-*'
       - 'assets/maps/europe-pigment-*'
+      - 'assets/maps/europe-terrain-*'
+      - 'assets/maps/europe-edge-*'
       - 'adventure-preview.mjs'
   workflow_dispatch:
 

@@ -68,11 +68,13 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  const {svg,active}=result;
  if(result.fallbackMarker){active.setAttribute('r','2.1');node.dataset.microstate='marker';}
  const caption=node.closest('.scenic-map-inner')?.querySelector('.scenic-map-caption'),mapRect=node.getBoundingClientRect();
- const protectedTop=caption?Math.min(.38,Math.max(.20,(caption.getBoundingClientRect().bottom+7-mapRect.top)/mapRect.height)):.25;
+ const protectedTop=caption?Math.min(.38,Math.max(.06,(caption.getBoundingClientRect().bottom+7-mapRect.top)/mapRect.height)):.06;
  const crop=cropNear(svg,active,node.clientWidth,node.clientHeight,protectedTop);
  const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country),shape:country})).filter(p=>p.box&&records.has(p.id));
+ const hit=document.createElement('canvas').getContext('2d');
  if(crop)for(const item of labels){
-  const b=item.box,inside=(x,y)=>{try{return item.shape.isPointInFill(new DOMPoint(x,y));}catch{return true;}};
+  const path=item.shape.getAttribute('d'),shape=path?new Path2D(path):null;
+  const b=item.box,inside=(x,y)=>shape?hit.isPointInPath(shape,x,y):true;
   if(b.cx>crop.x&&b.cx<crop.x+crop.w&&b.cy>crop.y&&b.cy<crop.y+crop.h&&inside(b.cx,b.cy)){item.point={x:b.cx,y:b.cy};continue;}
   const left=Math.max(crop.x,b.x),top=Math.max(crop.y,b.y),w=Math.min(crop.x+crop.w,b.x+b.w)-left,h=Math.min(crop.y+crop.h,b.y+b.h)-top;
   let distance=Infinity;
@@ -115,7 +117,7 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  node.dataset.countryId=record.id;
  if(crop){
   const layer=document.createElement('div');layer.className='scenic-map-labels';
-  if(decodedImage)layer.hidden=true; // Country names are already engraved in the shared bitmap.
+  if(decodedImage)layer.hidden=true; // The Canvas camera paints bounded, readable labels.
   const accepted=[];
   const candidates=labels.filter(p=>p.id===record.id||neighboring(crop,p.box)).sort((a,b)=>Number(b.id===record.id)-Number(a.id===record.id)||b.box.w*b.box.h-a.box.w*a.box.h);
   for(const item of candidates){
@@ -131,5 +133,6 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   }
   node.append(layer);node.dataset.labelCount=String(accepted.length);
  }
- return {found:true,svg,active,crop,image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
+ const ratio=mapRect.width/mapRect.height,fullWidth=Math.max(680,500*ratio),fullHeight=fullWidth/ratio;
+ return {found:true,svg,active,crop,fullCrop:{x:(680-fullWidth)/2,y:(500-fullHeight)/2,w:fullWidth,h:fullHeight},labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
 }

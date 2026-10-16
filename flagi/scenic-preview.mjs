@@ -72,17 +72,16 @@ function showFlag(record){
 }
 function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
-  title.style.removeProperty('font-size');
-  const available=title.clientWidth;if(!available)return;
-  const caption=title.parentElement,style=getComputedStyle(title);
-  const height=caption.clientHeight-$('scenic-country-capital').getBoundingClientRect().height-2;
-  const scale=Math.min(1,available/title.scrollWidth,height/title.getBoundingClientRect().height);
-  if(scale<1)title.style.fontSize=Math.max(22,parseFloat(style.fontSize)*scale*.98)+'px';
+  // Named size tiers, never a per-frame scale-to-fit loop. Both lines have a
+  // permanent slot, so the geography camera does not move for long names.
+  const record=current(),spec=SCENIC.atlas.titles[record.id]||{size:record.country.length>10?30:record.country.length>7?34:36,lines:record.country.split(' ')};
+  title.style.fontSize=spec.size+'px';title.parentElement.style.setProperty('--title-size',spec.size+'px');title.parentElement.style.setProperty('--title-lines',spec.lines.length);title.setAttribute('aria-label',record.country);
+  title.replaceChildren(...spec.lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
-  sheet.style.top=viewport.height*.212+'px';sheet.style.height=viewport.height*.376+'px';
-  $('scenic-compass').style.top=(viewport.height*.212-24)+'px';
+  sheet.style.top=viewport.height*SCENIC.atlas.top+'px';sheet.style.height=viewport.height*(viewport.height<760?.395:SCENIC.atlas.height)+'px';
+  $('scenic-compass').style.top=(viewport.height*SCENIC.atlas.top-24)+'px';
   if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
 async function warmFlag(record){
@@ -94,7 +93,8 @@ async function warmFlag(record){
 function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
-  mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');
+  mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');sheet.dataset.view='near';
+  for(const button of sheet.querySelectorAll('[data-map-view]'))button.setAttribute('aria-pressed',String(button.dataset.mapView==='near'));
   swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placeScroll();
 }
 async function playQuestion({prepared=false}={}){
@@ -169,6 +169,12 @@ function restart(){
   step=0;points=0;seconds=SCENIC.seconds;game=createSession();paused=false;readyForNext=false;syncPause();caught(playQuestion());
 }
 answers.addEventListener('click',event=>{const button=event.target.closest('.scenic-answer');if(button&&!button.disabled)caught(respond(button.dataset.id));});
+sheet.addEventListener('click',event=>{
+  const button=event.target.closest('[data-map-view]');if(!button||!readyForNext||paused||visibilityPaused||sheet.dataset.view===button.dataset.mapView)return;
+  const owner=timeline;sheet.dataset.view=button.dataset.mapView;
+  for(const item of sheet.querySelectorAll('[data-map-view]'))item.setAttribute('aria-pressed',String(item===button));
+  caught(mapInk.setView(button.dataset.mapView,{timeline:owner,reduced:motion.matches}));
+});
 app.querySelector('[data-action="restart"]').addEventListener('click',restart);
 app.querySelector('[data-action="pause"]').addEventListener('click',()=>{if(state==='ended')return;paused=!paused;syncPause();});
 const ticker=setInterval(()=>{

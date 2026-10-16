@@ -5,65 +5,67 @@ const surface=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.heigh
 // One persistent Canvas owns the dry atlas ink through drawing, rest and erasing.
 // The target is prepared once, never exchanged for live HTML at completion.
 export function createMapInk(canvas,sheet,app){
- const ctx=canvas.getContext('2d'),mask=surface(1,1),masked=surface(1,1);
- let target,width,height,dpr,field,maskPixels;
- function clear(){if(target)target.width=target.height=1;canvas.width=canvas.height=1;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
+ const ctx=canvas.getContext('2d'),mask=surface(1,1),masked=surface(1,1),geographySurface=surface(1,1),hit=surface(1,1).getContext('2d');
+ let target,width,height,dpr,field,maskPixels,mapSpec,heading,edgeMask,viewGeneration=0;
+ const edgeImage=new Image();edgeImage.src=new URL('assets/maps/europe-edge-v22.webp',document.baseURI).href;
+ function paintGeography(paint,frame){
+  if(!mapSpec)return;const {result,rect,paths}=mapSpec;
+  const geo=geographySurface,w=Math.round(rect.w*dpr),h=Math.round(rect.h*dpr);if(geo.width!==w||geo.height!==h){geo.width=w;geo.height=h;}
+  const ink=geo.getContext('2d');ink.setTransform(dpr,0,0,dpr,0,0);ink.clearRect(0,0,rect.w,rect.h);
+  if(result.image){const sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;ink.drawImage(result.image,frame.x*sx,frame.y*sy,frame.w*sx,frame.h*sy,0,0,rect.w,rect.h);}
+  ink.save();ink.scale(rect.w/frame.w,rect.h/frame.h);ink.translate(-frame.x,-frame.y);ink.lineJoin='round';
+  const scale=rect.w/frame.w;
+  for(const {path,box,selected} of paths){
+   if(selected){ink.shadowColor='#17442d70';ink.shadowBlur=4/scale;ink.strokeStyle='#ffefad';ink.lineWidth=3/scale;ink.stroke(path);ink.shadowBlur=0;
+    ink.save();ink.globalCompositeOperation='multiply';ink.globalAlpha=.62;ink.fillStyle='#3c8750';ink.fill(path);ink.restore();
+    ink.strokeStyle='#fff4c5';ink.lineWidth=1.1/scale;ink.stroke(path);
+   }else if(!result.image){ink.fillStyle='#c8d18a';ink.fill(path);ink.strokeStyle='#fff2c7';ink.lineWidth=.7/scale;ink.stroke(path);}
+  }
+  ink.restore();
+  // Constant-size labels: exclude cropped words and dense overlaps on mobile.
+  const accepted=[],near=frame.w<500;
+  ink.font='800 11px ScenicBody';ink.textAlign='center';ink.lineJoin='round';
+  const candidates=(result.labels||[]).filter(item=>item.point&&!paths.some(p=>p.selected&&item.id===app.dataset.country)).sort((a,b)=>b.box.w*b.box.h-a.box.w*a.box.h);
+  for(const item of candidates){const x=(item.point.x-frame.x)/frame.w*rect.w,y=(item.point.y-frame.y)/frame.h*rect.h;
+   const half=ink.measureText(item.name).width/2;const active=paths.find(p=>p.selected);if(active&&[-half,0,half].some(dx=>hit.isPointInPath(active.path,frame.x+(x+dx)/rect.w*frame.w,item.point.y)))continue;if(x<half+22||x>rect.w-half-22||y<24||y>rect.h-26||accepted.some(p=>Math.abs(p.x-x)<p.half+half+8&&Math.abs(p.y-y)<18))continue;
+   if(!near&&item.box.w<45)continue;
+   ink.strokeStyle='#fff5d9';ink.lineWidth=3;ink.strokeText(item.name,x,y);ink.fillStyle='#354428';ink.fillText(item.name,x,y);accepted.push({x,y,half});if(accepted.length>=(near?6:7))break;
+  }
+  ink.globalCompositeOperation='destination-in';ink.drawImage(edgeMask,0,0,rect.w,rect.h);ink.globalCompositeOperation='source-over';
+  paint.drawImage(geo,rect.x,rect.y,rect.w,rect.h);
+ }
+ function clear(){geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=1;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
-  const art=surface(Math.round(width*dpr),Math.round(height*dpr)),paint=art.getContext('2d');paint.scale(dpr,dpr);
+  const art=surface(Math.round(width*dpr),Math.round(height*dpr));let paint=art.getContext('2d');paint.scale(dpr,dpr);
   const origin=sheet.getBoundingClientRect(),inner=sheet.querySelector('.scenic-map-inner'),map=inner.querySelector('.scenic-europe-map'),r=map.getBoundingClientRect();
+  mapSpec=null;viewGeneration++;
+  try{await edgeImage.decode();}catch{}
+  if(!isCurrent()){art.width=art.height=1;return;}
+  edgeMask=surface(Math.round(r.width*dpr),Math.round(r.height*dpr));
+  const em=edgeMask.getContext('2d');
+  if(edgeImage.naturalWidth)em.drawImage(edgeImage,0,0,edgeMask.width,edgeMask.height);
+  else{em.fillStyle='#fff';em.beginPath();for(let x=0;x<edgeMask.width;x+=3){const y=8+5*Math.sin(x*.09)+3*Math.sin(x*.27);if(!x)em.moveTo(x,y);else em.lineTo(x,y);}em.lineTo(edgeMask.width,edgeMask.height-12);em.lineTo(8,edgeMask.height-8);em.closePath();em.fill();}
   if(result?.svg){
-   const svg=result.svg,[vx,vy,vw,vh]=svg.getAttribute('viewBox').split(/\s+/).map(Number);
-   const geo=surface(Math.round(r.width*dpr),Math.round(r.height*dpr)),ink=geo.getContext('2d');ink.scale(dpr,dpr);
-   if(result.image){
-    const sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;
-    ink.drawImage(result.image,vx*sx,vy*sy,vw*sx,vh*sy,0,0,r.width,r.height);
-   }
-   // Trace the canonical SVG path directly. No per-question SVG image decoder,
-   // Blob or duplicate raster; both layers share exactly the same viewBox.
-   const scale=r.width/vw;
-   ink.save();ink.scale(r.width/vw,r.height/vh);ink.translate(-vx,-vy);ink.lineJoin='round';
-   for(const node of svg.querySelectorAll('.country')){
-    let path;if(node.tagName.toLowerCase()==='circle'){path=new Path2D();path.arc(Number(node.getAttribute('cx')),Number(node.getAttribute('cy')),Number(node.getAttribute('r')),0,Math.PI*2);}else path=new Path2D(node.getAttribute('d'));
-    const selected=node.dataset.country===record.id;
-    if(selected){
-     ink.strokeStyle='#f8d590';ink.lineWidth=2.3/scale;ink.stroke(path);
-     const box=node.getBBox(),wash=ink.createRadialGradient(box.x+box.width*.32,box.y+box.height*.26,0,box.x+box.width*.5,box.y+box.height*.5,Math.max(box.width,box.height)*.85);
-     wash.addColorStop(0,'#d0a65e');wash.addColorStop(.65,'#ad7f40');wash.addColorStop(1,'#82552c');
-     ink.save();ink.globalCompositeOperation='multiply';ink.globalAlpha=.24;ink.fillStyle=wash;ink.fill(path);ink.restore();
-     ink.strokeStyle='#70471f';ink.lineWidth=.9;ink.stroke(path);
-    }else{ink.fillStyle='#d9c79e47';ink.fill(path);ink.strokeStyle='#896b448c';ink.lineWidth=.48;ink.stroke(path);}
-   }
-   ink.restore();
-   // Dry, irregular crop edges, with actual holes instead of a blurred vignette.
-   const edgePixels=ink.getImageData(0,0,geo.width,geo.height),ep=edgePixels.data;
-   for(let y=0;y<geo.height;y++)for(let x=0;x<geo.width;x++){
-    const nx=x/dpr,ny=y/dpr,edge=Math.min(nx,ny,r.width-nx,r.height-ny);
-    const ridge=5+4*Math.sin(nx*.31+ny*.17)+3*Math.sin(nx*.77-ny*.43);
-    if(edge<ridge)ep[(y*geo.width+x)*4+3]=0;
-   }
-   ink.putImageData(edgePixels,0,0);
-   paint.drawImage(geo,r.left-origin.left,r.top-origin.top,r.width,r.height);geo.width=geo.height=1;
+   const paths=[...result.svg.querySelectorAll('.country')].map(node=>{let path;if(node.tagName.toLowerCase()==='circle'){path=new Path2D();path.arc(Number(node.getAttribute('cx')),Number(node.getAttribute('cy')),Number(node.getAttribute('r')),0,Math.PI*2);}else path=new Path2D(node.getAttribute('d'));return {path,box:node.getBBox(),selected:node.dataset.country===record.id};});
+   mapSpec={result,paths,rect:{x:r.left-origin.left,y:r.top-origin.top,w:r.width,h:r.height},frame:{...result.crop}};
+   paintGeography(paint,result.crop);
   }else{paint.fillStyle='#705332';paint.font='700 14px ScenicBody';paint.textAlign='center';paint.fillText('Mapa jest chwilowo niedostępna.',width/2,height*.56,width-36);}
-  // An ivory cartouche protects the heading while geography fills the whole sheet.
-  const caption=inner.querySelector('.scenic-map-caption'),cb=caption.getBoundingClientRect();
-  const cx=cb.left-origin.left-8,cy=cb.top-origin.top-5,cw=cb.width+15,ch=cb.height+9;
-  paint.fillStyle='#fff0d6';paint.beginPath();
-  for(let x=0;x<=cw;x+=3){const y=cy+Math.sin(x*.17)*1.2; if(!x)paint.moveTo(cx+x,y);else paint.lineTo(cx+x,y);}
-  paint.lineTo(cx+cw,cy+ch-2);
-  for(let x=cw;x>=0;x-=3)paint.lineTo(cx+x,cy+ch+Math.sin(x*.23)*1.8);
-  paint.closePath();paint.globalAlpha=.94;paint.fill();paint.globalAlpha=1;
-  for(const node of inner.querySelectorAll('#scenic-country-name,#scenic-country-capital')){
+  heading=surface(art.width,art.height);const headingPaint=heading.getContext('2d');headingPaint.scale(dpr,dpr);
+  const geography=paint;paint=headingPaint;
+  // Heading is outside the map's permanent paint viewport. No rectangular
+  // backing is needed: the original parchment supplies natural contrast.
+  for(const node of inner.querySelectorAll('.scenic-title-line,#scenic-country-capital')){
    const box=node.getBoundingClientRect(),style=getComputedStyle(node),size=parseFloat(style.fontSize);
    paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.fillStyle=style.color;paint.textAlign='left';
-   const words=node.textContent.split(' '),lines=[''];for(const word of words){const i=lines.length-1,line=lines[i]?lines[i]+' '+word:word;if(paint.measureText(line).width>box.width&&lines[i])lines.push(word);else lines[i]=line;}
-   lines.forEach((line,i)=>paint.fillText(line,box.left-origin.left,box.top-origin.top+size*.86+i*parseFloat(style.lineHeight),box.width));
+   paint.fillText(node.textContent,box.left-origin.left,box.top-origin.top+size*.86);
   }
   const city=inner.querySelector('.scenic-capital-icon').getBoundingClientRect();
   paint.save();paint.translate(city.left-origin.left,city.top-origin.top);paint.strokeStyle='#785637';paint.fillStyle='#785637';paint.lineWidth=1.2;
   paint.beginPath();paint.moveTo(1,6);paint.lineTo(7,1);paint.lineTo(13,6);paint.closePath();paint.stroke();
   paint.strokeRect(2,7,10,7);for(const x of [4,7,10]){paint.beginPath();paint.moveTo(x,8);paint.lineTo(x,13);paint.stroke();}paint.beginPath();paint.moveTo(0,15);paint.lineTo(14,15);paint.stroke();paint.restore();
   const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const box=flag.getBoundingClientRect();paint.save();paint.translate(box.left-origin.left+box.width/2,box.top-origin.top+box.height/2);paint.rotate(6*Math.PI/180);paint.globalAlpha=.93;paint.drawImage(flag,-box.width/2,-box.height/2,box.width,box.height);paint.restore();}catch{}
+  geography.drawImage(heading,0,0,width,height);paint=geography;
   if(!isCurrent()){art.width=art.height=1;return;}
   target=art;canvas.width=art.width;canvas.height=art.height;masked.width=art.width;masked.height=art.height;
   // Coarse ink field is independent of device DPR: bounded CPU work on iPhone.
@@ -85,6 +87,7 @@ export function createMapInk(canvas,sheet,app){
   sheet.dataset.inkGrains='0';sheet.dataset.inkBounds='contained';sheet.dataset.inkPasses='3';
  }
  function draw(t,erasing){
+  if(!erasing&&t>.88){sheet.dataset.toolsReady='true';sheet.querySelector('.scenic-atlas-tools').inert=false;}
   const mctx=mask.getContext('2d'),data=maskPixels.data;
   for(let k=0;k<field.length/5;k++){
    const i=k*5;
@@ -101,13 +104,23 @@ export function createMapInk(canvas,sheet,app){
  }
  async function animate({timeline,reduced,erasing=false}){
   if(!target)return;
+  if(erasing){viewGeneration++;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;}
   sheet.dataset.inkPhase=erasing?'erasing':'drawing';
   if(reduced){if(erasing)ctx.clearRect(0,0,canvas.width,canvas.height);else{ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(target,0,0);}}
   else {const costs=[];await timeline.tween(erasing?SCENIC.inkEraseMs:SCENIC.inkDrawMs,t=>{
    const started=app.dataset.qa==='true'?performance.now():0;draw(t,erasing);if(started)costs.push(performance.now()-started);
    if(app.dataset.qa==='true'&&app.dataset.qaInkAt!==undefined&&t>=Number(app.dataset.qaInkAt)){const at=app.dataset.qaInkAt;delete app.dataset.qaInkAt;app.dataset.qaInkCaptured=at;timeline.setPaused(true);}
   },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaInkAt===undefined?undefined:Number(app.dataset.qaInkAt)}:{});if(costs.length){costs.sort((a,b)=>a-b);sheet.dataset.inkPaintP95=costs[Math.floor(costs.length*.95)].toFixed(2);sheet.dataset.inkFrames=String(costs.length);}}
+  if(!erasing){sheet.dataset.toolsReady='true';sheet.querySelector('.scenic-atlas-tools').inert=false;}
   sheet.dataset.inkPhase=erasing?'empty':'complete';
  }
- return {prepare,reveal:options=>animate(options),erase:options=>animate({...options,erasing:true}),clear};
+ async function setView(view,{timeline,reduced}){
+  if(!target||!mapSpec)return;const generation=++viewGeneration,start={...mapSpec.frame},end=view==='europe'?mapSpec.result.fullCrop:mapSpec.result.crop;
+  const update=t=>{if(generation!==viewGeneration)return;const p=ease(t),frame={};for(const key of ['x','y','w','h'])frame[key]=start[key]+(end[key]-start[key])*p;mapSpec.frame=frame;
+   const paint=target.getContext('2d');paint.setTransform(dpr,0,0,dpr,0,0);paint.clearRect(0,0,width,height);paintGeography(paint,frame);paint.drawImage(heading,0,0,width,height);
+   ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(target,0,0);
+  };
+  if(reduced)update(1);else await timeline.tween(SCENIC.atlas.viewMs,update);
+ }
+ return {prepare,setView,reveal:options=>animate(options),erase:options=>animate({...options,erasing:true}),clear};
 }

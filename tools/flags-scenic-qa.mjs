@@ -95,7 +95,7 @@ try{
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
     assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the fixed heading');
-    const tier={pl:44,ch:38,li:32,ba:32,mk:32}[sample.id];if(tier){const typography=await page.locator('#scenic-country-name').evaluate(n=>({size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));assert.equal(typography.size,tier);assert.equal(typography.lines,['ba','mk'].includes(sample.id)?2:1);assert.equal(typography.slot,82);assert(typography.fit,'Explicit title lines fit without shrinking');}
+    const tier={pl:44,ch:38,li:32,ba:30,mk:32}[sample.id];if(tier){const typography=await page.locator('#scenic-country-name').evaluate(n=>({size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));assert.equal(typography.size,tier);assert.equal(typography.lines,['li','ba','mk'].includes(sample.id)?2:1);assert.equal(typography.slot,82);assert(typography.fit,'Explicit title lines fit without shrinking');}
     assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=3&&m.neighbors<=75,'Geographic camera includes surrounding countries');assert(m.labels>=1&&m.labels<=8,'Visible labels have bounded density');assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
@@ -106,7 +106,7 @@ try{
    for(const record of FLAGS.filter(x=>x.continent==='europe')){
     await open(page,record.id);await choose(page,false);await state(page,'feedback-wrong');
     const title=await page.locator('#scenic-country-name').evaluate(n=>({name:n.getAttribute('aria-label'),size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
-    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([32,38,44].includes(title.size));assert.equal(title.name,record.country);
+    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([30,32,38,44].includes(title.size));assert.equal(title.name,record.country);
     const viewport=await page.locator('.scenic-europe-map').boundingBox();if(first)assert.deepEqual(viewport,first,'All European names share the same map viewport');else first=viewport;
    }
   });

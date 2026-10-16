@@ -7,6 +7,7 @@ on:
       - '.github/workflows/flags-scenic-preview.yml'
       - 'tools/build-scenic-europe.mjs'
       - 'tools/flags-scenic-qa.mjs'
+      - 'tools/flags-scenic-qa-parallel.mjs'
       - 'flagi/scenic-preview.html'
       - 'flagi/scenic-preview.css'
       - 'flagi/scenic-*.mjs'
@@ -41,6 +42,7 @@ jobs:
         run: |
           node --check tools/build-scenic-europe.mjs
           node --check tools/flags-scenic-qa.mjs
+          node --check tools/flags-scenic-qa-parallel.mjs
           node --check flagi/scenic-europe.mjs
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
           node --test tests/scenic-atlas-labels.test.mjs
@@ -56,7 +58,7 @@ jobs:
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
         continue-on-error: true
-        run: SCENIC_QA_PHASE=full node tools/flags-scenic-qa.mjs
+        run: SCENIC_QA_PHASE=full node tools/flags-scenic-qa-parallel.mjs
       - name: Save generated atlas and screenshots on isolated branch
         if: always()
         run: |

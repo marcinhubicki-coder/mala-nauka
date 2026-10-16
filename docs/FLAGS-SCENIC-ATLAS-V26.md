@@ -38,7 +38,7 @@ pin. Isolated to `feature/flags-scenic-preview-v1`; no production/main changes.
   all four sides, including when the entire source rectangle is visible. The
   geographic canvas multiplies into the parchment. A separate heading canvas
   follows the same ink mask so white flag fields retain their proper colour.
-- Larger 44/38/32 px title tiers and a 22 px capital make fuller use of the
+- Larger 44/38/32 px title tiers (30 px for the long Bosnian name) and a 22 px capital make fuller use of the
   heading space. The sharp SVG flag keeps its true aspect ratio, a slight −2°
   rotation, delicate shadow and sheen. Country labels have lighter warm halos.
   The capital name avoids the pin itself.
@@ -140,3 +140,7 @@ The authoring tiles are outside runtime; only the completed WebP is loaded.
 The late v27 visual changes follow the owner's request for all-sided irregular
 edges, multiply compositing, larger heading/capital, straighter main flag and
 more zoom detail. Main/production stays untouched.
+
+The Linux WebKit run exposed wider system-serif metrics for Liechtenstein and
+Hercegowina. Liechtenstein keeps two explicit lines at 32 px; the Bosnian title
+uses a fixed 30 px tier. Other enlarged headings remain unchanged.

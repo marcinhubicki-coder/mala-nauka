@@ -4,7 +4,7 @@ import { readFile, access } from 'node:fs/promises';
 import { validateWords } from '../game.mjs';
 import { sceneFor } from '../spelling/scenes.mjs';
 import {configureAssets,playableWords} from '../shared/asset-loader.mjs';
-import {readPublishedCatalog,assertPublishedAssets,verifyPublishedImages} from '../design-system/library-publish.mjs';
+import {ASSET_ORIGIN,readPublishedCatalog,assertPublishedAssets,verifyPublishedImages} from '../design-system/library-publish.mjs';
 
 test('every offline precache request resolves to an existing file or entry directory', async () => {
   const sw = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
@@ -20,6 +20,7 @@ test('every offline precache request resolves to an existing file or entry direc
   assert.ok(catalog.assets.length>650);
   assert.ok(assets.length>10 && assets.length<50, 'Keep installation asset requests bounded');
   assert.ok(assets.length < catalog.assets.length/10);
+  const externalBootstrap=[];
   for (const request of [...core,...assets]) {
     if(/^https?:/.test(request)){
       assert.ok(deployment.consumer,'Remote precache only belongs to a consumer build');
@@ -27,8 +28,14 @@ test('every offline precache request resolves to an existing file or entry direc
       assert.ok(remotePaths.has(request.slice(deployment.contentSource.length)),'Remote precache must exist in the pinned asset/word catalog');
       continue;
     }
-    await access(new URL('../dist/' + request.replace(/^\//,'').split('?')[0], import.meta.url));
+    const path=request.replace(/^\//,'').split('?')[0];
+    try{await access(new URL('../dist/'+path,import.meta.url));}
+    catch(error){
+      if(error.code!=='ENOENT'||deployment.assetLibraryOrigin!==ASSET_ORIGIN||!/^assets\/.+\.(png|jpe?g|webp|avif|svg)$/i.test(path))throw error;
+      const asset=catalog.assets.find(asset=>asset.path===path);assert.ok(asset,'Missing bootstrap metadata: '+path);externalBootstrap.push(asset);
+    }
   }
+  if(externalBootstrap.length){assertPublishedAssets(externalBootstrap,await readPublishedCatalog());await verifyPublishedImages(externalBootstrap);}
   assert.ok(core.includes('/shared/design-runtime.mjs'));
   assert.ok(core.includes('/design-system/config.json'));
   assert.ok(core.some(request => request.includes('result-motion.mjs')));

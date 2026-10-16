@@ -22,6 +22,8 @@ References: attached `Polish Geography Quiz: Europe and Neighbours.png`, `image(
 2. Generated terrain and alpha material with built-in imagegen. First mask rejected, second accepted. Initial rendered card exposed too much heading whitespace, oversized trees at near zoom and hair over answer text; proportions and text spacing corrected.
 3. Inspected Poland near/full Europe, Switzerland, Liechtenstein, Bosnia, Macedonia and a low display. Kept fixed typography and camera viewport, reduced label clutter and retained actual terrain detail inside the highlighted country.
 
+4. Camera frame review exposed labels whose anchors were limited to the initial near crop. Anchors now cover the complete canonical countries; a regression assertion requires full Europe to include western country labels. Labels also avoid the control pill.
+
 ## Assets / generation
 
 `assets/maps/europe-terrain-v22.webp` — built-in imagegen, source `exec-280e1ab4-fef4-45d4-b198-3ebb64b630fa.png`. Prompt: ONE flat top-down warm yellow-green watercolor meadow material for a children's atlas, tiny evergreen/broadleaf clusters, low rolling hills and a discontinuous ivory/ochre rocky belt in the lower quarter; calm middle for labels; rag paper grain, translucent blooms and drybrush. No recognizable continent/country, coastline, boundaries, words, UI or sea. Style reference: existing `europa-atlas-polska.png` and supplied mobile mockup. Geography supplied only by existing code.

@@ -75,13 +75,23 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  if(crop)for(const item of labels){
   const path=item.shape.getAttribute('d'),shape=path?new Path2D(path):null;
   const b=item.box,inside=(x,y)=>shape?hit.isPointInPath(shape,x,y):true;
-  if(b.cx>crop.x&&b.cx<crop.x+crop.w&&b.cy>crop.y&&b.cy<crop.y+crop.h&&inside(b.cx,b.cy)){item.point={x:b.cx,y:b.cy};continue;}
-  const left=Math.max(crop.x,b.x),top=Math.max(crop.y,b.y),w=Math.min(crop.x+crop.w,b.x+b.w)-left,h=Math.min(crop.y+crop.h,b.y+b.h)-top;
+  if(inside(b.cx,b.cy)){item.point={x:b.cx,y:b.cy};continue;}
+  const left=b.x,top=b.y,w=b.w,h=b.h;
   let distance=Infinity;
   if(w>0&&h>0)for(let ix=0;ix<7;ix++)for(let iy=0;iy<7;iy++){
    const x=left+w*(ix+.5)/7,y=top+h*(iy+.5)/7,d=(x-left-w/2)**2+(y-top-h/2)**2;
    if(d<distance&&inside(x,y)){distance=d;item.point={x,y};}
   }
+ }
+ // Store a second truthful anchor inside the near frame's readable area.
+ // Big countries otherwise keep their global center outside a low phone crop.
+ hit.font='800 11px ScenicBody';
+ if(crop)for(const item of labels){
+  const half=hit.measureText(records.get(item.id).country).width/2;
+  const left=Math.max(item.box.x,crop.x+(half+22)/mapRect.width*crop.w),right=Math.min(item.box.x+item.box.w,crop.x+crop.w-(half+22)/mapRect.width*crop.w);
+  const top=Math.max(item.box.y,crop.y+24/mapRect.height*crop.h),bottom=Math.min(item.box.y+item.box.h,crop.y+crop.h-26/mapRect.height*crop.h);
+  const path=item.shape.getAttribute('d');if(!path||right<=left||bottom<=top)continue;const shape=new Path2D(path);let best=Infinity;
+  for(let ix=0;ix<11;ix++)for(let iy=0;iy<11;iy++){const x=left+(right-left)*(ix+.5)/11,y=top+(bottom-top)*(iy+.5)/11,d=(x-(left+right)/2)**2+(y-(top+bottom)/2)**2;if(d<best&&hit.isPointInPath(shape,x,y)){best=d;item.nearPoint={x,y};}}
  }
  if(crop){
   svg.setAttribute('viewBox',[crop.x,crop.y,crop.w,crop.h].map(x=>+x.toFixed(2)).join(' '));
@@ -134,5 +144,5 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   node.append(layer);node.dataset.labelCount=String(accepted.length);
  }
  const ratio=mapRect.width/mapRect.height,fullWidth=Math.max(680,500*ratio),fullHeight=fullWidth/ratio;
- return {found:true,svg,active,crop,fullCrop:{x:(680-fullWidth)/2,y:(500-fullHeight)/2,w:fullWidth,h:fullHeight},labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
+ return {found:true,svg,active,crop,fullCrop:{x:(680-fullWidth)/2,y:(500-fullHeight)/2,w:fullWidth,h:fullHeight},labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,nearPoint:item.nearPoint,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
 }

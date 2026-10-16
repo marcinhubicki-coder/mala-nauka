@@ -26,15 +26,16 @@ export function createMapInk(canvas,sheet,app){
   const accepted=[],near=frame.w<500;
   ink.font='800 11px ScenicBody';ink.textAlign='center';ink.lineJoin='round';
   const candidates=(result.labels||[]).filter(item=>item.point&&!paths.some(p=>p.selected&&item.id===app.dataset.country)).sort((a,b)=>b.box.w*b.box.h-a.box.w*a.box.h);
-  for(const item of candidates){const x=(item.point.x-frame.x)/frame.w*rect.w,y=(item.point.y-frame.y)/frame.h*rect.h;
-   const half=ink.measureText(item.name).width/2;const active=paths.find(p=>p.selected);if(active&&[-half,0,half].some(dx=>hit.isPointInPath(active.path,frame.x+(x+dx)/rect.w*frame.w,item.point.y)))continue;if(x<half+22||x>rect.w-half-22||y<24||y>rect.h-26||accepted.some(p=>Math.abs(p.x-x)<p.half+half+8&&Math.abs(p.y-y)<18))continue;
+  for(const item of candidates){const blend=clamp((frame.w-result.crop.w)/(result.fullCrop.w-result.crop.w)),anchor=item.nearPoint||item.point,point={x:anchor.x+(item.point.x-anchor.x)*blend,y:anchor.y+(item.point.y-anchor.y)*blend};const x=(point.x-frame.x)/frame.w*rect.w,y=(point.y-frame.y)/frame.h*rect.h;
+   const half=ink.measureText(item.name).width/2;const active=paths.find(p=>p.selected);if(active&&[-half,0,half].some(dx=>hit.isPointInPath(active.path,frame.x+(x+dx)/rect.w*frame.w,point.y)))continue;if(x<half+22||x>rect.w-half-22||y<24||y>rect.h-26||(x+half>rect.w-90&&y>rect.h-46)||accepted.some(p=>Math.abs(p.x-x)<p.half+half+8&&Math.abs(p.y-y)<18))continue;
    if(!near&&item.box.w<45)continue;
-   ink.strokeStyle='#fff5d9';ink.lineWidth=3;ink.strokeText(item.name,x,y);ink.fillStyle='#354428';ink.fillText(item.name,x,y);accepted.push({x,y,half});if(accepted.length>=(near?6:7))break;
+   ink.strokeStyle='#fff5d9';ink.lineWidth=3;ink.strokeText(item.name,x,y);ink.fillStyle='#354428';ink.fillText(item.name,x,y);accepted.push({id:item.id,name:item.name,x,y,half});if(accepted.length>=(near?6:7))break;
   }
+  if(app.dataset.qa==='true')sheet.dataset.drawnLabels=JSON.stringify(accepted.map(p=>p.name));
   ink.globalCompositeOperation='destination-in';ink.drawImage(edgeMask,0,0,rect.w,rect.h);ink.globalCompositeOperation='source-over';
   paint.drawImage(geo,rect.x,rect.y,rect.w,rect.h);
  }
- function clear(){geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=1;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
+ function clear(){geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=1;delete sheet.dataset.drawnLabels;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr));let paint=art.getContext('2d');paint.scale(dpr,dpr);

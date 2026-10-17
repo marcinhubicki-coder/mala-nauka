@@ -17,7 +17,8 @@ Ilustracja ma:
 - pomagać dziecku skojarzyć obraz ze słowem,
 - być atrakcyjna emocjonalnie,
 - zachowywać wspólny świat wizualny,
-- dobrze wyglądać po przycięciu przez organiczną bańkę w UI.
+- dobrze wyglądać po przycięciu przez ruchomą organiczną bańkę w UI,
+- zachować **20% bezpiecznego marginesu z każdej strony**; cały motyw i sens akcji mieszczą się w środkowych **60% szerokości × 60% wysokości** kadru.
 
 To nie są plansze edukacyjne, infografiki ani kolaże.
 
@@ -35,16 +36,21 @@ To nie są plansze edukacyjne, infografiki ani kolaże.
 - bez napisów, liter, numerów i etykiet,
 - bez logo, watermarków i elementów UI.
 
-### Kadrowanie pod bańkę
-Gra przycina ilustrację organiczną maską, dlatego:
-- najważniejszy temat trzymaj w **centralnych ok. 70% kadru**,
-- twarz, obiekt kluczowy lub główna akcja nie mogą dotykać krawędzi,
-- zostaw naturalny scenic margin wokół bohatera,
-- elementy istotne semantycznie nie mogą znajdować się tylko w narożnikach,
-- unikaj kompozycji, która działa wyłącznie jako szeroki kadr.
+### Kadrowanie pod ruchomą bańkę — obowiązkowe 20% marginesu
+Gra przycina obraz **ruchomą organiczną maską („bańką”)**. Poszczególne brzegi ilustracji mogą być zakrywane w różnych fazach animacji; samo wycentrowanie twarzy lub tułowia nie wystarcza.
 
-To jest szczególnie ważne po uwadze z produkcji: **temat ma być bliżej środka kadru**.
+**Twarda reguła: 20% od każdego z czterech boków jest marginesem bezpieczeństwa.** Cały główny motyw i wszystkie elementy niezbędne do rozpoznania słowa muszą mieścić się w **środkowym prostokącie 60% szerokości × 60% wysokości**:
+- poziomo: **x = 20–80% szerokości**;
+- pionowo: **y = 20–80% wysokości**;
+- dla **1254 × 1254 px**: margines ok. **251 px z każdej strony**, strefa bezpieczna **x ≈ 251–1003 px, y ≈ 251–1003 px**.
 
+W strefie muszą znaleźć się **całe sylwetki**, w tym głowa, rogi, uszy, ogon, nogi, dłonie i kopyta, oraz istotne rekwizyty, gesty i kierunek akcji. Żaden z nich nie może być ucięty przez granicę bezpiecznego obszaru. **Obraz musi zachować czytelne znaczenie także wtedy, gdy cała zewnętrzna strefa 20% zostanie zakryta przez bańkę.**
+
+Wewnętrzna strefa 60% × 60% jest **strefą treści, a nie strefą jedynie środka obiektu**. Zewnętrzne pasy 20% powinny mieć pełne, naturalne tło sceniczne (trawa, niebo, krajobraz, rozmyte otoczenie) aż do samej krawędzi — bez pustych obramowań, przezroczystości i sztucznego paddingu.
+
+**Przykład: „kozioł”.** Całe zwierzę, **razem z rogami i kopytami**, powinno być wewnątrz środkowych 60% kadru. Góry, niebo, skały i łąka mogą dochodzić do brzegów. Poprzednia ilustracja kozła, której sylwetka wychodzi poza ten obszar, **nie spełnia wymagań**.
+
+W razie naruszenia nie poprawiaj słabej kompozycji cropem: **wygeneruj ilustrację od nowa z dalszą kamerą / mniejszą skalą motywu**. W QA sprawdzaj również działanie ruchomej maski w różnych fazach animacji.
 ---
 
 ## 3. Docelowy styl wizualny
@@ -144,7 +150,8 @@ Preferowane:
 - tło wspierające znaczenie,
 - prosta linia akcji,
 - wyraźny punkt skupienia wzroku,
-- umiarkowana liczba rekwizytów.
+- umiarkowana liczba rekwizytów,
+- **cały główny motyw w centralnych 60% × 60%**, zewnętrzne 20% przy każdym boku tylko dla drugoplanowego tła.
 
 ### Liczba postaci
 Najczęściej:
@@ -299,7 +306,7 @@ Nie generować:
 - interfejsu,
 - watermarków,
 - pustego jednolitego tła,
-- głównego motywu przy samej krawędzi,
+- znaczących elementów motywu lub akcji poza bezpieczną strefą **x/y = 20–80%**,
 - postaci uciętej w sposób psujący sens,
 - przypadkowych dodatkowych palców / kończyn,
 - zwierząt o błędnej liczbie nóg,
@@ -335,7 +342,7 @@ CHARACTER / SUBJECT:
 [age, hairstyle, clothing, props; deliberately different from recent images if a human is present.]
 
 COMPOSITION:
-The main subject and the semantic action must remain compactly framed inside the central ~70% of the square. Keep face, hands and important objects away from corners because the app clips the picture inside an organic rounded bubble. Full scenic background to all edges. One clear visual focus.
+MANDATORY SAFE AREA for a moving organic bubble mask: place the ENTIRE main subject, all limbs (including horns, ears, tails, hands, feet) and ALL semantically essential actions and props completely within the central 60% of BOTH dimensions: x=20–80% and y=20–80%. Reserve 20% on EACH of the four edges for nonessential, continuous natural scenic background rendered all the way to the borders (no empty padding). Frame the camera far enough back that no meaningful element can be clipped at any point in the bubble animation. One clear visual focus.
 
 MOOD:
 Friendly, curious, warm and suitable for children. Emotion should support the word, not distract from it.
@@ -359,7 +366,7 @@ Warm cinematic 3D storybook look, expressive friendly characters, detailed natur
 
 Scene: [SCENE].
 
-Keep the entire semantic focus inside the central 70% for organic bubble cropping.
+MANDATORY: Keep the ENTIRE semantic subject, limbs, props and action within x=20–80% and y=20–80% (central 60% × 60%). Outer 20% on EACH edge must contain only nonessential continuous scenic background, safe for a moving organic bubble mask.
 
 No text, no letters, no border, no UI, no logo, no watermark, no collage.
 
@@ -471,9 +478,9 @@ Każdy obraz powinien przejść poniższe pytania:
 - Czy wybrano najbardziej dziecięce i czytelne znaczenie?
 
 ### Kadr
-- Czy główny motyw jest blisko środka?
-- Czy organiczny crop nie odetnie sensu?
-- Czy ważne ręce / przedmiot / twarz są w bezpiecznej strefie?
+- Czy **cała** sylwetka (łącznie z rogami, kończynami, ogonem) i wszystkie istotne przedmioty mieszczą się w **x = 20–80%, y = 20–80%**?
+- Czy pasy o szerokości 20% przy **każdym z czterech boków** zawierają tylko nieistotne tło?
+- Czy ruchoma maska bańki **we wszystkich fazach animacji** nie odcina znaczenia obrazu?
 
 ### Styl
 - Czy wygląda jak część tej samej serii?
@@ -502,7 +509,7 @@ Każdy obraz powinien przejść poniższe pytania:
 
 Regeneruj obraz, jeżeli:
 - semantyka jest słaba,
-- główny motyw jest zbyt daleko od środka,
+- znaczący fragment głównego motywu lub akcji wykracza poza **centralne 60% × 60%** (20% marginesu bezpieczeństwa od każdego boku),
 - generacja stworzyła planszę zamiast sceny,
 - pojawił się tekst,
 - postać jest praktycznie kopią ostatnich bohaterów,
@@ -547,7 +554,7 @@ Jeżeli użytkownik prosi o nowe grafiki do Ortografii:
 2. generuj **osobne kwadratowe assety 1:1**,
 3. utrzymuj **ciepły cinematic 3D storybook look**,
 4. **bez tekstu i bez plansz,**
-5. główny temat trzymaj **w centralnych ~70%**,
+5. **cały motyw i akcję** trzymaj **w centralnych 60% szerokości i wysokości**; 20% od każdego boku rezerwuj wyłącznie na nieistotne tło dla ruchomej maski,
 6. domyślnie preferuj **plener i złote światło**, jeśli znaczenie na to pozwala,
 7. dbaj o **różnorodność wieku, fryzur, koloru włosów i ubrań** między kolejnymi obrazami,
 8. nie imituj nazwanych artystów, studiów ani filmów,

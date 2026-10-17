@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-16T14:01:06.779Z",
-  "sourceCommit": "cee5059612adec80d3f94d1a42dd9038b0921b5c",
+  "date": "2026-10-17T09:24:44.292Z",
+  "sourceCommit": "5d2f67a9a6b253a9e277fa51dfbbeedaa7d69705",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -1066,6 +1066,51 @@
       "role": "body"
     },
     {
+      "file": "progress-screen.css",
+      "selector": ".award-switch button",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-evolution>h3",
+      "role": "display"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-upgrade,.power-card button",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-selector button",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-upgrade-dialog",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-upgrade-dialog h2",
+      "role": "display"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".trophy-later",
+      "role": "body"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".medal-card h3",
+      "role": "display"
+    },
+    {
+      "file": "progress-screen.css",
+      "selector": ".power-charge h3",
+      "role": "display"
+    },
+    {
       "file": "pwa-viewport.css",
       "selector": "#portrait-notice",
       "role": "body"
@@ -1477,8 +1522,8 @@
       "display"
     ]
   },
-  "cssBytes": 495003,
-  "jsBytes": 1200963,
+  "cssBytes": 507619,
+  "jsBytes": 1211977,
   "largeFiles": [
     {
       "path": "app.js",
@@ -1497,16 +1542,20 @@
       "bytes": 39019
     },
     {
+      "path": "progress-screen.css",
+      "bytes": 37002
+    },
+    {
       "path": "shared/structure-model.mjs",
-      "bytes": 33904
+      "bytes": 35068
+    },
+    {
+      "path": "shared/view-bindings.mjs",
+      "bytes": 33969
     },
     {
       "path": "shared/sound-library.mjs",
       "bytes": 32848
-    },
-    {
-      "path": "shared/view-bindings.mjs",
-      "bytes": 32073
     },
     {
       "path": "player-profiles.css",
@@ -1525,12 +1574,12 @@
       "bytes": 24424
     },
     {
-      "path": "progress-screen.css",
-      "bytes": 24037
-    },
-    {
       "path": "matematyka/app.js",
       "bytes": 23926
+    },
+    {
+      "path": "progress-screen.mjs",
+      "bytes": 22624
     },
     {
       "path": "app.css",
@@ -1539,10 +1588,6 @@
     {
       "path": "shared/view-contracts.mjs",
       "bytes": 21325
-    },
-    {
-      "path": "progress-screen.mjs",
-      "bytes": 21186
     },
     {
       "path": "angielski/wizard-v2.mjs",

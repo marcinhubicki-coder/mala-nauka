@@ -28,12 +28,15 @@ To nie są plansze edukacyjne, infografiki ani kolaże.
 ### Obowiązkowe
 - **proporcje 1:1**,
 - preferowany plik źródłowy: **1254 × 1254 px** lub większy kwadrat,
+- jeżeli generator daje większy natywny kwadrat (np. 1536 × 1536), zachowaj go jako źródło i dopiero w eksporcie normalizuj do wymiaru docelowego,
+- **1 słowo = 1 osobny plik**; batch 10 słów oznacza dokładnie 10 ilustracji, nigdy kolaż,
 - jedna scena na jeden plik,
 - pełne tło do wszystkich krawędzi,
 - bez ramek,
 - bez przezroczystego marginesu,
 - bez napisów, liter, numerów i etykiet,
-- bez logo, watermarków i elementów UI.
+- bez logo, watermarków i elementów UI,
+- finalny asset do gry ma **twardy limit 250 KB (256 000 B)** przy wymiarach **1254 × 1254 px**, preferowany format **WebP**; dobieraj jakość adaptacyjnie i odrzuć obraz, jeśli limit wymaga widocznego zniszczenia detali.
 
 ### Kadrowanie pod bańkę
 Gra przycina ilustrację organiczną maską, dlatego:
@@ -65,6 +68,21 @@ Cechy:
 - plastyczne, przyjemne twarze,
 - atrakcyjny dla dzieci, ale nie infantylny wygląd,
 - ilustracyjność wyraźniejsza niż fotorealizm.
+
+### Kalibracja względem istniejącej biblioteki
+Nowe obrazy powinny wyglądać jak **kolejne sceny z tej samej serii**, a nie jak osobny styl.
+
+Najważniejsze cechy widoczne w obecnej bazie:
+- główny motyw jest duży, czytelny i zwykle zajmuje środkową część kadru,
+- pierwszy plan ma wyraźne sylwetki i prostą hierarchię,
+- tło jest pełne i atrakcyjne, ale lekko uspokojone głębią ostrości,
+- kolor jest ciepły, nasycony i świetlisty, bez krzykliwego neonu,
+- materiały są miękkie i „dotykalne”: drewno, kamień, trawa, tkaniny, włosy, woda,
+- twarze są ekspresyjne, ale nie przerysowane do poziomu kreskówki 2D,
+- obraz ma wrażenie pojedynczego kadru z krótkiej opowieści,
+- sceny unikają sterylnego studia i pustych jednolitych teł.
+
+**Nie próbuj zwiększać widowiskowości kosztem rozpoznawalności słowa.** Jeżeli nowa grafika jest piękniejsza, ale stylistycznie bardziej realistyczna, bardziej plastikowa albo bardziej „game-artowa” niż reszta biblioteki, traktuj to jako błąd spójności.
 
 Nie używać w promptach nazw konkretnych studiów, marek, filmów ani żyjących artystów jako referencji stylu.
 
@@ -393,15 +411,10 @@ Nie jest to sztywny quota, ale dobra kontrola jakości:
 
 ---
 
-## 15. Nazewnictwo plików
+## 15. Nazewnictwo i zapis plików
 
-Obecna konwencja w repo:
-
-```text
-assets/scenes/<slug>.jpg
-```
-
-Slug:
+### Roboczy eksport
+Przed wysłaniem do Studio plik może mieć czytelną nazwę:
 - małe litery,
 - bez polskich znaków,
 - bez spacji,
@@ -410,10 +423,23 @@ Slug:
 Przykłady:
 - `źródło` → `zrodlo.jpg`
 - `dźwig` → `dzwig.jpg`
-- `dźwignia` → `dzwignia.jpg`
-- `łóżko` → `lozko.jpg`
-- `żółtko` → `zoltko.jpg`
-- `mężczyzna` → `mezczyzna.jpg`
+- `dowieźć` → `dowiezc.jpg`
+- `groźba` → `grozba.jpg`
+- `gruziński` → `gruzinski.jpg`
+
+### V2 — źródło prawdy
+Nowych grafik generowanych z Design Studio **nie zapisujemy już ręcznie jako kolejne pliki w `assets/scenes`**.
+
+Aktualny przepływ V2:
+1. grafika trafia przez Design Studio do zewnętrznej biblioteki,
+2. Studio zapisuje ją jako content-addressed asset w `assets/managed/<sha>.<ext>`,
+3. binaria znajdują się na branchu **`assets/library-v1`**,
+4. publiczny indeks biblioteki to **`asset-catalog.json`**,
+5. CDN biblioteki: **`https://mala-nauka-assets.vercel.app/`**,
+6. manifest przypisania słowa pozostaje w V2 i wskazuje konkretny asset,
+7. duplikaty są wykrywane po hashach — przed dodaniem nowego obrazu trzeba odświeżyć indeks.
+
+`assets/scenes` pozostaje biblioteką historycznych/manualnych scen i referencją stylu. Nie należy tam dublować nowej grafiki tylko po to, aby zachować dawną konwencję nazwy.
 
 Nie zmieniaj istniejącego assetu bez wyraźnej potrzeby.
 
@@ -421,25 +447,18 @@ Nie zmieniaj istniejącego assetu bez wyraźnej potrzeby.
 
 ## 16. Podpięcie w aplikacji
 
-Manualne sceny są mapowane w:
+### Standard V2
+Dla nowych batchy Ortografii źródłem prawdy jest przypisanie assetu w danych Design Studio / batcha. Sam plik graficzny musi istnieć w opublikowanej bibliotece i być obecny w `asset-catalog.json`.
 
-```text
-spelling/scenes.mjs
-```
+Przed publikacją:
+- odśwież katalog biblioteki,
+- sprawdź, czy hash nie jest już znany,
+- upewnij się, że `assetPath` słowa nie jest pusty,
+- sprawdź dostępność pliku z CDN,
+- dopiero potem publikuj zmianę manifestu.
 
-W `WORD_SCENES` obowiązuje wzór:
-
-```js
-['źródło', { key:'zrodlo', asset:'zrodlo.jpg', layouts:['bubble'] }],
-```
-
-Asset fizyczny:
-
-```text
-assets/scenes/zrodlo.jpg
-```
-
-Loader / pipeline może automatyzować część tego procesu, ale finalny stan musi zachować ten kontrakt.
+### Legacy
+`spelling/scenes.mjs` i `assets/scenes/<slug>.*` nadal obsługują starsze/manualne sceny. Używaj ich tylko wtedy, gdy świadomie pracujesz w legacy workflow, a nie jako domyślnego miejsca dla nowego batcha.
 
 ---
 
@@ -493,8 +512,34 @@ Każdy obraz powinien przejść poniższe pytania:
 
 ### Technika
 - Czy format jest 1:1?
-- Czy plik ma właściwy slug?
-- Czy mapping w `spelling/scenes.mjs` wskazuje właściwy asset?
+- Czy źródło ma co najmniej 1254 × 1254 px lub równoważną jakość Retina?
+- Czy finalny plik WebP ma dokładnie 1254 × 1254 px i ≤250 KB (256 000 B) bez widocznej degradacji?
+- Czy w batchu istnieje dokładnie jeden plik na jedno hasło?
+- Czy nowy asset jest obecny w indeksie biblioteki i nie jest duplikatem po hashu?
+- Czy `assetPath` właściwego słowa wskazuje opublikowany plik?
+- Jeżeli to legacy/manual scene: czy mapping w `spelling/scenes.mjs` wskazuje właściwy asset?
+
+---
+
+## 18.1. Bezwzględny zakaz generowania z planszy zbiorczej
+
+Dla finalnych assetów Ortografii **nie wolno** używać contact sheetów, kolaży ani plansz zbiorczych jako źródła pojedynczych ilustracji.
+
+Obowiązuje:
+- **1 hasło = 1 niezależna generacja źródłowa** w pełnym kwadracie,
+- finalnego assetu nie wolno uzyskiwać przez wycinanie kafla z większej planszy,
+- nie wolno powiększać małego wycinka do 1254 × 1254,
+- ZIP wolno tworzyć dopiero z już gotowych, osobno wygenerowanych i zwalidowanych plików,
+- jeśli pojedyncza grafika stylistycznie odbiega od serii, regeneruj ją osobno zamiast dopasowywać cropem lub filtrem.
+
+Kontrola jakości przed spakowaniem ZIP:
+1. każdy plik ma własne źródło generacji,
+2. każdy jest kwadratem 1:1,
+3. każdy finalnie ma 1254 × 1254,
+4. każdy mieści się w limicie 250 KB,
+5. brak tekstu / cyfr / napisów generowanych jako część sceny,
+6. styl pozostaje warm cinematic 3D storybook,
+7. brak fotorealistycznych wyjątków odstających od serii.
 
 ---
 
@@ -510,6 +555,23 @@ Regeneruj obraz, jeżeli:
 - obraz jest atrakcyjny, ale nie uczy właściwego skojarzenia.
 
 Nie poprawiaj słabego konceptu samym cropem. Najpierw popraw scenę / prompt.
+
+---
+
+## 20.1. Zasada dla podobnych słów w jednym batchu
+
+Jeżeli w paczce występują słowa bliskie znaczeniowo lub fleksyjnie, **nie używaj tej samej ilustracji ani kosmetycznych wariantów tego samego kadru**.
+
+Przykład:
+- **dowiezie** — pojazd / osoba faktycznie przywozi coś do celu,
+- **dowieźć** — moment zadania transportowego: trzeba bezpiecznie dostarczyć przedmiot lub pasażera.
+
+Podobnie:
+- **grozić** — czytelny gest / sytuacja zapowiadająca konsekwencję, bez przemocy,
+- **groźba** — sama sytuacja ostrzegawcza lub symboliczne zagrożenie,
+- **groźnie** — sposób wyglądu / zachowania / pogody, niekoniecznie czynność grożenia.
+
+Celem jest zarówno nauka pisowni, jak i unikanie pamięciowego skrótu „to samo zdjęcie = kilka różnych słów”.
 
 ---
 
@@ -552,8 +614,9 @@ Jeżeli użytkownik prosi o nowe grafiki do Ortografii:
 7. dbaj o **różnorodność wieku, fryzur, koloru włosów i ubrań** między kolejnymi obrazami,
 8. nie imituj nazwanych artystów, studiów ani filmów,
 9. sprawdzaj, czy obraz **realnie komunikuje słowo**,
-10. zapisuj asset do `assets/scenes/<slug>.jpg`,
-11. podpinaj go przez `WORD_SCENES` w `spelling/scenes.mjs`,
-12. przed zakończeniem sprawdź obraz w kontekście cropa bańki i na mobilnym ekranie Retina.
+10. w V2 wysyłaj nowy asset przez Design Studio do zewnętrznej biblioteki `assets/library-v1` / `assets/managed`,
+11. odśwież indeks, sprawdź duplikat po hashu i przypisz poprawny `assetPath` do słowa,
+12. `assets/scenes` + `WORD_SCENES` traktuj jako workflow legacy/manualny,
+13. przed zakończeniem sprawdź obraz w kontekście cropa bańki i na mobilnym ekranie Retina.
 
 **Najważniejszy test:** ilustracja ma wyglądać pięknie, ale przede wszystkim ma sprawić, że dziecko szybciej połączy obraz z właściwym słowem.

@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {designFields,editableProjectConfig,projectContract,projectSnapshot} from '../design-system/project-model.mjs';
+import {validateConfig} from '../design-system/model.mjs';
+const production=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8'));
+test('Typography scale persists through design drafts, snapshots and publish contract',()=>{
+ const local=structuredClone(production);
+ local.typeScale={h2:{size:40,weight:700}};
+ assert.deepEqual(designFields(local).typeScale,local.typeScale);
+ const draft=structuredClone(production);
+ draft.project.designDraft=designFields(local);
+ assert.deepEqual(editableProjectConfig(draft).typeScale,local.typeScale);
+ const snapshot=projectSnapshot(local.project,local);
+ assert.deepEqual(snapshot.design.typeScale,local.typeScale);
+ const merged=projectContract(local,production);
+ assert.deepEqual(merged.typeScale,local.typeScale);
+ assert.equal(merged.project.designDraft,undefined);
+ assert.equal(validateConfig(merged)?.revision,production.revision);
+});

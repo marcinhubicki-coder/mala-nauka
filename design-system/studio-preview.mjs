@@ -1,4 +1,5 @@
 import {runtimeStack,BLOCK_LEVELS} from '../shared/runtime-blocks.mjs';
+import {ReferenceCalibration} from './reference-calibration.mjs';
 import {behaviorPicker} from './behavior-picker.mjs';
 import {isMotionToken,behaviorDefinition} from '../shared/behaviors.mjs';
 import {selectionStack,LEVEL_NAMES,PART_BY_ID,partStates} from '../shared/structure-model.mjs';
@@ -14,6 +15,7 @@ import {studioIcon as iconSVG,MODE_ICONS,CATEGORY_ICONS,viewIcon,previewScale} f
 import {html,number,componentName,effectiveValue,savedMarker,rangeFor,FIELD_LABELS,MODE_NAMES,STATE_NAMES,relatedViews,compareSelection} from './preview-model.mjs';
 import {CATEGORIES,componentCategories,VISUAL_FIELDS,ICONS,ELEMENT_FAMILIES,ELEMENT_KINDS,visualValue,rawVisualValue} from '../shared/element-system.mjs';
 import {dynamicRange} from './dynamic-range.mjs';
+import {previewDevice} from './preview-device.mjs';
 import {tokenBounds} from './validation.mjs';
 
 export class StudioPreview {
@@ -21,6 +23,7 @@ export class StudioPreview {
     Object.assign(this,options);
     this.viewId='spelling-settings';this.componentId='layout';this.scope='global';this.metricBase=new Map();
     this.editingMode='view';this.compare=false;this.compareViews=[];
+    this.references=new ReferenceCalibration(this);
     this.blockLevel='all';this.picking=false;this.highlight=true;this.showAbsent=false;this.search='';this.zoom='fit';this.wide=false;this.branches=new Map();
     this.scenarioStates=new Map();this.inventories=new Map();this.selections=new Map();
     this.workspace.addEventListener('click',event=>this.click(event));
@@ -31,7 +34,8 @@ export class StudioPreview {
     this.workspace.addEventListener('drop',event=>{const row=event.target.closest('[data-layer-drag]');if(row&&this.draggedLayer&&row.dataset.layerDrag!==this.draggedLayer){event.preventDefault();this.send(this.activeFrame(),'reorder',{id:this.draggedLayer,before:row.dataset.layerDrag});this.draggedLayer='';}});
     this.workspace.addEventListener('keydown',event=>{if(event.target.dataset.studioNav&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))this.keyboardNav=true;else this.returnNavFocus=null;});
     this.workspace.addEventListener('pointerdown',()=>{this.keyboardNav=false;this.returnNavFocus=null;});
-    this.workspace.addEventListener('focusout',()=>this.endEdit?.());
+    this.workspace.addEventListener('focusout',event=>{this.endEdit?.();if(event.target.matches('[data-branch-gap]'))this.renderPills();});
+    this.references.bind();
     window.addEventListener('message',event=>this.receive(event));
   }
   get view(){return this.registry.views.find(row=>row.id===this.viewId)||this.registry.views[0];}
@@ -43,7 +47,7 @@ export class StudioPreview {
   send(frame,type,data={}){frame?.contentWindow?.postMessage({channel:'mala-nauka-studio',type,...data},location.origin);}
   broadcast(type,data={}){for(const frame of this.frames())this.send(frame,type,data);}
   sendDesign(){this.broadcast('design',this.getDesign());this.updateSavedIndicators();this.renderPills();}
-  viewURL(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:this.scenarioStates.get(view.id)||view.state,viewId:view.id});return url.href;}
+  viewURL(view){const url=new URL(view.route,location.origin);url.search=new URLSearchParams({studio:'1',mode:view.mode,screen:view.screen,state:this.scenarioStates.get(view.id)||view.state,viewId:view.id});if(view.id==='spelling-wrong')url.searchParams.set('sliderProgress',this.references.wrongVariant==='complete'?'99':'50');return url.href;}
   name(component=this.component){return componentName(component,this.config);}
   available(){const inventory=this.inventories.get(this.viewId);return new Set(inventory?.items.some(item=>item.index>=0&&item.visible)?inventory.items.filter(item=>item.visible||item.temporary!=='visible').map(item=>item.component):this.view.components);}
   activeSelection(){return this.selections.get(this.viewId);}
@@ -59,7 +63,7 @@ export class StudioPreview {
   }
   resizePhone(){
     const gallery=this.workspace.querySelector('#preview-gallery');if(!gallery||this.zoom==='100')return;
-    const scale=previewScale(this.compare?414+24:gallery.clientWidth,gallery.clientHeight,{paddingY:this.compare?56:24});
+    const scale=previewScale(this.compare?previewDevice().width+24:gallery.clientWidth,gallery.clientHeight,{paddingY:this.compare?56:24});
     gallery.style.setProperty('--preview-phone-scale',String(scale));
     gallery.style.setProperty('--mobile-preview-scale',String(scale));
   }
@@ -78,11 +82,19 @@ export class StudioPreview {
     mountJellies(toolbar,previous);
     if(focused)[...toolbar.querySelectorAll('[data-studio-nav]')].find(input=>input.dataset.studioNav===focused.group&&input.value===focused.value)?.focus({preventScroll:true});
     this.workspace.querySelector('#preview-controls').innerHTML='<div id=compare-choices></div>';
-    this.renderPills();this.renderCompareChoices();
+    this.renderPills();this.renderCompareChoices();this.references.renderControls();
     this.workspace.querySelector('.component-layout').classList.toggle('wide-preview',this.wide);const edge=this.workspace.querySelector('.inspector-edge');if(edge){edge.innerHTML=this.wide?'›':'‹';edge.dataset.tooltip=this.wide?'Pokaż panel ustawień':'Schowaj panel ustawień';edge.title=edge.dataset.tooltip;edge.setAttribute('aria-label',edge.dataset.tooltip);}
   }
   renderPills(){
+    // Removing a focused field can synchronously emit change/blur. Coalesce
+    // refreshes outside that event so they cannot replace the same DOM twice.
+    if(this.pillsRenderPending)return;
+    this.pillsRenderPending=true;
+    queueMicrotask(()=>{this.pillsRenderPending=false;this.renderPillsNow();});
+  }
+  renderPillsNow(){
     const strip=this.workspace.querySelector('#component-strip');if(!strip)return;
+    if(strip.contains(document.activeElement)&&document.activeElement.matches('[data-branch-gap]'))return;
     const inventory=this.inventories.get(this.viewId),tree=componentTree(inventory?.items),selected=this.activeSelection();
     const selectedId=tree.byId.has(selected?.id)?selected.id:'layout-root';let branch=tree.byId.has(this.branches.get(this.viewId))?this.branches.get(this.viewId):'layout-root';
     const path=tree.path(branch),children=(tree.children.get(branch)||[]).filter(tree.available);
@@ -113,7 +125,7 @@ export class StudioPreview {
     for(const tile of gallery.querySelectorAll('.preview-tile'))if(!ids.includes(tile.dataset.tileView))tile.remove();
     for(const id of ids)if(!gallery.querySelector(`[data-tile-view='${id}']`))gallery.append(this.tile(this.registry.views.find(view=>view.id===id)));
     gallery.classList.toggle('comparison',this.compare);gallery.classList.toggle('native-size',this.zoom==='100');
-    this.updateActiveFrame();this.renderCompareChoices();
+    this.updateActiveFrame();this.renderCompareChoices();this.references.sync();
     this.resizePhone();
   }
   updateActiveFrame(){
@@ -285,7 +297,6 @@ export class StudioPreview {
     if(target.dataset.compareView){const id=target.dataset.compareView;if(!target.checked&&this.compareViews.length===1){target.checked=true;this.notice('Pozostaw co najmniej jeden ekran do porównania.');return;}this.compareViews=target.checked?[...this.compareViews,id]:this.compareViews.filter(view=>view!==id);if(this.compareViews.length&&!this.compareViews.includes(this.viewId))this.viewId=this.compareViews[0];this.notifyState();this.syncGallery();this.renderToolbar();this.renderInspector();}
     if(target.id==='selected-visibility'){const selected=this.activeSelection();if(selected){if(this.workspace.querySelector('#hide-whole-family')?.checked)this.edit(`elementStyles.${selected.recipe||selected.kind}.visibility`,target.value);else this.writeVisualFor(selected,'visibility',target.value);}}
     if(target.dataset.layerVisibility){const item=this.inventories.get(this.viewId)?.items.find(row=>row.id===target.dataset.layerVisibility);this.writeVisualFor(item,'visibility',target.value);}
-    if(target.dataset.branchGap){const item=this.inventories.get(this.viewId)?.items.find(row=>row.id===target.dataset.branchGap),value=Number(target.value);if(Number.isFinite(value)&&value>=0&&value<=120)this.writeVisualFor(item,'gap',value);}
     if(target.dataset.surfacePreset!==undefined){this.writeVisual('surfaceEffects',selectSurface(rawVisualValue(this.config,this.viewId,this.activeSelection()),this.surfaceIndex||0,target.value));target.blur();this.renderVisual();this.endEdit();return;}
     if(target.dataset.tokenBehavior){const group=target.dataset.tokenBehavior,path=this.scope==='view'?`behaviors.bindings.views.${this.viewId}.${group}`:`behaviors.bindings.global.${group}`;this.edit(path,target.value);this.endEdit();return;}
     if(target.dataset.visualField){this.writeVisual(target.dataset.visualField,target.value);}
@@ -296,6 +307,7 @@ export class StudioPreview {
   input(event){
     const target=event.target;if(!target.closest('.component-layout'))return;
     event.stopImmediatePropagation();
+    if(target.dataset.branchGap){const item=this.inventories.get(this.viewId)?.items.find(row=>row.id===target.dataset.branchGap),value=Number(target.value);if(target.value!==''&&Number.isFinite(value)&&value>=0&&value<=120)this.writeVisualFor(item,'gap',value);return;}
     if(target.id==='component-search'){this.search=target.value;this.renderPills();return;}
     if(target.dataset.visualNumber){const key=target.dataset.visualNumber,[min,max]=VISUAL_FIELDS[key],value=Number(target.value);if(Number.isFinite(value)&&value>=min&&value<=max){this.writeVisual(key,value);const [a,b]=dynamicRange(value,this.savedVisual(key),min,key==='width'?390:key==='height'?200:key==='fontSize'?48:max,max);for(const input of this.workspace.querySelectorAll(`[data-visual-number="${key}"]`)){if(input.type==='range'){input.min=a;input.max=b;}if(input!==target)input.value=value;}}else this.notice(`Bezpieczny zakres: ${min}–${max}.`);return;}
     if(!target.dataset.token)return;

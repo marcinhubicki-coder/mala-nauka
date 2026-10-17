@@ -1,0 +1,87 @@
+# Design Studio v2 — silnik edycji komponentów (pilot)
+Data: 2026-10-13 · `refactor/v2-parity-first`
+
+Na tym etapie jedynym kanonicznym miejscem edycji parametrów jest konfiguracja `design-system/config.json` oraz jawne kontrakty w `shared/view-contracts.mjs` i `shared/spelling-settings-contract.mjs`.
+
+Silnik CLI i biblioteka Studio korzystają z tej samej ścieżki zapisu: `elementStyles` (wspólne bloki), `familyStyles` (wariant trybu) i `elementOverrides` (jedno wystąpienie). Inspektor Studio identyfikuje komponenty stałym `data-ds-block` / `data-ds-element`; PWA używa tych samych wartości. Nie dopisywać lokalnych poprawek CSS podczas typowych zmian stylu.
+
+## Polecenia
+
+```bash
+npm run studio:engine -- check
+npm run studio:engine -- inspect --view home --id home-mode-spelling
+npm run studio:engine -- set --view home --id home-mode-spelling --scope shared --property radius --value 28
+npm run studio:engine -- set --view home --id home-mode-spelling --scope view --property radius --value 20 --apply
+npm run studio:engine -- set --view home --id home-spelling-name --scope theme --property textColor --value '#ff2277' --apply
+npm run studio:engine -- set --view spelling-settings --id spelling-level-jelly --property radius --value 26 --apply
+```
+
+Bez `--apply` polecenie **nie zmienia plików**. Z `--apply` aktualizuje config po walidacji, następnie trzeba uruchomić `npm test`, sprawdzić Test PWA i porównać ze wzorcem. Można skorzystać z `--reset`, aby usunąć nadpisanie.
+
+**Ograniczenie świadome:** pilot obsługuje jawnie przeniesione komponenty Home i ustawienia Ortografii. Inne widoki muszą zostać zmigrowane do kontraktu przed edycją CLI — nie wolno zgadywać selektora ani dopisywać niejawnego wariantu.
+
+## Edycja przez przepis / wspólny komponent w całej aplikacji
+
+Jeżeli komponent istnieje w kanonicznym katalogu \`shared/structure-model.mjs\`, silnik pozwala edytować wspólny przepis, niezależnie od tego, czy cały widok jest już migrowany:
+
+\`\`\`bash
+npm run studio:engine -- inspect-recipe --recipe button-back
+npm run studio:engine -- set-recipe --recipe button-back --property radius --value 24
+npm run studio:engine -- set-recipe --recipe button-back --property radius --value 24 --apply
+npm run studio:engine -- set-recipe --recipe control-jelly --mode spelling --property height --value 52 --apply
+\`\`\`
+
+Zmiana przepisu działa przez \`elementStyles.<recipe>\` lub \`familyStyles.<mode>.<recipe>\`. Komponenty, których renderery mają jawną recepturę lub adapter starszego widoku przypisuje je na podstawie katalogu, dziedziczą zmianę. Narzędzie nie tworzy duplikatu atomu, nie skanuje DOM i nie zgaduje nazwy elementu.
+
+**Istotne:** nie oznacza to zakończenia migracji 41 widoków do deklaratywnych kontraktów. Indywidualne zmiany niezarejestrowanych instancji nadal wymagają migracji widoku.
+
+## Sterowanie nawigacją przez silnik
+
+Polecenia pracują na istniejących, zadeklarowanych połączeniach, które runtime już obsługuje:
+
+```bash
+npm run studio:engine -- inspect-route --from players --action enter-player
+npm run studio:engine -- set-route --from players --action enter-player --to progress
+npm run studio:engine -- set-route --from players --action enter-player --to progress --apply
+```
+
+Połączenia stałe, w tym sprawdzenie PIN, pozostają nietykalne. Zmiany trafiają do `config.navigation.routes` i są odczytywane przez wspólny `resolveRoute` podczas rozgrywki; bez lokalnych handlerów i łatek CSS. W pierwszej iteracji silnik ogranicza tę operację do scenariuszy profilu z `STARTUP_LINKS`; nie zgaduje połączeń innych ekranów.
+
+## Edycja układu Home bez modyfikacji kodu
+
+Zatwierdzone położenie elementów trzymamy w `shared/home-layout.mjs`. Nadpisania w `config.layoutOverrides.home` są wartościami `x/y/w/h` na artboardzie 853 × 1844 (przy uwzględnieniu obszaru treści). Zarówno renderer PWA, jak i podgląd Studio korzystają z tych samych wartości.
+
+```bash
+npm run studio:engine -- inspect-layout --id home-mode-spelling
+npm run studio:engine -- set-layout --id home-mode-spelling --x 34 --w 255
+npm run studio:engine -- set-layout --id home-mode-spelling --x 34 --w 255 --apply
+npm run studio:engine -- set-layout --id home-mode-spelling --reset --apply
+```
+
+Brak `--apply` oznacza suchy test. Silnik nie zapisze elementu wykraczającego poza artboard. Zmiany indywidualnych wystąpień są kontrolowane przez jawny model, bez doklejania CSS.
+
+## Pakiety zmian (transakcja)
+
+Silnik przyjmuje plik JSON zawierający tablicę 1–100 operacji typu `style`, `recipe`, `layout` lub `route`. Przykład:
+
+```json
+[{"type":"recipe","recipe":"button-back","property":"radius","value":23},{"type":"style","view":"spelling-results","id":"navigation-back-result-back","property":"radius","value":18}]
+```
+
+```bash
+npm run studio:engine -- batch --changes edits.json
+npm run studio:engine -- batch --changes edits.json --apply
+```
+
+Bez `--apply` jest tylko symulacja. Jeśli którakolwiek operacja jest błędna, cały pakiet jest odrzucany bez zapisu. Zatwierdzony pakiet zapisuje konfigurację atomowo przez plik tymczasowy. Po zapisie wymagany jest test regresyjny oraz sprawdzenie w przeglądarce.
+
+## Wyszukiwanie zarejestrowanych elementów
+
+```bash
+npm run studio:engine -- list --view spelling-results
+npm run studio:engine -- search --query powrot --kind button
+npm run studio:engine -- search --query jelly --limit 50
+npm run studio:engine -- inspect --view spelling-results --id navigation-back-result-back
+```
+
+Odczyt zwraca ID, nazwę, widok, przepis komponentu i oznaczenie `legacyAdapter`. Zapytania działają także bez polskich znaków. Dopiero po odnalezieniu rzeczywistego elementu silnik planuje zmianę przez `batch`.

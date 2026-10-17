@@ -2,6 +2,7 @@ import { watchScrollEdges } from '../shared/scroll-edges.mjs?v=1';
 import {createConfiguredBubble} from '../spelling/bubble-renderer.mjs';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { LEARNING_TYPES, validLearning } from '../spelling/learning.mjs?v=1';
+import {overlayAttrs,hydrateSpellingOverlay} from '../shared/spelling-overlays.mjs';
 
 const dialogs = new WeakMap();
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
@@ -38,17 +39,19 @@ export function openResultRule(root, attempt, trigger) {
   const image = scene?.asset ? sceneUrl(scene) : '';
   const dialog = document.createElement('dialog');
   dialog.className = 'result-rule-dialog';
+  dialog.dataset.dsKey='rule-shell';
   dialog.setAttribute('aria-labelledby', 'result-rule-title');
   const [before, ...after] = String(attempt.masked || '').split('_');
   const word = after.length ? escape(before) + '<span class="result-answer-letter">' + escape(attempt.answer) + '</span>' + escape(after.join('_')) : escape(attempt.word);
-  dialog.innerHTML = '<header class="rule-dialog-head"><span>' + eyeSvg + ' Mała podpowiedź</span><button type="button" class="rule-close" aria-label="Zamknij zasadę i wróć do wyników">×</button></header>' +
-    '<div class="rule-dialog-body"><div class="rule-dialog-fixed"><div class="rule-visual" role="img" aria-label="Ilustracja do słowa ' + escape(attempt.word) + '"><div class="rule-bubble"></div></div><span class="rule-image-loader" role="status" aria-label="Ładowanie ilustracji" hidden><span class="rule-loader-orbit" aria-hidden="true">' + Array.from({length: 6}, (_, index) => '<i style="--bubble-index:' + index + '"></i>').join('') + '</span></span><p class="rule-image-error" role="status" hidden>Przyjrzyj się poprawnemu zapisowi poniżej.</p>' +
-    '<h2 id="result-rule-title">' + word + '</h2><span class="rule-type" data-rule-type="' + escape(learning.type) + '">' + escape(LEARNING_TYPES[learning.type]) + '</span></div>' +
-    '<div class="rule-scroll-shell"><div class="rule-dialog-scroll" tabindex="0" aria-label="Szczegóły zasady"><section class="rule-explanation"><h3>' + escape(learning.title) + '</h3><p>' + escape(learning.explanation) + '</p>' +
+  dialog.innerHTML = '<header class="rule-dialog-head" ' + overlayAttrs('rule','rule-head') + '><span>' + eyeSvg + ' Mała podpowiedź</span><button type="button" class="rule-close" ' + overlayAttrs('rule','rule-dismiss') + ' data-action="dismiss-rule" aria-label="Zamknij zasadę i wróć do wyników">×</button></header>' +
+    '<div class="rule-dialog-body"><div class="rule-dialog-fixed"><div class="rule-visual" ' + overlayAttrs('rule','rule-visual') + ' role="img" aria-label="Ilustracja do słowa ' + escape(attempt.word) + '"><div class="rule-bubble"></div></div><span class="rule-image-loader" role="status" aria-label="Ładowanie ilustracji" hidden><span class="rule-loader-orbit" aria-hidden="true">' + Array.from({length: 6}, (_, index) => '<i style="--bubble-index:' + index + '"></i>').join('') + '</span></span><p class="rule-image-error" role="status" hidden>Przyjrzyj się poprawnemu zapisowi poniżej.</p>' +
+    '<h2 ' + overlayAttrs('rule','rule-word') + ' id="result-rule-title">' + word + '</h2><span class="rule-type" ' + overlayAttrs('rule','rule-type') + ' data-rule-type="' + escape(learning.type) + '">' + escape(LEARNING_TYPES[learning.type]) + '</span></div>' +
+    '<div class="rule-scroll-shell"><div class="rule-dialog-scroll" ' + overlayAttrs('rule','rule-scroll') + ' tabindex="0" aria-label="Szczegóły zasady"><section class="rule-explanation" ' + overlayAttrs('rule','rule-explanation') + '><h3 ' + overlayAttrs('rule','rule-explanation-title') + '>' + escape(learning.title) + '</h3><p ' + overlayAttrs('rule','rule-explanation-copy') + '>' + escape(learning.explanation) + '</p>' +
     (learning.examples.length ? '<div class="rule-exchanges">' + learning.examples.map(example => '<div><strong>' + escape(example.from) + '</strong><span aria-hidden="true">' + (learning.type === 'exchange' ? '↔' : '·') + '</span><strong>' + escape(example.to) + '</strong><small>' + escape(example.change) + '</small></div>').join('') + '</div>' : '') + '</section>' +
     (learning.relatedWords.length ? '<section class="rule-family"><h3>Rodzina wyrazów</h3><p>Podobne słowa pomagają zapamiętać pisownię.</p><div class="rule-chips">' + chips(learning.relatedWords, attempt.answer) + '</div></section>' : '') +
     (learning.forms.length ? '<section class="rule-family"><h3>Formy wyrazów z tej rodziny</h3><div class="rule-chips">' + chips(learning.forms, attempt.answer) + '</div></section>' : '') +
     (learning.sources.length ? '<details class="rule-sources"><summary>Dla ciekawych: słownik i zasady</summary>' + learning.sources.map(source => '<a href="' + escape(source.url) + '" target="_blank" rel="noopener noreferrer">' + escape(source.label) + ' ↗</a>').join('') + '</details>' : '') + '</div></div></div>';
+  hydrateSpellingOverlay(dialog,'rule');
   document.body.append(dialog);
   const active = {dialog, trigger, bubble: null, resizeObserver: null, loaderTimeout: null};
   dialogs.set(root, active);

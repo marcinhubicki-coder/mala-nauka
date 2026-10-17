@@ -1,5 +1,7 @@
 # Zasady i tokeny
 
+> **Nadrzędne reguły podejmowania decyzji na podstawie korekt użytkownika (03–17.10.2026):** [Zasady decyzji projektowych](decision-rules-2026-10.md). Ten dokument określa „dlaczego i kiedy”; poniższe tokeny określają „jak”. W razie nowszej, wyraźnej korekty konkretnego widoku zachowaj jej zakres; nie redefiniuj przy okazji tokenów pozostałych ekranów.
+
 ## Wzorzec
 
 Ortografia wyznacza skórkę jelly i układ ustawień. Angielski wyznacza subtelny cień **całego toru**, oddzielny od cienia ruchomego jelly. Te reguły są wspólne dla ortografii, angielskiego, flag i czytania. Matematyka zachowuje własny wybór działania i planszę; korzysta ze wspólnych tokenów kontrolek.

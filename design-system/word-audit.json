@@ -2,7 +2,7 @@
   "entries": 510,
   "uniqueWords": 510,
   "duplicates": [],
-  "multipleCategories": 186,
+  "multipleCategories": 185,
   "missingAssets": [
     "wieża",
     "dach",
@@ -18,8 +18,8 @@
     },
     {
       "category": "rz/ż",
-      "primary": 136,
-      "total": 158,
+      "primary": 135,
+      "total": 157,
       "basic": 83
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "category": "ć/ci",
-      "primary": 13,
+      "primary": 14,
       "total": 58,
       "basic": 34
     },

@@ -1,9 +1,10 @@
 import { BACKUP_FORMAT, BACKUP_VERSION, validateBackup } from './profile-backup.mjs?v=1';
-const DB_NAME='malaNauka.local.v1';
+const TEST_DATABASE=globalThis.__MN_TEST_PROFILES__===true;
+const DB_NAME=TEST_DATABASE?'malaNauka.demo.v1':'malaNauka.local.v1';
 const DB_VERSION=1;
-const SESSION_KEY='malaNauka.sessionPlayerId';
-const FALLBACK_KEY='malaNauka.localProfilesFallback.v1';
-const GUEST_PROGRESS_KEY='malaNauka.guestProgress.v1';
+const SESSION_KEY=(TEST_DATABASE?'demo.':'')+'malaNauka.sessionPlayerId';
+const FALLBACK_KEY=(TEST_DATABASE?'demo.':'')+'malaNauka.localProfilesFallback.v1';
+const GUEST_PROGRESS_KEY=(TEST_DATABASE?'demo.':'')+'malaNauka.guestProgress.v1';
 const guestPlayer=()=>({id:'guest',nickname:'odkrywco',avatarId:'b'});
 
 const now=()=>new Date().toISOString();

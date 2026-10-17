@@ -1,23 +1,29 @@
+import {addLearningSession} from './shared/mastery.mjs';
+import {awardRuleProgress} from './shared/rule-progress.mjs';
+import {exampleJourney,exampleRewardSummary} from './shared/test-profiles.mjs';
+import {discoverWord,reservePower,answerReward,progressionRules,POWERS,sparkBalance,comboMultiplier,awardAchievements} from './shared/progression.mjs';
+import {seedTestProfiles} from './shared/test-profiles.mjs';
 import {prepareScreenChange} from './shared/design-runtime.mjs';
+import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
+import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
+import {overlayAttrs,hydrateSpellingOverlay} from './shared/spelling-overlays.mjs';
+import {hydratePinParts,pinAttrs,PIN_CHILD_IDS} from './shared/pin-parts-contract.mjs';
 import {createModeHost,requestHostRoute} from './shared/mode-host.mjs';
-import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
+import {profileAvatar,updateProfileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from './shared/profile-parts.mjs';
 import {gameSound} from './shared/sound-runtime.mjs';
 import {resolveRoute,playerSelectionSettings} from './shared/navigation.mjs';
 import {animateStateChange} from './shared/state-motion.mjs';
-import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
+import {DEFAULT_SCORING,scoreAttempts,scoreResult} from './spelling/scoring.mjs';
 import {resolveRules} from './shared/rules-library.mjs';
-import {createStudioGame} from './design-system/scenarios.mjs';
 import {designReady,applyDesign} from './shared/design-runtime.mjs';
 import {pageHeading} from './shared/navigation-parts.mjs';
-import {loadWords,assetUrl} from './shared/asset-loader.mjs';
+import {loadWords,assetUrl,offlinePlayableWords,cachedGraphicPaths} from './shared/asset-loader.mjs';
 import {missionIllustration} from './shared/mission-parts.mjs';
-import { exampleProgress } from './progress-example.mjs?v=1';
 import { renderProgressScreen, destroyProgressScreen } from './progress-screen.mjs?v=8-reference-loop';
 import { setDictationWords } from './ortografia/wizard-v2.mjs?v=15-count-cta';
 import { renderSpellingResult, toggleResultDetail, getResultViewState, showResultRule, stopResultScroll } from './ortografia/result-screen.mjs?v=20-points-bubble';
 import { transitionToResult, settleResult } from './ortografia/result-motion.mjs?v=8-staggered-finish';
 import { closeResultRule } from './ortografia/result-rules.mjs?v=6-scroll-edges';
-import { exampleResult } from './ortografia/result-example.mjs?v=1';
 import { configureSpellingRound, spellingRoundLabel } from './spelling/round.mjs?v=1';
 import { renderHomeScreen } from './home-screen.mjs?v=20261010-vector-home';
 import { DURATIONS, Session, validateWords, cleanSettings, accuracy } from './game.mjs?v=20261002-flags-ready-v2';
@@ -33,7 +39,7 @@ const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
 let pinSuppressClickUntil=0;
 let studioSourceWords;
-const prefix='malaNauka.v1.';
+const prefix=(globalThis.__MN_TEST_PROFILES__?'demo.':'')+'malaNauka.v1.';
 function read(key,fallback=null) {try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}}
 function save(key,value) {if(new URLSearchParams(location.search).has('studio'))return;try{localStorage.setItem(prefix+key,JSON.stringify(value));}catch{document.querySelector('#storage-notice').hidden=false;}}
 const oldSettings=cleanSettings(read('maleDyktando.settings.v1',{}));
@@ -83,7 +89,7 @@ const fallbackAvatarId=player=>{
  for(let i=0;i<source.length;i++)sum+=source.charCodeAt(i);
  return ['a','b','c','d'][sum%4];
 };
-function avatarMarkup(player,extra=''){return profileAvatar(player,extra);}
+function avatarMarkup(player,extra='',contractAttrs=''){return profileAvatar(player,extra,undefined,contractAttrs);}
 
 const avatarAccentCache=new Map(),avatarImageCache=new Map();
 const defaultAvatarAccent={accent:'#0087ff',deep:'#006bd6',soft:'#e1f5ff',shadow:'rgba(0,135,255,.28)',shadowDeep:'rgba(0,94,196,.24)',toggleAccent:'#5d91bd',toggleSoft:'#e8f0f6',toggleShadow:'rgba(93,145,189,.18)'};
@@ -226,15 +232,17 @@ function playersPage(){
  const selection=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__);root.style.setProperty('--player-unselected-opacity',selection.otherOpacity);root.style.setProperty('--player-selection-duration',selection.fadeDuration+'ms');
  spellingArt.reset();view='players';root.dataset.view=view;delete root.dataset.mode;setScreenTheme('#fcfdff');
  const hasPlayers=players.length>0,atLimit=players.length>=MAX_PLAYERS;
+ const emptyAttrs=id=>viewAttrs('players-empty',id);
  const list=hasPlayers
   ?`<div class="player-grid count-${players.length}" role="group" aria-label="Zapisane profile">${players.map(player=>{const selected=player.id===selectedPlayerId;return `<button type="button" class="player-card ${selected?'is-selected':''}" data-action="choose-player" data-player="${escape(player.id)}" aria-pressed="${selected}">${avatarMarkup(player)}<strong style="--nickname-length:${[...player.nickname].length}" title="${escape(player.nickname)}">${escape(player.nickname)}</strong><span class="player-select-mark" aria-hidden="true">${selected?`<span class="check">${playerCheckIcon}</span>`:'<span class="empty-check"></span>'}</span></button>`;}).join('')}</div>`
-  :`<figure class="player-empty-art" aria-hidden="true"><img src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit"><span class="player-benefit-icon" aria-hidden="true">${playerProgressIcon}</span><p>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
+  :`<figure class="player-empty-art" aria-hidden="true"><img ${emptyAttrs('player-empty-illustration')} src="assets/brand/player-empty-3d.webp" alt="" width="1672" height="941" decoding="async" fetchpriority="high"></figure><div class="player-benefit" ${emptyAttrs('player-benefit')}><span class="player-benefit-icon" ${emptyAttrs('player-benefit-icon')} aria-hidden="true">${playerProgressIcon}</span><p ${emptyAttrs('player-benefit-copy')}>Każdy gracz ma własne<br><strong>postępy i wyniki.</strong></p></div>`;
  const arrow=`<span class="continue-arrow" aria-hidden="true">${homeChevronIcon}</span>`;
  const actions=hasPlayers
   ?`<div class="player-actions ${atLimit?'limit-actions':''}">${atLimit?'':btn(`<span class="add-icon" aria-hidden="true">${playerPlusIcon}</span> Dodaj gracza`,'add-player','add-player-soft')}${btn(`Dalej ${arrow}`,'continue-player','player-continue',selectedPlayerId?'':'disabled')}</div>`
-  :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue')}${btn('Później','guest-player','player-later')}</div>`;
+  :`<div class="player-actions empty-actions">${btn(`Dodaj użytkownika ${arrow}`,'add-player','player-continue',emptyAttrs('player-add'))}${btn('Później','guest-player','player-later',emptyAttrs('player-guest'))}</div>`;
  const subtitle=players.length===3?'Wybierz jeden z trzech profili.':hasPlayers?'Wybierz zapisany profil.':'Dodaj pierwszy profil, aby zacząć zabawę.';
- root.innerHTML=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}"><img class="player-brand-art" src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title"><h1 tabindex="-1">Kto dziś <span>gra?</span></h1><p class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ const markup=`<section class="player-shell ${hasPlayers?'':'player-shell-empty'} player-count-${players.length} ${atLimit?'player-shell-full':''}" ${hasPlayers?'':emptyAttrs('player-shell')}><img class="player-brand-art" ${hasPlayers?'':emptyAttrs('player-brand-art')} src="assets/brand/player-logo-3d.webp" alt="Mała Nauka — Małe wyzwania. Wielkie postępy." width="1536" height="512" decoding="async" fetchpriority="high"><div class="player-title" ${hasPlayers?'':emptyAttrs('player-title')}><h1 ${hasPlayers?'':emptyAttrs('player-heading')} tabindex="-1">Kto dziś <span>gra?</span></h1><p ${hasPlayers?'':emptyAttrs('player-subtitle')} class="${hasPlayers?'':'empty-subtitle'}">${subtitle}</p></div>${list}${actions}</section>`;
+ root.innerHTML=hasPlayers?markup:compileViewMarkup('players-empty',markup);
  const selected=players.find(player=>player.id===selectedPlayerId);if(selected)void applyAvatarAccent(selected.avatarId,{animate:false});else writeAvatarAccent(defaultAvatarAccent,{animate:false});
  root.scrollTop=0;root.querySelector('h1')?.focus({preventScroll:true});
 }
@@ -242,26 +250,42 @@ function playerCreatePage(){
  prepareScreenChange(root,'player-create');
  spellingArt.reset();view='player-create';root.dataset.view=view;delete root.dataset.mode;
  const editing=editingProfile&&activePlayer?.id&&activePlayer.id!=='guest';
+ const attrs=id=>viewAttrs('player-create',id);
  root.dataset.profileEditor=editing?'edit':'create';
  const title=editing?'Edytuj profil':'Nowy gracz',back=editing?'settings':'players';
  const heading=editing?'Twój profil':'Jak mamy Cię nazywać?';
  const copy=editing?'Zmień nick lub avatar. PIN ustawisz osobno.':'Wystarczy nick. Dane zostają na tym urządzeniu.';
- root.innerHTML=pageHead(title,back)+`<section class="player-form-card card"><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large')}</div><h2>${heading}</h2><p>${copy}</p><form id="player-create-form" novalidate lang="pl"><label for="player-nickname">Nick</label><input id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small id="nickname-help" class="nickname-help" role="status" aria-live="polite">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><span class="avatar-label">Wybierz avatar</span><div class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}"`)).join('')}</div><button class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ const navigation=pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView:'player-create',backId:'create-back',titleId:'create-page-title'});
+ const markup=navigation+`<section class="player-form-card card" ${attrs('create-card')}><div class="create-avatar-preview">${avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large',attrs('create-preview'))}</div><h2 ${attrs('create-heading')}>${heading}</h2><p ${attrs('create-copy')}>${copy}</p><form id="player-create-form" ${attrs('create-form')} novalidate lang="pl"><label ${attrs('create-name-label')} for="player-nickname">Nick</label><input ${attrs('create-name-input')} id="player-nickname" name="nickname" class="player-name-input" type="text" maxlength="${NICKNAME_MAX_LENGTH}" minlength="3" autocomplete="nickname" autocapitalize="words" enterkeyhint="next" spellcheck="false" aria-describedby="nickname-help" placeholder="np. Maja" value="${escape(pendingNickname)}" required><small ${attrs('create-name-help')} id="nickname-help" class="nickname-help" role="status" aria-live="polite">Od 3 do ${NICKNAME_MAX_LENGTH} znaków.</small><span ${attrs('create-avatar-label')} class="avatar-label">Wybierz avatar</span><div ${attrs('create-avatar-picker')} class="avatar-picker" role="group" aria-label="Wybierz avatar">${AVATARS.map(id=>btn(avatarMarkup({avatarId:id}), 'choose-avatar',`avatar-choice ${pendingAvatarId===id?'is-selected':''}`,`data-avatar="${id}" aria-pressed="${pendingAvatarId===id}" aria-label="Avatar ${id.toUpperCase()}" ${attrs('create-avatar-'+id)}`)).join('')}</div><button ${attrs('create-submit')} data-action="submit-player-form" class="primary player-form-next" type="submit">${editing?'Zapisz zmiany':'Dalej'} <span aria-hidden="true">›</span></button></form></section>`;
+ root.innerHTML=compileViewMarkup('player-create',markup,{variant:editing?'edit':'create'});
  void applyAvatarAccent(pendingAvatarId,{animate:false});
  root.scrollTop=0;
 }
 function pinFieldsMarkup(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
- if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next')}`;
+ if(creating&&!pendingPinEnabled)return `<h3 class="pin-instruction">Bez PIN-u</h3><p>Do tego profilu wejdziesz bez kodu.<br>PIN możesz ustawić później w ustawieniach.</p>${btn('Dalej','submit-pin','primary player-form-next',pinAttrs('pin-no-code-submit'))}`;
  return `<h3 class="pin-instruction">${deleting?'Potwierdź':creating||setting?'Ustaw':'Wpisz'} <strong>${deleting?'PIN':'4 cyfry'}</strong></h3><p>${deleting?'Wpisz PIN tego profilu, aby przejść do potwierdzenia usunięcia.':`PIN służy do przełączania profili.${creating||setting?'<br>Możesz go później wyłączyć w ustawieniach.':''}`}</p>${pinDotsMarkup(pinInput.length)}${pinKeypadMarkup(pinInput.length,deleting?'Potwierdź PIN':creating?'Zapisz profil':setting?'Zapisz PIN':'Wejdź do profilu')}`;
 }
 function renderPinError(){
  const node=root.querySelector('.pin-error-outside');if(!node)return;
  node.textContent=pinError||'';node.classList.toggle('is-visible',Boolean(pinError));
 }
+// PIN is a stateful group: entering digits must not replace its keys or dots.
+// Preserve input focus, element identity and future declarative component IDs.
+function syncPinEntry(){
+ const fields=root.querySelector('.pin-fields');if(!fields)return;
+ const dots=fields.querySelector('.pin-dots');
+ if(dots){
+  dots.setAttribute('aria-label','Wpisano '+pinInput.length+' z 4 cyfr');
+  dots.querySelectorAll(':scope > span').forEach((dot,index)=>dot.classList.toggle('filled',index<pinInput.length));
+ }
+ const submit=fields.querySelector('.pin-keypad [data-action="submit-pin"]');
+ if(submit)submit.disabled=pinInput.length!==4;
+ renderPinError();
+}
 function renderPinFields(animate=false){
  const fields=root.querySelector('.pin-fields');if(!fields)return;
- const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();renderPinError();if(animate)animateStateChange(card,oldHeight);
+ const card=fields.closest('.pin-card'),oldHeight=card.getBoundingClientRect().height;document.documentElement.dataset.dsComponentState=pendingPinEnabled?'pin':'no-pin';card.classList.toggle('pin-no-code',!pendingPinEnabled);fields.innerHTML=pinFieldsMarkup();hydratePinParts(card,{hasMode:Boolean(card.querySelector('.pin-mode')),hasKeypad:!card.classList.contains('pin-no-code')});renderPinError();if(animate)animateStateChange(card,oldHeight);
  if(animate&&settings.animations&&!matchMedia('(prefers-reduced-motion: reduce)').matches)fields.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:260,easing:'ease-out'});
 }
 function setPinMode(index){
@@ -278,9 +302,17 @@ function playerPinPage(){
  const creating=Boolean(pendingNickname),setting=editingPin,deleting=deletingProfile;
  const player=creating?{nickname:pendingNickname,avatarId:pendingAvatarId}:setting||deleting?activePlayer:players.find(item=>item.id===pendingPlayerId);
  const name=player?.nickname||'Gracz';
- root.dataset.pinPurpose=creating?'create':setting?'edit':'unlock';
+ const purpose=creating?'create':setting?'edit':deleting?'delete':'unlock';
+ const contractView=purpose==='unlock'?'player-unlock':'player-pin';
+ const attrs=id=>viewAttrs(contractView,id);
+ root.dataset.pinPurpose=purpose;
  const noPin=creating&&!pendingPinEnabled;
- root.innerHTML=pageHead(deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN',deleting||setting?'settings':creating?'edit-player':'players')+`<section class="pin-card ${noPin?'pin-no-code':''}"><div class="pin-profile">${avatarMarkup(player,'player-avatar-large')}<h2 style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div class="pin-fields">${pinFieldsMarkup()}</div></section><p class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
+ const title=deleting?'Potwierdź PIN':creating?'Twój PIN':setting?'Ustaw PIN':'Wpisz PIN';
+ const back=deleting||setting?'settings':creating?'edit-player':'players';
+ const nav=pageHeading(title,{action:back,titleRecipe:'text-player-title',contractView,backId:'pin-back',titleId:'pin-page-title'});
+ const markup=nav+`<section ${attrs('pin-card')} class="pin-card ${noPin?'pin-no-code':''}"><div ${attrs('pin-profile')} class="pin-profile">${avatarMarkup(player,'player-avatar-large',attrs('pin-avatar'))}<h2 ${attrs('pin-nickname')} style="--nickname-length:${[...name].length}">${escape(name)}</h2></div>${creating?pinModeMarkup(pendingPinEnabled):''}<div ${attrs('pin-fields')} class="pin-fields">${pinFieldsMarkup()}</div></section><p ${attrs('pin-error')} class="pin-error-outside ${pinError?'is-visible':''}" role="status" aria-live="polite">${pinError?escape(pinError):''}</p>`;
+ root.innerHTML=compileViewMarkup(contractView,markup,{variant:purpose,childIds:PIN_CHILD_IDS});
+ hydratePinParts(root.querySelector('.pin-card'),{hasMode:creating,hasKeypad:!noPin});
  const container=root.querySelector('.pin-mode');
  void applyAvatarAccent(player?.avatarId||pendingAvatarId,{animate:false});
  if(container){
@@ -325,26 +357,36 @@ function navigate(next) {
  if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
-function home() {
+async function home() {
+ root.dataset.dsContractPending='home';
+ const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(view!=='home'||activePlayer?.id!==playerId){if(root.dataset.dsContractPending==='home')delete root.dataset.dsContractPending;return;}progress=cleanProgress(latest);}
  const latest=progress.history[0],today=progress.today.day===localDay()?progress.today.count:0;
- const lastScore=latest?`${latest.correct} pkt`:'0 pkt';
+ const lastScore=latest?`${scoreResult(latest).total} ${latest.progressionRules?'iskier':'pkt'}`:'0 iskier';
  const lastLabel=latest?`Ostatnia: ${MODES[latest.mode].name}`:'Zagraj pierwszą rundę';
- root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});
+ root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});delete root.dataset.dsContractPending;
 }
 function wizard() {
+ root.dataset.tutorial=String(selectedMode==='spelling'&&!progress.journey?.tutorialDone&&!studioProfiles());
  if(selectedMode==='spelling')setDictationWords(words);
  const mode=MODES[selectedMode],config=configs[selectedMode];
- root.innerHTML=pageHead(mode.name)+`<section class="wizard-intro ${mode.color} mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
+ if(['spelling','english','reading','flags'].includes(selectedMode))root.dataset.dsContractPending=selectedMode+'-settings';
+ root.innerHTML=(selectedMode==='spelling'
+  ?pageHeading(mode.name,{action:'home',titleRecipe:'text-player-title',contractView:'spelling-settings',backId:'spelling-back',titleId:'spelling-page-title'})
+  :pageHead(mode.name))+`<section class="wizard-intro ${mode.color} mission-card" ${selectedMode==='spelling'?spellingAttrs('mission'):'data-ds-key="mission" data-ds-recipe="container-mission"'}>${missionIllustration(selectedMode,assetUrl)}<div><h2>Twoja mała misja</h2><p>${selectedMode==='reading'?'Przeczytaj, zapamiętaj i odpowiedz.':mode.hint+'.'}</p></div></section>
  <form id="setup-form" class="setup-form"><section class="card setup-card"><label class="field-title" for="category"><span class="step-dot">1</span>${selectedMode==='math'?'Jakie działania?':'Co ćwiczymy?'}</label><select id="category" name="category">${mode.categories.map(([id,label])=>`<option value="${id}" ${config.category===id?'selected':''}>${escape(label)}</option>`).join('')}</select>
  <fieldset><legend><span class="step-dot">2</span>${selectedMode==='reading'?'Co czytamy?':'Wybierz poziom'}</legend><div class="choices levels ${selectedMode==='spelling'?'four':''}">${mode.levels.map((label,index)=>{const value=selectedMode==='spelling'?index:index+1;return `<label class="choice"><input type="radio" name="difficulty" value="${value}" ${config.difficulty===value?'checked':''}><span>${label}</span></label>`;}).join('')}</div></fieldset>
  <fieldset><legend><span class="step-dot">3</span>Ile mamy czasu?</legend><div class="choices four">${DURATIONS.map(d=>`<label class="choice"><input type="radio" name="duration" value="${d}" ${config.duration===d?'checked':''}><span>${minutes(d)}</span></label>`).join('')}</div></fieldset></section>
- <p class="wizard-note">${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
+ <p class="wizard-note" ${selectedMode==='spelling'?spellingAttrs('note'):''}>${selectedMode==='reading'?'Wersja próbna · Czytaj spokojnie. Liczy się rozumienie.':'Po pomyłce czas czeka, aż poznasz odpowiedź.'}</p><p id="setup-error" role="status" hidden></p><button class="primary start-button" ${selectedMode==='spelling'?spellingAttrs('start')+' data-action="submit-setup"':''} type="submit">Zaczynamy! <span aria-hidden="true">→</span></button></form>`;spellingPoolNote();
 }
 function spellingPoolNote(){
  if(selectedMode!=='spelling'||view!=='wizard')return;const note=root.querySelector('.wizard-note');if(!note)return;const c=configs.spelling,size=createSource('spelling',c,words).length;
- note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`:'Każde słowo raz w rundzie. Po pomyłce czas czeka.';
+ note.textContent=!c.dyktando&&c.limitMode==='count'&&size>0&&size<c.wordLimit
+   ?`Ta pula ma ${size} słów. Runda skończy się po ${size}, bez powtórek.`
+   :c.dyktando?'Ćwicz w swoim tempie, bez pośpiechu i bez powtórek.'
+   :c.limitMode==='count'?'Ćwicz w swoim tempie. Liczy się każde słowo.'
+   :'Po pomyłce czas czeka, aż poznasz odpowiedź.';
 }
-function offlineStatus(){return offlineReady?'Gotowa do gry bez internetu.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
+function offlineStatus(){return offlineReady?'Gotowa offline z wcześniej wczytanymi obrazkami.':navigator.onLine?'Przygotowujemy grę bez internetu…':'Jesteś offline. Gra korzysta z zapisanych zasobów.';}
 function settingsPage() {
  view='settings';root.dataset.view='settings';root.dataset.mode=selectedMode;setScreenTheme('#f5f8ff');
  const savedProfile=Boolean(activePlayer?.id&&activePlayer.id!=='guest');
@@ -406,17 +448,35 @@ async function importBackup(){
  finally{backupBusy=false;}
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
-function historyPage() {
+async function historyPage(initialScreen='dashboard') {
+ root.dataset.dsContractPending='progress';
+ const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(view!=='history'||activePlayer?.id!==playerId){if(root.dataset.dsContractPending==='progress')delete root.dataset.dsContractPending;return;}progress=cleanProgress(latest);}
  setScreenTheme('#b4eaff');
- renderProgressScreen(root,{progress,words,backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
-  onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});
+ renderProgressScreen(root,{progress,words,initialScreen,onNavigate:target=>routeTo(target),onBack:()=>routeTo(resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'forge','return-results',selectedMode,collectionReturn?.result?.mode+'-results')),onSave:async journey=>{progress.journey=journey;await persistProgress({strict:true});},backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
+  onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});delete root.dataset.dsContractPending;
 }
 function unlockAudio(){void gameSound.unlock({gesture:true});}
 function beep(correct){gameSound.cue(correct?'correct':'incorrect');if(correct&&game?.streak>1&&game.streak%3===0)gameSound.cue('star');}
 async function start() {
  settleResult(root);
- const config=configs[selectedMode];
- try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
+ const config={...configs[selectedMode]};
+ if(selectedMode==='spelling'&&!progress.journey.tutorialDone)Object.assign(config,{limitMode:'count',wordLimit:10,dyktando:false,category:'all',difficulty:0});
+ try{if(selectedMode==='flags'&&navigator.onLine===false)config.offlineFlagIds=[...await cachedGraphicPaths()].map(path=>path.match(/\/assets\/flags\/svg\/([a-z]+)\.svg$/)?.[1]).filter(Boolean);const available=selectedMode==='spelling'?await offlinePlayableWords(words):words;const source=createSource(selectedMode,{...config,learning:progress.learning},available);if(Array.isArray(source)&&!source.length&&navigator.onLine===false)throw Error('Połącz się z internetem, aby wczytać obrazki do tej misji, albo wybierz wcześniej ćwiczone słowa.');game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
+ game.onPresentationHold=held=>{root.setAttribute('aria-busy',String(held));root.querySelectorAll('.answer').forEach(button=>button.disabled=held||game.state!=='playing');};
+ game.roundId=resultId();game.progressionRules=structuredClone(progressionRules());game.rewardSummary={sparks:0,discovered:[],stars:[],powers:[]};
+ game.onQuestion=(question)=>{
+  if(studioProfiles())return;
+  if(selectedMode==='spelling'){const found=discoverWord(progress.journey,question.word);progress.journey=found.journey;if(found.discovered)game.rewardSummary.discovered.push(question.word);const before=progress.journey.sparks;progress.journey=awardRuleProgress(progress.journey,words,game.progressionRules);game.rewardSummary.sparks+=(progress.journey.sparks-before)/1e6;}
+  progress.journey=reservePower(progress.journey,game.progressionRules);game.activePower=progress.journey.pending;void persistProgress();
+ };
+ game.onAttempt=(attempt,index)=>{
+  if(studioProfiles())return;
+  const reward=answerReward(progress.journey,attempt,{mode:selectedMode,id:game.roundId+':'+index,streak:game.economyStreak||0,rules:game.progressionRules});progress.journey=reward.journey;const day=localDay();progress.today={day,count:progress.journey.activeDays[day]||0};game.economyStreak=reward.streak;game.streak=reward.streak;
+  if(selectedMode==='spelling'){const known=progress.learning.items['word:'+attempt.word]?.masteryEarned;attempt.eventId=game.roundId+':'+index;progress.learning=addLearningSession(progress.learning,{mode:'spelling',id:game.roundId,incremental:true,date:attempt.at,attempts:[attempt]},game.progressionRules.mastery);if(!known&&progress.learning.items['word:'+attempt.word]?.masteryEarned)(game.rewardSummary.mastered||=[]).push(attempt.word);}
+  const previousAwards=new Set(Object.keys(progress.journey.achievements));progress.journey=awardAchievements(progress.journey,progress.learning,words,null,game.progressionRules);for(const id of Object.keys(progress.journey.achievements))if(!previousAwards.has(id))(game.rewardSummary.achievements||=[]).push(id);
+  game.rewardSummary.sparks+=reward.sparks;if(reward.starEarned)game.rewardSummary.stars.push({word:attempt.word,level:reward.star});if(reward.power)game.rewardSummary.powers.push(reward.power);void persistProgress();
+ };
+ game.onQuestion(game.current);
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();gameSound.cue('roundStart');lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
  const render=()=>{prepareScreenChange(root,'game');stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}return renderGame();};
@@ -424,8 +484,13 @@ async function start() {
   // Hold the round clock, while allowing the incoming scene's animations to
   // finish. Pausing the session here deadlocks the view-transition callback.
   game.setPresentationHold(true);
-  try{await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);await import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root));}
-  catch{render();root.inert=false;}
+  try{
+   await transitionToResult(root,()=>{document.activeElement?.blur();spellingArt.setPaused(true);},render);
+   // Decoding is bounded independently from the view-transition lock.
+   let timer;
+   try{await Promise.race([import('./shared/screen-readiness.mjs').then(m=>m.screenReady(root)),new Promise(resolve=>{timer=setTimeout(resolve,8000);})]);}
+   finally{clearTimeout(timer);}
+  }catch(error){console.error('[spelling-start]',error);render();root.inert=false;}
   if(game!==nextGame||view!=='game')return;
   game.setPresentationHold(false);
   if(document.hidden){pause();return;}
@@ -547,7 +612,7 @@ function renderGame() {
  }else{
   answersBlock=`<div class="answers count-${game.options.length} ${exposing?'concealed':''}" ${exposing?'inert aria-hidden="true"':''}>${exposing?'<div class="reading-wait"><span aria-hidden="true">'+book+'</span><p>Teraz czas na czytanie</p></div>':game.options.map((option,i)=>btn(escape(option),'answer',`answer ${q.kind==='spelling'||q.kind==='math'?'short-answer':''} ${feedback&&option===q.answer?'correct':feedback&&option===game.selected?'wrong':''}`,`data-index="${i}" ${feedback?'disabled':''} ${q.kind==='english'?'lang="en"':''}`)).join('')}</div>`;
  }
- root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} pkt</strong></div>
+ root.innerHTML=`<header class="game-bar">${btn('×','exit','icon','aria-label="Wyjdź z rundy"')}<div class="time-block"><span class="timer" aria-label="Pozostały czas"></span><small>${(game.state==='feedback-wrong'||game.mode==='flags'&&feedback)?'Czas zatrzymany':MODES[game.mode].name}</small></div>${btn('Ⅱ','pause','icon','aria-label="Pauza"')}</header><progress max="${game.duration*1000}" value="${game.remaining}" aria-label="Pozostały czas rundy"></progress><div class="game-meta"><span>Zadanie ${game.question}</span><strong><span aria-hidden="true">✦</span> ${game.correct} poprawnych</strong></div>
  <section class="question-card card ${feedback?(correct?'correct':'wrong'):''} ${exposing?'exposing':''}" data-country-id="${escape(q.countryId||'')}" data-flag-variant="${escape(q.flagGameType||'')}" aria-label="Pytanie">${badgeMarkup?`<div class="badges">${badgeMarkup}</div>`:''}<div class="question-content">${questionContent(q,feedback,exposing)}</div>${exposing?'<div class="exposure-track" aria-hidden="true"><span></span></div>':''}</section>
  <p class="prompt">${promptText}</p>${answersBlock}
  <div class="feedback" role="status" aria-live="polite" aria-atomic="true">${feedback?`<div class="feedback-message"><strong>${correct?'✓ Świetnie!':'Spokojnie, zapamiętaj odpowiedź.'}</strong><small>${correct?(game.mode==='flags'?'Zapamiętaj kraj i jego stolicę.':'Tak właśnie!'):'Czas czeka na Ciebie.'}</small></div>${correct&&game.mode!=='flags'?'':btn('Dalej →','next','primary')}`:'<p>Każda próba to krok do przodu.</p>'}</div>`;
@@ -556,6 +621,12 @@ function renderGame() {
  if(feedback&&!correct)root.querySelector('[data-action="next"]')?.focus({preventScroll:true});else if(!feedback&&!exposing)root.querySelector(q.kind==='memory'?'.memory-key':q.kind==='reading-phrase'?'.phrase-word':'.answer')?.focus({preventScroll:true});
 }
 function updateClock(){
+ if(game&&view==='game'&&!studioProfiles()){
+  let hud=root.querySelector('.power-game-hud');if(!hud){hud=document.createElement('aside');hud.className='power-game-hud';hud.setAttribute('aria-label','Iskry i moc');root.append(hud);}
+  const active=POWERS.find(p=>p.id===game.activePower),capacity=game.progressionRules.meter.capacity,charge=progress.journey.pending?capacity:Math.floor(progress.journey.meter);
+  const html='<span>✦ '+Math.floor(game.rewardSummary?.sparks||0)+'</span><b>×'+comboMultiplier(game.economyStreak||0,game.progressionRules)+'</b><meter min="0" max="'+capacity+'" value="'+charge+'" aria-label="Energia mocy"></meter><span>'+(active?active.icon+' '+active.name:Math.round(charge/capacity*100)+'%')+'</span>';
+  if(hud.innerHTML!==html)hud.innerHTML=html;hud.classList.toggle('is-active',Boolean(active));root.classList.toggle('has-power',Boolean(active));
+ }
  const timer=root.querySelector('.timer');if(!timer||!game)return;
  const progressNode=root.querySelector('progress');
  if(game.untimed){
@@ -594,15 +665,34 @@ function updateClock(){
  }
 }
 function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
-function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'exit-confirm':'exit')}</div>`);}
+function showModal(title,content,pauseVariant=''){
+ if(pauseVariant)modal.dataset.dsKey='pause-shell';
+ else for(const key of ['dsKey','dsElement','dsRecipe','dsKind','dsBlock','dsSubcontract','dsState'])delete modal.dataset[key];
+ modal.innerHTML=`<h2 id="modal-title" ${pauseVariant?overlayAttrs('pause','pause-title'):''}>${title}</h2>${content}`;
+ if(pauseVariant)hydrateSpellingOverlay(modal,'pause',{variant:pauseVariant});
+ if(!modal.open)modal.showModal();
+ modal.querySelector('button')?.focus();
+}
+function pause(exit=false){
+ if(!game||view!=='game')return;
+ stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();
+ if(game.state==='ended')return;
+ spellingArt.setPaused(true);root.classList.add('paused');
+ const variant=game.mode==='spelling'?(exit?'exit':'pause'):'';
+ const part=id=>variant?overlayAttrs('pause',id):'';
+ const copy=exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.';
+ const buttons=btn(exit?'Graj dalej':'Wracam do gry','resume','primary',part('pause-resume'))+
+   btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'exit-confirm':'exit','secondary',part('pause-end'));
+ showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',
+  `<p ${part('pause-copy')}>${copy}</p><div class="stack">${buttons}</div>`,variant);
+}
 function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
  if(!game||lastResult)return;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
- const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
+ const result={id:game.roundId||resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:[...game.attempts],elapsedMs:game.duration*1000-game.remaining,progressionRules:game.progressionRules,rewards:game.rewardSummary};
  if(game.mode==='spelling'){result.scoring=game.scoring||structuredClone(DEFAULT_SCORING);result.score=scoreAttempts(result.attempts,result.scoring).total;result.poolExhausted=game.poolExhausted===true;}
- const record=recordResult(progress,result);void persistProgress();lastResult=result;
+ const record=recordResult(progress,result,words);void persistProgress();lastResult=result;
  if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
  view='results';
  const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay});};
@@ -613,6 +703,7 @@ function routeTo(target){
  if(target==='player-create'){playerCreatePage();return;}
  if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
  if(target==='progress'){navigate('history');return;}
+ if(target==='forge'){view='history';void historyPage('forge');return;}
  if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(modeHost&&!new URLSearchParams(location.search).has('studio')&&selectedMode!==globalThis.__MALA_NAUKA_MODE__){stopGameTicker();spellingArt.reset();modeHost.open(selectedMode);return;}navigate('wizard');return;}
  if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
  navigate(target==='settings'?'settings':'home');
@@ -647,9 +738,9 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='guest-player'){await activatePlayer(studioProfiles()?{id:'studio-guest',nickname:'Gość',avatarId:'a',hasPin:false}:playerService.beginGuestSession(),'players','guest-player');return;}
  if(action==='continue-player'){playerSelectionEpoch++;await enterSelectedPlayer();return;}
- if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview');if(preview)preview.innerHTML=avatarMarkup({avatarId:pendingAvatarId},'player-avatar-large');void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
- if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';renderPinFields();}return;}
- if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';renderPinFields();return;}
+ if(action==='choose-avatar'){pendingAvatarId=button.dataset.avatar||'a';root.querySelectorAll('[data-action="choose-avatar"]').forEach(node=>{const selected=node.dataset.avatar===pendingAvatarId;node.classList.toggle('is-selected',selected);node.setAttribute('aria-pressed',String(selected));});const preview=root.querySelector('.create-avatar-preview .player-avatar-art');if(preview)updateProfileAvatar(preview,pendingAvatarId);void applyAvatarAccent(pendingAvatarId,{animate:true});return;}
+ if(action==='pin-digit'){if(pinInput.length<4){pinInput+=button.dataset.digit;pinError='';syncPinEntry();}return;}
+ if(action==='pin-backspace'){pinInput=pinInput.slice(0,-1);pinError='';syncPinEntry();return;}
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
@@ -659,7 +750,11 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
   if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
   const mode=action==='choose-mode'?button.dataset.mode:selectedMode;
   const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,mode,context);
-  routeTo(target);return;
+  routeTo(target);
+  // Results link to the spelling word collection directly (return-to-results is preserved).
+  if(action==='history'&&button.dataset.historyScreen==='collection'&&target==='progress')
+   root.querySelector('[data-progress="collection"]')?.click();
+  return;
  }
  if(action==='show-result-rule'&&view==='results')showResultRule(root,button);
  if(action==='toggle-result'&&view==='results')toggleResultDetail(root,button);
@@ -693,6 +788,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
+ if(action==='forge'){if(view==='results')collectionReturn={result:lastResult,ui:getResultViewState(root)};routeTo(resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,document.documentElement.dataset.dsView||view,'forge',selectedMode));return;}
  if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='exit-confirm')finish(true);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
@@ -760,49 +856,61 @@ document.addEventListener('pointerdown',()=>document.body.classList.remove('keyb
 document.addEventListener('mala-nauka:orientation',e=>{if(e.detail?.blocked&&view==='game')pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')});window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await seedTestProfiles(playerService,words);await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
 
 // Studio scenarios use the real renderers and Session, with a stopped clock.
 // No profile, score, backup or offline-cache writes happen in this mode.
+let studioScenarioEpoch=0;
 async function renderStudioScenario(stateOverride=null){
+ const epoch=++studioScenarioEpoch;root.dataset.scenarioPending=String(epoch);
+ try{
+ const {exampleProgress}=await import('./progress-example.mjs?v=1');
+ if(epoch!==studioScenarioEpoch)return;
  const query=new URLSearchParams(location.search);
  const screen=query.get('screen')||'wizard',state=stateOverride||query.get('state')||'initial';
  selectedMode=modeIds.includes(query.get('mode'))?query.get('mode'):'spelling';
  settings=cleanSettings({...settings,sound:true,animations:true,difficulty:true,category:true});applyPreferenceState();
  activePlayer={id:'studio-ania',nickname:'Ania',avatarId:'c',hasPin:true};
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
- progress=exampleProgress(words);lastResult=null;
+ progress={...exampleProgress(words),...exampleJourney(words,.25)};lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
  if(screen==='players'){if(state==='empty')players=[];else if(['one','two'].includes(state))players=players.slice(0,state==='one'?1:2);playersPage();return;}
  if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
  if(screen==='player-pin'){editingPin=false;deletingProfile=false;pendingNickname=state==='unlock'?'':'Ania';pendingPlayerId=state==='unlock'?activePlayer.id:null;pendingAvatarId='c';pendingPinEnabled=state!=='no-pin';pinInput='';playerPinPage();return;}
+ if(screen==='history'&&['trophy-base','trophy-evolution'].includes(state)){if(state==='trophy-base')delete progress.journey.trophies['mastery-5'];else progress={...progress,...exampleJourney(words,.9)};view='history';void historyPage(state);return;}
  if(['home','settings','wizard','history'].includes(screen)){
   navigate(screen);
   if(screen==='history'&&state!=='dashboard'){
    await new Promise(requestAnimationFrame);
-   if(state==='sessions'){root.querySelector('[data-progress="mode"][data-mode="english"]')?.click();root.querySelector('[data-progress="collection"]')?.click();}
+   if(state==='rule-details'){root.querySelector('[data-progress="rules"]')?.click();root.querySelector('[data-progress="open-rule-card"]')?.click();}
+   else if(state==='collection'){root.querySelector('[data-progress="collection"]')?.click();root.querySelector('[data-progress="filter"][data-filter="all"]')?.click();}
+   else if(state==='sessions'){root.querySelector('[data-progress="mode"][data-mode="english"]')?.click();root.querySelector('[data-progress="collection"]')?.click();}
    else root.querySelector(`[data-progress="${state}"]`)?.click();
   }
   return;
  }
  if(screen==='results'&&selectedMode==='spelling'){
   view='results';root.dataset.view=view;root.dataset.mode=selectedMode;
-  lastResult=exampleResult(words,state==='rule'?'mixed':state);
+  const {exampleResult}=await import('./ortografia/result-example.mjs?v=1');
+  lastResult=exampleResult(words,state==='rule'?'mixed':state);lastResult.progressionRules=structuredClone(progressionRules());lastResult.rewards=exampleRewardSummary(lastResult.attempts||[]);
   renderSpellingResult(root,lastResult,words,null,{animate:query.has('animate'),delay:120});
   if(state==='rule'){await new Promise(requestAnimationFrame);showResultRule(root,root.querySelector('[data-rule-index]'));}
   return;
  }
+ const {createStudioGame}=await import('./design-system/scenarios.mjs');
+ if(epoch!==studioScenarioEpoch)return;
  game=createStudioGame(selectedMode,configs[selectedMode],words);
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
- view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();
+ view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();if(epoch!==studioScenarioEpoch)return;
  if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:undefined});}
  if(state==='correct'||state==='wrong'){game.answer(state==='correct'?game.current.answer:game.options.find(option=>option!==game.current.answer));await renderGame();}
  if(screen==='results'){game.correct=8;game.wrong=2;finish();}
  if(state==='hint'){await new Promise(requestAnimationFrame);root.querySelector('.spelling-hint')?.click();}
  if(state==='pause')pause();
  if(query.has('effectLab'))installEffectLab();
+ }finally{if(epoch===studioScenarioEpoch){delete root.dataset.scenarioPending;document.dispatchEvent(new CustomEvent('mala-nauka:scenario-ready'));}}
 }
 
 let effectLabInstalled=false,effectLabPending=null,effectLabMeasurement=()=>{};

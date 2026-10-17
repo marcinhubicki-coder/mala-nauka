@@ -328,6 +328,7 @@ function install(){
  updateNote();
  syncPanel(false);
  syncHidden(true);
+ delete root.dataset.dsContractPending;
  requestAnimationFrame(()=>{syncSegmentedControls(false);installDrag();});
 }
 

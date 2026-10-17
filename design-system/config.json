@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "revision": 30,
+  "revision": 32,
   "name": "Mała Nauka",
-  "branch": "design/system-v1",
+  "branch": "refactor/v2-parity-first",
   "typography": {
     "body": "nunito",
     "ui": "dosis",
@@ -1496,7 +1496,7 @@
         "viewId": "spelling-settings",
         "tag": "h2",
         "original": "Twoja mała misja",
-        "text": "Twoja spokojna przygoda"
+        "text": "Twoja mała misja"
       }
     ],
     "rules": {
@@ -4400,7 +4400,7 @@
       "viewId": "spelling-settings",
       "tag": "h2",
       "original": "Twoja mała misja",
-      "text": "Twoja spokojna przygoda"
+      "text": "Twoja mała misja"
     }
   ],
   "elementStyles": {
@@ -4421,9 +4421,6 @@
     "container-mission": {
       "overflow": "visible",
       "offsetY": -3
-    },
-    "text-wizard-note": {
-      "visibility": "removed"
     },
     "container-result-line": {
       "gap": 0,
@@ -4531,6 +4528,11 @@
         "fontSize": 11,
         "offsetY": 1,
         "offsetX": 5
+      }
+    },
+    "spelling-settings": {
+      "spelling-start": {
+        "offsetY": 3
       }
     },
     "spelling-pause": {
@@ -4862,5 +4864,66 @@
       "#fe7b06"
     ],
     "soundInParent": false
+  },
+  "progression": {
+    "version": 1,
+    "pack": "base-v1",
+    "stars": [
+      5,
+      15,
+      30
+    ],
+    "starBonus": [
+      0,
+      0.02,
+      0.04,
+      0.06
+    ],
+    "mastery": {
+      "recallDays": 3,
+      "spanDays": 7,
+      "consolidateDays": 2
+    },
+    "ruleDiscovery": 3,
+    "combo": {
+      "thresholds": [
+        3,
+        6,
+        10
+      ],
+      "multipliers": [
+        1.25,
+        1.5,
+        2
+      ]
+    },
+    "meter": {
+      "capacity": 100,
+      "answer": 5,
+      "correct": 5
+    },
+    "modes": {
+      "spelling": {
+        "questionsPerMinute": 8
+      },
+      "math": {
+        "questionsPerMinute": 12
+      },
+      "english": {
+        "questionsPerMinute": 8
+      },
+      "flags": {
+        "questionsPerMinute": 16
+      },
+      "reading": {
+        "questionsPerMinute": 6
+      }
+    },
+    "activeDayAnswers": 10,
+    "balanceTolerance": 0.15,
+    "ruleCompleteBonus": 5
+  },
+  "testing": {
+    "includeProfiles": false
   }
 }

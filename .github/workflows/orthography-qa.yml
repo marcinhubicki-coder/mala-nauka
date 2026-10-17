@@ -1,0 +1,115 @@
+name: Orthography v2 end-to-end
+on:
+  pull_request:
+    paths:
+      - "ortografia/**"
+      - "spelling/**"
+      - "shared/spelling-*.mjs"
+      - "shared/view-contracts.mjs"
+      - "shared/view-bindings.mjs"
+      - "shared/view-contract-mount.mjs"
+      - "shared/element-*.mjs"
+      - "app.js"
+      - "progress-screen.mjs"
+      - "angielski/wizard-v2.mjs"
+      - "czytanie/wizard-v2.mjs"
+      - "flagi/adaptive-difficulty.mjs"
+      - "design-system/view-inventory-snapshots.mjs"
+      - "tools/qa-all-view-contracts-browser.mjs"
+      - "tools/qa-view-variants-browser.mjs"
+      - "tools/verify-screen-readiness.mjs"
+      - "tools/snapshot-view-contracts.mjs"
+      - "tests/v2-all-view-contracts.test.mjs"
+      - "shared/compiled-runtime.mjs"
+      - "shared/components.css"
+      - "shared/round-result.css"
+      - "design-system/registry.json"
+      - "spelling-art.css"
+      - "pwa-viewport.css"
+      - "tests/v2-result-sheet-is-not-card.test.mjs"
+      - "shared/structure-model.mjs"
+      - "tools/qa-orthography-browser.mjs"
+      - "tools/qa-orthography-complete-browser.mjs"
+      - "tools/qa-reference-studio-browser.mjs"
+      - "design-system/reference-calibration.mjs"
+      - "tools/build-design.mjs"
+      - "tools/build-asset-library.mjs"
+      - "tools/serve-preview.mjs"
+      - "tools/qa-device-switch-browser.mjs"
+      - "design-system/preview-device.mjs"
+      - "design-system/studio-device.css"
+      - "design-system/studio-preview.mjs"
+      - "design-system/studio-version.mjs"
+      - "design-system/index.html"
+      - "tests/pwa-release.test.mjs"
+      - "tools/qa-library-browser.mjs"
+      - "design-system/library-*.mjs"
+      - "shared/asset-loader.mjs"
+      - "shared/design-runtime.mjs"
+      - "tests/v2-library-*.test.mjs"
+      - "tests/v2-external-asset-publish.test.mjs"
+      - "tests/v2-offline-scene-cache.test.mjs"
+      - "tests/v2-spelling-*.mjs"
+      - "design-system/config.json"
+      - "design-system/git-client.mjs"
+      - "tests/v2-studio-git-branch.test.mjs"
+      - "tests/v2-studio-save-roundtrip.test.mjs"
+      - ".github/workflows/orthography-qa.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  orthography:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Unit tests and PWA build
+        run: npm test
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright
+          npx playwright install --with-deps chromium
+      - name: Serve isolated preview
+        run: |
+          node tools/serve-preview.mjs 8765 > /tmp/orthography-http.log 2>&1 &
+          echo $! > /tmp/orthography-http.pid
+      - name: All 45 contracts in iPhone and desktop production renderers
+        run: node tools/qa-all-view-contracts-browser.mjs http://127.0.0.1:8765
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2/all41
+      - name: Data-dependent view variants and reversible layout editing
+        run: node tools/qa-view-variants-browser.mjs http://127.0.0.1:8765
+      - name: Five real PWA flows, results, collection and shared audio owner
+        run: node tools/verify-screen-readiness.mjs chromium http://127.0.0.1:8765
+      - name: Spell settings, full quiz, results, rule and eight preview variants
+        run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2
+      - name: Natural completion of a ten-word Orthography round
+        run: node tools/qa-orthography-complete-browser.mjs http://127.0.0.1:8765
+      - name: Studio V2 approved screenshot batch import and persistence
+        run: node tools/qa-reference-studio-browser.mjs http://127.0.0.1:8765
+      - name: Isolated Studio upload, library index, PWA rendering and offline cache
+        run: node tools/qa-library-browser.mjs
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2
+      - name: iPhone and desktop previews retain the same view and draft
+        run: node tools/qa-device-switch-browser.mjs http://127.0.0.1:8765
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2
+      - name: Preserve V2 visual proof (7 days, not a Vercel deployment)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-orthography-visual-${{ github.sha }}
+          path: .design-qa/visual-v2/
+          if-no-files-found: ignore
+          retention-days: 7
+          compression-level: 6
+      - name: Report server diagnostics
+        if: failure()
+        run: tail -180 /tmp/orthography-http.log || true

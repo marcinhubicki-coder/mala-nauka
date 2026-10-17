@@ -1,19 +1,67 @@
+import {buildServiceWorker} from './service-worker.mjs';
 import {pinnedContentSource,usesLocalDesignSnapshot} from './content-source.mjs';
 import {readFile,writeFile,readdir,mkdir,rm} from 'node:fs/promises';
 import {resolve,relative,dirname,posix} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {selectOfflineBootstrapAssets,offlineAssetBudget} from './offline-cache-policy.mjs';
+import {selectOfflineCore} from './offline-core-policy.mjs';
+import {FLAG_ARCHIVE_INDEX,isFrozenFlagFile,assertFlagArchive} from './flag-archive-policy.mjs';
+import {readPublishedCatalog,assertPublishedAssets} from '../design-system/library-publish.mjs';
+import {VIEW_CONTRACTS,validateViewContract,viewContractFingerprint,resolveDeclaredPart} from '../shared/view-contracts.mjs';
+import {SNAPSHOT_CONTRACT_FINGERPRINT,VIEW_SNAPSHOT_IDS,inventorySnapshot} from '../design-system/view-inventory-snapshots.mjs';
 const root=process.cwd(),out=resolve(root,'dist'),canonicalBranch='design/system-v1';
 let branch=process.env.VERCEL_GIT_COMMIT_REF;try{branch||=execFileSync('git',['branch','--show-current'],{encoding:'utf8'}).trim();}catch{}
+// Pull-request CI checks out a detached merge commit: git has no branch name.
+// Use the versioned Studio config as a deterministic fallback for that build.
+// Deployment and Studio write targets are distinct: a PR preview must retain
+// the versioned V2 target instead of accidentally becoming a V1 consumer.
+const declaredStudioBranch=JSON.parse(await readFile(resolve(root,'design-system/config.json'),'utf8')).branch;
+branch||=declaredStudioBranch;
+const studioV2=declaredStudioBranch.startsWith('refactor/v2-')||declaredStudioBranch==='design/system-v2';
+if(studioV2){
+ const views=JSON.parse(await readFile(resolve(root,'design-system/registry.json'),'utf8')).views;
+ if(new Set(views.map(view=>view.id)).size!==views.length||Object.keys(VIEW_CONTRACTS).length!==views.length)throw Error('Incomplete V2 view contract coverage');
+ for(const view of views)validateViewContract(view.id);
+ if(SNAPSHOT_CONTRACT_FINGERPRINT!==viewContractFingerprint()||VIEW_SNAPSHOT_IDS.length!==views.length)throw Error('Regenerate the verified V2 contract inventory cache');
+ for(const view of views)for(const item of inventorySnapshot(view))if(item.id!=='layout-root'&&!resolveDeclaredPart(view.id,item.id))throw Error('Cached inventory is outside its contract: '+view.id+'/'+item.id);
+}
+if(branch.startsWith('refactor/v2-')&&!studioV2)throw Error('Niezgodna gałąź Studio V2: '+branch+' / '+declaredStudioBranch);
 let generatedReport;try{generatedReport=JSON.parse(await readFile(resolve(root,'design-system/pwa-test-report.json'),'utf8'));}catch{}
-const consumer=process.argv.includes('--consumer')||!usesLocalDesignSnapshot(branch,generatedReport);
+const consumer=process.argv.includes('--consumer')||!(studioV2||usesLocalDesignSnapshot(branch,generatedReport));
 const source=consumer?await pinnedContentSource({sourceURL:process.env.DS_SOURCE_URL,sourceSHA:process.env.DS_SOURCE_SHA}):'/';
-const centralFiles=['shared/runtime-blocks.mjs','shared/english-word-flip.mjs','shared/behaviors.mjs','design-system/behaviors-model.mjs','shared/navigation-parts.mjs','shared/navigation-parts.css','shared/spelling-word.css','spelling/word-reveal.mjs','shared/sound-themes.mjs','shared/mode-host.mjs','module-router.js','matematyka/round-timer.js','ortografia/wizard-v2.mjs','ortografia/wizard-retina.css','czytanie/wizard-v2.mjs','czytanie/wizard-retina.css','angielski/wizard-v2.mjs','angielski/wizard-retina.css','flagi/adventure-game.mjs','flagi/setup-retina.css','shared/atomic-config.mjs','shared/mission-parts.mjs','shared/mission-parts.css','shared/screen-blob-transition.mjs','shared/home-atoms.mjs','shared/profile-parts.mjs','shared/part-recipes.mjs','shared/structure-model.mjs','shared/screen-readiness.mjs','shared/building-blocks.mjs','shared/navigation.mjs','shared/state-motion.mjs','shared/round-result.css','spelling/fireworks.mjs','shared/surface-effects.mjs','shared/surface-effects.css','shared/logo-transition.mjs','boot-ui.mjs','boot-loader.css','boot-overlay.css','shared/element-motion.mjs','spelling/word-particles.mjs','spelling/word-particles.css','spelling/combo-global.mjs','spelling/combo-global.css','shared/rule-groups.mjs','spelling/bubble-dynamics.mjs','shared/element-system.mjs','shared/flow-model.mjs','home-screen.mjs','home-screen.css','progress-screen.mjs','progress-screen.css','design-system/config.json','design-system/word-batches.json','design-system/rules.json','design-system/assets.json','design-system/registry.json','design-system/audit.json','design-system/model.mjs','design-system/project-model.mjs','shared/discovery-model.mjs','shared/screen-copy.mjs','design-system/preview-model.mjs','design-system/validation.mjs','design-system/bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/rules-library.mjs','shared/screen-motion.mjs','shared/sound-library.mjs','shared/sound-runtime.mjs','shared/sound-map.mjs','shared/sound-worker.mjs','shared/component-recipes.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','shared/mastery.mjs','shared/scroll-edges.mjs','spelling/scenes.mjs','spelling/continue-drag.mjs','spelling/word-pools.mjs','spelling/effect-model.mjs','spelling/performance-model.mjs','spelling/response-effects.mjs','spelling/scoring.mjs','spelling/round.mjs','spelling/art.mjs','spelling/bubble.mjs','spelling/bubble-renderer.mjs','spelling/bubble-html.mjs','spelling/bubble-html.css','spelling/dictation.mjs','game.mjs','modes.mjs','progress.mjs','ortografia/result-screen.mjs','ortografia/result-rules.mjs'];
+const centralFiles=['shared/progression.mjs','shared/journey-ui.mjs','shared/journey.css','shared/rule-progress.mjs','shared/reward-assets.mjs','shared/gallery-assets.mjs','shared/award-catalog.mjs','shared/test-profiles.mjs','shared/input-lock.mjs','shared/compiled-runtime.mjs','shared/view-contracts.mjs','shared/view-bindings.mjs','shared/view-contract-mount.mjs','shared/pin-parts-contract.mjs','shared/spelling-overlays.mjs','shared/spelling-settings-contract.mjs','shared/element-styles.mjs','shared/type-system.mjs','shared/atom-vocabulary.mjs','shared/runtime-blocks.mjs','shared/english-word-flip.mjs','shared/behaviors.mjs','design-system/behaviors-model.mjs','shared/navigation-parts.mjs','shared/navigation-parts.css','shared/spelling-word.css','spelling/word-reveal.mjs','shared/sound-themes.mjs','shared/mode-host.mjs','module-router.js','matematyka/round-timer.js','ortografia/wizard-v2.mjs','ortografia/wizard-retina.css','czytanie/wizard-v2.mjs','czytanie/wizard-retina.css','angielski/wizard-v2.mjs','angielski/wizard-retina.css','flagi/adventure-game.mjs','flagi/setup-retina.css','shared/atomic-config.mjs','shared/mission-parts.mjs','shared/mission-parts.css','shared/screen-blob-transition.mjs','shared/home-layout.mjs','shared/home-atoms.mjs','shared/profile-parts.mjs','shared/part-recipes.mjs','shared/structure-model.mjs','shared/screen-readiness.mjs','shared/building-blocks.mjs','shared/navigation.mjs','shared/state-motion.mjs','shared/round-result.css','spelling/fireworks.mjs','shared/surface-effects.mjs','shared/surface-effects.css','shared/logo-transition.mjs','boot-ui.mjs','boot-loader.css','boot-overlay.css','shared/element-motion.mjs','spelling/word-particles.mjs','spelling/word-particles.css','spelling/combo-global.mjs','spelling/combo-global.css','shared/rule-groups.mjs','spelling/bubble-dynamics.mjs','shared/element-system.mjs','shared/flow-model.mjs','home-screen.mjs','home-screen.css','progress-screen.mjs','progress-screen.css','design-system/config.json','design-system/word-batches.json','design-system/rules.json','design-system/assets.json','design-system/registry.json','design-system/view-inventory-snapshots.mjs','design-system/audit.json','design-system/model.mjs','design-system/project-model.mjs','shared/discovery-model.mjs','shared/screen-copy.mjs','design-system/preview-model.mjs','design-system/validation.mjs','design-system/bridge.mjs','design-system/studio-bridge.mjs','shared/design-runtime.mjs','shared/asset-loader.mjs','shared/rules-library.mjs','shared/screen-motion.mjs','shared/sound-library.mjs','shared/sound-runtime.mjs','shared/sound-map.mjs','shared/sound-worker.mjs','shared/component-recipes.mjs','shared/components.css','shared/jelly-v4.css','shared/jelly-v4.mjs','shared/mastery.mjs','shared/scroll-edges.mjs','spelling/scenes.mjs','spelling/continue-drag.mjs','spelling/word-pools.mjs','spelling/effect-model.mjs','spelling/performance-model.mjs','spelling/response-effects.mjs','spelling/scoring.mjs','spelling/round.mjs','spelling/art.mjs','spelling/bubble.mjs','spelling/bubble-renderer.mjs','spelling/bubble-html.mjs','spelling/bubble-html.css','spelling/dictation.mjs','game.mjs','modes.mjs','progress.mjs','ortografia/result-screen.mjs','ortografia/result-attempts.mjs','ortografia/result-rules.mjs'];
 const files=new Map();
 let deploymentSHA=process.env.VERCEL_GIT_COMMIT_SHA;try{deploymentSHA||=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();}catch{}
 async function walk(dir){for(const item of await readdir(dir,{withFileTypes:true})){if(['.git','dist','node_modules','.design-qa','docs','tests','tools'].includes(item.name)||item.name.startsWith('.'))continue;const path=resolve(dir,item.name);if(item.isDirectory()){if(consumer&&relative(root,path)==='assets')continue;await walk(path);}else if(!/\.(md|py)$/.test(path)){files.set(relative(root,path).split('\\').join('/'),await readFile(path));}}}
 await walk(root);
-files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,builtAt:new Date().toISOString(),sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,consumer,contentSource:consumer?source:null,deploymentUrl:process.env.VERCEL_URL||null,branchUrl:process.env.VERCEL_BRANCH_URL||null})));
+// Scene archive is frozen on assets/library-v1 and hosted separately.
+// Do not package its 400+ unchanged illustrations into every UI preview.
+// CI tests use a plain local HTTP server with no Vercel rewrites, so their
+// compiled preview must include scenes. Only an actual hosted V2 deployment
+// removes them and serves the archive via the configured Vercel rewrite.
+const externalSceneLibrary=studioV2&&Boolean(process.env.VERCEL);
+const externalFlagLibrary=studioV2&&Boolean(process.env.VERCEL);
+if(externalFlagLibrary){
+ const response=await fetch(FLAG_ARCHIVE_INDEX,{cache:'no-store',signal:AbortSignal.timeout(20000)});
+ if(!response.ok)throw Error('Biblioteka SVG flag nie odpowiada: HTTP '+response.status);
+ // Compare 256 paths and hashes against the actual immutable archive.
+ // Never ship a missing flag behind an optimistic Vercel rewrite.
+ assertFlagArchive(JSON.parse(files.get('design-system/assets.json').toString()),await response.json());
+}
+// Immutable managed graphics are released on the asset branch before their
+// V2 metadata commit. Verify the actual CDN catalog at build time.
+if(externalSceneLibrary){
+ const archive=await readPublishedCatalog();
+ const current=JSON.parse(files.get('design-system/assets.json').toString());
+ assertPublishedAssets(current.assets.filter(asset=>/\.(?:png|jpe?g|webp|avif|svg)$/i.test(asset.path)),archive);
+}
+if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/scenes/'))files.delete(path);
+if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/managed/'))files.delete(path);
+if(externalFlagLibrary)for(const path of [...files.keys()])if(isFrozenFlagFile(path))files.delete(path);
+// Every graphic is served by the one archive. Local plain-HTTP QA retains copies.
+if(externalSceneLibrary)for(const path of [...files.keys()])if(/^assets\/.+\.(?:png|jpe?g|webp|avif|svg)$/i.test(path))files.delete(path);
+files.set('design-system/deployment.json',Buffer.from(JSON.stringify({schemaVersion:1,builtAt:new Date().toISOString(),sha:/^[0-9a-f]{40}$/.test(deploymentSHA||'')?deploymentSHA:null,branch,studioBranch:studioV2?declaredStudioBranch:null,consumer,assetLibraryOrigin:externalSceneLibrary?'https://mala-nauka-assets.vercel.app/':null,contentSource:consumer?source:null,deploymentUrl:process.env.VERCEL_URL||null,branchUrl:process.env.VERCEL_BRANCH_URL||null})));
 const localSource=process.env.DS_SOURCE_DIR;
 if(consumer)for(const path of centralFiles){if(localSource){files.set(path,await readFile(resolve(localSource,path)));continue;}const response=await fetch(new URL(path,source),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error(`Brak centralnego kontraktu (${response.status}): ${path}`);files.set(path,Buffer.from(await response.arrayBuffer()));}
 if(consumer){const app=files.get('app.js')?.toString()||'';if(app.includes('data/words-0')&&!/const parts=await Promise/.test(app))throw Error('Zaktualizuj adapter bazy słów dla tego konsumenta.');}
@@ -70,8 +118,11 @@ for(const [path,bytes] of [...files]){
   files.set(path,Buffer.from(text));
  }
  if(path.endsWith('.html')){
-  let html=bytes.toString();const baseMatch=html.match(/<base\s+href=['"]([^'"]+)['"]/),base=baseMatch?posix.normalize(posix.join(posix.dirname(path),baseMatch[1])):posix.dirname(path);
+  let html=bytes.toString();
+  if(branch==='studio/pwa-test'&&JSON.parse(files.get('design-system/config.json').toString()).testing?.includeProfiles)html=html.replace('</head>','<script>window.__MN_TEST_PROFILES__=true</script></head>');const baseMatch=html.match(/<base\s+href=['"]([^'"]+)['"]/),base=baseMatch?posix.normalize(posix.join(posix.dirname(path),baseMatch[1])):posix.dirname(path);
   if(consumer)html=assetReferences(html);
+  if(path==='design-system/index.html'&&studioV2)
+   html=html.replace('</head>','<script>window.__DS_STUDIO_BRANCH__='+JSON.stringify(declaredStudioBranch)+'</script></head>');
   const links=[...html.matchAll(/<link\b[^>]*rel=['"]stylesheet['"][^>]*>/g)];
   const styles=[];for(const link of links){const href=link[0].match(/href=['"]([^'"]+)['"]/)?.[1];if(href&&!/^https?:/.test(href))styles.push(posix.normalize(posix.join(base,href.split('?')[0])));}
   if(html.includes('id="app"')&&!styles.includes('shared/components.css'))styles.push('shared/components.css');
@@ -97,9 +148,12 @@ for(const [path,bytes] of files){
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
 for(const [path,bytes] of files){const target=resolve(out,path);await mkdir(dirname(target),{recursive:true});await writeFile(target,bytes);}
 const buildDigest=createHash('sha256');for(const [path,bytes]of files)if(path!=='sw.js'&&!path.startsWith('assets/'))buildDigest.update(path).update(bytes);const buildHash=buildDigest.digest('hex').slice(0,12);
-const core=[...files.keys()].filter(path=>/\.(html|css|mjs|js|json|webmanifest)$/.test(path)&&path!=='sw.js');
-const assetsToCache=catalog.assets.filter(asset=>!/\.txt$|\.md$/.test(asset.path)).map(asset=>assetURL(asset.path));
+const core=selectOfflineCore([...files.keys()].filter(path=>path!=='sw.js'),path=>files.get(path)?.toString());
+const coreCacheBytes=core.reduce((sum,path)=>sum+(files.get(path)?.byteLength||0),0);
+const assetBudget=offlineAssetBudget(catalog.assets);
+// Cache only a small starting kit; lesson illustrations enter the cache on demand.
+const assetsToCache=selectOfflineBootstrapAssets(catalog.assets).map(asset=>assetURL(asset.path));
 if(consumer){assetsToCache.push(new URL('design-system/rules.json',source).href,new URL('design-system/config.json',source).href,new URL('design-system/assets.json',source).href);for(let batch=1;batch<=8;batch++)assetsToCache.push(new URL(`data/words-0${batch}.json`,source).href);}
-const sw=`const CACHE='mala-nauka-ds-${buildHash}';\nconst CORE=${JSON.stringify(core.map(path=>'/'+path))};\nconst ASSETS=${JSON.stringify(assetsToCache)};\nconst NETWORK_FIRST=${JSON.stringify(branch==='studio/pwa-test')};\nself.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);for(let start=0;start<CORE.length;start+=12)await Promise.all(CORE.slice(start,start+12).map(async url=>{const response=await fetch(url);if(!response.ok)throw Error(url);await cache.put(url,response);}));for(let start=0;start<ASSETS.length;start+=12)await Promise.allSettled(ASSETS.slice(start,start+12).map(async url=>{const response=await fetch(url);if(response.ok)await cache.put(url,response);}));self.skipWaiting();})()));\nself.addEventListener('activate',event=>event.waitUntil((async()=>{for(const name of await caches.keys())if(name.startsWith('mala-nauka-')&&name!==CACHE)await caches.delete(name);await self.clients.claim();})()));\nself.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||!(url.origin===location.origin||url.href.startsWith(${JSON.stringify(consumer?source:'https://raw.githubusercontent.com/marcinhubicki-coder/mala-nauka/')})))return;if((NETWORK_FIRST&&/\\.(?:m?js|css|json|webmanifest)$/.test(url.pathname))||/\\/design-system\\/|\\/shared\\/.*\\.mjs$|\\/data\\/words-0[1-8]\\.json$/.test(url.pathname)){event.respondWith(fetch(request).then(async response=>{if(!response.ok)throw Error(url.href);const cache=await caches.open(CACHE);await cache.put(request,response.clone());return response;}).catch(()=>caches.match(request,{ignoreSearch:true})));return;}if(request.mode==='navigate'){event.respondWith(fetch(request).catch(async()=>await caches.match(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname)||await caches.match('/index.html')));return;}event.respondWith(caches.match(request,{ignoreSearch:true}).then(cached=>cached||fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(CACHE);await cache.put(request,response.clone());}return response;})));});`;
+const sw=buildServiceWorker({hash:buildHash,core:core.map(path=>'/'+path),bootstrap:assetsToCache,networkFirst:branch==='studio/pwa-test',contentOrigin:consumer?source:''});
 await writeFile(resolve(out,'sw.js'),sw);
-console.log(JSON.stringify({branch,consumer,assetOrigin:assetBase,files:files.size,bundledPages:bundled,removedRepeatedCSSBytes:removedCSSBytes,sourceAssetCopies:consumer?0:catalog.assets.length,buildHash}));
+console.log(JSON.stringify({branch,consumer,assetOrigin:assetBase,files:files.size,bundledPages:bundled,removedRepeatedCSSBytes:removedCSSBytes,sourceAssetCopies:[...files.keys()].filter(path=>path.startsWith('assets/')).length,externalSceneLibrary,externalFlagLibrary,offlineBootstrapCount:assetBudget.bootstrapCount,offlineBootstrapBytes:assetBudget.bootstrapBytes,offlineDeferredBytes:assetBudget.deferredBytes,coreCacheFiles:core.length,coreCacheBytes,buildHash}));

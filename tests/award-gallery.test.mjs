@@ -1,0 +1,42 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {awardCatalog} from '../shared/award-catalog.mjs';
+import {awardArt,trophyDialogMarkup} from '../shared/journey-ui.mjs';
+import {cleanJourney,chooseTrophy} from '../shared/progression.mjs';
+const words=Array.from({length:100},(_,i)=>({word:'słowo-'+i,category:i<50?'u/ó':'rz/ż'}));
+const stamp='2026-10-01T12:00:00Z';
+test('only earned or nearby real awards are visible; undiscovered artwork stays sealed',()=>{
+ const j=cleanJourney(null),catalog=awardCatalog(j,0,words);
+ assert.deepEqual(catalog.trophies.map(a=>a.id),['mastery-5']);
+ assert.deepEqual(catalog.medals.map(a=>a.id),['flawless-count-10']);
+ assert.match(awardArt(catalog.trophies[0]),/award-mystery/);
+ assert.doesNotMatch(awardArt(catalog.trophies[0]),/reward-sprite/);
+ for(const w of words.slice(0,75))j.cards[w.word]={firstSeenAt:stamp,correct:0};
+ const near=awardCatalog(j,0,words);
+ assert.ok(near.trophies.some(a=>a.id==='discover-all'&&!a.owned));
+ assert.ok(near.medals.some(a=>a.id==='discover-rz/ż'&&!a.owned));
+ j.achievements['discover-u/ó']=stamp;j.achievements['discover-rz/ż']=stamp;
+ assert.ok(awardCatalog(j,0,words).trophies.find(a=>a.id==='discover-all').owned);
+});
+test('a new base and every branch are sealed until the permanent choice is saved',()=>{
+ let j=cleanJourney(null);j.achievements['mastery-5']=stamp;j.achievements['mastery-25']=stamp;
+ const base=awardCatalog(j,8,words).trophies[0];assert.equal(base.canUpgrade,true);
+ assert.match(awardArt(base),/award-mystery/);
+ assert.equal((trophyDialogMarkup(j).match(/data-progress="trophy-base"/g)||[]).length,5);
+ assert.doesNotMatch(trophyDialogMarkup(j),/reward-sprite|Rączki|Skrzydełka|Szafir/);
+ j=chooseTrophy(j,'mastery-5',{family:2});
+ assert.equal(awardCatalog(j,25,words).trophies[0].canUpgrade,true);
+ assert.equal((trophyDialogMarkup(j).match(/data-progress="trophy-choice"/g)||[]).length,2);
+ assert.doesNotMatch(trophyDialogMarkup(j),/reward-sprite/);
+ j=chooseTrophy(j,'mastery-5',{choice:'b'},1);
+ assert.equal(awardCatalog(j,25,words).trophies[0].canUpgrade,false);
+ assert.equal(awardCatalog(j,25,words).trophies[0].total,100);
+ assert.match(awardArt(awardCatalog(j,25,words).trophies[0]),/reward-sprite/);
+});
+test('many attempts cannot be presented as cumulative progress toward a flawless medal',()=>{
+ const j=cleanJourney(null);j.totals.spelling=10000;
+ const a=awardCatalog(j,0,words).medals.find(a=>a.id==='flawless-count-10');
+ assert.equal(a.current,0);assert.equal(a.total,1);
+ j.activeDays={'2026-10-01':10,'2026-10-02':3,'2026-10-04':10};
+ assert.equal(awardCatalog(j,0,words).medals.find(a=>a.id==='active-days-7').current,2);
+});

@@ -63,8 +63,12 @@ export function validateTokens(tokens,partial=false){
 export function validAssetPath(path){return typeof path==='string'&&/^assets\/[a-zA-Z0-9._/-]+$/.test(path)&&!path.split('/').some(part=>part==='.'||part==='..'||!part);}
 export function validateAssets(value){
  if(value?.schemaVersion!==1||!Array.isArray(value.assets)||!value.words||!value.aliases)throw Error('Nieprawidłowy rejestr assetów.');
- const paths=new Set();
- for(const asset of value.assets){if(!validAssetPath(asset.path)||paths.has(asset.path)||!/^[0-9a-f]{64}$/.test(asset.sha)||!Number.isFinite(asset.size)||asset.size<0)throw Error('Nieprawidłowy lub powtórzony asset.');paths.add(asset.path);}
+ const paths=new Set(),hashes=new Set();
+ for(const asset of value.assets){
+  if(!validAssetPath(asset.path)||paths.has(asset.path)||!/^[0-9a-f]{64}$/.test(asset.sha)||!Number.isFinite(asset.size)||asset.size<0)throw Error('Nieprawidłowy lub powtórzony asset.');
+  if(hashes.has(asset.sha))throw Error('Zduplikowana zawartość SHA-256 w rejestrze: '+asset.sha+'. Połącz ścieżki aliasem.');
+  paths.add(asset.path);hashes.add(asset.sha);
+ }
  for(const [from,to] of Object.entries(value.aliases))if(!validAssetPath(from)||!paths.has(to)||from===to)throw Error('Nieprawidłowy alias assetu.');
  for(const [word,row] of Object.entries(value.words))if(['__proto__','constructor','prototype'].includes(word)||!paths.has(row.path)||!/^data\/words-0[1-8]\.json$/.test(row.source))throw Error(`Nieprawidłowe przypisanie ilustracji: ${word}.`);
  return value;

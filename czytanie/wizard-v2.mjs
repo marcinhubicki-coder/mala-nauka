@@ -231,6 +231,7 @@ function install(){
  const theme=document.querySelector('meta[name="theme-color"]');if(theme)theme.content='#65c8f4';
  updateStartButton(false);
  syncTrainingUI(false);
+ delete root.dataset.dsContractPending;
  requestAnimationFrame(()=>{syncSegments(false);installDrag()});
 }
 

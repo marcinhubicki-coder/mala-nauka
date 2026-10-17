@@ -5,6 +5,7 @@ export function orthographyFamilies(word){
   const text=String(word).normalize('NFC').toLocaleLowerCase('pl');
   const lookup={u:'u/ó',ó:'u/ó',rz:'rz/ż',ż:'rz/ż',ch:'ch/h',h:'ch/h',ć:'ć/ci',ci:'ć/ci',ś:'ś/si',si:'ś/si',ź:'ź/zi',zi:'ź/zi',ń:'ń/ni',ni:'ń/ni',dź:'dź/dzi',dzi:'dź/dzi'};
   const found=new Set([...text.matchAll(/dzi|dź|rz|ch|ci|si|zi|ni|[uóżhćśźń]/g)].map(match=>lookup[match[0]]));
+  if(text==='zmarznąć')found.delete('rz/ż');
   return RULE_CATEGORIES.filter(family=>found.has(family));
 }
 export function validateRules(value){

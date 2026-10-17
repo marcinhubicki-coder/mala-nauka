@@ -36,7 +36,6 @@ main#app, .app-shell {
 html:has(#app[data-view="results"][data-mode="spelling"]) {
   background: #dfddfc url("assets/ortografia/result-background-v6.webp") center calc(-1.9 * var(--app-vh)) / auto calc(var(--app-viewport-height) + 1.9 * var(--app-vh)) no-repeat;
 }
-.result-scenery { display: none; }
 .result-sheet { bottom: max(calc(16 * var(--result-u)), var(--result-safe-bottom)); }
 
 /* Keep focus behavior and keyboard navigation, without visual focus rings. */

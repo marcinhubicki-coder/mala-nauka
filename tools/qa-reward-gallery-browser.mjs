@@ -41,6 +41,8 @@ try{
   await page.locator('[data-progress=trophy-select][data-award=discover-all]').click();
   assert.equal(await page.locator('.trophy-evolution > h3').innerText(),'Wielki odkrywca');
   assert.equal(await page.locator('.trophy-on-podium .reward-sprite').count(),0);
+  await page.locator('[data-progress=trophy-select]').last().click();
+  assert.ok(await page.locator('.trophy-selector').evaluate(rail=>{const selected=rail.querySelector('[aria-pressed=true]'),r=rail.getBoundingClientRect(),s=selected.getBoundingClientRect();return s.right<=r.right+1&&s.left>=r.left-1;}),'Selected trophy remains visible in its horizontal rail');
   await page.locator('[data-progress=award-tab][data-kind=medals]').click();await page.locator('.medal-card').first().waitFor();
   await page.locator('.medal-card[data-ds-contract=v2]').first().waitFor();
   await shot(out+'/'+device+'-medals.png');

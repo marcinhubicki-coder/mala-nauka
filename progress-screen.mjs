@@ -104,6 +104,8 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
       content='<p class="progress-subtitle">Małe kroki, coraz pewniejsza pisownia.</p><div class="progress-category-list">'+categoryGroups.map(g=>'<button type="button" data-progress="practice" data-category="'+g.category+'"><b class="category-pair"><span>'+g.category.split('/').map(esc).join('</span><i aria-hidden="true">/</i><span>')+'</span></b><span>'+g.mastered+' / '+g.total+' opanowane<small>'+(g.review?g.review+' słów do powtórki':'Poznaj lub utrwal tę zasadę')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>';
     }
     root.innerHTML='<section class="progress-canvas progress-subpage" data-ds-recipe="'+(screen==='collection'?'family-collection':'family-progress-'+screen)+'" data-ds-kind="container">'+header(title,true)+content+'</section>';
+    const rail=root.querySelector('.trophy-selector'),selected=rail?.querySelector('[aria-pressed=true]');
+    if(selected)rail.scrollLeft=Math.max(0,selected.getBoundingClientRect().left-rail.getBoundingClientRect().left-(rail.clientWidth-selected.offsetWidth)/2);
     if(screen==='rules'&&mode==='spelling')mountRulesView();
     if(['trophy-base','trophy-evolution'].includes(screen))openUpgrade();
   }
@@ -143,7 +145,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     if(action==='trophy-cancel'){closeUpgrade();return;}
     if(action==='trophy-upgrade'){openUpgrade();return;}
     if(action==='award-tab'){if(button.dataset.preview){previewKind=button.dataset.kind;achievementPage=0;}else awardKind=button.dataset.kind;render();return;}
-    if(action==='trophy-select'){selectedTrophy=button.dataset.award;render();return;}
+    if(action==='trophy-select'){selectedTrophy=button.dataset.award;render();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)root.querySelector('.trophy-on-podium')?.animate([{opacity:0,transform:'scale(.9)'},{opacity:1,transform:'scale(1)'}],{duration:280,easing:'ease-out'});return;}
     if(action==='award-open'){awardKind=button.dataset.kind;selectedTrophy=button.dataset.award;screen='achievements';render();root.scrollTop=0;return;}
     if(action==='return-results'){onBack?.();return;}
     if(action==='forge'&&onNavigate){const target=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'progress','forge',mode);if(target!=='forge'){onNavigate(target);return;}}

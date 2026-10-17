@@ -55,7 +55,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Start local PWA
         run: |
-          python3 -m http.server 8765 --directory dist > /tmp/avatars-http.log 2>&1 &
+          node tools/serve-preview.mjs 8765 > /tmp/avatars-http.log 2>&1 &
           echo $! > /tmp/avatars-http.pid
       - name: Verify avatar picker, PIN, profile save and editing
         run: node tools/qa-avatars-browser.mjs http://127.0.0.1:8765

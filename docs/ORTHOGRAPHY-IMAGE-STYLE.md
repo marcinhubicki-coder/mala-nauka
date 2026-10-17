@@ -521,6 +521,28 @@ Każdy obraz powinien przejść poniższe pytania:
 
 ---
 
+## 18.1. Bezwzględny zakaz generowania z planszy zbiorczej
+
+Dla finalnych assetów Ortografii **nie wolno** używać contact sheetów, kolaży ani plansz zbiorczych jako źródła pojedynczych ilustracji.
+
+Obowiązuje:
+- **1 hasło = 1 niezależna generacja źródłowa** w pełnym kwadracie,
+- finalnego assetu nie wolno uzyskiwać przez wycinanie kafla z większej planszy,
+- nie wolno powiększać małego wycinka do 1254 × 1254,
+- ZIP wolno tworzyć dopiero z już gotowych, osobno wygenerowanych i zwalidowanych plików,
+- jeśli pojedyncza grafika stylistycznie odbiega od serii, regeneruj ją osobno zamiast dopasowywać cropem lub filtrem.
+
+Kontrola jakości przed spakowaniem ZIP:
+1. każdy plik ma własne źródło generacji,
+2. każdy jest kwadratem 1:1,
+3. każdy finalnie ma 1254 × 1254,
+4. każdy mieści się w limicie 250 KB,
+5. brak tekstu / cyfr / napisów generowanych jako część sceny,
+6. styl pozostaje warm cinematic 3D storybook,
+7. brak fotorealistycznych wyjątków odstających od serii.
+
+---
+
 ## 19. Reguła regeneracji
 
 Regeneruj obraz, jeżeli:

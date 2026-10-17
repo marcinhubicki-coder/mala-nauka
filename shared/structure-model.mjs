@@ -220,6 +220,17 @@ for(const [id,name]of Object.entries({
  'text-card-stars':'Gwiazdka karty','text-hud-sparks':'Iskry podczas rundy','text-hud-combo':'Mnożnik combo','text-hud-power':'Aktywna moc'
 }))PARTS.push(atom(id,name,'text','[data-ds-recipe="'+id+'"]'));
 PARTS.push(group('group-trophy-milestones','Etapy pucharu','.trophy-milestones',['text-trophy-milestone']),group('group-achievement-goals','Cele kolekcji','.achievement-goals',['container-achievement-goal']),group('container-achievement-goal','Cel i licznik','[data-goal]',['text-achievement-goal','text-achievement-progress']));
+PARTS.push(
+ atom('image-gallery-art','Ilustracja kuźni, podium lub prezentu','image','.forge-emblem,.trophy-podium,.trophy-gift,.award-mystery,.power-icon'),
+ atom('button-award-tab','Przełącznik medali i pucharów','button','[data-progress=award-tab]',{inherits:'button-main'}),
+ atom('button-trophy-upgrade','Odkryj ulepszenie pucharu','button','[data-progress=trophy-upgrade]',{inherits:'button-main',states:['default','disabled']}),
+ atom('button-trophy-select','Wybierz puchar na podium','button','[data-progress=trophy-select]',{inherits:'button-main'}),
+ group('group-award-switch','Medale i puchary','.award-switch',['button-award-tab']),
+ group('group-trophy-stage','Podium z pucharem','.trophy-stage',['image-gallery-art','image-reward-sprite']),
+ group('group-trophy-selector','Pasek pucharów','.trophy-selector',['button-trophy-select']),
+ group('group-award-progress','Droga do nagrody','.award-progress',['meter-power-charge','text-achievement-progress']),
+ group('family-trophy-dialog','Niespodzianka: trwały wybór','.trophy-upgrade-dialog',['button-trophy-choice','button-popup-close'],{level:'family',inherits:'family-education-popup'})
+);
 const explicitUses={'text-pin-error':['player-pin','player-unlock'],'text-math-setup-title':['math-settings'],'text-spelling-word':['spelling-initial','spelling-correct','spelling-wrong'],'button-game-hint':['spelling-initial','spelling-correct','spelling-wrong'],'jelly-option':['spelling-settings','english-settings','flags-settings','reading-settings','math-settings']};
 for(const [id,views]of Object.entries(explicitUses)){const p=PARTS.find(p=>p.id===id);if(p)p.views=views;}
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));

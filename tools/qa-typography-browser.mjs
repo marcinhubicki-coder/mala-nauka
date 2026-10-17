@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 const {chromium}=await import('playwright');
 const base=process.argv[2]||'http://127.0.0.1:8765';
-const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+const browser=await chromium.launch({headless:true,args:['--no-sandbox'],...(process.env.CHROME_EXECUTABLE?{executablePath:process.env.CHROME_EXECUTABLE}:{})});
 try{
  const studio=await browser.newPage({viewport:{width:1365,height:900}});
  const errors=[];studio.on('pageerror',error=>errors.push(error.message));
@@ -17,7 +17,7 @@ try{
  const libraryHeading=await studio.locator('.block-library-heading').innerText();
  const sharedCount=libraryHeading.match(/13 typów atomów · (\d+) wspólnych klocków/);
  assert.ok(sharedCount,'The shared atom library count is missing');
- assert.ok(Number(sharedCount[1])>=40&&Number(sharedCount[1])<=100,'Shared catalog count looks wrong: '+sharedCount[1]);
+ assert.ok(Number(sharedCount[1])>=40&&Number(sharedCount[1])<=110,'Shared catalog count looks wrong: '+sharedCount[1]);
  const shared=await studio.locator('.block-catalog-row').count();
  await studio.locator('[data-block-details]').selectOption('all');
  const detailed=await studio.locator('.block-catalog-row').count();

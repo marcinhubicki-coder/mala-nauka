@@ -63,7 +63,7 @@ jobs:
         run: node tools/qa-no-pin-browser.mjs http://127.0.0.1:8765
       - name: Recheck Studio typography and shared component library
         run: node tools/qa-typography-browser.mjs http://127.0.0.1:8765
-      - name: Recheck all 41 registered view renderers
+      - name: Recheck all 45 registered view renderers
         run: node tools/qa-all-views-browser.mjs http://127.0.0.1:8765
       - name: Orthography settings, quiz and eight Studio views
         run: node tools/qa-orthography-browser.mjs http://127.0.0.1:8765

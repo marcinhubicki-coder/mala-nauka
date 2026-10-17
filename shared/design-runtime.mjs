@@ -22,6 +22,7 @@ let inspectorLoader;
 function currentViewId(app){
  const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
  const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
+ const trophyDialog=app.querySelector('.trophy-upgrade-dialog[open]');if(trophyDialog)return trophyDialog.dataset.trophyDialog;
  if(app.querySelector('.learning-rule-dialog[open]'))return 'rule-details';
  return viewIdFor({view:app.dataset.view,mode:app.dataset.mode||'spelling',state,hasPlayers:Boolean(app.querySelector('.player-card')),pinPurpose:app.dataset.pinPurpose,historyState:app.dataset.historyState|| (app.querySelector('.progress-achievement-list')?'achievements':app.querySelector('.progress-category-list')?'categories':app.querySelector('.rules-views')?'rules':app.querySelector('.collection-word-grid')?'collection':'dashboard'),popup});
 }

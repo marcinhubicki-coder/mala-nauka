@@ -105,7 +105,7 @@ try{
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
     assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the fixed heading');
     const typography=await page.locator('#scenic-country-name').evaluate(n=>({family:getComputedStyle(n).fontFamily,size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
-    assert(typography.family.includes('ScenicAtlas'));assert([30,32,34,36,38,40,42,44,46].includes(typography.size));assert(typography.lines<=2);assert.equal(typography.slot,sample.h<760?49:53);assert(typography.fit,'Country title fits the bundled Polish font');
+    assert(typography.family.includes('ScenicAtlas'));assert([22,24,26,28,30,32].includes(typography.size));assert(typography.lines<=2);assert.equal(typography.slot,sample.h<760?38:42);assert(typography.fit,'Country title fits the bundled Polish font');
 
     assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=0&&m.neighbors<=75,'Geographic camera density is bounded');assert(m.labels>=1&&m.labels<=8,'Visible labels have bounded density');assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
@@ -117,7 +117,7 @@ try{
    for(const record of FLAGS.filter(x=>x.continent==='europe')){
     await open(page,record.id);await choose(page,false);await state(page,'feedback-wrong');
     const title=await page.locator('#scenic-country-name').evaluate(n=>({name:n.getAttribute('aria-label'),size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
-    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([30,32,34,36,38,40,42,44,46].includes(title.size));assert.equal(title.name,record.country);
+    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([22,24,26,28,30,32].includes(title.size));assert.equal(title.name,record.country);
     const viewport=await page.locator('.scenic-europe-map').boundingBox();if(first)assert.deepEqual(viewport,first,'All European names share the same map viewport');else first=viewport;
    }
   });
@@ -141,13 +141,23 @@ try{
    assert(audit.landmarks>50);assert(audit.width>=3500&&audit.height>=2600,'Keep the high resolution atlas');assert(audit.after<audit.before*.85,'Registered painted coast follows the true coast: '+JSON.stringify(audit));
    await page.locator('#scenic-map-scroll').evaluate((n,audit)=>n.dataset.registrationAudit=JSON.stringify(audit),audit);
   });
+  await check(engine+'-v29-materials-character-and-capital',browser,{},async page=>{
+   await open(page,'pl');await choose(page,false);await state(page,'feedback-wrong');
+   const material=await page.evaluate(async()=>{
+    const boy=document.querySelector('.scenic-boy');await boy.decode();const c=document.createElement('canvas');c.width=boy.naturalWidth;c.height=boy.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(boy,0,0);const pixels=ctx.getImageData(0,0,c.width,c.height).data;let empty=0,soft=0;for(let i=3;i<pixels.length;i+=4){if(!pixels[i])empty++;else if(pixels[i]<250)soft++;}
+    const rect=boy.getBoundingClientRect(),face={right:rect.left+rect.width*.88,top:rect.top+rect.height*.25,bottom:rect.top+rect.height*.65};
+    const rows=[...document.querySelectorAll('.scenic-neighbor-row')].map(n=>n.getBoundingClientRect());
+    return {alpha:empty/(pixels.length/4),soft,clip:getComputedStyle(boy).clipPath,clearFace:rows.every(r=>r.right<rect.left||r.left>=face.right||r.bottom<=face.top||r.top>=face.bottom),borders:['.scenic-answer','.scenic-neighbor-row','.scenic-swipe'].map(sel=>getComputedStyle(document.querySelector(sel),sel==='.scenic-swipe'?null:'::before').borderImageRepeat),rope:[getComputedStyle(document.querySelector('.scenic-task-back')).zIndex,getComputedStyle(document.querySelector('#scenic-progress')).zIndex,getComputedStyle(document.querySelector('.scenic-meta')).zIndex].map(Number),backMask:getComputedStyle(document.querySelector('.scenic-task-back')).maskImage,frontMask:getComputedStyle(document.querySelector('#scenic-task'),'::before').maskImage,heading:JSON.parse(document.querySelector('#scenic-map-scroll').dataset.headingMetrics),flagHeight:document.querySelector('.scenic-map-flag').clientHeight};
+   });
+   assert(material.alpha>.25&&material.soft>100,'Boy retains native alpha and antialiased hair');assert.equal(material.clip,'none');assert(material.clearFace,'Neighbor papers do not cover the boy’s face');assert(material.borders.every(x=>x==='repeat'),'Paper edges repeat without stretching');assert(material.rope[0]<material.rope[1]&&material.rope[1]<material.rope[2],'Rear rope is behind the bar and front rope above it');assert(material.backMask!=='none'&&material.frontMask!=='none');assert.equal(material.heading.height,material.heading.iconHeight);assert.equal(material.heading.baseline,material.heading.iconBottom);assert(material.flagHeight<=44);await capture(page,engine+'-v29-materials');
+  });
   await check(engine+'-v28-mobile-ribbons-and-cameras',browser,{reducedMotion:'reduce'},async page=>{
    await open(page,'pl');await choose(page,false);await state(page,'feedback-wrong');
    assert.equal(await page.locator('.scenic-ios-status').count(),0,'No fake phone status bar');
    const controls=await page.locator('.scenic-atlas-tools [aria-pressed="true"]').evaluate(n=>getComputedStyle(n).backgroundColor);assert.equal(controls,'rgb(114, 80, 45)');
    const order=await page.locator('#scenic-neighbors [data-neighbor]').evaluateAll(nodes=>nodes.map(n=>n.dataset.neighbor));assert.deepEqual(order,['ru','lt','by','ua','sk','cz','de'],'Neighbors follow compass order, including Kaliningrad');
-   const start=await page.locator('#scenic-neighbors b').boundingBox(),map=await page.locator('.scenic-europe-map').boundingBox();assert(Math.abs(start.x-map.x)<5,'First ribbon text aligns with the painted map');
-   const rows=await page.locator('.scenic-neighbor-row').evaluateAll(nodes=>nodes.map(n=>({w:n.getBoundingClientRect().width,h:n.getBoundingClientRect().height,n:n.querySelectorAll('button').length})));assert(rows.length>=2);assert(rows[1].w<rows[0].w);assert(rows[1].n>1);const ribbons=await page.locator('#scenic-neighbors').boundingBox();assert(ribbons.y+ribbons.height<844*.827,'Two neighbor ribbons stay above the boy’s eyes');
+   const map=await page.locator('.scenic-europe-map').boundingBox();const edges=await page.locator('.scenic-neighbor-row').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().right));assert(edges.every(x=>Math.abs(x-map.x-map.width)<2),'Every ribbon ends at the painted map’s right edge');
+   const rows=await page.locator('.scenic-neighbor-row').evaluateAll(nodes=>nodes.map(n=>({w:n.getBoundingClientRect().width,h:n.getBoundingClientRect().height,n:n.querySelectorAll('button').length})));assert(rows.length>=2);assert(rows[1].w<rows[0].w);assert(rows[1].n>1);const ribbons=await page.locator('#scenic-neighbors').boundingBox();assert(ribbons.x>80,'Ribbons leave the boy’s face free on the left');assert(rows.every(r=>r.h>=33),'Parchment has vertical breathing room');
    const neighbor=page.locator('[data-neighbor="lt"]');await neighbor.click();assert.equal(await neighbor.getAttribute('aria-pressed'),'true');assert.deepEqual(JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-highlighted-neighbors')),['lt']);await neighbor.click();assert.equal(await neighbor.getAttribute('aria-pressed'),'false');
    const before=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-atlas-frame')),metadata=await page.evaluate(async()=>fetch('assets/maps/europe-atlas-v26.json').then(r=>r.json()));const box=metadata.features.find(f=>f.id==='pl').box;
    assert(Math.abs(before.x+before.w/2-box.x-box.w/2)<.01&&Math.abs(before.y+before.h/2-box.y-box.h/2)<.01,'Near camera centers the target');assert(Math.max(box.w/before.w,box.h/before.h)>.59,'Country fills the near frame');
@@ -301,10 +311,10 @@ try{
    });
    await check(engine+'-stable-scene-and-answer-geometry',browser,{},async page=>{
     await open(page);const before=await metrics(page);
-    const scenery=()=>page.locator('#scenic-screen').evaluate(n=>({background:getComputedStyle(n).backgroundImage,foreground:getComputedStyle(n.querySelector('.scenic-foreground')).opacity,replacement:n.querySelectorAll('.scenic-feedback-scene').length,vectorCompass:n.querySelectorAll('.scenic-paper-row svg,.scenic-atlas-compass').length}));
-    const first=await scenery();assert.equal(first.vectorCompass,0);assert.equal(first.replacement,0);assert.equal(first.foreground,'1');
+    const scenery=()=>page.locator('#scenic-screen').evaluate(n=>({background:getComputedStyle(n).backgroundImage,foreground:n.querySelector('.scenic-boy').getAttribute('src'),replacement:n.querySelectorAll('.scenic-feedback-scene').length,vectorCompass:n.querySelectorAll('.scenic-paper-row svg,.scenic-atlas-compass').length}));
+    const first=await scenery();assert.equal(first.vectorCompass,0);assert.equal(first.replacement,0);assert(first.foreground.endsWith('scenic-boy-v29.webp'));
     assert.equal(await page.locator('.flag-pole,.scenic-rock-base,.scenic-land-shadow').count(),0,'Mast and rocks belong to one scene image');
-    assert(await page.locator('.scenic-foreground').evaluate(n=>getComputedStyle(n).backgroundImage===getComputedStyle(n.closest('main')).backgroundImage),'Hair overlap uses the very same scene');
+    assert.equal(await page.locator('.scenic-boy').evaluate(n=>getComputedStyle(n).clipPath),'none','Boy uses the generated asset alpha, with no polygon cutout');
     await choose(page,false);await page.waitForTimeout(180);await capture(page,engine+'-click-early');await state(page,'feedback-wrong');
     const after=await metrics(page);assert.deepEqual(await scenery(),first);
     for(let i=0;i<4;i++)for(const key of ['x','y','w','h'])assert(Math.abs(before.answers[i][key]-after.answers[i][key])<1,'Answer tiles must not move after an answer');

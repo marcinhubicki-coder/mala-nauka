@@ -53,7 +53,7 @@ export function createMapInk(canvas,sheet,app){
   ink.globalCompositeOperation='destination-in';ink.drawImage(edgeMask,0,0,rect.w,rect.h);ink.globalCompositeOperation='source-over';
   paint.drawImage(geo,rect.x,rect.y,rect.w,rect.h);
  }
- function clear(){delete sheet.dataset.highlightedNeighbors;delete sheet.dataset.atlasLabels;delete sheet.dataset.capitalPin;geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=headingCanvas.width=headingCanvas.height=1;delete sheet.dataset.drawnLabels;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
+ function clear(){delete sheet.dataset.headingMetrics;delete sheet.dataset.highlightedNeighbors;delete sheet.dataset.atlasLabels;delete sheet.dataset.capitalPin;geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=headingCanvas.width=headingCanvas.height=1;delete sheet.dataset.drawnLabels;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr));let paint=art.getContext('2d');paint.scale(dpr,dpr);
@@ -102,17 +102,21 @@ export function createMapInk(canvas,sheet,app){
   const geography=paint;paint=headingPaint;
   // Heading is outside the map's permanent paint viewport. No rectangular
   // backing is needed: the original parchment supplies natural contrast.
-  let headerTop=Infinity,headerBottom=-Infinity;
+  let headerTop=Infinity,headerBottom=-Infinity,capitalMetrics;
   for(const node of inner.querySelectorAll('.scenic-title-line,#scenic-country-capital')){
    const box=node.getBoundingClientRect(),style=getComputedStyle(node),size=parseFloat(style.fontSize);
    paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';paint.fillStyle=style.color;paint.textAlign='left';
    const baseline=box.top-origin.top+size*.86,metrics=paint.measureText(node.textContent);
    headerTop=Math.min(headerTop,baseline-metrics.actualBoundingBoxAscent);headerBottom=Math.max(headerBottom,baseline+metrics.actualBoundingBoxDescent);
    paint.fillText(node.textContent,box.left-origin.left,baseline);
+   if(node.id==='scenic-country-capital'){
+    const cap=paint.measureText('H').actualBoundingBoxAscent;
+    capitalMetrics={baseline,height:cap};
+   }
   }
   const city=inner.querySelector('.scenic-capital-icon').getBoundingClientRect();
-  drawCapitalSymbol(paint,city.left-origin.left,city.top-origin.top,18);
-  const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,(headerBottom-headerTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale;paint.save();paint.translate(box.right-origin.left-fw/2,(headerTop+headerBottom)/2);paint.rotate(-2*Math.PI/180);paint.shadowColor='#65472a38';paint.shadowBlur=3;paint.shadowOffsetY=1.5;paint.drawImage(flag,-fw/2,-fh/2,fw,fh);paint.shadowColor='transparent';const sheen=paint.createLinearGradient(-fw/2,0,fw/2,fh);sheen.addColorStop(0,'#fff3');sheen.addColorStop(.45,'#fff0');sheen.addColorStop(1,'#63472910');paint.fillStyle=sheen;paint.fillRect(-fw/2,-fh/2,fw,fh);paint.restore();}catch{}
+  if(capitalMetrics){drawCapitalSymbol(paint,city.left-origin.left,capitalMetrics.baseline-capitalMetrics.height,capitalMetrics.height,{capHeight:true});if(app.dataset.qa==='true')sheet.dataset.headingMetrics=JSON.stringify({...capitalMetrics,iconBottom:capitalMetrics.baseline,iconHeight:capitalMetrics.height});}
+  const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,box.height/flag.naturalHeight,(headerBottom-headerTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale;paint.save();paint.translate(box.right-origin.left-fw/2,(headerTop+headerBottom)/2);paint.rotate(-2*Math.PI/180);paint.shadowColor='#65472a38';paint.shadowBlur=3;paint.shadowOffsetY=1.5;paint.drawImage(flag,-fw/2,-fh/2,fw,fh);paint.shadowColor='transparent';const sheen=paint.createLinearGradient(-fw/2,0,fw/2,fh);sheen.addColorStop(0,'#fff3');sheen.addColorStop(.45,'#fff0');sheen.addColorStop(1,'#63472910');paint.fillStyle=sheen;paint.fillRect(-fw/2,-fh/2,fw,fh);paint.restore();}catch{}
   geography.drawImage(heading,0,0,width,height);paint=geography;
   if(!isCurrent()){art.width=art.height=1;return;}
   target=art;canvas.width=headingCanvas.width=art.width;canvas.height=headingCanvas.height=art.height;masked.width=art.width;masked.height=art.height;

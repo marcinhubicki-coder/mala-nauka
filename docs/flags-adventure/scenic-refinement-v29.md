@@ -1,0 +1,35 @@
+# Scenic v29 — materiały i proporcje
+
+Chłopiec jest osobną ilustracją z natywną przezroczystością. Nowe tło nie zawiera postaci; nie ma podwójnego tła ani wielokątnej maski włosów. Postać siedzi przy lewej krawędzi, a paski sąsiadów pozostawiają wolny obszar twarzy.
+
+Oba paski sąsiadów dopasowują szerokość do zawartości i kończą się przy prawej krawędzi mapy. Mają większe marginesy pionowe. Wygenerowane materiały odpowiedzi, pasków i suwaka używają dziewięciu części: końcówki i brzegi zachowują stałe wymiary, a powtarzana tekstura środka nie jest rozciągana. Miękkie połączenie CSS usuwa prostokątne styki. Suwak ma drewnianą ramę, pergaminowy wkład, dwa chevrony i osobny okrągły kompas.
+
+Przednia i tylna część obu pętli sznurka korzystają z dopełniających masek SVG. Tylna warstwa znajduje się poniżej nieprzezroczystego paska postępu, a przednia nad nim. Maski dotyczą sznurka, nie chłopca.
+
+Nagłówek: kaligraficzny Charm Bold, lokalny WOFF2, SIL OFL. Sprawdzono pełny zestaw `ąćęłńóśźżĄĆĘŁŃÓŚŹŻ`. Oficjalne źródło: [Google Fonts / Charm](https://github.com/google/fonts/tree/main/ofl/charm). Kraj ma 24–32 px lub 22 px przy podziale na dwa wiersze, stolica 18 px i stałe położenie. Flaga mieści się w 66 × 44 px. Ikona stolicy ma rzeczywistą wysokość dużej litery H oraz wspólną linię bazową z tekstem. Mapa zaczyna się wyżej i zajmuje większą część papieru. Odpowiedzi zachowują EB Garamond, bliższy literom mockupu.
+
+Przygotowanie bitmap: imagegen w trybie wbudowanym, pięć oddzielnych zadań. Tło zachowano w 852 × 1846 px, ilustrację chłopca przycięto jedynie do zewnętrznych pustych marginesów i zmniejszono do szerokości 1000 px; kanał alfa został zachowany. Materiały interfejsu przygotowano w wysokości 128 px, czyli ponad dwukrotności ich typowego rozmiaru ekranowego. Środek pobrano jako kwadratową powtarzaną teksturę. Atlas pozostaje źródłem 3658 × 2688 px z rejestracją wybrzeży v28.
+
+Walidacja obejmuje dwa silniki przeglądarki, wszystkie europejskie nazwy, maski mapy i etykiety, sąsiadów, całą rozgrywkę, suwak, pauzę, restart oraz naturalny kanał alfa postaci. Dodatkowy scenariusz v29 sprawdza wolny obszar twarzy, powtarzanie brzegów, kolejność warstw sznurka, wysokość i linię bazową ikony stolicy.
+
+## Pełne prompty imagegen
+
+### scene
+
+Use case: precise-object-edit. Edit target: this exact tall storybook alpine landscape game background. Remove ONLY the boy and the boy's backpack from the lower left foreground. Reconstruct the daisies, small rocks and meadow naturally where he was. Keep the dog exactly as it is, at the same size and position. Keep the table rock and unfolded treasure map at the bottom, the right backpack and bench, the wooden flagpole and its exact location, the mountains, lake, castle, foliage, lighting and all other composition unchanged. No people. No extra objects. Preserve the original tall full-screen aspect ratio and painterly 3D storybook visual style. This is the clean background layer for placing an independently rendered boy later.
+
+### boy
+
+Use case: identity-preserve. Asset type: an independently generated transparent character cutout for this exact storybook game. References: image 1 shows the boy identity and outfit; image 2 shows the desired clean character edge and pose. Generate ONLY the same charming brown-haired young boy, from tousled hair down to waist and both complete forearms, with a forest-green shirt, khaki rolled sleeves and small adventurer backpack. Same large warm brown eyes, soft rounded face, thoughtful smile, cheek resting on his right palm, left arm resting horizontally at the bottom, looking up and to the right. Three-quarter front view, designed to sit at the lower LEFT of a mobile screen. Complete hair silhouette and natural fine hair strands, no clipped hair or hands. Rich polished illustrated storybook 3D painting matching the reference. A genuinely transparent background is essential: clean natural anti-aliased alpha, no scenery, no flowers, no table, no dog, no map, no cast shadow on an invisible floor, no white/colored fringe or halo, no polygonal masking. Regenerate the character cleanly rather than roughly cutting the old background out. Portrait composition, modest transparent margin.
+
+### answer
+
+Use case: style-transfer. Asset type: single blank illustrated parchment answer button, matching the four answer buttons in the reference. Generate just ONE horizontal cream parchment pill, approximately 3.5:1, isolated with transparent margin. Warm ivory aged paper, a few fine fibers and subtle natural creases, thin softly browned irregular deckled edge, gently rounded slightly uneven end caps, a delicate golden lip with tiny realistic thickness. The edge has small organic tears and slight curls, NOT a jagged stone zigzag. Center very pale and quiet for text. Flat front view, no perspective. Match the elegant light thin parchment buttons of the reference, avoid bulky plastic/beveled capsule appearance. NO text, icons, X, colored states, frame, characters, background or shadows outside the paper. Clear crisp natural alpha. The asset will be sliced into fixed corners and edges, so keep the detailed aging concentrated near the perimeter, with a simple evenly lit center.
+
+### ribbon
+
+Use case: style-transfer. Asset type: single blank horizontal aged parchment ribbon for a small list of neighbor pills in this atlas game. Match the reference's light warm parchment material, fine fibers, soft tan burnt edges and illustrated storybook finish. One narrow wide strip around 6:1, full strip entirely visible with transparent margin. Natural softly torn left and right ends, uneven curled upper/lower lip with a little paper thickness and gentle creases, warm ivory quiet empty center, restrained detail so text is clear. It should look like a real small strip of old map parchment, not a wooden plaque, not a plastic pill, not a regular accordion/sawtooth edge. Flat front-facing. NO text, symbols, labels, buttons, outline boxes, objects, background or external cast shadow. Clean natural transparency. Designed for nine-slice edges: do not put big cracks or drawings in the center.
+
+### slider
+
+Use case: precise-object-edit. Asset type: standalone blank slider track from the reference. Recreate ONLY the long slider rail at the bottom: a slender dark honey-brown wooden capsule frame with a fine gold/brass outer rim, subtle wood grain and soft thin depth; a very light warm ivory parchment insert lies inside it and ends in an organic slightly torn/curling edge near the right end, leaving a short exposed wooden end cap. Approximately 7:1, complete horizontal track isolated with transparent margin, flat front view. Match the elegant detailed reference closely, NOT a broad shiny beveled plastic button. Remove the compass, text and arrow icons entirely; these will be separate UI layers. NO characters, scenery, lettering, logos, icons or extra objects. Real transparent background and crisp soft natural alpha edges. Keep corners and end caps sharply detailed for nine-slice rendering.

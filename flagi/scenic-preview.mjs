@@ -43,7 +43,7 @@ function createSession(){
 }
 const letters=text=>text.split(' ').map(word=>'<span class="scenic-answer-word">'+[...word].map(ch=>'<span class="sand-letter" aria-hidden="true">'+escape(ch)+'</span>').join('')+'</span>').join(' ');
 function renderButtons(options,{disabled=false}={}){
-  if(!answers.children.length)answers.innerHTML=options.map(()=>'<button class="scenic-answer" type="button"><span class="scenic-answer-label" aria-hidden="true"></span></button>').join('');
+  if(!answers.children.length)answers.innerHTML=options.map(()=>'<button class="scenic-answer" type="button"><i class="scenic-paper-center" aria-hidden="true"></i><span class="scenic-answer-label" aria-hidden="true"></span></button>').join('');
   [...answers.children].forEach((button,i)=>{
     const record=options[i];button.dataset.id=record.id;button.dataset.long=String(record.country.length>17);
     button.setAttribute('aria-label',record.country);button.disabled=disabled;button.classList.remove('correct','wrong');
@@ -75,12 +75,12 @@ function fitCaption(){
   const record=current(),parent=title.parentElement,style=getComputedStyle(title);
   const available=parent.clientWidth-parseFloat(getComputedStyle(parent).paddingRight);
   const fits=(text,size)=>{captionMeasure.font=`700 ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing='-.35px';return captionMeasure.measureText(text).width<=available;};
-  let lines=[record.country],size=[46,44,42,40,38,36,34,32].find(n=>fits(record.country,n));
+  let lines=[record.country],size=[32,30,28,26,24].find(n=>fits(record.country,n));
   if(!size){
     const words=record.country.split(' ');let best=Infinity;
-    for(let i=1;i<words.length;i++){const pair=[words.slice(0,i).join(' '),words.slice(i).join(' ')];captionMeasure.font=`700 30px ${style.fontFamily}`;const width=Math.max(...pair.map(t=>captionMeasure.measureText(t).width));if(width<best){best=width;lines=pair;}}
-    size=30;
-    if(lines.length===1)size=32; // Every single-word European name fits this bundled face.
+    for(let i=1;i<words.length;i++){const pair=[words.slice(0,i).join(' '),words.slice(i).join(' ')];captionMeasure.font=`700 22px ${style.fontFamily}`;const width=Math.max(...pair.map(t=>captionMeasure.measureText(t).width));if(width<best){best=width;lines=pair;}}
+    size=22;
+    if(lines.length===1)size=24;
   }
   title.setAttribute('aria-label',record.country);title.style.fontSize=size+'px';
   title.replaceChildren(...lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
@@ -99,7 +99,7 @@ async function showNeighbors(result,owner){
   const label=document.createElement('b');label.textContent=`Sąsiedzi (${ids.length}):`;
   const items=[label,...buttons];if(!ids.length){const empty=document.createElement('span');empty.textContent='brak lądowych';items.push(empty);}
   const measure=document.createElement('div');measure.className='scenic-neighbor-row is-measuring';measure.append(...items);nav.replaceChildren(measure);nav.hidden=false;
-  const sizes=items.map(n=>n.getBoundingClientRect().width),max=nav.clientWidth-26;
+  const sizes=items.map(n=>n.getBoundingClientRect().width),max=nav.clientWidth-20;
   // Partition in compass order. Prefer a broad first ribbon and a shorter second
   // one; avoid leaving a lone short country on the last ribbon.
   let best=null;

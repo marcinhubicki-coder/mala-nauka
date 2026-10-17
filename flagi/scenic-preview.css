@@ -1,9 +1,8 @@
 @font-face{font-family:ScenicRound;src:url('../assets/fonts/fredoka-polish-v1.woff') format('woff');font-weight:300 700;font-display:swap}
 @font-face{font-family:ScenicBody;src:url('../assets/fonts/nunito-variable.woff') format('woff');font-weight:400 900;font-display:swap}
 *{box-sizing:border-box}html,body{padding:0;margin:0;width:100%;height:100%;overflow:hidden}body{font-family:ScenicRound,ui-rounded,sans-serif;color:#080d36;background:#6ba3bd}button{font:inherit}
-.scenic-screen{--scene:url('../assets/flags/adventure/scenic-scene-v14.webp');--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#aed6a8 var(--scene) center top/100% 112% no-repeat}
+.scenic-screen{--scene:url('../assets/flags/adventure/scenic-scene-v29.webp');--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#aed6a8 var(--scene) center top/100% 112% no-repeat}
 .scenic-screen::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(#ffffff04,transparent 52%,#ffd48008)}
-.scenic-foreground{clip-path:polygon(0 100%,0 88%,13% 86%,16% 82%,18% 80%,20% 78%,24% 76%,29% 74.5%,33% 73.9%,37% 73.3%,39% 74%,42% 73.8%,45% 75%,47% 77%,49% 79%,55% 85%,73% 85%,83% 90%,100% 88%,100% 100%);position:absolute;inset:0;z-index:7;pointer-events:none;background:var(--scene) center top/100% 112% no-repeat}
 .scenic-stage{position:absolute;inset:var(--safe-top) 0 var(--safe-bottom)}.scenic-stage>*{position:absolute}
 .scenic-ios-status{top:2%;left:8%;right:8%;display:flex;justify-content:space-between;align-items:center;font:900 14px ScenicBody;color:#fff;text-shadow:0 1px 3px #20395588;z-index:8}
 .scenic-header{top:6.5%;left:6%;width:88%;height:6.8%;display:flex;justify-content:space-between;align-items:center;z-index:26}
@@ -70,43 +69,50 @@
 @media(prefers-reduced-motion:reduce){.scenic-progress i{transition:none}.scenic-answer:active{transform:none}.scenic-atlas-tools{transition:none}}
 .scenic-swipe{padding-left:48px;padding-right:28px;background:#f8e4b9 url('../assets/flags/adventure/scenic-answer-paper-v6.webp') center/100% 100% no-repeat;border:3px solid #bf8b42;color:#674322;font:800 12px Georgia,serif;border-radius:28px;box-shadow:inset 0 0 0 2px #ffecc2,inset 0 2px 5px #8d632c38,0 3px 8px #3c332846}
 .scenic-swipe-knob{top:50%;bottom:auto;left:-9px;width:56px;height:56px;min-width:56px;margin-top:-28px;border:0;background:none;box-shadow:none;border-radius:50%;filter:drop-shadow(0 2px 3px #5c382c65)}.scenic-swipe-knob img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}.scenic-swipe-arrows{position:absolute;right:12px;font:800 18px Georgia,serif;letter-spacing:-7px;color:#9a692b;pointer-events:none}.scenic-swipe::before{background:linear-gradient(90deg,#efd19999,#f5dfb755)}
-/* v28: full-screen atlas and parchment controls, using one bundled serif. */
-@font-face{font-family:ScenicAtlas;src:url('../assets/fonts/eb-garamond-polish-v1.woff2') format('woff2');font-weight:400 800;font-display:swap}
-html{background:#62b7ee url('../assets/flags/adventure/scenic-scene-v14.webp') center top/cover no-repeat}body{background:transparent}
+/* Calligraphy and native-alpha materials. Borders tile at a fixed pixel size. */
+@font-face{font-family:ScenicPrint;src:url('../assets/fonts/eb-garamond-polish-v1.woff2') format('woff2');font-weight:400 800;font-display:swap}
+@font-face{font-family:ScenicAtlas;src:url('../assets/fonts/charm-polish-v29.woff2') format('woff2');font-weight:700;font-display:swap}
+html{background:#62b7ee url('../assets/flags/adventure/scenic-scene-v29.webp') center top/cover no-repeat}body{background:transparent}
+.scenic-boy{z-index:7;left:-78px;bottom:3%;width:208px;height:auto;pointer-events:none;user-select:none}
 .scenic-header{top:1.8%;height:8%;align-items:center}.scenic-timer strong{font-size:44px}.scenic-timer small{font-size:12px}.scenic-nav{border-radius:17px}
-.scenic-progress{top:11.5%;height:13px}.scenic-meta{top:11.5%}
-.scenic-task{top:-3px;transform:rotate(1.5deg);width:117px;height:51px;padding-bottom:7px}
+.scenic-progress{top:11.5%;height:12px;background:#fffaf0}.scenic-meta{top:11.5%}
+.scenic-task{top:-3px;transform:rotate(1.5deg);width:124px;height:44px;padding-bottom:4px;font-size:14px}
 .scenic-task::after{display:none}
-.scenic-task::before{background-image:url('../assets/flags/adventure/scenic-task-sign-v28.webp')}
+.scenic-task::before{background-image:url('../assets/flags/adventure/scenic-task-sign-v28.webp');mask:url('../assets/flags/adventure/scenic-task-front-mask-v29.svg') center/100% 100% no-repeat}
+.scenic-task-back{z-index:5;top:calc(11.5% - 6px);right:calc(6% - 5px);width:134px;height:50px;transform:rotate(1.5deg);background:url('../assets/flags/adventure/scenic-task-sign-v28.webp') center/100% 100% no-repeat;mask:url('../assets/flags/adventure/scenic-task-back-mask-v29.svg') center/100% 100% no-repeat;pointer-events:none}
 .scenic-lang{top:25px;width:33px;height:33px;left:calc(50% - 16px);font-size:13px}
-.scenic-map-caption{top:13px;left:25px;right:26px;height:83px;padding-right:112px;gap:0}
-.scenic-map-caption strong{height:53px;font:700 46px/.9 ScenicAtlas,serif;letter-spacing:-.35px;justify-content:flex-end;color:#171b32}
-.scenic-city{top:55px;gap:6px}.scenic-map-caption .scenic-city span{font:650 26px/1 ScenicAtlas,serif;color:#604322}
-.scenic-capital-icon{width:18px;height:19px;flex-basis:18px}
-.scenic-map-flag{right:0;top:3px;width:104px;height:75px;object-fit:contain}
-.scenic-europe-map{inset:96px 12px 20px}.scenic-atlas-tools{bottom:21px;right:17px}
+.scenic-map-caption{top:12px;left:25px;right:26px;height:65px;padding-right:76px;gap:0}
+.scenic-map-caption strong{height:42px;font:700 32px/.92 ScenicAtlas,cursive;letter-spacing:-.35px;justify-content:flex-end;color:#282333}
+.scenic-city{top:43px;gap:5px;align-items:baseline}.scenic-map-caption .scenic-city span{font:700 18px/1 ScenicAtlas,cursive;color:#604322}
+.scenic-capital-icon{width:12px;height:13px;flex-basis:12px}
+.scenic-map-flag{right:0;top:8px;width:66px;height:44px;object-fit:contain}
+.scenic-europe-map{inset:80px 12px 20px}.scenic-atlas-tools{bottom:21px;right:17px}
 .scenic-atlas-tools button[aria-pressed="true"]{background:#72502d;box-shadow:inset 0 1px 2px #fff3,0 1px 2px #52361e40}
 .scenic-answers{top:60.2%;height:14.8%;gap:6px 7px}
-.scenic-answer{font-family:ScenicAtlas,serif;font-weight:750;font-size:21px;line-height:1.08;border-radius:0;background:transparent;overflow:visible;padding:7px 12px;box-shadow:none;filter:drop-shadow(0 3px 2px #47321d55)}
-.scenic-answer::before{background-image:url('../assets/flags/adventure/scenic-answer-paper-v28.svg')}
-.scenic-answer::after{inset:3px 4px 5px;border-radius:17px;mask:url('../assets/flags/adventure/scenic-answer-paper-v28.svg') center/100% 100% no-repeat}
+.scenic-answer{font-family:ScenicPrint,serif;font-weight:750;font-size:21px;line-height:1.08;border-radius:0;background:transparent;overflow:visible;padding:7px 12px;box-shadow:none;filter:drop-shadow(0 2px 2px #47321d55)}
+.scenic-answer::before{background:#ffedc9 url('../assets/flags/adventure/scenic-answer-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:12px solid transparent;border-left-width:32px;border-right-width:32px;border-image:url('../assets/flags/adventure/scenic-answer-border-v29.webp') 26 64 fill / 12px 32px / 0 repeat}
+.scenic-answer::after{inset:4px 5px 5px;border-radius:23px;mask:none}
 .scenic-answer.correct,.scenic-answer.wrong{box-shadow:none}.scenic-answer.correct::after{background:#a1d5a3;opacity:.78}.scenic-answer.wrong::after{background:#f39591;opacity:.82}
 .scenic-answer.wrong{padding-right:36px}.scenic-answer.wrong .scenic-answer-label::after{content:'×';position:absolute;left:calc(100% + 7px);top:50%;margin-top:-11px;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#bb122b;color:#fff9ed;box-shadow:0 0 0 1.5px #fff6dd;font:700 23px/1 ScenicBody}
 .scenic-answer[data-long="true"]{font-size:19px}
-.scenic-neighbors{right:-3px;top:calc(75% - 1px);width:calc(95.5% + 3px);z-index:13;display:flex;flex-direction:column;align-items:flex-end;gap:1px;pointer-events:none}
-.scenic-neighbor-row{position:relative;display:flex;align-items:center;gap:5px;min-height:28px;padding:4px 19px 4px 14px;color:#624225;font:650 13px/1 ScenicAtlas,serif;white-space:nowrap;isolation:isolate;filter:drop-shadow(0 2px 1px #44301845);pointer-events:auto}
-.scenic-neighbor-row::before{content:'';position:absolute;inset:0;z-index:-1;background:url('../assets/flags/adventure/scenic-neighbor-paper-v28.svg') center/100% 100% no-repeat}
-.scenic-neighbor-row:first-child{width:100%}
-.scenic-neighbor-row b{font-size:13px;font-weight:750;padding-right:2px}
-.scenic-neighbor-row button{border:1px solid #aa814d88;border-radius:12px;padding:3px 7px;background:#fff5d978;color:#604322;font:700 12px/1 ScenicBody;cursor:pointer;touch-action:manipulation;box-shadow:inset 0 1px 1px #fff9}
+.scenic-neighbors{right:calc(4.5% + 12px);top:calc(75% + 1px);width:calc(100% - 136px);z-index:13;display:flex;flex-direction:column;align-items:flex-end;gap:1px;pointer-events:none}
+.scenic-neighbor-row{position:relative;display:flex;flex:none;align-items:center;gap:5px;width:max-content;max-width:100%;min-height:35px;padding:7px 10px;color:#624225;font:700 12px/1 ScenicAtlas,cursive;white-space:nowrap;isolation:isolate;filter:drop-shadow(0 2px 1px #44301845);pointer-events:auto}
+.scenic-neighbor-row::before{content:'';position:absolute;inset:0;z-index:-1;background:#fff0cf url('../assets/flags/adventure/scenic-neighbor-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:8px solid transparent;border-left-width:16px;border-right-width:16px;border-image:url('../assets/flags/adventure/scenic-neighbor-border-v29.webp') 26 64 fill / 8px 16px / 0 repeat}
+.scenic-neighbor-row b{font-size:16px;font-weight:700;padding-right:2px}
+.scenic-neighbor-row button{flex:none;border:1px solid #aa814d88;border-radius:12px;padding:4px 6px;background:#fff5d978;color:#604322;font:700 11px/1 ScenicBody;cursor:pointer;touch-action:manipulation;box-shadow:inset 0 1px 1px #fff9}
 .scenic-neighbor-row button[aria-pressed="true"]{background:#71502e;border-color:#71502e;color:#fff5d9}
-.scenic-neighbor-row.is-measuring{position:absolute;visibility:hidden;padding:0}
-.scenic-controls{left:8%;right:6%;top:92.2%;height:5.8%;min-height:45px}
-.scenic-swipe{background:transparent url('../assets/flags/adventure/scenic-swipe-rail-v28.svg') center/100% 100% no-repeat;border:0;border-radius:30px;box-shadow:0 4px 5px #39251266;padding-left:43px;padding-right:33px;font:600 16px ScenicAtlas,serif;color:#603f20}
-.scenic-swipe-knob{left:-7px;width:57px;height:57px;min-width:57px;margin-top:-28.5px;overflow:hidden;background:transparent;filter:drop-shadow(0 2px 2px #39251288)}
-.scenic-swipe-knob img{position:absolute;width:70px;height:70px;max-width:none;left:-6.5px;top:-12.5px;object-fit:fill;clip-path:circle(28.5px at 35px 41px)}
-.scenic-swipe-arrows{right:19px;font-size:22px;letter-spacing:-7px}.scenic-swipe::before{inset:6px 26px 7px 5px;background:linear-gradient(90deg,#e8c99188,#f2dca144)}
-.scenic-foreground{clip-path:polygon(0 100%,0 88%,13% 86%,16% 82%,18% 80%,20% 78%,24% 76%,29% 74.5%,33% 73.9%,37% 73.3%,39% 74%,42% 73.8%,45% 75%,47% 77%,49% 79%,55% 85%,73% 85%,83% 90%,100% 88%,100% 100%)}
-@media(max-height:760px){.scenic-header{top:1.2%}.scenic-timer strong{font-size:38px}.scenic-map-caption{top:11px;height:73px}.scenic-map-caption strong{height:49px}.scenic-city{top:51px}.scenic-map-flag{height:70px}.scenic-europe-map{top:89px}.scenic-answer{font-size:19px}.scenic-answer[data-long="true"]{font-size:17px}.scenic-neighbor-row{min-height:26px;padding-top:3px;padding-bottom:3px}.scenic-neighbor-row button{font-size:11px}.scenic-neighbors{top:calc(75% - 2px)}.scenic-controls{top:92.3%;height:6%}.scenic-swipe{font-size:14px}.scenic-swipe-knob{width:52px;height:52px;min-width:52px;margin-top:-26px}.scenic-swipe-knob img{width:64px;height:64px;left:-6px;top:-11.5px;clip-path:circle(26px at 32px 37.5px)}}
+.scenic-neighbor-row.is-measuring{position:absolute;visibility:hidden;max-width:none;padding:0}
+.scenic-controls{left:8%;right:7.5%;top:92.2%;height:5.7%;min-height:45px}
+.scenic-swipe{background:#ffedc9 url('../assets/flags/adventure/scenic-swipe-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:9px solid transparent;border-left-width:35px;border-right-width:35px;border-image:url('../assets/flags/adventure/scenic-swipe-border-v29.webp') 28 94 fill / 9px 35px / 0 repeat;border-radius:0;box-shadow:none;filter:drop-shadow(0 3px 2px #39251288);padding-left:11px;padding-right:1px;font:700 13.5px ScenicAtlas,cursive;color:#603f20}
+.scenic-swipe-knob{left:-39px;width:60px;height:60px;min-width:60px;margin-top:-30px;overflow:hidden;background:transparent;filter:drop-shadow(0 2px 2px #39251288)}
+.scenic-swipe-knob img{position:absolute;width:73.7px;height:73.7px;max-width:none;left:-6.85px;top:-13.16px;object-fit:fill;clip-path:circle(30px at 36.85px 43.16px)}
+.scenic-swipe-arrows{right:-6px;width:25px;height:25px;display:grid;place-items:center}.scenic-swipe-arrows svg{display:block;width:25px;height:25px;fill:none;stroke:#754b20;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}.scenic-swipe::before{inset:-3px -8px -2px -20px;background:linear-gradient(90deg,#e8c99188,#f2dca144)}
+@media(max-height:760px){.scenic-header{top:1.2%}.scenic-timer strong{font-size:38px}.scenic-boy{width:187px;left:-64px;bottom:1%}.scenic-map-caption{top:11px;height:61px}.scenic-map-caption strong{height:38px}.scenic-city{top:39px}.scenic-map-flag{height:40px}.scenic-europe-map{top:74px}.scenic-answer{font-size:19px}.scenic-answer[data-long="true"]{font-size:17px}.scenic-neighbor-row{min-height:33px;padding-top:6px;padding-bottom:6px}.scenic-neighbor-row button{font-size:10px}.scenic-neighbors{top:75%}.scenic-controls{top:92.3%;height:6%}.scenic-swipe{font-size:12.5px}.scenic-swipe-knob{width:54px;height:54px;min-width:54px;margin-top:-27px}.scenic-swipe-knob img{width:66.3px;height:66.3px;left:-6.15px;top:-11.85px;clip-path:circle(27px at 33.15px 38.85px)}}
+@media(max-height:760px){.scenic-paper-row{top:48.9%}.scenic-answers{top:58.2%;height:16.8%}}
 
-@media(max-height:760px){.scenic-paper-row{top:48.9%}.scenic-answers{top:58.2%;height:16.8%}.scenic-map-caption{height:78px}}
+/* The repeating center overlaps each fixed cap with a soft material join. */
+.scenic-paper-center,.scenic-rail-center,.scenic-neighbor-row::after{position:absolute;pointer-events:none;background:#fff0cf url('../assets/flags/adventure/scenic-answer-grain-v29.webp') repeat;background-size:32px 32px;mask:linear-gradient(90deg,transparent,#000 15px,#000 calc(100% - 15px),transparent);z-index:-1}
+.scenic-paper-center{inset:9px 18px 9px}
+.scenic-neighbor-row::after{content:'';inset:7px 12px;background-image:url('../assets/flags/adventure/scenic-neighbor-grain-v29.webp')}
+.scenic-rail-center{inset:-2px -5px;background-image:url('../assets/flags/adventure/scenic-swipe-grain-v29.webp');z-index:-1}
+.scenic-swipe .continue-copy,.scenic-swipe-arrows{z-index:1}

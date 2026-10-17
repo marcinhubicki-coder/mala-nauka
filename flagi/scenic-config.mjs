@@ -4,7 +4,7 @@ export const SCENIC = Object.freeze({
   sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
   // Cloth anchors to the mast painted in the single full-screen scene.
   mast: Object.freeze({attachX:.288, attachY:.283}),
-  atlas: Object.freeze({top:.184,height:.410,headerHeight:92,viewMs:520}),
+  atlas: Object.freeze({top:.178,height:.416,headerHeight:78,viewMs:520}),
   flagTimeoutMs: 5000, mapTimeoutMs: 6000, maxDpr: 2
 });
 export const seedOf = value => [...String(value)].reduce((n,c)=>(Math.imul(n,31)+c.charCodeAt(0))>>>0,13579);

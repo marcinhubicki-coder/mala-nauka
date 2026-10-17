@@ -40,7 +40,7 @@ test('theme colors cannot override the animated ink with important declarations'
   assert.match(css, /#app\[data-mode\]\[data-view\].*jelly-v4-text-active/);
 });
 
-test('a captured tap commits its original label once and cancellation leaves the choice unchanged', () => {
+test('a captured tap remains a native click and cancellation leaves the choice unchanged', () => {
   const classes = () => ({ add() {}, remove() {}, toggle() {}, contains: () => true });
   const style = () => ({ setProperty() {} });
   const handlers = new Map(), captures = [], commits = [], suppressions = [];
@@ -69,11 +69,11 @@ test('a captured tap commits its original label once and cancellation leaves the
   handlers.get('pointerup')({ pointerId: 1 });
   handlers.get('pointerup')({ pointerId: 1 });
   assert.deepEqual(captures, [1]);
-  assert.deepEqual(commits, [1]);
-  assert.equal(suppressions.length, 1);
+  assert.deepEqual(commits, []);
+  assert.equal(suppressions.length, 0);
   handlers.get('pointerdown')(down(2));
   handlers.get('pointercancel')({ pointerId: 2 });
   handlers.get('pointerup')({ pointerId: 2 });
-  assert.deepEqual(commits, [1]);
+  assert.deepEqual(commits, []);
   assert.equal(container.dataset.activeIndex, '0');
 });

@@ -1,34 +1,16 @@
-const MODULE_PATHS={
-  spelling:'ortografia',
-  math:'matematyka',
-  english:'angielski',
-  flags:'flagi',
-  reading:'czytanie'
-};
-
+const studioMode=new URLSearchParams(location.search).has('studio');
 const lockedMode=globalThis.__MALA_NAUKA_MODE__||'';
 let booted=false;
 
-// Na ekranie głównym każdy kafel prowadzi do stałego adresu swojego modułu.
-document.addEventListener('click',event=>{
-  const button=event.target.closest('button[data-action="choose-mode"][data-mode]');
-  if(!button)return;
-  const mode=button.dataset.mode;
-  if(lockedMode===mode)return;
-  const folder=MODULE_PATHS[mode];
-  if(!folder)return;
-  event.preventDefault();
-  event.stopPropagation();
-  location.href=new URL(`./${folder}/`,document.baseURI).href;
-},true);
+// The app hosts each mode document, keeping one background audio context alive.
 
 // Strony modułów używają tej samej powłoki i po załadowaniu od razu otwierają swój tryb.
-if(lockedMode){
+if(lockedMode&&!studioMode&&new URLSearchParams(location.search).get('audio-host')!=='1'){
   const root=document.querySelector('#app');
   const boot=()=>{
     if(booted)return;
     const button=root?.querySelector(`button[data-action="choose-mode"][data-mode="${lockedMode}"]`);
-    if(!button)return;
+    if(!button||studioMode)return;
     booted=true;
     button.click();
   };

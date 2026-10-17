@@ -1,4 +1,11 @@
+import {pageHeading} from '../shared/navigation-parts.mjs';
+import {missionIllustration} from '../shared/mission-parts.mjs';
+import {transitionToResult} from '../ortografia/result-motion.mjs';
+import {gameSound} from '../shared/sound-runtime.mjs';
+import {designReady} from '../shared/design-runtime.mjs';
+import {renderMathStudioResult} from './round-timer.js';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
+await designReady;
 const app = document.querySelector('#app');
 
 const DURATIONS = [60, 120, 180, 300];
@@ -119,20 +126,7 @@ function makeQuestion(mode) {
   };
 }
 
-function setupTopbar() {
-  return `
-    <header class="topbar">
-      <div></div>
-      <div class="brand">
-        <a class="math-home-link" href="../" aria-label="Wróć do Małej Nauki">
-          <img src="../assets/icon-192.png" alt="" width="24" height="24">
-          <span>Mała Nauka</span>
-        </a>
-      </div>
-      <div></div>
-    </header>
-  `;
-}
+function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title'});}
 
 function gameTopbar() {
   return `
@@ -152,6 +146,7 @@ function resetAttemptState() {
 }
 
 function renderCategories() {
+  app.dataset.mode='math';app.dataset.view='wizard';
   state.screen = 'categories';
   state.question = null;
   resetAttemptState();
@@ -159,11 +154,9 @@ function renderCategories() {
   app.innerHTML = `
     ${setupTopbar()}
     <section class="screen math-setup-screen">
-      <div class="hero">
-        <p class="eyebrow">Matematyka</p>
-        <h1>Co dziś ćwiczymy?</h1>
-      </div>
 
+
+      <section class="wizard-intro mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration('math')}<div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
       <section class="math-duration-setup" aria-label="Czas rozgrywki">
         <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Wybierz czas rundy">
@@ -196,14 +189,6 @@ function renderCategories() {
     button.addEventListener('click', () => {
       state.duration = Number(button.dataset.duration);
       saveSetup();
-      async function bootMath(){
-  await playerService.init();
-  const player=await playerService.getSessionPlayer();
-  if(!player){location.replace('../');return;}
-  renderCategories();
-}
-
-bootMath();
     });
   });
 
@@ -219,13 +204,16 @@ bootMath();
   app.querySelector('[data-start]')?.addEventListener('click', startSelectedGame);
 }
 
-function startSelectedGame() {
+async function startSelectedGame() {
   saveSetup();
   state.screen = state.selectedMode;
   resetAttemptState();
   state.question = makeQuestion(state.screen);
+  gameSound.cue('roundStart');
   window.dispatchEvent(new CustomEvent('math-round-start', { detail: { mode: state.screen, duration: state.duration } }));
-  renderGame();
+  window.dispatchEvent(new CustomEvent('math-presentation-hold',{detail:true}));
+  try{await transitionToResult(app,()=>document.activeElement?.blur(),()=>renderGame());}
+  finally{window.dispatchEvent(new CustomEvent('math-presentation-hold',{detail:false}));}
 }
 
 function nextQuestion() {
@@ -281,6 +269,7 @@ function hasVisualExplainer() {
 }
 
 function renderGame({ feedback = '', feedbackType = '' } = {}) {
+  app.dataset.mode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
   const q = state.question;
   if (!q) return;
   const showExplainer = hasVisualExplainer();
@@ -310,8 +299,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
   `;
 
   app.querySelector('#back')?.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('math-round-cancel'));
-    renderCategories();
+    window.dispatchEvent(new CustomEvent('math-request-exit'));
   });
 
   app.querySelectorAll('[data-answer]').forEach(button => {
@@ -342,6 +330,7 @@ function chooseAnswer(answer) {
   if (!q) return;
 
   if (answer === q.correct) {
+    gameSound.cue('correct');
     state.locked = true;
     renderGame({ feedback: 'Dobrze!', feedbackType: 'good' });
     window.setTimeout(() => {
@@ -350,6 +339,7 @@ function chooseAnswer(answer) {
     return;
   }
 
+  gameSound.cue('incorrect');
   state.wrongAnswers.add(answer);
   state.lastWrongAnswer = answer;
 
@@ -590,4 +580,18 @@ window.addEventListener('math-restart', event => {
 
 window.addEventListener('math-back-to-setup', renderCategories);
 
-renderCategories();
+async function bootMath(){
+ await playerService.init();const player=await playerService.getSessionPlayer();
+ if(!player){location.replace('../');return;}renderCategories();
+}
+if(new URLSearchParams(location.search).has('studio')){
+ renderCategories();
+ const query=new URLSearchParams(location.search);
+ if(query.get('screen')!=='wizard'){
+  state.screen='add';state.selectedMode='add';state.question=makeQuestion('add');
+  if(query.get('state')==='correct')state.locked=true;
+  if(query.get('state')==='wrong'){state.hadMistake=true;const wrong=state.question.answers.find(answer=>answer!==state.question.correct);state.wrongAnswers.add(wrong);state.lastWrongAnswer=wrong;}
+  renderGame({feedback:query.get('state')==='correct'?'Świetnie!':query.get('state')==='wrong'?'Spróbuj jeszcze raz.':'',feedbackType:query.get('state')==='correct'?'good':query.get('state')==='wrong'?'bad':''});
+  if(query.get('screen')==='results')renderMathStudioResult({correct:8,wrong:2,duration:180,mode:'add'});
+ }
+} else {await bootMath();}

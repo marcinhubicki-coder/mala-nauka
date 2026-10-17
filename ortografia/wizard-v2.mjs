@@ -297,7 +297,6 @@ function install(){
  const canvas=document.createElement('div');canvas.className='spelling-wizard-canvas';
  while(root.firstChild)canvas.append(root.firstChild);root.append(canvas);
  const intro=root.querySelector('.wizard-intro');intro?.querySelector('.mode-icon')?.remove();
- if(intro){const art=document.createElement('img');art.className='spelling-mission-art';art.src=new URL('../assets/ortografia/wizard-mission-retina-v1.webp',import.meta.url).href;art.alt='';art.width=1200;art.height=404;intro.prepend(art);}
  geometryObserver.disconnect();root.querySelectorAll('.spelling-segmented').forEach(container=>geometryObserver.observe(container));
  updateStartButton(false);syncPanel(false);syncHidden('force');requestAnimationFrame(()=>{syncSegments(false);installDrag();});
 }

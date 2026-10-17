@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "canonical": "design/system-v1",
+  "consumers": [
+    "design/english-v0.1",
+    "czytanie-v1",
+    "design/profile-and-learning-v5",
+    "design/spelling-v0.3-preview",
+    "design/flags-v0.1",
+    "matematyka-v1"
+  ],
+  "production": {
+    "branch": "main",
+    "state": "review-required"
+  },
+  "historical": "release/*, trigger-temp*, wcześniejsze tunery i próby: migawki Git, nie baza nowych prac",
+  "verification": {
+    "tests": 65,
+    "consumerBuilds": 6,
+    "deploymentState": "READY",
+    "canonicalCommitTested": "82bea29ecfe38368ca35d5a7c8f775543e60488a",
+    "consumerSourceCommitTested": "13269e22f8c92e350dbd9007d155671ff96d4bca"
+  },
+  "consumerCommits": {
+    "czytanie-v1": "ffd54027d1170f7e81508b4faa5e271f008f840d",
+    "design/english-v0.1": "e847583a97a806fd68b1c283a65163178951a8ab",
+    "design/flags-v0.1": "95656d44824ac510516b123dbeb888f824e26358",
+    "design/profile-and-learning-v5": "08b61d963d53d9d5762274984f94203b6ef91bd2",
+    "design/spelling-v0.3-preview": "789d454b4961f54d8ad77c0f0d54994f1e8b8d08",
+    "matematyka-v1": "5933943ab45ae6e0517e37b3b5bf250d98f72a20"
+  }
+}

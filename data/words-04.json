@@ -63,7 +63,10 @@
           "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
         }
       ]
-    }
+    },
+    "practiceCategories": [
+      "rz/ż"
+    ]
   },
   {
     "word": "grzech",
@@ -1691,6 +1694,188 @@
           "url": "https://zpe.gov.pl/a/urzekajace-rzesy-zaby-bozenki-czyli-o-rz-i-z/D1oWrlwFL"
         }
       ]
+    }
+  },
+  {
+    "word": "ciśnieniomierz",
+    "category": "rz/ż",
+    "answer": "rz",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "ciśnieniomie_",
+    "difficulty": 2,
+    "categoryDifficulties": {
+      "rz/ż": 2,
+      "ć/ci": 2,
+      "ś/si": 2,
+      "ń/ni": 2
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ć/ci",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "ośnieżony",
+    "category": "rz/ż",
+    "answer": "ż",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "ośnie_ony",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "rz/ż": 1,
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śnieżka",
+    "category": "rz/ż",
+    "answer": "ż",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "śnie_ka",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "rz/ż": 1,
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śnieżny",
+    "category": "rz/ż",
+    "answer": "ż",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "śnie_ny",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "rz/ż": 1,
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śnieżyca",
+    "category": "rz/ż",
+    "answer": "ż",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "śnie_yca",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "rz/ż": 1,
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
+    }
+  },
+  {
+    "word": "śnieżynka",
+    "category": "rz/ż",
+    "answer": "ż",
+    "options": [
+      "rz",
+      "ż"
+    ],
+    "masked": "śnie_ynka",
+    "difficulty": 1,
+    "categoryDifficulties": {
+      "rz/ż": 1,
+      "ś/si": 1,
+      "ń/ni": 1
+    },
+    "practiceCategories": [
+      "rz/ż",
+      "ś/si",
+      "ń/ni"
+    ],
+    "learning": {
+      "type": "memory",
+      "title": "Zapis rz/ż",
+      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór rz lub ż. Porównaj też znane słowa z tej samej rodziny.",
+      "examples": [],
+      "relatedWords": [],
+      "forms": [],
+      "sources": []
     }
   }
 ]

@@ -1,0 +1,52 @@
+/* Neon Matematyka: gentle retro glow, rendered only on this module.
+   No SVG filters, per-frame JS or animated text-shadow. */
+#app[data-mode="math"] .math-setup-screen .math-neon-wordmark{
+ display:inline-flex;align-items:center;justify-content:center;
+ padding:5px 12px;min-height:22px;border-radius:12px;
+ color:#ffedbc;background:#203256;border:1px solid #9fd7ff;
+ font-size:.72rem;letter-spacing:.13em;font-weight:900;text-transform:uppercase;
+ text-shadow:0 0 3px #fff8d3,0 0 8px #ffdf87;
+ box-shadow:inset 0 0 8px #8cf3ff30,0 0 7px #6adfff4d;
+ animation:mn-neon-switch-on 700ms steps(1,end) both;
+}
+#app[data-mode="math"][data-state="feedback-correct"] .equation-number{
+ color:#7356bc;
+ text-shadow:0 0 2px #ffffff,0 0 10px #b3a1ff99;
+ animation:mn-neon-number-success 690ms ease-out both;
+}
+.math-neon-loading{
+ position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;gap:18px;min-height:100%;
+ background:linear-gradient(165deg,#f4f5ff,#e6f8ff);
+ font:700 15px/1.4 system-ui,sans-serif;color:#4a4b80;text-align:center;
+}
+.math-neon-loading .math-neon-grid{
+ display:grid;grid-template-columns:repeat(3,30px);gap:8px;
+ border-radius:22px;padding:18px;background:#243258;
+ box-shadow:0 14px 28px #46579b29;
+}
+.math-neon-grid span{
+ display:grid;place-items:center;width:30px;height:30px;
+ border:1px solid #8c9dcb72;border-radius:6px;
+ font:800 21px/1 system-ui,sans-serif;color:#e3faff;
+ text-shadow:0 0 6px #61e8fb;
+ animation:mn-neon-digit-pulse 1100ms ease-in-out infinite alternate;
+ animation-delay:calc(var(--digit-index,0) * -125ms);
+}
+@keyframes mn-neon-switch-on{
+ 0%,21%,39%{opacity:.35}
+ 22%,38%,40%,100%{opacity:1}
+}
+@keyframes mn-neon-digit-pulse{
+ 0%{opacity:.38;transform:translate3d(0,0,0) scale(.94)}
+ 100%{opacity:1;transform:translate3d(0,0,0) scale(1.04)}
+}
+@keyframes mn-neon-number-success{
+ 0%{opacity:.65;transform:translate3d(0,3px,0) scale(.96)}
+ 100%{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+ #app[data-mode="math"] .math-neon-wordmark,
+ #app[data-mode="math"] .equation-number,
+ .math-neon-grid span{animation:none!important}
+}

@@ -5,6 +5,7 @@ import { READING } from './data/reading.mjs?v=3';
 import { FLAGS, FLAG_CATEGORIES } from './data/flags.mjs';
 import { filterSpellingPreview } from './spelling/preview.mjs?v=23-art-library';
 import { cleanRoundSettings } from './spelling/round.mjs?v=1';
+import { spellingPool } from './spelling/word-pools.mjs';
 
 export const MODES = {
  spelling: {name:'Ortografia',icon:'abc',hint:'Złap właściwą literę',color:'pink',categories:[['all','Wszystkie słowa'],...CATEGORIES.map(c=>[c,c.replace('/', ' / ')])],levels:['Wszystkie','Podstawowe','Trudne']},
@@ -386,7 +387,7 @@ export function createSource(mode, config, words, random = Math.random) {
   const preview=filterSpellingPreview(words);
   const pool=config.dyktando
    ? dictationSource(preview,config.dictationTag)
-   : preview.filter(w=>(!selected||selected.includes(w.category))&&(!config.difficulty||w.difficulty===config.difficulty));
+   : spellingPool(preview,config,random);
   return pool.map(w=>({...w,kind:'spelling',text:w.masked,full:w.word,prompt:'Co pasuje w lukę?'}));
  }
  if(mode==='math') return ()=>mathQuestion(config,random);

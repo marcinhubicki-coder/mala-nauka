@@ -1,0 +1,11 @@
+/* One canvas and one protrusion for all five adventures and their library sample. */
+#app[data-view=wizard] .wizard-intro.mission-card,.live-component .mission-card{--mission-u:min(calc(100vw / 390),calc(480px / 390),calc((var(--app-viewport-height,100dvh) - var(--app-safe-top,env(safe-area-inset-top,0px)) - var(--app-safe-bottom,env(safe-area-inset-bottom,0px))) / 755));position:relative;isolation:isolate;width:calc(350 * var(--mission-u));max-width:100%;height:calc(94 * var(--mission-u))!important;min-height:0;padding:0!important;border:0;background:linear-gradient(110deg,#fffcf1,#fff7df)!important;border-radius:calc(24 * var(--mission-u));overflow:visible!important;}
+.mission-illustration{position:absolute;inset:auto 0 0;width:100%;height:calc(127 * var(--mission-u,1px));z-index:0;pointer-events:none;}
+.mission-illustration svg{display:block;width:100%;height:100%;overflow:visible;}
+#app[data-view=wizard] .mission-card>div,.live-component .mission-card>div{position:relative;z-index:1;margin-left:25.5%!important;width:44%!important;padding-top:0!important;transform:none!important;}
+#app[data-view=wizard] .mission-card h2,.live-component .mission-card h2{margin:0;font:800 calc(20 * var(--mission-u))/1.15 var(--ds-font-ui);color:#09043f;}
+#app[data-view=wizard] .mission-card p,.live-component .mission-card p{font:600 calc(12.8 * var(--mission-u))/1.3 var(--ds-font-body);white-space:normal!important;}
+.live-component .mission-sample{width:350px;max-width:100%;height:127px;position:relative;--mission-u:1px;margin:auto;}
+.live-component .mission-sample>.mission-illustration{height:127px;}
+
+.live-component .mission-card{--mission-u:1px;width:350px;height:94px;margin:33px auto 0;max-width:none;}

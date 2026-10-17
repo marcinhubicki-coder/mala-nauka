@@ -1,0 +1,6 @@
+/* All navigation-back uses share their circle and arrow. Recipe edits override it. */
+.navigation-back[data-ds-recipe="button-back"]{display:grid!important;place-items:center;flex:none;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;border:1px solid #fff!important;border-radius:22px!important;background:linear-gradient(145deg,#fff,#f8fcff)!important;color:#100944!important;box-shadow:0 4px 10px #5bb4d12a!important;touch-action:manipulation;}
+.navigation-back>svg{display:block;width:24px!important;height:24px!important;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+
+#app[data-view=wizard]>.page-head{display:flex;align-items:center;gap:14px;min-height:44px;margin-bottom:33px;}
+#app[data-view=wizard]>.page-head h1{margin:0;font:700 25px/1.15 var(--ds-font-display);color:#09043f;}

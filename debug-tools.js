@@ -31,23 +31,23 @@ function mountTools(){
   if(!TEST_HOST) return;
   const app = document.querySelector('#app');
   if(!app || app.dataset.view !== 'settings' || app.querySelector('[data-test-tools]')) return;
+  const screen=app.querySelector('.settings-screen');
+  if(!screen)return;
 
   const section = document.createElement('section');
-  section.className = 'card';
+  section.className = 'settings-group';
   section.dataset.testTools = '1';
   section.innerHTML = `
-    <h2 style="margin-bottom:6px">Narzędzia testowe</h2>
-    <p class="muted" style="margin-bottom:12px">${BUILD_MARKER} · użyj, gdy preview/PWA wygląda jak starsza wersja.</p>
-    <div class="stack">
-      <button type="button" class="secondary" data-debug-action="refresh">Wymuś świeżą wersję</button>
-      <button type="button" class="danger" data-debug-action="reset">Wyczyść cache i ustawienia lokalne</button>
+    <h2 class="settings-section-title">Narzędzia testowe</h2>
+    <div class="card settings-card settings-test-card">
+      <p>${BUILD_MARKER} · używaj tylko w Preview, gdy chcesz wymusić świeże pliki albo wyczyścić lokalne dane tej wersji testowej.</p>
+      <div class="settings-test-actions">
+        <button type="button" class="secondary" data-debug-action="refresh">Odśwież preview</button>
+        <button type="button" class="settings-clear-results" data-debug-action="reset">Wyczyść dane</button>
+      </div>
     </div>`;
-
-  const installation = app.querySelector('.installation');
-  if(installation) installation.insertAdjacentElement('afterend', section);
-  else app.append(section);
+  screen.append(section);
 }
-
 new MutationObserver(mountTools).observe(document.querySelector('#app'), {childList:true,subtree:true,attributes:true,attributeFilter:['data-view']});
 mountTools();
 

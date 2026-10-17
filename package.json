@@ -1,0 +1,12 @@
+{
+  "name": "mala-nauka",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build-design.mjs",
+    "audit": "node tools/audit-design.mjs",
+    "assets:audit": "node tools/catalog-assets.mjs",
+    "test": "node tools/build-design.mjs && node --test tests/*.test.mjs",
+    "design:check": "node tools/audit-design.mjs && npm test"
+  }
+}

@@ -1,5 +1,5 @@
 import { watchScrollEdges } from '../shared/scroll-edges.mjs?v=1';
-import { createBubble } from '../spelling/bubble.mjs?v=42-live-fixed-rule';
+import {createConfiguredBubble} from '../spelling/bubble-renderer.mjs';
 import { sceneFor, sceneUrl } from '../spelling/scenes.mjs?v=27-final-assets';
 import { LEARNING_TYPES, validLearning } from '../spelling/learning.mjs?v=1';
 
@@ -69,7 +69,7 @@ export function openResultRule(root, attempt, trigger) {
   const updateScrollCue=()=>scroll.dispatchEvent(new Event('scroll'));
   dialog.querySelector('.rule-sources')?.addEventListener('toggle',updateScrollCue);
   // The rule artwork uses the same live bubble motion as the spelling game.
-  active.bubble = createBubble(dialog.querySelector('.rule-bubble'));
+  active.bubble = createConfiguredBubble(dialog.querySelector('.rule-bubble'));
   const loader = dialog.querySelector('.rule-image-loader');
   active.loaderTimeout = setTimeout(() => {
     if (dialogs.get(root) === active) { loader.hidden = false; updateScrollCue(); }

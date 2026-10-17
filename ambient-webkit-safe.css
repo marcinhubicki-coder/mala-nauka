@@ -1,0 +1,1 @@
+.screen-atmosphere:is(.ambient-orbit,.ambient-aurora)::before,.screen-atmosphere:is(.ambient-orbit,.ambient-aurora)::after,.screen-atmosphere:is(.ambient-orbit,.ambient-aurora) .ambient-finish,.screen-atmosphere:is(.ambient-orbit,.ambient-aurora) .ambient-lens{display:none!important}

@@ -1,7 +1,8 @@
 import { validLearning } from './spelling/learning.mjs?v=1';
+import {spellingPool,wordKey,wordSlots} from './spelling/word-pools.mjs';
 export const CATEGORIES = ['u/ó', 'rz/ż', 'ch/h', 'ć/ci', 'ś/si', 'ź/zi', 'ń/ni', 'dź/dzi'];
 export const DURATIONS = [60, 120, 180, 300];
-export const DEFAULT_SETTINGS = { duration: 180, sound: true, difficulty: true };
+export const DEFAULT_SETTINGS = { duration: 180, sound: true, animations: true, difficulty: true, category: true };
 export const accuracy = (correct, wrong) => correct + wrong ? Math.round(100 * correct / (correct + wrong)) : 0;
 export const modeName = category => category === 'all' ? 'Wszystkie słowa' : String(category).split(',').map(value=>value.replace('/', ' / ')).join(', ');
 export const bestKey = (category, duration) => `${category}:${duration}`;
@@ -16,6 +17,9 @@ export function shuffle(items, random = Math.random) {
 export function validateWords(words) {
   if (!Array.isArray(words) || words.length < 455 || new Set(words.map(w => w.word)).size !== words.length) throw Error('Niepełna baza słów.');
   for (const w of words) {
+    const detected=[...new Set(wordSlots(w).map(r=>r.category))],enabled=w.practiceCategories??detected;
+    if(!Array.isArray(enabled)||!enabled.length||new Set(enabled).size!==enabled.length||enabled.some(c=>!detected.includes(c))||!enabled.includes(w.category))throw Error('Nieprawidłowe dozwolone kategorie słowa.');
+    if(w.categoryDifficulties){const keys=Object.keys(w.categoryDifficulties);if(keys.some(c=>!enabled.includes(c))||enabled.some(c=>![1,2].includes(w.categoryDifficulties[c]))||w.categoryDifficulties[w.category]!==w.difficulty)throw Error('Nieprawidłowe poziomy kategorii słowa.');}
     if (typeof w.word !== 'string' || typeof w.masked !== 'string' || w.masked.split('_').length !== 2 ||
       !CATEGORIES.includes(w.category) || !Array.isArray(w.options) || w.options.length !== 2 || new Set(w.options).size !== 2 ||
       !w.options.every(o => w.category.split('/').includes(o)) || !w.options.includes(w.answer) ||
@@ -27,7 +31,9 @@ export function validateWords(words) {
 export function cleanSettings(value) {
   return { duration: DURATIONS.includes(value?.duration) ? value.duration : 180,
     sound: typeof value?.sound === 'boolean' ? value.sound : true,
-    difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true };
+    animations: typeof value?.animations === 'boolean' ? value.animations : true,
+    difficulty: typeof value?.difficulty === 'boolean' ? value.difficulty : true,
+    category: typeof value?.category === 'boolean' ? value.category : true };
 }
 export function validResult(r) {
  const selected=r?.category==='all'?CATEGORIES:String(r?.category??'').split(',').filter(Boolean);
@@ -46,7 +52,8 @@ export class Session {
       remaining: duration * 1000, lastTime: now(), correct: 0, wrong: 0, question: 0,
       state: 'playing', queue: [], feedbackRemaining: 0, exposureRemaining: 0,
       questionElapsed: 0, lastResponseMs: 0, recentAnswers: [], attempts: [],
-      untimed: false, questionLimit: 0 });
+      untimed: false, questionLimit: 0, usedWords:new Set(),streak:0,bestStreak:0,
+      noRepeatWords:Array.isArray(source)&&source.every(row=>row.word&&row.masked) });
     this.next();
   }
   tick() {
@@ -69,17 +76,20 @@ export class Session {
   }
   next() {
     if (this.state === 'paused' || this.state === 'ended') return;
-    if (this.questionLimit && this.question >= this.questionLimit) { this.current = null; this.state = 'ended'; return; }
+    if (this.questionLimit && this.question >= this.questionLimit) { this.poolExhausted=this.noRepeatWords&&this.usedWords.size>=new Set(this.pool.map(row=>wordKey(row.word))).size; this.current = null; this.state = 'ended'; return; }
     if (typeof this.source === 'function') {
       this.current = this.preparedQuestion || this.source(this);
       this.preparedQuestion = null;
     }
     else {
       if (!this.queue.length) {
-        this.queue = shuffle(this.pool, this.random);
+        this.queue = shuffle(this.noRepeatWords?this.pool.filter(row=>!this.usedWords.has(wordKey(row.word))):this.pool, this.random);
         if (this.queue.length > 1 && this.queue[0] === this.current) [this.queue[0], this.queue[1]] = [this.queue[1], this.queue[0]];
       }
+      if(this.noRepeatWords)this.queue=this.queue.filter(row=>!this.usedWords.has(wordKey(row.word)));
       this.current = this.queue.shift();
+      if(!this.current){this.poolExhausted=true;this.state='ended';return;}
+      if(this.noRepeatWords)this.usedWords.add(wordKey(this.current.word));
     }
     this.options = shuffle(this.current.options, this.random);
     this.question++;
@@ -96,6 +106,7 @@ export class Session {
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
+    this.streak=correct&&!this.hintUsed?this.streak+1:0;this.bestStreak=Math.max(this.bestStreak,this.streak);
     if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({
@@ -154,7 +165,7 @@ export class Session {
 export class Game extends Session {
   constructor(words, category, duration, now, random) {
     const selected=category==='all'?null:String(category).split(',');
-    super(words.filter(w => !selected || selected.includes(w.category)), duration, now, random);
+    super(spellingPool(words,{category},random), duration, now, random);
     this.category = category;
   }
 }

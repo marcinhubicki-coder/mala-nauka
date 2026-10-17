@@ -1,0 +1,11 @@
+/* Global atmospheric bokeh and flowing pastel light — compositor-only motion. */
+.screen-atmosphere.ambient-orbit i,.screen-atmosphere.ambient-aurora i{position:absolute;left:var(--ambient-x);top:var(--ambient-y);border-radius:50%;pointer-events:none;opacity:var(--ambient-particle-opacity,.25);will-change:transform}
+.screen-atmosphere.ambient-orbit i{width:19vmin;height:19vmin;min-width:70px;min-height:70px;background:radial-gradient(circle,#ffe4f5bb 0%,#eac2fa80 26%,transparent 75%);transform-origin:var(--ambient-pivot-x,20vw) var(--ambient-pivot-y,20vh);animation:mn-orbit var(--ambient-duration,14s) linear var(--ambient-delay) infinite}
+.screen-atmosphere.ambient-orbit i:nth-of-type(3n+1){background:radial-gradient(circle,#fff4c7c7 0%,#ffc89a84 28%,transparent 76%)}
+.screen-atmosphere.ambient-orbit i:nth-of-type(3n+2){background:radial-gradient(circle,#c5f7ffe0 0%,#95daed9c 28%,transparent 76%)}
+.screen-atmosphere.ambient-aurora i{width:46vmin;height:46vmin;min-width:160px;min-height:160px;background:radial-gradient(circle,#c3deffce 0%,#b5b7ed72 30%,transparent 75%);animation:mn-aurora var(--ambient-duration,14s) ease-in-out var(--ambient-delay) infinite alternate}
+.screen-atmosphere.ambient-aurora i:nth-of-type(2n){background:radial-gradient(circle,#ffe9b4c0 0%,#ffc6c16e 35%,transparent 75%)}
+.screen-atmosphere.ambient-aurora i:nth-of-type(3n){background:radial-gradient(circle,#d0ffefca 0%,#91ebe38a 30%,transparent 75%)}
+@keyframes mn-orbit{to{transform:translate3d(0,0,0) rotate(360deg)}}
+@keyframes mn-aurora{from{transform:translate3d(-12%,-5%,0) scale(.9)}to{transform:translate3d(10%,16%,0) scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.screen-atmosphere.ambient-orbit i,.screen-atmosphere.ambient-aurora i{animation:none!important}}

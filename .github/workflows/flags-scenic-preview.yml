@@ -9,6 +9,7 @@ on:
       - 'tools/flags-scenic-qa.mjs'
       - 'tools/flags-scenic-qa-parallel.mjs'
       - 'flagi/scenic-preview.html'
+      - 'flagi/scenic-preview.webmanifest'
       - 'flagi/scenic-preview.css'
       - 'flagi/scenic-*.mjs'
       - 'assets/flags/adventure/scenic-*'

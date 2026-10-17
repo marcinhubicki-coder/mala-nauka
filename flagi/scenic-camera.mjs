@@ -6,9 +6,11 @@ export function nearAtlasFrame(box,width,height){
  const w=Math.max(box.w*1.64,box.h*ratio*1.64,box.w<5?56:88),h=w/ratio;
  return {x:box.x+box.w/2-w/2,y:box.y+box.h/2-h/2,w,h};
 }
-export function fullAtlasFrame(width,height){
+export function fullAtlasFrame(width,height,focus){
  const ratio=width/height,w=Math.min(600,443*ratio);
- return {x:35,y:12,w,h:w/ratio};
+ const h=w/ratio;
+ const center=focus?{x:focus.x+focus.w/2,y:focus.y+focus.h/2}:{x:35+w/2,y:12+h/2};
+ return {x:Math.max(12,Math.min(668-w,center.x-w/2)),y:Math.max(10,Math.min(490-h,center.y-h/2)),w,h};
 }
 export function clockwiseNeighbors(selected,features,geometry=[]){
  const byId=new Map(features.map(f=>[f.id,f]));

@@ -49,3 +49,15 @@ test('Polish neighbor order starts north with Kaliningrad and proceeds clockwise
  const geometry=[...svg.matchAll(/data-country="([a-z]+)" d="([^"]+)"/g)].map(m=>({id:m[1],path:m[2]}));
  assert.deepEqual(clockwiseNeighbors(features.find(f=>f.id==='pl'),features,geometry),['ru','lt','by','ua','sk','cz','de']);
 });
+
+
+test('overview gives the selected country the nearest possible central frame',async()=>{
+ const {fullAtlasFrame}=await import('../flagi/scenic-camera.mjs');
+ const {features}=JSON.parse(await readFile(new URL('../assets/maps/europe-atlas-v26.json',import.meta.url)));
+ for(const ratio of [.85,1.1,1.5,1.9])for(const record of FLAGS.filter(r=>r.continent==='europe')){
+  const box=features.find(f=>f.id===record.id).box,frame=fullAtlasFrame(330,330/ratio,box),cx=box.x+box.w/2,cy=box.y+box.h/2;
+  assert(Math.abs(frame.x-Math.max(12,Math.min(668-frame.w,cx-frame.w/2)))<1e-8);
+  assert(Math.abs(frame.y-Math.max(10,Math.min(490-frame.h,cy-frame.h/2)))<1e-8);
+  assert(Math.abs(frame.w/frame.h-ratio)<1e-8);
+ }
+});

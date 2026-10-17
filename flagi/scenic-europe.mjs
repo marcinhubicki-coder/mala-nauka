@@ -1,10 +1,10 @@
 /* Scenic Europe proof of concept: one prebaked map, one highlighted SVG country.
    All coordinates are registered to Natural Earth's 680 × 500 viewBox. */
 const EUROPE_IMAGE=new URL('assets/maps/europe-painted-v27.webp',document.baseURI).href;
-import {registerAtlasImage} from './scenic-registration.mjs';
+import {registerAtlasImage} from './scenic-registration.mjs?v=30';
 import {FLAGS} from '../data/flags.mjs';
-import {SCENIC} from './scenic-config.mjs';
-import {nearAtlasFrame,fullAtlasFrame,clockwiseNeighbors} from './scenic-camera.mjs';
+import {SCENIC} from './scenic-config.mjs?v=30';
+import {nearAtlasFrame,fullAtlasFrame,clockwiseNeighbors} from './scenic-camera.mjs?v=30';
 const records=new Map(FLAGS.map(r=>[r.id,r]));
 let imagePromise;
 let geographyPromise;
@@ -139,5 +139,5 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
 
  const visibleLabels=labels.filter(item=>selectedFeature.neighbors.length?selectedFeature.neighbors.includes(item.id):neighboring(crop,item.box));
  const flags=Object.fromEntries(await Promise.all(visibleLabels.map(async item=>[item.id,await loadFlag(item.id)])));
- return {found:true,svg,active,crop,fullCrop:fullAtlasFrame(mapRect.width,mapRect.height),geometry,neighbors:clockwiseNeighbors(selectedFeature,metadata.features,geometry),capital:selectedFeature.capital,flags,labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,nearPoint:item.nearPoint,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
+ return {found:true,svg,active,crop,fullCrop:fullAtlasFrame(mapRect.width,mapRect.height,selectedFeature.box),geometry,neighbors:clockwiseNeighbors(selectedFeature,metadata.features,geometry),capital:selectedFeature.capital,flags,labels:labels.map(item=>({id:item.id,name:language==='en'?records.get(item.id).countryEn:records.get(item.id).country,point:item.point,nearPoint:item.nearPoint,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
 }

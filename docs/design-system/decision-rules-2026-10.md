@@ -3,7 +3,7 @@
 **Wersja:** 2026-10-17 · **Zakres retrospekcji:** 03–17.10.2026 · **Status:** reguły robocze do stosowania przy każdej kolejnej zmianie V2.
 **Pochodzenie:** uwagi, akceptacje i żądania korekt użytkownika z rozmów projektu Homework, skonfrontowane z aktualnymi dokumentami V2. To dokument interpretujący intencję projektową, a nie kopia tokenów ani alternatywna konfiguracja.
 
-**Źródła techniczne:** [zasady i tokeny](principles.md), [Atomic Design](../V2-ATOMS-AND-TYPOGRAPHY.md), [kontrakty 41 widoków](../V2-ALL-VIEW-CONTRACTS.md), [akceptacja wizualna](../V2-VISUAL-ACCEPTANCE.md), [wspólny runtime](unified-runtime.md), [biblioteka assetów](../V2-CANONICAL-IMAGE-INDEX.md), [styl ilustracji Ortografii](../ORTHOGRAPHY-IMAGE-STYLE.md). W razie konfliktu danych źródłem jest produkcyjny kontrakt/asset, nie opis w tym pliku.
+**Źródła techniczne:** [zasady i tokeny](principles.md), [Atomic Design](../V2-ATOMS-AND-TYPOGRAPHY.md), [aktualny rejestr kontraktów (45 widoków na 17.10.2026)](../V2-ALL-VIEW-CONTRACTS.md), [akceptacja wizualna](../V2-VISUAL-ACCEPTANCE.md), [wspólny runtime](unified-runtime.md), [biblioteka assetów](../V2-CANONICAL-IMAGE-INDEX.md), [styl ilustracji Ortografii](../ORTHOGRAPHY-IMAGE-STYLE.md). W razie konfliktu danych źródłem jest aktualny kontrakt i asset wybranej gałęzi V2, a nie historyczny opis w tym pliku lub starszy produkcyjny `main`.
 
 ## 1. Jak rozstrzygać decyzje
 
@@ -34,7 +34,11 @@ Nie interpretuj „ok, kontynuuj” jako akceptacji każdego piksela, każdego w
 
 ## 3. Kontrakt Design Studio ↔ PWA
 
-- **D:** Studio jest silnikiem wspólnego projektu, nie dekoracyjnym edytorem obok gry. Rzeczywiste renderery i 41 jawnych kontraktów widoków służą obu środowiskom. Spis/inwentarz Studio jest pochodny, a nie drugim źródłem prawdy. Bez heurystycznego odtwarzania znaczenia z DOM i jednorazowych łatek.
+**D / najnowsza implementacja wyznacza standard:** punktem odniesienia jest aktualna gałąź `refactor/v2-parity-first`, jej `design-system/registry.json`, `shared/view-contracts.mjs` i ostatnie zaakceptowane poprawki, a nie stan wcześniejszej gałęzi dokumentacyjnej. Na 17.10.2026 to **45 widoków**: wcześniejsze 41 oraz `forge`, `rule-details`, `trophy-base`, `trophy-evolution`. Każdy nowy widok musi mieć własny kontrakt, stany i kryteria regresji. Zmiana liczby widoków wymaga aktualizacji zasad i QA; nie wolno cofać nowszych ekranów przez kopiowanie starej konfiguracji.
+
+**D / zasady obejmują nowe widoki:** kuźnia (`forge`), szczegóły reguły (`rule-details`) i oba etapy trofeum (`trophy-base`, `trophy-evolution`) podlegają tym samym zasadom czytelności, edytowalności Atomic Design, spójności Studio/PWA, lokalnych zakresów, animacji, assetów i testów iPhone. Nowy ekran nie jest zwolniony z żadnej bramki jakości; jego konkretny wygląd wynika z najnowszych zaakceptowanych wzorców i bieżącego renderera, a nie z uogólnienia starszego mockupu.
+
+- **D:** Studio jest silnikiem wspólnego projektu, nie dekoracyjnym edytorem obok gry. Rzeczywiste renderery i aktualny komplet jawnych kontraktów (45 widoków na 17.10.2026) służą obu środowiskom. Spis/inwentarz Studio jest pochodny, a nie drugim źródłem prawdy. Bez heurystycznego odtwarzania znaczenia z DOM i jednorazowych łatek.
 - **D:** ten sam stan, ta sama typografia, wymiary, assety, widoczność, kolejność, zachowania i animacje muszą przejść od edycji przez Test PWA do przeglądarki telefonu. Sam poprawny Preview Studio nie zamyka zadania.
 - **D:** „hidden” ukrywa element z zachowaniem miejsca; „removed” usuwa element z układu. Eksport respektuje wybrany stan; brak renderowania w Studio nie może ujawniać elementu w PWA.
 - **D:** renderowanie i akcje muszą pozostawać aktywne po przejściu Start → Gra. Ekran przycięty albo przyciski reagujące tylko w edytorze są blockerem, nawet przy zielonym buildzie.

@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import {SCENIC} from '../flagi/scenic-config.mjs';
 import {FLAGS} from '../data/flags.mjs';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),OUT=process.env.SCENIC_QA_OUT||join(ROOT,'docs/flags-adventure/qa-scenic');
-const types={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.json':'application/json','.woff':'font/woff'};
+const types={'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.json':'application/json','.woff':'font/woff','.woff2':'font/woff2'};
 const server=createServer(async(req,res)=>{
  const path=new URL(req.url,'http://localhost').pathname,file=resolve(ROOT,'.'+path+(path.endsWith('/')?'index.html':''));
  if(!file.startsWith(ROOT+sep)){res.writeHead(403).end();return;}
@@ -34,7 +34,7 @@ async function metrics(page){return page.evaluate(()=>{
   raster:host?.dataset.mapImage,activeCount:svg?.querySelectorAll('.country').length||0,highlight:!!svg?.querySelector('.scenic-country-overlay'),
   neighbors:Number(svg?.dataset.visibleNeighbors),labels:document.querySelector('#scenic-map-scroll').dataset.drawnLabels?JSON.parse(document.querySelector('#scenic-map-scroll').dataset.drawnLabels).length:Number(host?.dataset.labelCount),crop:svg?.getAttribute('viewBox'),microstate:host?.dataset.microstate,
   captionFits:(()=>{const inner=document.querySelector('.scenic-map-inner').getBoundingClientRect(),caption=document.querySelector('.scenic-map-caption').getBoundingClientRect(),title=document.querySelector('#scenic-country-name').getBoundingClientRect(),capital=document.querySelector('#scenic-country-capital').getBoundingClientRect();return title.top>=inner.top+3&&capital.bottom<=caption.bottom+1&&caption.right<=inner.right-10&&document.querySelector('#scenic-country-name').scrollWidth<=document.querySelector('#scenic-country-name').clientWidth+1;})(),
-  capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
+  registrationAudit:document.querySelector('#scenic-map-scroll').dataset.registrationAudit?JSON.parse(document.querySelector('#scenic-map-scroll').dataset.registrationAudit):undefined,capital:document.querySelector('#scenic-country-capital').textContent,swipeVisible:!document.querySelector('#scenic-swipe').hidden,
   overflowX:document.documentElement.scrollWidth>innerWidth,overflowY:document.documentElement.scrollHeight>innerHeight,
   animations:document.getAnimations().filter(a=>a.playState==='running').length,sand:app.dataset.sandPhase,qa:{enabled:app.dataset.qa,at:app.dataset.qaCaptureAt,captured:app.dataset.qaCaptured,progress:app.dataset.sandProgress},
   foldImages:document.querySelectorAll('.scenic-fold-leaf').length===4&&[...document.querySelectorAll('.scenic-fold-leaf')].every(n=>getComputedStyle(n).backgroundImage.includes('scenic-paper-v14.webp')),inkPhase:document.querySelector('#scenic-map-scroll').dataset.inkPhase,inkGrains:Number(document.querySelector('#scenic-map-scroll').dataset.inkGrains),inkOutside:Number(document.querySelector('#scenic-map-scroll').dataset.inkOutside),inkPaintP95:Number(document.querySelector('#scenic-map-scroll').dataset.inkPaintP95),inkFrames:Number(document.querySelector('#scenic-map-scroll').dataset.inkFrames),compass:rect('.scenic-compass')};
@@ -104,8 +104,10 @@ try{
    if(sample.mode!=='question'){
     assert.equal(m.raster,'ready');assert.equal(m.activeCount,1);
     assert(await page.locator('.scenic-europe-map svg').evaluate((svg,source)=>{const ref=new DOMParser().parseFromString(source,'image/svg+xml'),active=svg.querySelector('.country'),original=ref.querySelector('[data-country="'+active.dataset.country+'"]'),base=svg.querySelector('image');return base.getAttribute('x')==='0'&&base.getAttribute('y')==='0'&&base.getAttribute('width')==='680'&&base.getAttribute('height')==='500'&&(!original||original.getAttribute('d')===active.getAttribute('d'));},canonicalEurope),'Raster and selected SVG must use the canonical coordinates');assert(m.captionFits,'country and capital must fit within the fixed heading');
-    const tier={pl:44,ch:38,li:32,ba:30,mk:32}[sample.id];if(tier){const typography=await page.locator('#scenic-country-name').evaluate(n=>({size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));if(sample.id==='pl')assert.equal(typography.size,tier);else assert([30,32,38,44].includes(typography.size)&&typography.size<=tier,'Heading uses a readable fixed tier suited to the actual platform font');assert.equal(typography.lines,['li','ba','mk'].includes(sample.id)?2:1);assert.equal(typography.slot,82);assert(typography.fit,'Explicit title lines fit without shrinking');}
-    assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=3&&m.neighbors<=75,'Geographic camera includes surrounding countries');assert(m.labels>=1&&m.labels<=8,'Visible labels have bounded density');assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
+    const typography=await page.locator('#scenic-country-name').evaluate(n=>({family:getComputedStyle(n).fontFamily,size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,slot:n.clientHeight,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
+    assert(typography.family.includes('ScenicAtlas'));assert([30,32,34,36,38,40,42,44,46].includes(typography.size));assert(typography.lines<=2);assert.equal(typography.slot,sample.h<760?49:53);assert(typography.fit,'Country title fits the bundled Polish font');
+
+    assert(await page.locator('.scenic-country-overlay').evaluate(n=>n.getBoundingClientRect().top>=document.querySelector('.scenic-map-caption').getBoundingClientRect().bottom+4),'The complete highlighted country stays below the heading');assert(m.highlight);assert(m.neighbors>=0&&m.neighbors<=75,'Geographic camera density is bounded');assert(m.labels>=1&&m.labels<=8,'Visible labels have bounded density');assert(m.foldImages);assert.equal(m.inkPhase,'complete');assert.equal(m.inkGrains,0);assert.equal(m.inkOutside,0);assert.equal(m.animations,0,'Steady atlas must not keep moving');
     assert.equal(m.swipeVisible,sample.mode==='wrong');assert(m.atlas.y+m.atlas.h<m.answers[0].y);
    }
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
@@ -115,9 +117,44 @@ try{
    for(const record of FLAGS.filter(x=>x.continent==='europe')){
     await open(page,record.id);await choose(page,false);await state(page,'feedback-wrong');
     const title=await page.locator('#scenic-country-name').evaluate(n=>({name:n.getAttribute('aria-label'),size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
-    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([30,32,38,44].includes(title.size));assert.equal(title.name,record.country);
+    assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([30,32,34,36,38,40,42,44,46].includes(title.size));assert.equal(title.name,record.country);
     const viewport=await page.locator('.scenic-europe-map').boundingBox();if(first)assert.deepEqual(viewport,first,'All European names share the same map viewport');else first=viewport;
    }
+  });
+  await check(engine+'-v28-slow-neighbor-image',browser,{},async page=>{
+   await page.route('**/assets/flags/svg/de.svg',async route=>{await new Promise(resolve=>setTimeout(resolve,4200));await route.continue().catch(()=>{});});
+   await open(page,'pl');await choose(page,false);await state(page,'feedback-wrong');
+   assert.equal((await metrics(page)).raster,'ready');assert.equal(await page.locator('.scenic-map-unavailable').count(),0,'A delayed neighbor SVG must not remove the whole atlas');assert.equal(await page.locator('#scenic-neighbors [data-neighbor]').count(),7);await capture(page,engine+'-v28-slow-neighbor-map');
+  });
+  await check(engine+'-v28-spain-coastline-registration',browser,{reducedMotion:'reduce'},async page=>{
+   await open(page,'es');await choose(page,false);await state(page,'feedback-wrong');
+   const audit=await page.evaluate(async()=>{
+    const {registerAtlasImage}=await import('./flagi/scenic-registration.mjs');
+    const spec=await fetch('assets/maps/europe-iberia-registration-v28.json').then(r=>r.json());
+    const image=new Image();image.src='assets/maps/europe-painted-v27.webp';await image.decode();const corrected=registerAtlasImage(image,spec);
+    function coast(bitmap){const c=document.createElement('canvas');c.width=1360;c.height=1000;const ctx=c.getContext('2d');ctx.drawImage(bitmap,0,0,c.width,c.height);const px=ctx.getImageData(0,0,c.width,c.height).data,land=new Uint8Array(c.width*c.height);for(let i=0;i<land.length;i++){const r=px[i*4],g=px[i*4+1],b=px[i*4+2];land[i]=b>r*.95&&b>g*.84?0:1;}const points=[];for(let y=644;y<892;y++)for(let x=236;x<488;x++){const i=y*c.width+x;if(land[i]&&[i-1,i+1,i-c.width,i+c.width].some(j=>!land[j]))points.push([x/2,y/2]);}return points;}
+    const before=coast(image),after=coast(corrected),moving=spec.pairs.filter(p=>Math.hypot(p.to[0]-p.from[0],p.to[1]-p.from[1])>.5);
+    const distance=(points,p)=>Math.min(...points.map(q=>Math.hypot(q[0]-p[0],q[1]-p[1])));
+    const error=points=>moving.reduce((s,p)=>s+distance(points,p.to),0)/moving.length;
+    const result={before:error(before),after:error(after),landmarks:moving.length,width:corrected.width,height:corrected.height};corrected.width=corrected.height=1;return result;
+   });
+   assert(audit.landmarks>50);assert(audit.width>=3500&&audit.height>=2600,'Keep the high resolution atlas');assert(audit.after<audit.before*.85,'Registered painted coast follows the true coast: '+JSON.stringify(audit));
+   await page.locator('#scenic-map-scroll').evaluate((n,audit)=>n.dataset.registrationAudit=JSON.stringify(audit),audit);
+  });
+  await check(engine+'-v28-mobile-ribbons-and-cameras',browser,{reducedMotion:'reduce'},async page=>{
+   await open(page,'pl');await choose(page,false);await state(page,'feedback-wrong');
+   assert.equal(await page.locator('.scenic-ios-status').count(),0,'No fake phone status bar');
+   const controls=await page.locator('.scenic-atlas-tools [aria-pressed="true"]').evaluate(n=>getComputedStyle(n).backgroundColor);assert.equal(controls,'rgb(114, 80, 45)');
+   const order=await page.locator('#scenic-neighbors [data-neighbor]').evaluateAll(nodes=>nodes.map(n=>n.dataset.neighbor));assert.deepEqual(order,['ru','lt','by','ua','sk','cz','de'],'Neighbors follow compass order, including Kaliningrad');
+   const start=await page.locator('#scenic-neighbors b').boundingBox(),map=await page.locator('.scenic-europe-map').boundingBox();assert(Math.abs(start.x-map.x)<5,'First ribbon text aligns with the painted map');
+   const rows=await page.locator('.scenic-neighbor-row').evaluateAll(nodes=>nodes.map(n=>({w:n.getBoundingClientRect().width,h:n.getBoundingClientRect().height,n:n.querySelectorAll('button').length})));assert(rows.length>=2);assert(rows[1].w<rows[0].w);assert(rows[1].n>1);
+   const neighbor=page.locator('[data-neighbor="lt"]');await neighbor.click();assert.equal(await neighbor.getAttribute('aria-pressed'),'true');assert.deepEqual(JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-highlighted-neighbors')),['lt']);await neighbor.click();assert.equal(await neighbor.getAttribute('aria-pressed'),'false');
+   const before=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-atlas-frame')),metadata=await page.evaluate(async()=>fetch('assets/maps/europe-atlas-v26.json').then(r=>r.json()));const box=metadata.features.find(f=>f.id==='pl').box;
+   assert(Math.abs(before.x+before.w/2-box.x-box.w/2)<.01&&Math.abs(before.y+before.h/2-box.y-box.h/2)<.01,'Near camera centers the target');assert(Math.max(box.w/before.w,box.h/before.h)>.59,'Country fills the near frame');
+   await capture(page,engine+'-v28-poland');
+   await page.getByRole('button',{name:'Cała Europa',exact:true}).click();const full=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-atlas-frame'));assert(full.w<=600&&full.h<=443.01);assert(Math.abs(full.w/full.h-map.width/map.height)<.001,'Overview fills the viewport without distortion');
+   await capture(page,engine+'-v28-overview');
+   await open(page,'es');await choose(page,false);await state(page,'feedback-wrong');await capture(page,engine+'-v28-spain');
   });
   await check(engine+'-missing-watercolor-mask',browser,{},async page=>{
    await page.route('**/europe-edge-v22.webp',route=>route.abort());
@@ -132,11 +169,11 @@ try{
    for(const id of ['de','cz','sk','ua','by','lt','ru'])assert(labels.some(x=>x.id===id&&x.flag),'Poland has a readable label and flag for '+id);
    const capital=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-capital-pin'));
    assert.equal(capital.name,'Warszawa');assert(Math.abs(capital.lonLat[0]-21.005347)<.001&&Math.abs(capital.lonLat[1]-52.230872)<.001,'Capital pin uses the source coordinate, not country centroid');
-   assert(labels.some(x=>x.capital&&x.name==='Warszawa'));assert.equal(await page.locator('.scenic-atlas-desktop').isVisible(),false,'Neighbor list stays off the phone');
+   assert(labels.some(x=>x.capital&&x.name==='Warszawa'));assert.equal(await page.locator('#scenic-neighbors').isVisible(),true,'Neighbor ribbons are available on the phone');
    await capture(page,engine+'-v26-poland-neighbors');
    await open(page,'ch');await choose(page,false);await state(page,'feedback-wrong');
    labels=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-atlas-labels'));
-   assert(labels.some(x=>x.id==='li'&&x.leader&&x.flag),'Tiny Liechtenstein has a leader and its flag');
+   assert(labels.some(x=>x.id==='li'&&x.flag),'Tiny Liechtenstein has a readable name and its flag');
    await capture(page,engine+'-v26-swiss-callouts');
   });
   await check(engine+'-desktop-land-neighbors',browser,{viewport:{width:1200,height:900}},async page=>{

@@ -30,3 +30,22 @@ test('all playable European countries have registered geometry, source capitals 
  assert.deepEqual(byId.get('pl').neighbors,['by','cz','de','lt','ru','sk','ua']);assert.deepEqual(byId.get('li').neighbors,['at','ch']);assert.deepEqual(byId.get('is').neighbors,[]);
  assert(data.features.some(f=>f.id==='kz')&&data.features.some(f=>f.id==='ir'),'Asia continues through the east of the atlas');
 });
+
+test('near cameras center every country and preserve the phone map ratio',async()=>{
+ const {nearAtlasFrame,fullAtlasFrame}=await import('../flagi/scenic-camera.mjs');
+ const {features}=JSON.parse(await readFile(new URL('../assets/maps/europe-atlas-v26.json',import.meta.url)));
+ for(const ratio of [1.25,1.5,1.9])for(const record of FLAGS.filter(r=>r.continent==='europe')){
+  const box=features.find(f=>f.id===record.id).box,frame=nearAtlasFrame(box,330,330/ratio);
+  assert(Math.abs(frame.x+frame.w/2-box.x-box.w/2)<1e-8);assert(Math.abs(frame.y+frame.h/2-box.y-box.h/2)<1e-8);
+  assert(Math.abs(frame.w/frame.h-ratio)<1e-8);assert(box.w/frame.w<=.62&&box.h/frame.h<=.62);
+  const full=fullAtlasFrame(330,330/ratio);assert(full.w<=600&&full.h<=443.001);assert(full.x>=0&&full.y>=0&&full.x+full.w<680&&full.y+full.h<500);
+ }
+});
+
+test('Polish neighbor order starts north with Kaliningrad and proceeds clockwise',async()=>{
+ const {clockwiseNeighbors}=await import('../flagi/scenic-camera.mjs');
+ const {features}=JSON.parse(await readFile(new URL('../assets/maps/europe-atlas-v26.json',import.meta.url)));
+ const svg=await readFile(new URL('../assets/maps/europe-atlas-v26.svg',import.meta.url),'utf8');
+ const geometry=[...svg.matchAll(/data-country="([a-z]+)" d="([^"]+)"/g)].map(m=>({id:m[1],path:m[2]}));
+ assert.deepEqual(clockwiseNeighbors(features.find(f=>f.id==='pl'),features,geometry),['ru','lt','by','ua','sk','cz','de']);
+});

@@ -1,6 +1,6 @@
 // True anchors stay on their countries. A leader connects a crowded or small
 // state to readable text/flag; neither the paint edge nor another name cuts it.
-export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,allowed=()=>true,near=true,max=8}){
+export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,allowed=()=>true,onCountry=()=>false,near=true,max=8}){
  const placed=[],reserved=[{x:width-91,y:height-43,w:91,h:43}];
  const overlaps=(a,b)=>a.x<b.x+b.w+4&&a.x+a.w+4>b.x&&a.y<b.y+b.h+4&&a.y+a.h+4>b.y;
  const crosses=(ax,ay,bx,by,box)=>{
@@ -29,12 +29,12 @@ export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,
    const box={x:Math.max(13,Math.min(width-w-13,item.ax+dx-w/2)),y:Math.max(15,Math.min(height-h-15,item.ay+dy-h/2)),w,h},key=box.x.toFixed(2)+':'+box.y.toFixed(2);
    if(seen.has(key))continue;seen.add(key);
    if(reserved.some(r=>overlaps(box,r)))continue;
-   if(item.capital&&overlaps(box,{x:item.ax-7,y:item.ay-13,w:14,h:17}))continue;
+   if(item.capital&&overlaps(box,{x:item.ax-10,y:item.ay-10,w:20,h:20}))continue;
    if(items.some(p=>p.key!==item.key&&p.ax>box.x-3&&p.ax<box.x+box.w+3&&p.ay>box.y-3&&p.ay<box.y+box.h+3))continue;
    if(!item.capital&&!item.selected&&blocked(box))continue;
    if(!allowed(box))continue;
    const x=box.x+w/2,y=box.y+2;
-   yield {...item,lines,box,x,y,leader:item.small||Math.hypot(x-item.ax,box.y+h/2-item.ay)>14};
+   yield {...item,lines,box,x,y,leader:!onCountry(item,box)&&(item.small||Math.hypot(x-item.ax,box.y+h/2-item.ay)>14)};
   }
  }
  // Reserve the most constrained genuine neighbours first. A wide country at

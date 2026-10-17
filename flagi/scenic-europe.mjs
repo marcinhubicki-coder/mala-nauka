@@ -1,8 +1,10 @@
 /* Scenic Europe proof of concept: one prebaked map, one highlighted SVG country.
    All coordinates are registered to Natural Earth's 680 × 500 viewBox. */
 const EUROPE_IMAGE=new URL('assets/maps/europe-painted-v27.webp',document.baseURI).href;
+import {registerAtlasImage} from './scenic-registration.mjs';
 import {FLAGS} from '../data/flags.mjs';
 import {SCENIC} from './scenic-config.mjs';
+import {nearAtlasFrame,fullAtlasFrame,clockwiseNeighbors} from './scenic-camera.mjs';
 const records=new Map(FLAGS.map(r=>[r.id,r]));
 let imagePromise;
 let geographyPromise;
@@ -13,7 +15,12 @@ async function loadGeography(){
 }
 function loadFlag(id){
  if(!records.has(id))return Promise.resolve(null);
- if(!flagImages.has(id))flagImages.set(id,new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>{flagImages.delete(id);resolve(null)};img.src=new URL(records.get(id).flagSvg,document.baseURI).href;}));
+ if(!flagImages.has(id))flagImages.set(id,new Promise(resolve=>{
+  const img=new Image();let finished=false;
+  const done=value=>{if(finished)return;finished=true;clearTimeout(timer);img.onload=img.onerror=null;if(!value)flagImages.delete(id);resolve(value);};
+  const timer=setTimeout(()=>done(null),1600);
+  img.onload=()=>done(img);img.onerror=()=>done(null);img.src=new URL(records.get(id).flagSvg,document.baseURI).href;
+ }));
  return flagImages.get(id);
 }
 function loadImage(){
@@ -21,7 +28,7 @@ function loadImage(){
   imagePromise=new Promise((resolve,reject)=>{
    const image=new Image(),timer=setTimeout(()=>{image.src='';reject(new Error('Map bitmap timeout'));},SCENIC.mapTimeoutMs);
    image.onload=()=>{clearTimeout(timer);resolve(image)};image.onerror=()=>{clearTimeout(timer);reject(new Error('Map bitmap unavailable'))};image.src=EUROPE_IMAGE;
-  }).catch(error=>{imagePromise=null;throw error});
+  }).then(async image=>{try{const response=await fetch(new URL('assets/maps/europe-iberia-registration-v28.json',document.baseURI));if(!response.ok)throw Error('registration');return registerAtlasImage(image,await response.json());}catch{return image;}}).catch(error=>{imagePromise=null;throw error});
  }
  return imagePromise;
 }
@@ -35,40 +42,6 @@ const visibleFraction=(a,b)=>{
 };
 const neighboring=(frame,country)=>visibleFraction(frame,country)>.22 ||
  (country.cx>frame.x&&country.cx<frame.x+frame.w&&country.cy>frame.y&&country.cy<frame.y+frame.h);
-function cropNear(svg,selected,mapWidth,mapHeight,protectedTop=.25){
- const original=svg.viewBox.baseVal,box=boxOf(selected);
- if(!box)return null;
- const base={x:original.x,y:original.y,w:original.width,h:original.height};
- const ratio=Math.max(.65,(mapWidth||320)/(mapHeight||300));
- const peers=[...svg.querySelectorAll('.country')].filter(x=>x!==selected).map(boxOf).filter(Boolean);
- const centerX=box.cx,centerY=box.cy;
- let chosen=null,best=Infinity;
- const minimum=Math.max(160,box.w*1.8,box.h*ratio/(.92-protectedTop));
- for(let width=minimum;width<=460;width+=6){
-  const height=width/ratio;
-  if(width>base.w)break;
-  for(const dx of [0,-.09,.09,-.18,.18,-.27,.27])for(const dy of [0,-.06,.06,-.12,.12]){
-   const x=Math.max(base.x,Math.min(base.x+base.w-width,centerX-width/2+dx*width));
-   const y=Math.max(base.y-height*protectedTop,Math.min(base.y+base.h-height+height*.15,centerY-height*(protectedTop+.92)/2+dy*height));
-   // Keep the complete country and breathing room. Slightly shifting the
-   // camera can avoid a crowded Balkan/Benelux corner without excessive zoom.
-   if(box.x<x+width*.08||box.x+box.w>x+width*.92||box.y<y+height*protectedTop||box.y+box.h>y+height*.92)continue;
-   const frame={x,y,w:width,h:height},visible=peers.filter(p=>neighboring(frame,p)).length;
-   const missing=Math.max(0,6-visible),extra=Math.max(0,visible-10);
-   const score=missing*14+extra*9+Math.abs(visible-8)*1.6+width*.016+(Math.abs(dx)+Math.abs(dy))*4;
-   if(score<best){best=score;chosen={...frame,visible};}
-  }
-  if(chosen?.visible>=7&&chosen.visible<=10)break;
- }
- if(!chosen){
-  // Very large countries use a wider view, including transparent space outside
-  // the continental raster. Both the bitmap and SVG keep the same coordinates.
-  const w=Math.max(200,minimum),h=w/ratio;
-  chosen={x:centerX-w/2,y:centerY-h*(protectedTop+.92)/2,w,h};
-  chosen.visible=peers.filter(p=>neighboring(chosen,p)).length;
- }
- return chosen;
-}
 const n='http://www.w3.org/2000/svg';
 export async function mountScenicEurope(node,{record,language='pl'}={}){
  if(!node||!record)return {found:false,reason:'missing'};
@@ -84,9 +57,9 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
  const geometry=[...svg.querySelectorAll('.country')].map(n=>({id:n.dataset.country,path:n.getAttribute('d'),box:boxOf(n)}));
  const result={svg,active,fallbackMarker:selectedFeature.box.w*selectedFeature.box.h<5};
  if(result.fallbackMarker)node.dataset.microstate='marker';
- const caption=node.closest('.scenic-map-inner')?.querySelector('.scenic-map-caption'),mapRect=node.getBoundingClientRect();
- const protectedTop=caption?Math.min(.38,Math.max(.06,(caption.getBoundingClientRect().bottom+7-mapRect.top)/mapRect.height)):.06;
- const crop=cropNear(svg,active,node.clientWidth,node.clientHeight,protectedTop);
+ const mapRect=node.getBoundingClientRect();
+ const crop=nearAtlasFrame(selectedFeature.box,node.clientWidth,node.clientHeight);
+ crop.visible=geometry.filter(p=>p.id!==record.id&&neighboring(crop,p.box)).length;
  const labels=[...svg.querySelectorAll('.country')].map(country=>({id:country.dataset.country,box:boxOf(country),shape:country,feature:featureById.get(country.dataset.country)})).filter(p=>p.box&&records.has(p.id));
  const hit=document.createElement('canvas').getContext('2d');
  if(crop)for(const item of labels){
@@ -163,8 +136,8 @@ export async function mountScenicEurope(node,{record,language='pl'}={}){
   }
   node.append(layer);node.dataset.labelCount=String(accepted.length);
  }
- const ratio=mapRect.width/mapRect.height,fullWidth=Math.max(680,500*ratio),fullHeight=fullWidth/ratio;
- const visibleLabels=labels.filter(item=>neighboring(crop,item.box)||selectedFeature.neighbors.includes(item.id));
+
+ const visibleLabels=labels.filter(item=>selectedFeature.neighbors.length?selectedFeature.neighbors.includes(item.id):neighboring(crop,item.box));
  const flags=Object.fromEntries(await Promise.all(visibleLabels.map(async item=>[item.id,await loadFlag(item.id)])));
- return {found:true,svg,active,crop,fullCrop:{x:(680-fullWidth)/2,y:(500-fullHeight)/2,w:fullWidth,h:fullHeight},geometry,neighbors:selectedFeature.neighbors,capital:selectedFeature.capital,flags,labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,nearPoint:item.nearPoint,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
+ return {found:true,svg,active,crop,fullCrop:fullAtlasFrame(mapRect.width,mapRect.height),geometry,neighbors:clockwiseNeighbors(selectedFeature,metadata.features,geometry),capital:selectedFeature.capital,flags,labels:labels.map(item=>({id:item.id,name:records.get(item.id).country,point:item.point,nearPoint:item.nearPoint,box:item.box})),image:decodedImage,bitmap:node.dataset.mapImage==='ready',microstate:!!result.fallbackMarker};
 }

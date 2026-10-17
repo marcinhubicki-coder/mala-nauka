@@ -17,6 +17,8 @@ on:
       - 'assets/maps/europe-edge-*'
       - 'assets/maps/europe-atlas-v26.*'
       - 'assets/maps/europe-painted-v27.*'
+      - 'assets/maps/europe-iberia-registration-v28.json'
+      - 'assets/fonts/eb-garamond-*'
       - 'tests/scenic-atlas-labels.test.mjs'
       - 'tools/assemble-scenic-atlas-hd.mjs'
       - 'adventure-preview.mjs'
@@ -54,6 +56,9 @@ jobs:
         run: |
           test -s assets/maps/europe-painted-v27.webp
           test -s assets/maps/europe-atlas-v26.svg
+          test -s assets/maps/europe-iberia-registration-v28.json
+          test -s assets/fonts/eb-garamond-polish-v1.woff2
+          test -s assets/flags/adventure/scenic-task-sign-v28.webp
           node --input-type=module -e "import fs from 'node:fs'; const atlas=JSON.parse(fs.readFileSync('assets/maps/europe-atlas-v26.json')); if(atlas.features.filter(x=>x.capital).length<45) throw Error('Missing capital geography');"
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa

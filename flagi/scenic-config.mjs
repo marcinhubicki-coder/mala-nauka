@@ -4,8 +4,7 @@ export const SCENIC = Object.freeze({
   sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
   // Cloth anchors to the mast painted in the single full-screen scene.
   mast: Object.freeze({attachX:.288, attachY:.283}),
-  atlas: Object.freeze({top:.212,height:.410,headerHeight:112,viewMs:520,
-    titles:Object.freeze({pl:{size:44,lines:['Polska']},ch:{size:38,lines:['Szwajcaria']},lu:{size:32,lines:['Luksemburg']},li:{size:32,lines:['Liechten','stein']},ba:{size:30,lines:['Bośnia i','Hercegowina']},mk:{size:32,lines:['Macedonia','Północna']},gb:{size:32,lines:['Wielka','Brytania']}})}),
+  atlas: Object.freeze({top:.184,height:.410,headerHeight:92,viewMs:520}),
   flagTimeoutMs: 5000, mapTimeoutMs: 6000, maxDpr: 2
 });
 export const seedOf = value => [...String(value)].reduce((n,c)=>(Math.imul(n,31)+c.charCodeAt(0))>>>0,13579);

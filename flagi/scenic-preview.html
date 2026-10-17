@@ -3,16 +3,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <base href="../"><title>Mała Nauka · Flagi — pejzażowy wariant</title>
 <link rel="preload" href="assets/maps/europe-painted-v27.webp" as="image" type="image/webp">
-<meta name="theme-color" content="#85c8ed">
+<meta name="theme-color" content="#62b7ee">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="assets/flags/adventure/scenic-scene-v14.webp" as="image" type="image/webp">
 <link rel="stylesheet" href="flagi/adventure.css?v=17-framing">
 <link rel="stylesheet" href="flagi/cloth-prebaked.css?v=1">
+<link rel="preload" href="assets/fonts/eb-garamond-polish-v1.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/fredoka-polish-v1.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="assets/flags/adventure/scenic-paper-v14.webp" as="image" type="image/webp">
-<link rel="stylesheet" href="flagi/scenic-preview.css?v=27">
+<link rel="stylesheet" href="flagi/scenic-preview.css?v=28">
 <script src="flagi/europe-map.js?v=7"></script><script src="flagi/map-microstates.js?v=1"></script></head>
 <body><main id="scenic-screen" class="scenic-screen" aria-label="Podgląd wariantu pejzażowego gry Flagi"><div class="scenic-foreground" aria-hidden="true"></div><div class="scenic-stage" id="scenic-stage">
-  <div class="scenic-ios-status" aria-hidden="true"><span>9:41</span><svg width="58" height="14" viewBox="0 0 58 14"><g fill="currentColor"><rect x="0" y="9" width="3" height="4" rx="1"/><rect x="5" y="6" width="3" height="7" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="13" rx="1"/></g><path d="M22 5q6-6 12 0M25 8q3-3 6 0" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="28" cy="11" r="1.5" fill="currentColor"/><rect x="39" y="2" width="15" height="10" rx="2" fill="none" stroke="currentColor"/><rect x="41" y="4" width="11" height="6" rx="1" fill="currentColor"/><path d="M56 5v4" stroke="currentColor" stroke-width="2"/></svg></div>
   <header class="scenic-header"><button class="scenic-nav" data-action="restart" aria-label="Rozpocznij ponownie">×</button><div class="scenic-timer"><strong id="scenic-clock">2:46</strong><small id="scenic-clock-caption">Flagi</small></div><button class="scenic-nav" data-action="pause" aria-label="Pauza" aria-pressed="false">Ⅱ</button></header>
   <div id="scenic-progress" class="scenic-progress" aria-label="Postęp rozgrywki"><i id="scenic-progress-fill"></i></div>
   <div class="scenic-meta"><span class="scenic-task" id="scenic-task">Zadanie 1</span><span class="scenic-lang">PL</span><strong class="scenic-score" id="scenic-score">0 pkt</strong></div>
@@ -23,6 +25,7 @@
     <p class="scenic-prompt">Który kraj ma taką flagę?</p>
   </div>
   <section class="scenic-answers" id="scenic-answers" aria-label="Wybierz państwo"></section>
+  <nav id="scenic-neighbors" class="scenic-neighbors" aria-label="Sąsiedzi kraju" hidden></nav>
   <div class="scenic-feedback" id="scenic-feedback" role="status" aria-live="polite"></div>
   <section class="scenic-map-scroll" id="scenic-map-scroll" aria-label="Mapa kraju" aria-hidden="true">
     <span class="scenic-paper-shadow" aria-hidden="true"></span>
@@ -37,8 +40,8 @@
     <div class="scenic-map-inner"><div class="scenic-map-caption"><strong id="scenic-country-name"></strong><div class="scenic-city"><i class="scenic-capital-icon" aria-hidden="true"></i><span id="scenic-country-capital"></span></div><img id="scenic-map-flag" class="scenic-map-flag" alt="" decoding="async"></div><div class="scenic-europe-map"><div id="scenic-europe-map"></div></div></div>
     <nav inert class="scenic-atlas-tools" aria-label="Widok mapy"><button type="button" data-map-view="europe" aria-label="Cała Europa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg></button><button type="button" data-map-view="near" aria-label="Kraj i jego otoczenie" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M10.5 7v7M7 10.5h7"/></svg></button></nav>
   </section>
-    <aside class="scenic-atlas-desktop" aria-label="Sąsiedzi i informacje o atlasie"><p><b>Atlas odkrywcy</b><br>Wybierz globus lub lupę, by zmienić zasięg mapy.</p><section id="scenic-desktop-neighbors"></section><p>Pinezka pokazuje położenie stolicy. Zielony obszar wskazuje poznawany kraj.</p><small>Granice i stolice: Natural Earth. Ilustracja: imagegen.</small></aside>
+    <aside class="scenic-atlas-desktop" aria-label="Sąsiedzi i informacje o atlasie"><p><b>Atlas odkrywcy</b><br>Wybierz globus lub lupę, by zmienić zasięg mapy.</p><section id="scenic-desktop-neighbors"></section><p>Symbol budynku pokazuje położenie stolicy. Wyróżniony obszar wskazuje poznawany kraj.</p><small>Granice i stolice: Natural Earth. Ilustracja: imagegen.</small></aside>
     <img id="scenic-compass" class="scenic-compass" src="assets/flags/adventure/scenic-compass-v10.webp" alt="" aria-hidden="true">
   <div class="scenic-sand-canvas-holder" aria-hidden="true"><canvas id="scenic-sand-canvas"></canvas></div>
   <div class="scenic-controls" id="scenic-controls"><div class="scenic-auto-hint" id="scenic-auto-hint" hidden>Za chwilę następna flaga…</div><div class="scenic-swipe" id="scenic-swipe" hidden role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Przesuń, aby przejść dalej"><span class="scenic-swipe-knob continue-handle" id="scenic-swipe-knob" aria-hidden="true"><img src="assets/flags/adventure/scenic-compass-v10.webp" alt="" width="56" height="56"></span><span class="continue-copy">Przesuń, aby przejść dalej</span><span class="scenic-swipe-arrows" aria-hidden="true">❯❯</span></div></div>
-</div></main><script type="module" src="flagi/scenic-preview.mjs?v=27"></script></body></html>
+</div></main><script type="module" src="flagi/scenic-preview.mjs?v=28"></script></body></html>

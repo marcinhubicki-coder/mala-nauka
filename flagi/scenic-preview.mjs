@@ -59,7 +59,6 @@ function updateHud(){
   $('scenic-progress').setAttribute('aria-label','Pozostało '+seconds+' sekund');
 }
 function fitFlag(){
-  app.querySelector('.scenic-ios-status').hidden=$('scenic-stage').offsetTop>0;
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
   const ratio=(app.dataset.country==='ch'||app.dataset.country==='va'?1:4/3)/1.15;
   const stage=$('scenic-stage'),top=app.clientHeight*SCENIC.mast.attachY-stage.offsetTop;
@@ -73,24 +72,51 @@ function showFlag(record){
 }
 function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
-  // Choose a fixed tier once for the actual platform font. The permanent slot
-  // keeps the map steady; no continuous scaling or animation-frame fitting.
-  const record=current(),spec=SCENIC.atlas.titles[record.id]||{size:record.country.length>10?32:record.country.length>7?38:44,lines:record.country.split(' ')};
-  title.parentElement.style.setProperty('--title-lines',spec.lines.length);title.setAttribute('aria-label',record.country);
-  title.replaceChildren(...spec.lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
-  const parentStyle=getComputedStyle(title.parentElement),available=title.parentElement.clientWidth-parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight);
-  for(const size of [spec.size,...[44,38,32,30].filter(size=>size<spec.size)]){
-    title.style.fontSize=size+'px';title.parentElement.style.setProperty('--title-size',size+'px');
-    const style=getComputedStyle(title);captionMeasure.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';
-    if([...title.children].every(line=>line.scrollWidth<=title.clientWidth+1&&captionMeasure.measureText(line.textContent).width<=available+1))break;
+  const record=current(),parent=title.parentElement,style=getComputedStyle(title);
+  const available=parent.clientWidth-parseFloat(getComputedStyle(parent).paddingRight);
+  const fits=(text,size)=>{captionMeasure.font=`700 ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing='-.35px';return captionMeasure.measureText(text).width<=available;};
+  let lines=[record.country],size=[46,44,42,40,38,36,34,32].find(n=>fits(record.country,n));
+  if(!size){
+    const words=record.country.split(' ');let best=Infinity;
+    for(let i=1;i<words.length;i++){const pair=[words.slice(0,i).join(' '),words.slice(i).join(' ')];captionMeasure.font=`700 30px ${style.fontFamily}`;const width=Math.max(...pair.map(t=>captionMeasure.measureText(t).width));if(width<best){best=width;lines=pair;}}
+    size=30;
+    if(lines.length===1)size=32; // Every single-word European name fits this bundled face.
   }
+  title.setAttribute('aria-label',record.country);title.style.fontSize=size+'px';
+  title.replaceChildren(...lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
+  parent.style.setProperty('--title-lines',lines.length);parent.style.setProperty('--title-size',size+'px');
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
-  sheet.style.top=viewport.height*SCENIC.atlas.top+'px';sheet.style.height=viewport.height*(viewport.height<760?.395:SCENIC.atlas.height)+'px';
+  sheet.style.top=viewport.height*SCENIC.atlas.top+'px';sheet.style.height=viewport.height*(viewport.height<760?SCENIC.atlas.height-.02:SCENIC.atlas.height)+'px';
   $('scenic-compass').style.top=(viewport.height*SCENIC.atlas.top-24)+'px';
   if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
+async function showNeighbors(result,owner){
+  if(!result?.found)return;
+  const nav=$('scenic-neighbors'),ids=result.neighbors.filter(id=>records.has(id));
+  const buttons=ids.map(id=>{const b=document.createElement('button');b.type='button';b.dataset.neighbor=id;b.textContent=records.get(id).country;b.setAttribute('aria-pressed','false');return b;});
+  const label=document.createElement('b');label.textContent=`Sąsiedzi (${ids.length}):`;
+  const items=[label,...buttons];if(!ids.length){const empty=document.createElement('span');empty.textContent='brak lądowych';items.push(empty);}
+  const measure=document.createElement('div');measure.className='scenic-neighbor-row is-measuring';measure.append(...items);nav.replaceChildren(measure);nav.hidden=false;
+  const sizes=items.map(n=>n.getBoundingClientRect().width),max=nav.clientWidth-26;
+  // Partition in compass order. Prefer a broad first ribbon and a shorter second
+  // one; avoid leaving a lone short country on the last ribbon.
+  let best=null;
+  function partition(index,rows){
+    if(index===items.length){const widths=rows.map(a=>a.reduce((sum,i)=>sum+sizes[i],0)+(a.length-1)*5);const score=rows.length*10000+Math.max(...widths)-Math.min(...widths)+(widths.at(-1)>widths[0]?90:0)+(rows.at(-1).length===1&&sizes[rows.at(-1)[0]]<110?140:0);if(!best||score<best.score)best={rows:rows.map(a=>[...a]),score};return;}
+    const row=[];let width=0;
+    for(let i=index;i<items.length;i++){width+=sizes[i]+(row.length?5:0);if(width>max&&row.length)break;row.push(i);partition(i+1,[...rows,[...row]]);}
+  }
+  partition(0,[]);nav.replaceChildren();
+  for(const indices of best.rows){const row=document.createElement('div');row.className='scenic-neighbor-row';row.append(...indices.map(i=>items[i]));nav.append(row);}
+  await Promise.all([...nav.children].map((row,i)=>motion.matches?Promise.resolve():owner.animate(row,[{transform:'translateX(110%)',opacity:0},{transform:'translateX(0)',opacity:1}],{duration:360+i*55,easing:'cubic-bezier(.2,.8,.2,1)',fill:'none'})));
+}
+$('scenic-neighbors').addEventListener('click',event=>{
+  const button=event.target.closest('[data-neighbor]');if(!button||!readyForNext||paused||visibilityPaused)return;
+  const active=button.getAttribute('aria-pressed')!=='true';
+  button.setAttribute('aria-pressed',String(active));mapInk.setNeighbor(button.dataset.neighbor,active);
+});
 async function warmFlag(record){
   if(!record)return;
   // Bound a slow or missing image. Existing SVG/Canvas fallback stays available.
@@ -100,6 +126,7 @@ async function warmFlag(record){
 function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
+  $('scenic-neighbors').hidden=true;$('scenic-neighbors').replaceChildren();
   mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');sheet.dataset.view='near';
   for(const button of sheet.querySelectorAll('[data-map-view]'))button.setAttribute('aria-pressed',String(button.dataset.mapView==='near'));
   swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placeScroll();
@@ -130,7 +157,7 @@ async function respond(chosenId){
   void opening.catch(()=>{});
   const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
   let timer,mapResult;
-  try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs))]);}
+  try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs+2000))]);}
   finally{clearTimeout(timer);}
   if(!alive(owner))return;
   if(!mapResult?.found){
@@ -148,6 +175,7 @@ async function respond(chosenId){
   await mapInk.prepare(mapResult,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
   await opening;if(!alive(owner))return;
   await mapInk.reveal({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
+  await showNeighbors(mapResult,owner);if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
     hint.hidden=false;

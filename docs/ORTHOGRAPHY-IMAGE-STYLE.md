@@ -36,7 +36,7 @@ To nie są plansze edukacyjne, infografiki ani kolaże.
 - bez przezroczystego marginesu,
 - bez napisów, liter, numerów i etykiet,
 - bez logo, watermarków i elementów UI,
-- finalny asset do gry powinien mieć **maks. ok. 350 KB**, o ile kompresja nie psuje jakości twarzy, włosów, światła ani gradientów.
+- finalny asset do gry ma **twardy limit 250 KB (256 000 B)** przy wymiarach **1254 × 1254 px**, preferowany format **WebP**; dobieraj jakość adaptacyjnie i odrzuć obraz, jeśli limit wymaga widocznego zniszczenia detali.
 
 ### Kadrowanie pod bańkę
 Gra przycina ilustrację organiczną maską, dlatego:
@@ -513,7 +513,7 @@ Każdy obraz powinien przejść poniższe pytania:
 ### Technika
 - Czy format jest 1:1?
 - Czy źródło ma co najmniej 1254 × 1254 px lub równoważną jakość Retina?
-- Czy finalny plik mieści się w docelowym budżecie ok. 350 KB bez widocznej degradacji?
+- Czy finalny plik WebP ma dokładnie 1254 × 1254 px i ≤250 KB (256 000 B) bez widocznej degradacji?
 - Czy w batchu istnieje dokładnie jeden plik na jedno hasło?
 - Czy nowy asset jest obecny w indeksie biblioteki i nie jest duplikatem po hashu?
 - Czy `assetPath` właściwego słowa wskazuje opublikowany plik?

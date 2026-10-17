@@ -1,7 +1,7 @@
-import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=30';
-import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=30';
+import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=31';
+import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=31';
 import {FLAGS} from '../data/flags.mjs';
-import {drawCapitalSymbol} from './scenic-capital.mjs?v=30';
+import {drawCapitalSymbol} from './scenic-capital.mjs?v=31';
 const EUROPE_IDS=new Set(FLAGS.filter(record=>record.continent==='europe').map(record=>record.id));
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};

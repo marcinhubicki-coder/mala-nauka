@@ -117,8 +117,13 @@ html{background:#405024 url('../assets/flags/adventure/scenic-scene-v29.webp') c
 .scenic-rail-center{inset:-2px -5px;background-image:url('../assets/flags/adventure/scenic-swipe-grain-v29.webp');z-index:-1}
 .scenic-swipe .continue-copy,.scenic-swipe-arrows{z-index:1}
 
-/* Layout viewport fills iOS standalone; controls alone respect the insets. */
-html,body{overscroll-behavior:none;min-height:100%}
-@media(display-mode:standalone),(display-mode:fullscreen){.scenic-screen{min-height:100lvh}}
+/* Give the root its own viewport height: 100% inherits the shortened iOS
+   standalone containing block. Insets belong only to the controls inside it. */
+html,body{overscroll-behavior:none;height:100vh;height:100dvh;min-height:100dvh}
+@media(display-mode:standalone),(display-mode:fullscreen){html,body,.scenic-screen{height:100vh;height:100lvh;min-height:100lvh}}
+.scenic-neighbors[data-rows="3"] .scenic-neighbor-row{min-height:33px;padding-top:6px;padding-bottom:6px}
+.scenic-neighbors[data-wide="true"]{width:91%}
+.scenic-neighbors[data-wide="true"] button{font-size:10px}
+.scenic-neighbors[data-wide="true"] .scenic-neighbor-row:not(:first-child){max-width:var(--neighbor-narrow-width)}
 .scenic-timer,.scenic-timer strong,.scenic-timer small{text-shadow:none;filter:none}
 .scenic-paper-row{padding:5px 16px 5px 38px}.scenic-prompt{width:100%;font:700 clamp(16px,4.3vw,19px)/1.12 ScenicRound,sans-serif;white-space:normal;text-wrap:balance;transform:translateY(-1px)}

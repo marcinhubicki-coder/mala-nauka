@@ -1,4 +1,4 @@
-import {SCENIC,randomFrom} from './scenic-config.mjs?v=30';
+import {SCENIC,randomFrom} from './scenic-config.mjs?v=31';
 const mix=(a,b,t)=>a+(b-a)*t;
 const ease=t=>t*t*(3-2*t);
 

@@ -144,11 +144,33 @@ try{
   await check(engine+'-v30-iphone-pwa-question-and-layout',browser,{viewport:{width:390,height:844},reducedMotion:'reduce',isMobile:true},async page=>{
    await open(page,'pl');await page.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px;height:calc(100dvh - 47px);min-height:100lvh}'});
    await page.waitForFunction(()=>document.querySelector('#scenic-screen').getBoundingClientRect().height>=843.9);
+   await page.waitForFunction(()=>{const a=document.querySelector('#scenic-answers').getBoundingClientRect(),b=document.querySelector('.scenic-boy').getBoundingClientRect();return Math.abs(a.bottom-b.top-10)<1;});
    const initial=await page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),main=r('main'),paper=r('#scenic-paper-row'),prompt=r('.scenic-prompt'),answers=r('#scenic-answers'),boy=r('.scenic-boy');return {height:main.height,promptFits:prompt.top>=paper.top+5&&prompt.bottom<=paper.bottom-5,overlap:answers.bottom-boy.top,boyBottom:boy.bottom-main.bottom,shadow:[getComputedStyle(document.querySelector('#scenic-clock')).textShadow,getComputedStyle(document.querySelector('#scenic-clock-caption')).textShadow],language:r('#scenic-language').width};});
    assert(Math.abs(initial.height-844)<.1,'Fill the iPhone layout viewport, allowing subpixel rounding');assert(initial.promptFits);assert(Math.abs(initial.overlap-10)<1);assert(initial.boyBottom>=10&&initial.boyBottom<=14,'Boy continues into the bottom edge');assert.deepEqual(initial.shadow,['none','none']);assert(initial.language<=33);await capture(page,engine+'-v30-pwa-question');
    await choose(page,false);await state(page,'feedback-wrong');
    const layout=await page.evaluate(()=>{const a=document.querySelector('#scenic-answers').getBoundingClientRect(),rows=[...document.querySelectorAll('.scenic-neighbor-row')].map(n=>n.getBoundingClientRect());return {right:rows.every(r=>Math.abs(r.right-a.right)<1),gap:rows.map((r,i)=>i?r.top-rows[i-1].bottom:r.top-a.bottom),answerGap:parseFloat(getComputedStyle(document.querySelector('#scenic-answers')).rowGap)};});
    assert(layout.right);assert(layout.gap.every(g=>Math.abs(g-layout.answerGap)<1));await capture(page,engine+'-v30-pwa-map');
+  });
+  for(const sample of [{name:'pwa-france',id:'fr',height:844,safe:true},{name:'pwa-russia',id:'ru',height:844,safe:true},{name:'short-germany',id:'de',height:700},{name:'short-russia',id:'ru',height:700}])await check(engine+'-v31-'+sample.name,browser,{viewport:{width:390,height:sample.height},reducedMotion:'reduce',isMobile:true},async page=>{
+   await open(page,sample.id);
+   if(sample.safe){
+    // Exercise the standalone CSS branch, not an emulation of native iOS chrome.
+    // Desktop engines cannot reproduce its status-bar containing-block bug.
+    await page.evaluate(()=>{for(const sheet of document.styleSheets)for(const rule of sheet.cssRules)if(rule.conditionText?.includes('display-mode:'))rule.conditionText='all';});
+    await page.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px}'});
+   }
+   await page.waitForFunction(()=>{const a=document.querySelector('#scenic-answers').getBoundingClientRect(),b=document.querySelector('.scenic-boy').getBoundingClientRect();return Math.abs(a.bottom-b.top-10)<1;});
+   const choices=await page.locator('#scenic-answers').boundingBox(),closedBottom=await page.locator('#scenic-paper-row').evaluate(n=>n.getBoundingClientRect().bottom);
+   await choose(page,false);await state(page,'feedback-wrong');
+   async function audit(){return page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),main=r('main'),paper=r('#scenic-map-scroll'),answers=r('#scenic-answers'),nav=r('#scenic-neighbors'),controls=r('#scenic-controls'),knob=r('#scenic-swipe-knob'),rows=[...document.querySelectorAll('.scenic-neighbor-row')].map(n=>n.getBoundingClientRect());return {root:document.documentElement.clientHeight,body:document.body.clientHeight,main:main.height,viewport:innerHeight,paperTop:paper.top,chromeBottom:Math.max(r('#scenic-language').bottom,r('#scenic-task').bottom),paperBottom:paper.bottom,answerTop:answers.top,navBottom:nav.bottom,railTop:Math.min(controls.top,knob.top),rows:rows.length,count:document.querySelectorAll('[data-neighbor]').length,right:rows.every(x=>Math.abs(x.right-answers.right)<1),gaps:rows.map((x,i)=>x.top-(i?rows[i-1].bottom:answers.bottom)),height:rows.map(x=>x.height)};});}
+   for(const lang of ['pl','en']){
+    if(lang==='en'){await page.locator('#scenic-language').click();await page.waitForFunction(()=>!document.querySelector('#scenic-language').disabled);}
+    const a=await audit();assert(Math.abs(a.root-a.viewport)<1&&Math.abs(a.body-a.viewport)<1&&Math.abs(a.main-a.viewport)<1,'Root, body and scene fill the viewport: '+JSON.stringify(a));
+    assert(a.paperTop>=a.chromeBottom+5.8,'Expanded paper clears language and task');assert(Math.abs(a.paperBottom-closedBottom)<1,'Closed and open paper have the same bottom');assert(a.answerTop-a.paperBottom>=9.8);assert(a.navBottom+5.8<=a.railTop,'Every neighbor ribbon stays above the slider: '+JSON.stringify(a));assert(a.right&&a.gaps.every(x=>Math.abs(x-6)<1));assert(a.height.every(x=>x>=32.9));assert.equal(a.count,sample.id==='fr'?8:sample.id==='de'?9:11);
+    const last=page.locator('#scenic-neighbors [data-neighbor]').last(),pressed=await last.getAttribute('aria-pressed');await last.click();assert.equal(await last.getAttribute('aria-pressed'),String(pressed!=='true'));
+    assert.deepEqual(await page.locator('#scenic-answers').boundingBox(),choices,'Choices stay fixed while revealing and translating the map');await capture(page,engine+'-v31-'+sample.name+'-'+lang);
+   }
+   if(sample.safe){await page.setViewportSize({width:390,height:797});await page.waitForFunction(()=>Math.abs(document.querySelector('main').getBoundingClientRect().height-797)<1);await page.waitForFunction(()=>document.querySelector('#scenic-neighbors').getBoundingClientRect().bottom+5.8<=document.querySelector('#scenic-controls').getBoundingClientRect().top);const a=await audit();assert.equal(a.root,797);assert(a.navBottom+5.8<=a.railTop);await capture(page,engine+'-v31-pwa-short-viewport');}
   });
   await check(engine+'-v30-wash-long-answer-and-language',browser,{reducedMotion:'reduce'},async page=>{
    await open(page,'ch');await page.locator('.scenic-answer[data-id="ba"]').click();await state(page,'feedback-wrong');
@@ -215,6 +237,8 @@ try{
   await check(engine+'-labels-inside-watercolor-edge',browser,{reducedMotion:'reduce'},async page=>{
    for(const {id} of FLAGS.filter(record=>record.continent==='europe')){
     await open(page,id);await choose(page,false);await state(page,'feedback-wrong');
+    const ribbons=await page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),boy=r('.scenic-boy'),face={left:boy.left,right:boy.left+boy.width*.88,top:boy.top+boy.height*.25,bottom:boy.top+boy.height*.65};return {bottom:r('#scenic-neighbors').bottom,rail:Math.min(r('#scenic-controls').top,r('#scenic-swipe-knob').top),faceClear:[...document.querySelectorAll('.scenic-neighbor-row')].every(n=>{const x=n.getBoundingClientRect();return x.left>=face.right||x.right<=face.left||x.bottom<=face.top||x.top>=face.bottom;})};});
+    assert(ribbons.bottom+5.8<=ribbons.rail,'Neighbors remain above the slider for '+id+': '+JSON.stringify(ribbons));assert(ribbons.faceClear,'Neighbors leave the boy’s face clear for '+id);
     for(const view of ['near','europe']){
      if(view==='europe')await page.getByRole('button',{name:'Cała Europa',exact:true}).click();
      if(view==='near')assert(await page.locator('#scenic-map-scroll').evaluate(n=>JSON.parse(n.dataset.atlasLabels).some(label=>label.capital)),'Capital label remains visible for '+id);

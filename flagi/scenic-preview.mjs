@@ -2,13 +2,13 @@ import {FLAGS} from '../data/flags.mjs';
 import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
 import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
-import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=30';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=30';
-import {SCENIC,seedOf} from './scenic-config.mjs?v=30';
-import {ScenicTimeline} from './scenic-timeline.mjs?v=30';
-import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=30';
-import {createSand} from './scenic-sand.mjs?v=30';
-import {createMapInk} from './scenic-ink.mjs?v=30';
+import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=31';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=31';
+import {SCENIC,seedOf} from './scenic-config.mjs?v=31';
+import {ScenicTimeline} from './scenic-timeline.mjs?v=31';
+import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=31';
+import {createSand} from './scenic-sand.mjs?v=31';
+import {createMapInk} from './scenic-ink.mjs?v=31';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
@@ -90,32 +90,51 @@ function fitCaption(){
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
-  const height=viewport.height*(viewport.height<760?SCENIC.atlas.height-.02:SCENIC.atlas.height),top=viewport.height*SCENIC.atlas.top;
+  // Reserve the feedback stack before answering, so revealing neighbors never
+  // moves a choice under the child's finger. Include the compass above its rail.
+  const controls=$('scenic-controls').getBoundingClientRect(),knobSize=parseFloat(getComputedStyle(knob).height);
+  const railTop=controls.top-viewport.top-Math.max(0,(knobSize-controls.height)/2);
+  const ribbons=SCENIC.neighbors.rows*SCENIC.neighbors.rowHeight+(SCENIC.neighbors.rows+1)*SCENIC.neighbors.gap;
+  const answerHeight=answers.getBoundingClientRect().height;
+  answers.style.top=Math.min(viewport.height*.62,railTop-ribbons-answerHeight)+'px';
+  const answer=answers.getBoundingClientRect();
+  const chromeBottom=Math.max($('scenic-language').getBoundingClientRect().bottom,$('scenic-task').getBoundingClientRect().bottom)-viewport.top;
+  const top=Math.max(viewport.height*SCENIC.atlas.top,chromeBottom+6),height=answer.top-viewport.top-SCENIC.atlas.answerGap-top;
   sheet.style.top=top+'px';sheet.style.height=height+'px';
   const paper=$('scenic-paper-row'),closed=Math.min(64,Math.max(50,viewport.height*.075));paper.style.height=closed+'px';paper.style.top=(top+height-closed)+'px';
   $('scenic-compass').style.top=(top-24)+'px';
-  const answer=answers.getBoundingClientRect(),origin=app.getBoundingClientRect(),boy=app.querySelector('.scenic-boy'),boyHeight=app.clientHeight-(answer.bottom-origin.top-10)+12;
+  const origin=app.getBoundingClientRect(),boy=app.querySelector('.scenic-boy'),boyHeight=app.clientHeight-(answer.bottom-origin.top-10)+12;
   boy.style.height=boyHeight+'px';boy.style.left=(-boyHeight*.4)+'px';
-  $('scenic-neighbors').style.top=(answer.bottom-viewport.top+6)+'px';
+  $('scenic-neighbors').style.top=(answer.bottom-viewport.top+SCENIC.neighbors.gap)+'px';
+  fitFlag();
   if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
 async function showNeighbors(result,owner,{immediate=false}={}){
   if(!result?.found)return;
   const nav=$('scenic-neighbors'),ids=result.neighbors.filter(id=>records.has(id));
+  nav.dataset.wide='false';
   const buttons=ids.map(id=>{const b=document.createElement('button');b.type='button';b.dataset.neighbor=id;b.textContent=local(records.get(id)).country;b.setAttribute('aria-pressed','false');return b;});
   const label=document.createElement('b');label.textContent=`${copy().neighbors} (${ids.length}):`;
   const items=[label,...buttons];if(!ids.length){const empty=document.createElement('span');empty.textContent=copy().none;items.push(empty);}
   const measure=document.createElement('div');measure.className='scenic-neighbor-row is-measuring';measure.append(...items);nav.replaceChildren(measure);nav.hidden=false;
-  const sizes=items.map(n=>n.getBoundingClientRect().width),max=nav.clientWidth-20;
+  let sizes=items.map(n=>n.getBoundingClientRect().width);const max=nav.clientWidth-20;
   // Partition in compass order. Prefer a broad first ribbon and a shorter second
   // one; avoid leaving a lone short country on the last ribbon.
-  let best=null;
+  let best=null,firstMax=max;
   function partition(index,rows){
     if(index===items.length){const widths=rows.map(a=>a.reduce((sum,i)=>sum+sizes[i],0)+(a.length-1)*5);const score=rows.length*10000+Math.max(...widths)-Math.min(...widths)+(widths.at(-1)>widths[0]?90:0)+(rows.at(-1).length===1&&sizes[rows.at(-1)[0]]<110?140:0);if(!best||score<best.score)best={rows:rows.map(a=>[...a]),score};return;}
     const row=[];let width=0;
-    for(let i=index;i<items.length;i++){width+=sizes[i]+(row.length?5:0);if(width>max&&row.length)break;row.push(i);partition(i+1,[...rows,[...row]]);}
+    for(let i=index;i<items.length;i++){width+=sizes[i]+(row.length?5:0);if(width>(rows.length?max:firstMax)&&row.length)break;row.push(i);partition(i+1,[...rows,[...row]]);}
   }
-  partition(0,[]);nav.replaceChildren();
+  partition(0,[]);
+  if(best.rows.length>SCENIC.neighbors.rows){
+    // The first ribbon is above the face; it can use the answer width. Later
+    // ribbons keep their narrow width so the boy stays visible on the left.
+    nav.dataset.wide='true';nav.style.setProperty('--neighbor-narrow-width',(max+20)+'px');
+    sizes=items.map(n=>n.getBoundingClientRect().width);
+    firstMax=answers.clientWidth-20;best=null;partition(0,[]);
+  }
+  nav.replaceChildren();nav.dataset.rows=best.rows.length;
   for(const indices of best.rows){const row=document.createElement('div');row.className='scenic-neighbor-row';row.append(...indices.map(i=>items[i]));nav.append(row);}
   await Promise.all([...nav.children].map((row,i)=>motion.matches||immediate?Promise.resolve():owner.animate(row,[{transform:'translateX(110%)',opacity:0},{transform:'translateX(0)',opacity:1}],{duration:360+i*55,easing:'cubic-bezier(.2,.8,.2,1)',fill:'none'})));
 }
@@ -258,7 +277,7 @@ const ticker=setInterval(()=>{
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
 // Test-only capture bridge: freeze Canvas without changing the photographed UI.
 if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
-const observer=new ResizeObserver(()=>{fitFlag();placeScroll();fitCaption();});observer.observe($('scenic-stage'));
+const observer=new ResizeObserver(()=>{placeScroll();fitCaption();});observer.observe($('scenic-stage'));
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();mapInk.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});

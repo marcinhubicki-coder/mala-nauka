@@ -1,4 +1,4 @@
-import {SCENIC} from './scenic-config.mjs?v=30';
+import {SCENIC} from './scenic-config.mjs?v=31';
 const MATERIAL='assets/flags/adventure/scenic-paper-v14.webp';
 let material;
 export function preloadPaper(){

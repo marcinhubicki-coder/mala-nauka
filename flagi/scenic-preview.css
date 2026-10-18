@@ -133,3 +133,9 @@ html,body{overscroll-behavior:none;height:100vh;height:100dvh;min-height:100dvh}
 .scenic-map-scroll{--atlas-paint-inset:24px;--atlas-heading-inset:calc(2 * var(--atlas-paint-inset))}
 .scenic-map-caption{top:22px;left:var(--atlas-heading-inset);right:var(--atlas-heading-inset);height:var(--caption-height,88px)}
 .scenic-city{top:var(--capital-top,62px)}
+/* Shared screen-height measurement from orthography. iOS can report an lvh
+   shortened by its status bar even when the installed canvas is full-screen. */
+html.scenic-standalone,html.scenic-standalone body,html.scenic-standalone .scenic-screen{height:var(--app-viewport-height,100lvh);min-height:var(--app-viewport-height,100lvh)}
+html.scenic-standalone body{position:relative;isolation:isolate;background:transparent}
+html.scenic-standalone .scenic-screen{background:transparent}
+html.scenic-standalone body>.scenic-scenery{position:fixed;z-index:-1;left:max(0px,calc((100vw - 480px) / 2));right:auto;width:min(100%,480px);height:var(--app-viewport-height,100lvh)}

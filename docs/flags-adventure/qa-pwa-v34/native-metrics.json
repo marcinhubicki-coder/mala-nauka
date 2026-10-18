@@ -1,0 +1,135 @@
+{
+  "variant": "product-v34",
+  "url": "http://127.0.0.1:8766/flagi/scenic-preview.html?source=pwa&country=fr&freeze=1",
+  "standalone": true,
+  "display": {
+    "standalone": true,
+    "fullscreen": false
+  },
+  "screen": {
+    "width": 390,
+    "height": 844,
+    "availHeight": 844,
+    "dpr": 3
+  },
+  "inner": {
+    "width": 390,
+    "height": 844
+  },
+  "visual": {
+    "width": 390,
+    "height": 844,
+    "offsetTop": 0,
+    "pageTop": 0,
+    "scale": 1
+  },
+  "scroll": {
+    "x": 0,
+    "y": 0
+  },
+  "units": {
+    "vh": 843.984375,
+    "dvh": 843.984375,
+    "lvh": 843.984375,
+    "svh": 797
+  },
+  "rects": {
+    "html": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844,
+      "bottom": 844,
+      "right": 390
+    },
+    "body": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844,
+      "bottom": 844,
+      "right": 390
+    },
+    "#scenic-screen": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844,
+      "bottom": 844,
+      "right": 390
+    },
+    "#scenic-stage": {
+      "x": 0,
+      "y": 47,
+      "width": 390,
+      "height": 763,
+      "bottom": 810,
+      "right": 390
+    },
+    "#scenic-map-scroll": {
+      "x": 17.546875,
+      "y": 198.734375,
+      "width": 354.890625,
+      "height": 296.75,
+      "bottom": 495.484375,
+      "right": 372.4375
+    },
+    "#scenic-paper-row": {
+      "x": 17.546875,
+      "y": 438.25,
+      "width": 354.890625,
+      "height": 57.21875,
+      "bottom": 495.46875,
+      "right": 372.4375
+    },
+    "#scenic-answers": {
+      "x": 17.546875,
+      "y": 505.484375,
+      "width": 354.890625,
+      "height": 119.015625,
+      "bottom": 624.5,
+      "right": 372.4375
+    },
+    "#scenic-neighbors": {
+      "x": 118.453125,
+      "y": 630.5,
+      "width": 254,
+      "height": 111,
+      "bottom": 741.5,
+      "right": 372.453125
+    },
+    "#scenic-controls": {
+      "x": 31.1875,
+      "y": 755,
+      "width": 329.5625,
+      "height": 45,
+      "bottom": 800,
+      "right": 360.75
+    },
+    ".scenic-boy": {
+      "x": -96.59375,
+      "y": 614.5,
+      "width": 234.921875,
+      "height": 241.5,
+      "bottom": 856,
+      "right": 138.328125
+    }
+  },
+  "root": {
+    "clientHeight": 797,
+    "height": "844px",
+    "bodyHeight": "844px"
+  },
+  "state": "feedback-wrong",
+  "country": "fr",
+  "recordedAt": 1792307074.882635,
+  "verification": {
+    "environment": "Apple iOS Simulator",
+    "device": "iPhone 13 Pro",
+    "runtime": "iOS 27.0 (24A434)",
+    "physicalDeviceVerified": false,
+    "visibleBottomBand": false,
+    "systemTopBlurStillVisible": true,
+    "note": "Local development server adds measurement only; no experimental CSS or overlay was active in this capture."
+  }
+}

@@ -56,6 +56,38 @@ try{
    await page.mouse.move(knob.x+knob.width/2,knob.y+knob.height/2);await page.mouse.down();await page.mouse.move(rail.x+rail.width-8,knob.y+knob.height/2,{steps:16});await page.mouse.up();
    await frame.waitForFunction(()=>document.querySelector('main').dataset.state==='playing'&&document.querySelector('main').dataset.country==='pl');
    assert.equal(errors.length,0);results.push({engine,status:'PASS',samples,initial:first,errors});console.log(engine+' PASS — fixed portrait geometry, proportional resize, margins, language and slider');
-  }finally{await page.close();await browser.close();}
+  }finally{await page.close();}
+  // iOS may report a CSS viewport shorter than its physical standalone screen.
+  // Orthography's shared helper must keep the photograph and scene full height.
+  const installed=await browser.newPage({viewport:{width:390,height:797},screen:{width:390,height:844},deviceScaleFactor:3,reducedMotion:'reduce'});
+  try{
+   await installed.addInitScript(()=>{
+    Object.defineProperty(navigator,'standalone',{get:()=>true});
+    // Playwright otherwise resizes screen with the window; a phone's physical
+    // screen stays the same while WebKit's reported viewport changes.
+    Object.defineProperty(screen,'width',{get:()=>390});Object.defineProperty(screen,'height',{get:()=>844});
+   });
+   await installed.goto(base+'/flagi/scenic-preview.html?country=fr&qa=1&freeze=1');
+   await installed.waitForFunction(()=>document.querySelector('main')?.dataset.state==='playing');
+   await installed.addStyleTag({content:'.scenic-screen{--safe-top:47px;--safe-bottom:34px}'});
+   await installed.locator('.scenic-answer[data-id="es"]').click();
+   await installed.waitForFunction(()=>document.querySelector('main')?.dataset.state==='feedback-wrong');
+   const installedMetrics=()=>installed.evaluate(()=>{
+    const rect=s=>{const r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};};
+    const photo=document.querySelector('.scenic-scenery'),style=getComputedStyle(photo),matrix=new DOMMatrix(style.transform);
+    return {screen:[screen.width,screen.height],height:getComputedStyle(document.documentElement).getPropertyValue('--app-viewport-height'),standalone:document.documentElement.classList.contains('scenic-standalone'),frames:document.querySelectorAll('iframe').length,photo:{parent:photo.parentElement.tagName,position:style.position,fit:style.objectFit,layoutHeight:photo.offsetHeight,scale:[matrix.a,matrix.d]},boxes:Object.fromEntries(['html','body','main','#scenic-stage','#scenic-map-scroll','#scenic-answers','#scenic-neighbors','#scenic-controls'].map(s=>[s,rect(s)]))};
+   });
+   const first=await installedMetrics();
+   assert.equal(first.standalone,true);assert.equal(first.frames,0);assert.equal(first.height,'844px');
+   assert.deepEqual(first.photo,{parent:'BODY',position:'fixed',fit:'cover',layoutHeight:844,scale:[1.12,1.12]});
+   for(const selector of ['html','body','main'])assert.equal(first.boxes[selector].h,844);
+   for(const height of [844,797,810]){
+    await installed.setViewportSize({width:390,height});
+    await installed.waitForFunction(()=>getComputedStyle(document.documentElement).getPropertyValue('--app-viewport-height')==='844px');
+    assert.deepEqual(await installedMetrics(),first,'Standalone geometry must follow the screen, including when CSS viewport units are 47px shorter');
+   }
+   await installed.screenshot({path:join(out,engine+'-standalone-screen-height.png')});
+   results.push({engine,mode:'standalone-screen-height',status:'PASS',initial:first});console.log(engine+' PASS — standalone screen height survives a shorter CSS viewport');
+  }finally{await installed.close();await browser.close();}
  }
-}finally{await writeFile(join(out,'report.json'),JSON.stringify({passed:results.length,total:2,results},null,2)+'\n');server.close();}
+}finally{await writeFile(join(out,'report.json'),JSON.stringify({passed:results.length,total:4,results},null,2)+'\n');server.close();}

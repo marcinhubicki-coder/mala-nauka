@@ -2,6 +2,12 @@
 // so resizing the window cannot stretch art or rearrange the current round.
 const standalone=navigator.standalone===true||matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches;
 const embedded=new URLSearchParams(location.search).get('view')==='game';
+if(standalone){
+  document.documentElement.classList.add('scenic-standalone');
+  // Match orthography: the photograph outlives the game container and paints
+  // the full native canvas, while only controls use the safe-area insets.
+  document.body.prepend(document.querySelector('.scenic-scenery'));
+}
 if(standalone||embedded||window.top!==window){
   const script=document.createElement('script');script.type='module';script.src=new URL('./scenic-preview.mjs?v=32',import.meta.url).href;document.body.append(script);
 }else{

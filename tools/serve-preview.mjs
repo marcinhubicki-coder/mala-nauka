@@ -14,7 +14,7 @@ createServer(async(req,res)=>{
   let bytes,type=types[extname(file)]||'application/octet-stream';
   try{bytes=await readFile(file);}
   catch(error){
-   if(error.code!=='ENOENT'||!/^assets\/(managed|scenes|flags)\//.test(path))throw error;
+   if(error.code!=='ENOENT'||!/^assets\/.+\.(?:png|jpe?g|webp|avif|svg)$/i.test(path))throw error;
    const response=await fetch(new URL(path,ASSET_ORIGIN),{signal:AbortSignal.timeout(20000),redirect:'error'});
    if(!response.ok){res.writeHead(response.status);res.end();return;}
    bytes=Buffer.from(await response.arrayBuffer());type=response.headers.get('content-type')||type;

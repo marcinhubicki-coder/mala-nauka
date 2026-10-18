@@ -242,3 +242,23 @@ body:has(#app[data-view="results"]){background:transparent}
 }
 #app[data-view="results"][data-mode="spelling"] .result-points-core strong{font-size:calc(29 * var(--result-u))}
 
+
+/* One read-only award presentation for collection cards and word dialogs. */
+.word-badge{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;width:46px;isolation:isolate}
+.word-badge-art{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 2px 2px #71401f24)}
+.word-badge.is-empty::before{content:"";position:absolute;inset:4px 3px auto;height:38px;border-radius:50%;background:linear-gradient(145deg,#ded9d4ed,#fffaf0e8);box-shadow:inset 1px 2px 3px #786d7947,0 1px 1px #fff9;z-index:-1}
+.word-badge.is-empty .word-badge-art{filter:grayscale(1) brightness(.88);opacity:.28}
+.word-badge-count{display:block;margin-top:2px;color:#746782;font-size:12px;line-height:1.4;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.word-badge-mastery.is-earned .word-badge-count{color:#25825c}
+.word-badge-star.is-earned .word-badge-count{color:#986a33}
+.word-spelling-mark{display:inline;background:#dff4e8;color:#218258;border-radius:50%;outline:1px solid #acd5be88;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 1px}
+.word-families{display:flex;justify-content:center;flex-wrap:wrap;gap:4px}
+.word-family{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c8bce9;border-radius:999px;background:#f5efffcc;color:#766096;line-height:1.3;padding:2px 7px;font-size:11px;font-weight:800;white-space:nowrap}
+.word-detail-hero{display:grid;grid-template-columns:46px minmax(0,210px) 46px;align-items:center;justify-content:center;gap:6px;margin-top:-7px}
+.word-detail-hero .rule-visual{width:100%;height:auto;max-width:210px;margin:0;aspect-ratio:1}
+.word-detail-hero .word-badge{align-self:center}
+.result-rule-dialog .word-families{margin:0 auto 7px}
+.rule-additional .word-family{margin-bottom:7px}
+.rule-visual.has-word-award .mn-soap-picture::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at 100% 100%,#fff2c79e, #fff2c72e 36%,transparent 72%)}
+.word-award-vignette{pointer-events:none}
+@media(max-width:350px){.word-detail-hero{grid-template-columns:40px minmax(0,210px) 40px;gap:3px}.word-detail-hero .word-badge{width:40px}.word-badge.is-empty::before{height:32px}.word-badge-count{font-size:11px}}

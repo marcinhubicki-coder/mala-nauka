@@ -527,3 +527,15 @@ body:has(#app[data-view="history"]) { background:#dff4ff url('assets/progress/he
 @media(min-width:760px){.forge-intro{min-height:380px}.forge-intro .forge-emblem{width:70%;right:0}.forge-intro .forge-hero-copy{max-width:50%;padding:30px}.forge-intro h2{font-size:52px}.forge-intro p{font-size:17px}.forge-intro .journey-eyebrow{font-size:13px}.medal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.trophy-evolution{max-width:740px;margin:auto}.trophy-stage{max-width:520px}.spark-wallet{right:30px;top:25px}.power-card .power-icon{width:130px;height:130px}}
 @media(max-width:600px){.journey-awards-intro h2{font-size:24px}.trophy-base-options{grid-template-columns:repeat(3,minmax(0,1fr))}.trophy-base-options button{font-size:11px}.trophy-gift{height:88px}.trophy-on-podium{bottom:10%}.trophy-stage{margin-top:5px}.trophy-on-podium .reward-sprite{width:190px;height:190px}.award-progress>div{font-size:12px}.power-card .power-icon{width:105px;height:105px}.power-grid{gap:12px}.forge-intro h2{font-size:35px}.forge-intro .journey-eyebrow{font-size:10px}.medal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.medal-card{padding:16px 10px}.medal-card h3{font-size:16px}.medal-card p{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.award-switch button,.trophy-base-options button,.trophy-choices button{transition:none}.trophy-base-options button:hover,.trophy-choices button:hover{transform:none}}
+
+/* Awards sit inside the picture; categories replace the former text rows. */
+.collection-photo{position:relative;display:block;aspect-ratio:1;overflow:hidden;border-radius:15px;isolation:isolate}
+.collection-word .collection-photo-image{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.collection-photo.has-word-award::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at 100% 100%,#fff2c7b8,#fff2c740 32%,transparent 70%);z-index:1}
+.collection-photo .word-badge{position:absolute;bottom:4px;width:32px;z-index:2}
+.collection-photo .word-badge-mastery{left:4px}.collection-photo .word-badge-star{right:4px}
+.collection-word .word-badge-art{width:100%;height:auto;aspect-ratio:1;object-fit:contain;border-radius:0}
+.collection-photo .word-badge.is-empty::before{inset:3px 2px auto;height:26px}
+.collection-word .word-spelling-mark{border-radius:50%;outline:1px solid #acd5be88}
+.collection-word .word-families{gap:3px;margin-top:5px;min-height:17px}
+.collection-word .word-family{padding:1px 5px;font-size:9px;line-height:1.4}

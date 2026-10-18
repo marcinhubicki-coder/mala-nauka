@@ -157,7 +157,7 @@ const collection=[...progressBase(true),group('collection-content','family-colle
  ...['all','mastered','learning','review'].map(key=>button('collection-filter-'+key,'button-collection-filter','collection-filters',`[data-progress="filter"][data-filter="${key}"]`,'filter',progressAction)),
  group('collection-grid','container-collection-grid','collection-content','.collection-word-grid',optional),
  repeat('collection-word','container-collection-word','button','collection-grid','.collection-word','data-word',{action:'rule',...progressAction,level:'group'}),
- within('word-image','image-collection-word','image','collection-word','img'),within('word-title','text-collection-word','text','collection-word','strong'),within('word-state','text-collection-state','text','collection-word','small:not(.word-star)'),within('word-stars','text-card-stars','text','collection-word','.word-star',optional),
+ within('word-image','image-collection-word','image','collection-word','.collection-photo-image'),within('word-title','text-collection-word','text','collection-word','strong'),within('word-mastery','image-word-award','image','collection-word','.word-badge-mastery img'),within('word-star','image-word-award','image','collection-word','.word-badge-star img'),within('word-families','text-word-families','text','collection-word','.word-families'),
  group('collection-empty','group-progress-empty','collection-content','.progress-empty',optional),text('collection-empty-title','collection-empty','.progress-empty h2',optional),text('collection-empty-copy','collection-empty','.progress-empty p',optional),
  button('collection-practice','button-main','collection-empty','[data-progress="practice"]','practice',{...progressAction,...optional})
 ];

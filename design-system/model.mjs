@@ -137,7 +137,9 @@ export function effectiveTokens(group){
 }
 
 export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,pinPurpose='',historyState='dashboard',popup=''}){
- if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup))return `spelling-${popup}`;
+ // The shared word dialog is also opened from the collection. Its nested
+ // contract belongs to that collection, rather than replacing it with results.
+ if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup)&&(popup!=='rule'||view==='results'))return `spelling-${popup}`;
  if(view==='wizard')return `${mode}-settings`;
  if(view==='game')return `${mode}-${state==='feedback-correct'?'correct':state==='feedback-wrong'?'wrong':'initial'}`;
  if(view==='results')return `${mode}-results`;

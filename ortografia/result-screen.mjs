@@ -13,6 +13,7 @@ import { spellingRoundLabel } from '../spelling/round.mjs?v=1';
 import {identifyResultAttempts} from './result-attempts.mjs';
 
 const resultContexts = new WeakMap();
+const resultProfiles = new WeakMap();
 const scrollCleanups = new WeakMap();
 export function stopResultScroll(root){scrollCleanups.get(root)?.forEach(stop=>stop());scrollCleanups.delete(root);}
 
@@ -70,13 +71,14 @@ export function progressParticles(percent) {
   }).join('') + '</span>';
 }
 
-export function renderSpellingResult(root, result, words = [], ui = null, motion = null) {
+export function renderSpellingResult(root, result, words = [], ui = null, motion = null, progress = null) {
   settleResult(root);
   stopResultScroll(root);
   closeResultRule(root, false);
   const learning = new Map(words.filter(word => word.learning).map(word => [word.word, word.learning]));
   const attempts = identifyResultAttempts(Array.isArray(result.attempts) ? result.attempts.filter(attempt => attempt?.kind === 'spelling').map((attempt, ruleIndex) => ({...attempt, ruleIndex, learning: attempt.learning || learning.get(attempt.word)})) : []);
   resultContexts.set(root, attempts);
+  resultProfiles.set(root,{progress,words:new Map(words.map(w=>[w.word,w]))});
   const spelling = !result.mode || result.mode === 'spelling';
   const resultView=(result.mode||'spelling')+'-results';
   const attrs=id=>viewAttrs(resultView,id.replace('spelling-',(result.mode||'spelling')+'-'));
@@ -125,7 +127,8 @@ export function showResultRule(root, button) {
   const index = Number(button?.dataset.ruleIndex);
   if (!Number.isInteger(index) || index < 0) return;
   settleResult(root);
-  openResultRule(root, resultContexts.get(root)?.[index], button);
+  const attempt=resultContexts.get(root)?.[index],context=resultProfiles.get(root);
+  openResultRule(root,attempt,button,{journey:context?.progress?.journey,learningItem:context?.progress?.learning?.items?.['word:'+attempt?.word],wordRecord:context?.words?.get(attempt?.word)});
 }
 
 export function toggleResultDetail(root, button) {

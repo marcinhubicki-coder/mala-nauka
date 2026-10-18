@@ -11,6 +11,11 @@ on:
       - "shared/element-*.mjs"
       - "app.js"
       - "progress-screen.mjs"
+      - "progress-screen.css"
+      - "shared/word-card.mjs"
+      - "shared/word-badge-assets.mjs"
+      - "tests/word-card.test.mjs"
+      - "tools/qa-word-cards-browser.mjs"
       - "angielski/wizard-v2.mjs"
       - "czytanie/wizard-v2.mjs"
       - "flagi/adaptive-difficulty.mjs"
@@ -83,6 +88,10 @@ jobs:
           V2_SCREENSHOT_DIR: .design-qa/visual-v2/all41
       - name: Data-dependent view variants and reversible layout editing
         run: node tools/qa-view-variants-browser.mjs http://127.0.0.1:8765
+      - name: Word badges, multi-target rules and shared Design System editing
+        run: node tools/qa-word-cards-browser.mjs http://127.0.0.1:8765
+        env:
+          V2_SCREENSHOT_DIR: .design-qa/visual-v2/word-cards
       - name: Five real PWA flows, results, collection and shared audio owner
         run: node tools/verify-screen-readiness.mjs chromium http://127.0.0.1:8765
       - name: Spell settings, full quiz, results, rule and eight preview variants

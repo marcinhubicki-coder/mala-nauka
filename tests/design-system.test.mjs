@@ -83,6 +83,7 @@ test('normal routes share studio view IDs for settings, feedback, profiles and a
  assert.equal(viewIdFor({view:'players',hasPlayers:false}),'players-empty');
  assert.equal(viewIdFor({view:'history',historyState:'achievements'}),'trophies');
  assert.equal(viewIdFor({view:'results',popup:'rule'}),'spelling-rule');
+ assert.equal(viewIdFor({view:'history',historyState:'collection',popup:'rule'}),'collection');
 });
 
 test('shared rules join the same atomic save and credentials never enter content',async()=>{

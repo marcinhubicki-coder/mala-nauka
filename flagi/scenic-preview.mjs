@@ -2,13 +2,13 @@ import {FLAGS} from '../data/flags.mjs';
 import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
 import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
-import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=35';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=35';
-import {SCENIC,seedOf} from './scenic-config.mjs?v=35';
-import {ScenicTimeline} from './scenic-timeline.mjs?v=35';
-import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=35';
-import {createSand} from './scenic-sand.mjs?v=35';
-import {createMapInk} from './scenic-ink.mjs?v=35';
+import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=36';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=36';
+import {SCENIC,seedOf} from './scenic-config.mjs?v=36';
+import {ScenicTimeline} from './scenic-timeline.mjs?v=36';
+import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=36';
+import {createSand} from './scenic-sand.mjs?v=36';
+import {createMapInk} from './scenic-ink.mjs?v=36';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
@@ -81,7 +81,12 @@ function fitFlag(){
 function showFlag(record){
   flagHost.innerHTML=flagOnPole(record,{label:'Flaga do rozpoznania'});
   flagHost.querySelector('.flag-pole')?.remove();
-  app.dataset.country=record.id;fitFlag();paintFlags(flagHost);
+  app.dataset.country=record.id;syncAtlasScope();fitFlag();paintFlags(flagHost);
+}
+function syncAtlasScope(){
+  const russia=app.dataset.country==='ru',scope=$('scenic-atlas-context'),full=sheet.dataset.view==='europe';
+  scope.hidden=!russia||!app.classList.contains('is-presenting');scope.textContent=language==='pl'?(full?'Rosja · Europa i Azja':'Rosja · część europejska'):(full?'Russia · Europe and Asia':'Russia · European part');
+  sheet.querySelector('[data-map-view="europe"]').setAttribute('aria-label',russia?(language==='pl'?'Europa i Azja':'Europe and Asia'):(language==='pl'?'Cała Europa':'All Europe'));
 }
 function fitCaption(){
   const title=$('scenic-country-name');if(!title.textContent)return;
@@ -109,7 +114,8 @@ function placeScroll(){
   // moves a choice under the child's finger. Include the compass above its rail.
   const controls=$('scenic-controls').getBoundingClientRect(),knobSize=parseFloat(getComputedStyle(knob).height);
   const railTop=controls.top-viewport.top-Math.max(0,(knobSize-controls.height)/2);
-  const ribbons=SCENIC.neighbors.rows*SCENIC.neighbors.rowHeight+(SCENIC.neighbors.rows+1)*SCENIC.neighbors.gap;
+  const rows=current().id==='ru'?4:SCENIC.neighbors.rows,rowHeight=rows===4?31:SCENIC.neighbors.rowHeight;
+  const ribbons=rows*rowHeight+(rows+1)*SCENIC.neighbors.gap;
   const answerHeight=answers.getBoundingClientRect().height;
   answers.style.top=Math.min(viewport.height*.62,railTop-ribbons-answerHeight)+'px';
   const answer=answers.getBoundingClientRect();
@@ -187,7 +193,7 @@ function clearPresentation(){
   $('scenic-neighbors').hidden=true;$('scenic-neighbors').replaceChildren();
   lastMapResult=null;$('scenic-desktop-neighbors').replaceChildren();mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');sheet.dataset.view='near';
   for(const button of sheet.querySelectorAll('[data-map-view]'))button.setAttribute('aria-pressed',String(button.dataset.mapView==='near'));
-  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');sand.clear();mapInk.clear();placeScroll();
+  swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');syncAtlasScope();sand.clear();mapInk.clear();placeScroll();
 }
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');
@@ -218,7 +224,7 @@ async function respond(chosenId){
   $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
   $('scenic-country-name').textContent=local(record).country;$('scenic-country-capital').textContent=local(record).capital;
   sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
-  app.classList.add('is-presenting');
+  app.classList.add('is-presenting');syncAtlasScope();
   const opening=foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});
   // Cancellation may happen while the independent asset preparation is pending.
   void opening.catch(()=>{});
@@ -236,8 +242,10 @@ async function respond(chosenId){
   lastMapResult=mapResult;
   await mapInk.prepare(mapResult,local(record),{isCurrent:()=>alive(owner)});if(!alive(owner))return;
   await opening;if(!alive(owner))return;
-  await mapInk.reveal({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
-  await showNeighbors(mapResult,owner,{withSlider:!correct});if(!alive(owner))return;
+  await Promise.all([
+    mapInk.reveal({timeline:owner,reduced:motion.matches}),
+    (async()=>{if(!motion.matches)await owner.wait(SCENIC.inkDrawMs*2/3);if(alive(owner))await showNeighbors(mapResult,owner,{withSlider:!correct});})()
+  ]);if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
     hint.hidden=false;
@@ -275,12 +283,14 @@ answers.addEventListener('click',event=>{const button=event.target.closest('.sce
 sheet.addEventListener('click',event=>{
   const button=event.target.closest('[data-map-view]');if(!button||!readyForNext||paused||visibilityPaused||sheet.dataset.view===button.dataset.mapView)return;
   const owner=timeline;sheet.dataset.view=button.dataset.mapView;
+  syncAtlasScope();
   for(const item of sheet.querySelectorAll('[data-map-view]'))item.setAttribute('aria-pressed',String(item===button));
   caught(mapInk.setView(button.dataset.mapView,{timeline:owner,reduced:motion.matches}));
 });
 function localizeChrome(){
  const aside=document.querySelector('.scenic-atlas-desktop');aside.querySelector('p').innerHTML=language==='en'?'<b>Explorer’s atlas</b><br>Choose the globe or magnifier to change the map view.':'<b>Atlas odkrywcy</b><br>Wybierz globus lub lupę, by zmienić zasięg mapy.';aside.querySelectorAll('p')[1].textContent=language==='en'?'The building symbol marks the capital. The highlighted area is the country being explored.':'Symbol budynku pokazuje położenie stolicy. Wyróżniony obszar wskazuje poznawany kraj.';if(lastMapResult)renderDesktop(lastMapResult,current());
  document.documentElement.lang=language;app.dataset.language=language;$('scenic-language').querySelector('b').textContent=language.toUpperCase();$('scenic-language').setAttribute('aria-label',language==='pl'?'Zmień język na angielski':'Switch to Polish');
+ syncAtlasScope();
  document.querySelector('.scenic-prompt').textContent=copy().question;document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);hint.textContent=copy().auto;
  app.querySelector('[data-action="restart"]').setAttribute('aria-label',copy().restart);
  for(const button of answers.children){const record=local(records.get(button.dataset.id));button.setAttribute('aria-label',record.country);button.dataset.long=String(record.country.length>17);button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);}

@@ -1,8 +1,8 @@
-import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=35';
-import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=35';
+import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=36';
+import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=36';
 import {FLAGS} from '../data/flags.mjs';
-import {drawCapitalSymbol} from './scenic-capital.mjs?v=35';
-import {nearAtlasFrame,fullAtlasFrame} from './scenic-camera.mjs?v=35';
+import {drawCapitalSymbol} from './scenic-capital.mjs?v=36';
+import {readableAtlasFrames} from './scenic-camera.mjs?v=36';
 const EUROPE_IDS=new Set(FLAGS.filter(record=>record.continent==='europe').map(record=>record.id));
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
@@ -17,19 +17,21 @@ export function createMapInk(canvas,sheet,app){
   if(!mapSpec)return;const {result,rect,paths}=mapSpec;
   const geo=geographySurface,w=Math.round(rect.w*dpr),h=Math.round(rect.h*dpr);if(geo.width!==w||geo.height!==h){geo.width=w;geo.height=h;}
   const ink=geo.getContext('2d');ink.setTransform(dpr,0,0,dpr,0,0);ink.clearRect(0,0,rect.w,rect.h);
-  if(result.image){const sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;ink.drawImage(result.image,frame.x*sx,frame.y*sy,frame.w*sx,frame.h*sy,0,0,rect.w,rect.h);}
+  if(result.paintBase)result.paintBase(ink,frame,rect);
+  else if(result.image){const sx=result.image.naturalWidth/680,sy=result.image.naturalHeight/500;ink.drawImage(result.image,frame.x*sx,frame.y*sy,frame.w*sx,frame.h*sy,0,0,rect.w,rect.h);}
   ink.save();ink.scale(rect.w/frame.w,rect.h/frame.h);ink.translate(-frame.x,-frame.y);ink.lineJoin='round';
   const scale=rect.w/frame.w;
-  for(const {path,box,selected,id} of paths){
+  for(const {path,box,bounds=box,selected,id} of paths){
+   if(bounds.x>frame.x+frame.w||bounds.x+bounds.w<frame.x||bounds.y>frame.y+frame.h||bounds.y+bounds.h<frame.y)continue;
    if(selected){ink.shadowColor='#17442d70';ink.shadowBlur=4/scale;ink.strokeStyle='#ffefad';ink.lineWidth=3/scale;ink.stroke(path);ink.shadowBlur=0;
     ink.save();ink.globalCompositeOperation='multiply';ink.globalAlpha=.34;ink.fillStyle='#3c8750';ink.fill(path);ink.restore();
     ink.strokeStyle='#fff4c5';ink.lineWidth=1.1/scale;ink.stroke(path);
-   }else{if(!result.image){ink.fillStyle='#c8d18a';ink.fill(path);}ink.strokeStyle='#fff5d1cc';ink.lineWidth=.55/scale;ink.stroke(path);if(mapSpec.neighbors.has(id)){ink.fillStyle='#8c58272c';ink.fill(path);ink.strokeStyle='#fff5d1';ink.lineWidth=3/scale;ink.stroke(path);ink.strokeStyle='#fff3c9';ink.lineWidth=1.8/scale;ink.stroke(path);}}
+   }else{if(!result.image&&!result.paintBase){ink.fillStyle='#c8d18a';ink.fill(path);}ink.strokeStyle='#fff5d1cc';ink.lineWidth=.55/scale;ink.stroke(path);if(mapSpec.neighbors.has(id)){ink.fillStyle='#9f653033';ink.fill(path);ink.strokeStyle='#fff6dd';ink.lineWidth=3.2/scale;ink.stroke(path);ink.strokeStyle='#c88047';ink.lineWidth=1.6/scale;ink.stroke(path);}}
   }
   ink.restore();
   // The atlas's source rectangle is inside the viewport in the overview.
   // Chip that rectangle too, so it can never expose a straight vertical edge.
-  ink.globalCompositeOperation='destination-in';ink.drawImage(edgeImage.naturalWidth?edgeImage:edgeMask,-frame.x/frame.w*rect.w,-frame.y/frame.h*rect.h,680/frame.w*rect.w,500/frame.h*rect.h);ink.globalCompositeOperation='source-over';
+  if(!result.paintBase){ink.globalCompositeOperation='destination-in';ink.drawImage(edgeImage.naturalWidth?edgeImage:edgeMask,-frame.x/frame.w*rect.w,-frame.y/frame.h*rect.h,680/frame.w*rect.w,500/frame.h*rect.h);ink.globalCompositeOperation='source-over';}
   const blend=clamp((frame.w-result.crop.w)/(result.fullCrop.w-result.crop.w||1)),nearMix=1-blend;
   ink.font='700 10.5px ScenicBody';ink.textAlign='center';ink.textBaseline='top';ink.lineJoin='round';
   const plans=new Map();for(const label of mapSpec.nearLabels)plans.set(label.key,{near:label});for(const label of mapSpec.fullLabels){if(!plans.has(label.key))plans.set(label.key,{});plans.get(label.key).full=label;}
@@ -61,7 +63,7 @@ export function createMapInk(canvas,sheet,app){
  async function prepare(result,record,{isCurrent=()=>true}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr));let paint=art.getContext('2d');paint.scale(dpr,dpr);
-  const origin=sheet.getBoundingClientRect(),inner=sheet.querySelector('.scenic-map-inner'),map=inner.querySelector('.scenic-europe-map'),r=map.getBoundingClientRect(),caption=inner.querySelector('.scenic-map-caption').getBoundingClientRect(),headerBottom=caption.bottom-r.top-4;
+  const origin=sheet.getBoundingClientRect(),inner=sheet.querySelector('.scenic-map-inner'),map=inner.querySelector('.scenic-europe-map'),r=map.getBoundingClientRect(),caption=inner.querySelector('.scenic-map-caption').getBoundingClientRect(),headerBottom=caption.bottom-r.top+1;
   mapSpec=null;viewGeneration++;
   try{await edgeImage.decode();}catch{}
   if(!isCurrent()){art.width=art.height=1;return;}
@@ -74,6 +76,7 @@ export function createMapInk(canvas,sheet,app){
   const edgePixels=em.getImageData(0,0,edgeMask.width,edgeMask.height).data;
   const sourceEdge=surface(edgeImage.naturalWidth||edgeMask.width,edgeImage.naturalHeight||edgeMask.height),sourceCtx=sourceEdge.getContext('2d');sourceCtx.drawImage(edgeImage.naturalWidth?edgeImage:edgeMask,0,0,sourceEdge.width,sourceEdge.height);const sourcePixels=sourceCtx.getImageData(0,0,sourceEdge.width,sourceEdge.height).data;
   const sourceInsideEdge=(box,frame)=>{
+   if(result.paintBase)return true;
    for(let y=box.y;y<=box.y+box.h;y+=1)for(let x=box.x;x<=box.x+box.w;x+=1){
     const sx=Math.floor((frame.x+x/r.width*frame.w)/680*sourceEdge.width),sy=Math.floor((frame.y+y/r.height*frame.h)/500*sourceEdge.height);
     if(sx<0||sy<0||sx>=sourceEdge.width||sy>=sourceEdge.height||sourcePixels[(sy*sourceEdge.width+sx)*4+3]<240)return false;
@@ -89,9 +92,9 @@ export function createMapInk(canvas,sheet,app){
   if(result?.svg){
    const paths=result.geometry.map(item=>({...item,path:new Path2D(item.path),selected:item.id===record.id}));
    const mainTop=Math.min(r.height*.45,headerBottom+14),mainHeight=r.height-mainTop;
-   const focus=result.focusBox||paths.find(p=>p.selected).box,near=nearAtlasFrame(focus,r.width,mainHeight),full=fullAtlasFrame(r.width,r.height,focus);
-   result.crop={...near,y:near.y-mainTop*near.w/r.width,h:near.w/r.width*r.height};
-   result.fullCrop={...full,y:full.y-mainTop*.5*full.w/r.width};
+   const focus=result.focusBox||paths.find(p=>p.selected).box,frames=readableAtlasFrames(focus,r.width,r.height,mainTop,result.bounds||{x:0,y:0,w:680,h:500},result.wholeCountry);
+   result.crop=frames.near;result.fullCrop=frames.full;
+   if(app.dataset.qa==='true'){sheet.dataset.atlasBounds=JSON.stringify(result.bounds);sheet.dataset.atlasFocus=JSON.stringify(focus);sheet.dataset.mainMapArea=JSON.stringify({top:mainTop,height:mainHeight});}
    mapSpec={result,paths,headerBottom,neighbors:new Set(),rect:{x:r.left-origin.left,y:r.top-origin.top,w:r.width,h:r.height},frame:{...result.crop}};
    const measure=surface(1,1).getContext('2d');measure.font='700 10.5px ScenicBody';
    function plan(frame,near){
@@ -104,7 +107,7 @@ export function createMapInk(canvas,sheet,app){
      if(path&&right>left&&bottom>top)for(let ix=0;ix<9;ix++)for(let iy=0;iy<9;iy++){const x=left+(right-left)*(ix+.5)/9,y=top+(bottom-top)*(iy+.5)/9,score=(x-(left+right)/2)**2+(y-(top+bottom)/2)**2;if(score<best&&hit.isPointInPath(path,x,y)){point={x,y};best=score;}}
      return point;
     };
-    const items=result.labels.filter(item=>item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):EUROPE_IDS.has(item.id))).sort((a,b)=>{
+    const items=result.labels.filter(item=>item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):(record.id==='ru'||EUROPE_IDS.has(item.id)))).sort((a,b)=>{
      const priority=x=>near?(result.neighbors.includes(x.id)?0:1):(x.id===record.id?-1:0);
      return priority(a)-priority(b)||(near&&priority(a)===0?a.box.w*a.box.h-b.box.w*b.box.h:b.box.w*b.box.h-a.box.w*a.box.h);
     }).map(item=>{const point=visibleAnchor(item);return {...item,...project(point),point,key:'country:'+item.id,flag:!!result.flags[item.id],selected:item.id===record.id,required:near?result.neighbors.includes(item.id):item.id===record.id,small:false};});
@@ -138,9 +141,9 @@ export function createMapInk(canvas,sheet,app){
   try{
    await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,box.height/flag.naturalHeight,(headingBottom-headingTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale,angle=-2*Math.PI/180;
    const visibleWidth=fw*Math.cos(angle)+fh*Math.abs(Math.sin(angle)),visibleHeight=fh*Math.cos(angle)+fw*Math.abs(Math.sin(angle));
-   flagPaint.save();flagPaint.translate(box.right-origin.left-visibleWidth/2,headingBottom-visibleHeight/2);flagPaint.rotate(angle);
+   flagPaint.save();flagPaint.translate(box.right-origin.left-visibleWidth/2,headingBottom-visibleHeight/2-8);flagPaint.rotate(angle);
    flagPaint.shadowColor='#56361e50';flagPaint.shadowBlur=3;flagPaint.shadowOffsetY=2;flagPaint.drawImage(flag,-fw/2,-fh/2,fw,fh);flagPaint.restore();
-   if(app.dataset.qa==='true')sheet.dataset.flagBottom=String(headingBottom);
+   if(app.dataset.qa==='true')sheet.dataset.flagBottom=String(headingBottom-8);
   }catch{}
   paint=geography;
   if(!isCurrent()){art.width=art.height=1;return;}

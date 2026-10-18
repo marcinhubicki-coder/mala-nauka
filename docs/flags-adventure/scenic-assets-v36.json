@@ -1,0 +1,18 @@
+{
+  "mode": "built-in image_gen",
+  "assets": [
+    {
+      "path": "assets/maps/atlas-ground-v36.webp",
+      "source": "/Users/marcin/.codex/generated_images/01a143d8-7236-7950-a636-dccff36a389f/exec-af6f1335-fe9c-44b4-86fa-95a8e9963852.png",
+      "prompt": "Use case: precise-object-edit. Asset type: seamless flat land material for the existing illustrated children's atlas. Edit target: the referenced watercolor terrain tile. Remove ALL mountains, peaks, rocky hills and elevation formations. Fill their places with the same soft lime, moss and ochre meadow watercolor washes and tiny sparse evergreen/deciduous tree clusters. Keep the same hand-painted storybook atlas material, paper grain, top-down viewpoint, scale of trees, warm light and saturated but gentle colors. Even, varied flat lowland throughout, edge-to-edge seamless tile, no mountains anywhere, no coastlines, rivers, borders, labels, paths, shadows from clouds or blank margins."
+    },
+    {
+      "path": "assets/maps/atlas-mountain-v36.webp",
+      "source": "/Users/marcin/.codex/generated_images/01a143d8-7236-7950-a636-dccff36a389f/exec-a4bd324f-f818-4060-a3a5-941573cf7876.png",
+      "prompts": [
+        "Use case: illustration-story. Asset type: a single reusable atlas mountain-range stamp on a genuinely transparent background. Primary request: a compact cluster of three overlapping alpine mountains, viewed slightly from above, to match a richly hand-painted watercolor children's atlas. Warm ochre and muted olive foothills, gray-brown crags, warm ivory snow on the highest peaks, small dark evergreen trees near the base. Soft irregular natural silhouette and sparse watercolor fading at the base. Entire cluster visible, horizontally wide about 3:2, modest transparent margin, no ground rectangle, no scene background, no text, symbols, borders, cartographic lines or drop shadow. Crisp small-scale detail, storybook brushwork, light from upper left. Real clean alpha transparency, not checkerboard.",
+        "Use case: precise-object-edit. Edit target: the referenced transparent watercolor mountain cluster. Keep the same three mountains, trees, warm palette, snowy ridges, shape and storybook painted style. Remove ALL atmospheric haze, golden glow, dark glow, vignette and blurry halo around the mountains. The surrounding area must be completely transparent with clean natural antialiased edges. Only the solid mountain silhouettes, small foothills and trees remain. No drop shadow, no surrounding ground rectangle. This is a small atlas stamp that will be repeated over green watercolor land; colored haze outside the object makes dirty patches, so remove it completely. Preserve real alpha transparency."
+      ]
+    }
+  ]
+}

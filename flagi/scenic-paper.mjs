@@ -1,4 +1,4 @@
-import {SCENIC} from './scenic-config.mjs?v=35';
+import {SCENIC} from './scenic-config.mjs?v=36';
 const MATERIAL='assets/flags/adventure/scenic-paper-v14.webp';
 let material;
 export function preloadPaper(){
@@ -14,7 +14,7 @@ function geometry(sheet,p){
  let rise=0,depth=0;
  const panels=angles.map((a,i)=>{const angle=a*(i%2?-1:1);const y=height-bottom-rise-h;const z=depth;rise+=h*Math.cos(angle);depth-=h*Math.sin(angle);return {transform:`translate3d(0,${y}px,${z}px) rotateX(${angle*180/Math.PI}deg)`,shade:Math.sin(a)*.29,light:Math.sin(a)*(i%2?.12:.35)};});
  const capY=height-bottom-rise-top,projectedY=height+(capY-height)*2400/(2400-depth);
- return {panels,cap:`translate3d(0,${capY}px,${depth}px)`,compass:`translate3d(0,${projectedY}px,0)`,bottom,top,h,height};
+ return {panels,cap:`translate3d(0,${capY}px,${depth}px)`,compass:`translate3d(0,${projectedY}px,0) scale(1.15)`,bottom,top,h,height};
 }
 export function placePaper(sheet){
  const g=geometry(sheet,sheet.classList.contains('is-open')?1:0);

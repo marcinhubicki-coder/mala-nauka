@@ -1,7 +1,7 @@
 // One timing source for the isolated scenic variant, also used by visual QA.
 export const SCENIC = Object.freeze({
   seconds: 166, memoryMs: 3900, openMs: 880, closeMs: 860, inkDrawMs: 2100, inkEraseMs: 1050,
-  sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
+  sandMs: 1700, sandFall: .34, sandSettle: .49, grainsPerLetter: 30,
   // Cloth anchors to the mast painted in the single full-screen scene.
   mast: Object.freeze({imageWidth:852,imageHeight:1846,zoom:1.12,attachX:245,attachY:470}),
   atlas: Object.freeze({compassGap:12,answerGap:10,viewMs:520}),

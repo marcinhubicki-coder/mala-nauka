@@ -154,3 +154,13 @@ html,body,.scenic-screen *{-webkit-user-select:none;user-select:none;-webkit-tou
 .scenic-answer:active{transform:none}
 .scenic-screen img{-webkit-user-drag:none}
 .scenic-neighbor-row{pointer-events:none}.scenic-neighbor-row button{pointer-events:auto}
+.scenic-prompt{font-size:clamp(17px,4.7vw,20px);transform:translateY(-7px)}
+.scenic-paper-row{padding-left:20px;padding-right:20px}
+.scenic-compass{transform-origin:center}
+.scenic-lang{scale:1.15;top:21px;left:calc(50% + 4.5px);transform-origin:center}
+/* The two folded ends overlap and feather instead of meeting on a hard cut. */
+.scenic-paper-top{height:calc(var(--paper-top) + 10px);mask:linear-gradient(#000 calc(100% - 10px),transparent)}
+.scenic-paper-bottom{height:calc(var(--paper-bottom) + 8px);mask:linear-gradient(transparent,#000 8px)}
+.scenic-atlas-context{position:absolute;left:28px;bottom:16px;z-index:8;max-width:calc(100% - 135px);font:800 10px/1.1 ScenicBody;color:#684928;pointer-events:none}
+.scenic-neighbors[data-rows="4"] .scenic-neighbor-row{min-height:31px;padding-top:5px;padding-bottom:5px}
+.scenic-neighbors[data-rows="4"] button{font-size:10px}

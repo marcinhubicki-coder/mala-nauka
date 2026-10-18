@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "russiaNeighbors": 14,
+  "scope": "Europe and Asia",
+  "atlasContinents": [
+    "africa",
+    "oceania",
+    "eurasia"
+  ],
+  "errors": []
+}

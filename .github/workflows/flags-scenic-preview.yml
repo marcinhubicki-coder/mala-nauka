@@ -20,6 +20,8 @@ on:
       - 'assets/maps/europe-atlas-v26.*'
       - 'assets/maps/europe-painted-v27.*'
       - 'assets/maps/europe-iberia-registration-v28.json'
+      - 'assets/maps/atlas-*-v36.*'
+      - 'tools/prepare-scenic-world.mjs'
       - 'assets/fonts/eb-garamond-*'
       - 'assets/fonts/charm-*'
       - 'assets/fonts/merienda-*'
@@ -60,6 +62,10 @@ jobs:
           npx playwright install --with-deps chromium webkit
       - name: Check registered atlas assets
         run: |
+          test -s assets/maps/atlas-world-v36.data
+          test -s assets/maps/atlas-ground-v36.webp
+          test -s assets/maps/atlas-mountain-v36.webp
+          node --input-type=module -e "import fs from 'node:fs'; import {gunzipSync} from 'node:zlib'; const a=JSON.parse(gunzipSync(fs.readFileSync('assets/maps/atlas-world-v36.data'))); if(a.features.length<200 || a.features.find(f=>f.id==='ru').neighbors.length!==14) throw Error('Incomplete world atlas');"
           test -s assets/maps/europe-painted-v27.webp
           test -s assets/maps/europe-atlas-v26.svg
           test -s assets/maps/europe-iberia-registration-v28.json

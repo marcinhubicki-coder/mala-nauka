@@ -1,89 +1,79 @@
-import {SCENIC,randomFrom} from './scenic-config.mjs?v=35';
-const mix=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t*t*(3-2*t);
+import {SCENIC,randomFrom} from './scenic-config.mjs?v=36';
+const mix=(a,b,t)=>a+(b-a)*t,clamp=t=>Math.max(0,Math.min(1,t)),ease=t=>t*t*(3-2*t);
+const surface=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
 
-// Sample each glyph's actual silhouette: fifteen grains per nonspace letter.
-// One tiny scratch canvas is reused; the only animated surface is the main one.
-function glyphs(answers,origin,rand) {
-  const scratch=document.createElement('canvas');scratch.width=64;scratch.height=64;
-  const ctx=scratch.getContext('2d',{willReadFrequently:true});
-  return [...answers.querySelectorAll('.scenic-answer')].map(button=>{
-    const letters=[...button.querySelectorAll('.sand-letter')].filter(s=>s.textContent.trim());
-    const points=[],lines=[];
-    for(const span of letters){const r=span.getBoundingClientRect();let line=lines.find(l=>Math.abs(l.top-r.top)<2);if(!line){line={top:r.top,left:r.left,right:r.right,bottom:r.bottom};lines.push(line);}line.left=Math.min(line.left,r.left);line.right=Math.max(line.right,r.right);line.bottom=Math.max(line.bottom,r.bottom);}
-    for(const span of letters){
-      const r=span.getBoundingClientRect(),style=getComputedStyle(span);
-      ctx.clearRect(0,0,64,64);ctx.font=`${style.fontWeight} 40px ${style.fontFamily}`;
-      ctx.fillStyle='#000';ctx.textBaseline='top';ctx.fillText(span.textContent,0,0);
-      const pixels=ctx.getImageData(0,0,64,64).data,ink=[];
-      for(let y=0;y<52;y+=2)for(let x=0;x<50;x+=2)if(pixels[(y*64+x)*4+3]>120)ink.push({x,y});
-      const maxX=Math.max(1,...ink.map(p=>p.x)),maxY=Math.max(1,...ink.map(p=>p.y));
-      for(let i=0;i<SCENIC.grainsPerLetter;i++){
-        const p=ink[Math.floor(rand()*ink.length)]||{x:10,y:20};
-        const line=lines.find(l=>Math.abs(l.top-r.top)<2);
-        points.push({x:r.left-origin.left+(p.x/maxX)*r.width,y:r.top-origin.top+(p.y/maxY)*r.height*.87,baseline:line.bottom-origin.top-2,letterCenter:(r.left+r.right)/2-origin.left,letterWidth:r.width});
-      }
-    }
-    const r=button.querySelector('.scenic-answer-label').getBoundingClientRect();
-    return {points,center:r.left-origin.left+r.width/2,baseline:r.bottom-origin.top-2,width:r.width};
-  });
-}
-
-export function createSand(canvas,app,answers) {
-  const ctx=canvas.getContext('2d',{alpha:true});
-  const clear=()=>{canvas.width=canvas.height=1;delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete app.dataset.qaCaptured;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
-  async function transition({timeline,reduced,seed,replace}) {
-    clear();if(reduced){replace();return;}
-    const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);
-    canvas.width=Math.round(origin.width*dpr);canvas.height=Math.round(origin.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
-    const old=glyphs(answers,origin,rand);
-    answers.classList.add('is-sanding');replace();
-    const next=glyphs(answers,origin,rand),grains=[];
-    old.forEach((group,row)=>{
-      const target=next[row],count=Math.max(group.points.length,target.points.length);
-      // Monotone horizontal matching avoids crossing whole words while forming.
-      group.points.sort((a,b)=>a.x-b.x||a.y-b.y);target.points.sort((a,b)=>a.x-b.x||a.y-b.y);
-      for(let i=0;i<count;i++){
-        const start=group.points[Math.min(group.points.length-1,Math.floor(i/count*group.points.length))],end=target.points[Math.min(target.points.length-1,Math.floor(i/count*target.points.length))];
-        const ridge=Math.max(0,1-Math.abs(start.x-start.letterCenter)/Math.max(1,start.letterWidth/2));
-        grains.push({start,end,fromOld:Math.floor((i+1)*group.points.length/count)>Math.floor(i*group.points.length/count),toNew:Math.floor((i+1)*target.points.length/count)>Math.floor(i*target.points.length/count),
-          pile:{x:start.x,y:Math.max(start.y,start.baseline-ridge*(2+rand()*4))},
-          size:1.2+rand()*1.1,delay:rand()*.075,
-          color:['#473b32','#5a4738','#6b503c'][Math.floor(rand()*3)]});
-      }
-    });
-    canvas.dataset.grains=String(grains.length);
-    if(app.dataset.qa==='true'){canvas.dataset.upward=String(grains.filter(g=>g.toNew&&g.end.y<g.pile.y).length);canvas.dataset.downward=String(grains.filter(g=>g.toNew&&g.end.y>g.pile.y).length);}
-    try{await timeline.tween(SCENIC.sandMs,t=>{
-      ctx.clearRect(0,0,origin.width,origin.height);
-      if(app.dataset.qa==='true')app.dataset.sandProgress=t.toFixed(3);
-      const phase=t<SCENIC.sandFall?'falling':t<SCENIC.sandSettle?'settled':'forming';
-      if(app.dataset.sandPhase!==phase)app.dataset.sandPhase=phase;
-      // Solid letters take over only after the grains reach their new silhouettes.
-      answers.style.setProperty('--ink-opacity',String(Math.max(0,(t-.91)/.09)));
-      for(const g of grains){
-        let x,y,alpha=g.fromOld?1:0;
-        if(t<SCENIC.sandFall){
-          const q=Math.max(0,Math.min(1,(t-g.delay)/(SCENIC.sandFall-g.delay)));
-          x=g.start.x;
-          y=mix(g.start.y,g.pile.y,q*q);
-        }else if(t<SCENIC.sandSettle){x=g.pile.x;y=g.pile.y;}
-        else{
-          const q=ease(Math.min(1,(t-SCENIC.sandSettle)/(.92-SCENIC.sandSettle)));
-          x=mix(g.pile.x,g.end.x,q);y=mix(g.pile.y,g.end.y,q);
-          alpha=g.toNew?(g.fromOld?1:q):1-q;alpha*=Math.min(1,(1-t)/.07);
-        }
-        if(alpha<=0)continue;ctx.globalAlpha=alpha;ctx.fillStyle=g.color;ctx.fillRect(x,y,g.size,g.size);
-        // A tiny warm upper edge and shaded lower edge pick up the scene light.
-        if(g.size>1.65){ctx.globalAlpha=alpha*.46;ctx.fillStyle='#b58a58';ctx.fillRect(x,y,g.size,.55);ctx.globalAlpha=alpha*.36;ctx.fillStyle='#1d2420';ctx.fillRect(x,y+g.size-.5,g.size,.5);}
-      }
-      ctx.globalAlpha=1;
-      // Capture target is armed before resuming: no screenshot/IPC timing race.
-      if(app.dataset.qa==='true'&&app.dataset.qaCaptureAt!==undefined){
-        const target=Number(app.dataset.qaCaptureAt);
-        if(t>=target){delete app.dataset.qaCaptureAt;app.dataset.qaCaptured=String(target);timeline.setPaused(true);}
-      }
-    },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaCaptureAt===undefined?undefined:Number(app.dataset.qaCaptureAt)}:{});}finally{clear();}
+// Sample the actual CSS glyph at its measured DOM baseline, without stretching
+// a generic 40px letter into a different box. The same raster forms the handoff.
+function glyphs(answers,origin,rand,dpr){
+ const ink=surface(Math.round(origin.width*dpr),Math.round(origin.height*dpr)),paint=ink.getContext('2d');paint.scale(dpr,dpr);
+ const scratch=surface(1,1),groups=[];
+ for(const button of answers.querySelectorAll('.scenic-answer')){
+  const points=[],spans=[...button.querySelectorAll('.sand-letter')].filter(s=>s.textContent.trim()),lines=[];
+  for(const span of spans){const r=span.getBoundingClientRect();let line=lines.find(l=>Math.abs(l.top-r.top)<2);if(!line){line={top:r.top,bottom:r.bottom};lines.push(line);}line.bottom=Math.max(line.bottom,r.bottom);}
+  for(const span of spans){
+   const r=span.getBoundingClientRect(),style=getComputedStyle(span),size=parseFloat(style.fontSize),pad=4;
+   const marker=document.createElement('i');marker.style.cssText='display:inline-block;width:0;height:0;padding:0;margin:0;vertical-align:baseline';span.append(marker);const baseline=marker.getBoundingClientRect().top;marker.remove();
+   const font=`${style.fontWeight} ${size}px ${style.fontFamily}`;
+   paint.font=font;paint.fillStyle=style.color;paint.textBaseline='alphabetic';paint.fillText(span.textContent,r.left-origin.left,baseline-origin.top);
+   scratch.width=Math.ceil((r.width+size*.6+pad*2)*dpr);scratch.height=Math.ceil((r.height+size*.8+pad*2)*dpr);
+   const ctx=scratch.getContext('2d',{willReadFrequently:true});ctx.scale(dpr,dpr);ctx.font=font;ctx.fillStyle='#000';ctx.textBaseline='alphabetic';ctx.fillText(span.textContent,pad,baseline-r.top+pad);
+   const pixels=ctx.getImageData(0,0,scratch.width,scratch.height).data,candidates=[];
+   for(let y=0;y<scratch.height;y+=2)for(let x=0;x<scratch.width;x+=2)if(pixels[(y*scratch.width+x)*4+3]>110)candidates.push({x:r.left-origin.left+x/dpr-pad,y:r.top-origin.top+y/dpr-pad});
+   if(!candidates.length)candidates.push({x:r.left-origin.left+r.width/2,y:baseline-origin.top});
+   // Spread dots across all strokes rather than randomly sampling one thick arm.
+   const distances=new Float32Array(candidates.length).fill(Infinity);let chosen=Math.floor(rand()*candidates.length);
+   for(let i=0;i<SCENIC.grainsPerLetter;i++){
+    const p=candidates[chosen];points.push({...p,color:style.color,baseline:Math.max(baseline-origin.top+2,p.y+1),letterCenter:(r.left+r.right)/2-origin.left,letterWidth:r.width});
+    let farthest=-1;for(let j=0;j<candidates.length;j++){const q=candidates[j];distances[j]=Math.min(distances[j],(q.x-p.x)**2+(q.y-p.y)**2);if(distances[j]>farthest){farthest=distances[j];chosen=j;}}
+   }
   }
-  return {transition,clear};
+  groups.push({points});
+ }
+ return {groups,ink};
+}
+export function createSand(canvas,app,answers){
+ const ctx=canvas.getContext('2d',{alpha:true});
+ const clear=()=>{canvas.width=canvas.height=1;delete app.dataset.sandPhase;delete app.dataset.sandProgress;delete app.dataset.qaCaptured;delete canvas.dataset.grains;answers.classList.remove('is-sanding','is-growing');answers.style.removeProperty('--ink-opacity');};
+ async function transition({timeline,reduced,seed,replace}){
+  clear();if(reduced){replace();return;}
+  const dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr),origin=canvas.getBoundingClientRect(),rand=randomFrom(seed);
+  canvas.width=Math.round(origin.width*dpr);canvas.height=Math.round(origin.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+  const old=glyphs(answers,origin,rand,dpr);answers.classList.add('is-sanding');replace();
+  const next=glyphs(answers,origin,rand,dpr),grains=[],formed=surface(canvas.width,canvas.height),dotMask=surface(canvas.width,canvas.height);
+  old.groups.forEach((group,row)=>{
+   const target=next.groups[row],count=Math.max(group.points.length,target.points.length);
+   group.points.sort((a,b)=>a.x-b.x||a.y-b.y);target.points.sort((a,b)=>a.x-b.x||a.y-b.y);
+   for(let i=0;i<count;i++){
+    const start=group.points[Math.min(group.points.length-1,Math.floor(i/count*group.points.length))],end=target.points[Math.min(target.points.length-1,Math.floor(i/count*target.points.length))],ridge=Math.max(0,1-Math.abs(start.x-start.letterCenter)/Math.max(1,start.letterWidth/2));
+    grains.push({start,end,fromOld:Math.floor((i+1)*group.points.length/count)>Math.floor(i*group.points.length/count),toNew:Math.floor((i+1)*target.points.length/count)>Math.floor(i*target.points.length/count),pile:{x:start.x,y:Math.max(start.y,start.baseline-ridge*(2+rand()*4))},radius:.48+rand()*.32,delay:rand()*.06});
+   }
+  });
+  canvas.dataset.grains=String(grains.length);
+  if(app.dataset.qa==='true'){canvas.dataset.upward=String(grains.filter(g=>g.toNew&&g.end.y<g.pile.y).length);canvas.dataset.downward=String(grains.filter(g=>g.toNew&&g.end.y>g.pile.y).length);canvas.dataset.shape='circle';canvas.dataset.grainsPerLetter=String(SCENIC.grainsPerLetter);}
+  try{await timeline.tween(SCENIC.sandMs,t=>{
+   ctx.clearRect(0,0,origin.width,origin.height);
+   const phase=t<SCENIC.sandFall?'falling':t<SCENIC.sandSettle?'settled':'forming',solid=clamp((t-.80)/.13),handoff=clamp((t-.93)/.07);
+   app.dataset.sandPhase=phase;if(app.dataset.qa==='true')app.dataset.sandProgress=t.toFixed(3);
+   answers.style.setProperty('--ink-opacity',String(handoff));
+   for(const g of grains){
+    let x,y,alpha=g.fromOld?1:0;
+    if(t<SCENIC.sandFall){const q=clamp((t-g.delay)/(SCENIC.sandFall-g.delay));x=g.start.x;y=mix(g.start.y,g.pile.y,q*q);}
+    else if(t<SCENIC.sandSettle){x=g.pile.x;y=g.pile.y;}
+    else{const q=ease(clamp((t-SCENIC.sandSettle)/(.88-SCENIC.sandSettle)));x=mix(g.pile.x,g.end.x,q);y=mix(g.pile.y,g.end.y,q);alpha=(g.toNew?(g.fromOld?1:q):1-q)*(1-solid)*(1-handoff);}
+    if(alpha<=0)continue;ctx.globalAlpha=alpha;ctx.fillStyle=phase==='forming'?g.end.color:g.start.color;ctx.beginPath();ctx.arc(x,y,g.radius,0,Math.PI*2);ctx.fill();
+   }
+   // The arriving dots reveal the exact glyph mask. Once complete, this crisp
+   // full font fades out at exactly the rate the identical DOM font fades in.
+   if(solid>0){
+    const mask=dotMask.getContext('2d');mask.setTransform(dpr,0,0,dpr,0,0);mask.clearRect(0,0,origin.width,origin.height);mask.fillStyle='#000';
+    if(solid>.98)mask.fillRect(0,0,origin.width,origin.height);
+    else{mask.beginPath();for(const g of grains)if(g.toNew){mask.moveTo(g.end.x+(.6+solid*3),g.end.y);mask.arc(g.end.x,g.end.y,.6+solid*3,0,Math.PI*2);}mask.fill();}
+    const f=formed.getContext('2d');f.globalCompositeOperation='source-over';f.clearRect(0,0,formed.width,formed.height);f.drawImage(next.ink,0,0);f.globalCompositeOperation='destination-in';f.drawImage(dotMask,0,0);
+    ctx.globalAlpha=solid*(1-handoff);ctx.drawImage(formed,0,0,origin.width,origin.height);
+   }
+   ctx.globalAlpha=1;
+   if(app.dataset.qa==='true'&&app.dataset.qaCaptureAt!==undefined&&t>=Number(app.dataset.qaCaptureAt)){const target=app.dataset.qaCaptureAt;delete app.dataset.qaCaptureAt;app.dataset.qaCaptured=target;timeline.setPaused(true);}
+  },app.dataset.qa==='true'?{stopAt:()=>app.dataset.qaCaptureAt===undefined?undefined:Number(app.dataset.qaCaptureAt)}:{});}finally{clear();}
+ }
+ return {transition,clear};
 }

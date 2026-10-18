@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "neighborsStart": {
+    "ink": 0.675,
+    "state": "showing-map"
+  },
+  "grains": {
+    "count": 1020,
+    "perLetter": 30,
+    "shape": "circle",
+    "opacity": "0"
+  },
+  "handoff": 0.571429,
+  "errors": []
+}

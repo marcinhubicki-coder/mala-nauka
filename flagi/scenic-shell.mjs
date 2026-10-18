@@ -9,7 +9,7 @@ if(standalone){
   document.body.prepend(document.querySelector('.scenic-scenery'));
 }
 if(standalone||embedded||window.top!==window){
-  const script=document.createElement('script');script.type='module';script.src=new URL('./scenic-preview.mjs?v=35',import.meta.url).href;document.body.append(script);
+  const script=document.createElement('script');script.type='module';script.src=new URL('./scenic-preview.mjs?v=36',import.meta.url).href;document.body.append(script);
 }else{
   const width=390,height=844,maxWidth=480;
   const style=document.createElement('style');

@@ -225,6 +225,8 @@ function applySegmentSelection(input){
 function setupDrag(container){
  if(!container||container.dataset.jellyV4DragReady==='true')return;
  jellyV4.setupDrag(container,{
+  // A tap must keep its native label target; capture only after a real drag.
+  captureOnDrag:true,
   getActiveIndex:()=>activeIndexFor(container),
   commitIndex:index=>{
    const list=[...container.querySelectorAll(':scope > label')];

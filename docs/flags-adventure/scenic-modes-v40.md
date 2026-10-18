@@ -20,6 +20,8 @@ by Session. Capitals display localized city names while submitting the original
 country key. Countries submit country IDs. This retains adaptive question
 selection, scoring, category history, pause and prepared-next behavior. Restored
 wizard choices are explicitly synchronized into the application configuration.
+Segmented controls capture the pointer only after a drag threshold, preserving
+the native label click for ordinary mode-selection taps.
 
 The entry blur waits for the decoded scene, fonts, flag and rendered question
 map. Next-round asset preparation retains the v39 atlas cache and clock hold.
@@ -34,7 +36,7 @@ were checked at near/continent zoom and after switching to English. Countries'
 reverse fold was also checked with normal motion. No browser page errors.
 These checks do not constitute physical iPhone or installed-PWA verification.
 
-Preview entry: `/flagi/preview-frame.html?scenic=1&v=40`.
+Preview entry: `/flagi/preview-frame.html?scenic=1&v=40.1`.
 Isolated question examples:
 `/flagi/scenic-preview.html?country=pl&mode=capitals&v=40` and
 `/flagi/scenic-preview.html?country=pl&mode=countries&v=40`.

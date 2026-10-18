@@ -1,10 +1,10 @@
 /* Scenic Europe proof of concept: one prebaked map, one highlighted SVG country.
    All coordinates are registered to Natural Earth's 680 × 500 viewBox. */
 const EUROPE_IMAGE=new URL('assets/maps/europe-painted-v27.webp',document.baseURI).href;
-import {registerAtlasImage} from './scenic-registration.mjs?v=31';
+import {registerAtlasImage} from './scenic-registration.mjs?v=32';
 import {FLAGS} from '../data/flags.mjs';
-import {SCENIC} from './scenic-config.mjs?v=31';
-import {nearAtlasFrame,fullAtlasFrame,clockwiseNeighbors} from './scenic-camera.mjs?v=31';
+import {SCENIC} from './scenic-config.mjs?v=32';
+import {nearAtlasFrame,fullAtlasFrame,clockwiseNeighbors} from './scenic-camera.mjs?v=32';
 const records=new Map(FLAGS.map(r=>[r.id,r]));
 let imagePromise;
 let geographyPromise;

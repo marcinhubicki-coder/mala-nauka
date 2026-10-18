@@ -1,7 +1,7 @@
-import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=31';
-import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=31';
+import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=32';
+import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=32';
 import {FLAGS} from '../data/flags.mjs';
-import {drawCapitalSymbol} from './scenic-capital.mjs?v=31';
+import {drawCapitalSymbol} from './scenic-capital.mjs?v=32';
 const EUROPE_IDS=new Set(FLAGS.filter(record=>record.continent==='europe').map(record=>record.id));
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
@@ -105,20 +105,21 @@ export function createMapInk(canvas,sheet,app){
   const geography=paint;paint=headingPaint;
   // Heading keeps full opacity on a separate surface above the pale map wash.
   // The same ink mask reveals both surfaces without a rectangular backing.
-  let headingTop=Infinity,headingBottom=-Infinity,countryBottom=-Infinity,capitalTop=Infinity,capitalMetrics;
+  let headingTop=Infinity,headingBottom=-Infinity,countryBottom=-Infinity,capitalTop=Infinity,capitalMetrics;const countryBaselines=[];
   for(const node of inner.querySelectorAll('.scenic-title-line,#scenic-country-capital')){
    const box=node.getBoundingClientRect(),style=getComputedStyle(node),size=parseFloat(style.fontSize);
    paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';paint.fillStyle=style.color;paint.textAlign='left';
-   const metrics=paint.measureText(node.textContent),baseline=node.id==='scenic-country-capital'?box.top-origin.top+metrics.actualBoundingBoxAscent:box.bottom-origin.top-metrics.actualBoundingBoxDescent;
+   const metrics=paint.measureText(node.textContent),reference=paint.measureText(node.id==='scenic-country-capital'?'ĄĆĘŁŃÓŚŹŻ':'Polska'),baseline=node.id==='scenic-country-capital'?box.top-origin.top+reference.actualBoundingBoxAscent:box.bottom-origin.top-reference.actualBoundingBoxDescent;
    headingTop=Math.min(headingTop,baseline-metrics.actualBoundingBoxAscent);headingBottom=Math.max(headingBottom,baseline+metrics.actualBoundingBoxDescent);if(node.id==='scenic-country-capital')capitalTop=baseline-metrics.actualBoundingBoxAscent;else countryBottom=Math.max(countryBottom,baseline+metrics.actualBoundingBoxDescent);
    paint.fillText(node.textContent,box.left-origin.left,baseline);
+   if(node.id!=='scenic-country-capital')countryBaselines.push(baseline);
    if(node.id==='scenic-country-capital'){
     const cap=paint.measureText('H').actualBoundingBoxAscent;
     capitalMetrics={baseline,height:cap};
    }
   }
   const city=inner.querySelector('.scenic-capital-icon').getBoundingClientRect();
-  if(capitalMetrics){drawCapitalSymbol(paint,city.left-origin.left,capitalMetrics.baseline-capitalMetrics.height,capitalMetrics.height,{capHeight:true});if(app.dataset.qa==='true')sheet.dataset.headingMetrics=JSON.stringify({...capitalMetrics,countryBottom,capitalTop,gap:capitalTop-countryBottom,iconBottom:capitalMetrics.baseline,iconHeight:capitalMetrics.height});}
+  if(capitalMetrics){drawCapitalSymbol(paint,city.left-origin.left,capitalMetrics.baseline-capitalMetrics.height,capitalMetrics.height,{capHeight:true});if(app.dataset.qa==='true')sheet.dataset.headingMetrics=JSON.stringify({...capitalMetrics,countryBaselines,countryBottom,capitalTop,gap:capitalTop-countryBottom,iconBottom:capitalMetrics.baseline,iconHeight:capitalMetrics.height});}
   const flag=inner.querySelector('.scenic-map-flag');try{await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,box.height/flag.naturalHeight,(headingBottom-headingTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale;paint.save();paint.translate(box.right-origin.left-fw/2,(headingTop+headingBottom)/2);paint.rotate(-2*Math.PI/180);paint.shadowColor='#65472a38';paint.shadowBlur=3;paint.shadowOffsetY=1.5;paint.drawImage(flag,-fw/2,-fh/2,fw,fh);paint.shadowColor='transparent';const sheen=paint.createLinearGradient(-fw/2,0,fw/2,fh);sheen.addColorStop(0,'#fff3');sheen.addColorStop(.45,'#fff0');sheen.addColorStop(1,'#63472910');paint.fillStyle=sheen;paint.fillRect(-fw/2,-fh/2,fw,fh);paint.restore();}catch{}
   paint=geography;
   if(!isCurrent()){art.width=art.height=1;return;}

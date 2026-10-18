@@ -1,7 +1,8 @@
 @font-face{font-family:ScenicRound;src:url('../assets/fonts/fredoka-polish-v1.woff') format('woff');font-weight:300 700;font-display:swap}
 @font-face{font-family:ScenicBody;src:url('../assets/fonts/nunito-variable.woff') format('woff');font-weight:400 900;font-display:swap}
 *{box-sizing:border-box}html,body{padding:0;margin:0;width:100%;height:100%;overflow:hidden}body{font-family:ScenicRound,ui-rounded,sans-serif;color:#080d36;background:#6ba3bd}button{font:inherit}
-.scenic-screen{--scene:url('../assets/flags/adventure/scenic-scene-v29.webp');--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;min-height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#aed6a8 var(--scene) center top/100% 112% no-repeat}
+.scenic-screen{--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;min-height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#aed6a8}
+.scenic-scenery{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transform:scale(1.12);transform-origin:center top;pointer-events:none;user-select:none}
 .scenic-screen::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(#ffffff04,transparent 52%,#ffd48008)}
 .scenic-stage{position:absolute;inset:var(--safe-top) 0 var(--safe-bottom)}.scenic-stage>*{position:absolute}
 .scenic-ios-status{top:2%;left:8%;right:8%;display:flex;justify-content:space-between;align-items:center;font:900 14px ScenicBody;color:#fff;text-shadow:0 1px 3px #20395588;z-index:8}
@@ -127,3 +128,8 @@ html,body{overscroll-behavior:none;height:100vh;height:100dvh;min-height:100dvh}
 .scenic-neighbors[data-wide="true"] .scenic-neighbor-row:not(:first-child){max-width:var(--neighbor-narrow-width)}
 .scenic-timer,.scenic-timer strong,.scenic-timer small{text-shadow:none;filter:none}
 .scenic-paper-row{padding:5px 16px 5px 38px}.scenic-prompt{width:100%;font:700 clamp(16px,4.3vw,19px)/1.12 ScenicRound,sans-serif;white-space:normal;text-wrap:balance;transform:translateY(-1px)}
+/* The paint's torn edge adds about12px to its12px viewport inset. The
+   heading gets twice that optical margin, symmetrically on the flag side. */
+.scenic-map-scroll{--atlas-paint-inset:24px;--atlas-heading-inset:calc(2 * var(--atlas-paint-inset))}
+.scenic-map-caption{top:22px;left:var(--atlas-heading-inset);right:var(--atlas-heading-inset);height:var(--caption-height,88px)}
+.scenic-city{top:var(--capital-top,62px)}

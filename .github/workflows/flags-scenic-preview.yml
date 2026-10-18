@@ -8,6 +8,7 @@ on:
       - 'tools/build-scenic-europe.mjs'
       - 'tools/flags-scenic-qa.mjs'
       - 'tools/flags-scenic-qa-parallel.mjs'
+      - 'tools/flags-scenic-layout-qa.mjs'
       - 'flagi/scenic-preview.html'
       - 'flagi/scenic-preview.webmanifest'
       - 'flagi/scenic-preview.css'
@@ -47,6 +48,7 @@ jobs:
           node --check tools/build-scenic-europe.mjs
           node --check tools/flags-scenic-qa.mjs
           node --check tools/flags-scenic-qa-parallel.mjs
+          node --check tools/flags-scenic-layout-qa.mjs
           node --check flagi/scenic-europe.mjs
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
           node --test tests/scenic-atlas-labels.test.mjs
@@ -67,12 +69,15 @@ jobs:
       - name: Capture phone gameplay and verify SVG-only active border
         id: qa
         continue-on-error: true
-        run: SCENIC_QA_PHASE=full node tools/flags-scenic-qa-parallel.mjs
+        run: |
+          SCENIC_QA_PHASE=full node tools/flags-scenic-qa-parallel.mjs
+          node tools/flags-scenic-layout-qa.mjs
       - name: Save generated atlas and screenshots on isolated branch
         if: always()
         run: |
           git add assets/maps/europe-scenic.webp
           if [ -d docs/flags-adventure/qa-scenic ]; then git add docs/flags-adventure/qa-scenic/; fi
+          if [ -d docs/flags-adventure/qa-layout-v32 ]; then git add docs/flags-adventure/qa-layout-v32/; fi
           if ! git diff --cached --quiet; then
             git -c user.name='github-actions[bot]' \
                 -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \

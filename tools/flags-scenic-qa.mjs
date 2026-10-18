@@ -50,7 +50,7 @@ async function check(name,browser,options,run){
  catch(error){const result={name,...await metrics(page).catch(()=>({})),error:String(error),errors};reports.push(result);failures.push(result);await capture(page,name+'-failure').catch(()=>{});console.error(name,error.stack||String(error));}
  finally{await context.close();await isolated?.close();}
 }
-async function open(page,country='by',freeze=true){await page.goto(base+'/flagi/scenic-preview.html?qa=1&country='+country+(freeze?'&freeze=1':''),{waitUntil:'domcontentloaded'});await state(page,'playing');}
+async function open(page,country='by',freeze=true,fixture){await page.goto(base+'/flagi/scenic-preview.html?view=game&qa=1&country='+country+(freeze?'&freeze=1':'')+(fixture?'&state='+fixture:''),{waitUntil:'domcontentloaded'});await state(page,fixture?'feedback-'+fixture:'playing');}
 async function choose(page,correct=true){const id=await page.locator('#scenic-screen').getAttribute('data-country');const button=correct?page.locator(`.scenic-answer[data-id="${id}"]`):page.locator(`.scenic-answer:not([data-id="${id}"])`).first();await button.click();}
 async function freezeFold(page,opening){
  // Freeze in the same browser task that starts the fold. Remote screenshot
@@ -113,11 +113,16 @@ try{
    await capture(page,engine==='chromium'?sample.name:engine+'-'+sample.name);
   });
   if(phase==='full')await check(engine+'-all-europe-title-layout',browser,{reducedMotion:'reduce'},async page=>{
-   let first;
+   let first,countryBaseline,capitalBaseline;
    for(const record of FLAGS.filter(x=>x.continent==='europe')){
-    await open(page,record.id);await choose(page,false);await state(page,'feedback-wrong');
+    // This sweep measures type, not repeated pointer scrolling. Use the public
+    // wrong-answer fixture; the other scenarios exercise actual answer clicks.
+    await open(page,record.id,true,'wrong');
     const title=await page.locator('#scenic-country-name').evaluate(n=>({name:n.getAttribute('aria-label'),size:parseFloat(getComputedStyle(n).fontSize),lines:n.children.length,fit:[...n.children].every(x=>x.scrollWidth<=n.clientWidth+1)}));
-    assert(Number(JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-heading-metrics')).gap)>=6,record.country+' descenders meet the capital');assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([18,20,22,24,26,28,30].includes(title.size));assert.equal(title.name,record.country);
+    const heading=JSON.parse(await page.locator('#scenic-map-scroll').getAttribute('data-heading-metrics'));
+    assert(Number(heading.gap)>=6,record.country+' descenders meet the capital');assert(title.fit,record.country+' title overflows');assert(title.lines<=2);assert([18,20,22,24,26,28,30].includes(title.size));assert.equal(title.name,record.country);
+    if(title.size===30&&title.lines===1){countryBaseline??=heading.countryBaselines[0];assert(Math.abs(heading.countryBaselines[0]-countryBaseline)<.1,record.country+' uses the shared Poland baseline');}
+    capitalBaseline??=heading.baseline;assert(Math.abs(heading.baseline-capitalBaseline)<.1,record.capital+' keeps the same capital baseline');
     const viewport=await page.locator('.scenic-europe-map').boundingBox();if(first)assert.deepEqual(viewport,first,'All European names share the same map viewport');else first=viewport;
    }
   });

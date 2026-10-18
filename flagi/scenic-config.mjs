@@ -3,7 +3,7 @@ export const SCENIC = Object.freeze({
   seconds: 166, memoryMs: 3900, openMs: 880, closeMs: 860, inkDrawMs: 2100, inkEraseMs: 1050,
   sandMs: 1550, sandFall: .36, sandSettle: .55, grainsPerLetter: 15,
   // Cloth anchors to the mast painted in the single full-screen scene.
-  mast: Object.freeze({attachX:.288, attachY:.283}),
+  mast: Object.freeze({imageWidth:852,imageHeight:1846,zoom:1.12,attachX:245,attachY:470}),
   atlas: Object.freeze({top:.178,answerGap:10,headerHeight:90,viewMs:520}),
   neighbors: Object.freeze({rows:3,rowHeight:33,gap:6}),
   flagTimeoutMs: 5000, mapTimeoutMs: 6000, maxDpr: 2

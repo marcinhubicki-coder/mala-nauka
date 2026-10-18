@@ -2,13 +2,13 @@ import {FLAGS} from '../data/flags.mjs';
 import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
 import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
-import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=31';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=31';
-import {SCENIC,seedOf} from './scenic-config.mjs?v=31';
-import {ScenicTimeline} from './scenic-timeline.mjs?v=31';
-import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=31';
-import {createSand} from './scenic-sand.mjs?v=31';
-import {createMapInk} from './scenic-ink.mjs?v=31';
+import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=32';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=32';
+import {SCENIC,seedOf} from './scenic-config.mjs?v=32';
+import {ScenicTimeline} from './scenic-timeline.mjs?v=32';
+import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=32';
+import {createSand} from './scenic-sand.mjs?v=32';
+import {createMapInk} from './scenic-ink.mjs?v=32';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
@@ -64,8 +64,9 @@ function updateHud(){
 function fitFlag(){
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
   const ratio=(app.dataset.country==='ch'||app.dataset.country==='va'?1:4/3)/1.15;
-  const stage=$('scenic-stage'),top=app.clientHeight*SCENIC.mast.attachY-stage.offsetTop;
-  cloth.style.left=(app.clientWidth*SCENIC.mast.attachX)+'px';cloth.style.top=top+'px';
+  const stage=$('scenic-stage'),mast=SCENIC.mast,scale=Math.max(app.clientWidth/mast.imageWidth,app.clientHeight/mast.imageHeight)*mast.zoom;
+  const top=mast.attachY*scale-stage.offsetTop,left=(app.clientWidth-mast.imageWidth*scale)/2+mast.attachX*scale;
+  cloth.style.left=left+'px';cloth.style.top=top+'px';
   cloth.style.width=Math.min(app.clientWidth*.61,Math.max(80,$('scenic-paper-row').offsetTop-top-6)*ratio)+'px';
 }
 function showFlag(record){
@@ -87,6 +88,11 @@ function fitCaption(){
   title.setAttribute('aria-label',record.country);title.style.fontSize=size+'px';
   title.replaceChildren(...lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
   parent.style.setProperty('--title-lines',lines.length);parent.style.setProperty('--title-size',size+'px');
+  // Keep the Poland baseline and capital slot for every country. Reserve the
+  // font's full descenders even when the current name has none.
+  captionMeasure.font=`700 30px ${style.fontFamily}`;
+  const capitalTop=title.clientHeight+Math.ceil(captionMeasure.measureText('ĄĘgjpqy').actualBoundingBoxDescent)+6;
+  parent.style.setProperty('--capital-top',capitalTop+'px');parent.style.setProperty('--caption-height',(capitalTop+24)+'px');
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();

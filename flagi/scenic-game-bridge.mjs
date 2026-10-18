@@ -4,11 +4,11 @@ export function prepareScenicGame(session,{onExit,onEnd,onAnswer}={}){
  const standalone=navigator.standalone===true||matchMedia('(display-mode:standalone)').matches;
  const host=document.createElement('section'),frame=document.createElement('iframe');
  host.className='scenic-host';host.inert=true;host.setAttribute('aria-label','Gra Flagi');host.style.cssText='position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:#253222;opacity:0;pointer-events:none';
- frame.title='Mała Nauka — Flagi';frame.scenicSession=session;frame.scenicActive=false;
+ const title={flags:'Flagi',countries:'Państwa',capitals:'Stolice'}[session.current.flagGameType]||'Flagi';host.setAttribute('aria-label',title);frame.title='Mała Nauka — '+title;frame.scenicSession=session;frame.scenicActive=false;
  frame.style.cssText='display:block;border:0;flex:none;transform-origin:center center';host.append(frame);document.body.append(host);
  const probe=document.createElement('div');probe.style.cssText='position:fixed;visibility:hidden;padding:var(--app-safe-top,env(safe-area-inset-top)) 0 var(--app-safe-bottom,env(safe-area-inset-bottom))';document.body.append(probe);const safe=getComputedStyle(probe);
  frame.scenicInsets={top:parseFloat(safe.paddingTop)||0,bottom:parseFloat(safe.paddingBottom)||0};probe.remove();
- const url=new URL('flagi/scenic-preview.html',document.baseURI);url.searchParams.set('view','game');url.searchParams.set('hosted','1');url.searchParams.set('v','39');
+ const url=new URL('flagi/scenic-preview.html',document.baseURI);url.searchParams.set('view','game');url.searchParams.set('hosted','1');url.searchParams.set('v','40');
  url.searchParams.set('lang',window.MalaNaukaFlagLanguage?.language==='en'?'en':'pl');frame.src=url.href;
  function fit(){
   if(standalone){frame.style.width='100%';frame.style.height='100%';frame.style.transform='none';}

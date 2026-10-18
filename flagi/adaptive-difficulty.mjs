@@ -22,8 +22,8 @@ const START_COPY={
 };
 const NOTES={
  flags:'Rozpoznawaj flagi i odkrywaj, gdzie leżą państwa.',
- countries:'Patrz na nazwę państwa i wybierz jego flagę.',
- capitals:'Połącz stolicę z właściwym państwem.'
+ countries:globalThis.__MALA_NAUKA_SCENIC__?'Rozpoznaj państwo na mapie, korzystając z położenia i nazwy stolicy.':'Patrz na nazwę państwa i wybierz jego flagę.',
+ capitals:globalThis.__MALA_NAUKA_SCENIC__?'Spójrz na zaznaczony kraj i wybierz jego stolicę.':'Połącz stolicę z właściwym państwem.'
 };
 
 let state=null;
@@ -274,14 +274,14 @@ function syncPanel(animate=false){
  syncSegmentedControls(animate);
 }
 
-function syncHidden(dispatch=true){
+function syncHidden(dispatch=true,force=false){
  const category=root.querySelector('input[name="category"]');
  if(!category)return;
  const next=encodeCategory();
  const changed=category.value!==next;
  category.value=next;
  saveState();
- if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
+ if(dispatch&&(changed||force))category.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
 function setWorldFromAllContinents(){
@@ -327,7 +327,9 @@ function install(){
  updateStartButton(false);
  updateNote();
  syncPanel(false);
- syncHidden(true);
+ // Restored radio selection must reach app.js even when the newly inserted
+ // hidden field already contains that value.
+ syncHidden(true,true);
  requestAnimationFrame(()=>{syncSegmentedControls(false);installDrag();});
 }
 

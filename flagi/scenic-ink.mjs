@@ -2,6 +2,7 @@ import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=36';
 import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=36';
 import {drawCapitalSymbol} from './scenic-capital.mjs?v=36';
 import {readableAtlasFrames} from './scenic-camera.mjs?v=39';
+import {FULL_INK} from './scenic-modes.mjs?v=40';
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
 const surface=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
@@ -58,7 +59,7 @@ export function createMapInk(canvas,sheet,app){
   paint.drawImage(geo,rect.x,rect.y,rect.w,rect.h);
  }
  function clear(){delete sheet.dataset.headingMetrics;delete sheet.dataset.highlightedNeighbors;delete sheet.dataset.atlasLabels;delete sheet.dataset.capitalPin;geographySurface.width=geographySurface.height=1;viewGeneration++;mapSpec=null;if(heading)heading.width=heading.height=1;if(flagSurface)flagSurface.width=flagSurface.height=1;if(edgeMask)edgeMask.width=edgeMask.height=1;if(target)target.width=target.height=1;canvas.width=canvas.height=headingCanvas.width=headingCanvas.height=flagCanvas.width=flagCanvas.height=1;delete sheet.dataset.drawnLabels;delete sheet.dataset.toolsReady;sheet.querySelector('.scenic-atlas-tools').inert=true;delete sheet.dataset.inkPasses;delete sheet.dataset.inkPhase;delete sheet.dataset.inkProgress;delete sheet.dataset.inkGrains;delete sheet.dataset.inkPaintP95;delete sheet.dataset.inkFrames;delete sheet.dataset.inkOutside;delete sheet.dataset.inkBounds;delete app.dataset.qaInkAt;delete app.dataset.qaInkCaptured;target=null;field=null;maskPixels=null;masked.width=mask.width=1;masked.height=mask.height=1;}
- async function prepare(result,record,{isCurrent=()=>true}={}){
+ async function prepare(result,record,{isCurrent=()=>true,presentation=FULL_INK}={}){
   width=sheet.clientWidth;height=sheet.clientHeight;dpr=Math.min(devicePixelRatio||1,SCENIC.maxDpr);
   const art=surface(Math.round(width*dpr),Math.round(height*dpr));let paint=art.getContext('2d');paint.scale(dpr,dpr);
   const origin=sheet.getBoundingClientRect(),inner=sheet.querySelector('.scenic-map-inner'),map=inner.querySelector('.scenic-europe-map'),r=map.getBoundingClientRect(),caption=inner.querySelector('.scenic-map-caption').getBoundingClientRect(),headerBottom=caption.bottom-r.top+1;
@@ -106,11 +107,11 @@ export function createMapInk(canvas,sheet,app){
      if(path&&right>left&&bottom>top)for(let ix=0;ix<9;ix++)for(let iy=0;iy<9;iy++){const x=left+(right-left)*(ix+.5)/9,y=top+(bottom-top)*(iy+.5)/9,score=(x-(left+right)/2)**2+(y-(top+bottom)/2)**2;if(score<best&&hit.isPointInPath(path,x,y)){point={x,y};best=score;}}
      return point;
     };
-    const items=result.labels.filter(item=>item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):(record.id==='ru'||item.continent===result.continent))).sort((a,b)=>{
+    const items=result.labels.filter(item=>(presentation.selectedLabel||item.id!==record.id)&&item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):(record.id==='ru'||item.continent===result.continent))).sort((a,b)=>{
      const priority=x=>near?(result.neighbors.includes(x.id)?0:1):(x.id===record.id?-1:0);
      return priority(a)-priority(b)||(near&&priority(a)===0?a.box.w*a.box.h-b.box.w*b.box.h:b.box.w*b.box.h-a.box.w*a.box.h);
     }).map(item=>{const point=visibleAnchor(item);return {...item,...project(point),point,key:'country:'+item.id,flag:!!result.flags[item.id],selected:item.id===record.id,required:near?result.neighbors.includes(item.id):item.id===record.id,small:false};});
-    if(near&&result.capital){const point={x:result.capital.point[0],y:result.capital.point[1]};items.unshift({key:'capital:'+record.id,id:record.id,name:record.capital,...project(point),point,capital:true});}
+    if(near&&result.capital&&presentation.capitalName){const point={x:result.capital.point[0],y:result.capital.point[1]};items.unshift({key:'capital:'+record.id,id:record.id,name:record.capital,...project(point),point,capital:true});}
     return layoutAtlasLabels(items,{width:r.width,height:r.height,measure:text=>measure.measureText(text).width,near,max:near?8:7,requireOnCountry:true,onCountry:(item,box)=>{const path=paths.find(p=>p.id===item.id)?.path;return path&&hit.isPointInPath(path,frame.x+(box.x+box.w/2)/r.width*frame.w,frame.y+(box.y+box.h/2)/r.height*frame.h);},allowed:box=>box.y>=headerBottom+12&&labelInsideEdge(box)&&sourceInsideEdge(box,frame),blocked:box=>near&&[.15,.5,.85].every(f=>hit.isPointInPath(active.path,frame.x+(box.x+box.w*f)/r.width*frame.w,frame.y+(box.y+box.h*.5)/r.height*frame.h))});
    }
    mapSpec.nearLabels=plan(result.crop,true);mapSpec.fullLabels=plan(result.fullCrop,false);
@@ -123,6 +124,7 @@ export function createMapInk(canvas,sheet,app){
   // The same ink mask reveals both surfaces without a rectangular backing.
   let headingTop=Infinity,headingBottom=-Infinity,countryBottom=-Infinity,capitalTop=Infinity,capitalMetrics;const countryBaselines=[];
   for(const node of inner.querySelectorAll('.scenic-title-line,#scenic-country-capital')){
+   if(node.id==='scenic-country-capital'?!presentation.capitalHeading:!presentation.countryName)continue;
    const box=node.getBoundingClientRect(),style=getComputedStyle(node),size=parseFloat(style.fontSize);
    paint.font=`${style.fontWeight} ${size}px ${style.fontFamily}`;paint.letterSpacing=(parseFloat(style.letterSpacing)||0)+'px';paint.fillStyle=style.color;paint.textAlign='left';
    const metrics=paint.measureText(node.textContent),reference=paint.measureText(node.id==='scenic-country-capital'?'H':'Polska'),baseline=node.id==='scenic-country-capital'?box.top-origin.top+reference.actualBoundingBoxAscent:box.bottom-origin.top-reference.actualBoundingBoxDescent;
@@ -138,11 +140,12 @@ export function createMapInk(canvas,sheet,app){
   if(capitalMetrics){drawCapitalSymbol(paint,city.left-origin.left,capitalMetrics.baseline-capitalMetrics.height,capitalMetrics.height,{capHeight:true});if(app.dataset.qa==='true')sheet.dataset.headingMetrics=JSON.stringify({...capitalMetrics,countryBaselines,countryBottom,capitalTop,gap:capitalTop-countryBottom,iconBottom:capitalMetrics.baseline,iconHeight:capitalMetrics.height});}
   const flag=inner.querySelector('.scenic-map-flag');
   try{
-   await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,box.height/flag.naturalHeight,(headingBottom-headingTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale,angle=-2*Math.PI/180;
+   if(presentation.flag){await flag.decode();const box=flag.getBoundingClientRect(),scale=Math.min(box.width/flag.naturalWidth,box.height/flag.naturalHeight,(headingBottom-headingTop)/flag.naturalHeight),fw=flag.naturalWidth*scale,fh=flag.naturalHeight*scale,angle=-2*Math.PI/180;
    const visibleWidth=fw*Math.cos(angle)+fh*Math.abs(Math.sin(angle)),visibleHeight=fh*Math.cos(angle)+fw*Math.abs(Math.sin(angle));
    flagPaint.save();flagPaint.translate(box.right-origin.left-visibleWidth/2,headingBottom-visibleHeight/2-8);flagPaint.rotate(angle);
    flagPaint.shadowColor='#56361e50';flagPaint.shadowBlur=3;flagPaint.shadowOffsetY=2;flagPaint.drawImage(flag,-fw/2,-fh/2,fw,fh);flagPaint.restore();
    if(app.dataset.qa==='true')sheet.dataset.flagBottom=String(headingBottom-8);
+   }
   }catch{}
   paint=geography;
   if(!isCurrent()){art.width=art.height=1;return;}

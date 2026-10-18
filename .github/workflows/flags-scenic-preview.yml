@@ -38,6 +38,7 @@ on:
       - 'assets/fonts/charm-*'
       - 'assets/fonts/merienda-*'
       - 'tests/scenic-atlas-labels.test.mjs'
+      - 'tests/scenic-modes.test.mjs'
       - 'tools/assemble-scenic-atlas-hd.mjs'
       - 'adventure-preview.mjs'
   workflow_dispatch:
@@ -69,7 +70,7 @@ jobs:
           node --check flagi/scenic-europe.mjs
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
           for file in flagi/atlas-*.mjs; do node --check "$file"; done
-          node --test tests/scenic-atlas-labels.test.mjs
+          node --test tests/scenic-atlas-labels.test.mjs tests/scenic-modes.test.mjs
       - name: Install browser
         if: github.event_name == 'workflow_dispatch'
         run: |

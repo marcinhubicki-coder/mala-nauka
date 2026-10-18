@@ -8,7 +8,8 @@ import {SCENIC,seedOf} from './scenic-config.mjs?v=36';
 import {ScenicTimeline} from './scenic-timeline.mjs?v=36';
 import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=36';
 import {createSand} from './scenic-sand.mjs?v=36';
-import {createMapInk} from './scenic-ink.mjs?v=39';
+import {createMapInk} from './scenic-ink.mjs?v=40';
+import {scenicMode,choiceText,sessionValue,questionInk,MODE_COPY} from './scenic-modes.mjs?v=40';
 import {prepareScenicScene,createScenicGate,decodeScenicImage} from './scenic-ready.mjs?v=39';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
@@ -16,10 +17,13 @@ const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe
 const captionMeasure=document.createElement('canvas').getContext('2d'),neighborLayouts=new Map();
 const query=new URLSearchParams(location.search),records=new Map(FLAGS.map(x=>[x.id,x]));
 const hostedSession=window.frameElement?.scenicSession,byName=new Map(FLAGS.map(r=>[r.country,r]));
+const mode=scenicMode(hostedSession?.current,query.get('mode')),mapQuestion=mode!=='flags';
+app.dataset.mode=mode;
 if(hostedSession){const inset=window.frameElement.scenicInsets;app.style.setProperty('--safe-top',inset.top+'px');app.style.setProperty('--safe-bottom',inset.bottom+'px');}
 let hostedActive=!hostedSession||window.frameElement.scenicActive===true,hostPaused=false;
 let language=query.get('lang')==='en'?'en':'pl',lastMapResult;
 const local=record=>localizedRecord(record,language),copy=()=>COPY[language];
+const modeCopy=()=>MODE_COPY[language][mode],choice=record=>choiceText(local(record),mode);
 const scope=FLAGS.filter(r=>!query.has('category')||query.get('category')==='all'||r.continent===query.get('category'));
 const pool=[...(scope.length?scope:FLAGS)];
 if(!query.has('country')&&!query.has('qa'))for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
@@ -51,7 +55,7 @@ function optionsFor(record){
 function createSession(){
   const session=new Session(owner=>{
     const record=records.get(queue[owner.question%queue.length]);
-    return {kind:'flags',countryId:record.id,answer:record.id,options:optionsFor(record).map(x=>x.id)};
+    return {kind:'flags',flagGameType:mode,countryId:record.id,answer:record.id,options:optionsFor(record).map(x=>x.id)};
   },180);
   session.mode='flags';session.remaining=SCENIC.seconds*1000;session.options=optionsFor(records.get(queue[0])).map(x=>x.id);return session;
 }
@@ -59,23 +63,23 @@ const letters=text=>text.split(' ').map(word=>'<span class="scenic-answer-word">
 function renderButtons(options,{disabled=false}={}){
   if(!answers.children.length)answers.innerHTML=options.map(()=>'<button class="scenic-answer" type="button"><i class="scenic-paper-center" aria-hidden="true"></i><span class="scenic-answer-label" aria-hidden="true"></span><span class="scenic-answer-mark" aria-hidden="true">×</span></button>').join('');
   [...answers.children].forEach((button,i)=>{
-    const record=local(options[i]);button.dataset.id=record.id;button.dataset.long=String(record.country.length>17);
-    button.setAttribute('aria-label',record.country);button.disabled=disabled;button.classList.remove('correct','wrong');
-    button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);
+    const record=options[i],text=choice(record);button.dataset.id=record.id;button.dataset.long=String(text.length>17);
+    button.setAttribute('aria-label',text);button.disabled=disabled;button.classList.remove('correct','wrong');
+    button.querySelector('.scenic-answer-label').innerHTML=letters(text);
   });
 }
 function alignNextOptions(options){
-  const previous=[...answers.children].map(b=>local(records.get(b.dataset.id)).country.length);
+  const previous=[...answers.children].map(b=>choice(records.get(b.dataset.id)).length);
   let best=options,bestCost=Infinity;
   function visit(rest,order,cost){
     if(!rest.length){if(cost<bestCost){best=order;bestCost=cost;}return;}
-    for(const record of rest)visit(rest.filter(r=>r!==record),[...order,record],cost+(local(record).country.length-previous[order.length])**2);
+    for(const record of rest)visit(rest.filter(r=>r!==record),[...order,record],cost+(choice(record).length-previous[order.length])**2);
   }
   visit(options,[],0);return best;
 }
 function updateHud(){
   points=game.correct;seconds=Math.ceil(game.remaining/1000);
-  $('scenic-clock-caption').textContent=state==='playing'||state==='loading'?copy().flags:copy().stopped;
+  $('scenic-clock-caption').textContent=state==='playing'||state==='loading'?modeCopy().title:copy().stopped;
   $('scenic-task').textContent=copy().task+' '+(step+1);$('scenic-score').textContent=points+(language==='pl'?' pkt':' pts');
   $('scenic-clock').textContent=Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
   $('scenic-progress-fill').style.width=Math.max(0,seconds/roundSeconds*100)+'%';
@@ -97,7 +101,7 @@ function showFlag(record){
 }
 function syncAtlasScope(){
   const russia=app.dataset.country==='ru',scope=$('scenic-atlas-context'),full=sheet.dataset.view==='europe';
-  scope.hidden=!russia||!app.classList.contains('is-presenting');scope.textContent=language==='pl'?(full?'Rosja · Europa i Azja':'Rosja · część europejska'):(full?'Russia · Europe and Asia':'Russia · European part');
+  scope.hidden=!russia||!app.classList.contains('is-presenting')||(mode==='countries'&&sheet.dataset.phase==='question');scope.textContent=language==='pl'?(full?'Rosja · Europa i Azja':'Rosja · część europejska'):(full?'Russia · Europe and Asia':'Russia · European part');
   const continent=records.get(app.dataset.country)?.continent||'europe',names={europe:['Europa','Europe'],asia:['Azja','Asia'],africa:['Afryka','Africa'],'north-america':['Ameryka Północna','North America'],'south-america':['Ameryka Południowa','South America'],oceania:['Oceania','Oceania']};
   sheet.querySelector('[data-map-view="europe"]').setAttribute('aria-label',russia?(language==='pl'?'Europa i Azja':'Europe and Asia'):names[continent][language==='pl'?0:1]);
 }
@@ -120,7 +124,8 @@ function fitCaption(forRecord=current()){
   const descent=captionMeasure.measureText('gjpqy').actualBoundingBoxDescent-captionMeasure.measureText('Polska').actualBoundingBoxDescent;
   const capitalTop=title.clientHeight+Math.ceil(descent)+1;
   const capital=$('scenic-country-capital'),capitalStyle=getComputedStyle(capital),capitalWidth=Math.max(40,available-23);
-  const capitalSize=[16,15,14,13,12,11].find(n=>{captionMeasure.font=`${capitalStyle.fontWeight} ${n}px ${capitalStyle.fontFamily}`;return captionMeasure.measureText(record.capital).width<=capitalWidth;})||11;
+  const capitalSizes=mode==='countries'&&sheet.dataset.phase==='question'?[24,22,20,18,16,14,12,11]:[16,15,14,13,12,11];
+  const capitalSize=capitalSizes.find(n=>{captionMeasure.font=`${capitalStyle.fontWeight} ${n}px ${capitalStyle.fontFamily}`;return captionMeasure.measureText(record.capital).width<=capitalWidth;})||11;
   capital.style.fontSize=capitalSize+'px';
   parent.style.setProperty('--capital-top',capitalTop+'px');parent.style.setProperty('--caption-height',(capitalTop+18)+'px');
 }
@@ -235,11 +240,40 @@ function prefetchNext(){
 }
 function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
+  delete app.dataset.revealFlag;
   sheet.classList.remove('is-opening','is-open','is-closing');sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
   $('scenic-neighbors').hidden=true;$('scenic-neighbors').replaceChildren();
   lastMapResult=null;$('scenic-desktop-neighbors').replaceChildren();mapHost.replaceChildren();feedback.textContent='';feedback.classList.remove('is-ended');sheet.dataset.view='near';
   for(const button of sheet.querySelectorAll('[data-map-view]'))button.setAttribute('aria-pressed',String(button.dataset.mapView==='near'));
+  sheet.dataset.phase='question';$('scenic-map-question').hidden=true;
   swipe.hidden=true;hint.hidden=true;resetSwipe();app.classList.remove('is-pending','is-presenting','is-transitioning');syncAtlasScope();sand.clear();mapInk.clear();placeScroll();
+}
+async function presentMap(record,owner,{question=false,opening=false,animate=false,withFeedback=false,correct=false}={}){
+  sheet.dataset.phase=question?'question':'feedback';$('scenic-map-question').hidden=!question;
+  $('scenic-map-question').textContent=modeCopy().question;
+  captionFor(record);placeScroll();sheet.setAttribute('aria-hidden','false');
+  sheet.setAttribute('aria-label',question?(mode==='capitals'?local(record).country+'. '+modeCopy().question:local(record).capital+'. '+modeCopy().question):local(record).country+', '+local(record).capital);
+  $('scenic-paper-row').setAttribute('aria-hidden','true');app.classList.add('is-presenting');syncAtlasScope();
+  // Question maps are already open under the entry blur. Only Flags unfolds
+  // the sheet after answering; the other variants reuse its decoded geography.
+  const folding=opening?foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches}):Promise.resolve();
+  void folding.catch(()=>{});
+  if(!opening){sheet.classList.add('is-open');placePaper(sheet);}
+  let result=lastMapResult;
+  if(!result){
+    const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
+    result=await mountScenicEurope(mountPoint,{record,language});if(!alive(owner))return;
+  }
+  if(!result?.found)throw Error(copy().unavailable);
+  lastMapResult=result;
+  if(!question)renderDesktop(result,record);
+  await mapInk.prepare(result,local(record),{isCurrent:()=>alive(owner),...(question?{presentation:questionInk(mode)}:{})});
+  if(!alive(owner))return;await folding;if(!alive(owner))return;
+  await Promise.all([
+    mapInk.reveal({timeline:owner,reduced:!animate||motion.matches}),
+    withFeedback?(async()=>{if(animate&&!motion.matches)await owner.wait(SCENIC.inkDrawMs*2/3);if(alive(owner))await showNeighbors(result,owner,{withSlider:!correct});})():Promise.resolve()
+  ]);
+  return result;
 }
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');
@@ -247,7 +281,8 @@ async function playQuestion({prepared=false}={}){
   const material=await preloadPaper();if(!alive(owner))return;
   app.dataset.questionPaper=material.question?'ready':'fallback';sheet.dataset.materialReady=String(!!material.question);
   if(!prepared)await warmRound(record);if(!alive(owner))return;
-  await showFlag(record);if(!alive(owner))return;for(const b of answers.children)b.disabled=false;game.setPresentationHold(app.dataset.ready!=='true');setState('playing');updateHud();
+  await showFlag(record);if(mapQuestion&&alive(owner))await presentMap(record,owner,{question:true});
+  if(!alive(owner))return;for(const b of answers.children)b.disabled=false;game.setPresentationHold(app.dataset.ready!=='true'||!hostedActive);setState('playing');updateHud();
   prefetchNext();
 }
 function renderDesktop(result,record){
@@ -263,35 +298,19 @@ async function respond(chosenId){
   if(state!=='playing'||paused||visibilityPaused||hostPaused||!hostedActive)return;
   const owner=timeline,record=current(),correct=chosenId===record.id;
   setState('showing-map');app.classList.add('is-pending');$('scenic-paper-row').setAttribute('aria-hidden','true');
-  game.answer(hostedSession?records.get(chosenId).country:chosenId);game.setPresentationHold(true);updateHud();prefetchNext();if(hostedSession)parent.postMessage({type:'mala-nauka:scenic-answer',correct},location.origin);
+  if(!game.answer(sessionValue(records.get(chosenId),game.current,!!hostedSession))){setState('playing');app.classList.remove('is-pending');return;}
+  game.setPresentationHold(true);updateHud();prefetchNext();if(hostedSession)parent.postMessage({type:'mala-nauka:scenic-answer',correct},location.origin);
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
-  feedback.textContent=correct?copy().correct:copy().answer+local(record).country+'.';
-  $('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;
-  $('scenic-map-flag').onerror=()=>{$('scenic-map-flag').onerror=null;$('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;};
-  $('scenic-country-name').textContent=local(record).country;$('scenic-country-capital').textContent=local(record).capital;
-  sheet.dataset.long=String(record.country.length>15);placeScroll();sheet.setAttribute('aria-hidden','false');
-  app.classList.add('is-presenting');syncAtlasScope();
-  const opening=foldPaper(sheet,{opening:true,timeline:owner,reduced:motion.matches});
-  // Cancellation may happen while the independent asset preparation is pending.
-  void opening.catch(()=>{});
-  const mountPoint=document.createElement('div');mountPoint.style.cssText='position:absolute;inset:0';mapHost.replaceChildren(mountPoint);
-  let timer,mapResult;
-  try{mapResult=await Promise.race([mountScenicEurope(mountPoint,{record,language}),new Promise(done=>timer=setTimeout(()=>done({found:false}),SCENIC.mapTimeoutMs+2000))]);}
-  finally{clearTimeout(timer);}
+  feedback.textContent=correct?copy().correct:copy().answer+choice(record)+'.';
+  if(correct&&mode==='countries'){
+    // Recognition runs backwards here: the named country becomes its flag.
+    app.dataset.revealFlag='true';$('scenic-map-question').hidden=true;document.querySelector('.scenic-prompt').textContent=local(record).country;
+    await mapInk.erase({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
+    await foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches});if(!alive(owner))return;
+    sheet.setAttribute('aria-hidden','true');$('scenic-paper-row').setAttribute('aria-hidden','false');
+    app.classList.remove('is-presenting');app.classList.add('is-transitioning');syncAtlasScope();
+  }else await presentMap(record,owner,{opening:!mapQuestion,animate:true,withFeedback:true,correct});
   if(!alive(owner))return;
-  if(!mapResult?.found){
-    mapHost.replaceChildren();const note=document.createElement('p');note.className='scenic-map-unavailable';note.textContent=copy().unavailable;mapHost.append(note);
-  }
-  renderDesktop(mapResult,record);
-  // Paper opens while geography decodes. Ink starts only once both are ready.
-  await document.fonts.ready;if(!alive(owner))return;fitCaption();
-  lastMapResult=mapResult;
-  await mapInk.prepare(mapResult,local(record),{isCurrent:()=>alive(owner)});if(!alive(owner))return;
-  await opening;await owner.wait(0);if(!alive(owner))return;
-  await Promise.all([
-    mapInk.reveal({timeline:owner,reduced:motion.matches}),
-    (async()=>{if(!motion.matches)await owner.wait(SCENIC.inkDrawMs*2/3);if(alive(owner))await showNeighbors(mapResult,owner,{withSlider:!correct});})()
-  ]);if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
     hint.hidden=false;
@@ -301,6 +320,7 @@ async function respond(chosenId){
 async function toNext(){
   if(!readyForNext||paused||visibilityPaused||hostPaused||!hostedActive||!['feedback-correct','feedback-wrong'].includes(state))return;
   const owner=timeline;readyForNext=false;setState('preparing-next');hint.hidden=true;
+  delete app.dataset.revealFlag;
   const nextStep=(step+1)%queue.length,preparedQuestion=hostedSession?game.prepareNext():null;
   if(hostedSession&&!preparedQuestion){parent.postMessage({type:'mala-nauka:scenic-ended'},location.origin);return;}
   const next=records.get(hostedSession?preparedQuestion.countryId:queue[nextStep]),nextOptions=alignNextOptions(hostedSession?optionRecords(preparedQuestion.options):optionsFor(next));
@@ -309,11 +329,13 @@ async function toNext(){
   // The decoded next cloth sits beneath the paper before the folds close.
   captionFor(next);await showFlag(next);if(!alive(owner))return;
   await Promise.all([
-    foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}).then(()=>{if(alive(owner))app.classList.add('is-transitioning');}),
+    (sheet.classList.contains('is-open')?foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}):Promise.resolve()).then(()=>{if(alive(owner))app.classList.add('is-transitioning');}),
     sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>renderButtons(nextOptions,{disabled:true})})
   ]);
   await owner.wait(0);if(!alive(owner))return;
-  game.next();game.options=nextOptions.map(x=>hostedSession?x.country:x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
+  game.next();game.options=nextOptions.map(x=>sessionValue(x,game.current,!!hostedSession));step=nextStep;clearPresentation();localizeChrome();
+  if(mapQuestion){setState('loading');await presentMap(next,owner,{question:true,opening:true});if(!alive(owner))return;}
+  game.setPresentationHold(false);setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
   // Keep the very same cloth and answer DOM after completion (no second paint).
   prefetchNext();
 }
@@ -330,7 +352,7 @@ function restart(){
 }
 answers.addEventListener('click',event=>{const button=event.target.closest('.scenic-answer');if(button&&!button.disabled)caught(respond(button.dataset.id));});
 sheet.addEventListener('click',event=>{
-  const button=event.target.closest('[data-map-view]');if(!button||!readyForNext||paused||visibilityPaused||hostPaused||!hostedActive||sheet.dataset.view===button.dataset.mapView)return;
+  const button=event.target.closest('[data-map-view]');if(!button||(!readyForNext&&!(mapQuestion&&state==='playing'))||paused||visibilityPaused||hostPaused||!hostedActive||sheet.dataset.view===button.dataset.mapView)return;
   const owner=timeline;sheet.dataset.view=button.dataset.mapView;
   syncAtlasScope();
   for(const item of sheet.querySelectorAll('[data-map-view]'))item.setAttribute('aria-pressed',String(item===button));
@@ -340,22 +362,23 @@ function localizeChrome(){
  const aside=document.querySelector('.scenic-atlas-desktop');aside.querySelector('p').innerHTML=language==='en'?'<b>Explorer’s atlas</b><br>Choose the globe or magnifier to change the map view.':'<b>Atlas odkrywcy</b><br>Wybierz globus lub lupę, by zmienić zasięg mapy.';aside.querySelectorAll('p')[1].textContent=language==='en'?'The building symbol marks the capital. The highlighted area is the country being explored.':'Symbol budynku pokazuje położenie stolicy. Wyróżniony obszar wskazuje poznawany kraj.';if(lastMapResult)renderDesktop(lastMapResult,current());
  document.documentElement.lang=language;app.dataset.language=language;$('scenic-language').querySelector('b').textContent=language.toUpperCase();$('scenic-language').setAttribute('aria-label',language==='pl'?'Zmień język na angielski':'Switch to Polish');
  syncAtlasScope();
- document.querySelector('.scenic-prompt').textContent=copy().question;document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);swipe.dataset.completeLabel=copy().complete;hint.textContent=copy().auto;
+ document.querySelector('.scenic-prompt').textContent=mode==='countries'&&state==='feedback-correct'?local(current()).country:modeCopy().question;
+ $('scenic-map-question').textContent=modeCopy().question;app.setAttribute('aria-label',modeCopy().title);answers.setAttribute('aria-label',MODE_COPY[language][mode==='capitals'?'chooseCapital':'chooseCountry']);
+ document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);swipe.dataset.completeLabel=copy().complete;hint.textContent=mapQuestion?MODE_COPY[language].auto:copy().auto;
  app.querySelector('[data-action="restart"]').setAttribute('aria-label',hostedSession?(language==='pl'?'Zakończ rundę':'Leave the round'):copy().restart);
- for(const button of answers.children){const record=local(records.get(button.dataset.id));button.setAttribute('aria-label',record.country);button.dataset.long=String(record.country.length>17);button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);}
+ for(const button of answers.children){const text=choice(records.get(button.dataset.id));button.setAttribute('aria-label',text);button.dataset.long=String(text.length>17);button.querySelector('.scenic-answer-label').innerHTML=letters(text);}
  updateHud();
 }
 $('scenic-language').addEventListener('click',()=>caught((async()=>{
  const owner=timeline,previousState=state;if(!['playing','feedback-correct','feedback-wrong'].includes(state))return;
  $('scenic-language').disabled=true;timeline.setPaused(true);language=language==='pl'?'en':'pl';localizeChrome();parent.postMessage({type:'mala-nauka:scenic-language',language},location.origin);
- try{await prepareNeighborLayout(current());placeScroll();if(lastMapResult?.found&&previousState.startsWith('feedback')){
+ try{await prepareNeighborLayout(current());placeScroll();if(lastMapResult?.found&&(previousState.startsWith('feedback')||mapQuestion)&&sheet.classList.contains('is-open')){
   const view=sheet.dataset.view,active=[...document.querySelectorAll('#scenic-neighbors button[aria-pressed="true"]')].map(n=>n.dataset.neighbor),record=local(current());
   const result={...lastMapResult,labels:lastMapResult.labels.map(item=>({...item,name:local(records.get(item.id)).country})),capital:{...lastMapResult.capital,name:record.capital}};
-  $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent=record.capital;fitCaption();
-  await mapInk.prepare(result,record,{isCurrent:()=>alive(owner)});if(!alive(owner))return;
-  await mapInk.reveal({timeline:owner,reduced:true});if(view==='europe')await mapInk.setView(view,{timeline:owner,reduced:true});
-  await showNeighbors(result,owner,{immediate:true});for(const id of active){mapInk.setNeighbor(id,true);document.querySelector(`[data-neighbor="${id}"]`)?.setAttribute('aria-pressed','true');}
-  feedback.textContent=previousState==='feedback-correct'?copy().correct:copy().answer+record.country+'.';
+  lastMapResult=result;await presentMap(current(),owner,{question:previousState==='playing'});if(!alive(owner))return;
+  if(view==='europe')await mapInk.setView(view,{timeline:owner,reduced:true});
+  if(previousState.startsWith('feedback')){await showNeighbors(result,owner,{immediate:true});for(const id of active){mapInk.setNeighbor(id,true);document.querySelector(`[data-neighbor="${id}"]`)?.setAttribute('aria-pressed','true');}}
+  feedback.textContent=previousState==='playing'?'':previousState==='feedback-correct'?copy().correct:copy().answer+choice(current())+'.';
  }}finally{if(alive(owner)){timeline.setPaused(paused||visibilityPaused||hostPaused||!hostedActive);$('scenic-language').disabled=false;}}
 })()));
 app.querySelector('[data-action="restart"]').addEventListener('click',restart);

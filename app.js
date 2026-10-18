@@ -250,12 +250,12 @@ async function start() {
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
- if(selectedMode==='flags'&&globalThis.__MALA_NAUKA_SCENIC__&&game.current.kind==='flags'){
+ if(selectedMode==='flags'&&globalThis.__MALA_NAUKA_SCENIC__&&['flags','flag-country','flag-capital'].includes(game.current.kind)){
   game.pause();game.setPresentationHold(true);stopGameTicker();root.inert=true;root.setAttribute('aria-busy','true');
   const startButton=root.querySelector('.start-button'),oldLabel=startButton?.innerHTML;
   if(startButton)startButton.textContent='Przygotowujemy przygodę…';
   try{
-   const {prepareScenicGame}=await import('./flagi/scenic-game-bridge.mjs?v=39');
+   const {prepareScenicGame}=await import('./flagi/scenic-game-bridge.mjs?v=40');
    const scene=prepareScenicGame(game,{onExit:()=>pause(true),onEnd:()=>finish(),onAnswer:correct=>beep(correct)});scenicGame=scene;
    await scene.ready;if(game!==nextGame){scene.destroy();return;}
    const show=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode='flags';root.scrollTop=0;scene.mount(root);};

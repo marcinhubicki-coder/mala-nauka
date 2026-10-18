@@ -1,6 +1,7 @@
 // End-to-end settings -> gameplay and all eight Orthography Studio fixtures.
 // No production writes: fresh browser context uses ephemeral localStorage.
 import assert from 'node:assert/strict';
+import {SPELLING_OVERLAYS} from '../shared/spelling-overlays.mjs';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 const {chromium}=await import('playwright');
@@ -168,7 +169,7 @@ try{
  if(await detailAction.count()){
   await detailAction.click();
   await gameFrame.locator('dialog.result-rule-dialog[open]').waitFor({timeout:9000});
-  assert.equal(await gameFrame.locator('[data-ds-subcontract="spelling-rule"]').count(),10);
+  assert.equal(await gameFrame.locator('[data-ds-subcontract="spelling-rule"]').count(),SPELLING_OVERLAYS.rule.length);
   await gameFrame.locator('dialog.result-rule-dialog .rule-close').click();
   assert.ok(await gameFrame.locator('#app [data-ds-contract="v2"]').count()>=18,'Closing rule lost results identity');
  }
@@ -271,7 +272,7 @@ try{
   }
   if(viewId==='spelling-rule'){
    await page.locator('.result-rule-dialog').waitFor({timeout:10000});
-   assert.equal(await page.locator('[data-ds-subcontract="spelling-rule"]').count(),10,'Educational rule must declare all 10 semantic parts');
+   assert.equal(await page.locator('[data-ds-subcontract="spelling-rule"]').count(),SPELLING_OVERLAYS.rule.length,'Educational rule must declare every current semantic part');
    await page.locator('.result-rule-dialog .rule-close').click();
    assert.equal(await page.locator('#app [data-ds-contract="v2"]').count(),18,'Closing a rule must preserve the results family');
   }

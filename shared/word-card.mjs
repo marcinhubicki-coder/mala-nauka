@@ -21,12 +21,12 @@ export function markedWord(word){
  return html+esc(text.slice(cursor));
 }
 export function wordFamiliesMarkup(word){return `<span class="word-families" aria-label="Kategorie pisowni: ${esc(practiceCategories(word).join(', '))}">${practiceCategories(word).map(c=>`<span class="word-family" data-family="${esc(c)}">${esc(c)}</span>`).join('')}</span>`;}
-export function wordBadgeMarkup(type,state,{counter=false,imageAttrs='',countAttrs=''}={}){
+export function wordBadgeMarkup(type,state,{counter=false,badgeAttrs='',imageAttrs='',countAttrs=''}={}){
  const mastery=type==='mastery',earned=mastery?state.mastered:state.level>0,tier=mastery?'mastery':['gold','bronze','silver','gold'][state.level];
  const current=mastery?state.masteryCurrent:state.starCurrent,total=mastery?state.masteryTotal:state.starTotal;
  const label=mastery?`Umiem: ${current}/${total} utrwalonych kroków. Każde miejsce pisowni wymaga poprawnych powtórek w różnych dniach i co najmniej ${state.spanDays} dni.`:`${['Miejsce na gwiazdkę','Brązowa gwiazdka','Srebrna gwiazdka','Złota gwiazdka'][state.level]}: ${current}/${total} poprawnych odpowiedzi.`;
  const art=WORD_BADGE_ASSETS[tier];
- return `<span class="word-badge word-badge-${type} ${earned?'is-earned':'is-empty'}" data-badge="${type}" data-level="${mastery?Number(earned):state.level}" role="img" aria-label="${esc(label)}" title="${esc(label)}"><img class="word-badge-art" data-ds-state="${earned?'earned':'empty'}" ${imageAttrs} src="${esc(assetUrl(art.path))}" width="1254" height="1254" alt="" decoding="async" loading="lazy">${counter?`<span class="word-badge-count" ${countAttrs} aria-hidden="true">${current}/${total}</span>`:''}</span>`;
+ return `<span class="word-badge word-badge-${type} ${earned?'is-earned':'is-empty'}" ${badgeAttrs} data-badge="${type}" data-ds-renderer-state="${mastery&&earned?'mastered':earned?'earned':'empty'}" data-level="${mastery?Number(earned):state.level}" role="img" aria-label="${esc(label)}" title="${esc(label)}"><img class="word-badge-art" data-ds-renderer-state="${earned?'earned':'empty'}" ${imageAttrs} src="${esc(assetUrl(art.path))}" width="1254" height="1254" alt="" decoding="async" loading="lazy">${counter?`<span class="word-badge-count" ${countAttrs} aria-hidden="true">${current}/${total}</span>`:''}</span>`;
 }
 export function wordRules(word){
  const library=ruleLibrary(),assigned=library?wordRuleIds(library,word.word).map(id=>({...library.rules[id],id})):[],rows=[];

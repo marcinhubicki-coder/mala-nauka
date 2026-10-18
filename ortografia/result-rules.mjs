@@ -43,7 +43,7 @@ export function openResultRule(root, attempt, trigger, {journey={},learningItem=
   dialog.dataset.dsKey='rule-shell';
   dialog.setAttribute('aria-labelledby', 'result-rule-title');
   const progress=wordCardProgress(wordRecord,journey,learningItem);
-  const badge=type=>wordBadgeMarkup(type,progress,{counter:true,imageAttrs:overlayAttrs('rule','rule-'+type+'-art'),countAttrs:overlayAttrs('rule','rule-'+type+'-count')});
+  const badge=type=>wordBadgeMarkup(type,progress,{counter:true,badgeAttrs:overlayAttrs('rule','rule-'+type+'-badge')+' data-ds-entrance="mount"',imageAttrs:overlayAttrs('rule','rule-'+type+'-art'),countAttrs:overlayAttrs('rule','rule-'+type+'-count')});
   const additional=wordRules(wordRecord).filter(rule=>rule.title!==learning.title||rule.explanation!==learning.explanation);
   const allRules=additional.map(rule=>'<section class="rule-explanation rule-additional" data-rule-category="'+escape(rule.category)+'"><span class="word-family">'+escape(rule.category)+'</span><h3>'+escape(rule.title)+'</h3><p>'+escape(rule.explanation)+'</p>'+(rule.examples?.length?'<div class="rule-chips">'+rule.examples.map(example=>'<span class="rule-word-chip">'+escape(typeof example==='string'?example:[example.from,example.to].filter(Boolean).join(' ↔ '))+'</span>').join('')+'</div>':'')+'</section>').join('');
   dialog.innerHTML = '<header class="rule-dialog-head" ' + overlayAttrs('rule','rule-head') + '><span>' + eyeSvg + ' Mała podpowiedź</span><button type="button" class="rule-close" ' + overlayAttrs('rule','rule-dismiss') + ' data-action="dismiss-rule" aria-label="Zamknij zasadę i wróć do wyników">×</button></header>' +
@@ -82,7 +82,7 @@ export function openResultRule(root, attempt, trigger, {journey={},learningItem=
       const ns='http://www.w3.org/2000/svg',gradient=document.createElementNS(ns,'radialGradient');
       gradient.id=svg.querySelector('clipPath').id+'-award';
       gradient.setAttribute('cx','1');gradient.setAttribute('cy','1');gradient.setAttribute('r','.8');
-      gradient.innerHTML='<stop stop-color="#fff2c7" stop-opacity=".62"/><stop offset=".45" stop-color="#fff2c7" stop-opacity=".18"/><stop offset="1" stop-color="#fff2c7" stop-opacity="0"/>';
+      gradient.innerHTML='<stop stop-color="#17122f" stop-opacity=".45"/><stop offset=".45" stop-color="#17122f" stop-opacity=".14"/><stop offset="1" stop-color="#17122f" stop-opacity="0"/>';
       svg.querySelector('defs').append(gradient);
       const shade=document.createElementNS(ns,'rect');shade.setAttribute('width','400');shade.setAttribute('height','400');shade.setAttribute('fill','url(#'+gradient.id+')');shade.classList.add('word-award-vignette');photo.after(shade);
     }

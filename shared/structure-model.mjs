@@ -49,6 +49,7 @@ export const PARTS=[
  group('container-collection-word','Słowo w kolekcji','.collection-word',['image-collection-word','image-word-award','text-collection-word','text-word-families'],{kind:'button'}),
  atom('image-collection-word','Ilustracja słowa','image','.collection-photo-image,.collection-word>img'),
  atom('text-collection-word','Słowo','text','.collection-word strong'),
+ group('group-word-award','Odznaka z licznikiem','.word-detail-hero .word-badge',['image-word-award','text-word-award-count'],{states:['empty','earned','mastered']}),
  atom('image-word-award','Odznaka Umiem / gwiazdka','image','.word-badge-art',{states:['empty','earned']}),
  atom('text-word-award-count','Postęp odznaki','text','.word-badge-count'),
  atom('text-word-families','Kategorie pisowni słowa','text','.word-families'),

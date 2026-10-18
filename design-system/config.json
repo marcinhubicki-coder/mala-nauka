@@ -4515,6 +4515,11 @@
       "animation": "pulse",
       "animationDistance": 13.5,
       "animationDuration": 3796
+    },
+    "group-word-award": {
+      "enterAnimation": "fade",
+      "enterDuration": 220,
+      "idleAnimation": "none"
     }
   },
   "elementOverrides": {
@@ -4925,5 +4930,28 @@
   },
   "testing": {
     "includeProfiles": false
+  },
+  "recipeStates": {
+    "group-word-award": {
+      "empty": {
+        "enterAnimation": "fade",
+        "enterDuration": 220,
+        "idleAnimation": "none"
+      },
+      "earned": {
+        "enterAnimation": "bump",
+        "enterDuration": 680,
+        "enterDistance": 14,
+        "idleAnimation": "none"
+      },
+      "mastered": {
+        "enterAnimation": "bump",
+        "enterDuration": 680,
+        "enterDistance": 14,
+        "idleAnimation": "pulse",
+        "idleDuration": 2800,
+        "idleDistance": 3
+      }
+    }
   }
 }

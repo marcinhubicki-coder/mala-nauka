@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {SPELLING_OVERLAYS,overlayAttrs,validateSpellingOverlay,hydrateSpellingOverlay} from '../shared/spelling-overlays.mjs';
 import {PART_BY_ID} from '../shared/structure-model.mjs';
-test('Hint, pause and rule reuse one dialog family; 5/5/16 declared inner blocks',()=>{
- assert.deepEqual(Object.fromEntries(Object.entries(SPELLING_OVERLAYS).map(([name,rows])=>[name,rows.length])),{hint:5,pause:5,rule:16});
+test('Hint, pause and rule reuse one dialog family; 5/5/18 declared inner blocks',()=>{
+ assert.deepEqual(Object.fromEntries(Object.entries(SPELLING_OVERLAYS).map(([name,rows])=>[name,rows.length])),{hint:5,pause:5,rule:18});
  for(const [type,rows] of Object.entries(SPELLING_OVERLAYS)){
   assert.equal(validateSpellingOverlay(type),true);
   assert.equal(rows[0].recipe,'family-education-popup');

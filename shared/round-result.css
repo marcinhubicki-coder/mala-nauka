@@ -150,22 +150,24 @@ html:has(#app[data-view="results"]){background:#dfddfc url('../assets/ortografia
 body:has(#app[data-view="results"]){background:transparent}
 .result-orb{left:clamp(calc(12 * var(--result-u)),var(--orb-left),calc(100% - (var(--orb-size) + 12) * var(--result-u)));top:clamp(calc(12 * var(--result-u)),var(--orb-top),calc(100% - (var(--orb-size) + 12) * var(--result-u)))}
 
-.result-rule-dialog{--result-u:1px;display:none;flex-direction:column;width:calc(100% - 28px);max-width:420px;height:min(calc(80 * var(--app-vh, 1dvh)),720px);max-height:calc(calc(100 * var(--app-vh, 1dvh)) - max(28px,env(safe-area-inset-top)) - max(28px,env(safe-area-inset-bottom)));margin:auto;padding:0;border:1px solid #fff8f0;border-radius:28px;color:#071b56;background:linear-gradient(145deg,#fffdf8,#fff5fb 65%,#f2edff);box-shadow:0 20px 80px #3d265540;font-family:var(--ds-font-body),ui-rounded,sans-serif;overflow:hidden}
-.result-rule-dialog[open]{display:flex}
+.result-rule-dialog{--result-u:1px;display:none;width:calc(100% - 28px);max-width:420px;height:min(calc(80 * var(--app-vh, 1dvh)),720px);max-height:calc(calc(100 * var(--app-vh, 1dvh)) - max(28px,env(safe-area-inset-top)) - max(28px,env(safe-area-inset-bottom)));margin:auto;padding:0;border:1px solid #fff8f0;border-radius:28px;color:#071b56;background:linear-gradient(145deg,#fffdf8,#fff5fb 65%,#f2edff);box-shadow:0 20px 80px #3d265540;font-family:var(--ds-font-body),ui-rounded,sans-serif;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.result-rule-dialog[open]{display:block}
+.result-rule-dialog::-webkit-scrollbar{display:none;width:0;height:0}
 .result-rule-dialog::backdrop{background:#51407755;backdrop-filter:blur(4px)}
 .rule-dialog-head{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 8px 20px;flex-shrink:0;background:transparent;overflow:visible}
 .rule-dialog-head>span{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#7c6b9b}
 .rule-dialog-head svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8}
 .rule-close{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid #fff;border-radius:50%;background:#efe8f9;color:#514476;font-size:29px;line-height:1}
-.rule-dialog-body{display:flex;flex:1;flex-direction:column;padding:0 20px;overflow:visible;min-height:0}
-.rule-dialog-fixed{position:relative;z-index:2;flex:0 0 auto;min-height:0;background:transparent;overflow:visible}
-.rule-scroll-shell{position:relative;flex:1;min-height:0;margin:0 -2px;overflow:hidden;border-radius:16px;isolation:isolate}
-.rule-dialog-scroll{height:100%;min-height:0;padding:10px 2px 30px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.rule-dialog-scroll::-webkit-scrollbar{display:none;width:0;height:0}
-.rule-scroll-shell::before{content:"";position:absolute;z-index:3;pointer-events:none;left:0;right:0;top:0;height:20px;opacity:0;background:linear-gradient(180deg,#fff9fbdf 0%,#fff9fb85 46%,#fff9fb00 100%);backdrop-filter:blur(2.4px);-webkit-backdrop-filter:blur(2.4px);mask-image:linear-gradient(#000 0 48%,transparent 100%);-webkit-mask-image:linear-gradient(#000 0 48%,transparent 100%);transition:opacity .14s ease}
-.result-rule-dialog.has-scroll-top .rule-scroll-shell::before{opacity:1}
-.rule-scroll-shell::after{content:"";position:absolute;z-index:3;pointer-events:none;left:0;right:0;bottom:0;height:24px;opacity:0;background:linear-gradient(transparent,#faf6ffdd);transition:opacity .14s ease}
-.result-rule-dialog.has-scroll-more .rule-scroll-shell::after{opacity:1}
+.rule-dialog-body{padding:0 20px;min-height:0}
+.rule-dialog-fixed{position:sticky;top:0;z-index:2;min-height:0;background:linear-gradient(145deg,#fffdf8,#fff9fb);overflow:visible;isolation:isolate}
+.rule-dialog-hero{display:flow-root;padding:0 20px}
+.rule-scroll-shell{margin:0 -2px}
+.rule-dialog-scroll{min-height:0;padding:0 2px 30px}
+.rule-scroll-meta{transform:scale(calc(1 - .12 * var(--rule-meta-collapse,0)));transform-origin:center top;opacity:calc(1 - var(--rule-meta-collapse,0))}
+.rule-dialog-fixed::after{content:"";position:absolute;z-index:3;pointer-events:none;left:0;right:0;top:100%;height:20px;opacity:0;background:linear-gradient(180deg,#fff9fbdf 0%,#fff9fb85 46%,#fff9fb00 100%);backdrop-filter:blur(2.4px);-webkit-backdrop-filter:blur(2.4px);mask-image:linear-gradient(#000 0 48%,transparent 100%);-webkit-mask-image:linear-gradient(#000 0 48%,transparent 100%);transition:opacity .14s ease}
+.result-rule-dialog.has-scroll-top .rule-dialog-fixed::after{opacity:1}
+.result-rule-dialog::after{content:"";position:sticky;display:block;z-index:3;pointer-events:none;left:0;right:0;bottom:0;height:24px;margin-top:-24px;opacity:0;background:linear-gradient(transparent,#faf6ffdd);transition:opacity .14s ease}
+.result-rule-dialog.has-scroll-more::after{opacity:1}
 .rule-visual{width:min(52vw,210px);height:min(52vw,210px);aspect-ratio:1;margin:-7px auto 0;position:relative}
 .rule-bubble{width:100%;height:100%}
 .rule-visual .soap-svg{display:block;width:100%;height:100%;overflow:visible}
@@ -174,7 +176,7 @@ body:has(#app[data-view="results"]){background:transparent}
 .rule-loader-orbit{position:relative;display:block;width:42px;height:42px;animation:rule-loader-spin 1.7s linear infinite}
 .rule-loader-orbit i{position:absolute;top:50%;left:50%;width:9px;height:9px;margin:-4.5px;border:1px solid #fff;background:radial-gradient(circle at 30% 25%,#fff 0 8%,#ffffff96 20%,#d4baff91 65%,#97e7fba6);border-radius:50%;box-shadow:0 0 5px #fff8,inset 0 0 2px #fff;transform:rotate(calc(var(--bubble-index) * 60deg)) translateY(-17px);opacity:calc(.45 + var(--bubble-index) * .11)}
 @keyframes rule-loader-spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.rule-loader-orbit{animation:none}.rule-scroll-shell::before,.rule-scroll-shell::after{transition:none}}
+@media(prefers-reduced-motion:reduce){.rule-loader-orbit{animation:none}.rule-dialog-fixed::after,.result-rule-dialog::after{transition:none}.rule-scroll-meta{transform:none}}
 .result-rule-dialog h2{font-size:31px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin:9px 0 7px}
 .result-rule-dialog h3{font-size:17px;font-weight:800;line-height:1.25;margin:0 0 5px}
 .result-rule-dialog p{text-align:left;font-size:14px;font-weight:600;line-height:1.45;color:#6f81a0;margin:0}

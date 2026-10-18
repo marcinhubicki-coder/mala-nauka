@@ -2,13 +2,13 @@ import {FLAGS} from '../data/flags.mjs';
 import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
 import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
-import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=32';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=32';
-import {SCENIC,seedOf} from './scenic-config.mjs?v=32';
-import {ScenicTimeline} from './scenic-timeline.mjs?v=32';
-import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=32';
-import {createSand} from './scenic-sand.mjs?v=32';
-import {createMapInk} from './scenic-ink.mjs?v=32';
+import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=35';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=35';
+import {SCENIC,seedOf} from './scenic-config.mjs?v=35';
+import {ScenicTimeline} from './scenic-timeline.mjs?v=35';
+import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=35';
+import {createSand} from './scenic-sand.mjs?v=35';
+import {createMapInk} from './scenic-ink.mjs?v=35';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
@@ -22,7 +22,7 @@ app.dataset.qa=String(query.has('qa'));
 const motion=matchMedia('(prefers-reduced-motion:reduce)');
 let step=0,points=0,seconds=SCENIC.seconds,state='loading',timeline=new ScenicTimeline(),round=0,paused=false,visibilityPaused=false;
 let readyForNext=false,fixtureTimer,game=createSession();
-const continueDrag=createContinueDrag(swipe,{canContinue:()=>state==='feedback-wrong'&&readyForNext&&!paused&&!visibilityPaused,onComplete:()=>caught(toNext())});
+const continueDrag=createContinueDrag(swipe,{canContinue:()=>state==='feedback-wrong'&&readyForNext&&!paused&&!visibilityPaused,completionDelay:SCENIC.feedback.exitDelayMs,onComplete:()=>caught(toNext())});
 const sand=createSand($('scenic-sand-canvas'),app,answers);
 const mapInk=createMapInk($('scenic-map-ink'),sheet,app);
 const escape=value=>String(value??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
@@ -53,6 +53,15 @@ function renderButtons(options,{disabled=false}={}){
     button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);
   });
 }
+function alignNextOptions(options){
+  const previous=[...answers.children].map(b=>local(records.get(b.dataset.id)).country.length);
+  let best=options,bestCost=Infinity;
+  function visit(rest,order,cost){
+    if(!rest.length){if(cost<bestCost){best=order;bestCost=cost;}return;}
+    for(const record of rest)visit(rest.filter(r=>r!==record),[...order,record],cost+(local(record).country.length-previous[order.length])**2);
+  }
+  visit(options,[],0);return best;
+}
 function updateHud(){
   points=game.correct;seconds=Math.ceil(game.remaining/1000);
   $('scenic-clock-caption').textContent=state==='playing'||state==='loading'?copy().flags:copy().stopped;
@@ -79,7 +88,7 @@ function fitCaption(){
   const record=local(current()),parent=title.parentElement,style=getComputedStyle(title);
   const available=parent.clientWidth-parseFloat(getComputedStyle(parent).paddingRight);
   const fits=(text,size)=>{captionMeasure.font=`700 ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing='-.35px';return captionMeasure.measureText(text).width<=available;};
-  let lines=[record.country],size=[30,28,26,24,22,20,18].find(n=>fits(record.country,n));
+  let lines=[record.country],size=[28,26,24,22,20,18].find(n=>fits(record.country,n));
   if(!size){
     const words=record.country.split(' ');let best=Infinity;
     for(let i=1;i<words.length;i++){const pair=[words.slice(0,i).join(' '),words.slice(i).join(' ')];captionMeasure.font=`700 18px ${style.fontFamily}`;const width=Math.max(...pair.map(t=>captionMeasure.measureText(t).width));if(width<best){best=width;lines=pair;}}
@@ -88,11 +97,11 @@ function fitCaption(){
   title.setAttribute('aria-label',record.country);title.style.fontSize=size+'px';
   title.replaceChildren(...lines.map(text=>{const line=document.createElement('span');line.className='scenic-title-line';line.textContent=text;return line;}));
   parent.style.setProperty('--title-lines',lines.length);parent.style.setProperty('--title-size',size+'px');
-  // Keep the Poland baseline and capital slot for every country. Reserve the
-  // font's full descenders even when the current name has none.
-  captionMeasure.font=`700 30px ${style.fontFamily}`;
-  const capitalTop=title.clientHeight+Math.ceil(captionMeasure.measureText('ĄĘgjpqy').actualBoundingBoxDescent)+6;
-  parent.style.setProperty('--capital-top',capitalTop+'px');parent.style.setProperty('--caption-height',(capitalTop+24)+'px');
+  // One common capital slot, tucked directly below the pen face's descenders.
+  captionMeasure.font=`700 28px ${style.fontFamily}`;
+  const descent=captionMeasure.measureText('gjpqy').actualBoundingBoxDescent-captionMeasure.measureText('Polska').actualBoundingBoxDescent;
+  const capitalTop=title.clientHeight+Math.ceil(descent)+1;
+  parent.style.setProperty('--capital-top',capitalTop+'px');parent.style.setProperty('--caption-height',(capitalTop+18)+'px');
 }
 function placeScroll(){
   const viewport=$('scenic-stage').getBoundingClientRect();
@@ -104,10 +113,10 @@ function placeScroll(){
   const answerHeight=answers.getBoundingClientRect().height;
   answers.style.top=Math.min(viewport.height*.62,railTop-ribbons-answerHeight)+'px';
   const answer=answers.getBoundingClientRect();
-  const chromeBottom=Math.max($('scenic-language').getBoundingClientRect().bottom,$('scenic-task').getBoundingClientRect().bottom)-viewport.top;
-  const top=Math.max(viewport.height*SCENIC.atlas.top,chromeBottom+6),height=answer.top-viewport.top-SCENIC.atlas.answerGap-top;
+  const compassTop=$('scenic-progress').getBoundingClientRect().bottom-viewport.top+SCENIC.atlas.compassGap;
+  const top=compassTop+24,height=answer.top-viewport.top-SCENIC.atlas.answerGap-top;
   sheet.style.top=top+'px';sheet.style.height=height+'px';
-  const paper=$('scenic-paper-row'),closed=Math.min(64,Math.max(50,viewport.height*.075));paper.style.height=closed+'px';paper.style.top=(top+height-closed)+'px';
+  const paper=$('scenic-paper-row'),closed=Math.min(64,Math.max(50,viewport.height*.075))+20;paper.style.height=closed+'px';paper.style.top=(top+height-closed)+'px';
   $('scenic-compass').style.top=(top-24)+'px';
   const origin=app.getBoundingClientRect(),boy=app.querySelector('.scenic-boy'),boyHeight=app.clientHeight-(answer.bottom-origin.top-10)+12;
   boy.style.height=boyHeight+'px';boy.style.left=(-boyHeight*.4)+'px';
@@ -115,8 +124,11 @@ function placeScroll(){
   fitFlag();
   if(!sheet.classList.contains('is-opening')&&!sheet.classList.contains('is-closing'))placePaper(sheet);
 }
-async function showNeighbors(result,owner,{immediate=false}={}){
-  if(!result?.found)return;
+async function showNeighbors(result,owner,{immediate=false,withSlider=false}={}){
+  if(!result?.found){
+    if(withSlider){swipe.hidden=false;resetSwipe();if(!motion.matches&&!immediate)await owner.animate($('scenic-controls'),[{transform:`translateY(${exitDistance()}px)`},{transform:'translateY(0)'}],{duration:SCENIC.feedback.ribbonMs,easing:'cubic-bezier(.16,.8,.2,1)',fill:'backwards'});}
+    return;
+  }
   const nav=$('scenic-neighbors'),ids=result.neighbors.filter(id=>records.has(id));
   nav.dataset.wide='false';
   const buttons=ids.map(id=>{const b=document.createElement('button');b.type='button';b.dataset.neighbor=id;b.textContent=local(records.get(id)).country;b.setAttribute('aria-pressed','false');return b;});
@@ -142,7 +154,21 @@ async function showNeighbors(result,owner,{immediate=false}={}){
   }
   nav.replaceChildren();nav.dataset.rows=best.rows.length;
   for(const indices of best.rows){const row=document.createElement('div');row.className='scenic-neighbor-row';row.append(...indices.map(i=>items[i]));nav.append(row);}
-  await Promise.all([...nav.children].map((row,i)=>motion.matches||immediate?Promise.resolve():owner.animate(row,[{transform:'translateX(110%)',opacity:0},{transform:'translateX(0)',opacity:1}],{duration:360+i*55,easing:'cubic-bezier(.2,.8,.2,1)',fill:'none'})));
+  const jobs=[...nav.children].map((row,i)=>motion.matches||immediate?Promise.resolve():owner.animate(row,[{transform:'translateX(110%)',opacity:0},{transform:'translateX(0)',opacity:1}],{duration:SCENIC.feedback.ribbonMs,delay:i*SCENIC.feedback.staggerMs,easing:'cubic-bezier(.16,.8,.2,1)',fill:'backwards'}));
+  if(withSlider){
+    swipe.hidden=false;resetSwipe();
+    if(!motion.matches&&!immediate)jobs.push(owner.animate($('scenic-controls'),[{transform:`translateY(${exitDistance()}px)`},{transform:'translateY(0)'}],{duration:SCENIC.feedback.ribbonMs+Math.max(0,nav.children.length-1)*SCENIC.feedback.staggerMs,easing:'cubic-bezier(.16,.8,.2,1)',fill:'backwards'}));
+  }
+  await Promise.all(jobs);
+}
+const exitDistance=()=>app.clientHeight-$('scenic-controls').offsetTop+80;
+async function dismissFeedback(owner){
+  const nav=$('scenic-neighbors'),controls=$('scenic-controls'),jobs=[];
+  if(!motion.matches){
+    for(const [i,row] of [...nav.children].reverse().entries())jobs.push(owner.animate(row,[{transform:'translateX(0)',opacity:1},{transform:'translateX(115%)',opacity:0}],{duration:SCENIC.feedback.exitMs,delay:i*SCENIC.feedback.staggerMs,easing:'cubic-bezier(.5,0,.85,.35)',fill:'both'}).then(()=>row.style.visibility='hidden'));
+    if(!swipe.hidden)jobs.push(owner.animate(controls,[{transform:'translateY(0)'},{transform:`translateY(${exitDistance()}px)`}],{duration:SCENIC.feedback.exitMs,easing:'cubic-bezier(.5,0,.85,.35)',fill:'both'}).then(()=>swipe.hidden=true));
+  }
+  await Promise.all(jobs);if(!alive(owner))return;nav.hidden=true;swipe.hidden=true;
 }
 $('scenic-neighbors').addEventListener('click',event=>{
   const button=event.target.closest('[data-neighbor]');if(!button||!readyForNext||paused||visibilityPaused)return;
@@ -211,28 +237,27 @@ async function respond(chosenId){
   await mapInk.prepare(mapResult,local(record),{isCurrent:()=>alive(owner)});if(!alive(owner))return;
   await opening;if(!alive(owner))return;
   await mapInk.reveal({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
-  await showNeighbors(mapResult,owner);if(!alive(owner))return;
+  await showNeighbors(mapResult,owner,{withSlider:!correct});if(!alive(owner))return;
   setState(correct?'feedback-correct':'feedback-wrong');readyForNext=true;
   if(correct){
     hint.hidden=false;
-    if(!query.has('freeze')){await owner.wait(SCENIC.memoryMs);if(alive(owner))await toNext();}
-  }else{swipe.hidden=false;resetSwipe();}
+    if(!(query.has('qa')&&query.has('freeze'))){await owner.wait(SCENIC.memoryMs);if(alive(owner))await toNext();}
+  }
 }
 async function toNext(){
   if(!readyForNext||paused||visibilityPaused||!['feedback-correct','feedback-wrong'].includes(state))return;
-  const owner=timeline;readyForNext=false;setState('preparing-next');hint.hidden=true;swipe.hidden=true;
-  const nextStep=(step+1)%queue.length,next=records.get(queue[nextStep]);
-  await warmFlag(next);if(!alive(owner))return;
-  await mapInk.erase({timeline:owner,reduced:motion.matches});if(!alive(owner))return;
+  const owner=timeline;readyForNext=false;setState('preparing-next');hint.hidden=true;
+  const nextStep=(step+1)%queue.length,next=records.get(queue[nextStep]),nextOptions=alignNextOptions(optionsFor(next));
+  await Promise.all([warmFlag(next),dismissFeedback(owner),mapInk.erase({timeline:owner,reduced:motion.matches})]);if(!alive(owner))return;
   setState('transition');feedback.textContent='';
   // The decoded next cloth sits beneath the paper before the folds close.
   showFlag(next);
   await Promise.all([
     foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}).then(()=>{if(alive(owner))app.classList.add('is-transitioning');}),
-    sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>renderButtons(optionsFor(next),{disabled:true})})
+    sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>renderButtons(nextOptions,{disabled:true})})
   ]);
   if(!alive(owner))return;
-  game.next();game.options=optionsFor(next).map(x=>x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
+  game.next();game.options=nextOptions.map(x=>x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
   // Keep the very same cloth and answer DOM after completion (no second paint).
   void warmFlag(records.get(queue[(step+1)%queue.length]));
 }

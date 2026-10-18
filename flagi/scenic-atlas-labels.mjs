@@ -1,6 +1,6 @@
 // True anchors stay on their countries. A leader connects a crowded or small
 // state to readable text/flag; neither the paint edge nor another name cuts it.
-export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,allowed=()=>true,onCountry=()=>false,near=true,max=8}){
+export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,allowed=()=>true,onCountry=()=>false,requireOnCountry=false,near=true,max=8}){
  const placed=[],reserved=[{x:width-91,y:height-43,w:91,h:43}];
  const overlaps=(a,b)=>a.x<b.x+b.w+4&&a.x+a.w+4>b.x&&a.y<b.y+b.h+4&&a.y+a.h+4>b.y;
  const crosses=(ax,ay,bx,by,box)=>{
@@ -33,6 +33,7 @@ export function layoutAtlasLabels(items,{width,height,measure,blocked=()=>false,
    if(items.some(p=>p.key!==item.key&&p.ax>box.x-3&&p.ax<box.x+box.w+3&&p.ay>box.y-3&&p.ay<box.y+box.h+3))continue;
    if(!item.capital&&!item.selected&&blocked(box))continue;
    if(!allowed(box))continue;
+   if(requireOnCountry&&!item.capital&&!onCountry(item,box))continue;
    const x=box.x+w/2,y=box.y+2;
    yield {...item,lines,box,x,y,leader:!onCountry(item,box)&&(item.small||Math.hypot(x-item.ax,box.y+h/2-item.ay)>14)};
   }

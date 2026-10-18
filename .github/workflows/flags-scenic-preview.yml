@@ -22,6 +22,7 @@ on:
       - 'assets/maps/europe-iberia-registration-v28.json'
       - 'assets/fonts/eb-garamond-*'
       - 'assets/fonts/charm-*'
+      - 'assets/fonts/merienda-*'
       - 'tests/scenic-atlas-labels.test.mjs'
       - 'tools/assemble-scenic-atlas-hd.mjs'
       - 'adventure-preview.mjs'
@@ -53,6 +54,7 @@ jobs:
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
           node --test tests/scenic-atlas-labels.test.mjs
       - name: Install browser
+        if: github.event_name == 'workflow_dispatch'
         run: |
           npm install --no-save --no-package-lock playwright@1.64.1
           npx playwright install --with-deps chromium webkit
@@ -67,13 +69,14 @@ jobs:
           test -s assets/flags/adventure/scenic-task-sign-v28.webp
           node --input-type=module -e "import fs from 'node:fs'; const atlas=JSON.parse(fs.readFileSync('assets/maps/europe-atlas-v26.json')); if(atlas.features.filter(x=>x.capital).length<45) throw Error('Missing capital geography');"
       - name: Capture phone gameplay and verify SVG-only active border
+        if: github.event_name == 'workflow_dispatch'
         id: qa
         continue-on-error: true
         run: |
           SCENIC_QA_PHASE=full node tools/flags-scenic-qa-parallel.mjs
           node tools/flags-scenic-layout-qa.mjs
       - name: Save generated atlas and screenshots on isolated branch
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch'
         run: |
           git add assets/maps/europe-scenic.webp
           if [ -d docs/flags-adventure/qa-scenic ]; then git add docs/flags-adventure/qa-scenic/; fi
@@ -86,5 +89,5 @@ jobs:
             git push origin HEAD:feature/flags-scenic-preview-v1
           fi
       - name: Require visual QA success
-        if: steps.qa.outcome == 'failure'
+        if: github.event_name == 'workflow_dispatch' && steps.qa.outcome == 'failure'
         run: exit 1

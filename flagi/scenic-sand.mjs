@@ -1,4 +1,4 @@
-import {SCENIC,randomFrom} from './scenic-config.mjs?v=32';
+import {SCENIC,randomFrom} from './scenic-config.mjs?v=35';
 const mix=(a,b,t)=>a+(b-a)*t;
 const ease=t=>t*t*(3-2*t);
 
@@ -21,7 +21,7 @@ function glyphs(answers,origin,rand) {
       for(let i=0;i<SCENIC.grainsPerLetter;i++){
         const p=ink[Math.floor(rand()*ink.length)]||{x:10,y:20};
         const line=lines.find(l=>Math.abs(l.top-r.top)<2);
-        points.push({x:r.left-origin.left+(p.x/maxX)*r.width,y:r.top-origin.top+(p.y/maxY)*r.height*.87,baseline:line.bottom-origin.top-2,lineCenter:(line.left+line.right)/2-origin.left,lineWidth:line.right-line.left});
+        points.push({x:r.left-origin.left+(p.x/maxX)*r.width,y:r.top-origin.top+(p.y/maxY)*r.height*.87,baseline:line.bottom-origin.top-2,letterCenter:(r.left+r.right)/2-origin.left,letterWidth:r.width});
       }
     }
     const r=button.querySelector('.scenic-answer-label').getBoundingClientRect();
@@ -41,12 +41,14 @@ export function createSand(canvas,app,answers) {
     const next=glyphs(answers,origin,rand),grains=[];
     old.forEach((group,row)=>{
       const target=next[row],count=Math.max(group.points.length,target.points.length);
+      // Monotone horizontal matching avoids crossing whole words while forming.
+      group.points.sort((a,b)=>a.x-b.x||a.y-b.y);target.points.sort((a,b)=>a.x-b.x||a.y-b.y);
       for(let i=0;i<count;i++){
-        const start=group.points[i%group.points.length],end=target.points[i%target.points.length];
-        const dx=(rand()-.5)*Math.min(64,start.lineWidth*.65),pileX=start.lineCenter+dx;
-        grains.push({start,end,fromOld:i<group.points.length,toNew:i<target.points.length,
-          pile:{x:pileX,y:start.baseline-(1-Math.abs(dx)/40)*(2+rand()*4)},
-          size:1.2+rand()*1.1,delay:rand()*.075,spread:(rand()-.5)*17,
+        const start=group.points[Math.min(group.points.length-1,Math.floor(i/count*group.points.length))],end=target.points[Math.min(target.points.length-1,Math.floor(i/count*target.points.length))];
+        const ridge=Math.max(0,1-Math.abs(start.x-start.letterCenter)/Math.max(1,start.letterWidth/2));
+        grains.push({start,end,fromOld:Math.floor((i+1)*group.points.length/count)>Math.floor(i*group.points.length/count),toNew:Math.floor((i+1)*target.points.length/count)>Math.floor(i*target.points.length/count),
+          pile:{x:start.x,y:Math.max(start.y,start.baseline-ridge*(2+rand()*4))},
+          size:1.2+rand()*1.1,delay:rand()*.075,
           color:['#473b32','#5a4738','#6b503c'][Math.floor(rand()*3)]});
       }
     });
@@ -63,14 +65,13 @@ export function createSand(canvas,app,answers) {
         let x,y,alpha=g.fromOld?1:0;
         if(t<SCENIC.sandFall){
           const q=Math.max(0,Math.min(1,(t-g.delay)/(SCENIC.sandFall-g.delay)));
-          x=mix(g.start.x,g.pile.x,q)+g.spread*Math.sin(q*Math.PI);
+          x=g.start.x;
           y=mix(g.start.y,g.pile.y,q*q);
-          if(q>.82)y-=Math.sin((q-.82)/.18*Math.PI)*3;
-        }else if(t<SCENIC.sandSettle){x=g.pile.x;y=g.pile.y;alpha=1;}
+        }else if(t<SCENIC.sandSettle){x=g.pile.x;y=g.pile.y;}
         else{
           const q=ease(Math.min(1,(t-SCENIC.sandSettle)/(.92-SCENIC.sandSettle)));
           x=mix(g.pile.x,g.end.x,q);y=mix(g.pile.y,g.end.y,q);
-          alpha=g.toNew?1:1-q;alpha*=Math.min(1,(1-t)/.07);
+          alpha=g.toNew?(g.fromOld?1:q):1-q;alpha*=Math.min(1,(1-t)/.07);
         }
         if(alpha<=0)continue;ctx.globalAlpha=alpha;ctx.fillStyle=g.color;ctx.fillRect(x,y,g.size,g.size);
         // A tiny warm upper edge and shaded lower edge pick up the scene light.

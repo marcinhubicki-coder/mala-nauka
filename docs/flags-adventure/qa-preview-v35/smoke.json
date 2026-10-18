@@ -1,0 +1,297 @@
+{
+  "status": "PASS",
+  "entrance": {
+    "rows": [
+      [
+        {
+          "delay": 0,
+          "direction": "normal",
+          "duration": 480,
+          "easing": "cubic-bezier(0.16, 0.8, 0.2, 1)",
+          "endDelay": 0,
+          "fill": "backwards",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ],
+      [
+        {
+          "delay": 85,
+          "direction": "normal",
+          "duration": 480,
+          "easing": "cubic-bezier(0.16, 0.8, 0.2, 1)",
+          "endDelay": 0,
+          "fill": "backwards",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ],
+      [
+        {
+          "delay": 170,
+          "direction": "normal",
+          "duration": 480,
+          "easing": "cubic-bezier(0.16, 0.8, 0.2, 1)",
+          "endDelay": 0,
+          "fill": "backwards",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ]
+    ],
+    "slider": [
+      {
+        "delay": 0,
+        "direction": "normal",
+        "duration": 650,
+        "easing": "cubic-bezier(0.16, 0.8, 0.2, 1)",
+        "endDelay": 0,
+        "fill": "backwards",
+        "iterationStart": 0,
+        "iterations": 1
+      }
+    ]
+  },
+  "exit": {
+    "rows": [
+      [
+        {
+          "delay": 170,
+          "direction": "normal",
+          "duration": 420,
+          "easing": "cubic-bezier(0.5, 0, 0.85, 0.35)",
+          "endDelay": 0,
+          "fill": "both",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ],
+      [
+        {
+          "delay": 85,
+          "direction": "normal",
+          "duration": 420,
+          "easing": "cubic-bezier(0.5, 0, 0.85, 0.35)",
+          "endDelay": 0,
+          "fill": "both",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ],
+      [
+        {
+          "delay": 0,
+          "direction": "normal",
+          "duration": 420,
+          "easing": "cubic-bezier(0.5, 0, 0.85, 0.35)",
+          "endDelay": 0,
+          "fill": "both",
+          "iterationStart": 0,
+          "iterations": 1
+        }
+      ]
+    ],
+    "slider": [
+      {
+        "delay": 0,
+        "direction": "normal",
+        "duration": 420,
+        "easing": "cubic-bezier(0.5, 0, 0.85, 0.35)",
+        "endDelay": 0,
+        "fill": "both",
+        "iterationStart": 0,
+        "iterations": 1
+      }
+    ]
+  },
+  "layout": {
+    "font": "ScenicCartography, cursive",
+    "heading": {
+      "baseline": 78.83199977874756,
+      "height": 12.831999778747559,
+      "countryBaselines": [
+        54.639997482299805
+      ],
+      "countryBottom": 64.21599578857422,
+      "capitalTop": 64.01599979400635,
+      "gap": -0.1999959945678711,
+      "iconBottom": 78.83199977874756,
+      "iconHeight": 12.831999778747559
+    },
+    "flagBottom": 79.2160005569458,
+    "compass": {
+      "x": 15.546875,
+      "y": 158.734375,
+      "w": 58,
+      "h": 58,
+      "bottom": 216.734375
+    },
+    "progress": {
+      "x": 23.390625,
+      "y": 134.734375,
+      "w": 343.1875,
+      "h": 12,
+      "bottom": 146.734375
+    },
+    "paper": {
+      "x": 17.546875,
+      "y": 182.734375,
+      "w": 354.890625,
+      "h": 327.3125,
+      "bottom": 510.046875
+    },
+    "controls": {
+      "x": 31.1875,
+      "y": 773,
+      "w": 329.5625,
+      "h": 45,
+      "bottom": 818
+    },
+    "knob": {
+      "x": 27.1875,
+      "y": 765.5,
+      "w": 60,
+      "h": 60,
+      "bottom": 825.5
+    },
+    "labels": [
+      {
+        "id": "at",
+        "name": "Austria",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 194.76598358154297,
+        "y": 227,
+        "anchor": {
+          "x": 197.22006486424965,
+          "y": 242.04230969694572
+        },
+        "box": {
+          "x": 173,
+          "y": 225,
+          "w": 43.53196716308594,
+          "h": 27
+        }
+      },
+      {
+        "id": "be",
+        "name": "Belgia",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 99.75778293787641,
+        "y": 177.3187949009884,
+        "anchor": {
+          "x": 99.75778293787641,
+          "y": 193.8187949009884
+        },
+        "box": {
+          "x": 80.2703027743022,
+          "y": 175.3187949009884,
+          "w": 38.97496032714844,
+          "h": 27
+        }
+      },
+      {
+        "id": "dk",
+        "name": "Dania",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 181.15398406982422,
+        "y": 97,
+        "anchor": {
+          "x": 178.5140117003385,
+          "y": 105.37249062350519
+        },
+        "box": {
+          "x": 163,
+          "y": 95,
+          "w": 36.30796813964844,
+          "h": 27
+        }
+      },
+      {
+        "id": "cz",
+        "name": "Czechy",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 220.51736607667902,
+        "y": 189.26670332922305,
+        "anchor": {
+          "x": 220.51736607667902,
+          "y": 205.76670332922305
+        },
+        "box": {
+          "x": 199.47588505861262,
+          "y": 187.26670332922305,
+          "w": 42.08296203613281,
+          "h": 27
+        }
+      },
+      {
+        "id": "de",
+        "name": "Berlin",
+        "capital": true,
+        "flag": false,
+        "leader": true,
+        "x": 231.60022735595703,
+        "y": 157,
+        "anchor": {
+          "x": 197.9193333706879,
+          "y": 158.9874471687823
+        },
+        "box": {
+          "x": 213,
+          "y": 155,
+          "w": 37.20045471191406,
+          "h": 15
+        }
+      },
+      {
+        "id": "pl",
+        "name": "Polska",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 283.1857147216797,
+        "y": 157,
+        "anchor": {
+          "x": 260.59629589593345,
+          "y": 169.22591980313314
+        },
+        "box": {
+          "x": 263,
+          "y": 155,
+          "w": 40.371429443359375,
+          "h": 27
+        }
+      },
+      {
+        "id": "fr",
+        "name": "Francja",
+        "capital": false,
+        "flag": true,
+        "leader": false,
+        "x": 84.58222961425781,
+        "y": 217,
+        "anchor": {
+          "x": 83.89246867337441,
+          "y": 229.93266944988386
+        },
+        "box": {
+          "x": 63,
+          "y": 215,
+          "w": 43.164459228515625,
+          "h": 27
+        }
+      }
+    ],
+    "selection": "none"
+  },
+  "correctAutoAdvance": true,
+  "errors": [],
+  "finalHeadingRecheck": true
+}

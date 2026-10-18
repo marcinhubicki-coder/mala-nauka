@@ -139,3 +139,18 @@ html.scenic-standalone,html.scenic-standalone body,html.scenic-standalone .sceni
 html.scenic-standalone body{position:relative;isolation:isolate;background:transparent}
 html.scenic-standalone .scenic-screen{background:transparent}
 html.scenic-standalone body>.scenic-scenery{position:fixed;z-index:-1;left:max(0px,calc((100vw - 480px) / 2));right:auto;width:min(100%,480px);height:var(--app-viewport-height,100lvh)}
+/* A compact pen face shares the question and map heading without long swashes. */
+@font-face{font-family:ScenicCartography;src:url('../assets/fonts/merienda-polish-v35.woff2') format('woff2');font-weight:400 700;font-display:swap}
+.scenic-map-caption strong{height:36px;font:700 28px/1 ScenicCartography,cursive;letter-spacing:-.4px}
+.scenic-map-caption .scenic-city span{font:600 16px/1 ScenicCartography,cursive}
+.scenic-prompt{font:700 clamp(15px,4.1vw,18px)/1.25 ScenicCartography,cursive;letter-spacing:-.4px;transform:none}
+.scenic-paper-row{padding-top:20px;padding-bottom:10px}
+.scenic-map-heading{mix-blend-mode:multiply}
+.scenic-map-flag-ink{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
+.scenic-lang{top:16px;left:calc(50% - 6.5px)}
+.scenic-controls{bottom:max(-8px,calc(8px - var(--safe-bottom)))}
+html,body,.scenic-screen *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+:focus,:focus-visible{outline:none!important}
+.scenic-answer:active{transform:none}
+.scenic-screen img{-webkit-user-drag:none}
+.scenic-neighbor-row{pointer-events:none}.scenic-neighbor-row button{pointer-events:auto}

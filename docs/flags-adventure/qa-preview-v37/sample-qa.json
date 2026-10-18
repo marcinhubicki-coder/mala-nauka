@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "engine": "Headless WebKit desktop viewport; not physical iPhone",
+  "cache": {
+    "bytes": 6742144,
+    "downloads": 7
+  },
+  "requests": [
+    "assets/maps/atlas-sample-v37/manifest.json",
+    "assets/maps/atlas-sample-v37/0/0-0.webp",
+    "assets/maps/atlas-sample-v37/2/0-0.webp",
+    "assets/maps/atlas-sample-v37/2/1-0.webp",
+    "assets/maps/atlas-sample-v37/2/2-0.webp",
+    "assets/maps/atlas-sample-v37/2/0-1.webp",
+    "assets/maps/atlas-sample-v37/2/1-1.webp",
+    "assets/maps/atlas-sample-v37/2/2-1.webp"
+  ],
+  "motion": {
+    "frames": 47,
+    "p95IntervalMs": 17,
+    "maxIntervalMs": 18
+  },
+  "errors": []
+}

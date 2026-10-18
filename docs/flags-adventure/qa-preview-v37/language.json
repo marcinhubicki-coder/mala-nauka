@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "lang": "en",
+      "complete": true,
+      "text": "\"Great!\""
+    },
+    {
+      "lang": "pl",
+      "complete": true,
+      "text": "\"Świetnie!\""
+    }
+  ]
+}

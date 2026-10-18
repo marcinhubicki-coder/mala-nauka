@@ -3,7 +3,7 @@ import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
 import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
 import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=36';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=36';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=37';
 import {SCENIC,seedOf} from './scenic-config.mjs?v=36';
 import {ScenicTimeline} from './scenic-timeline.mjs?v=36';
 import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=36';
@@ -291,7 +291,7 @@ function localizeChrome(){
  const aside=document.querySelector('.scenic-atlas-desktop');aside.querySelector('p').innerHTML=language==='en'?'<b>Explorer’s atlas</b><br>Choose the globe or magnifier to change the map view.':'<b>Atlas odkrywcy</b><br>Wybierz globus lub lupę, by zmienić zasięg mapy.';aside.querySelectorAll('p')[1].textContent=language==='en'?'The building symbol marks the capital. The highlighted area is the country being explored.':'Symbol budynku pokazuje położenie stolicy. Wyróżniony obszar wskazuje poznawany kraj.';if(lastMapResult)renderDesktop(lastMapResult,current());
  document.documentElement.lang=language;app.dataset.language=language;$('scenic-language').querySelector('b').textContent=language.toUpperCase();$('scenic-language').setAttribute('aria-label',language==='pl'?'Zmień język na angielski':'Switch to Polish');
  syncAtlasScope();
- document.querySelector('.scenic-prompt').textContent=copy().question;document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);hint.textContent=copy().auto;
+ document.querySelector('.scenic-prompt').textContent=copy().question;document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);swipe.dataset.completeLabel=copy().complete;hint.textContent=copy().auto;
  app.querySelector('[data-action="restart"]').setAttribute('aria-label',copy().restart);
  for(const button of answers.children){const record=local(records.get(button.dataset.id));button.setAttribute('aria-label',record.country);button.dataset.long=String(record.country.length>17);button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);}
  updateHud();

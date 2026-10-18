@@ -1,0 +1,36 @@
+{
+  "source": "/Users/marcin/Documents/Codex/2026-10-16/moze/outputs/v37/painted-region-sample.png",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "levels": [
+    {
+      "id": 0,
+      "width": 384,
+      "height": 256,
+      "scale": 0.25,
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": 1,
+      "width": 768,
+      "height": 512,
+      "scale": 0.5,
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": 2,
+      "width": 1536,
+      "height": 1024,
+      "scale": 1,
+      "cols": 3,
+      "rows": 2
+    }
+  ],
+  "tiles": 9,
+  "bytes": 1214558,
+  "countries": 54
+}

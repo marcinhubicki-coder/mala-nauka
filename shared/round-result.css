@@ -274,9 +274,8 @@ body:has(#app[data-view="results"]){background:transparent}
  /* Own this presentation in CSS instead of stacking it with WAAPI motion. */
  opacity:1!important;
  scale:1!important;
- transform:none!important;
 }
-.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery{left:15px}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery{left:15px;transform:none!important}
 .result-rule-dialog[open] .word-detail-hero>.word-badge-star{left:-15px;--word-award-delay:200ms}
 .result-rule-dialog[open] .word-detail-hero>.word-badge>:is(.word-badge-art,.word-badge-count){
  --word-award-opacity:1;
@@ -289,6 +288,16 @@ body:has(#app[data-view="results"]){background:transparent}
 .result-rule-dialog[open] .word-detail-hero>.word-badge-mastery.is-earned>.word-badge-art{
  animation:word-award-arrive 680ms ease-out both,word-award-pulse 2800ms ease-in-out 680ms infinite;
 }
+/* Move the whole star badge, including its surface; level zero stays still. */
+.result-rule-dialog[open] .word-detail-hero>.word-badge-star>:is(.word-badge-art,.word-badge-count){animation:none}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-star.is-earned{animation:word-star-arrive 680ms ease-out 200ms both}
+@keyframes word-star-arrive{
+ 0%{filter:opacity(0);transform:scale(1)}
+ 30%{filter:opacity(1);transform:scale(1)}
+ 57%{transform:scale(1.14)}
+ 78%{transform:scale(.97)}
+ 100%{filter:opacity(1);transform:scale(1)}
+}
 @keyframes word-award-appear{from{opacity:0}to{opacity:var(--word-award-opacity,1)}}
 @keyframes word-award-arrive{
  0%{opacity:0;transform:scale(1)}
@@ -299,5 +308,6 @@ body:has(#app[data-view="results"]){background:transparent}
 }
 @keyframes word-award-pulse{0%,100%{scale:1}50%{scale:1.015}}
 @media(prefers-reduced-motion:reduce){
+ .result-rule-dialog[open] .word-detail-hero>.word-badge-star{animation:none}
  .result-rule-dialog[open] .word-detail-hero>:is(.word-badge,.word-badge-mastery.is-earned)>:is(.word-badge-art,.word-badge-count){animation:none}
 }

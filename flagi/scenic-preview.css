@@ -172,7 +172,7 @@ html,body,.scenic-screen *{-webkit-user-select:none;user-select:none;-webkit-tou
 .scenic-screen:is([data-mode="countries"],[data-mode="capitals"]) .scenic-map-scroll[data-phase="question"] .scenic-map-caption{padding-right:0}
 .scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption{height:40px}
 .scenic-screen[data-mode="capitals"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption{height:40px}
-.scenic-screen[data-mode="countries"][data-state="playing"] .scenic-atlas-context{display:none}
+.scenic-map-scroll[data-phase="question"] .scenic-atlas-context{display:none}
 .scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption strong,
 .scenic-screen[data-mode="capitals"] .scenic-map-scroll[data-phase="question"] .scenic-city{visibility:hidden}
 .scenic-map-scroll[data-phase="question"] .scenic-map-flag{visibility:hidden}

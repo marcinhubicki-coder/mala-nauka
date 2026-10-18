@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "engine": "Headless WebKit, viewport390x844 DPR2; not physical iPhone",
+  "initialImageRequests": 3,
+  "totalImageRequests": 15,
+  "stats": {
+    "bytes": 14692720,
+    "downloads": 15,
+    "frame": {
+      "x": 1096,
+      "y": 699.2951348461851,
+      "w": 440,
+      "h": 293.33333333333326
+    }
+  },
+  "repeatDownloads": 0,
+  "unavailableDetailFallback": "PASS",
+  "errors": []
+}

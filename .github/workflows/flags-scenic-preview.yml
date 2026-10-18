@@ -13,6 +13,8 @@ on:
       - 'flagi/scenic-preview.webmanifest'
       - 'flagi/scenic-preview.css'
       - 'flagi/scenic-*.mjs'
+      - 'flagi/atlas-*.html'
+      - 'flagi/atlas-*.mjs'
       - 'assets/flags/adventure/scenic-*'
       - 'assets/maps/europe-pigment-*'
       - 'assets/maps/europe-terrain-*'
@@ -21,6 +23,7 @@ on:
       - 'assets/maps/europe-painted-v27.*'
       - 'assets/maps/europe-iberia-registration-v28.json'
       - 'assets/maps/atlas-*-v36.*'
+      - 'assets/maps/atlas-*/**'
       - 'tools/prepare-scenic-world.mjs'
       - 'assets/fonts/eb-garamond-*'
       - 'assets/fonts/charm-*'
@@ -54,6 +57,7 @@ jobs:
           node --check tools/flags-scenic-layout-qa.mjs
           node --check flagi/scenic-europe.mjs
           for file in flagi/scenic-*.mjs; do node --check "$file"; done
+          for file in flagi/atlas-*.mjs; do node --check "$file"; done
           node --test tests/scenic-atlas-labels.test.mjs
       - name: Install browser
         if: github.event_name == 'workflow_dispatch'

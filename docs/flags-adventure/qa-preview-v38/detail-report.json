@@ -1,0 +1,150 @@
+{
+  "generated": [
+    "/Users/marcin/.codex/generated_images/01a143d8-7236-7950-a636-dccff36a389f/exec-f7294eae-19e4-4b74-be88-01586cc55bac.png",
+    "/Users/marcin/.codex/generated_images/01a143d8-7236-7950-a636-dccff36a389f/exec-60995d4c-1fb5-4fe8-bb12-5a29bcf2414d.png"
+  ],
+  "detailScale": 2,
+  "overlapSourcePixels": 256,
+  "join": "minimum-difference continuous seam plus 12px feather",
+  "master": [
+    3072,
+    2048
+  ],
+  "higherDetailCoverage": {
+    "x": 768,
+    "y": 512,
+    "w": 768,
+    "h": 512
+  },
+  "levels": [
+    {
+      "id": 0,
+      "width": 384,
+      "height": 256,
+      "scale": 0.25,
+      "cols": 1,
+      "rows": 1
+    },
+    {
+      "id": 1,
+      "width": 768,
+      "height": 512,
+      "scale": 0.5,
+      "cols": 2,
+      "rows": 1
+    },
+    {
+      "id": 2,
+      "width": 1536,
+      "height": 1024,
+      "scale": 1,
+      "cols": 3,
+      "rows": 2
+    },
+    {
+      "id": 3,
+      "width": 3072,
+      "height": 2048,
+      "scale": 2,
+      "cols": 6,
+      "rows": 4,
+      "available": [
+        "3-2",
+        "4-2",
+        "5-2",
+        "3-3",
+        "4-3",
+        "5-3"
+      ],
+      "fallback": 2,
+      "coverage": {
+        "x": 768,
+        "y": 512,
+        "w": 768,
+        "h": 512
+      }
+    }
+  ],
+  "files": [
+    {
+      "name": "0/0-0.webp",
+      "bytes": 43450
+    },
+    {
+      "name": "1/0-0.webp",
+      "bytes": 100422
+    },
+    {
+      "name": "1/1-0.webp",
+      "bytes": 57582
+    },
+    {
+      "name": "2/0-0.webp",
+      "bytes": 83922
+    },
+    {
+      "name": "2/1-0.webp",
+      "bytes": 77064
+    },
+    {
+      "name": "2/2-0.webp",
+      "bytes": 76708
+    },
+    {
+      "name": "2/0-1.webp",
+      "bytes": 60576
+    },
+    {
+      "name": "2/1-1.webp",
+      "bytes": 76166
+    },
+    {
+      "name": "2/2-1.webp",
+      "bytes": 110356
+    },
+    {
+      "name": "3/3-2.webp",
+      "bytes": 86270
+    },
+    {
+      "name": "3/4-2.webp",
+      "bytes": 100728
+    },
+    {
+      "name": "3/5-2.webp",
+      "bytes": 67480
+    },
+    {
+      "name": "3/3-3.webp",
+      "bytes": 69880
+    },
+    {
+      "name": "3/4-3.webp",
+      "bytes": 99356
+    },
+    {
+      "name": "3/5-3.webp",
+      "bytes": 94916
+    }
+  ],
+  "totalBytes": 1204876,
+  "detailBytes": 518630,
+  "compression": [
+    {
+      "quality": 60,
+      "bytes": 232190
+    },
+    {
+      "quality": 72,
+      "bytes": 266960
+    },
+    {
+      "quality": 80,
+      "bytes": 322594
+    },
+    {
+      "quality": 88,
+      "bytes": 434104
+    }
+  ]
+}

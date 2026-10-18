@@ -1,0 +1,31 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. EDIT TARGET: the attached exact square crop from an already approved illustrated geographic atlas.\nReconstruct this EXACT SAME square tile at 1024x1024 or the highest native square resolution, with genuinely new crisp fine brush detail that supports 2x magnification. This is detail reconstruction, not a redesigned map and not a simple sharpen/upscale filter. Preserve every mountain ridge, valley, river, coast, tree group and lake at EXACTLY the same normalized pixel location, with the same silhouette, scale, framing, warm palette, top-down storybook watercolor/gouache style and lighting.\nAdd legible small painted details inside the existing features: distinct pine needles and tiny leaves, small crag faces and snow gullies, delicate rock texture, grass clumps and watercolor pigment marks; keep them subtle and in scale. Dry ochre land remains dry, snowy massifs remain snowy, lower green foothills remain green. Rivers retain the exact same courses and widths in normalized coordinates.\nThe tile overlaps its neighboring atlas tile. All four edges must remain compositionally identical to the reference with continuous paint. No shifted features, extra mountains, new lakes, extra river branches, new tree groups, text, labels, borders, frame, empty margins, boats, blur, glow, exaggerated sharpening halo or photographic texture. Entire square crop, no zooming or recentering.",
+  "inputs": [
+    {
+      "reference": "outputs/v38/detail-west-source.png",
+      "rect": {
+        "x": 768,
+        "y": 512,
+        "w": 512,
+        "h": 512
+      },
+      "generated": "outputs/v38/detail-west-generated.png"
+    },
+    {
+      "reference": "outputs/v38/detail-east-source.png",
+      "rect": {
+        "x": 1024,
+        "y": 512,
+        "w": 512,
+        "h": 512
+      },
+      "generated": "outputs/v38/detail-east-generated.png"
+    }
+  ],
+  "outputs": {
+    "joined": "outputs/v38/detail-joined.png",
+    "master": "outputs/v38/regional-master-hd.png",
+    "runtime": "assets/maps/atlas-detail-v38/"
+  }
+}

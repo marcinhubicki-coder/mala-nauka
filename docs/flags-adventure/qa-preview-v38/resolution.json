@@ -1,0 +1,32 @@
+{
+  "world": [
+    5000,
+    3000
+  ],
+  "countries": [
+    {
+      "id": "ch",
+      "name": "Szwajcaria",
+      "longitudeSpan": 4.484569999999999,
+      "widthAt5000px": 62
+    },
+    {
+      "id": "pl",
+      "name": "Polska",
+      "longitudeSpan": 9.977149000000002,
+      "widthAt5000px": 139
+    },
+    {
+      "id": "lt",
+      "name": "Litwa",
+      "longitudeSpan": 5.729590000000003,
+      "widthAt5000px": 80
+    },
+    {
+      "id": "fr",
+      "name": "Francja",
+      "longitudeSpan": 12.902832000000005,
+      "widthAt5000px": 179
+    }
+  ]
+}

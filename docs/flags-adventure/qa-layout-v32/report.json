@@ -1,6 +1,6 @@
 {
-  "passed": 2,
-  "total": 2,
+  "passed": 4,
+  "total": 4,
   "results": [
     {
       "engine": "chromium",
@@ -172,6 +172,80 @@
       "errors": []
     },
     {
+      "engine": "chromium",
+      "mode": "standalone-screen-height",
+      "status": "PASS",
+      "initial": {
+        "screen": [
+          390,
+          844
+        ],
+        "height": "844px",
+        "standalone": true,
+        "frames": 0,
+        "photo": {
+          "parent": "BODY",
+          "position": "fixed",
+          "fit": "cover",
+          "layoutHeight": 844,
+          "scale": [
+            1.12,
+            1.12
+          ]
+        },
+        "boxes": {
+          "html": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "body": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "#scenic-stage": {
+            "x": 0,
+            "y": 47,
+            "w": 390,
+            "h": 763
+          },
+          "#scenic-map-scroll": {
+            "x": 17.546875,
+            "y": 198.734375,
+            "w": 354.890625,
+            "h": 296.75
+          },
+          "#scenic-answers": {
+            "x": 17.546875,
+            "y": 505.484375,
+            "w": 354.890625,
+            "h": 119.015625
+          },
+          "#scenic-neighbors": {
+            "x": 118.453125,
+            "y": 630.5,
+            "w": 254,
+            "h": 111
+          },
+          "#scenic-controls": {
+            "x": 31.1875,
+            "y": 755,
+            "w": 329.5625,
+            "h": 45
+          }
+        }
+      }
+    },
+    {
       "engine": "webkit",
       "status": "PASS",
       "samples": [
@@ -339,6 +413,80 @@
         }
       },
       "errors": []
+    },
+    {
+      "engine": "webkit",
+      "mode": "standalone-screen-height",
+      "status": "PASS",
+      "initial": {
+        "screen": [
+          390,
+          844
+        ],
+        "height": "844px",
+        "standalone": true,
+        "frames": 0,
+        "photo": {
+          "parent": "BODY",
+          "position": "fixed",
+          "fit": "cover",
+          "layoutHeight": 844,
+          "scale": [
+            1.12,
+            1.12
+          ]
+        },
+        "boxes": {
+          "html": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "body": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "main": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 844
+          },
+          "#scenic-stage": {
+            "x": 0,
+            "y": 47,
+            "w": 390,
+            "h": 763
+          },
+          "#scenic-map-scroll": {
+            "x": 17.546875,
+            "y": 198.734375,
+            "w": 354.890625,
+            "h": 296.75
+          },
+          "#scenic-answers": {
+            "x": 17.546875,
+            "y": 505.484375,
+            "w": 354.890625,
+            "h": 119.015625
+          },
+          "#scenic-neighbors": {
+            "x": 118.453125,
+            "y": 630.5,
+            "w": 254,
+            "h": 111
+          },
+          "#scenic-controls": {
+            "x": 31.1875,
+            "y": 755,
+            "w": 329.5625,
+            "h": 45
+          }
+        }
+      }
     }
   ]
 }

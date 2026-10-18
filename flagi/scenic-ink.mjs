@@ -1,9 +1,7 @@
 import {SCENIC,randomFrom,seedOf} from './scenic-config.mjs?v=36';
 import {layoutAtlasLabels} from './scenic-atlas-labels.mjs?v=36';
-import {FLAGS} from '../data/flags.mjs';
 import {drawCapitalSymbol} from './scenic-capital.mjs?v=36';
-import {readableAtlasFrames} from './scenic-camera.mjs?v=36';
-const EUROPE_IDS=new Set(FLAGS.filter(record=>record.continent==='europe').map(record=>record.id));
+import {readableAtlasFrames} from './scenic-camera.mjs?v=39';
 const clamp=n=>Math.max(0,Math.min(1,n));
 const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
 const surface=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
@@ -44,7 +42,7 @@ export function createMapInk(canvas,sheet,app){
    const leader=(pair.near?.leader&&nearMix>.01)||(pair.full?.leader&&blend>.01);
    if(leader){ink.beginPath();ink.moveTo(ax,ay);ink.lineTo(x,y+5);ink.strokeStyle='#fff4d8';ink.lineWidth=3;ink.stroke();ink.strokeStyle='#644321';ink.lineWidth=1.2;ink.stroke();ink.fillStyle='#fff3ce';ink.beginPath();ink.arc(ax,ay,2,0,Math.PI*2);ink.fill();ink.stroke();}
    label.lines.forEach((text,i)=>{ink.strokeStyle='#fff5dce8';ink.lineWidth=2.2;ink.strokeText(text,x,y+i*11);ink.fillStyle=label.capital?'#6b3b25':label.selected?'#18482f':'#354428';ink.fillText(text,x,y+i*11);});
-   const flag=label.flag&&result.flags[label.id];if(flag&&pair.near&&nearMix>.015){const ratio=flag.naturalWidth/flag.naturalHeight,fw=Math.min(16,10*ratio),fh=fw/ratio,fy=y+label.lines.length*11+2;ink.globalAlpha=alpha*nearMix;ink.fillStyle='#fffae9';ink.shadowColor='#35482f50';ink.shadowBlur=2;ink.fillRect(x-fw/2-1,fy-1,fw+2,fh+2);ink.shadowBlur=0;ink.drawImage(flag,x-fw/2,fy,fw,fh);}
+   const flag=label.flag&&result.flags[label.id];if(flag&&pair.near&&nearMix>.015){const ratio=flag.naturalWidth/flag.naturalHeight,fw=Math.min(16,10*ratio),fh=fw/ratio,fy=y+label.lines.length*11+2;ink.globalAlpha=alpha*nearMix;ink.fillStyle='#fffae9';ink.shadowColor='#35482f50';ink.shadowBlur=2;ink.fillRect(x-fw/2-1,fy-1,fw+2,fh+2);ink.shadowBlur=0;ink.drawImage(flag.image||flag,x-fw/2,fy,fw,fh);}
    const activeLabel=blend>.5?(pair.full||pair.near):(pair.near||pair.full);
    ink.restore();drawn.push({id:label.id,name:label.name,capital:!!label.capital,flag:!!flag&&!!pair.near&&nearMix>.5,leader:!!leader,x,y,anchor:{x:ax,y:ay},box:{x:x-activeLabel.box.w/2,y:y-2,w:activeLabel.box.w,h:activeLabel.box.h}});
   }
@@ -90,10 +88,11 @@ export function createMapInk(canvas,sheet,app){
    return true;
   };
   if(result?.svg){
-   const paths=result.geometry.map(item=>({...item,path:new Path2D(item.path),selected:item.id===record.id}));
+   const paths=result.geometry.map(item=>({...item,path:item.shape||new Path2D(item.path),selected:item.id===record.id}));
    const mainTop=Math.min(r.height*.45,headerBottom+14),mainHeight=r.height-mainTop;
    const focus=result.focusBox||paths.find(p=>p.selected).box,frames=readableAtlasFrames(focus,r.width,r.height,mainTop,result.bounds||{x:0,y:0,w:680,h:500},result.wholeCountry);
    result.crop=frames.near;result.fullCrop=frames.full;
+   if(result.prepareFrames){await result.prepareFrames([frames.near,frames.full],r.width);if(!isCurrent()){art.width=art.height=1;return;}app.dataset.atlasReady=record.id;app.dataset.atlasMemory=JSON.stringify(result.tileStats());}
    if(app.dataset.qa==='true'){sheet.dataset.atlasBounds=JSON.stringify(result.bounds);sheet.dataset.atlasFocus=JSON.stringify(focus);sheet.dataset.mainMapArea=JSON.stringify({top:mainTop,height:mainHeight});}
    mapSpec={result,paths,headerBottom,neighbors:new Set(),rect:{x:r.left-origin.left,y:r.top-origin.top,w:r.width,h:r.height},frame:{...result.crop}};
    const measure=surface(1,1).getContext('2d');measure.font='700 10.5px ScenicBody';
@@ -107,7 +106,7 @@ export function createMapInk(canvas,sheet,app){
      if(path&&right>left&&bottom>top)for(let ix=0;ix<9;ix++)for(let iy=0;iy<9;iy++){const x=left+(right-left)*(ix+.5)/9,y=top+(bottom-top)*(iy+.5)/9,score=(x-(left+right)/2)**2+(y-(top+bottom)/2)**2;if(score<best&&hit.isPointInPath(path,x,y)){point={x,y};best=score;}}
      return point;
     };
-    const items=result.labels.filter(item=>item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):(record.id==='ru'||EUROPE_IDS.has(item.id)))).sort((a,b)=>{
+    const items=result.labels.filter(item=>item.point&&readable(item)&&(near?item.id!==record.id&&(result.neighbors.length>0?result.neighbors.includes(item.id):!!result.flags[item.id]):(record.id==='ru'||item.continent===result.continent))).sort((a,b)=>{
      const priority=x=>near?(result.neighbors.includes(x.id)?0:1):(x.id===record.id?-1:0);
      return priority(a)-priority(b)||(near&&priority(a)===0?a.box.w*a.box.h-b.box.w*b.box.h:b.box.w*b.box.h-a.box.w*a.box.h);
     }).map(item=>{const point=visibleAnchor(item);return {...item,...project(point),point,key:'country:'+item.id,flag:!!result.flags[item.id],selected:item.id===record.id,required:near?result.neighbors.includes(item.id):item.id===record.id,small:false};});
@@ -202,6 +201,7 @@ export function createMapInk(canvas,sheet,app){
  }
  async function setView(view,{timeline,reduced}){
   if(!target||!mapSpec)return;const generation=++viewGeneration,start={...mapSpec.frame},end=view==='europe'?mapSpec.result.fullCrop:mapSpec.result.crop;
+  if(mapSpec.result.prepareFrames){await mapSpec.result.prepareFrames([start,end],mapSpec.rect.w);if(generation!==viewGeneration||!mapSpec)return;app.dataset.atlasMemory=JSON.stringify(mapSpec.result.tileStats());}
   const update=t=>{if(generation!==viewGeneration)return;const p=ease(t),frame={};for(const key of ['x','y','w','h'])frame[key]=start[key]+(end[key]-start[key])*p;mapSpec.frame=frame;
    const paint=target.getContext('2d');paint.setTransform(dpr,0,0,dpr,0,0);paint.clearRect(0,0,width,height);paintGeography(paint,frame);
    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(target,0,0);

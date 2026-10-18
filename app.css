@@ -332,3 +332,5 @@ body:has(#app[data-view="results"][data-mode="spelling"]){background:transparent
 .result-continue-rail .continue-copy svg{width:calc(20 * var(--result-u));height:calc(20 * var(--result-u))}
 .result-continue-rail.is-complete .continue-copy{display:none}
 .result-continue-rail.is-complete{box-shadow:inset 0 0 5px #fff9,0 0 0 2px #ffe5f6,0 0 calc(12 * var(--result-u)) #ff80c3a6}
+body.scenic-hosted-standalone{isolation:isolate;background:#405024}
+body.scenic-hosted-standalone::before{content:'';position:fixed;inset:0;height:var(--app-viewport-height,100lvh);z-index:-1;pointer-events:none;background:url('assets/flags/adventure/scenic-scene-v29.webp') center top/cover no-repeat;transform:scale(1.12);transform-origin:center top}

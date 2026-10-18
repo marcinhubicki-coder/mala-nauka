@@ -3,4 +3,5 @@ export const COPY={
  pl:{flags:'Flagi',stopped:'Czas zatrzymany',task:'Zadanie',question:'Który kraj ma taką flagę?',neighbors:'Sąsiedzi',none:'brak lądowych',next:'Przesuń, aby przejść dalej',complete:'Świetnie!',auto:'Za chwilę następna flaga…',correct:'Poprawna odpowiedź.',answer:'Poprawna odpowiedź: ',unavailable:'Mapa jest chwilowo niedostępna.',pause:'Pauza',resume:'Wznów',restart:'Rozpocznij ponownie'},
  en:{flags:'Flags',stopped:'Time paused',task:'Task',question:'Which country has this flag?',neighbors:'Neighbours',none:'no land borders',next:'Slide to continue',complete:'Great!',auto:'The next flag is coming…',correct:'Correct answer.',answer:'Correct answer: ',unavailable:'The map is temporarily unavailable.',pause:'Pause',resume:'Resume',restart:'Start again'}
 };
-export function localizedRecord(record,language){return language==='en'?{...record,country:record.countryEn,capital:capitals[record.id]||record.capital}:record;}
+export function localizedRecord(record,language){return language==='en'?{...record,country:record.countryEn,capital:capitals[record.id]||CAPITALS_EN[record.id]||record.capital}:record;}
+import {CAPITALS_EN} from '../data/flags/capitals-en.mjs?v=39';

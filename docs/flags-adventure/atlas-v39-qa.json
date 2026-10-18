@@ -1,0 +1,176 @@
+{
+  "engine": "headless WebKit,390x844,DPR2; not physical iPhone",
+  "countries": [
+    {
+      "country": "pl",
+      "memory": {
+        "decodedBytes": 14618304,
+        "peakDecodedBytes": 14618304,
+        "compressedBytes": 1187568,
+        "tiles": 14,
+        "downloads": 16,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "jp",
+      "memory": {
+        "decodedBytes": 11398496,
+        "peakDecodedBytes": 11398496,
+        "compressedBytes": 1225218,
+        "tiles": 11,
+        "downloads": 19,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "br",
+      "memory": {
+        "decodedBytes": 10642000,
+        "peakDecodedBytes": 10642000,
+        "compressedBytes": 1366164,
+        "tiles": 10,
+        "downloads": 20,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "cd",
+      "memory": {
+        "decodedBytes": 8240544,
+        "peakDecodedBytes": 8240544,
+        "compressedBytes": 1166448,
+        "tiles": 8,
+        "downloads": 16,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "fj",
+      "memory": {
+        "decodedBytes": 15654432,
+        "peakDecodedBytes": 15654432,
+        "compressedBytes": 1215204,
+        "tiles": 15,
+        "downloads": 24,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "ru",
+      "memory": {
+        "decodedBytes": 9282880,
+        "peakDecodedBytes": 9282880,
+        "compressedBytes": 1476648,
+        "tiles": 10,
+        "downloads": 20,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "sa",
+      "memory": {
+        "decodedBytes": 11423232,
+        "peakDecodedBytes": 11423232,
+        "compressedBytes": 1189288,
+        "tiles": 11,
+        "downloads": 15,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    },
+    {
+      "country": "lk",
+      "memory": {
+        "decodedBytes": 14626544,
+        "peakDecodedBytes": 14626544,
+        "compressedBytes": 1362104,
+        "tiles": 14,
+        "downloads": 23,
+        "budget": 25165824,
+        "cap": 4,
+        "degraded": false
+      },
+      "ready": "true",
+      "zoomExtraRequests": 0
+    }
+  ],
+  "errors": [],
+  "englishSliderComplete": "Great!",
+  "delayedAssetGate": true,
+  "hostedSession": {
+    "correct": 1,
+    "wrong": 0,
+    "question": 2,
+    "state": "playing"
+  },
+  "hostedSummary": true,
+  "finalLayout": {
+    "checked": [
+      "cd",
+      "cn",
+      "ru",
+      "jp"
+    ],
+    "fourRowCountries": [
+      "cd",
+      "cn",
+      "ru"
+    ],
+    "ribbonBottom": 775.9375,
+    "sliderHandleTop": 781.9375,
+    "noOverlap": true
+  },
+  "browserResize": {
+    "from": {
+      "width": 1280,
+      "height": 900
+    },
+    "to": {
+      "width": 1280,
+      "height": 600
+    },
+    "sceneBefore": {
+      "width": 390,
+      "height": 844
+    },
+    "sceneAfter": {
+      "width": 390,
+      "height": 844
+    },
+    "proportionsStable": true
+  },
+  "englishSliderCompleted": {
+    "class": "scenic-swipe is-complete",
+    "ariaValue": "100",
+    "label": "Great!",
+    "rendering": "rail::after uses data-complete-label"
+  }
+}

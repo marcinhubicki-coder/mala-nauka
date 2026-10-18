@@ -1,4 +1,4 @@
-name: Flags scenic Europe preview
+name: Flags scenic world preview
 
 on:
   push:
@@ -23,6 +23,15 @@ on:
       - 'assets/maps/europe-painted-v27.*'
       - 'assets/maps/europe-iberia-registration-v28.json'
       - 'assets/maps/atlas-*-v36.*'
+      - 'assets/maps/atlas-world-v39.*'
+      - 'tools/flags-world-v39-check.mjs'
+      - 'tools/build-scenic-world-tiles-v39.mjs'
+      - 'tools/prepare-scenic-world-v39.mjs'
+      - 'flagi/index.html'
+      - 'flagi/preview-frame.html'
+      - 'app.js'
+      - 'app.css'
+      - 'data/flags/capitals-en.mjs'
       - 'assets/maps/atlas-*/**'
       - 'tools/prepare-scenic-world.mjs'
       - 'assets/fonts/eb-garamond-*'
@@ -51,6 +60,8 @@ jobs:
           node-version: '22'
       - name: Validate JavaScript modules
         run: |
+          node --check app.js
+          node --check tools/build-scenic-world-tiles-v39.mjs
           node --check tools/build-scenic-europe.mjs
           node --check tools/flags-scenic-qa.mjs
           node --check tools/flags-scenic-qa-parallel.mjs
@@ -66,9 +77,7 @@ jobs:
           npx playwright install --with-deps chromium webkit
       - name: Check registered atlas assets
         run: |
-          test -s assets/maps/atlas-world-v36.data
-          test -s assets/maps/atlas-ground-v36.webp
-          test -s assets/maps/atlas-mountain-v36.webp
+          node tools/flags-world-v39-check.mjs
           node --input-type=module -e "import fs from 'node:fs'; import {gunzipSync} from 'node:zlib'; const a=JSON.parse(gunzipSync(fs.readFileSync('assets/maps/atlas-world-v36.data'))); if(a.features.length<200 || a.features.find(f=>f.id==='ru').neighbors.length!==14) throw Error('Incomplete world atlas');"
           test -s assets/maps/europe-painted-v27.webp
           test -s assets/maps/europe-atlas-v26.svg

@@ -1,39 +1,50 @@
 import {FLAGS} from '../data/flags.mjs';
 import {Session} from '../game.mjs';
 import {createContinueDrag} from '../spelling/continue-drag.mjs?v=3';
-import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=13-all-webp';
-import {mountScenicEurope,preloadScenicEurope} from './scenic-europe.mjs?v=36';
-import {COPY,localizedRecord} from './scenic-language.mjs?v=37';
+import {flagOnPole,paintFlags,prepareFlag} from './flag-on-pole.mjs?v=39-decoded';
+import {mountScenicEurope,preloadScenicEurope,scenicNeighborIds} from './scenic-europe.mjs?v=39';
+import {COPY,localizedRecord} from './scenic-language.mjs?v=39';
 import {SCENIC,seedOf} from './scenic-config.mjs?v=36';
 import {ScenicTimeline} from './scenic-timeline.mjs?v=36';
 import {placePaper,foldPaper,preloadPaper} from './scenic-paper.mjs?v=36';
 import {createSand} from './scenic-sand.mjs?v=36';
-import {createMapInk} from './scenic-ink.mjs?v=36';
+import {createMapInk} from './scenic-ink.mjs?v=39';
+import {prepareScenicScene,createScenicGate,decodeScenicImage} from './scenic-ready.mjs?v=39';
 const $=id=>document.getElementById(id),app=$('scenic-screen'),hero=$('scenic-hero'),flagHost=$('scenic-flag-host');
 const answers=$('scenic-answers'),sheet=$('scenic-map-scroll'),mapHost=$('scenic-europe-map');
 const feedback=$('scenic-feedback'),swipe=$('scenic-swipe'),knob=$('scenic-swipe-knob'),hint=$('scenic-auto-hint');
-const captionMeasure=document.createElement('canvas').getContext('2d');
-const query=new URLSearchParams(location.search),records=new Map(FLAGS.map(x=>[x.id,x])),europe=FLAGS.filter(x=>x.continent==='europe');
+const captionMeasure=document.createElement('canvas').getContext('2d'),neighborLayouts=new Map();
+const query=new URLSearchParams(location.search),records=new Map(FLAGS.map(x=>[x.id,x]));
+const hostedSession=window.frameElement?.scenicSession,byName=new Map(FLAGS.map(r=>[r.country,r]));
+if(hostedSession){const inset=window.frameElement.scenicInsets;app.style.setProperty('--safe-top',inset.top+'px');app.style.setProperty('--safe-bottom',inset.bottom+'px');}
+let hostedActive=!hostedSession||window.frameElement.scenicActive===true,hostPaused=false;
 let language=query.get('lang')==='en'?'en':'pl',lastMapResult;
 const local=record=>localizedRecord(record,language),copy=()=>COPY[language];
-const initial=records.get(query.get('country'))?.continent==='europe'?query.get('country'):'by';
-const queue=[initial,'pl','ch','de','fr','cz','hu','it','lt','ua','at','sk','es','no','gb','ro','pt','se',...europe.map(x=>x.id)].filter((id,i,all)=>records.has(id)&&all.indexOf(id)===i);
+const scope=FLAGS.filter(r=>!query.has('category')||query.get('category')==='all'||r.continent===query.get('category'));
+const pool=[...(scope.length?scope:FLAGS)];
+if(!query.has('country')&&!query.has('qa'))for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+const initial=records.has(query.get('country'))?query.get('country'):pool[0].id;
+const queue=[initial,...pool.map(x=>x.id)].filter((id,i,all)=>records.has(id)&&all.indexOf(id)===i);
 app.dataset.qa=String(query.has('qa'));
 const motion=matchMedia('(prefers-reduced-motion:reduce)');
 let step=0,points=0,seconds=SCENIC.seconds,state='loading',timeline=new ScenicTimeline(),round=0,paused=false,visibilityPaused=false;
-let readyForNext=false,fixtureTimer,game=createSession();
-const continueDrag=createContinueDrag(swipe,{canContinue:()=>state==='feedback-wrong'&&readyForNext&&!paused&&!visibilityPaused,completionDelay:SCENIC.feedback.exitDelayMs,onComplete:()=>caught(toNext())});
+let readyForNext=false,fixtureTimer,game=hostedSession||createSession();
+const roundSeconds=hostedSession?.duration||SCENIC.seconds;
+const entry=createScenicGate(app,()=>language);
+const continueDrag=createContinueDrag(swipe,{canContinue:()=>state==='feedback-wrong'&&readyForNext&&!paused&&!visibilityPaused&&!hostPaused&&hostedActive,completionDelay:SCENIC.feedback.exitDelayMs,onComplete:()=>caught(toNext())});
 const sand=createSand($('scenic-sand-canvas'),app,answers);
 const mapInk=createMapInk($('scenic-map-ink'),sheet,app);
 const escape=value=>String(value??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const caught=task=>void task.catch(error=>{if(error.name!=='AbortError'){console.error('[scenic]',error);feedback.textContent='Coś poszło nie tak. Uruchom grę ponownie.';}});
-const current=()=>records.get(queue[step]);
+const current=()=>records.get(hostedSession?game.current.countryId:queue[step]);
+const optionRecords=values=>values.map(value=>records.get(value)||byName.get(value));
+const optionsNow=()=>hostedSession?optionRecords(game.options):optionsFor(current());
 const alive=owner=>owner===timeline&&!owner.cancelled;
 function setState(value){state=value;app.dataset.state=value;$('scenic-language').disabled=!['playing','feedback-correct','feedback-wrong'].includes(value);}
 function optionsFor(record){
   if(record.id==='pl')return ['is','ch','pl','rs'].map(id=>records.get(id));
   if(record.id==='by')return ['pl','by','de','hu'].map(id=>records.get(id));
-  const pool=europe.filter(x=>x.id!==record.id),offset=seedOf(record.id)%pool.length;
+  const pool=FLAGS.filter(x=>x.id!==record.id&&x.continent===record.continent),offset=seedOf(record.id)%pool.length;
   const picks=[pool[offset],record,pool[(offset+13)%pool.length],pool[(offset+29)%pool.length]];
   return new Set(picks.map(x=>x.id)).size===4?picks:[record,...pool.slice(0,3)];
 }
@@ -65,10 +76,10 @@ function alignNextOptions(options){
 function updateHud(){
   points=game.correct;seconds=Math.ceil(game.remaining/1000);
   $('scenic-clock-caption').textContent=state==='playing'||state==='loading'?copy().flags:copy().stopped;
-  $('scenic-task').textContent=copy().task+' '+(step+1);$('scenic-score').textContent=points+' pkt';
+  $('scenic-task').textContent=copy().task+' '+(step+1);$('scenic-score').textContent=points+(language==='pl'?' pkt':' pts');
   $('scenic-clock').textContent=Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0');
-  $('scenic-progress-fill').style.width=Math.max(0,seconds/SCENIC.seconds*100)+'%';
-  $('scenic-progress').setAttribute('aria-label','Pozostało '+seconds+' sekund');
+  $('scenic-progress-fill').style.width=Math.max(0,seconds/roundSeconds*100)+'%';
+  $('scenic-progress').setAttribute('aria-label',language==='pl'?'Pozostało '+seconds+' sekund':seconds+' seconds remaining');
 }
 function fitFlag(){
   const cloth=flagHost.querySelector('.flag-cloth');if(!cloth)return;
@@ -82,15 +93,17 @@ function showFlag(record){
   flagHost.innerHTML=flagOnPole(record,{label:'Flaga do rozpoznania'});
   flagHost.querySelector('.flag-pole')?.remove();
   app.dataset.country=record.id;syncAtlasScope();fitFlag();paintFlags(flagHost);
+  return Promise.all([...flagHost.querySelectorAll('img')].map(image=>image.decode().catch(()=>null)));
 }
 function syncAtlasScope(){
   const russia=app.dataset.country==='ru',scope=$('scenic-atlas-context'),full=sheet.dataset.view==='europe';
   scope.hidden=!russia||!app.classList.contains('is-presenting');scope.textContent=language==='pl'?(full?'Rosja · Europa i Azja':'Rosja · część europejska'):(full?'Russia · Europe and Asia':'Russia · European part');
-  sheet.querySelector('[data-map-view="europe"]').setAttribute('aria-label',russia?(language==='pl'?'Europa i Azja':'Europe and Asia'):(language==='pl'?'Cała Europa':'All Europe'));
+  const continent=records.get(app.dataset.country)?.continent||'europe',names={europe:['Europa','Europe'],asia:['Azja','Asia'],africa:['Afryka','Africa'],'north-america':['Ameryka Północna','North America'],'south-america':['Ameryka Południowa','South America'],oceania:['Oceania','Oceania']};
+  sheet.querySelector('[data-map-view="europe"]').setAttribute('aria-label',russia?(language==='pl'?'Europa i Azja':'Europe and Asia'):names[continent][language==='pl'?0:1]);
 }
-function fitCaption(){
+function fitCaption(forRecord=current()){
   const title=$('scenic-country-name');if(!title.textContent)return;
-  const record=local(current()),parent=title.parentElement,style=getComputedStyle(title);
+  const record=local(forRecord),parent=title.parentElement,style=getComputedStyle(title);
   const available=parent.clientWidth-parseFloat(getComputedStyle(parent).paddingRight);
   const fits=(text,size)=>{captionMeasure.font=`700 ${size}px ${style.fontFamily}`;captionMeasure.letterSpacing='-.35px';return captionMeasure.measureText(text).width<=available;};
   let lines=[record.country],size=[28,26,24,22,20,18].find(n=>fits(record.country,n));
@@ -106,21 +119,45 @@ function fitCaption(){
   captionMeasure.font=`700 28px ${style.fontFamily}`;
   const descent=captionMeasure.measureText('gjpqy').actualBoundingBoxDescent-captionMeasure.measureText('Polska').actualBoundingBoxDescent;
   const capitalTop=title.clientHeight+Math.ceil(descent)+1;
+  const capital=$('scenic-country-capital'),capitalStyle=getComputedStyle(capital),capitalWidth=Math.max(40,available-23);
+  const capitalSize=[16,15,14,13,12,11].find(n=>{captionMeasure.font=`${capitalStyle.fontWeight} ${n}px ${capitalStyle.fontFamily}`;return captionMeasure.measureText(record.capital).width<=capitalWidth;})||11;
+  capital.style.fontSize=capitalSize+'px';
   parent.style.setProperty('--capital-top',capitalTop+'px');parent.style.setProperty('--caption-height',(capitalTop+18)+'px');
 }
-function placeScroll(){
+function neighborPartition(sizes,max,firstMax=max){
+ let best=null;
+ function visit(index,rows){
+  if(index===sizes.length){const widths=rows.map(a=>a.reduce((sum,i)=>sum+sizes[i],0)+(a.length-1)*5),score=rows.length*10000+Math.max(...widths)-Math.min(...widths)+(widths.at(-1)>widths[0]?90:0)+(rows.at(-1).length===1&&sizes[rows.at(-1)[0]]<110?140:0);if(!best||score<best.score)best={rows:rows.map(a=>[...a]),score};return;}
+  const row=[];let width=0;for(let i=index;i<sizes.length;i++){width+=sizes[i]+(row.length?5:0);if(width>(rows.length?max:firstMax)&&row.length)break;row.push(i);visit(i+1,[...rows,[...row]]);}
+ }visit(0,[]);return best;
+}
+async function prepareNeighborLayout(record){
+ const key=record.id+':'+language;if(neighborLayouts.has(key))return;
+ const ids=await scenicNeighborIds(record),probe=$('scenic-neighbors').cloneNode(false);probe.removeAttribute('id');probe.hidden=false;probe.dataset.rows='3';probe.dataset.wide='false';probe.style.cssText='position:absolute;left:0;right:auto;top:0;visibility:hidden;pointer-events:none';
+ const row=document.createElement('div');row.className='scenic-neighbor-row is-measuring';const label=document.createElement('b');label.textContent=`${copy().neighbors} (${ids.length}):`;row.append(label);
+ for(const id of ids){const button=document.createElement('button');button.textContent=local(records.get(id)).country;row.append(button);}if(!ids.length){const note=document.createElement('span');note.textContent=copy().none;row.append(note);}probe.append(row);$('scenic-stage').append(probe);
+ const max=probe.clientWidth-20;let plan=neighborPartition([...row.children].map(n=>n.getBoundingClientRect().width),max);
+ if(plan.rows.length>3){probe.dataset.wide='true';probe.dataset.rows='4';plan=neighborPartition([...row.children].map(n=>n.getBoundingClientRect().width),max,answers.clientWidth-20);}
+ neighborLayouts.set(key,{rows:Math.max(3,plan.rows.length)});probe.remove();
+}
+function measureScroll(record=current()){
   const viewport=$('scenic-stage').getBoundingClientRect();
   // Reserve the feedback stack before answering, so revealing neighbors never
   // moves a choice under the child's finger. Include the compass above its rail.
   const controls=$('scenic-controls').getBoundingClientRect(),knobSize=parseFloat(getComputedStyle(knob).height);
   const railTop=controls.top-viewport.top-Math.max(0,(knobSize-controls.height)/2);
-  const rows=current().id==='ru'?4:SCENIC.neighbors.rows,rowHeight=rows===4?31:SCENIC.neighbors.rowHeight;
+  const rows=neighborLayouts.get(record.id+':'+language)?.rows||(record.id==='ru'?4:SCENIC.neighbors.rows),rowHeight=rows>=4?31:SCENIC.neighbors.rowHeight;
   const ribbons=rows*rowHeight+(rows+1)*SCENIC.neighbors.gap;
   const answerHeight=answers.getBoundingClientRect().height;
-  answers.style.top=Math.min(viewport.height*.62,railTop-ribbons-answerHeight)+'px';
-  const answer=answers.getBoundingClientRect();
+  const answerTop=Math.min(viewport.height*.62,railTop-ribbons-answerHeight);
   const compassTop=$('scenic-progress').getBoundingClientRect().bottom-viewport.top+SCENIC.atlas.compassGap;
-  const top=compassTop+24,height=answer.top-viewport.top-SCENIC.atlas.answerGap-top;
+  const top=compassTop+24,height=answerTop-SCENIC.atlas.answerGap-top;
+  return {viewport,answerTop,top,height};
+}
+function placeScroll(){
+  const {viewport,answerTop,top,height}=measureScroll();
+  answers.style.top=answerTop+'px';
+  const answer=answers.getBoundingClientRect();
   sheet.style.top=top+'px';sheet.style.height=height+'px';
   const paper=$('scenic-paper-row'),closed=Math.min(64,Math.max(50,viewport.height*.075))+20;paper.style.height=closed+'px';paper.style.top=(top+height-closed)+'px';
   $('scenic-compass').style.top=(top-24)+'px';
@@ -136,7 +173,7 @@ async function showNeighbors(result,owner,{immediate=false,withSlider=false}={})
     return;
   }
   const nav=$('scenic-neighbors'),ids=result.neighbors.filter(id=>records.has(id));
-  nav.dataset.wide='false';
+  nav.dataset.wide='false';nav.dataset.rows=String(neighborLayouts.get(current().id+':'+language)?.rows||3);
   const buttons=ids.map(id=>{const b=document.createElement('button');b.type='button';b.dataset.neighbor=id;b.textContent=local(records.get(id)).country;b.setAttribute('aria-pressed','false');return b;});
   const label=document.createElement('b');label.textContent=`${copy().neighbors} (${ids.length}):`;
   const items=[label,...buttons];if(!ids.length){const empty=document.createElement('span');empty.textContent=copy().none;items.push(empty);}
@@ -144,19 +181,13 @@ async function showNeighbors(result,owner,{immediate=false,withSlider=false}={})
   let sizes=items.map(n=>n.getBoundingClientRect().width);const max=nav.clientWidth-20;
   // Partition in compass order. Prefer a broad first ribbon and a shorter second
   // one; avoid leaving a lone short country on the last ribbon.
-  let best=null,firstMax=max;
-  function partition(index,rows){
-    if(index===items.length){const widths=rows.map(a=>a.reduce((sum,i)=>sum+sizes[i],0)+(a.length-1)*5);const score=rows.length*10000+Math.max(...widths)-Math.min(...widths)+(widths.at(-1)>widths[0]?90:0)+(rows.at(-1).length===1&&sizes[rows.at(-1)[0]]<110?140:0);if(!best||score<best.score)best={rows:rows.map(a=>[...a]),score};return;}
-    const row=[];let width=0;
-    for(let i=index;i<items.length;i++){width+=sizes[i]+(row.length?5:0);if(width>(rows.length?max:firstMax)&&row.length)break;row.push(i);partition(i+1,[...rows,[...row]]);}
-  }
-  partition(0,[]);
+  let best=neighborPartition(sizes,max);
   if(best.rows.length>SCENIC.neighbors.rows){
     // The first ribbon is above the face; it can use the answer width. Later
     // ribbons keep their narrow width so the boy stays visible on the left.
     nav.dataset.wide='true';nav.style.setProperty('--neighbor-narrow-width',(max+20)+'px');
     sizes=items.map(n=>n.getBoundingClientRect().width);
-    firstMax=answers.clientWidth-20;best=null;partition(0,[]);
+    best=neighborPartition(sizes,max,answers.clientWidth-20);
   }
   nav.replaceChildren();nav.dataset.rows=best.rows.length;
   for(const indices of best.rows){const row=document.createElement('div');row.className='scenic-neighbor-row';row.append(...indices.map(i=>items[i]));nav.append(row);}
@@ -177,15 +208,30 @@ async function dismissFeedback(owner){
   await Promise.all(jobs);if(!alive(owner))return;nav.hidden=true;swipe.hidden=true;
 }
 $('scenic-neighbors').addEventListener('click',event=>{
-  const button=event.target.closest('[data-neighbor]');if(!button||!readyForNext||paused||visibilityPaused)return;
+  const button=event.target.closest('[data-neighbor]');if(!button||!readyForNext||paused||visibilityPaused||hostPaused||!hostedActive)return;
   const active=button.getAttribute('aria-pressed')!=='true';
   button.setAttribute('aria-pressed',String(active));mapInk.setNeighbor(button.dataset.neighbor,active);
 });
 async function warmFlag(record){
   if(!record)return;
-  // Bound a slow or missing image. Existing SVG/Canvas fallback stays available.
-  let timer;try{await Promise.race([prepareFlag(record,flagHost),new Promise(done=>timer=setTimeout(done,SCENIC.flagTimeoutMs))]);}
-  finally{clearTimeout(timer);}
+  await Promise.all([prepareFlag(record,flagHost),decodeScenicImage(record.flagSvg)]);
+}
+function captionFor(record){
+ const item=local(record);$('scenic-country-name').textContent=item.country;$('scenic-country-capital').textContent=item.capital;
+ $('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;fitCaption(record);
+}
+async function warmMap(record,{prefetch=false}={}){
+ const r=sheet.querySelector('.scenic-europe-map').getBoundingClientRect(),layout=measureScroll(record);
+ const height=layout.height-(sheet.clientHeight-r.height);
+ const caption=sheet.querySelector('.scenic-map-caption').getBoundingClientRect();
+ const stats=await preloadScenicEurope(record,{width:r.width,height,headerTop:caption.bottom-r.top+15,prefetch});
+ if(!prefetch){app.dataset.atlasReady=record.id;app.dataset.atlasMemory=JSON.stringify(stats);}
+ return stats;
+}
+async function warmRound(record,{caption=true}={}){await Promise.all([warmFlag(record),prepareNeighborLayout(record)]);if(caption){captionFor(record);placeScroll();}await warmMap(record);}
+function prefetchNext(){
+ const record=hostedSession?records.get(game.prepareNext()?.countryId):records.get(queue[(step+1)%queue.length]);if(!record)return;app.dataset.nextAssets='loading';
+ void Promise.all([warmFlag(record),(async()=>{await prepareNeighborLayout(record);return warmMap(record,{prefetch:true});})()]).then(()=>{app.dataset.nextAssets=record.id},()=>{app.dataset.nextAssets='retry'});
 }
 function resetSwipe(){continueDrag.reset();}
 function clearPresentation(){
@@ -197,12 +243,12 @@ function clearPresentation(){
 }
 async function playQuestion({prepared=false}={}){
   const owner=timeline;readyForNext=false;clearPresentation();setState('loading');
-  const record=current();renderButtons(optionsFor(record),{disabled:true});
+  const record=current();renderButtons(optionsNow(),{disabled:true});
   const material=await preloadPaper();if(!alive(owner))return;
   app.dataset.questionPaper=material.question?'ready':'fallback';sheet.dataset.materialReady=String(!!material.question);
-  if(!prepared)await warmFlag(record);if(!alive(owner))return;
-  showFlag(record);for(const b of answers.children)b.disabled=false;game.setPresentationHold(false);setState('playing');updateHud();
-  void warmFlag(records.get(queue[(step+1)%queue.length]));void preloadScenicEurope().catch(()=>{});
+  if(!prepared)await warmRound(record);if(!alive(owner))return;
+  await showFlag(record);if(!alive(owner))return;for(const b of answers.children)b.disabled=false;game.setPresentationHold(app.dataset.ready!=='true');setState('playing');updateHud();
+  prefetchNext();
 }
 function renderDesktop(result,record){
   const desktop=$('scenic-desktop-neighbors');desktop.replaceChildren();
@@ -214,10 +260,10 @@ function renderDesktop(result,record){
   }
 }
 async function respond(chosenId){
-  if(state!=='playing'||paused||visibilityPaused)return;
+  if(state!=='playing'||paused||visibilityPaused||hostPaused||!hostedActive)return;
   const owner=timeline,record=current(),correct=chosenId===record.id;
   setState('showing-map');app.classList.add('is-pending');$('scenic-paper-row').setAttribute('aria-hidden','true');
-  game.answer(chosenId);game.setPresentationHold(true);updateHud();
+  game.answer(hostedSession?records.get(chosenId).country:chosenId);game.setPresentationHold(true);updateHud();prefetchNext();if(hostedSession)parent.postMessage({type:'mala-nauka:scenic-answer',correct},location.origin);
   for(const button of answers.children){button.disabled=true;button.classList.toggle('correct',button.dataset.id===record.id);button.classList.toggle('wrong',button.dataset.id===chosenId&&!correct);}
   feedback.textContent=correct?copy().correct:copy().answer+local(record).country+'.';
   $('scenic-map-flag').src=new URL(record.flagSvg,document.baseURI).href;
@@ -241,7 +287,7 @@ async function respond(chosenId){
   await document.fonts.ready;if(!alive(owner))return;fitCaption();
   lastMapResult=mapResult;
   await mapInk.prepare(mapResult,local(record),{isCurrent:()=>alive(owner)});if(!alive(owner))return;
-  await opening;if(!alive(owner))return;
+  await opening;await owner.wait(0);if(!alive(owner))return;
   await Promise.all([
     mapInk.reveal({timeline:owner,reduced:motion.matches}),
     (async()=>{if(!motion.matches)await owner.wait(SCENIC.inkDrawMs*2/3);if(alive(owner))await showNeighbors(mapResult,owner,{withSlider:!correct});})()
@@ -253,35 +299,38 @@ async function respond(chosenId){
   }
 }
 async function toNext(){
-  if(!readyForNext||paused||visibilityPaused||!['feedback-correct','feedback-wrong'].includes(state))return;
+  if(!readyForNext||paused||visibilityPaused||hostPaused||!hostedActive||!['feedback-correct','feedback-wrong'].includes(state))return;
   const owner=timeline;readyForNext=false;setState('preparing-next');hint.hidden=true;
-  const nextStep=(step+1)%queue.length,next=records.get(queue[nextStep]),nextOptions=alignNextOptions(optionsFor(next));
-  await Promise.all([warmFlag(next),dismissFeedback(owner),mapInk.erase({timeline:owner,reduced:motion.matches})]);if(!alive(owner))return;
+  const nextStep=(step+1)%queue.length,preparedQuestion=hostedSession?game.prepareNext():null;
+  if(hostedSession&&!preparedQuestion){parent.postMessage({type:'mala-nauka:scenic-ended'},location.origin);return;}
+  const next=records.get(hostedSession?preparedQuestion.countryId:queue[nextStep]),nextOptions=alignNextOptions(hostedSession?optionRecords(preparedQuestion.options):optionsFor(next));
+  await Promise.all([warmRound(next,{caption:false}),dismissFeedback(owner),mapInk.erase({timeline:owner,reduced:motion.matches})]);if(!alive(owner))return;
   setState('transition');feedback.textContent='';
   // The decoded next cloth sits beneath the paper before the folds close.
-  showFlag(next);
+  captionFor(next);await showFlag(next);if(!alive(owner))return;
   await Promise.all([
     foldPaper(sheet,{opening:false,timeline:owner,reduced:motion.matches}).then(()=>{if(alive(owner))app.classList.add('is-transitioning');}),
     sand.transition({timeline:owner,reduced:motion.matches,seed:seedOf(next.id+':'+(++round)),replace:()=>renderButtons(nextOptions,{disabled:true})})
   ]);
-  if(!alive(owner))return;
-  game.next();game.options=nextOptions.map(x=>x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
+  await owner.wait(0);if(!alive(owner))return;
+  game.next();game.options=nextOptions.map(x=>hostedSession?x.country:x.id);game.setPresentationHold(false);step=nextStep;clearPresentation();setState('playing');updateHud();for(const b of answers.children)b.disabled=false;
   // Keep the very same cloth and answer DOM after completion (no second paint).
-  void warmFlag(records.get(queue[(step+1)%queue.length]));
+  prefetchNext();
 }
 function syncPause(){
-  if(paused||visibilityPaused){game.pause();resetSwipe();}else game.resume();
-  timeline.setPaused(paused||visibilityPaused);app.classList.toggle('is-paused',paused);
+  if(paused||visibilityPaused||hostPaused||!hostedActive){game.pause();resetSwipe();}else game.resume();
+  timeline.setPaused(paused||visibilityPaused||hostPaused||!hostedActive);app.classList.toggle('is-paused',paused||hostPaused);
   const button=app.querySelector('[data-action="pause"]');button.textContent=paused?'▷':'Ⅱ';button.setAttribute('aria-label',paused?copy().resume:copy().pause);button.setAttribute('aria-pressed',String(paused));
-  answers.inert=paused;swipe.inert=paused;
+  answers.inert=paused||hostPaused||!hostedActive;swipe.inert=answers.inert;
 }
 function restart(){
+  if(hostedSession){parent.postMessage({type:'mala-nauka:scenic-exit'},location.origin);return;}
   clearTimeout(fixtureTimer);timeline.cancel();timeline=new ScenicTimeline();
-  step=0;points=0;seconds=SCENIC.seconds;game=createSession();paused=false;readyForNext=false;syncPause();caught(playQuestion());
+  step=0;points=0;seconds=SCENIC.seconds;game=createSession();paused=false;readyForNext=false;syncPause();entry.hold();void enter();
 }
 answers.addEventListener('click',event=>{const button=event.target.closest('.scenic-answer');if(button&&!button.disabled)caught(respond(button.dataset.id));});
 sheet.addEventListener('click',event=>{
-  const button=event.target.closest('[data-map-view]');if(!button||!readyForNext||paused||visibilityPaused||sheet.dataset.view===button.dataset.mapView)return;
+  const button=event.target.closest('[data-map-view]');if(!button||!readyForNext||paused||visibilityPaused||hostPaused||!hostedActive||sheet.dataset.view===button.dataset.mapView)return;
   const owner=timeline;sheet.dataset.view=button.dataset.mapView;
   syncAtlasScope();
   for(const item of sheet.querySelectorAll('[data-map-view]'))item.setAttribute('aria-pressed',String(item===button));
@@ -292,14 +341,14 @@ function localizeChrome(){
  document.documentElement.lang=language;app.dataset.language=language;$('scenic-language').querySelector('b').textContent=language.toUpperCase();$('scenic-language').setAttribute('aria-label',language==='pl'?'Zmień język na angielski':'Switch to Polish');
  syncAtlasScope();
  document.querySelector('.scenic-prompt').textContent=copy().question;document.querySelector('.continue-copy').textContent=copy().next;swipe.setAttribute('aria-label',copy().next);swipe.dataset.completeLabel=copy().complete;hint.textContent=copy().auto;
- app.querySelector('[data-action="restart"]').setAttribute('aria-label',copy().restart);
+ app.querySelector('[data-action="restart"]').setAttribute('aria-label',hostedSession?(language==='pl'?'Zakończ rundę':'Leave the round'):copy().restart);
  for(const button of answers.children){const record=local(records.get(button.dataset.id));button.setAttribute('aria-label',record.country);button.dataset.long=String(record.country.length>17);button.querySelector('.scenic-answer-label').innerHTML=letters(record.country);}
  updateHud();
 }
 $('scenic-language').addEventListener('click',()=>caught((async()=>{
  const owner=timeline,previousState=state;if(!['playing','feedback-correct','feedback-wrong'].includes(state))return;
- $('scenic-language').disabled=true;timeline.setPaused(true);language=language==='pl'?'en':'pl';localizeChrome();
- try{if(lastMapResult?.found&&previousState.startsWith('feedback')){
+ $('scenic-language').disabled=true;timeline.setPaused(true);language=language==='pl'?'en':'pl';localizeChrome();parent.postMessage({type:'mala-nauka:scenic-language',language},location.origin);
+ try{await prepareNeighborLayout(current());placeScroll();if(lastMapResult?.found&&previousState.startsWith('feedback')){
   const view=sheet.dataset.view,active=[...document.querySelectorAll('#scenic-neighbors button[aria-pressed="true"]')].map(n=>n.dataset.neighbor),record=local(current());
   const result={...lastMapResult,labels:lastMapResult.labels.map(item=>({...item,name:local(records.get(item.id)).country})),capital:{...lastMapResult.capital,name:record.capital}};
   $('scenic-country-name').textContent=record.country;$('scenic-country-capital').textContent=record.capital;fitCaption();
@@ -307,14 +356,15 @@ $('scenic-language').addEventListener('click',()=>caught((async()=>{
   await mapInk.reveal({timeline:owner,reduced:true});if(view==='europe')await mapInk.setView(view,{timeline:owner,reduced:true});
   await showNeighbors(result,owner,{immediate:true});for(const id of active){mapInk.setNeighbor(id,true);document.querySelector(`[data-neighbor="${id}"]`)?.setAttribute('aria-pressed','true');}
   feedback.textContent=previousState==='feedback-correct'?copy().correct:copy().answer+record.country+'.';
- }}finally{if(alive(owner)){timeline.setPaused(paused||visibilityPaused);$('scenic-language').disabled=false;}}
+ }}finally{if(alive(owner)){timeline.setPaused(paused||visibilityPaused||hostPaused||!hostedActive);$('scenic-language').disabled=false;}}
 })()));
 app.querySelector('[data-action="restart"]').addEventListener('click',restart);
 app.querySelector('[data-action="pause"]').addEventListener('click',()=>{if(state==='ended')return;paused=!paused;syncPause();});
 const ticker=setInterval(()=>{
-  if(state!=='playing'||paused||visibilityPaused)return;game.tick();const previous=seconds;seconds=Math.ceil(game.remaining/1000);if(seconds!==previous)updateHud();
-  if(!seconds){setState('ended');for(const b of answers.children)b.disabled=true;feedback.textContent='Dobra robota! Zdobywasz '+points+' pkt.';feedback.classList.add('is-ended');}
+  if(state!=='playing'||paused||visibilityPaused||hostPaused||!hostedActive)return;game.tick();const previous=seconds;seconds=Math.ceil(game.remaining/1000);if(seconds!==previous)updateHud();
+  if(!seconds){setState('ended');for(const b of answers.children)b.disabled=true;feedback.textContent=language==='pl'?'Dobra robota! Zdobywasz '+points+' pkt.':'Well done! You earn '+points+' points.';feedback.classList.add('is-ended');if(hostedSession)parent.postMessage({type:'mala-nauka:scenic-ended'},location.origin);}
 },100);
+window.addEventListener('message',event=>{if(!hostedSession||event.origin!==location.origin||event.source!==parent)return;if(event.data?.type==='mala-nauka:scenic-activate'){hostedActive=true;syncPause();game.setPresentationHold(false)}if(event.data?.type==='mala-nauka:scenic-pause'){hostPaused=event.data.paused===true;syncPause()}});
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
 // Test-only capture bridge: freeze Canvas without changing the photographed UI.
 if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
@@ -322,7 +372,9 @@ const observer=new ResizeObserver(()=>{placeScroll();fitCaption();});observer.ob
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();mapInk.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});
-caught((async()=>{
-  const owner=timeline;localizeChrome();await Promise.all([document.fonts.ready,preloadPaper()]);if(!alive(owner))return;await playQuestion();
+async function enter(){try{
+  const owner=timeline;localizeChrome();await Promise.all([prepareScenicScene(),preloadPaper()]);if(!alive(owner))return;await playQuestion();
+  if(!alive(owner))return;await entry.reveal();game.setPresentationHold(false);
   const fixture=query.get('state');if(['correct','wrong'].includes(fixture))fixtureTimer=setTimeout(()=>caught(respond(fixture==='correct'?current().id:optionsFor(current()).find(x=>x.id!==current().id).id)),100);
-})());
+}catch(error){console.error('[scenic entry]',error);entry.fail(()=>void enter());}}
+void enter();

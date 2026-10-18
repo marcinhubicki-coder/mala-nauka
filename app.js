@@ -31,6 +31,7 @@ let progress=cleanProgress(null);
 let activePlayer=null,players=[],selectedPlayerId=null,pendingPlayerId=null,pendingNickname='',pendingAvatarId='a',pinInput='',pinError='',pendingPinEnabled=true,editingPin=false;
 let words=[],game=null,view='home',selectedMode='spelling',lastResult=null,audio=null,renderedState='',renderedQuestion=0,memoryInput=[],phraseInput=[];
 let gameTicker = null;
+let scenicGame = null;
 function stopGameTicker(){clearInterval(gameTicker);gameTicker=null;}
 function startGameTicker(){stopGameTicker();gameTicker=setInterval(()=>{if(view!=='game'||!game){stopGameTicker();return;}game.tick();syncGame();},50);}
 let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
@@ -165,6 +166,7 @@ async function submitPlayerPin(){
 function modeIcon(mode) {return `<span class="mode-icon ${mode==='english'?'hello':''}" aria-hidden="true">${mode==='reading'?book:mode==='flags'?globe:mode==='english'?englishFlag:MODES[mode].icon}</span>`;}
 function pageHead(title,action='home') {return `<header class="page-head">${btn('←',action,'icon','aria-label="Wróć"')}<h1 tabindex="-1">${title}</h1></header>`;}
 function navigate(next) {
+ scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;
  editingPin=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
@@ -248,6 +250,22 @@ async function start() {
  try{const source=createSource(selectedMode,config,words);game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};save('configs',configs);unlockAudio();lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
+ if(selectedMode==='flags'&&globalThis.__MALA_NAUKA_SCENIC__&&game.current.kind==='flags'){
+  game.pause();game.setPresentationHold(true);stopGameTicker();root.inert=true;root.setAttribute('aria-busy','true');
+  const startButton=root.querySelector('.start-button'),oldLabel=startButton?.innerHTML;
+  if(startButton)startButton.textContent='Przygotowujemy przygodę…';
+  try{
+   const {prepareScenicGame}=await import('./flagi/scenic-game-bridge.mjs?v=39');
+   const scene=prepareScenicGame(game,{onExit:()=>pause(true),onEnd:()=>finish(),onAnswer:correct=>beep(correct)});scenicGame=scene;
+   await scene.ready;if(game!==nextGame){scene.destroy();return;}
+   const show=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode='flags';root.scrollTop=0;scene.mount(root);};
+   try{await transitionToResult(root,()=>document.activeElement?.blur(),show);}catch{show();root.inert=false;}
+   if(game!==nextGame||view!=='game')return;
+   game.resume();game.setPresentationHold(false);scene.activate();
+  }catch(error){scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;if(startButton)startButton.innerHTML=oldLabel;const message=root.querySelector('#setup-error');if(message){message.textContent=error.message;message.hidden=false;}}
+  finally{root.inert=false;root.setAttribute('aria-busy','false');}
+  return;
+ }
  const render=()=>{stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();}else renderGame();};
  if(selectedMode==='spelling'){
   game.pause();
@@ -415,11 +433,12 @@ function updateClock(){
   }
  }
 }
-function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
+function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(root.dataset.scenic==='true')return;if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content){modal.innerHTML=`<h2 id="modal-title">${title}</h2>${content}`;if(!modal.open)modal.showModal();modal.querySelector('button')?.focus();}
-function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
-function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
+function pause(exit=false){if(!game||view!=='game')return;stopGameTicker();spellingArt.closeHint();game.pause();scenicGame?.pause(true);syncGame();if(game.state==='ended')return;spellingArt.setPaused(true);root.classList.add('paused');showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',`<p>${exit?'Zapiszemy wynik i pokażemy podsumowanie.':'Odpocznij chwilę. Czas na Ciebie czeka.'}</p><div class="stack">${btn(exit?'Graj dalej':'Wracam do gry','resume','primary')}${btn(exit?'Zakończ i zobacz podsumowanie':'Zakończ rundę',exit?'end-home':'exit')}</div>`);}
+function resume(){modal.close();root.classList.remove('paused');game?.resume();spellingArt.setPaused(false);syncGame();if(scenicGame){scenicGame.pause(false);return;}if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
+ scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;
  if(!game||lastResult)return;game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
  const result={id:resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:game.mode==='spelling'?[...game.attempts]:undefined};
@@ -496,7 +515,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  }
  if(action==='answer'&&view==='game'&&!modal.open){if(game.answer(game.options[Number(button.dataset.index)]))beep(game.state==='feedback-correct');syncGame();}
  if(action==='next'&&view==='game'&&game?.mode!=='spelling'&&!modal.open){game.skipFeedback();syncGame();}
- if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,true);
+ if(action==='pause')pause();if(action==='exit')pause(true);if(action==='resume')resume();if(action==='end-home')finish(true,!scenicGame);
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }

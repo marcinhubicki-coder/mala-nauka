@@ -47,7 +47,7 @@ function preloadWebp(id){
   if(!preloadJobs.has(url)){
     const task=new Promise((resolve,reject)=>{
       const image=new Image();
-      image.onload=()=>resolve(image);
+      image.onload=()=>image.decode().then(()=>resolve(image),reject);
       image.onerror=()=>reject(new Error('Prebaked WebP unavailable: ' + id));
       image.src=url;
     });

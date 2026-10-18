@@ -164,3 +164,11 @@ html,body,.scenic-screen *{-webkit-user-select:none;user-select:none;-webkit-tou
 .scenic-atlas-context{position:absolute;left:28px;bottom:16px;z-index:8;max-width:calc(100% - 135px);font:800 10px/1.1 ScenicBody;color:#684928;pointer-events:none}
 .scenic-neighbors[data-rows="4"] .scenic-neighbor-row{min-height:31px;padding-top:5px;padding-bottom:5px}
 .scenic-neighbors[data-rows="4"] button{font-size:10px}
+.scenic-screen{transition:filter 650ms ease-out,opacity 650ms ease-out}
+.scenic-screen[data-ready="false"]{filter:blur(18px);opacity:.68;pointer-events:none}
+body:has(.scenic-screen[data-ready="false"])>.scenic-scenery{filter:blur(18px)}
+.scenic-entry-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;background:#17251435;color:#fff7dc;text-shadow:0 1px 4px #15231e;font:700 20px ScenicBody;text-align:center;padding:24px}
+.scenic-entry-gate[hidden]{display:none}
+.scenic-entry-gate button{border:1px solid #9e7b45;border-radius:22px;padding:13px 24px;background:#fff0cc;color:#5c3f21;font:inherit;text-shadow:none}
+@media(prefers-reduced-motion:reduce){.scenic-screen{transition:none}}
+.scenic-neighbors[data-rows="5"] .scenic-neighbor-row,.scenic-neighbors[data-rows="6"] .scenic-neighbor-row{min-height:31px;padding-top:5px;padding-bottom:5px}.scenic-neighbors[data-rows="5"] button,.scenic-neighbors[data-rows="6"] button{font-size:10px}

@@ -1,0 +1,1407 @@
+{
+  "assembly": {
+    "width": 14336,
+    "height": 9216,
+    "pixelScale": 5.50483660130719,
+    "origin": {
+      "x": -1099.5744680851064,
+      "y": -125
+    },
+    "hdPatches": 51,
+    "plannedPatches": 51,
+    "filledPixels": 1459114,
+    "mask": "atlas-world-v39.data paths union minus Natural Earth lakes; exact same projection and rounded path coordinates as runtime",
+    "note": "Master is offline authoring only; bounded sparse WebP pyramid is delivered to devices."
+  },
+  "base": [
+    {
+      "id": "africa-north",
+      "native": [
+        1452,
+        1083
+      ],
+      "detector": [
+        1452,
+        1083
+      ],
+      "landPixels": 1141733,
+      "blueInsideGuideLandBefore": 50688,
+      "blueInsideGuideLandAfter": 34720,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 6458,
+      "rejectedCoastPixels": 904,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "africa-south",
+      "native": [
+        1152,
+        1366
+      ],
+      "detector": [
+        1152,
+        1366
+      ],
+      "landPixels": 703520,
+      "blueInsideGuideLandBefore": 6424,
+      "blueInsideGuideLandAfter": 1724,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 5511,
+      "rejectedCoastPixels": 9,
+      "maxAcceptedSourceMove": 8.94427190999916,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "america-northwest",
+      "native": [
+        1211,
+        1299
+      ],
+      "detector": [
+        1211,
+        1299
+      ],
+      "landPixels": 504631,
+      "blueInsideGuideLandBefore": 6837,
+      "blueInsideGuideLandAfter": 6837,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 14394,
+      "rejectedCoastPixels": 2359,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "america-northeast",
+      "native": [
+        1078,
+        1459
+      ],
+      "detector": [
+        1078,
+        1459
+      ],
+      "landPixels": 666980,
+      "blueInsideGuideLandBefore": 15397,
+      "blueInsideGuideLandAfter": 15397,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 33706,
+      "rejectedCoastPixels": 4961,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "america-central",
+      "native": [
+        1415,
+        1111
+      ],
+      "detector": [
+        1415,
+        1111
+      ],
+      "landPixels": 377969,
+      "blueInsideGuideLandBefore": 20528,
+      "blueInsideGuideLandAfter": 10824,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 8440,
+      "rejectedCoastPixels": 1641,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "america-south-north",
+      "native": [
+        1187,
+        1326
+      ],
+      "detector": [
+        1187,
+        1326
+      ],
+      "landPixels": 905754,
+      "blueInsideGuideLandBefore": 25458,
+      "blueInsideGuideLandAfter": 21511,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4952,
+      "rejectedCoastPixels": 233,
+      "maxAcceptedSourceMove": 22.561028345356952,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "america-south-south",
+      "native": [
+        1083,
+        1453
+      ],
+      "detector": [
+        1083,
+        1453
+      ],
+      "landPixels": 497224,
+      "blueInsideGuideLandBefore": 6326,
+      "blueInsideGuideLandAfter": 5272,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 7504,
+      "rejectedCoastPixels": 2970,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "asia-west",
+      "native": [
+        1037,
+        1517
+      ],
+      "detector": [
+        1037,
+        1517
+      ],
+      "landPixels": 1119104,
+      "blueInsideGuideLandBefore": 8809,
+      "blueInsideGuideLandAfter": 4528,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 7033,
+      "rejectedCoastPixels": 2696,
+      "maxAcceptedSourceMove": 23.769728648009426,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "asia-east",
+      "native": [
+        1010,
+        1557
+      ],
+      "detector": [
+        1010,
+        1557
+      ],
+      "landPixels": 743823,
+      "blueInsideGuideLandBefore": 7256,
+      "blueInsideGuideLandAfter": 7168,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 14673,
+      "rejectedCoastPixels": 4042,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "asia-northwest",
+      "native": [
+        1495,
+        1052
+      ],
+      "detector": [
+        1495,
+        1052
+      ],
+      "landPixels": 779056,
+      "blueInsideGuideLandBefore": 12809,
+      "blueInsideGuideLandAfter": 12809,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 16122,
+      "rejectedCoastPixels": 11707,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "asia-northeast",
+      "native": [
+        1472,
+        1069
+      ],
+      "detector": [
+        1472,
+        1069
+      ],
+      "landPixels": 455709,
+      "blueInsideGuideLandBefore": 50669,
+      "blueInsideGuideLandAfter": 46745,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 11961,
+      "rejectedCoastPixels": 12641,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "asia-southeast",
+      "native": [
+        1306,
+        1204
+      ],
+      "detector": [
+        1306,
+        1204
+      ],
+      "landPixels": 288827,
+      "blueInsideGuideLandBefore": 6628,
+      "blueInsideGuideLandAfter": 2958,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 14654,
+      "rejectedCoastPixels": 0,
+      "maxAcceptedSourceMove": 12.36931687685298,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "australia",
+      "native": [
+        1141,
+        1379
+      ],
+      "detector": [
+        1141,
+        1379
+      ],
+      "landPixels": 626357,
+      "blueInsideGuideLandBefore": 5712,
+      "blueInsideGuideLandAfter": 2564,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 7903,
+      "rejectedCoastPixels": 567,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "pacific-west",
+      "native": [
+        1047,
+        1501
+      ],
+      "detector": [
+        1047,
+        1501
+      ],
+      "landPixels": 9318,
+      "blueInsideGuideLandBefore": 5555,
+      "blueInsideGuideLandAfter": 5555,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 1842,
+      "rejectedCoastPixels": 342,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "pacific-east",
+      "native": [
+        851,
+        1849
+      ],
+      "detector": [
+        736,
+        1600
+      ],
+      "landPixels": 229,
+      "blueInsideGuideLandBefore": 158,
+      "blueInsideGuideLandAfter": 158,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 116,
+      "rejectedCoastPixels": 9,
+      "maxAcceptedSourceMove": 5.8309518948453,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "new-zealand",
+      "native": [
+        979,
+        1607
+      ],
+      "detector": [
+        975,
+        1600
+      ],
+      "landPixels": 71189,
+      "blueInsideGuideLandBefore": 9763,
+      "blueInsideGuideLandAfter": 8309,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4750,
+      "rejectedCoastPixels": 1481,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "greenland",
+      "native": [
+        1498,
+        1050
+      ],
+      "detector": [
+        1498,
+        1050
+      ],
+      "landPixels": 551802,
+      "blueInsideGuideLandBefore": 27768,
+      "blueInsideGuideLandAfter": 27768,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 23577,
+      "rejectedCoastPixels": 1126,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "maldives",
+      "native": [
+        807,
+        1949
+      ],
+      "detector": [
+        662,
+        1600
+      ],
+      "landPixels": 58,
+      "blueInsideGuideLandBefore": 58,
+      "blueInsideGuideLandAfter": 58,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 32,
+      "rejectedCoastPixels": 18,
+      "maxAcceptedSourceMove": 19.6468827043885,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "europe-north",
+      "native": [
+        2140,
+        735
+      ],
+      "detector": [
+        1600,
+        550
+      ],
+      "landPixels": 125636,
+      "blueInsideGuideLandBefore": 9148,
+      "blueInsideGuideLandAfter": 9148,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 13455,
+      "rejectedCoastPixels": 3236,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "cape-verde",
+      "native": [
+        1121,
+        1403
+      ],
+      "detector": [
+        1121,
+        1403
+      ],
+      "landPixels": 25470,
+      "blueInsideGuideLandBefore": 15629,
+      "blueInsideGuideLandAfter": 15629,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 1342,
+      "rejectedCoastPixels": 573,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "hawaii",
+      "native": [
+        1129,
+        1393
+      ],
+      "detector": [
+        1129,
+        1393
+      ],
+      "landPixels": 55803,
+      "blueInsideGuideLandBefore": 23572,
+      "blueInsideGuideLandAfter": 22312,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 790,
+      "rejectedCoastPixels": 1605,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "easter-island",
+      "native": [
+        1003,
+        1568
+      ],
+      "detector": [
+        1003,
+        1568
+      ],
+      "landPixels": 1542,
+      "blueInsideGuideLandBefore": 1541,
+      "blueInsideGuideLandAfter": 1541,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 212,
+      "rejectedCoastPixels": 233,
+      "maxAcceptedSourceMove": 23.853720883753127,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    }
+  ],
+  "hd": [
+    {
+      "id": "6-0",
+      "native": [
+        1322,
+        1190
+      ],
+      "detector": [
+        1322,
+        1190
+      ],
+      "landPixels": 543812,
+      "blueInsideGuideLandBefore": 49602,
+      "blueInsideGuideLandAfter": 49602,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 15345,
+      "rejectedCoastPixels": 1560,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "7-0",
+      "native": [
+        1322,
+        1190
+      ],
+      "detector": [
+        1322,
+        1190
+      ],
+      "landPixels": 12316,
+      "blueInsideGuideLandBefore": 118,
+      "blueInsideGuideLandAfter": 118,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 2866,
+      "rejectedCoastPixels": 308,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-0",
+      "native": [
+        1322,
+        1190
+      ],
+      "detector": [
+        1322,
+        1190
+      ],
+      "landPixels": 159446,
+      "blueInsideGuideLandBefore": 8330,
+      "blueInsideGuideLandAfter": 8330,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 9900,
+      "rejectedCoastPixels": 3558,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-0",
+      "native": [
+        1322,
+        1190
+      ],
+      "detector": [
+        1322,
+        1190
+      ],
+      "landPixels": 46728,
+      "blueInsideGuideLandBefore": 7642,
+      "blueInsideGuideLandAfter": 7642,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 4071,
+      "rejectedCoastPixels": 5328,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "6-1",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 178708,
+      "blueInsideGuideLandBefore": 12339,
+      "blueInsideGuideLandAfter": 12339,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 6687,
+      "rejectedCoastPixels": 360,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "10-2",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1559635,
+      "blueInsideGuideLandBefore": 47316,
+      "blueInsideGuideLandAfter": 44009,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 1839,
+      "rejectedCoastPixels": 401,
+      "maxAcceptedSourceMove": 8.06225774829855,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "11-2",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1556034,
+      "blueInsideGuideLandBefore": 53946,
+      "blueInsideGuideLandAfter": 47610,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 1994,
+      "rejectedCoastPixels": 0,
+      "maxAcceptedSourceMove": 21.02379604162864,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "12-2",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1211115,
+      "blueInsideGuideLandBefore": 31393,
+      "blueInsideGuideLandAfter": 30870,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 8666,
+      "rejectedCoastPixels": 6335,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "13-2",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 280444,
+      "blueInsideGuideLandBefore": 15373,
+      "blueInsideGuideLandAfter": 15373,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 14844,
+      "rejectedCoastPixels": 3171,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "3-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 984433,
+      "blueInsideGuideLandBefore": 22085,
+      "blueInsideGuideLandAfter": 22085,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 8176,
+      "rejectedCoastPixels": 8575,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "4-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 184441,
+      "blueInsideGuideLandBefore": 3866,
+      "blueInsideGuideLandAfter": 3866,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 6517,
+      "rejectedCoastPixels": 2547,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "6-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 149889,
+      "blueInsideGuideLandBefore": 5712,
+      "blueInsideGuideLandAfter": 5712,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 607,
+      "rejectedCoastPixels": 1248,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1056290,
+      "blueInsideGuideLandBefore": 28304,
+      "blueInsideGuideLandAfter": 20436,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 8932,
+      "rejectedCoastPixels": 154,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1338506,
+      "blueInsideGuideLandBefore": 29602,
+      "blueInsideGuideLandAfter": 23734,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4955,
+      "rejectedCoastPixels": 676,
+      "maxAcceptedSourceMove": 23.853720883753127,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "10-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1437766,
+      "blueInsideGuideLandBefore": 72532,
+      "blueInsideGuideLandAfter": 71475,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 2176,
+      "rejectedCoastPixels": 1526,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "11-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1500186,
+      "blueInsideGuideLandBefore": 109557,
+      "blueInsideGuideLandAfter": 107550,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4625,
+      "rejectedCoastPixels": 2672,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "12-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 580159,
+      "blueInsideGuideLandBefore": 21886,
+      "blueInsideGuideLandAfter": 21886,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 16529,
+      "rejectedCoastPixels": 5051,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "13-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 52769,
+      "blueInsideGuideLandBefore": 2656,
+      "blueInsideGuideLandAfter": 2656,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 5803,
+      "rejectedCoastPixels": 142,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "3-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 383690,
+      "blueInsideGuideLandBefore": 15919,
+      "blueInsideGuideLandAfter": 13575,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 6381,
+      "rejectedCoastPixels": 101,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "4-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 316498,
+      "blueInsideGuideLandBefore": 13122,
+      "blueInsideGuideLandAfter": 13122,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 8996,
+      "rejectedCoastPixels": 315,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "6-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 379394,
+      "blueInsideGuideLandBefore": 18075,
+      "blueInsideGuideLandAfter": 18075,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 1944,
+      "rejectedCoastPixels": 77,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "7-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1554749,
+      "blueInsideGuideLandBefore": 66791,
+      "blueInsideGuideLandAfter": 66658,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 625,
+      "rejectedCoastPixels": 313,
+      "maxAcceptedSourceMove": 23.769728648009423,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1514545,
+      "blueInsideGuideLandBefore": 33385,
+      "blueInsideGuideLandAfter": 31350,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 1162,
+      "rejectedCoastPixels": 275,
+      "maxAcceptedSourceMove": 23.345235059857504,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 885106,
+      "blueInsideGuideLandBefore": 22214,
+      "blueInsideGuideLandAfter": 19345,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4814,
+      "rejectedCoastPixels": 229,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "10-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 501079,
+      "blueInsideGuideLandBefore": 7256,
+      "blueInsideGuideLandAfter": 5428,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4999,
+      "rejectedCoastPixels": 1480,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "11-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 704227,
+      "blueInsideGuideLandBefore": 30308,
+      "blueInsideGuideLandAfter": 28872,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 8186,
+      "rejectedCoastPixels": 1575,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "12-4",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 238821,
+      "blueInsideGuideLandBefore": 7784,
+      "blueInsideGuideLandAfter": 6689,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 8558,
+      "rejectedCoastPixels": 316,
+      "maxAcceptedSourceMove": 23.706539182259394,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "4-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1155468,
+      "blueInsideGuideLandBefore": 48786,
+      "blueInsideGuideLandAfter": 48786,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 3548,
+      "rejectedCoastPixels": 87,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "5-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 777321,
+      "blueInsideGuideLandBefore": 30588,
+      "blueInsideGuideLandAfter": 30588,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 3488,
+      "rejectedCoastPixels": 177,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "6-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 91335,
+      "blueInsideGuideLandBefore": 17085,
+      "blueInsideGuideLandAfter": 17085,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 881,
+      "rejectedCoastPixels": 0,
+      "maxAcceptedSourceMove": 22.627416997969522,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "7-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 578136,
+      "blueInsideGuideLandBefore": 99970,
+      "blueInsideGuideLandAfter": 99543,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 3014,
+      "rejectedCoastPixels": 376,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1497079,
+      "blueInsideGuideLandBefore": 63410,
+      "blueInsideGuideLandAfter": 59567,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 3535,
+      "rejectedCoastPixels": 38,
+      "maxAcceptedSourceMove": 23.769728648009426,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 532312,
+      "blueInsideGuideLandBefore": 10519,
+      "blueInsideGuideLandAfter": 10098,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 2018,
+      "rejectedCoastPixels": 0,
+      "maxAcceptedSourceMove": 16.278820596099706,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "10-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 25775,
+      "blueInsideGuideLandBefore": 391,
+      "blueInsideGuideLandAfter": 391,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 923,
+      "rejectedCoastPixels": 5,
+      "maxAcceptedSourceMove": 23.194827009486403,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "11-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 212268,
+      "blueInsideGuideLandBefore": 2796,
+      "blueInsideGuideLandAfter": 2504,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 6904,
+      "rejectedCoastPixels": 11,
+      "maxAcceptedSourceMove": 23.3452350598575,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "12-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 310988,
+      "blueInsideGuideLandBefore": 8248,
+      "blueInsideGuideLandAfter": 5551,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 14107,
+      "rejectedCoastPixels": 3,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "13-5",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 185537,
+      "blueInsideGuideLandBefore": 5308,
+      "blueInsideGuideLandAfter": 4147,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 5940,
+      "rejectedCoastPixels": 124,
+      "maxAcceptedSourceMove": 23.853720883753127,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "4-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 955137,
+      "blueInsideGuideLandBefore": 48747,
+      "blueInsideGuideLandAfter": 48031,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 1343,
+      "rejectedCoastPixels": 313,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "5-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1242344,
+      "blueInsideGuideLandBefore": 38941,
+      "blueInsideGuideLandAfter": 38941,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 1822,
+      "rejectedCoastPixels": 434,
+      "maxAcceptedSourceMove": 23.769728648009426,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "7-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 149162,
+      "blueInsideGuideLandBefore": 797,
+      "blueInsideGuideLandAfter": 797,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 1320,
+      "rejectedCoastPixels": 0,
+      "maxAcceptedSourceMove": 13.341664064126334,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1299637,
+      "blueInsideGuideLandBefore": 15764,
+      "blueInsideGuideLandAfter": 14118,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4228,
+      "rejectedCoastPixels": 20,
+      "maxAcceptedSourceMove": 22,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 354411,
+      "blueInsideGuideLandBefore": 2319,
+      "blueInsideGuideLandAfter": 1773,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 4748,
+      "rejectedCoastPixels": 32,
+      "maxAcceptedSourceMove": 23.40939982143925,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "12-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 542550,
+      "blueInsideGuideLandBefore": 8081,
+      "blueInsideGuideLandAfter": 6556,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 6923,
+      "rejectedCoastPixels": 199,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "13-6",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 593207,
+      "blueInsideGuideLandBefore": 10032,
+      "blueInsideGuideLandAfter": 8782,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 7101,
+      "rejectedCoastPixels": 253,
+      "maxAcceptedSourceMove": 23.769728648009426,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "14-6",
+      "native": [
+        1154,
+        1363
+      ],
+      "detector": [
+        1154,
+        1363
+      ],
+      "landPixels": 21084,
+      "blueInsideGuideLandBefore": 15590,
+      "blueInsideGuideLandAfter": 15590,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 2687,
+      "rejectedCoastPixels": 1109,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "4-7",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 698704,
+      "blueInsideGuideLandBefore": 12380,
+      "blueInsideGuideLandAfter": 12380,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 6742,
+      "rejectedCoastPixels": 4860,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "5-7",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 513307,
+      "blueInsideGuideLandBefore": 9614,
+      "blueInsideGuideLandAfter": 9614,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 8159,
+      "rejectedCoastPixels": 8243,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "8-7",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 608394,
+      "blueInsideGuideLandBefore": 2076,
+      "blueInsideGuideLandAfter": 1990,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 2314,
+      "rejectedCoastPixels": 16,
+      "maxAcceptedSourceMove": 23.259406699226012,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "9-7",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 70078,
+      "blueInsideGuideLandBefore": 998,
+      "blueInsideGuideLandAfter": 508,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 1282,
+      "rejectedCoastPixels": 125,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "14-7",
+      "native": [
+        1155,
+        1362
+      ],
+      "detector": [
+        1155,
+        1362
+      ],
+      "landPixels": 24656,
+      "blueInsideGuideLandBefore": 8585,
+      "blueInsideGuideLandAfter": 8585,
+      "localWarpAccepted": false,
+      "matchedCoastPixels": 2524,
+      "rejectedCoastPixels": 480,
+      "maxAcceptedSourceMove": 24,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    },
+    {
+      "id": "7-3",
+      "native": [
+        1254,
+        1254
+      ],
+      "detector": [
+        1254,
+        1254
+      ],
+      "landPixels": 1130081,
+      "blueInsideGuideLandBefore": 4718,
+      "blueInsideGuideLandAfter": 2034,
+      "localWarpAccepted": true,
+      "matchedCoastPixels": 3990,
+      "rejectedCoastPixels": 315,
+      "maxAcceptedSourceMove": 23.769728648009426,
+      "method": "bounded local coastal UV, 72px falloff, 24px displacement limit; retain original when mismatch increases; exact canonical land/lake mask applied in assembly"
+    }
+  ]
+}

@@ -74,6 +74,12 @@
         ],
         "state": "feedback-wrong",
         "country": "fr",
+        "scroll": {
+          "scene": 0,
+          "x": 0,
+          "y": 0
+        },
+        "overflow": "clip",
         "heading": {
           "x": 65.546875,
           "y": 183.046875,
@@ -237,6 +243,12 @@
         ],
         "state": "feedback-wrong",
         "country": "fr",
+        "scroll": {
+          "scene": 0,
+          "x": 0,
+          "y": 0
+        },
+        "overflow": "clip",
         "heading": {
           "x": 65.546875,
           "y": 183.046875,

@@ -264,3 +264,38 @@ body:has(#app[data-view="results"]){background:transparent}
 .rule-visual.has-word-award .mn-soap-picture::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at 100% 100%,#17122f73,#17122f24 36%,transparent 72%)}
 .word-award-vignette{pointer-events:none}
 @media(max-width:350px){.word-detail-hero{--word-hero-clearance:126px}.word-detail-hero .word-badge{width:46px}.word-detail-hero .word-badge.is-empty::before{height:38px}.word-detail-hero .word-badge-count{font-size:12.65px}}
+
+/* Dialog-only visual timing; the collection and progress data are unchanged. */
+.result-rule-dialog[open] .word-detail-hero>.word-badge{
+ --word-award-delay:0ms;
+ top:15px;
+ /* Own this presentation in CSS instead of stacking it with WAAPI motion. */
+ opacity:1!important;
+ scale:1!important;
+ transform:none!important;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery{left:15px}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-star{left:-15px;--word-award-delay:200ms}
+.result-rule-dialog[open] .word-detail-hero>.word-badge>:is(.word-badge-art,.word-badge-count){
+ --word-award-opacity:1;
+ animation:word-award-appear 220ms ease-out var(--word-award-delay) both;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge.is-empty>.word-badge-art{--word-award-opacity:.28}
+.result-rule-dialog[open] .word-detail-hero>.word-badge.is-earned>:is(.word-badge-art,.word-badge-count){
+ animation:word-award-arrive 680ms ease-out var(--word-award-delay) both;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery.is-earned>.word-badge-art{
+ animation:word-award-arrive 680ms ease-out both,word-award-pulse 2800ms ease-in-out 680ms infinite;
+}
+@keyframes word-award-appear{from{opacity:0}to{opacity:var(--word-award-opacity,1)}}
+@keyframes word-award-arrive{
+ 0%{opacity:0;transform:scale(1)}
+ 30%{opacity:var(--word-award-opacity,1);transform:scale(1)}
+ 57%{transform:scale(1.14)}
+ 78%{transform:scale(.97)}
+ 100%{opacity:var(--word-award-opacity,1);transform:scale(1)}
+}
+@keyframes word-award-pulse{0%,100%{scale:1}50%{scale:1.015}}
+@media(prefers-reduced-motion:reduce){
+ .result-rule-dialog[open] .word-detail-hero>:is(.word-badge,.word-badge-mastery.is-earned)>:is(.word-badge-art,.word-badge-count){animation:none}
+}

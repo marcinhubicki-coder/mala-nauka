@@ -55,6 +55,7 @@ function applyArtwork(node,style){
 
 function partState(node,item){
  const states=partStates(PART_BY_ID[item.recipe]);
+ if(states.includes(node.dataset.dsRendererState))return node.dataset.dsRendererState;
  for(const state of ['correct','wrong','dragging','complete','selected','pressed'])if(states.includes(state)&&(node.classList.contains(state)||node.classList.contains('is-'+state)||(state==='selected'&&(node.getAttribute('aria-pressed')==='true'||node.getAttribute('aria-expanded')==='true'||node.matches('label:has(input:checked)')))))return state;
  if(states.includes('disabled')&&node.disabled)return 'disabled';
  return 'default';

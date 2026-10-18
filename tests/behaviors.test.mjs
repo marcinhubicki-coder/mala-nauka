@@ -90,3 +90,11 @@ test('choosing a surface for a whole screen never creates an invalid recipe stat
  StudioPreview.prototype.writeVisual.call(preview,'surfaceEffects',[{preset:'surface-bokeh'}]);assert.equal(paths[0],'elementStyles.layout.surfaceEffects');validateConfig(c);
  preview.scope='view';StudioPreview.prototype.writeVisual.call(preview,'surfaceEffects',[{preset:'surface-bokeh'}]);assert.equal(paths[1],'elementOverrides.home.layout-root.surfaceEffects');validateConfig(c);
 });
+
+test('award entry and idle tuning survives Studio behavior migration independently',()=>{
+ const saved=migrateBehaviors(original);validateConfig(saved);
+ for(const state of ['empty','earned','mastered']){
+  const a=visualValue(original,'spelling-rule',{id:'rule-mastery-badge',kind:'container',recipe:'group-word-award',state}),b=visualValue(saved,'spelling-rule',{id:'rule-mastery-badge',kind:'container',recipe:'group-word-award',state});
+  for(const key of ['enterAnimation','enterDuration','enterDistance','idleAnimation','idleDuration','idleDistance'])if(a[key]!==undefined)assert.equal(b[key],a[key],state+'.'+key);
+ }
+});

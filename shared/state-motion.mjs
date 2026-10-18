@@ -1,4 +1,5 @@
 import {visualValue} from './element-styles.mjs';
+import {elementEntranceFrames} from './element-motion.mjs';
 const stateAnimations=new WeakMap();
 export function animateStateChange(node,oldHeight){
  if(!node||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
@@ -13,6 +14,7 @@ export function animateStateChange(node,oldHeight){
 }
 function presenceFrames(style,exit=false){
  const d=style[exit?'exitDistance':'enterDistance']??style.stateDistance??6,kind=exit?style.exitAnimation:style.enterAnimation;
+ if(kind==='bump'){const frames=elementEntranceFrames(kind,d);return exit?frames.toReversed().map(({offset,...frame},i)=>({...frame,offset:i/(frames.length-1)})):frames;}
  if(kind==='fade')return exit?[{opacity:1},{opacity:0}]:[{opacity:0},{opacity:1}];
  const away=kind==='pulse'?{opacity:0,scale:'.9'}:kind==='sway'?{opacity:0,rotate:`${d/3}deg`}: {opacity:0,translate:`0 ${d}px`};
  const rest=kind==='pulse'?{opacity:1,scale:'1'}:kind==='sway'?{opacity:1,rotate:'0deg'}:{opacity:1,translate:'0 0'};return exit?[rest,away]:[away,rest];
@@ -30,6 +32,13 @@ export function rememberPresence(node,style){
  if(conditional)style={enterAnimation:'fade',exitAnimation:'fade',...style};
  if(!style.enterAnimation&&!style.exitAnimation)return;
  const rect=node.getBoundingClientRect(),visible=Boolean(rect.width&&rect.height),before=visibility.get(node);
+ // Explicit mount entrances are opt-in. Wait for their artwork, keeping the
+ // first transparent frame paused until it can be shown, without layout work.
+ if(before===undefined&&visible&&node.dataset.dsEntrance==='mount'&&style.enterAnimation&&style.enterAnimation!=='none'&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+  const a=node.animate(presenceFrames(style),{duration:style.enterDuration??style.stateDuration??260,easing:'ease-out',fill:'backwards'});a.pause();a.currentTime=0;
+  Promise.all([...node.querySelectorAll('img')].map(img=>img.complete?undefined:new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});}))).then(()=>{if(node.isConnected&&!matchMedia('(prefers-reduced-motion:reduce)').matches)a.play();else a.cancel();});
+ }
+
  if(before!==undefined&&before!==visible&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
   if(visible&&style.enterAnimation!=='none')node.animate(presenceFrames(style),{duration:style.enterDuration??style.stateDuration??260,easing:'ease-out'});
   else if(!visible&&style.exitAnimation!=='none')exitGhost(node,style,boxes.get(node));

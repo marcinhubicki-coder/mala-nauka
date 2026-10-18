@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": 32,
+  "revision": 33,
   "assets": [
     {
       "path": "assets/angielski/wizard-boy-retina-v3.webp",
@@ -7409,6 +7409,58 @@
       "group": "managed",
       "references": [
         "shared/gallery-assets.mjs"
+      ]
+    },
+    {
+      "id": "word-badge-gold",
+      "path": "assets/managed/308a73267298290573773686c39ca6d8f8fd687333582f76971b9a094577ff9a.webp",
+      "sha": "308a73267298290573773686c39ca6d8f8fd687333582f76971b9a094577ff9a",
+      "size": 191408,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/word-badge-assets.mjs"
+      ]
+    },
+    {
+      "id": "word-badge-silver",
+      "path": "assets/managed/7f9dd93e443a84d2d7fab63145213e2e63bf799f140dbdb347bc47ef88ffaea8.webp",
+      "sha": "7f9dd93e443a84d2d7fab63145213e2e63bf799f140dbdb347bc47ef88ffaea8",
+      "size": 146318,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/word-badge-assets.mjs"
+      ]
+    },
+    {
+      "id": "word-badge-bronze",
+      "path": "assets/managed/d0bfb6270455725ada3b784de6434836243d7bee4d03d01570776f1e39a1a8d5.webp",
+      "sha": "d0bfb6270455725ada3b784de6434836243d7bee4d03d01570776f1e39a1a8d5",
+      "size": 161484,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/word-badge-assets.mjs"
+      ]
+    },
+    {
+      "id": "word-badge-mastery",
+      "path": "assets/managed/7c550a289256e676bc2aac2b80b399d3a92362c6c0cca301b45b7b304c272b2a.webp",
+      "sha": "7c550a289256e676bc2aac2b80b399d3a92362c6c0cca301b45b7b304c272b2a",
+      "size": 195304,
+      "width": 1254,
+      "height": 1254,
+      "type": "webp",
+      "group": "managed",
+      "references": [
+        "shared/word-badge-assets.mjs"
       ]
     }
   ],

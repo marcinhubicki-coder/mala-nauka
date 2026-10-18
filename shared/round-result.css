@@ -242,3 +242,60 @@ body:has(#app[data-view="results"]){background:transparent}
 }
 #app[data-view="results"][data-mode="spelling"] .result-points-core strong{font-size:calc(29 * var(--result-u))}
 
+
+/* One read-only award presentation for collection cards and word dialogs. */
+.word-badge{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;width:46px;isolation:isolate}
+.word-badge-art{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 2px 2px #71401f24)}
+.word-badge.is-empty::before{content:"";position:absolute;inset:4px 3px auto;height:38px;border-radius:50%;background:linear-gradient(145deg,#ded9d4ed,#fffaf0e8);box-shadow:inset 1px 2px 3px #786d7947,0 1px 1px #fff9;z-index:-1}
+.word-badge.is-empty .word-badge-art{filter:grayscale(1) brightness(.88);opacity:.28}
+.word-badge-count{display:block;margin-top:2px;color:#746782;font-size:12px;line-height:1.4;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.word-badge-mastery.is-earned .word-badge-count{color:#25825c}
+.word-badge-star.is-earned .word-badge-count{color:#986a33}
+.word-spelling-mark{display:inline;background:#dff4e8;color:#218258;border-radius:50%;outline:1px solid #acd5be88;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 1px}
+.word-families{display:flex;justify-content:center;flex-wrap:wrap;gap:4px}
+.word-family{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c8bce9;border-radius:999px;background:#f5efffcc;color:#766096;line-height:1.3;padding:2px 7px;font-size:11px;font-weight:800;white-space:nowrap}
+.word-detail-hero{--word-hero-clearance:144px;display:grid;grid-template-columns:minmax(0,1fr) min(210px,calc(100% - var(--word-hero-clearance))) minmax(0,1fr);align-items:end;width:calc(100% + 40px);margin:-7px -20px 0;gap:0}
+.word-detail-hero .rule-visual{width:100%;height:auto;max-width:210px;margin:0;aspect-ratio:1}
+.word-detail-hero .word-badge{align-self:end;justify-self:center;width:52.9px;transform-origin:center bottom}
+.word-detail-hero .word-badge-count{font-size:13.8px}
+.word-detail-hero .word-badge.is-empty::before{height:44.9px}
+.result-rule-dialog .word-families{margin:0 auto 7px}
+.rule-additional .word-family{margin-bottom:7px}
+.rule-visual.has-word-award .mn-soap-picture::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(ellipse at 100% 100%,#17122f73,#17122f24 36%,transparent 72%)}
+.word-award-vignette{pointer-events:none}
+@media(max-width:350px){.word-detail-hero{--word-hero-clearance:126px}.word-detail-hero .word-badge{width:46px}.word-detail-hero .word-badge.is-empty::before{height:38px}.word-detail-hero .word-badge-count{font-size:12.65px}}
+
+/* Dialog-only visual timing; the collection and progress data are unchanged. */
+.result-rule-dialog[open] .word-detail-hero>.word-badge{
+ --word-award-delay:0ms;
+ top:15px;
+ /* Own this presentation in CSS instead of stacking it with WAAPI motion. */
+ opacity:1!important;
+ scale:1!important;
+ transform:none!important;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery{left:15px}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-star{left:-15px;--word-award-delay:200ms}
+.result-rule-dialog[open] .word-detail-hero>.word-badge>:is(.word-badge-art,.word-badge-count){
+ --word-award-opacity:1;
+ animation:word-award-appear 220ms ease-out var(--word-award-delay) both;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge.is-empty>.word-badge-art{--word-award-opacity:.28}
+.result-rule-dialog[open] .word-detail-hero>.word-badge.is-earned>:is(.word-badge-art,.word-badge-count){
+ animation:word-award-arrive 680ms ease-out var(--word-award-delay) both;
+}
+.result-rule-dialog[open] .word-detail-hero>.word-badge-mastery.is-earned>.word-badge-art{
+ animation:word-award-arrive 680ms ease-out both,word-award-pulse 2800ms ease-in-out 680ms infinite;
+}
+@keyframes word-award-appear{from{opacity:0}to{opacity:var(--word-award-opacity,1)}}
+@keyframes word-award-arrive{
+ 0%{opacity:0;transform:scale(1)}
+ 30%{opacity:var(--word-award-opacity,1);transform:scale(1)}
+ 57%{transform:scale(1.14)}
+ 78%{transform:scale(.97)}
+ 100%{opacity:var(--word-award-opacity,1);transform:scale(1)}
+}
+@keyframes word-award-pulse{0%,100%{scale:1}50%{scale:1.015}}
+@media(prefers-reduced-motion:reduce){
+ .result-rule-dialog[open] .word-detail-hero>:is(.word-badge,.word-badge-mastery.is-earned)>:is(.word-badge-art,.word-badge-count){animation:none}
+}

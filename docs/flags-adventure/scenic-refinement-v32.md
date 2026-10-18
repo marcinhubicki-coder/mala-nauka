@@ -1,5 +1,7 @@
 # Scenic v32 — wspólne napisy i proporcje przeglądarki
 
+Aktualizacja v33: po publikacji sprawdzenie w przeglądarce aplikacji ujawniło przewinięcie wnętrza sceny przy kliknięciu ostatniego sąsiada. `overflow:hidden` ukrywa pasek, ale dopuszcza takie przewijanie. Scena używa teraz `overflow:clip`. Test podglądu sprawdza kliknięcie ostatniego sąsiada i zerową pozycję przewijania przed zmianą rozmiaru okna. CSS ma nowy adres wersji, aby dotychczasowy podgląd pobrał poprawkę.
+
 Nazwy państw używają linii bazowej odniesionej do „Polska”, zamiast przesuwać się zależnie od ogonków aktualnego słowa. Rozmiar bazowy pozostaje30px; długie nazwy nadal zmniejszają się i w razie potrzeby mieszczą w dwóch wierszach. Stolice mają wspólną, nieruchomą linię bazową. Miejsce na dolne części liter jest rezerwowane dla całego fontu, także przy nazwach bez ogonków. Symbol stolicy nadal kończy się na linii bazowej i ma wysokość wielkiej litery.
 
 Nagłówek i flaga otrzymały symetryczne48px marginesu od boków pergaminu. To dwukrotność optycznego24px marginesu mapy:12px położenia jej kontenera i około12px poszarpanego brzegu ilustracji. Góra nagłówka znajduje się22px od papieru, o10px niżej niż w v31. Flaga pozostaje proporcjonalna i wyrównana do prawej strony nagłówka.

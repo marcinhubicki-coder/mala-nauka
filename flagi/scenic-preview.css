@@ -1,7 +1,7 @@
 @font-face{font-family:ScenicRound;src:url('../assets/fonts/fredoka-polish-v1.woff') format('woff');font-weight:300 700;font-display:swap}
 @font-face{font-family:ScenicBody;src:url('../assets/fonts/nunito-variable.woff') format('woff');font-weight:400 900;font-display:swap}
 *{box-sizing:border-box}html,body{padding:0;margin:0;width:100%;height:100%;overflow:hidden}body{font-family:ScenicRound,ui-rounded,sans-serif;color:#080d36;background:#6ba3bd}button{font:inherit}
-.scenic-screen{--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;min-height:100dvh;max-width:480px;margin:auto;overflow:hidden;isolation:isolate;background:#aed6a8}
+.scenic-screen{--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;min-height:100dvh;max-width:480px;margin:auto;overflow:clip;isolation:isolate;background:#aed6a8}
 .scenic-scenery{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transform:scale(1.12);transform-origin:center top;pointer-events:none;user-select:none}
 .scenic-screen::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(#ffffff04,transparent 52%,#ffd48008)}
 .scenic-stage{position:absolute;inset:var(--safe-top) 0 var(--safe-bottom)}.scenic-stage>*{position:absolute}

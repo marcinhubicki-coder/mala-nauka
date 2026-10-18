@@ -18,7 +18,8 @@ async function metrics(frame){return frame.evaluate(()=>{
  const r=s=>{const q=document.querySelector(s).getBoundingClientRect();return {x:q.x,y:q.y,w:q.width,h:q.height,right:q.right,bottom:q.bottom};};
  const heading=r('.scenic-map-caption'),paper=r('#scenic-map-scroll'),flag=r('.scenic-map-flag'),map=r('.scenic-europe-map'),boy=r('.scenic-boy');
  const scenery=getComputedStyle(document.querySelector('.scenic-scenery')),matrix=new DOMMatrix(scenery.transform);
- return {viewport:[innerWidth,innerHeight],state:document.querySelector('main').dataset.state,country:document.querySelector('main').dataset.country,heading,paper,flag,map,boy,answers:r('#scenic-answers'),background:{fit:scenery.objectFit,scaleX:matrix.a,scaleY:matrix.d},title:r('#scenic-country-name'),capital:r('#scenic-country-capital'),headingMetrics:JSON.parse(document.querySelector('#scenic-map-scroll').dataset.headingMetrics),camera:JSON.parse(document.querySelector('#scenic-map-scroll').dataset.atlasFrame)};
+ const main=document.querySelector('main');
+ return {viewport:[innerWidth,innerHeight],state:main.dataset.state,country:main.dataset.country,scroll:{scene:main.scrollTop,x:scrollX,y:scrollY},overflow:getComputedStyle(main).overflow,heading,paper,flag,map,boy,answers:r('#scenic-answers'),background:{fit:scenery.objectFit,scaleX:matrix.a,scaleY:matrix.d},title:r('#scenic-country-name'),capital:r('#scenic-country-capital'),headingMetrics:JSON.parse(document.querySelector('#scenic-map-scroll').dataset.headingMetrics),camera:JSON.parse(document.querySelector('#scenic-map-scroll').dataset.atlasFrame)};
 });}
 try{
  for(const [engine,launcher] of [['chromium',chromium],['webkit',webkit]]){
@@ -31,6 +32,9 @@ try{
    await frame.locator('.scenic-answer[data-id="es"]').click();
    await frame.waitForFunction(()=>document.querySelector('main')?.dataset.state==='feedback-wrong');
    const first=await metrics(frame),samples=[];
+   assert.equal(first.overflow,'clip');assert.equal(first.scroll.scene,0);
+   const neighbor=frame.locator('#scenic-neighbors button[data-neighbor="es"]');
+   await neighbor.click();assert.deepEqual(await metrics(frame),first,'Clicking the last neighbor cannot scroll the scene');await neighbor.click();
    assert.deepEqual(first.viewport,[390,844]);assert.equal(first.background.fit,'cover');assert.equal(first.background.scaleX,first.background.scaleY);
    assert(Math.abs(first.heading.x-first.paper.x-48)<.1);assert(Math.abs(first.paper.right-first.heading.right-48)<.1);
    assert(Math.abs(first.heading.y-first.paper.y-22)<.1);assert(first.headingMetrics.gap>=6);

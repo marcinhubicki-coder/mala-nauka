@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-17T09:24:44.292Z",
-  "sourceCommit": "5d2f67a9a6b253a9e277fa51dfbbeedaa7d69705",
+  "date": "2026-10-19T13:18:19.466Z",
+  "sourceCommit": "5b5175ee4fd152a933e2bb05ae9c46c2661e9780",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -756,6 +756,16 @@
       "role": "body"
     },
     {
+      "file": "flagi/scenic-preview.css",
+      "selector": ".scenic-header .scenic-timer strong",
+      "role": "body"
+    },
+    {
+      "file": "flagi/scenic-preview.css",
+      "selector": ".scenic-timer small",
+      "role": "body"
+    },
+    {
       "file": "flagi/setup-retina.css",
       "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"]",
       "role": "body"
@@ -1116,6 +1126,61 @@
       "role": "body"
     },
     {
+      "file": "shared/adventure.css",
+      "selector": ".adventure-reward-card h3",
+      "role": "ui"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".adventure-reward-card p",
+      "role": "body"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".adventure-reward-dialog h2",
+      "role": "display"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".adventure-forge .power-card button",
+      "role": "ui"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".award-tabs button",
+      "role": "ui"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".campaign-header h1",
+      "role": "display"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".campaign-traveller-picker button",
+      "role": "body"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".campaign-itinerary h2",
+      "role": "display"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".campaign-itinerary p",
+      "role": "body"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".campaign-next-world",
+      "role": "body"
+    },
+    {
+      "file": "shared/adventure.css",
+      "selector": ".home-welcome .home-campaign-cta",
+      "role": "ui"
+    },
+    {
       "file": "shared/components.css",
       "selector": "@import './mission-parts.css';\n@import './spelling-word.css';\n@import './navigation-parts.css';\n\n:root",
       "role": "flag"
@@ -1163,6 +1228,16 @@
     {
       "file": "shared/components.css",
       "selector": ".round-score-audit",
+      "role": "body"
+    },
+    {
+      "file": "shared/game-chrome.css",
+      "selector": ".game-bar .timer,.scenic-header #scenic-clock",
+      "role": "body"
+    },
+    {
+      "file": "shared/game-chrome.css",
+      "selector": ".game-bar .time-block small,.scenic-header .scenic-timer small",
       "role": "body"
     },
     {
@@ -1520,18 +1595,46 @@
     "trophy-evolution": [
       "body",
       "display"
+    ],
+    "campaign": [
+      "body",
+      "display"
+    ],
+    "reward-details": [
+      "body",
+      "display"
+    ],
+    "campaign-math-initial": [
+      "body",
+      "display"
+    ],
+    "campaign-math-correct": [
+      "body",
+      "display"
+    ],
+    "campaign-math-wrong": [
+      "body",
+      "display"
     ]
   },
-  "cssBytes": 507619,
-  "jsBytes": 1211977,
+  "cssBytes": 577922,
+  "jsBytes": 1483297,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 93409
+      "bytes": 100721
     },
     {
       "path": "shared/round-result.css",
-      "bytes": 41586
+      "bytes": 46655
+    },
+    {
+      "path": "flagi/scenic-preview.mjs",
+      "bytes": 41955
+    },
+    {
+      "path": "progress-screen.css",
+      "bytes": 40152
     },
     {
       "path": "spelling/bubble.mjs",
@@ -1542,20 +1645,24 @@
       "bytes": 39019
     },
     {
-      "path": "progress-screen.css",
-      "bytes": 37002
+      "path": "shared/view-bindings.mjs",
+      "bytes": 38485
     },
     {
       "path": "shared/structure-model.mjs",
-      "bytes": 35068
+      "bytes": 35767
     },
     {
-      "path": "shared/view-bindings.mjs",
-      "bytes": 33969
+      "path": "flagi/scenic-preview.css",
+      "bytes": 34686
     },
     {
       "path": "shared/sound-library.mjs",
       "bytes": 32848
+    },
+    {
+      "path": "flagi/scenic-ink.mjs",
+      "bytes": 28745
     },
     {
       "path": "player-profiles.css",
@@ -1574,20 +1681,24 @@
       "bytes": 24424
     },
     {
-      "path": "matematyka/app.js",
-      "bytes": 23926
+      "path": "progress-screen.mjs",
+      "bytes": 24203
     },
     {
-      "path": "progress-screen.mjs",
-      "bytes": 22624
+      "path": "matematyka/app.js",
+      "bytes": 24122
     },
     {
       "path": "app.css",
-      "bytes": 22200
+      "bytes": 22275
     },
     {
       "path": "shared/view-contracts.mjs",
-      "bytes": 21325
+      "bytes": 21408
+    },
+    {
+      "path": "shared/adventure.css",
+      "bytes": 21235
     },
     {
       "path": "angielski/wizard-v2.mjs",
@@ -1599,7 +1710,7 @@
     },
     {
       "path": "modes.mjs",
-      "bytes": 20215
+      "bytes": 20539
     },
     {
       "path": "ortografia/wizard-v2.css",

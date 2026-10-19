@@ -109,7 +109,7 @@ export class Session {
     this.selected = option;
     const correct = option === this.current.answer;
     this.streak=correct?(this.hintUsed?this.streak:this.streak+1):0;this.bestStreak=Math.max(this.bestStreak,this.streak);
-    this.attempts.push({kind:this.current.kind,at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,targetIds:this.current.targetIds,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
+    this.attempts.push({kind:this.current.kind,at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,targetIds:this.current.targetIds,...Object.fromEntries(['learningKey','countryId','full','text'].filter(k=>typeof this.current[k]==='string').map(k=>[k,this.current[k]])),...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
     this.onAttempt?.(this.attempts.at(-1),this.question);
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({

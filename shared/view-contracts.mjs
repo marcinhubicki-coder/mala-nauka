@@ -10,6 +10,7 @@ const row=(id,recipe,kind,parent,level='atom',action=null,mode=null)=>({id,recip
 const home=[
  row('home-background','background-home','background','layout-root'),
  row('home-logo','image-home-logo-art','image','layout-root'),
+ row('home-campaign','button-campaign','button','home-welcome','atom','campaign'),
  row('home-settings','button-home-settings','button','layout-root','atom','settings'),
  row('home-welcome','family-home-welcome','container','layout-root','family'),
  row('home-hero','container-home-hero','container','home-welcome','group'),

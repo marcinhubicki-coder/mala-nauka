@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -10,9 +11,9 @@ import {optimizedTestConfig} from '../design-system/pwa-test-build.mjs';
 import {planStyleEdit,inspectEditableBlock} from '../tools/studio-engine.mjs';
 import {CENTRAL_DESIGN_BRANCH,pinnedContentSource} from '../tools/content-source.mjs';
 const registry=JSON.parse(readFileSync(new URL('../design-system/registry.json',import.meta.url)));
-const base=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url)));
+const base=resolveBehaviorConfig(JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url))));
 test('Every registered V2 view has a validated source-owned renderer contract',()=>{
- assert.equal(registry.views.length,45);
+ assert.equal(registry.views.length,50);
  assert.deepEqual(new Set(Object.keys(VIEW_CONTRACTS)),new Set(registry.views.map(v=>v.id)));
  for(const view of registry.views){assert.ok(validateViewContract(view.id));assert.ok(viewContract(view.id).length>=8,view.id);}
 });

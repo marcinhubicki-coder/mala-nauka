@@ -3,12 +3,7 @@
   "uniqueWords": 510,
   "duplicates": [],
   "multipleCategories": 185,
-  "missingAssets": [
-    "wieża",
-    "dach",
-    "chata",
-    "chrzan"
-  ],
+  "missingAssets": [],
   "pools": [
     {
       "category": "u/ó",

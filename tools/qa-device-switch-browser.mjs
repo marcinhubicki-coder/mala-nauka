@@ -12,7 +12,7 @@ try{
  await page.goto(base+'/design-system/#components');
  await page.locator('#device-frame').waitFor();
  console.log('device-qa: editor ready');
- await page.locator('label:has(input[data-studio-nav="view"][value="spelling-wrong"])').click();
+ await page.locator('#view-select').selectOption('spelling-wrong');
  await page.waitForFunction(()=>{const f=document.querySelector('#device-frame');return f?.dataset.previewView==='spelling-wrong'&&!f.dataset.initializingView;});
  const originalURL=await page.locator('#device-frame').getAttribute('src');
  const gap=page.getByRole('spinbutton',{name:'Odstęp między elementami w pikselach',exact:true});
@@ -46,7 +46,7 @@ try{
  if(output){await mkdir(output,{recursive:true});await page.screenshot({path:join(output,'studio-desktop.png')});}
  await select('iPhone',[390,844]);
  console.log('device-qa: iPhone viewport verified');
- await page.locator('#reference-upload').waitFor();
+ await page.locator('.reference-disclosure').evaluate(n=>n.open=true);await page.locator('#reference-upload').waitFor();
  if(output)await page.screenshot({path:join(output,'studio-iphone.png')});
  await select('Desktop',[1440,900]);await page.reload();
  await page.locator('#device-frame').waitFor();

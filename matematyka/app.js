@@ -132,10 +132,10 @@ function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-s
 
 function gameTopbar() {
   return `
-    <header class="topbar">
-      <button class="icon-button" id="back" type="button" aria-label="Wróć">‹</button>
-      <div class="brand">${labels[state.screen] || 'Matematyka'}</div>
-      <div></div>
+    <header class="topbar game-bar">
+      <button class="icon-button icon" id="back" type="button" aria-label="Wyjdź z rundy">×</button>
+      <div class="brand time-block"><span class="math-round-time timer" aria-label="Pozostały czas rundy"><span>3:00</span></span><small>Matematyka</small></div>
+      <button type="button" class="icon icon-button" data-math-pause aria-label="Pauza">Ⅱ</button>
     </header>
   `;
 }

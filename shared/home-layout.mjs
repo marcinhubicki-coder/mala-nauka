@@ -1,4 +1,4 @@
-// Canonical approved 853 x 1844 Home composition in artboard coordinates.
+// Canonical 853 x 1844 Home composition, with the campaign bubble in the hero's left-hand opening.
 // View components and Design Studio use this same data, never visual DOM scans.
 export const HOME_WIDTH=853,HOME_TOP=100,HOME_CONTENT_HEIGHT=1670;
 export const HOME_SETTINGS=[709,122,103,103];
@@ -17,7 +17,8 @@ export const HOME_RECTS=Object.freeze({
  'home-logo':{rect:[26,102,180,140],basis:artboard},
  'home-settings':{rect:HOME_SETTINGS,basis:artboard},
  'home-welcome':{rect:HOME_WELCOME_BOUNDS,basis:artboard},
- 'home-hero':{rect:[22,220,810,820],basis:HOME_WELCOME_BOUNDS},
+ 'home-hero':{rect:[22,202,810,838],basis:HOME_WELCOME_BOUNDS},
+ 'home-campaign':{rect:[62,650,340,104],basis:HOME_WELCOME_BOUNDS},
  'home-stats':{rect:HOME_STATS,basis:HOME_WELCOME_BOUNDS},
  'home-adventures':{rect:[26,1162,801,68],basis:artboard},
  'home-modes':{rect:HOME_MODES_BOUNDS,basis:artboard},

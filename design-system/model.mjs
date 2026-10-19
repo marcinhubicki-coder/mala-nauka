@@ -1,3 +1,6 @@
+import {validateResponsiveGeometry} from '../shared/responsive-geometry.mjs';
+import {validateAdventure} from '../shared/adventure-model.mjs';
+import {validateMapOverrides,validateMapDefaults} from '../shared/map-overrides.mjs';
 import {validateProgression} from '../shared/progression.mjs';
 import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {validateBehaviors} from './behaviors-model.mjs';
@@ -49,6 +52,8 @@ export function validateConfig(config) {
     safeKeys(config.componentNames);
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
+  validateResponsiveGeometry(config);if(config.adventure)validateAdventure(config.adventure);
+  validateMapOverrides(config.mapOverrides||{});validateMapDefaults(config.mapDefaults);
   validateBehaviors(config);
   const resolved=resolveBehaviorConfig(config);
   if(config.navigation)validateNavigation(config.navigation);
@@ -146,5 +151,5 @@ export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,pinPurp
  if(view==='player-pin'&&pinPurpose==='unlock')return 'player-unlock';
  if(view==='players')return hasPlayers?'players':'players-empty';
  if(view==='history')return ({dashboard:'progress',achievements:'trophies'})[historyState]||historyState;
- return ['home','settings','player-create','player-pin'].includes(view)?view:'';
+ return ['home','settings','player-create','player-pin','campaign'].includes(view)?view:'';
 }

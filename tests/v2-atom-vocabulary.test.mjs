@@ -1,3 +1,4 @@
+import {ADVENTURE_PARTS} from '../shared/adventure-contract.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -5,6 +6,7 @@ import {semanticCatalog,runtimeCatalog} from '../shared/runtime-blocks.mjs';
 import {ATOM_TYPE_IDS,ATOM_TYPES,atomTypeFor,countDesignConcepts} from '../shared/atom-vocabulary.mjs';
 import {TYPE_STYLE_IDS} from '../shared/type-system.mjs';
 import {inventorySnapshot} from '../design-system/view-inventory-snapshots.mjs';
+import {SCENIC_PARTS} from '../shared/scenic-contract.mjs';
 const registry=JSON.parse(readFileSync(new URL('../design-system/registry.json',import.meta.url),'utf8'));
 const original=runtimeCatalog(registry,new Map(registry.views.map(view=>[view.id,{items:inventorySnapshot(view)}])));
 const grouped=semanticCatalog(original);
@@ -35,6 +37,6 @@ test('Grouping does not drop use-level edit identities or independent actions',(
  assert.equal(grouped.filter(x=>x.recipe==='button-back').length,1);
  const vocab=countDesignConcepts(grouped);
  assert.equal(vocab.atomVocabulary,13);
- assert.ok(vocab.sharedBuildingBlocks>=40&&vocab.sharedBuildingBlocks<=110);
+ assert.ok(vocab.sharedBuildingBlocks>=40&&vocab.sharedBuildingBlocks<=110+SCENIC_PARTS.length+ADVENTURE_PARTS.length);
  assert.ok(vocab.groups>0&&vocab.families>0);
 });

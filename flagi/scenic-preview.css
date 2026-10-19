@@ -1,0 +1,216 @@
+@import '../shared/game-chrome.css';
+@font-face{font-family:ScenicRound;src:url('../assets/fonts/fredoka-polish-v1.woff') format('woff');font-weight:300 700;font-display:swap}
+@font-face{font-family:ScenicBody;src:url('../assets/fonts/nunito-variable.woff') format('woff');font-weight:400 900;font-display:swap}
+*{box-sizing:border-box}html,body{padding:0;margin:0;width:100%;height:100%;overflow:hidden}body{font-family:ScenicRound,ui-rounded,sans-serif;color:#080d36;background:#6ba3bd}button{font:inherit}
+.scenic-screen{--paper:#fff1d1;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;min-height:100dvh;max-width:480px;margin:auto;overflow:clip;isolation:isolate;background:#aed6a8}
+.scenic-scenery{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transform:scale(1.12);transform-origin:center top;pointer-events:none;user-select:none}
+.scenic-screen::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(#ffffff04,transparent 52%,#ffd48008)}
+.scenic-stage{position:absolute;inset:var(--safe-top) 0 var(--safe-bottom)}.scenic-stage>*{position:absolute}
+.scenic-ios-status{top:2%;left:8%;right:8%;display:flex;justify-content:space-between;align-items:center;font:900 14px ScenicBody;color:#fff;text-shadow:0 1px 3px #20395588;z-index:8}
+.scenic-header{top:6.5%;left:6%;width:88%;height:6.8%;display:flex;justify-content:space-between;align-items:center;z-index:26}
+.scenic-nav{display:grid;place-items:center;border:2px solid #fff9;width:46px;height:46px;border-radius:20px;background:linear-gradient(140deg,#fffefd,#fff7eaf5);color:#080d36;font:750 38px/1 ScenicBody;box-shadow:inset 0 1px 3px #fff,0 5px 12px #39474f2e;cursor:pointer;touch-action:manipulation}.scenic-nav:last-child{font-size:27px}
+.scenic-timer{display:flex;align-items:center;flex-direction:column;gap:1px;text-shadow:none}.scenic-timer strong{font:900 43px/1 ScenicBody;letter-spacing:-1.6px;font-variant-numeric:tabular-nums}.scenic-timer small{font:800 13px ScenicBody;white-space:nowrap;color:#152344}.is-presenting .scenic-timer small{color:#496281}
+.scenic-progress{z-index:6;top:14.3%;left:6%;width:88%;height:13px;border-radius:12px;background:#fffc;border:3px solid #fff;box-shadow:0 2px 6px #20362430;overflow:hidden}.scenic-progress i{display:block;height:100%;background:linear-gradient(90deg,#03b65d,#08a65b);border-radius:8px;transition:width .2s linear}
+.scenic-meta{z-index:8;top:14.3%;left:6%;right:6%;height:60px;pointer-events:none}
+.scenic-task{position:absolute;right:0;top:0;width:113px;height:53px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;font:850 15px ScenicBody;transform:rotate(4deg);isolation:isolate}
+.scenic-task::before{content:'';position:absolute;inset:-3px -5px -3px;z-index:-1;background:url('../assets/flags/adventure/scenic-task-sign-v6.webp') center/100% 100% no-repeat;filter:drop-shadow(0 3px 2px #48332135)}
+.scenic-lang{position:absolute;left:calc(50% - 18px);top:24px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#fffaf1;color:#080d36;font:900 14px ScenicBody;border:2px solid #fff;box-shadow:0 3px 8px #57633f20}
+.scenic-score{display:none}
+.scenic-hero{z-index:2;inset:0;pointer-events:none}
+.scenic-flag-host,.scenic-flag-host .flag-on-pole,.scenic-flag-host .flag-camera,.scenic-flag-host .flag-rig{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.scenic-flag-host .flag-scene-sky,.scenic-flag-host .flag-clouds{display:none}.scenic-flag-host .flag-pole{display:none}.scenic-flag-host .flag-cloth{left:28%;top:24%;z-index:3;aspect-ratio:calc(var(--flag-ratio) / 1.15);transform:rotate(-1deg);filter:drop-shadow(2px 7px 5px #2d344a30)}
+.scenic-flag-host .flag-cloth-prebaked{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}.scenic-flag-host .flag-cloth.is-prebaked .flag-cloth-prebaked{opacity:1}.scenic-flag-host .flag-cloth.is-prebaked .flag-cloth-fallback,.scenic-flag-host .flag-cloth.is-prebaked canvas{visibility:hidden}.scenic-paper-row{z-index:12;top:50.9%;left:4.5%;width:91%;height:8.5%;min-height:46px;display:flex;justify-content:center;align-items:center;padding:8px 12px 8px 42px;color:#080d36;pointer-events:none}
+.scenic-prompt{font-size:clamp(15px,4.55vw,21px);font-weight:650;text-align:center;margin:0;letter-spacing:-.25px;white-space:nowrap}
+.is-presenting .scenic-prompt{opacity:0}
+.scenic-answers{z-index:6;top:63.5%;left:4.5%;width:91%;height:max(12%,95px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:7px 7px}
+.scenic-answer{position:relative;min-width:0;display:grid;place-items:center;overflow:hidden;padding:4px 9px;border:0;border-radius:18px;background:#fff2d8;box-shadow:0 4px 7px #4d3b2a35;font-size:17px;font-weight:650;line-height:1.08;color:#080d36;cursor:pointer;touch-action:manipulation;isolation:isolate}
+.scenic-answer::before{content:'';position:absolute;inset:0;z-index:-2;background:url('../assets/flags/adventure/scenic-answer-paper-v6.webp') center/100% 100% no-repeat}
+.scenic-answer::after{content:'';position:absolute;inset:2px;z-index:-1;border-radius:16px;opacity:0;mix-blend-mode:multiply;pointer-events:none}
+.scenic-answer[disabled]{cursor:default}.scenic-answer.correct{color:#073e28;box-shadow:inset 0 0 0 2px #11904f,0 4px 8px #32552f50}.scenic-answer.correct::after{background:#a6edbf;opacity:.88}.scenic-answer.wrong{color:#850d1d;box-shadow:inset 0 0 0 2px #e34a69,0 4px 8px #50332f50}.scenic-answer.wrong::after{background:#f6b7c6;opacity:.88}
+.scenic-answer-label{position:relative;display:block;max-width:100%;line-height:1.08;text-align:center;overflow-wrap:normal}.scenic-answer-word{display:inline-block;white-space:nowrap}.sand-letter{display:inline-block;white-space:pre}.scenic-answers.is-sanding .scenic-answer-label{opacity:var(--ink-opacity,0)}
+.scenic-feedback{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.scenic-feedback:empty{display:none}.scenic-feedback.is-ended{clip-path:none;white-space:normal;width:auto;left:8%;right:8%;z-index:12;top:34%;height:auto;padding:22px;font-size:22px;line-height:1.3;color:#513418;background:#fff4d9 url('../assets/flags/adventure/scenic-answer-paper-v6.webp') center/100% 100% no-repeat;border-radius:22px;box-shadow:0 7px 18px #49341d45;visibility:visible}
+/* The geographic WebP and its single SVG highlight stay perfectly registered. */
+.scenic-map-scroll{z-index:9;left:4.5%;width:91%;pointer-events:none;isolation:isolate}
+.scenic-paper-material{position:absolute;inset:0;perspective:2400px;perspective-origin:50% 100%;transform-style:preserve-3d}
+.scenic-map-inner{position:absolute;inset:0;opacity:0;overflow:hidden;isolation:isolate}
+.scenic-map-ink{position:absolute;inset:0;width:100%;height:100%;z-index:7;mix-blend-mode:multiply}
+.scenic-map-heading{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
+.scenic-compass{position:absolute;left:calc(4.5% - 2px);top:calc(21.2% - 24px);width:58px;pointer-events:none;height:58px;object-fit:contain;z-index:14;filter:drop-shadow(1px 3px 2px #4b321c55);transform-origin:center center}
+.scenic-paper-top,.scenic-paper-bottom,.scenic-fold-leaf{position:absolute;left:0;right:0;display:block;background-image:url('../assets/flags/adventure/scenic-paper-v14.webp');background-size:100% var(--paper-height);background-repeat:no-repeat}
+.scenic-paper-top{top:0;height:calc(var(--paper-top) + 1px);background-position:center top;z-index:4;filter:drop-shadow(0 -2px 2px #56391c30)}
+.scenic-paper-bottom{bottom:0;height:var(--paper-bottom);background-position:center bottom;z-index:5;filter:drop-shadow(0 3px 2px #56391c35)}
+.scenic-map-scroll[data-material-ready="false"] :is(.scenic-paper-top,.scenic-paper-bottom,.scenic-fold-leaf){background-image:none;background-color:#fff0cf;border-left:2px solid #edcf9b;border-right:2px solid #edcf9b}
+.scenic-map-caption{position:absolute;top:14px;left:52px;right:18px;height:100px;z-index:2;padding-right:60px;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.scenic-map-caption strong{display:flex;flex-direction:column;justify-content:flex-start;flex-shrink:0;height:82px;max-width:100%;font:900 44px/1.04 Georgia,serif;color:#111b40;letter-spacing:-.65px}
+.scenic-title-line{display:block!important;white-space:nowrap;font:inherit!important;color:inherit!important}
+.scenic-city{position:absolute;top:calc(var(--title-lines,1)*var(--title-size,44px)*1.04 + 6px);left:0;display:flex;align-items:center;gap:7px;min-width:0}.scenic-capital-icon{display:block;flex:0 0 18px;width:18px;height:20px}.scenic-map-caption .scenic-city span{font:700 22px/1.2 Georgia,serif;color:#634927;white-space:nowrap}
+.scenic-map-flag{position:absolute;right:0;top:18px;width:54px;height:40px;object-fit:contain}
+.scenic-atlas-tools{position:absolute;right:18px;bottom:22px;z-index:8;display:flex;gap:3px;padding:3px;border:1px solid #fff8da;border-radius:28px;background:#fff5dcbd;box-shadow:0 2px 5px #63472930;opacity:0;pointer-events:none;transition:opacity .18s}
+.scenic-map-scroll[data-tools-ready="true"] .scenic-atlas-tools{opacity:1;pointer-events:auto}
+.scenic-atlas-tools button{width:38px;height:36px;border:0;border-radius:50%;background:transparent;color:#604927;display:grid;place-items:center;cursor:pointer;touch-action:manipulation}
+.scenic-atlas-tools button[aria-pressed="true"]{background:#157841;color:#fff9e6;box-shadow:inset 0 1px 2px #fff3,0 1px 2px #36592c30}.scenic-atlas-tools svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.scenic-atlas-desktop{display:none}
+.scenic-atlas-desktop h3{margin:12px 0 10px;font-size:17px;line-height:1.3}.scenic-atlas-desktop ul{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:9px}.scenic-atlas-desktop li{display:flex;gap:10px;align-items:center;font-weight:800}.scenic-atlas-desktop li img{object-fit:contain;border-radius:2px;box-shadow:0 1px 3px #593b2630}
+
+.scenic-europe-map{position:absolute;inset:116px 12px 22px;overflow:hidden;background:transparent}.scenic-europe-map .continent-map-host,.scenic-europe-map .continent-map-canvas{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;min-height:0}.scenic-europe-map svg{width:100%;height:100%;display:block;max-height:none;overflow:hidden}.scenic-europe-map svg .country{animation:none!important;transition:none!important;transform:none!important}.scenic-europe-map svg .scenic-country-overlay{fill:#a27437!important;fill-opacity:.24;stroke:#70471f;stroke-width:.85;stroke-linejoin:round;filter:none!important;mix-blend-mode:multiply}.scenic-europe-map svg .scenic-country-halo{fill:none!important;stroke:#f8d590!important;stroke-width:2.1;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 1px 2px #6b401e55);pointer-events:none}.scenic-europe-raster{pointer-events:none}
+.scenic-map-labels{position:absolute;inset:0;pointer-events:none}.scenic-map-label{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:850 10px ScenicBody;color:#31482f;text-shadow:0 1px 2px #fff6db,0 -1px 2px #fff6db,1px 0 2px #fff6db}.scenic-map-label.is-selected{color:#fcffe4;font-weight:950;text-shadow:0 1px 2px #00341a}.scenic-map-pin{position:absolute;width:9px;height:9px;border:2px solid #fff4bf;border-radius:50%;background:#1ba261;box-shadow:0 0 0 3px #20a45b44;transform:translate(-50%,-50%)}.scenic-map-unavailable{padding:12px;text-align:center;font:700 13px ScenicBody;color:#456754}
+/* The four joints share one geometry; all lighting follows their actual tilt. */
+.scenic-fold-stage{position:absolute;inset:0;z-index:3;pointer-events:none;transform-style:preserve-3d;visibility:hidden}
+.scenic-map-scroll:is(.is-open,.is-opening,.is-closing) .scenic-fold-stage{visibility:visible}
+.scenic-fold-leaf{top:0;transform-origin:center bottom;backface-visibility:hidden;overflow:hidden}
+.scenic-fold-shade,.scenic-fold-light{position:absolute;inset:0;pointer-events:none;opacity:0}
+.scenic-fold-shade{background:linear-gradient(180deg,#69432085,transparent 28%,transparent 74%,#5f361b90)}
+.scenic-fold-light{background:linear-gradient(115deg,#fff4c992,transparent 65%),linear-gradient(0deg,#fff7d7bb,transparent 16%);mix-blend-mode:soft-light}
+.scenic-paper-shadow{position:absolute;left:3%;right:3%;bottom:-5px;height:14px;background:radial-gradient(ellipse,#432c1660,transparent 70%)}
+.scenic-controls{z-index:18;left:9%;right:9%;top:92.2%;height:5.2%;min-height:44px;display:grid;place-items:center;pointer-events:none}.scenic-auto-hint{color:#31563d;padding:9px 16px;font:850 13px ScenicBody;text-shadow:0 1px 2px #fff;background:#fff4dce6;border:2px solid #fff6;border-radius:24px;box-shadow:0 3px 8px #2f563025}.scenic-swipe{position:relative;width:100%;height:100%;min-height:44px;background:linear-gradient(120deg,#e5f3da,#c6e3ba);border:4px solid #fff9ee;border-radius:36px;display:flex;align-items:center;justify-content:center;padding-left:40px;color:#214f3b;font:850 13px ScenicBody;box-shadow:inset 0 3px 6px #456a353c,inset 0 -1px 3px #fff,0 5px 10px #2d423343;touch-action:none;pointer-events:auto;isolation:isolate}.scenic-swipe-knob{position:absolute;z-index:2;left:1px;top:1px;bottom:1px;width:calc(5.2vh - 10px);min-width:36px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(at 25% 15%,#fff,#fff9ed 75%);border:2px solid #e8dfd1;box-shadow:inset 0 1px 2px #fff,0 2px 5px #574b3238;color:#138952;font-size:29px;cursor:grab;touch-action:none}.scenic-swipe-knob:active{cursor:grabbing}.scenic-swipe::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(90deg,#7ed99e,#afdf9e);clip-path:inset(0 calc(100% - var(--drag-progress,0)*100%) 0 0 round 30px)}.scenic-swipe.is-complete .continue-copy{opacity:0}.scenic-swipe.is-complete::after{content:attr(data-complete-label);position:absolute;inset:0;display:grid;place-items:center;color:#086d3d}
+.scenic-sand-canvas-holder{inset:0;z-index:20;pointer-events:none}#scenic-sand-canvas{width:100%;height:100%;display:block}.scenic-screen.is-pending .scenic-answers{pointer-events:none}.scenic-screen.is-paused::after{content:'Pauza';position:absolute;inset:0;z-index:24;background:#192b399c;display:grid;place-items:center;color:#fff;font:900 38px ScenicBody;text-shadow:0 2px 10px #000}.scenic-screen.is-paused .scenic-timer{color:#fff;text-shadow:none}.scenic-screen.is-paused .scenic-controls{pointer-events:none}
+.scenic-screen.is-transitioning .scenic-prompt{opacity:1}
+.scenic-answer:active{transform:translateY(2px)}button:focus-visible,.scenic-swipe:focus-visible{outline:3px solid #0d6048;outline-offset:3px}[hidden]{display:none!important}
+@media(max-height:760px){.scenic-timer strong{font-size:36px}.scenic-nav{width:41px;height:41px;font-size:32px}.scenic-task{font-size:14px;width:103px;height:49px}.scenic-answer{font-size:15px}.scenic-answers{top:62.2%}.scenic-paper-row{top:52.2%}.scenic-controls{top:91.8%}.scenic-map-caption{top:12px}}
+@media(min-width:900px){.scenic-atlas-desktop{display:block;position:fixed;left:calc(50% + 265px);top:30%;width:210px;padding:20px;border:1px solid #d7bd83;border-radius:18px;background:#fff3d7;color:#634927;font:600 15px/1.6 ScenicBody}.scenic-atlas-desktop p{margin:0 0 12px}.scenic-atlas-desktop small{font-size:12px}}
+
+@media(prefers-reduced-motion:reduce){.scenic-progress i{transition:none}.scenic-answer:active{transform:none}.scenic-atlas-tools{transition:none}}
+.scenic-swipe{padding-left:48px;padding-right:28px;background:#f8e4b9 url('../assets/flags/adventure/scenic-answer-paper-v6.webp') center/100% 100% no-repeat;border:3px solid #bf8b42;color:#674322;font:800 12px Georgia,serif;border-radius:28px;box-shadow:inset 0 0 0 2px #ffecc2,inset 0 2px 5px #8d632c38,0 3px 8px #3c332846}
+.scenic-swipe-knob{top:50%;bottom:auto;left:-9px;width:56px;height:56px;min-width:56px;margin-top:-28px;border:0;background:none;box-shadow:none;border-radius:50%;filter:drop-shadow(0 2px 3px #5c382c65)}.scenic-swipe-knob img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}.scenic-swipe-arrows{position:absolute;right:12px;font:800 18px Georgia,serif;letter-spacing:-7px;color:#9a692b;pointer-events:none}.scenic-swipe::before{background:linear-gradient(90deg,#efd19999,#f5dfb755)}
+/* Calligraphy and native-alpha materials. Borders tile at a fixed pixel size. */
+@font-face{font-family:ScenicPrint;src:url('../assets/fonts/eb-garamond-polish-v1.woff2') format('woff2');font-weight:400 800;font-display:swap}
+@font-face{font-family:ScenicAtlas;src:url('../assets/fonts/charm-polish-v29.woff2') format('woff2');font-weight:700;font-display:swap}
+html{background:#405024 url('../assets/flags/adventure/scenic-scene-v29.webp') center top/cover no-repeat}body{background:#405024 url('../assets/flags/adventure/scenic-scene-v29.webp') center bottom/cover no-repeat;overscroll-behavior:none}
+.scenic-boy{position:absolute;z-index:7;left:-80px;bottom:-12px;width:auto;height:230px;pointer-events:none;user-select:none}
+.scenic-header{top:1.8%;height:8%;align-items:center}.scenic-timer strong{font-size:44px}.scenic-timer small{font-size:12px}.scenic-nav{border-radius:17px}
+.scenic-progress{top:11.5%;height:12px;background:#fffaf0}.scenic-meta{top:11.5%}
+.scenic-task{top:-3px;transform:rotate(1.5deg);width:124px;height:44px;padding-bottom:4px;font-size:14px}
+.scenic-task::after{display:none}
+.scenic-task::before{background-image:url('../assets/flags/adventure/scenic-task-sign-v28.webp');mask:url('../assets/flags/adventure/scenic-task-front-mask-v29.svg') center/100% 100% no-repeat}
+.scenic-task-back{z-index:5;top:calc(11.5% - 6px);right:calc(6% - 5px);width:134px;height:50px;transform:rotate(1.5deg);background:url('../assets/flags/adventure/scenic-task-sign-v28.webp') center/100% 100% no-repeat;mask:url('../assets/flags/adventure/scenic-task-back-mask-v29.svg') center/100% 100% no-repeat;pointer-events:none}
+.scenic-lang{top:25px;width:33px;height:33px;left:calc(50% - 2px);padding:0;background:none;border:0;box-shadow:none;pointer-events:auto;cursor:pointer;isolation:isolate}.scenic-lang i{position:absolute;inset:0;overflow:hidden;border-radius:50%}.scenic-lang img{position:absolute;width:40.53px;height:40.53px;max-width:none;left:-3.77px;top:-7.24px;clip-path:circle(16.5px at 20.27px 23.74px)}.scenic-lang b{position:relative;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff0cf url('../assets/flags/adventure/scenic-answer-grain-v29.webp') center/32px;font:850 11px/1 ScenicBody;color:#4f341e}.scenic-lang:disabled{cursor:default}
+.scenic-map-caption{top:12px;left:25px;right:26px;height:78px;padding-right:76px;gap:0}
+.scenic-map-caption strong{height:44px;font:700 30px/1 ScenicAtlas,cursive;letter-spacing:-.35px;justify-content:flex-end;color:#282333}
+.scenic-city{top:56px;gap:5px;align-items:baseline}.scenic-map-caption .scenic-city span{font:700 17px/1 ScenicAtlas,cursive;color:#604322}
+.scenic-capital-icon{width:12px;height:13px;flex-basis:12px}
+.scenic-map-flag{right:0;top:8px;width:66px;height:44px;object-fit:contain}
+.scenic-europe-map{inset:16px 12px 20px}.scenic-atlas-tools{bottom:21px;right:17px}
+.scenic-atlas-tools button[aria-pressed="true"]{background:#72502d;box-shadow:inset 0 1px 2px #fff3,0 1px 2px #52361e40}
+.scenic-answers{top:62%;height:15.6%;gap:6px 7px}
+.scenic-answer{font-family:ScenicPrint,serif;font-weight:750;font-size:21px;line-height:1.08;border-radius:0;background:transparent;overflow:visible;padding:9px 16px;box-shadow:none;filter:drop-shadow(0 2px 2px #47321d55)}
+.scenic-answer::before{background:#ffedc9 url('../assets/flags/adventure/scenic-answer-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:12px solid transparent;border-left-width:32px;border-right-width:32px;border-image:url('../assets/flags/adventure/scenic-answer-border-v29.webp') 26 64 fill / 12px 32px / 0 repeat}
+.scenic-answer::after{inset:0;border-radius:0;mask:none;-webkit-mask-box-image:url('../assets/flags/adventure/scenic-answer-border-v29.webp') 26 64 fill / 12px 32px / 0 repeat}
+.scenic-answer.correct,.scenic-answer.wrong{box-shadow:none}.scenic-answer.correct::after{background:#a1d5a3;opacity:.78}.scenic-answer.wrong::after{background:#f39591;opacity:.82}
+.scenic-answer.wrong{padding-right:46px}.scenic-answer-label{width:100%}.scenic-answer-mark{display:none}.scenic-answer.wrong .scenic-answer-mark{position:absolute;right:14px;top:50%;margin-top:-10px;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#bb122b;color:#fff9ed;box-shadow:0 0 0 1.5px #fff6dd;font:700 20px/1 ScenicBody}
+.scenic-answer[data-long="true"]{font-size:17.5px}.scenic-answer.wrong[data-long="true"]{font-size:16.5px}
+.scenic-neighbors{right:4.5%;top:calc(77.6% + 6px);width:calc(100% - 136px);z-index:13;display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:none}
+.scenic-neighbor-row{position:relative;display:flex;flex:none;align-items:center;gap:5px;width:max-content;max-width:100%;min-height:35px;padding:7px 10px;color:#624225;font:700 12px/1 ScenicAtlas,cursive;white-space:nowrap;isolation:isolate;filter:drop-shadow(0 2px 1px #44301845);pointer-events:auto}
+.scenic-neighbor-row::before{content:'';position:absolute;inset:0;z-index:-1;background:#fff0cf url('../assets/flags/adventure/scenic-neighbor-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:8px solid transparent;border-left-width:16px;border-right-width:16px;border-image:url('../assets/flags/adventure/scenic-neighbor-border-v29.webp') 26 64 fill / 8px 16px / 0 repeat}
+.scenic-neighbor-row b{font-size:16px;font-weight:700;padding-right:2px}
+.scenic-neighbor-row button{flex:none;border:1px solid #aa814d88;border-radius:12px;padding:4px 6px;background:#fff5d978;color:#604322;font:700 11px/1 ScenicBody;cursor:pointer;touch-action:manipulation;box-shadow:inset 0 1px 1px #fff9}
+.scenic-neighbor-row button[aria-pressed="true"]{background:#71502e;border-color:#fff4cf;color:#fff5d9;box-shadow:0 0 0 1px #805932,inset 0 0 0 1px #fff4cf66}
+.scenic-neighbor-row.is-measuring{position:absolute;visibility:hidden;max-width:none;padding:0}
+.scenic-controls{left:8%;right:7.5%;top:auto;bottom:10px;height:5.7%;min-height:45px}
+.scenic-swipe{background:#ffedc9 url('../assets/flags/adventure/scenic-swipe-grain-v29.webp') repeat;background-size:32px 32px;background-clip:padding-box;border:9px solid transparent;border-left-width:35px;border-right-width:35px;border-image:url('../assets/flags/adventure/scenic-swipe-border-v29.webp') 28 94 fill / 9px 35px / 0 repeat;border-radius:0;box-shadow:none;filter:drop-shadow(0 3px 2px #39251288);padding-left:11px;padding-right:1px;font:700 13.5px ScenicAtlas,cursive;color:#603f20}
+.scenic-swipe-knob{left:-39px;width:60px;height:60px;min-width:60px;margin-top:-30px;overflow:hidden;background:transparent;filter:drop-shadow(0 2px 2px #39251288)}
+.scenic-swipe-knob img{position:absolute;width:73.7px;height:73.7px;max-width:none;left:-6.85px;top:-13.16px;object-fit:fill;clip-path:circle(30px at 36.85px 43.16px)}
+.scenic-swipe-arrows{right:-6px;width:25px;height:25px;display:grid;place-items:center}.scenic-swipe-arrows svg{display:block;width:25px;height:25px;fill:none;stroke:#754b20;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}.scenic-swipe::before{inset:-3px -8px -2px -20px;background:linear-gradient(90deg,#e8c99188,#f2dca144)}
+@media(max-height:760px){.scenic-header{top:1.2%}.scenic-timer strong{font-size:38px}.scenic-map-caption{top:11px;height:74px}.scenic-map-caption strong{height:40px}.scenic-city{top:52px}.scenic-map-flag{height:40px}.scenic-europe-map{top:16px}.scenic-answer{font-size:19px}.scenic-answer[data-long="true"]{font-size:17px}.scenic-answer.wrong[data-long="true"]{font-size:16px}.scenic-neighbor-row{min-height:33px;padding-top:6px;padding-bottom:6px}.scenic-neighbor-row button{font-size:10px}.scenic-neighbors{top:calc(79.2% + 6px)}.scenic-controls{top:auto;bottom:10px;height:6%}.scenic-swipe{font-size:12.5px}.scenic-swipe-knob{width:54px;height:54px;min-width:54px;margin-top:-27px}.scenic-swipe-knob img{width:66.3px;height:66.3px;left:-6.15px;top:-11.85px;clip-path:circle(27px at 33.15px 38.85px)}}
+@media(max-height:760px){.scenic-answers{top:62%;height:17.2%}}
+
+/* The repeating center overlaps each fixed cap with a soft material join. */
+.scenic-paper-center,.scenic-rail-center,.scenic-neighbor-row::after{position:absolute;pointer-events:none;background:#fff0cf url('../assets/flags/adventure/scenic-answer-grain-v29.webp') repeat;background-size:32px 32px;mask:linear-gradient(90deg,transparent,#000 15px,#000 calc(100% - 15px),transparent);z-index:-1}
+.scenic-paper-center{inset:9px 18px 9px}
+.scenic-neighbor-row::after{content:'';inset:7px 12px;background-image:url('../assets/flags/adventure/scenic-neighbor-grain-v29.webp')}
+.scenic-rail-center{inset:-2px -5px;background-image:url('../assets/flags/adventure/scenic-swipe-grain-v29.webp');z-index:-1}
+.scenic-swipe .continue-copy,.scenic-swipe-arrows{z-index:1}
+
+/* Give the root its own viewport height: 100% inherits the shortened iOS
+   standalone containing block. Insets belong only to the controls inside it. */
+html,body{overscroll-behavior:none;height:100vh;height:100dvh;min-height:100dvh}
+@media(display-mode:standalone),(display-mode:fullscreen){html,body,.scenic-screen{height:100vh;height:100lvh;min-height:100lvh}}
+.scenic-neighbors[data-rows="3"] .scenic-neighbor-row{min-height:33px;padding-top:6px;padding-bottom:6px}
+.scenic-neighbors[data-wide="true"]{width:91%}
+.scenic-neighbors[data-wide="true"] button{font-size:10px}
+.scenic-neighbors[data-wide="true"] .scenic-neighbor-row:not(:first-child){max-width:var(--neighbor-narrow-width)}
+.scenic-timer,.scenic-timer strong,.scenic-timer small{text-shadow:none;filter:none}
+.scenic-paper-row{padding:5px 16px 5px 38px}.scenic-prompt{width:100%;font:700 clamp(16px,4.3vw,19px)/1.12 ScenicRound,sans-serif;white-space:normal;text-wrap:balance;transform:translateY(-1px)}
+/* The paint's torn edge adds about12px to its12px viewport inset. The
+   heading gets twice that optical margin, symmetrically on the flag side. */
+.scenic-map-scroll{--atlas-paint-inset:24px;--atlas-heading-inset:calc(2 * var(--atlas-paint-inset))}
+.scenic-map-caption{top:22px;left:var(--atlas-heading-inset);right:var(--atlas-heading-inset);height:var(--caption-height,88px)}
+.scenic-city{top:var(--capital-top,62px)}
+/* Shared screen-height measurement from orthography. iOS can report an lvh
+   shortened by its status bar even when the installed canvas is full-screen. */
+html.scenic-standalone,html.scenic-standalone body,html.scenic-standalone .scenic-screen{height:var(--app-viewport-height,100lvh);min-height:var(--app-viewport-height,100lvh)}
+html.scenic-standalone body{position:relative;isolation:isolate;background:transparent}
+html.scenic-standalone .scenic-screen{background:transparent}
+html.scenic-standalone body::before{content:"";position:fixed;z-index:-1;inset:0;background:url('../assets/flags/adventure/scenic-scene-v29.webp') center top/cover no-repeat;transform:scale(1.12);transform-origin:center top;pointer-events:none}
+/* A compact pen face shares the question and map heading without long swashes. */
+@font-face{font-family:ScenicCartography;src:url('../assets/fonts/merienda-polish-v35.woff2') format('woff2');font-weight:400 700;font-display:swap}
+.scenic-map-caption strong{height:36px;font:700 28px/1 ScenicCartography,cursive;letter-spacing:-.4px}
+.scenic-map-caption .scenic-city span{font:600 16px/1 ScenicCartography,cursive}
+.scenic-prompt{font:700 clamp(15px,4.1vw,18px)/1.25 ScenicCartography,cursive;letter-spacing:-.4px;transform:none}
+.scenic-paper-row{padding-top:20px;padding-bottom:10px}
+.scenic-map-heading{mix-blend-mode:multiply}
+.scenic-map-flag-ink{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
+.scenic-lang{top:16px;left:calc(50% - 6.5px)}
+.scenic-controls{bottom:max(-8px,calc(8px - var(--safe-bottom)))}
+html,body,.scenic-screen *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+:focus,:focus-visible{outline:none!important}
+.scenic-answer:active{transform:none}
+.scenic-screen img{-webkit-user-drag:none}
+.scenic-neighbor-row{pointer-events:none}.scenic-neighbor-row button{pointer-events:auto}
+.scenic-prompt{font-size:clamp(17px,4.7vw,20px);transform:translateY(-7px)}
+.scenic-paper-row{padding-left:20px;padding-right:20px}
+.scenic-compass{transform-origin:center}
+.scenic-lang{scale:1.15;top:21px;left:calc(50% + 4.5px);transform-origin:center}
+/* The two folded ends overlap and feather instead of meeting on a hard cut. */
+.scenic-paper-top{height:calc(var(--paper-top) + 10px);mask:linear-gradient(#000 calc(100% - 10px),transparent)}
+.scenic-paper-bottom{height:calc(var(--paper-bottom) + 8px);mask:linear-gradient(transparent,#000 8px)}
+.scenic-atlas-context{position:absolute;left:28px;bottom:16px;z-index:8;max-width:calc(100% - 135px);font:800 10px/1.1 ScenicBody;color:#684928;pointer-events:none}
+.scenic-neighbors[data-rows="4"] .scenic-neighbor-row{min-height:31px;padding-top:5px;padding-bottom:5px}
+.scenic-neighbors[data-rows="4"] button{font-size:10px}
+/* The same open sheet asks map questions; the bottom band stays clear of ink. */
+.scenic-map-question{position:absolute;left:22px;right:22px;bottom:14px;margin:0;z-index:10;text-align:center;text-wrap:balance;font:700 17px/1.2 ScenicCartography,cursive;color:#282333;mix-blend-mode:multiply}
+.scenic-map-scroll[data-phase="question"] .scenic-europe-map{bottom:57px}
+.scenic-map-scroll[data-phase="question"] .scenic-atlas-tools{bottom:56px}
+.scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-city{top:8px}
+.scenic-screen:is([data-mode="countries"],[data-mode="capitals"]) .scenic-map-scroll[data-phase="question"] .scenic-map-caption{padding-right:0}
+.scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption{height:40px}
+.scenic-screen[data-mode="capitals"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption{height:40px}
+.scenic-map-scroll[data-phase="question"] .scenic-atlas-context{display:none}
+.scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-map-caption strong,
+.scenic-screen[data-mode="capitals"] .scenic-map-scroll[data-phase="question"] .scenic-city{visibility:hidden}
+.scenic-map-scroll[data-phase="question"] .scenic-map-flag{visibility:hidden}
+.scenic-screen:is([data-mode="countries"],[data-mode="capitals"]):not([data-reveal-flag="true"]) .scenic-hero{visibility:hidden}
+.scenic-screen{transition:filter 650ms ease-out,opacity 650ms ease-out}
+.scenic-screen[data-ready="false"]{filter:blur(18px);opacity:.68;pointer-events:none}
+html.scenic-standalone body:has(.scenic-screen[data-ready="false"])::before{filter:blur(18px)}
+.scenic-entry-gate{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;background:#17251435;color:#fff7dc;text-shadow:0 1px 4px #15231e;font:700 20px ScenicBody;text-align:center;padding:24px}
+.scenic-entry-gate[hidden]{display:none}
+.scenic-entry-gate button{border:1px solid #9e7b45;border-radius:22px;padding:13px 24px;background:#fff0cc;color:#5c3f21;font:inherit;text-shadow:none}
+@media(prefers-reduced-motion:reduce){.scenic-screen{transition:none}}
+.scenic-neighbors[data-rows="5"] .scenic-neighbor-row,.scenic-neighbors[data-rows="6"] .scenic-neighbor-row{min-height:31px;padding-top:5px;padding-bottom:5px}.scenic-neighbors[data-rows="5"] button,.scenic-neighbors[data-rows="6"] button{font-size:10px}
+#app{position:relative;width:100%;height:100%;margin:0;padding:0;max-width:none;overflow:hidden}
+.scenic-entry-gate>span{white-space:nowrap}
+/* Orthography owns the HUD proportions; the scene below keeps its own art. */
+.scenic-header .scenic-nav{width:46px;height:46px;min-width:46px;border-radius:50%;border:1px solid #ffffffdc;background:#ffffffa6;box-shadow:inset 0 1px 2px white,0 5px 16px #6b529620;color:#582497;backdrop-filter:blur(9px)}
+.scenic-header .scenic-nav svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round}
+.scenic-header .scenic-timer strong{font:800 19px/1 var(--ds-font-body,ScenicBody);letter-spacing:.3px;color:#393373}
+.scenic-timer small{font:800 11px/1.2 var(--ds-font-body,ScenicBody);margin-top:8px;color:#393373}
+.scenic-compass{left:calc(4.5% - 7px)}
+.scenic-prompt{transform:translateY(-3px)}
+.scenic-europe-map{top:11px}
+.scenic-map-scroll[data-phase="question"] .scenic-europe-map{bottom:20px}
+.scenic-map-scroll[data-phase="question"] .scenic-atlas-tools{bottom:21px}
+.scenic-screen:is([data-mode="countries"],[data-mode="capitals"]) .scenic-map-question{left:48px;right:48px;top:28px;bottom:auto;font-size:17px}
+.scenic-screen:is([data-mode="countries"],[data-mode="capitals"]) .scenic-map-scroll:is([data-phase="question"],[data-phase="learning"]) .scenic-map-caption{height:var(--caption-height);padding-right:0}
+.scenic-screen[data-mode="countries"] .scenic-map-scroll[data-phase="question"] .scenic-city{top:var(--capital-top)}
+.scenic-screen[data-mode="capitals"] .scenic-map-scroll:is([data-phase="question"],[data-phase="learning"]) #scenic-country-name{transform:translateY(var(--country-top,0px))}
+.map-label-editor{position:absolute;inset:0;z-index:23;pointer-events:none}
+.map-label-handle{position:absolute;pointer-events:auto;touch-action:none;cursor:grab;border:1px dashed #8d4a3c88;background:transparent;border-radius:5px;padding:0;min-width:12px;min-height:14px}
+.map-label-handle[aria-pressed="true"]{outline:2px solid #087dec;background:#1688dd18}
+
+.flag-cloth-canvas,.flag-cloth-fallback{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:left top}.flag-cloth-canvas{opacity:0}.flag-cloth.is-painted .flag-cloth-canvas{opacity:1}.flag-cloth.is-painted .flag-cloth-fallback{visibility:hidden}
+.scenic-screen:is([data-mode="countries"],[data-mode="capitals"]) .scenic-map-question{left:28px;right:28px}
+
+.scenic-flag-host .flag-cloth{position:absolute}
+
+.scenic-screen[data-untimed="true"] .scenic-timer strong{font-size:25px}
+/* The shared slider sits above the footer; keep its compass above the face. */
+.scenic-boy{height:210px;bottom:-66px}

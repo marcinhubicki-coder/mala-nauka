@@ -1,3 +1,5 @@
+import {ADVENTURE_PARTS} from './adventure-contract.mjs';
+import {SCENIC_PARTS} from './scenic-contract.mjs';
 // Shared, code-backed vocabulary for the library, view map and element inspector.
 // Palettes are independent of families: a family is a complete view.
 export const ATOMS={
@@ -13,6 +15,8 @@ export const ATOMS={
 const atom=(id,name,kind,selector,extra={})=>({id,name,kind,selector,level:'atom',children:[],...extra});
 const group=(id,name,selector,children,extra={})=>({id,name,kind:'container',selector,children,level:'group',...extra});
 export const PARTS=[
+ ...ADVENTURE_PARTS,
+ ...SCENIC_PARTS,
  atom('container-card','Kafel / podkład','container','.setup-card,.settings-card,.card',{block:'card'}),
  atom('icon-step-dot','Numer w kółku','icon','.step-dot'),
  group('family-player-empty','Pierwszy gracz','.player-shell-empty',['image-player-brand-art','container-player-title','image-player-empty-art','group-player-benefit','button-main','button-player-later'],{level:'family'}),

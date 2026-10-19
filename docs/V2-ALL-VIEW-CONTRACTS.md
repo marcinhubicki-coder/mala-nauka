@@ -1,3 +1,17 @@
+> Aktualizacja v44, 19.10.2026: nadal 50 widoków. Kampania ma interaktywne pola,
+> powtórki, odkrywanie układanki i osobne laboratorium mapy w Studio.
+> Szczegóły i testy: [interaktywna kampania v44](design-system/interactive-campaign-v44.md).
+
+> Aktualizacja v43, 19.10.2026: nadal 50 widoków i wspólnych kontraktów.
+> Kampania ma siedem krain izometrycznych, 105 kroków i trzy postacie;
+> kuźnia oraz odkrywanie/ulepszanie nagród korzystają ze wspólnego renderera.
+> Zakres i weryfikacja: [kampania izometryczna v43](design-system/isometric-campaign-v43.md).
+
+> Aktualizacja v42, 19.10.2026: rejestr ma 50 widoków. Zachowano 45 wcześniejszych
+> kontraktów; dodano `campaign`, `reward-details` i `campaign-math-initial/correct/wrong`.
+> Kuźnia obejmuje 8 mocy, a kolekcje innych trybów pokazują odkryte karty. Szczegóły
+> i dowody: [kampania i nagrody v42](design-system/campaign-rewards-v42.md).
+
 # Studio V2 — 45 aktualnych widoków (stan 17.10.2026)
 
 Zakres: `refactor/v2-parity-first`, bez promocji do `main` ani zmian w V1.

@@ -1,3 +1,4 @@
+import {isCampaignViewport} from '../shared/campaign-viewport.mjs';
 import {runtimeLevel,runtimeRendererReady} from '../shared/runtime-blocks.mjs';
 import {screenReady} from '../shared/screen-readiness.mjs';
 import {triggerSurfaceEffects} from '../shared/surface-effects.mjs';
@@ -21,6 +22,7 @@ if (studio) {
 
 let copyScanning=false;
 let registryReady=Promise.resolve();
+let freeLayout=false,gridLayout=false,freeDragging=false;
 let registry, inspecting = false, showHighlight = true, selection = null;
 let items = new Map(), actions = new Map(), reportTimer, overlay;
 const temporaryVisibility = new Map();
@@ -29,6 +31,9 @@ const app = () => document.getElementById('app');
 const emit = data => { if (parent !== window) parent.postMessage({channel:'mala-nauka-studio',...data},location.origin); };
 const visible = node => {
   if(!node?.getClientRects().length)return false;
+  // Ink labels keep a DOM measurement/control atom, while their actual pixels
+  // are painted on the shared canvas. Inspect that explicit owner surface.
+  if(node.dataset.dsCanvas){const owner=document.getElementById(node.dataset.dsCanvas),style=getComputedStyle(node);return node.dataset.dsPainted==='true'&&style.display!=='none'&&style.visibility!=='hidden'&&!!owner&&visible(owner);}
   for(let parent=node;parent&&parent!==document.body;parent=parent.parentElement){
     const style=getComputedStyle(parent);
     // aria-hidden and inert affect accessibility/input, not painted visibility.
@@ -126,6 +131,7 @@ function selectedDetails() {
 }
 let dialogOutline;
 function paintHighlight() {
+  if(freeDragging)return;
   overlay?.remove();
   if(dialogOutline){const {node,value,priority}=dialogOutline;node.style.setProperty('outline',value,priority);dialogOutline=null;}
   if (!showHighlight || !selectedItem()) return;
@@ -140,14 +146,21 @@ function paintHighlight() {
     const box=document.createElement('div');
     box.className='ds-selected-outline';
     box.style.cssText=`position:absolute;left:${rect.x}px;top:${rect.y}px;width:${rect.width}px;height:${rect.height}px;box-sizing:border-box;border:${item.id===chosen.id?'3px solid':'1px dashed'} #315af2;border-radius:8px;background:${item.id===chosen.id?'#315af214':'transparent'}`;
-    overlay.append(box);
+    if(freeLayout&&chosen.id!=='layout-root'&&!isCampaignViewport(chosen)){box.style.pointerEvents='auto';box.style.cursor='grab';box.style.touchAction='none';const handle=document.createElement('span');handle.dataset.resizeHandle='true';handle.style.cssText='position:absolute;right:-8px;bottom:-8px;width:17px;height:17px;background:#315af2;border:2px solid white;border-radius:4px;cursor:nwse-resize;pointer-events:auto';box.append(handle);box.addEventListener('pointerdown',event=>startFreeDrag(event,item,box));}overlay.append(box);
   }
   document.body.append(overlay);
+}
+function startFreeDrag(event,item,box){
+ freeDragging=true;
+ event.preventDefault();event.stopPropagation();const node=item.node,parent=node.parentElement,rect=node.getBoundingClientRect(),parentRect=parent.getBoundingClientRect(),startX=event.clientX,startY=event.clientY,resize=Boolean(event.target.dataset.resizeHandle),config=window.__MALA_NAUKA_DESIGN__||{},view=document.documentElement.dataset.dsView,previous=config.responsiveGeometry?.views?.[view]?.[item.id]||config.responsiveGeometry?.global?.[item.recipe]||{x:0,y:0};let value={...previous},moved=false;const original=node.getAttribute('style');box.setPointerCapture(event.pointerId);
+ const move=e=>{const dx=e.clientX-startX,dy=e.clientY-startY;if(!moved&&Math.hypot(dx,dy)<3)return;moved=true;if(resize){const w=Math.max(8,rect.width+dx),h=Math.max(8,rect.height+dy);value={...previous,width:Math.min(3,w/parentRect.width),aspect:w/h};node.style.setProperty('width',value.width*100+'%','important');node.style.setProperty('height','auto','important');node.style.setProperty('aspect-ratio',String(value.aspect));}else{value={...previous,x:Math.max(-2,Math.min(2,previous.x+dx/parentRect.width)),y:Math.max(-2,Math.min(2,previous.y+dy/parentRect.height))};node.style.translate=value.x*parent.clientWidth+'px '+value.y*parent.clientHeight+'px';}const r=node.getBoundingClientRect();box.style.left=r.x+'px';box.style.top=r.y+'px';box.style.width=r.width+'px';box.style.height=r.height+'px';};
+ const end=e=>{freeDragging=false;box.removeEventListener('pointermove',move);box.removeEventListener('pointerup',end);box.removeEventListener('pointercancel',end);if(e.type==='pointercancel'||!moved){if(original===null)node.removeAttribute('style');else node.setAttribute('style',original);paintHighlight();return;}if(original===null)node.removeAttribute('style');else node.setAttribute('style',original);emit({type:'responsive-geometry',id:item.id,recipe:item.recipe,value});};box.addEventListener('pointermove',move);box.addEventListener('pointerup',end,{once:true});box.addEventListener('pointercancel',end,{once:true});
 }
 function itemMetrics(node){const style=getComputedStyle(node),rect=node.getBoundingClientRect();return {width:rect.width,height:rect.height,padding:parseFloat(style.padding)||0,gap:parseFloat(style.gap)||0,radius:parseFloat(style.borderRadius)||0,fontSize:parseFloat(style.fontSize)||16,textColor:style.color,background:style.backgroundColor,opacity:Number(style.opacity),fontFamily:style.fontFamily};}
 
 function report() {
   clearTimeout(reportTimer);
+  if(document.querySelector('.scenic-host iframe'))return;
   if(copyScanning)emit({type:'copy-list',rows:collectScreenCopy(app())});
   items = collect();
   applyVisibility();
@@ -226,6 +239,7 @@ function presentLibrary(){
 
 if (studio) {
   const maskStyle=document.createElement('style');maskStyle.textContent='[data-ds-library-hidden]{visibility:hidden!important}';document.head.append(maskStyle);
+  document.addEventListener('keydown',event=>{if(!freeLayout||event.target.closest('input,textarea,select'))return;if(event.key==='Escape'||(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();emit({type:'geometry-key',action:event.key==='Escape'?'cancel':event.shiftKey?'redo':'undo'});}});
   document.addEventListener('pointerdown',()=>emit({type:'preview-interaction'}),true);
   document.addEventListener('focusin',()=>emit({type:'preview-focus'}));
   document.addEventListener('click',event=>{
@@ -249,6 +263,7 @@ if (studio) {
   window.addEventListener('message',async event=>{
     if(event.origin!==location.origin || event.source!==parent || event.data?.channel!=='mala-nauka-studio')return;
     const message=event.data;
+    const scenic=document.querySelector('.scenic-host iframe');if(scenic){scenic.contentWindow.postMessage(message,location.origin);return;}
     if(message.type==='inventory-request'){await designReady;await screenReady(app());report();return;}
     if(message.type==='library-preview'){await focusItem({...message,reveal:true});libraryTarget=selection;libraryIsolated=message.isolated===true;presentLibrary();return;}
     if(message.type==='surface-demo'){if(message.event!=='continuous')triggerSurfaceEffects(app(),message.event);return;}
@@ -262,6 +277,7 @@ if (studio) {
       if(message.words)document.dispatchEvent(new CustomEvent('mala-nauka:words',{detail:message.words}));
       scheduleReport();
     }
+    if(message.type==='layout-tools'){freeLayout=message.free===true;gridLayout=message.grid===true;let grid=document.getElementById('ds-layout-grid');if(!grid){grid=document.createElement('div');grid.id='ds-layout-grid';grid.style.cssText='position:fixed;inset:0;z-index:2147483646;pointer-events:none;background-image:linear-gradient(#315af21f 1px,transparent 1px),linear-gradient(90deg,#315af21f 1px,transparent 1px);background-size:calc(100vw / 12) 16px';document.body.append(grid);}grid.hidden=!gridLayout;paintHighlight();}
     if(message.type==='inspect'){inspecting=Boolean(message.enabled);showHighlight=Boolean(message.highlight);paintHighlight();}
     if(message.type==='focus')focusItem(message);
     if(message.type==='blueprint'){
@@ -304,6 +320,6 @@ if (studio) {
   registryReady=fetch(new URL('./registry.json',import.meta.url)).then(response=>response.json()).then(value=>{registry=value;});
   await registryReady;
   await designReady;
-  if(app())new MutationObserver(records=>{if(records.some(record=>record.type==='childList'||record.attributeName!=='style'))scheduleReport();}).observe(app(),{childList:true,subtree:true,attributes:true,attributeFilter:['class','open','checked','aria-pressed','data-state']});
+  if(app())new MutationObserver(records=>{if(records.some(record=>record.type==='childList'||record.oldValue!==record.target.getAttribute(record.attributeName)))scheduleReport();}).observe(app(),{childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','open','checked','aria-pressed','data-state','data-view','data-ds-contract-ready']});
   report();emit({type:'ready',view:query.get('viewId')});
 }

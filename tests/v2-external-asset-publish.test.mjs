@@ -1,9 +1,10 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 globalThis.__DS_STUDIO_BRANCH__='refactor/v2-parity-first';
 const {GitClient,ASSET_BRANCH,BRANCH}=await import('../design-system/git-client.mjs?archive-transaction-tests');
-const base=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8'));
+const base=resolveBehaviorConfig(JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8')));
 const current=JSON.parse(readFileSync(new URL('../design-system/assets.json',import.meta.url),'utf8'));
 const bytes=new TextEncoder().encode('Mała Nauka — isolated asset publishing test');
 const digest=await crypto.subtle.digest('SHA-256',bytes);

@@ -1,0 +1,35 @@
+// Editable roles shared by campaign and rewards; never inferred from DOM shape.
+const atom=(id,name,kind,selector)=>({id,name,kind,selector,level:'atom',children:[]});
+const group=(id,name,selector,children,extra={})=>({id,name,kind:'container',selector,children,level:'group',...extra});
+export const ADVENTURE_PARTS=[
+ atom('button-campaign','Wejście do kampanii','button','.home-campaign-cta'),
+ group('container-campaign','Mapa kampanii','.campaign-screen',['group-campaign-header','group-campaign-realms','group-campaign-map','group-campaign-itinerary'],{level:'family'}),
+ group('group-campaign-header','Nagłówek kampanii','.campaign-header',['button-back','text-campaign-title']),
+ atom('text-campaign-title','Nazwa świata','text','.campaign-header h1'),
+ group('group-campaign-realms','Wybór świata','.campaign-realms',['button-campaign-realm']),
+ group('button-campaign-realm','Świat kampanii','[data-campaign-realm]',[],{kind:'button',states:['default','selected','disabled']}),
+ group('group-campaign-map','Ilustracja i szlak','.campaign-map',['image-campaign','button-campaign-milestone','icon-campaign-token','button-campaign-portal']),
+ atom('image-campaign','Ilustracja świata','image','.campaign-map > img'),
+ group('button-campaign-milestone','Pole szlaku','[data-campaign-tile]',[],{kind:'button',states:['default','selected','complete']}),
+ atom('icon-campaign-token','Pionek podróżnika','icon','.campaign-token'),
+ atom('button-campaign-portal','Portal do kolejnej krainy','button','.campaign-portal'),
+ group('group-campaign-itinerary','Plan wyprawy','.campaign-itinerary',['button-campaign-start']),
+ group('button-campaign-start','Rozpocznij krok','[data-campaign-start]',[],{kind:'button'}),
+ group('family-reward-dialog','Odkrycie nagrody','.adventure-reward-dialog',['button-popup-close','text-reward-title','text-reward-copy','group-reward-stage','group-reward-criteria','input-reward-slider','text-reward-status'],{level:'family'}),
+ atom('text-reward-title','Tytuł nagrody','text','.adventure-reward-card h3,.adventure-reward-dialog h2'),
+ atom('text-reward-copy','Opis nagrody','text','.adventure-reward-card p,.adventure-reward-dialog > p'),
+ group('group-reward-stage','Skrzynia i nagroda','.reward-reveal-stage',['image-gallery-art']),
+ group('group-reward-criteria','Wymagania nagrody','.reward-criteria',['group-criterion']),
+ group('group-criterion','Pojedyncze wymaganie','.reward-criterion',['meter-power-charge']),
+ atom('input-reward-slider','Otwórz skrzynię','input','.reward-slider input'),
+ atom('text-reward-status','Informacja o odkryciu','text','.reward-status'),
+ group('group-reward-cards','Karty osiągnięć','.adventure-reward-grid',['button-reward-card']),
+ group('button-reward-card','Karta medalu lub trofeum','.adventure-reward-card',['image-gallery-art','text-reward-title','text-reward-copy','meter-power-charge'],{kind:'button'}),
+ group('container-knowledge-cup','Główny Puchar wiedzy','.knowledge-cup',['text-knowledge-title','image-gallery-art','group-reward-criteria'],{}),
+ atom('text-knowledge-title','Tytuł Pucharu wiedzy','text','.knowledge-cup h2'),
+ group('group-discovery-grid','Odkryte zagadnienia','.discovery-grid',['button-discovery-card']),
+ group('button-discovery-card','Karta odkrycia','.discovery-card',['text-discovery-name','text-discovery-progress'],{kind:'button'}),
+ atom('text-discovery-name','Nazwa odkrycia','text','.discovery-card strong'),
+ atom('text-discovery-progress','Postęp odkrycia','text','.discovery-card small'),
+ atom('text-discovery-remaining','Pozostałe odkrycia','text','.undiscovered-note')
+];

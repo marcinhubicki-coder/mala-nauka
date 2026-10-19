@@ -7462,6 +7462,669 @@
       "references": [
         "shared/word-badge-assets.mjs"
       ]
+    },
+    {
+      "id": "campaign-city",
+      "path": "assets/managed/dfff6a6ade3990216e07f8323b55b5e9c31aa3595eab9421cbd57780d7a2d077.webp",
+      "sha": "dfff6a6ade3990216e07f8323b55b5e9c31aa3595eab9421cbd57780d7a2d077",
+      "size": 605332,
+      "width": 1080,
+      "height": 1440,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-jungle",
+      "path": "assets/managed/6978ab1d1032131507ebe457eca903c720a4a393519d80d32f8d713baba61368.webp",
+      "sha": "6978ab1d1032131507ebe457eca903c720a4a393519d80d32f8d713baba61368",
+      "size": 606564,
+      "width": 1080,
+      "height": 1440,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-caves",
+      "path": "assets/managed/52c74167c251ac0e405df4ac1bf4ed987fba6018a23972b31ef70d817ec9a7bf.webp",
+      "sha": "52c74167c251ac0e405df4ac1bf4ed987fba6018a23972b31ef70d817ec9a7bf",
+      "size": 495004,
+      "width": 1080,
+      "height": 1440,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-fairies",
+      "path": "assets/managed/e8248e8463331fb0c4f56feb2926366802a78ee999250d27137e0adc83ada107.webp",
+      "sha": "e8248e8463331fb0c4f56feb2926366802a78ee999250d27137e0adc83ada107",
+      "size": 563100,
+      "width": 1080,
+      "height": 1440,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-space",
+      "path": "assets/managed/db4661fea3d284bf7c87212804f386f9033a72662f6831be7f6b15cb38822acf.webp",
+      "sha": "db4661fea3d284bf7c87212804f386f9033a72662f6831be7f6b15cb38822acf",
+      "size": 543522,
+      "width": 1080,
+      "height": 1440,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-oak-closed",
+      "path": "assets/managed/e2c174b51eb4851c0a58dee35122b4033d37416e729f1c1fd1c0e15c749fb305.webp",
+      "sha": "e2c174b51eb4851c0a58dee35122b4033d37416e729f1c1fd1c0e15c749fb305",
+      "size": 88778,
+      "width": 640,
+      "height": 524,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-oak-open",
+      "path": "assets/managed/d963e9c1ce5a907aadb6198fe5de424d1e60ea963c81a274e0d056f50b219f22.webp",
+      "sha": "d963e9c1ce5a907aadb6198fe5de424d1e60ea963c81a274e0d056f50b219f22",
+      "size": 80094,
+      "width": 640,
+      "height": 524,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-azure-closed",
+      "path": "assets/managed/e710d1f107293c4e0abe17281a103a84d809f10a33c7e07bc8f1e50feeba3980.webp",
+      "sha": "e710d1f107293c4e0abe17281a103a84d809f10a33c7e07bc8f1e50feeba3980",
+      "size": 109788,
+      "width": 640,
+      "height": 567,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-azure-open",
+      "path": "assets/managed/4bb70883277b57d2795c6030df24cb6acc3b32f613b602ad52d14f091ffd1a4a.webp",
+      "sha": "4bb70883277b57d2795c6030df24cb6acc3b32f613b602ad52d14f091ffd1a4a",
+      "size": 105688,
+      "width": 640,
+      "height": 567,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-crystal-closed",
+      "path": "assets/managed/52a451e63cfd9e1e93ce3a9b015325e40b851c1c2f06a167412f1d9faf61db80.webp",
+      "sha": "52a451e63cfd9e1e93ce3a9b015325e40b851c1c2f06a167412f1d9faf61db80",
+      "size": 104698,
+      "width": 640,
+      "height": 530,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-crystal-open",
+      "path": "assets/managed/96e1690938c0c18866563300f170eafe7145af98ab0aff3002b29321ae4bf8be.webp",
+      "sha": "96e1690938c0c18866563300f170eafe7145af98ab0aff3002b29321ae4bf8be",
+      "size": 100630,
+      "width": 640,
+      "height": 530,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-leaf-closed",
+      "path": "assets/managed/88593f856ff813451c45ddced649bdb415ab1b5aab9a2f50f0447545c86adfc3.webp",
+      "sha": "88593f856ff813451c45ddced649bdb415ab1b5aab9a2f50f0447545c86adfc3",
+      "size": 88684,
+      "width": 640,
+      "height": 585,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-leaf-open",
+      "path": "assets/managed/09b2f2d992b698b9ec1da250c83084c6b298ce8c8b27de6f42016b44879f5412.webp",
+      "sha": "09b2f2d992b698b9ec1da250c83084c6b298ce8c8b27de6f42016b44879f5412",
+      "size": 79124,
+      "width": 640,
+      "height": 585,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-cosmic-closed",
+      "path": "assets/managed/680c089e076f64918a7db58379562a4e1f2211603e04c0fbb07c75e18cea80ff.webp",
+      "sha": "680c089e076f64918a7db58379562a4e1f2211603e04c0fbb07c75e18cea80ff",
+      "size": 58872,
+      "width": 640,
+      "height": 427,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "id": "chest-cosmic-open",
+      "path": "assets/managed/9f30165d558071252bb7c3798fb5f0ac9d9b8bf74c12e57a556b73b14459024f.webp",
+      "sha": "9f30165d558071252bb7c3798fb5f0ac9d9b8bf74c12e57a556b73b14459024f",
+      "size": 57418,
+      "width": 640,
+      "height": 427,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/adventure-assets.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/bd9181a6bb414f5d7292546869b000cdc276abf3252e00cbda2a17e4c97ac49e.webp",
+      "sha": "bd9181a6bb414f5d7292546869b000cdc276abf3252e00cbda2a17e4c97ac49e",
+      "id": "bd9181a6bb414f5d",
+      "size": 247722,
+      "type": "webp",
+      "group": "managed",
+      "width": 1254,
+      "height": 1254,
+      "references": [
+        "spelling/scenes.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/a3618945f37b0fc5b65bdee3af7c1f4c33f16fb0a56dfcc0929bb1a3b901d5ff.webp",
+      "sha": "a3618945f37b0fc5b65bdee3af7c1f4c33f16fb0a56dfcc0929bb1a3b901d5ff",
+      "id": "a3618945f37b0fc5",
+      "size": 220688,
+      "type": "webp",
+      "group": "managed",
+      "width": 1254,
+      "height": 1254,
+      "references": [
+        "spelling/scenes.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/3fa2ba44ed0118df4859128571bd590ccd8f1bab696e93e7d0c5aae2549d9e4b.webp",
+      "sha": "3fa2ba44ed0118df4859128571bd590ccd8f1bab696e93e7d0c5aae2549d9e4b",
+      "id": "3fa2ba44ed0118df",
+      "size": 247492,
+      "type": "webp",
+      "group": "managed",
+      "width": 1254,
+      "height": 1254,
+      "references": [
+        "spelling/scenes.mjs"
+      ]
+    },
+    {
+      "path": "assets/managed/04c2e4db69e0081c0ec8ee8796e0836cbd84ae331a5442c1b1a57cf7776d918b.webp",
+      "sha": "04c2e4db69e0081c0ec8ee8796e0836cbd84ae331a5442c1b1a57cf7776d918b",
+      "id": "04c2e4db69e0081c",
+      "size": 223014,
+      "type": "webp",
+      "group": "managed",
+      "width": 1254,
+      "height": 1254,
+      "references": [
+        "spelling/scenes.mjs"
+      ]
+    },
+    {
+      "id": "campaign-city-iso-v43",
+      "path": "assets/managed/bceaeb9482017a961b6d07912e90dc5adcb1f32af8b7c4925cff7c59a182f0aa.webp",
+      "sha": "bceaeb9482017a961b6d07912e90dc5adcb1f32af8b7c4925cff7c59a182f0aa",
+      "size": 537112,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-jungle-iso-v43",
+      "path": "assets/managed/1fe786ac660dddf4eff46df67982431f51bb7152b8a616851a8babb69ccf3509.webp",
+      "sha": "1fe786ac660dddf4eff46df67982431f51bb7152b8a616851a8babb69ccf3509",
+      "size": 616226,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-caves-iso-v43",
+      "path": "assets/managed/bb8d19951aaf4cae87c5dafeeca768edac63624c99ce71621587f7b2680889eb.webp",
+      "sha": "bb8d19951aaf4cae87c5dafeeca768edac63624c99ce71621587f7b2680889eb",
+      "size": 550786,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-fairies-iso-v43",
+      "path": "assets/managed/ac17756d98ca0fa3064b2438ed070ee9d4481d96eff80576262f5f886f60186f.webp",
+      "sha": "ac17756d98ca0fa3064b2438ed070ee9d4481d96eff80576262f5f886f60186f",
+      "size": 584608,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-space-iso-v43",
+      "path": "assets/managed/cd8560a935a99a38711ff95d6d0e09ad3a3dfca9e7afc94449ce45918da17a25.webp",
+      "sha": "cd8560a935a99a38711ff95d6d0e09ad3a3dfca9e7afc94449ce45918da17a25",
+      "size": 466692,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-heavens-iso-v43",
+      "path": "assets/managed/dca5eb994f4ed4946fd4e76f5b44ba4b2d5505a846ee5e47e8469d9a6ce15fed.webp",
+      "sha": "dca5eb994f4ed4946fd4e76f5b44ba4b2d5505a846ee5e47e8469d9a6ce15fed",
+      "size": 455682,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "campaign-underwater-iso-v43",
+      "path": "assets/managed/e80b105ce200862a64966f242c11ea9cc1e6faca6c25f7aa6dcc08eb86cb1a4a.webp",
+      "sha": "e80b105ce200862a64966f242c11ea9cc1e6faca6c25f7aa6dcc08eb86cb1a4a",
+      "size": 590636,
+      "width": 1080,
+      "height": 1350,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-boy-iso-v43",
+      "path": "assets/managed/a9a2e72e8d5aa6270d495d66b744c66938d8bd7445a39792e4761e5e64340cc1.webp",
+      "sha": "a9a2e72e8d5aa6270d495d66b744c66938d8bd7445a39792e4761e5e64340cc1",
+      "size": 39438,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-girl-iso-v43",
+      "path": "assets/managed/fd26caddaaccda7db0b0628e3b45eaeefd4c0dc06f84bf0345e645bc7e70d955.webp",
+      "sha": "fd26caddaaccda7db0b0628e3b45eaeefd4c0dc06f84bf0345e645bc7e70d955",
+      "size": 43504,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-horse-iso-v43",
+      "path": "assets/managed/9fc1d5e79ede76b783bc205ef194ef982a289fb5d4050d10fdfad9557ebc4bf2.webp",
+      "sha": "9fc1d5e79ede76b783bc205ef194ef982a289fb5d4050d10fdfad9557ebc4bf2",
+      "size": 51100,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "power-recall-iso-v43",
+      "path": "assets/managed/aa317a02c33f3d1fdfae6cae995aae7ace1e24f36b87f5590ffeb49c25e38be5.webp",
+      "sha": "aa317a02c33f3d1fdfae6cae995aae7ace1e24f36b87f5590ffeb49c25e38be5",
+      "size": 68966,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "power-orbit-iso-v43",
+      "path": "assets/managed/25a9a4a3b7c15778b5746d39862d42951a5aac24ac074b4382d0d3330028369a.webp",
+      "sha": "25a9a4a3b7c15778b5746d39862d42951a5aac24ac074b4382d0d3330028369a",
+      "size": 102442,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "power-rainbow-iso-v43",
+      "path": "assets/managed/1e1bdf7b4d12d1de6bd2b0ba07095d8bc2ecf791a2f5aea7c76c1b6541055fa9.webp",
+      "sha": "1e1bdf7b4d12d1de6bd2b0ba07095d8bc2ecf791a2f5aea7c76c1b6541055fa9",
+      "size": 77696,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "power-trail-iso-v43",
+      "path": "assets/managed/d65e29d2e001299a0a46b09cca178925f29198b8d45a2f337f9c024124cd9424.webp",
+      "sha": "d65e29d2e001299a0a46b09cca178925f29198b8d45a2f337f9c024124cd9424",
+      "size": 93718,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-city-iso-v43",
+      "path": "assets/managed/ac0c7d9c9cd03975747888fc628ca1181610468fe6083ed0b57df2bc52d8b9cb.webp",
+      "sha": "ac0c7d9c9cd03975747888fc628ca1181610468fe6083ed0b57df2bc52d8b9cb",
+      "size": 25902,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-jungle-iso-v43",
+      "path": "assets/managed/e8c543272d9baf2611dc30966271c63691a3725b9b737e902e3bb8fe649c907a.webp",
+      "sha": "e8c543272d9baf2611dc30966271c63691a3725b9b737e902e3bb8fe649c907a",
+      "size": 32950,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-caves-iso-v43",
+      "path": "assets/managed/903ab10136455a0b1392c1af9866207c65cb667423a738e5992af744c00cf46c.webp",
+      "sha": "903ab10136455a0b1392c1af9866207c65cb667423a738e5992af744c00cf46c",
+      "size": 20800,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-fairies-iso-v43",
+      "path": "assets/managed/d9945770d2f237470448ee26c8a72ebd51b392a8623a4aed30271d4af9570332.webp",
+      "sha": "d9945770d2f237470448ee26c8a72ebd51b392a8623a4aed30271d4af9570332",
+      "size": 24084,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-space-iso-v43",
+      "path": "assets/managed/3dc6a275c68a72a0b15d6ebecc27c0422f16a9f6fb6a8366787c83a2315d2f30.webp",
+      "sha": "3dc6a275c68a72a0b15d6ebecc27c0422f16a9f6fb6a8366787c83a2315d2f30",
+      "size": 25562,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-heavens-iso-v43",
+      "path": "assets/managed/6773c741090494b8bcb7cf041b738da892861e57821ec13c18199acd324882e0.webp",
+      "sha": "6773c741090494b8bcb7cf041b738da892861e57821ec13c18199acd324882e0",
+      "size": 25444,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "world-icon-underwater-iso-v43",
+      "path": "assets/managed/ea39d1b128e7b9bad3bc0d78c6295f51df2bc187a6c4cb5ed9e5865414169bfe.webp",
+      "sha": "ea39d1b128e7b9bad3bc0d78c6295f51df2bc187a6c4cb5ed9e5865414169bfe",
+      "size": 23800,
+      "width": 256,
+      "height": 256,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-boy-iso-v44",
+      "path": "assets/managed/64dad74f7a55cc42ee88fd88cdf9fad83508c4f893dc636b4d00892bad3467b1.webp",
+      "sha": "64dad74f7a55cc42ee88fd88cdf9fad83508c4f893dc636b4d00892bad3467b1",
+      "size": 32240,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-girl-iso-v44",
+      "path": "assets/managed/e420ee146825ca87730ec82ec6daa4352b18935f0cfcb2a29f9c5fdde3412ca8.webp",
+      "sha": "e420ee146825ca87730ec82ec6daa4352b18935f0cfcb2a29f9c5fdde3412ca8",
+      "size": 38404,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "traveller-horse-iso-v44",
+      "path": "assets/managed/eaa304984b8f34fb23ba98e98a0d0bc9ba4ef6d18b0f5b74720e33e5f6cff951.webp",
+      "sha": "eaa304984b8f34fb23ba98e98a0d0bc9ba4ef6d18b0f5b74720e33e5f6cff951",
+      "size": 46484,
+      "width": 512,
+      "height": 512,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "teleport-ring-iso-v44",
+      "path": "assets/managed/ef7e2b7037c3631a63ff0ac22f4b65cbcc5cc6d1fb6d0cb48876700a312416b2.webp",
+      "sha": "ef7e2b7037c3631a63ff0ac22f4b65cbcc5cc6d1fb6d0cb48876700a312416b2",
+      "size": 68706,
+      "width": 640,
+      "height": 240,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-city-iso-v44",
+      "path": "assets/managed/e00967b138defde4a9a3f4c39627fe81b921bfa1d9f7f4a27c5f44289df93e5d.webp",
+      "sha": "e00967b138defde4a9a3f4c39627fe81b921bfa1d9f7f4a27c5f44289df93e5d",
+      "size": 657544,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-jungle-iso-v44",
+      "path": "assets/managed/1374b5f190e8bfa50b8078b52963809669ca2c1c8ca723fd47397160abe4c208.webp",
+      "sha": "1374b5f190e8bfa50b8078b52963809669ca2c1c8ca723fd47397160abe4c208",
+      "size": 767368,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-caves-iso-v44",
+      "path": "assets/managed/3fa17bae773afde3d56624d599bbc860da3762967508c87443ade6f86d33e529.webp",
+      "sha": "3fa17bae773afde3d56624d599bbc860da3762967508c87443ade6f86d33e529",
+      "size": 716352,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-fairies-iso-v44",
+      "path": "assets/managed/0cb4c124abfdb20c80e1d4a73f2eeaf9baf5dbbe89b0cb0dab87f6b416936784.webp",
+      "sha": "0cb4c124abfdb20c80e1d4a73f2eeaf9baf5dbbe89b0cb0dab87f6b416936784",
+      "size": 742220,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-space-iso-v44",
+      "path": "assets/managed/4ab870144e60caa813bd01366a9102a32fd4f87350e15df8055ed18ea72deed1.webp",
+      "sha": "4ab870144e60caa813bd01366a9102a32fd4f87350e15df8055ed18ea72deed1",
+      "size": 593082,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-heavens-iso-v44",
+      "path": "assets/managed/ffa964c0e18872c5ea8182c890c50b63be9f597645fb75577b8efb488242e79e.webp",
+      "sha": "ffa964c0e18872c5ea8182c890c50b63be9f597645fb75577b8efb488242e79e",
+      "size": 567302,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
+    },
+    {
+      "id": "backdrop-underwater-iso-v44",
+      "path": "assets/managed/5611b5f5eaa575ab3416f3e636fd1310848c7c43b4a90904000219f1d294f051.webp",
+      "sha": "5611b5f5eaa575ab3416f3e636fd1310848c7c43b4a90904000219f1d294f051",
+      "size": 784368,
+      "width": 1080,
+      "height": 2340,
+      "type": "webp",
+      "group": "adventure",
+      "references": [
+        "shared/isometric-assets.mjs"
+      ]
     }
   ],
   "aliases": {
@@ -10078,6 +10741,30 @@
       "path": "assets/managed/ca5dcbb997e5eb0f9e4e5d0d5eba708eee7470303078ae3ce457a4f0d9060527.jpg",
       "source": "data/words-08.json",
       "masked": "wi_nia",
+      "manual": true
+    },
+    "wieża": {
+      "path": "assets/managed/bd9181a6bb414f5d7292546869b000cdc276abf3252e00cbda2a17e4c97ac49e.webp",
+      "source": "data/words-05.json",
+      "masked": "wie_a",
+      "manual": true
+    },
+    "dach": {
+      "path": "assets/managed/a3618945f37b0fc5b65bdee3af7c1f4c33f16fb0a56dfcc0929bb1a3b901d5ff.webp",
+      "source": "data/words-06.json",
+      "masked": "da_",
+      "manual": true
+    },
+    "chata": {
+      "path": "assets/managed/3fa2ba44ed0118df4859128571bd590ccd8f1bab696e93e7d0c5aae2549d9e4b.webp",
+      "source": "data/words-06.json",
+      "masked": "_ata",
+      "manual": true
+    },
+    "chrzan": {
+      "path": "assets/managed/04c2e4db69e0081c0ec8ee8796e0836cbd84ae331a5442c1b1a57cf7776d918b.webp",
+      "source": "data/words-06.json",
+      "masked": "_rzan",
       "manual": true
     }
   }

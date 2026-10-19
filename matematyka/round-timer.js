@@ -1,3 +1,4 @@
+import {playPowerEffect} from '../shared/adventure-ui.mjs';
 import {progressionRules,reservePower,answerReward,cleanJourney,POWERS,comboMultiplier} from '../shared/progression.mjs';
 import {requestHostRoute} from '../shared/mode-host.mjs';
 import {navigateWithBlob} from '../shared/screen-blob-transition.mjs';
@@ -91,10 +92,6 @@ function ensureTimerUi() {
 
   const snapshot = syncTimerSnapshot();
   topbar.classList.add('math-timed');
-  const slot = topbar.lastElementChild;
-  if (slot && !slot.querySelector('.math-round-time')) {
-    slot.innerHTML = `<div class="math-round-time ${snapshot.paused ? 'is-paused' : ''}" aria-label="Pozostały czas rundy"><span>${snapshot.text}</span></div>`;
-  }
   if (!document.querySelector('.math-round-progress')) {
     const progress = document.createElement('div');
     progress.className = 'math-round-progress';
@@ -109,7 +106,7 @@ function updateTimerUi() {
   const time = document.querySelector('.math-round-time');
   const text = time?.querySelector('span');
   const bar = document.querySelector('.math-round-progress > span');
-  if (text && text.textContent !== snapshot.text) text.textContent = snapshot.text;
+  if (text && text.textContent !== snapshot.text.replace('Ⅱ ','')) text.textContent = snapshot.text.replace('Ⅱ ','');const copy=document.querySelector('.topbar small');if(copy)copy.textContent=snapshot.paused?'Czas zatrzymany':'Matematyka';
   time?.classList.toggle('is-paused', snapshot.paused);
   if (bar) bar.style.width = `${snapshot.percent}%`;
 }
@@ -231,8 +228,8 @@ document.addEventListener('click', event => {
     const chosen = Number(answer.dataset.answer);
     if (Number.isFinite(expected) && Number.isFinite(chosen)&&quiz&&roundScope&&!roundScope.answered.has(quiz.dataset.questionId)) {
       const scope=roundScope;preparePower(quiz);scope.answered.add(quiz.dataset.questionId);
-      const attempt={kind:'math',correct:chosen===expected,selected:String(chosen),answer:String(expected),at:new Date().toISOString()};scope.attempts.push(attempt);const answerIndex=scope.attempts.length;
-      scope.writes=scope.writes.then(async()=>{if(!scope.player)return;const reward=answerReward(scope.journey,attempt,{mode:'math',id:scope.id+':'+answerIndex,streak:scope.streak,rules:scope.rules});scope.journey=reward.journey;scope.streak=reward.streak;scope.rewards.sparks+=reward.sparks;const progress=cleanProgress(await playerService.getProgress(scope.player.id));progress.journey=scope.journey;await playerService.saveProgress(scope.player.id,progress);}).catch(error=>console.error('[math-progress]',error.message));
+      const equation=quiz.querySelector('.equation')?.textContent||quiz.textContent||'';const attempt={kind:'math',text:equation,category:currentMode,correct:chosen===expected,selected:String(chosen),answer:String(expected),at:new Date().toISOString()};scope.attempts.push(attempt);const answerIndex=scope.attempts.length;
+      scope.writes=scope.writes.then(async()=>{if(!scope.player)return;const reward=answerReward(scope.journey,attempt,{mode:'math',id:scope.id+':'+answerIndex,streak:scope.streak,rules:scope.rules});scope.journey=reward.journey;scope.streak=reward.streak;scope.rewards.sparks+=reward.sparks;if(reward.power)playPowerEffect(document.querySelector('#app'),reward.power,scope.journey.powerLevels[reward.power]||1);const progress=cleanProgress(await playerService.getProgress(scope.player.id));progress.journey=scope.journey;await playerService.saveProgress(scope.player.id,progress);}).catch(error=>console.error('[math-progress]',error.message));
       if (chosen === expected) correct += 1;
       else wrong += 1;
     }
@@ -260,7 +257,7 @@ setInterval(() => {
 
   ensureTimerUi();
   const hasExplainer = Boolean(document.querySelector('.quiz-stage.has-explainer'));
-  const shouldPause = hasExplainer || document.hidden || document.documentElement.classList.contains('landscape-blocked') || Boolean(document.querySelector('.math-exit-dialog[open]'));
+  const shouldPause = Boolean(document.querySelector('.math-pause-dialog[open]')) || hasExplainer || document.hidden || document.documentElement.classList.contains('landscape-blocked') || Boolean(document.querySelector('.math-exit-dialog[open]'));
 
   if (shouldPause && clock.state !== 'paused' && clock.state !== 'ended') clock.pause();
   if (!shouldPause && clock.state === 'paused') clock.resume();
@@ -269,3 +266,5 @@ setInterval(() => {
   updateTimerUi();
   if (clock.state === 'ended' || clock.remaining <= 0) endRound();
 }, 50);
+
+document.addEventListener('click',event=>{if(!event.target.closest('[data-math-pause]')||!clock)return;clock.pause();updateTimerUi();const d=document.createElement('dialog');d.className='math-pause-dialog';d.innerHTML='<h2>Chwila przerwy</h2><p>Czas czeka na Ciebie.</p><button type="button" class="primary" data-math-resume>Wracam do gry</button>';document.querySelector('#app').append(d);d.querySelector('button').onclick=()=>d.close();d.addEventListener('close',()=>{d.remove();clock?.resume();},{once:true});d.showModal();});

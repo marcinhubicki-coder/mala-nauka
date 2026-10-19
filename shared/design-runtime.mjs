@@ -1,3 +1,6 @@
+import {normalizeCampaignViewport} from './campaign-viewport.mjs';
+import {applyResponsiveGeometry} from './responsive-geometry.mjs';
+import {validateMapOverrides} from './map-overrides.mjs';
 import {resolveBehaviorConfig} from './behaviors.mjs';
 import {migrateAtomicConfig} from './atomic-config.mjs';
 import {normalizeMission} from './mission-parts.mjs';
@@ -20,6 +23,7 @@ const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
 let inspectorLoader;
 function currentViewId(app){
+ if(app.dataset.campaignMode==='math'&&app.dataset.view==='game')return 'campaign-math-'+(app.dataset.state==='feedback-correct'?'correct':app.dataset.state==='feedback-wrong'?'wrong':'initial');if(app.dataset.view==='campaign')return 'campaign';if(app.querySelector('.adventure-reward-dialog[open]'))return 'reward-details';
  const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
  const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
  const trophyDialog=app.querySelector('.trophy-upgrade-dialog[open]');if(trophyDialog)return trophyDialog.dataset.trophyDialog;
@@ -33,7 +37,7 @@ const updateView=(root,settings,view)=>{
  // Every registered view uses its explicit contract in Studio and the PWA.
  // The persistent audio owner delegates the entire screen to its mode iframe.
  // That document mounts and validates its own contract.
- if(root.querySelector(':scope > iframe[data-mode-host]'))return;
+ if(root.querySelector(':scope > iframe[data-mode-host],:scope > .scenic-host > iframe[data-mode-host]'))return;
  if(root.dataset.scenarioPending||root.dataset.dsContractPending||root.querySelector('.loading')||!root.children.length)return;
  if(BOUND_VIEW_CONTRACTS[view])return applyCompiledView(root,settings,view);
  if(hasViewContract(view)){
@@ -58,8 +62,13 @@ export function prepareScreenChange(app,nextView){
  if(motion.style!=='blob'||motion.speed===0)return;
  pendingOutgoing={from:document.documentElement.dataset.dsView,node:app.cloneNode(true),background:getComputedStyle(document.body).background};
 }
+// Local scene effects start after the shared incoming-screen transition is visible.
+export async function waitForScreenEntrance(app){
+ await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ await app?.mnEntrance?.catch?.(()=>{});
+}
 export function applyDesign(value) {
-  value=resolveBehaviorConfig(migrateAtomicConfig(value));
+  value=normalizeCampaignViewport(resolveBehaviorConfig(migrateAtomicConfig(value)));
   const nextSignature=JSON.stringify(value);if(nextSignature===designSignature)return;designSignature=nextSignature;
   const css = configCSS(value);
   let style = document.getElementById('ds-tokens');
@@ -69,7 +78,7 @@ export function applyDesign(value) {
   window.__MALA_NAUKA_DESIGN__ = value;
   document.documentElement.dataset.dsRevision = String(value.revision);
   configureScreenCopy(value.copyOverrides||[]);
-  updateView(document.getElementById('app'),value,document.documentElement.dataset.dsView);
+  updateView(document.getElementById('app'),value,document.documentElement.dataset.dsView);applyResponsiveGeometry(value);
   document.dispatchEvent(new CustomEvent('mala-nauka:design', {detail:value}));
 }
 export const currentDesign = () => config;
@@ -106,7 +115,8 @@ export async function initDesign() {
     if(app.dataset.view==='wizard')normalizeMission(app,app.dataset.mode,assetUrl);
     applyScreenCopy(app);
     const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')&&!window.__MALA_NAUKA_EXTERNAL_TRANSITION__){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background,config:config.exitTransition,speed:motion.speed});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
-    updateView(app,config,document.documentElement.dataset.dsView);
+    app.mnEntrance=screenAnimation?.finished||Promise.resolve();
+    updateView(app,config,document.documentElement.dataset.dsView);applyResponsiveGeometry(config,app);
   };
   let annotationFrame=0,presenceRecords=[];
   if (app) new MutationObserver(records=>{
@@ -130,7 +140,7 @@ export async function initDesign() {
         annotate();animatePresence(batch);
       });
     }
-  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','data-scenario-pending','open']});
+  }).observe(document.body, {childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','data-view','data-mode','data-state','data-history-state','data-scenario-pending','data-ds-contract-pending','open']});
   if(app)app.addEventListener('change',event=>{const label=event.target.closest?.('label');if(!label)return;for(const node of label.parentElement.children)if(node.dataset.dsElement)syncElementMotion(node,visualValue(config,document.documentElement.dataset.dsView,{id:node.dataset.dsElement,recipe:node.dataset.dsRecipe,kind:node.dataset.dsKind}));});
   if(app)app.addEventListener('click',event=>{if(event.target.closest('[data-action=answer],.math-answer,.answer'))queueMicrotask(()=>triggerSurfaceEffects(app,'answer'));});
   annotate();
@@ -141,3 +151,7 @@ export const designReady = initDesign().catch(error => {
   document.documentElement.dataset.dsError = error.message;
   throw error;
 });
+
+if(typeof BroadcastChannel!=='undefined'){const maps=new BroadcastChannel('mala-nauka-map-settings');maps.onmessage=event=>{try{validateMapOverrides(event.data);if(config)applyDesign({...config,mapOverrides:event.data});}catch(error){console.error('[map-settings]',error)}};addEventListener('pagehide',()=>maps.close(),{once:true});}
+
+if(typeof BroadcastChannel!=='undefined'){const local=new BroadcastChannel('mala-nauka-design-settings');local.onmessage=e=>{if(e.data?.config){applyDesign(e.data.config);if(e.data.assets){configureAssets(e.data.assets,base.href);document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}}};addEventListener('pagehide',()=>local.close(),{once:true});}

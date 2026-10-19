@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {SOUND_ZONES,SOUND_COLLECTIONS,DEFAULT_AMBIENCE,soundZone} from '../shared/sound-themes.mjs';
@@ -18,7 +19,7 @@ test('seven zones cover setup, loading, game, results and collection with stable
  for(const view of ['progress','collection','sessions','rules','spelling-results','math-results'])assert.equal(soundZone({view}),'results');
 });
 test('zone settings survive Studio/PWA export and changes stay within their zone',async()=>{
- const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))),settings=normalizeSoundSettings(config.sound),before=structuredClone(settings.ambience.home);
+ const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),settings=normalizeSoundSettings(config.sound),before=structuredClone(settings.ambience.home);
  settings.ambience.english.soundscape='forest';settings.ambience.english.mix[1]=39;settings.ambience.english.volume=73;
  validateSoundSettings(settings);config.sound=settings;assert.deepEqual(designFields(config).sound,settings);assert.deepEqual(settings.ambience.home,before);
  const selected=ambienceForZone(settings,'english');assert.equal(selected.mix[1],39);assert.equal(selected.soundscape,'forest');assert.equal(selected.volume,settings.volume);

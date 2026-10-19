@@ -1,9 +1,14 @@
+import {campaignPosition} from './shared/campaign-layout.mjs';
+import {campaignRoundSource} from './shared/campaign-round.mjs';
+import {adventureConfig,campaignStepState,campaignPool,cleanAdventure,campaignSummary} from './shared/adventure-model.mjs';
+import {campaignMarkup,campaignMarkupReady,mountCampaignScene,celebrate,playPowerEffect,openRewardDialog,animateCampaignToken,departCampaignTraveller} from './shared/adventure-ui.mjs';
+import {configureScenicRound} from './flagi/scenic-round.mjs';
 import {addLearningSession} from './shared/mastery.mjs';
 import {awardRuleProgress} from './shared/rule-progress.mjs';
 import {exampleJourney,exampleRewardSummary} from './shared/test-profiles.mjs';
 import {discoverWord,reservePower,answerReward,progressionRules,POWERS,sparkBalance,comboMultiplier,awardAchievements} from './shared/progression.mjs';
 import {seedTestProfiles} from './shared/test-profiles.mjs';
-import {prepareScreenChange} from './shared/design-runtime.mjs';
+import {prepareScreenChange,waitForScreenEntrance} from './shared/design-runtime.mjs';
 import {compileViewMarkup,viewAttrs} from './shared/view-contracts.mjs';
 import {spellingAttrs} from './shared/spelling-settings-contract.mjs';
 import {overlayAttrs,hydrateSpellingOverlay} from './shared/spelling-overlays.mjs';
@@ -34,6 +39,7 @@ import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './play
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
+let campaignRound=null,campaignRealm='',campaignTravelFrom=null,campaignPaintEpoch=0,campaignSelectedStep='',campaignResumeProfile=false,campaignDesignSignature='';
 const modeHost=new URLSearchParams(location.search).get('audio-host')==='1'?null:createModeHost({app:root,audio:gameSound,getDesign:()=>window.__MALA_NAUKA_DESIGN__,navigate:target=>{if(target==='players')playersPage();else navigate(target);}});
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
 const pinJelly=createJellyV4({indicatorSelector:'.pin-mode-indicator'});
@@ -208,7 +214,8 @@ async function activatePlayer(player,from='',action=''){
  activePlayer=player;selectedPlayerId=player.id;
  if(!studioProfiles())progress=cleanProgress(await playerService.getProgress(player.id));
  pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';
- if(!from&&new URLSearchParams(location.search).get('audio-host')==='1'&&window.__MALA_NAUKA_MODE__){selectedMode=window.__MALA_NAUKA_MODE__;navigate('wizard');}
+ if(campaignResumeProfile){campaignResumeProfile=false;campaignRealm='';campaignSelectedStep='';campaignTravelFrom=null;navigate('campaign');}
+ else if(!from&&new URLSearchParams(location.search).get('audio-host')==='1'&&window.__MALA_NAUKA_MODE__){selectedMode=window.__MALA_NAUKA_MODE__;navigate('wizard');}
  else routeTo(from?resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode):'home');
  const duration=playerSelectionSettings(window.__MALA_NAUKA_DESIGN__).fadeDuration;if(duration&&!matchMedia('(prefers-reduced-motion:reduce)').matches)root.animate([{opacity:0},{opacity:1}],{duration,easing:'ease-out'});
 }
@@ -346,7 +353,7 @@ async function submitPlayerPin(){
 }
 
 function pageHead(title,action='home') {return pageHeading(title,{action});}
-function navigate(next) {
+function navigate(next) {scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;
  prepareScreenChange(root,next);
  editingPin=false;editingProfile=false;deletingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
@@ -354,16 +361,29 @@ function navigate(next) {
  if(next!=='history')collectionReturn=null;
  spellingArt.reset();
  view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&(selectedMode==='spelling'||selectedMode==='english')?'#70d1f3':'#f5f8ff');
- if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')historyPage();
+ if(view==='campaign')root.mnScreenReady=campaignPage();if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')root.mnScreenReady=historyPage();
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
+async function campaignPage(){
+ const epoch=++campaignPaintEpoch,config=adventureConfig();campaignDesignSignature=JSON.stringify(config);root.dataset.dsContractPending='campaign';
+ if(activePlayer?.id&&!studioProfiles()){const latest=await playerService.getProgress(activePlayer.id);if(view!=='campaign')return;progress=cleanProgress(latest);}
+ const from=campaignTravelFrom;campaignTravelFrom=null;
+ const html=await campaignMarkupReady(progress,words,{config,realmId:campaignRealm,player:activePlayer,selectedStep:campaignSelectedStep,fromIndex:from?.realm===campaignRealm?from.index:undefined});if(epoch!==campaignPaintEpoch||view!=='campaign')return;root.innerHTML=html;
+ const controller=await mountCampaignScene(root,progress,config,{fromIndex:from?.realm===campaignRealm?from.index:undefined});delete root.dataset.dsContractPending;
+ if(from)void waitForScreenEntrance(root).then(()=>{if(epoch===campaignPaintEpoch&&view==='campaign')return animateCampaignToken(root,progress,adventureConfig(),from,controller);});
+}
+async function launchCampaign(id){
+ const c=adventureConfig(),step=c.steps.find(s=>s.id===id);if(!step||!campaignStepState(progress,step,words,c).unlocked)return;
+ campaignTravelFrom={realm:step.realm,index:campaignPosition(progress,c.realms.find(r=>r.id===step.realm),c).index};campaignSelectedStep='';campaignRound=step;campaignRealm=step.realm;selectedMode=step.mode;await start();
+}
 async function home() {
+ campaignRound=null;campaignTravelFrom=null;delete root.dataset.campaignMode;
  root.dataset.dsContractPending='home';
  const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(view!=='home'||activePlayer?.id!==playerId){if(root.dataset.dsContractPending==='home')delete root.dataset.dsContractPending;return;}progress=cleanProgress(latest);}
  const latest=progress.history[0],today=progress.today.day===localDay()?progress.today.count:0;
  const lastScore=latest?`${scoreResult(latest).total} ${latest.progressionRules?'iskier':'pkt'}`:'0 iskier';
  const lastLabel=latest?`Ostatnia: ${MODES[latest.mode].name}`:'Zagraj pierwszą rundę';
- root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,modes:MODES,modeIds});delete root.dataset.dsContractPending;
+ root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,campaignStarted:progress.journey.adventure.campaign.started||progress.journey.adventure.campaign.completed.length>0,modes:MODES,modeIds});delete root.dataset.dsContractPending;
 }
 function wizard() {
  root.dataset.tutorial=String(selectedMode==='spelling'&&!progress.journey?.tutorialDone&&!studioProfiles());
@@ -457,11 +477,13 @@ async function historyPage(initialScreen='dashboard') {
 }
 function unlockAudio(){void gameSound.unlock({gesture:true});}
 function beep(correct){gameSound.cue(correct?'correct':'incorrect');if(correct&&game?.streak>1&&game.streak%3===0)gameSound.cue('star');}
+let scenicGame=null;
 async function start() {
  settleResult(root);
- const config={...configs[selectedMode]};
- if(selectedMode==='spelling'&&!progress.journey.tutorialDone)Object.assign(config,{limitMode:'count',wordLimit:10,dyktando:false,category:'all',difficulty:0});
- try{if(selectedMode==='flags'&&navigator.onLine===false)config.offlineFlagIds=[...await cachedGraphicPaths()].map(path=>path.match(/\/assets\/flags\/svg\/([a-z]+)\.svg$/)?.[1]).filter(Boolean);const available=selectedMode==='spelling'?await offlinePlayableWords(words):words;const source=createSource(selectedMode,{...config,learning:progress.learning},available);if(Array.isArray(source)&&!source.length&&navigator.onLine===false)throw Error('Połącz się z internetem, aby wczytać obrazki do tej misji, albo wybierz wcześniej ćwiczone słowa.');game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
+ if(campaignRound?.mode==='math')root.dataset.campaignMode='math';else delete root.dataset.campaignMode;
+ const step=campaignRound,config=step?{...cleanConfig(selectedMode,{...step,wordLimit:step.taskCount,category:selectedMode==='flags'?'flagcfg:'+['flags','countries','capitals'][step.cohort%3]+':world:':step.category}),maxValue:step.maxValue,campaignStepId:step.id,limitMode:step.limitMode,wordLimit:step.taskCount}: {...configs[selectedMode]};
+ if(!step&&selectedMode==='spelling'&&!progress.journey.tutorialDone)Object.assign(config,{limitMode:'count',wordLimit:10,dyktando:false,category:'all',difficulty:0});
+ try{if(selectedMode==='flags'&&navigator.onLine===false)config.offlineFlagIds=[...await cachedGraphicPaths()].map(path=>path.match(/\/assets\/flags\/svg\/([a-z]+)\.svg$/)?.[1]).filter(Boolean);const available=selectedMode==='spelling'?await offlinePlayableWords(words):words;const source=step?campaignRoundSource(step,{...config,learning:progress.learning},available,progress.journey):createSource(selectedMode,{...config,learning:progress.learning},available);if(Array.isArray(source)&&!source.length&&navigator.onLine===false)throw Error('Połącz się z internetem, aby wczytać obrazki do tej misji, albo wybierz wcześniej ćwiczone słowa.');game=new Session(source,config.duration);if(selectedMode==='spelling')configureSpellingRound(game,config,source);if(selectedMode==='flags')configureScenicRound(game,config);if(step){game.untimed=step.limitMode==='count';game.questionLimit=game.untimed?Math.min(step.taskCount,Array.isArray(source)?source.length:step.taskCount):0;}}catch(e){const message=root.querySelector('#setup-error');if(message){message.textContent=e.message;message.hidden=false;}return;}
  game.onPresentationHold=held=>{root.setAttribute('aria-busy',String(held));root.querySelectorAll('.answer').forEach(button=>button.disabled=held||game.state!=='playing');};
  game.roundId=resultId();game.progressionRules=structuredClone(progressionRules());game.rewardSummary={sparks:0,discovered:[],stars:[],powers:[]};
  game.onQuestion=(question)=>{
@@ -474,11 +496,22 @@ async function start() {
   const reward=answerReward(progress.journey,attempt,{mode:selectedMode,id:game.roundId+':'+index,streak:game.economyStreak||0,rules:game.progressionRules});progress.journey=reward.journey;const day=localDay();progress.today={day,count:progress.journey.activeDays[day]||0};game.economyStreak=reward.streak;game.streak=reward.streak;
   if(selectedMode==='spelling'){const known=progress.learning.items['word:'+attempt.word]?.masteryEarned;attempt.eventId=game.roundId+':'+index;progress.learning=addLearningSession(progress.learning,{mode:'spelling',id:game.roundId,incremental:true,date:attempt.at,attempts:[attempt]},game.progressionRules.mastery);if(!known&&progress.learning.items['word:'+attempt.word]?.masteryEarned)(game.rewardSummary.mastered||=[]).push(attempt.word);}
   const previousAwards=new Set(Object.keys(progress.journey.achievements));progress.journey=awardAchievements(progress.journey,progress.learning,words,null,game.progressionRules);for(const id of Object.keys(progress.journey.achievements))if(!previousAwards.has(id))(game.rewardSummary.achievements||=[]).push(id);
-  game.rewardSummary.sparks+=reward.sparks;if(reward.starEarned)game.rewardSummary.stars.push({word:attempt.word,level:reward.star});if(reward.power)game.rewardSummary.powers.push(reward.power);void persistProgress();
+  game.rewardSummary.sparks+=reward.sparks;if(reward.starEarned)game.rewardSummary.stars.push({word:attempt.word,level:reward.star});if(reward.power){game.rewardSummary.powers.push(reward.power);playPowerEffect(root,reward.power,progress.journey.powerLevels[reward.power]||1);}void persistProgress();
  };
  game.onQuestion(game.current);
  game.mode=selectedMode;game.feedbackMs=selectedMode==='spelling'?1400:selectedMode==='flags'?4000:700;game.config={...config};if(selectedMode==='spelling'){game.scoring=structuredClone(window.__MALA_NAUKA_DESIGN__?.scoring||DEFAULT_SCORING);game.config.actualWordLimit=game.questionLimit;}save('configs',configs);unlockAudio();gameSound.cue('roundStart');lastResult=null;memoryInput=[];phraseInput=[];
  const nextGame=game;
+ if(selectedMode==='flags'){
+  game.setPresentationHold(true);stopGameTicker();root.inert=true;root.setAttribute('aria-busy','true');
+  try{
+   const {prepareScenicGame}=await import('./flagi/scenic-game-bridge.mjs');
+   const scene=prepareScenicGame(game,{onExit:()=>pause(true),onPause:()=>pause(),onEnd:()=>finish(),onAnswer:correct=>gameSound.cue(correct?'answerCorrect':'answerWrong')});scenicGame=scene;root.mnScreenReady=scene.ready;
+   await scene.ready;if(game!==nextGame){scene.destroy();return;}
+   const show=()=>{spellingArt.reset();stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);view='game';root.dataset.view='game';root.dataset.mode='flags';scene.mount(root);};
+   await transitionToResult(root,()=>document.activeElement?.blur(),show);game.setPresentationHold(false);scene.activate();
+  }catch(error){scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;const message=root.querySelector('#setup-error');if(message){message.textContent=error.message;message.hidden=false;}}
+  finally{root.inert=false;root.setAttribute('aria-busy','false');}return;
+ }
  const render=()=>{prepareScreenChange(root,'game');stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}return renderGame();};
  if(selectedMode==='spelling'){
   // Hold the round clock, while allowing the incoming scene's animations to
@@ -664,7 +697,7 @@ function updateClock(){
   }
  }
 }
-function syncGame(){if(view!=='game'||!game)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
+function syncGame(){if(view!=='game'||!game)return;if(scenicGame)return;if(game.state==='ended'){finish();return;}if(game.state!=='paused'&&(game.state!==renderedState||game.question!==renderedQuestion))renderGame();updateClock();}
 function showModal(title,content,pauseVariant=''){
  if(pauseVariant)modal.dataset.dsKey='pause-shell';
  else for(const key of ['dsKey','dsElement','dsRecipe','dsKind','dsBlock','dsSubcontract','dsState'])delete modal.dataset[key];
@@ -673,7 +706,7 @@ function showModal(title,content,pauseVariant=''){
  if(!modal.open)modal.showModal();
  modal.querySelector('button')?.focus();
 }
-function pause(exit=false){
+function pause(exit=false){scenicGame?.pause(true);
  if(!game||view!=='game')return;
  stopGameTicker();spellingArt.closeHint();game.pause();root.dataset.state=game.state;syncGame();
  if(game.state==='ended')return;
@@ -686,25 +719,26 @@ function pause(exit=false){
  showModal(exit?'Zakończyć tę rundę?':'Mała przerwa',
   `<p ${part('pause-copy')}>${copy}</p><div class="stack">${buttons}</div>`,variant);
 }
-function resume(){modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game')startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
+function resume(){scenicGame?.pause(false);modal.close();root.classList.remove('paused');game?.resume();if(game)root.dataset.state=game.state;spellingArt.setPaused(false);syncGame();if(view==='game'&&!scenicGame)startGameTicker();root.querySelector(game?.state==='playing'?'.answer':'[data-action="next"]')?.focus({preventScroll:true});}
 function finish(early=false,goHome=false){
- if(!game||lastResult)return;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');
+ if(!game||lastResult)return;scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;gameSound.cue('roundEnd');game.end();if(modal.open)modal.close();root.classList.remove('paused');
  stopGameTicker();
  const result={id:game.roundId||resultId(),playerId:activePlayer?.id||null,...game.config,mode:game.mode,correct:game.correct,wrong:game.wrong,date:new Date().toISOString(),early,attempts:[...game.attempts],elapsedMs:game.duration*1000-game.remaining,progressionRules:game.progressionRules,rewards:game.rewardSummary};
  if(game.mode==='spelling'){result.scoring=game.scoring||structuredClone(DEFAULT_SCORING);result.score=scoreAttempts(result.attempts,result.scoring).total;result.poolExhausted=game.poolExhausted===true;}
  const record=recordResult(progress,result,words);void persistProgress();lastResult=result;
  if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
  view='results';
- const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay},progress);};
+ const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay},progress);if(result.campaignStepId){const back=document.createElement('button');back.type='button';back.className='primary campaign-return';back.dataset.action='campaign';back.textContent=result.campaignCompleted?'Krok ukończony · wróć na szlak →':'Wróć na szlak · kontynuuj odkrycia';root.querySelector('.result-v4')?.append(back);if(result.campaignWorld)celebrate(root);}};
  void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});
 }
 function routeTo(target){
+ if(target==='campaign'){campaignRound=null;navigate('campaign');return;}
  if((['home','settings','players'].includes(target)||target.endsWith('-settings')&&target.slice(0,-9)!==selectedMode)&&requestHostRoute(target))return;
  if(target==='player-create'){playerCreatePage();return;}
  if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
  if(target==='progress'){navigate('history');return;}
  if(target==='forge'){view='history';void historyPage('forge');return;}
- if(target.endsWith('-settings')){selectedMode=target.slice(0,-9);if(modeHost&&!new URLSearchParams(location.search).has('studio')&&selectedMode!==globalThis.__MALA_NAUKA_MODE__){stopGameTicker();spellingArt.reset();modeHost.open(selectedMode);return;}navigate('wizard');return;}
+ if(target.endsWith('-settings')){campaignRound=null;selectedMode=target.slice(0,-9);if(modeHost&&!new URLSearchParams(location.search).has('studio')&&selectedMode!==globalThis.__MALA_NAUKA_MODE__){stopGameTicker();spellingArt.reset();modeHost.open(selectedMode);return;}navigate('wizard');return;}
  if(target.endsWith('-results')){const back=collectionReturn,result=back?.result||lastResult;if(result?.mode===target.slice(0,-8)){destroyProgressScreen(root);collectionReturn=null;view='results';selectedMode=result.mode;renderSpellingResult(root,result,words,back?.ui,null,progress);return;}selectedMode=target.slice(0,-8);navigate('wizard');return;}
  navigate(target==='settings'?'settings':'home');
 }
@@ -712,6 +746,8 @@ function routeTo(target){
 function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function showDeleteProfilePrompt(){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz wszystkie jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
+ if(button.matches('[data-adventure-reward],[data-adventure-power],[data-power-preview],[data-campaign-realm],[data-campaign-start],[data-campaign-select],[data-campaign-portal],[data-campaign-character]')||action==='close-reward')return;
+ if(action==='campaign'){progress.journey.adventure.campaign.started=true;await persistProgress();campaignRound=null;navigate('campaign');return;}
  if(action==='export-backup'){await exportBackup();return;}
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
  if(action==='confirm-import'){await importBackup();return;}
@@ -744,7 +780,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='submit-pin'){await submitPlayerPin();return;}
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
- if(action==='switch-player'){const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){routeTo(target);return;}if(!studioProfiles())playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(action==='switch-player'){campaignResumeProfile=view==='campaign';const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){campaignResumeProfile=false;routeTo(target);return;}if(!studioProfiles())playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
  if(['home','settings','history','return-results','result-back','choose-mode'].includes(action)){
   const from=document.documentElement.dataset.dsView||view,context=action==='return-results'?collectionReturn?.result.mode+'-results':action==='choose-mode'?button.dataset.mode:'';
   if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
@@ -856,7 +892,7 @@ document.addEventListener('pointerdown',()=>document.body.classList.remove('keyb
 document.addEventListener('mala-nauka:orientation',e=>{if(e.detail?.blocked&&view==='game')pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&view==='game'&&!root.inert)pause();});
 window.addEventListener('pagehide',()=>{if(view==='game')pause();});
-async function load(){root.innerHTML='<p class="loading" role="status">Przygotowujemy małe przygody…</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')},progress);window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words,null,null,progress);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await seedTestProfiles(playerService,words);await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
+async function load(){root.innerHTML='<p class="loading" role="status">Trwa ładowanie...</p>';try{await designReady;studioSourceWords=new URLSearchParams(location.search).has('studio')?await loadWords({raw:true}):null;words=validateWords(studioSourceWords?resolveRules(studioSourceWords):await loadWords());if(new URLSearchParams(location.search).has('studio')){if(new URLSearchParams(location.search).has('campaignLab')){const {installCampaignLab}=await import('./shared/campaign-lab.mjs');installCampaignLab(root,words);}else await renderStudioScenario();return;}if(window.__MALA_NAUKA_PROGRESS_PREVIEW__){progress=exampleProgress(words);selectedMode='spelling';view='history';historyPage();return;}if(window.__MALA_NAUKA_RESULT_PREVIEW__){selectedMode='spelling';lastResult=exampleResult(words,new URLSearchParams(location.search).get('case')||'mixed');view='results';renderSpellingResult(root,lastResult,words,null,{animate:new URLSearchParams(location.search).has('animate')},progress);window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='result-preview'||!['mixed','completed','correct','review','dyktando','empty'].includes(event.data.scenario))return;lastResult=exampleResult(words,event.data.scenario);collectionReturn=null;view='results';renderSpellingResult(root,lastResult,words,null,null,progress);});return;}if(window.__MALA_NAUKA_FLAGS_PREVIEW__){selectedMode='flags';configs.flags=cleanConfig('flags',{category:'all',duration:180});const previewParams=new URLSearchParams(location.search);if(previewParams.has('country')){const {flagsPreviewSession}=await import('./flagi/preview-fixture.mjs?v=3');game=flagsPreviewSession(previewParams);view='game';root.dataset.view=view;root.dataset.mode='flags';renderGame();}else navigate('wizard');return;}if(window.__MALA_NAUKA_WIZARD_PREVIEW__){selectedMode='spelling';navigate('wizard');return;}await seedTestProfiles(playerService,words);await playerService.init();await refreshPlayers();const sessionPlayer=await playerService.getSessionPlayer();if(sessionPlayer)await activatePlayer(sessionPlayer);else playersPage();const requested=new URLSearchParams(location.search).get('open');if(requested==='settings'&&sessionPlayer)navigate('settings');if(requested==='players')playersPage();}catch(error){console.error('[game-load]',error);root.innerHTML=`<section class="empty card"><h1>Nie udało się wczytać gry</h1><p>Sprawdź połączenie i spróbuj ponownie.</p>${btn('Spróbuj ponownie','retry','primary')}</section>`;}}
 async function registerOffline(){if(new URLSearchParams(location.search).has('studio')||!('serviceWorker'in navigator))return;try{await navigator.serviceWorker.register(new URL('./sw.js',import.meta.url),{scope:new URL('./',import.meta.url).pathname});await navigator.serviceWorker.ready;offlineReady=true;}catch{offlineReady=false;}const status=root.querySelector('#offline-status');if(status)status.textContent=offlineReady?offlineStatus():'Nie udało się przygotować gry offline. Otwórz ją ponownie z internetem.';}
 load();registerOffline();
 
@@ -876,6 +912,8 @@ async function renderStudioScenario(stateOverride=null){
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress={...exampleProgress(words),...exampleJourney(words,.25)};lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
+ if(screen==='campaign'){view='campaign';root.dataset.view='campaign';root.dataset.mode=selectedMode;root.mnScreenReady=campaignPage();await root.mnScreenReady;return;}
+ if(screen==='history'&&state==='reward-details'){view='history';await historyPage('achievements');openRewardDialog(root,progress,'spelling-explorer',{words,onSave:async journey=>{progress.journey=journey;}});return;}
  if(screen==='players'){if(state==='empty')players=[];else if(['one','two'].includes(state))players=players.slice(0,state==='one'?1:2);playersPage();return;}
  if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
  if(screen==='player-pin'){editingPin=false;deletingProfile=false;pendingNickname=state==='unlock'?'':'Ania';pendingPlayerId=state==='unlock'?activePlayer.id:null;pendingAvatarId='c';pendingPinEnabled=state!=='no-pin';pinInput='';playerPinPage();return;}
@@ -901,7 +939,7 @@ async function renderStudioScenario(stateOverride=null){
  }
  const {createStudioGame}=await import('./design-system/scenarios.mjs');
  if(epoch!==studioScenarioEpoch)return;
- game=createStudioGame(selectedMode,configs[selectedMode],words);
+ game=createStudioGame(selectedMode,configs[selectedMode],words);if(query.get('viewId')?.startsWith('campaign-math'))root.dataset.campaignMode='math';
  if(selectedMode==='flags')window.__MALA_NAUKA_FLAGS_PREVIEW__=true;
  view='game';root.dataset.view=view;root.dataset.mode=selectedMode;renderedState='';renderedQuestion=0;await renderGame();if(epoch!==studioScenarioEpoch)return;
  if(query.has('effectLab')&&effectLabPending&&selectedMode==='spelling'){if(effectLabPending.event==='combo')game.streak=Math.max(0,(globalThis.__MALA_NAUKA_DESIGN__?.effects?.comboEvery||3)-1);spellingArt.setEffectPreview?.({id:effectLabPending.id,onMetrics:undefined});}
@@ -947,8 +985,20 @@ function installEffectLab(){
  requestAnimationFrame(()=>effectLabSend('ready'));
 }
 
-document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length)void renderStudioScenario();});
+// A draft can arrive after the fixture has mounted. Refresh only campaign data,
+// keeping the current realm, selected step and simulated progress.
+document.addEventListener('mala-nauka:design',()=>{if(studioProfiles()&&!new URLSearchParams(location.search).has('campaignLab')&&studioSourceWords?.length&&view==='campaign'&&campaignDesignSignature!==JSON.stringify(adventureConfig()))root.mnScreenReady=campaignPage();});
 
-document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(location.search).has('studio')&&studioSourceWords?.length){words=validateWords(resolveRules(studioSourceWords));void renderStudioScenario();}});
+document.addEventListener('mala-nauka:assets',()=>{if(new URLSearchParams(location.search).has('studio')&&!new URLSearchParams(location.search).has('campaignLab')&&studioSourceWords?.length)void renderStudioScenario();});
 
-document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});
+document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(location.search).has('studio')&&!new URLSearchParams(location.search).has('campaignLab')&&studioSourceWords?.length){words=validateWords(resolveRules(studioSourceWords));void renderStudioScenario();}});
+
+document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&!new URLSearchParams(location.search).has('campaignLab')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});
+
+root.addEventListener('click',async event=>{
+ const realm=event.target.closest('[data-campaign-realm]'),start=event.target.closest('[data-campaign-start]'),milestone=event.target.closest('[data-campaign-select]'),portal=event.target.closest('[data-campaign-portal]');
+ if(realm&&!realm.disabled){campaignTravelFrom=null;campaignSelectedStep='';campaignRealm=realm.dataset.campaignRealm;void campaignPage();}
+ if(start&&!start.disabled)void launchCampaign(start.dataset.campaignStart);
+ if(milestone&&!milestone.disabled){campaignSelectedStep=milestone.dataset.campaignSelect;void campaignPage();}
+ if(portal&&!portal.disabled){const next=adventureConfig().realms[Number(portal.dataset.campaignPortal)];if(next){portal.disabled=true;await campaignMarkupReady(progress,words,{realmId:next.id,player:activePlayer});celebrate(root);await departCampaignTraveller(root);campaignRealm=next.id;campaignTravelFrom={realm:next.id,index:0,arrivalOnly:true};await campaignPage();}}
+});

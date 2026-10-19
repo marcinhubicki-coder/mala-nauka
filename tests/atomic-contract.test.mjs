@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -14,7 +15,7 @@ import {validateConfig} from '../design-system/model.mjs';
 import {designFields} from '../design-system/project-model.mjs';
 import {transitionMotion,motionFrames,animateScreen} from '../shared/screen-motion.mjs';
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const modes=['spelling','math','english','flags','reading'];
 
 test('Home has six ordered template slots and actual composed families, without generated poster groups',()=>{

@@ -1,3 +1,4 @@
+import {cleanAdventure,trackAdventure} from './adventure-model.mjs';
 // One versioned economy for the game, Studio's calculator and saved rounds.
 // Coins are stored in millionths: short rounds never lose rounding remainders.
 export const GAME_MODES = Object.freeze({spelling:'Ortografia',math:'Matematyka',english:'Angielski',flags:'Flagi',reading:'Czytanie'});
@@ -13,6 +14,10 @@ export const POWERS = Object.freeze([
  {id:'spark',name:'Iskra odkrywcy',tier:'rare',icon:'✦',cost:40,bonus:.2,requires:{spelling:10},description:'Rozświetla zadanie i dodaje 20% iskier za poprawną odpowiedź.'},
  {id:'shield',name:'Spokojna tarcza',tier:'rare',icon:'◈',cost:70,bonus:.2,guard:true,requires:{spelling:20,math:10},description:'Chroni combo przy jednym potknięciu. Błąd nadal jest błędem do nauki.'},
  {id:'aurora',name:'Srebrna zorza',tier:'epic',icon:'❋',cost:180,bonus:.35,requires:{spelling:50,math:30,reading:20},description:'Otula zadanie zorzą i dodaje 35% iskier za poprawną odpowiedź.'},
+ {id:'recall',name:'Latarnia pamięci',tier:'rare',icon:'◉',cost:55,bonus:.2,requires:{reading:15},description:'Rozświetla zadanie kręgiem pamięci i wzmacnia zdobywane iskry.'},
+ {id:'orbit',name:'Orbita odkrywcy',tier:'epic',icon:'◎',cost:160,bonus:.3,requires:{flags:40,math:20},description:'Zatacza świetlistą orbitę wokół zadania i dodaje iskier.'},
+ {id:'rainbow',name:'Tęczowy most',tier:'epic',icon:'⌒',cost:200,bonus:.35,requires:{english:40,reading:20},description:'Łączy kolory nauki w tęczową falę światła.'},
+ {id:'trail',name:'Szlak świetlików',tier:'legendary',icon:'✧',cost:350,bonus:.45,requires:{spelling:60,math:40,reading:30,english:30,flags:30},description:'Świetliki otaczają zadanie i wzmacniają premię iskier.'},
  {id:'comet',name:'Złota kometa',tier:'legendary',icon:'☄',cost:400,bonus:.5,requires:{spelling:100,math:60,reading:40,english:40,flags:40},description:'Dodaje 50% iskier. Jej przepis łączy naukę we wszystkich pięciu przygodach.'}
 ]);
 const integer=n=>Number.isSafeInteger(n)&&n>=0?n:0;
@@ -29,7 +34,7 @@ export function progressionRules(config=globalThis.__MALA_NAUKA_DESIGN__){return
 export function cleanJourney(value){
  const cards={};for(const [word,card]of Object.entries(value?.cards||{}))if(word&&!['__proto__','prototype','constructor'].includes(word)&&word.length<100&&card&&typeof card.firstSeenAt==='string')cards[word]={firstSeenAt:card.firstSeenAt,correct:integer(card.correct)};
  const receipts={};for(const [id,n]of Object.entries(value?.receipts||{}))if(id.length<150&&integer(n)>0)receipts[id]=n;
- return {version:1,receipts,tutorialDone:value?.tutorialDone===true,pack:typeof value?.pack==='string'?value.pack:PROGRESSION_RULES.pack,cards,
+ return {version:1,adventure:cleanAdventure(value?.adventure),powerLevels:Object.fromEntries(POWERS.map(p=>[p.id,Math.max((value?.powers||[]).includes(p.id)?1:0,Math.min(3,integer(value?.powerLevels?.[p.id])))])),receipts,tutorialDone:value?.tutorialDone===true,pack:typeof value?.pack==='string'?value.pack:PROGRESSION_RULES.pack,cards,
   sparks:integer(value?.sparks),lifetimeSparks:integer(value?.lifetimeSparks),meter:Math.min(10000,Number.isFinite(value?.meter)&&value.meter>=0?value.meter:0),
   powers:[...new Set((value?.powers||[]).filter(id=>POWERS.some(p=>p.id===id)))],pending:POWERS.some(p=>p.id===value?.pending)?value.pending:null,
   queued:POWERS.some(p=>p.id===value?.queued)?value.queued:null,
@@ -61,13 +66,14 @@ export function reservePower(value,rules=PROGRESSION_RULES,random=Math.random){
 export function answerReward(value,attempt,{mode='spelling',id,streak=0,rules=PROGRESSION_RULES,random=Math.random}={}){
  validateProgression(rules);if(!id||!GAME_MODES[mode])throw Error('Odpowiedź wymaga trwałego identyfikatora i trybu.');
  let journey=cleanJourney(value);const receipt=/^(.*):([1-9][0-9]*)$/.exec(id);if(journey.applied.includes(id)||receipt&&(journey.receipts[receipt[1]]||0)>=Number(receipt[2]))return {journey,streak,duplicate:true,sparks:0};
- const power=POWERS.find(p=>p.id===journey.pending),correct=attempt.correct===true,assisted=attempt.hintUsed===true||attempt.explanationUsed===true;
+ const power=powerDefinition(POWERS.find(p=>p.id===journey.pending)),correct=attempt.correct===true,assisted=attempt.hintUsed===true||attempt.explanationUsed===true;
  const nextStreak=correct?(assisted?streak:streak+1):power?.guard?streak:0;
  const multiplier=comboMultiplier(nextStreak,rules),work=8/rules.modes[mode].questionsPerMinute;
  const previousLevel=starLevel(journey.cards[attempt.word]?.correct||0,rules);
  if(mode==='spelling'&&journey.cards[attempt.word]&&correct)journey.cards[attempt.word].correct++;
  const base=correct?work*multiplier*(1+rules.starBonus[previousLevel]):0;
- const earned=Math.round((base*(1+(power?.bonus||0))+(power?work:0))*1e6);
+ const earned=Math.round((base*(1+(power?Math.min(.8,power.bonus*[0,1,1.35,1.75][journey.powerLevels[power.id]||1]):0))+(power?work:0))*1e6);
+ journey.adventure=trackAdventure(journey.adventure,mode,attempt);
  journey.sparks+=earned;journey.lifetimeSparks+=earned;journey.totals[mode]++;
  const date=new Date(attempt.at||Date.now());const day=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
  journey.activeDays[day]=(journey.activeDays[day]||0)+1;
@@ -77,15 +83,16 @@ export function answerReward(value,attempt,{mode='spelling',id,streak=0,rules=PR
  return {journey,streak:nextStreak,sparks:earned/1e6,multiplier,power:power?.id||null,star:starLevel(journey.cards[attempt.word]?.correct||0,rules),starEarned:mode==='spelling'&&starLevel(journey.cards[attempt.word]?.correct||0,rules)>previousLevel};
 }
 export function powerRecipe(journey,power){
+ power=powerDefinition(power);
  const have=cleanJourney(journey),missing=Object.entries(power.requires).filter(([mode,n])=>have.totals[mode]<n);
  const predecessor=power.tier==='legendary'?'epic':power.tier==='epic'?'rare':null;
  const unlocked=!predecessor||have.powers.some(id=>POWERS.find(p=>p.id===id)?.tier===predecessor);
  return {missing,unlocked,owned:have.powers.includes(power.id),affordable:sparkBalance(have)>=power.cost,ready:!missing.length&&unlocked&&sparkBalance(have)>=power.cost};
 }
 export function forgePower(value,id,rules=PROGRESSION_RULES){
- const journey=cleanJourney(value),power=POWERS.find(p=>p.id===id);if(!power)throw Error('Nieznana moc.');
+ const journey=cleanJourney(value),power=powerDefinition(POWERS.find(p=>p.id===id));if(!power)throw Error('Nieznana moc.');
  const recipe=powerRecipe(journey,power);if(recipe.owned)return journey;if(!recipe.ready)throw Error('Zbierz składniki przepisu i iskry.');
- journey.sparks-=power.cost*1e6;const first=!journey.powers.length;journey.powers.push(id);journey.queued=id;if(first)journey.meter=rules.meter.capacity;return journey;
+ journey.sparks-=power.cost*1e6;const first=!journey.powers.length;journey.powers.push(id);journey.powerLevels[id]=1;journey.queued=id;if(first)journey.meter=rules.meter.capacity;return journey;
 }
 export function visibleAchievementIds(words){const categories=[...new Set(words.map(w=>w.category))];return [...[5,25,50,100,250,500].filter(n=>n<=words.length).map(n=>'mastery-'+n),...categories.map(c=>'discover-'+c),'active-days-7',...[10,20,40,80].filter(n=>n<=words.length).map(n=>'flawless-count-'+n),...Object.keys(GAME_MODES).flatMap(m=>[60,120,180,300].map(n=>'flawless-time-'+m+'-'+n))];}
 export function awardAchievements(value,learning,words,result=null,rules=PROGRESSION_RULES){
@@ -112,4 +119,14 @@ export function chooseTrophy(value,id,{family,choice},allowedLevel=0){
 export function trophySpriteIndex(path=''){return (2**path.length-1)+(path?parseInt(path.replaceAll('a','0').replaceAll('b','1'),2):0);}
 export function balanceBenchmark(rules=PROGRESSION_RULES,{accuracy=.8,minutes=5}={}){
  return Object.entries(GAME_MODES).map(([mode,name])=>{let journey=cleanJourney(null),streak=0,total=0,charge=0;const n=Math.round(minutes*rules.modes[mode].questionsPerMinute);for(let i=0;i<n;i++){const correct=(i+1)*accuracy-Math.floor(i*accuracy)>=1-1e-8;const r=answerReward(journey,{correct,at:'2026-01-01T12:00:00Z'},{mode,id:'benchmark-'+i,streak,rules});journey=r.journey;streak=r.streak;total+=r.sparks;charge+=8/rules.modes[mode].questionsPerMinute*(rules.meter.answer+(correct?rules.meter.correct*r.multiplier:0));}return {mode,name,sparksPerMinute:total/minutes,chargesPerMinute:charge/rules.meter.capacity/minutes,questions:n};});
+}
+
+export function powerDefinition(power){if(!power)return null;return {...power,...(globalThis.__MALA_NAUKA_DESIGN__?.adventure?.powers?.[power.id]||{})};}
+export function powerUpgradeRecipe(value,power){
+ power=powerDefinition(power);
+ const j=cleanJourney(value),level=j.powerLevels[power.id]||0,next=level+1,cost=Math.round(power.cost*[1,1.6,2.5][level]),missing=Object.entries(power.requires).filter(([mode,n])=>j.totals[mode]<Math.ceil(n*Math.max(1,next)));
+ const base=powerRecipe(j,power);return {level,next,cost,missing,complete:level>=3,ready:level<3&&!missing.length&&(level>0||base.unlocked)&&sparkBalance(j)>=cost,bonus:Math.round(Math.min(.8,power.bonus*[0,1,1.35,1.75][Math.min(3,next)])*100)};
+}
+export function upgradePower(value,id,expectedLevel,rules=PROGRESSION_RULES){
+ const j=cleanJourney(value),p=POWERS.find(p=>p.id===id);if(!p)throw Error('Nieznana moc.');const r=powerUpgradeRecipe(j,p);if(r.level!==expectedLevel||!r.ready)throw Error('Sprawdź poziom, składniki i portfel iskier.');if(!r.level)return forgePower(j,id,rules);j.sparks-=r.cost*1e6;j.powerLevels[id]=r.next;j.queued=id;return j;
 }

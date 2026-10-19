@@ -3,10 +3,10 @@
 Przed każdą zmianą interfejsu, animacji, grafik, stanu gry, Design Studio lub eksportu PWA przeczytaj:
 - [Zasady decyzji projektowych użytkownika](docs/design-system/decision-rules-2026-10.md) — priorytety, zaakceptowane i odrzucone kierunki, bramki ukończenia.
 - [Zasady i tokeny](docs/design-system/principles.md).
-- [rejestr aktualnych 45 widoków V2](docs/V2-ALL-VIEW-CONTRACTS.md), [Atomic Design](docs/V2-ATOMS-AND-TYPOGRAPHY.md), [wzorce wizualne](docs/V2-VISUAL-ACCEPTANCE.md).
+- [rejestr aktualnych 50 widoków V2](docs/V2-ALL-VIEW-CONTRACTS.md), [Atomic Design](docs/V2-ATOMS-AND-TYPOGRAPHY.md), [wzorce wizualne](docs/V2-VISUAL-ACCEPTANCE.md).
 - Dla obrazów: [styl ilustracji](docs/ORTHOGRAPHY-IMAGE-STYLE.md) i [biblioteka V2](docs/V2-CANONICAL-IMAGE-INDEX.md). Dla animacji: [wspólny runtime](docs/design-system/unified-runtime.md) i [WebKit](docs/ANIMATION-WEBKIT-GUIDE.md).
 
-**Aktualność V2:** przed zadaniem odczytaj bieżące `design-system/registry.json` i `shared/view-contracts.mjs` na gałęzi roboczej; liczba widoków i kontraktów musi się zgadzać. Na 17.10.2026 jest to **45 widoków**, w tym `forge`, `rule-details`, `trophy-base`, `trophy-evolution`. Nowsze widoki, zatwierdzone poprawki i aktualne kontrakty mają pierwszeństwo przed starszą dokumentacją. Nigdy nie przenoś starszego całego `registry.json` ani konfiguracji do nowszej gałęzi tylko po to, by dodać instrukcje.
+**Aktualność V2:** przed zadaniem odczytaj bieżące `design-system/registry.json` i `shared/view-contracts.mjs` na gałęzi roboczej; liczba widoków i kontraktów musi się zgadzać. Na 19.10.2026 jest to **50 widoków** (v42: kampania, okno nagrody i trzy stany matematyki kampanii), w tym `forge`, `rule-details`, `trophy-base`, `trophy-evolution`. Nowsze widoki, zatwierdzone poprawki i aktualne kontrakty mają pierwszeństwo przed starszą dokumentacją. Nigdy nie przenoś starszego całego `registry.json` ani konfiguracji do nowszej gałęzi tylko po to, by dodać instrukcje.
 
 ## Tryb pracy
 

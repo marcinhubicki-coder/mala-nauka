@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -12,7 +13,7 @@ import {playResponseEffect} from '../spelling/response-effects.mjs';
 import {DEFAULT_SCORING,scoreAttempts,scoreResult,validateScoring} from '../spelling/scoring.mjs';
 import {validateConfig,changedViews} from '../design-system/model.mjs';
 import {recordResult,cleanProgress} from '../progress.mjs';
-const read=p=>readFile(new URL('../'+p,import.meta.url),'utf8').then(JSON.parse);
+const read=p=>readFile(new URL('../'+p,import.meta.url),'utf8').then(JSON.parse).then(value=>p==='design-system/config.json'?resolveBehaviorConfig(value):value);
 const words=(await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat();
 const [assets,rules,config,registry]=await Promise.all(['assets','rules','config','registry'].map(s=>read(`design-system/${s}.json`)));
 configureAssets(assets,'https://test.example/');configureRules(rules);

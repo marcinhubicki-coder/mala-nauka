@@ -1,10 +1,11 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import {optimizedTestConfig,optimizeBubbleSource,optimizeIndexHTML,optimizeRuntimeSource,assertVisibilityReadyForProduction,TEST_PWA_BRANCH} from '../design-system/pwa-test-build.mjs';
 import {elementCSS} from '../shared/element-system.mjs';
-const fixture=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
+const fixture=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8')));
 
 test('Test PWA honors draft visibility in mobile build',()=>{
  const base=structuredClone(fixture);

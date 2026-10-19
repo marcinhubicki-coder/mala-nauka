@@ -82,5 +82,5 @@ export function annotateElements(root,config,view){
  }
  return items;
 }
-export function componentCategories(view){if(['players','player-create','player-pin'].includes(view.screen))return'login';if(['home','settings'].includes(view.id))return'home';if(view.screen==='history')return'results';return'game';}
-export const CATEGORIES={login:'Logowanie',home:'Strona startowa',results:'Moje wyniki',game:'Tryb gry'};
+export function componentCategories(view){if(view.screen==='campaign')return'campaign';if(['players','player-create','player-pin'].includes(view.screen))return'login';if(['home','settings'].includes(view.id))return'home';if(view.screen==='history')return'results';return'game';}
+export const CATEGORIES={login:'Logowanie',home:'Strona startowa',results:'Moje wyniki',campaign:'Kampania',game:'Tryb gry'};

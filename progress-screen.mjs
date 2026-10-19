@@ -1,3 +1,6 @@
+import {awardsMarkup,powersMarkup,rewardCardsMarkup,bindAdventure} from './shared/adventure-ui.mjs';
+import {modeMetrics,cleanAdventure} from './shared/adventure-model.mjs';
+import {discoveryCardsMarkup,openDiscoveryCard} from './shared/discovery-cards.mjs';
 import {resolveRoute} from './shared/navigation.mjs';
 import {forgePower,chooseTrophy,cleanJourney} from './shared/progression.mjs';
 import {forgeMarkup,trophiesMarkup,trophyLevel,ruleCardsMarkup,openRuleCard,awardPreview,trophyDialogMarkup} from './shared/journey-ui.mjs';
@@ -52,24 +55,24 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   function tabs(){return '<nav class="progress-modes" aria-label="Postępy według przygody">'+Object.keys(NAMES).map(id=>'<button type="button" data-progress="mode" data-mode="'+id+'" class="progress-mode '+(mode===id?'is-active':'')+'" aria-pressed="'+(mode===id)+'" aria-label="'+NAMES[id]+'">'+glyph(id)+(mode===id?'<span>'+NAMES[id]+'</span>':'')+'</button>').join('')+'</nav>';}
   function header(title,sub=false){return pageHeading(title,{className:'progress-header',backClass:'progress-back',...(sub?{progress:screen==='forge'&&initialScreen==='forge'&&backAction==='return-results'?'return-results':'dashboard'}:{action:backAction})});}
   function render(){
-    root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=screen==='collection'&&mode!=='spelling'?'sessions':screen;
+    root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=['collection','rules','categories'].includes(screen)&&mode!=='spelling'?'sessions':screen;
     if(screen!=='dashboard'){renderSubpage();return;}
     const spelling=mode==='spelling';
-    const sums=spelling?knowledge:{mastered:0,learning:0,review:0};
+    const metrics=modeMetrics(progress,mode,words),sums=spelling?knowledge:{mastered:metrics.mastered,learning:Math.max(0,metrics.discovered-metrics.mastered),review:0};
     const heading=spelling?'Coraz pewniej<span class="progress-hero-line">z <span class="progress-hero-emphasis">ortografią!</span></span>':'Twoja przygoda<span class="progress-hero-line">z <span class="progress-hero-emphasis">'+INSTRUMENTAL[mode]+'!</span></span>';
     root.innerHTML='<section class="progress-canvas"><div class="progress-hero">'+header('Moje wyniki')+tabs()+'<div class="progress-hero-copy"><h2>'+heading+'</h2><p>Zobacz, co już umiesz<br>i do czego warto<br>jeszcze wrócić.</p></div></div>'+
       '<div class="progress-content"><div class="progress-stats" aria-label="Twoja nauka">'+[['mastered','Umiem',check],['learning','Ćwiczę',gear],['review','Powtórzę',repeat]].map(([key,label,icon])=>'<button type="button" class="progress-stat '+key+'" data-progress="collection" data-filter="'+key+'"><span class="progress-stat-icon" aria-hidden="true">'+icon+'</span><span><b>'+sums[key]+'</b><small>'+label+'</small></span>'+sprig+'</button>').join('')+'</div>'+
       '<div class="progress-links">'+progressCollectionMarkup(spelling,true)+'<button type="button" class="progress-illustrated categories" data-progress="categories"><strong>Kategorie<br>do poćwiczenia</strong><span class="progress-link-arrow" aria-hidden="true">'+chevron+'</span></button></div>'+
-       '<section class="progress-achievements"><header><div><h2>Twoje osiągnięcia</h2><p>Odkryj, co czeka tuż za rogiem!</p></div><button type="button" data-progress="achievements">Zobacz więcej '+chevron+'</button></header>'+awardPreview(progress.journey,earnedWords,words,mode,previewKind,achievementPage)+'</section>'+
+       '<section class="progress-achievements"><header><div><h2>Twoje osiągnięcia</h2><p>Odkryj, co czeka tuż za rogiem!</p></div><button type="button" data-progress="achievements">Zobacz więcej '+chevron+'</button></header>'+rewardCardsMarkup(progress,mode,words,'medal')+'</section>'+
       '<button type="button" class="progress-rules-link" data-progress="rules"><span class="progress-rule-art" aria-hidden="true"></span><span class="progress-rule-copy"><strong>Wyjaśnienia i zasady</strong><small>Zobacz proste wyjaśnienia<br>zasad ortografii i przykłady.</small></span><i aria-hidden="true">'+chevron+'</i></button></div></section>';
   }
   function rulesContentMarkup(){
-    const selected=words.filter(word=>word.category===ruleCategory);
+    const selected=words.filter(word=>word.category===ruleCategory&&progress.journey.cards[word.word]);
     const groups=ruleGroups(words,ruleCategory);
     let content='<nav class="rules-categories" aria-label="Wybierz kategorię zasad">'+CATEGORIES.map(category=>'<button type="button" data-progress="rules-category" data-category="'+category+'" aria-pressed="'+(ruleCategory===category)+'">'+esc(category.replace('/',' / '))+'</button>').join('')+'</nav>';
     if(rulesView==='rules')content+=ruleCardsMarkup(words,progress.journey,ruleCategory);
     else content+='<p class="progress-subtitle">Wybierz słowo i poznaj jego zasadę.</p><div class="collection-word-grid">'+selected.map(word=>{const scene=sceneFor(word.masked,word.word);return '<button type="button" class="collection-word" data-progress="rule" data-word="'+esc(word.word)+'"><img src="'+esc(sceneUrl(scene))+'" alt="" width="120" height="120" loading="lazy" decoding="async"><strong>'+spelled(word)+'</strong></button>';}).join('')+'</div>';
-    return content;
+    return content+'<p class="undiscovered-note">Do odkrycia w tej kategorii: '+(words.filter(w=>w.category===ruleCategory).length-selected.length)+' słów.</p>';
   }
   function rulesViewMarkup(){
     return '<div class="rules-views" role="radiogroup" aria-label="Widok wyjaśnień"><span class="rules-view-indicator" aria-hidden="true"></span>'+[['rules','Zasady'],['words','Słowa']].map(([key,label])=>'<label><input type="radio" name="progressRulesView" value="'+key+'" '+(rulesView===key?'checked':'')+'><span>'+label+'</span></label>').join('')+'</div>';
@@ -89,17 +92,17 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   function renderSubpage(){
     const title={collection:mode==='spelling'?'Moja kolekcja słów':'Moje przygody',categories:'Kategorie do poćwiczenia',rules:'Wyjaśnienia i zasady',achievements:'Twoje osiągnięcia','trophy-base':'Wybierz swój puchar','trophy-evolution':'Twój puchar rośnie',forge:'Kuźnia mocy'}[screen];
     let content='';
-    if(screen==='forge'){content=forgeMarkup(progress.journey);}
-    else if(['achievements','trophy-base','trophy-evolution'].includes(screen)){content=trophiesMarkup(progress.journey,earnedWords,words,{kind:awardKind,selectedId:selectedTrophy,mode});}
+    if(screen==='forge'){content=powersMarkup(progress.journey);}
+    else if(['achievements','trophy-base','trophy-evolution'].includes(screen)){content=['trophy-base','trophy-evolution'].includes(screen)?trophiesMarkup(progress.journey,earnedWords,words,{kind:awardKind,selectedId:selectedTrophy,mode}):awardsMarkup(progress,mode,words,awardKind);}
     else if(mode!=='spelling'){
-      const sessions=progress.history.filter(result=>result.mode===mode);
-      content='<p class="progress-subtitle">Twoje ukończone przygody z '+INSTRUMENTAL[mode]+'.</p>'+(sessions.length?'<div class="progress-session-list">'+sessions.map(r=>'<article data-session="'+esc(r.id)+'"><h2>'+new Date(r.date).toLocaleDateString('pl-PL')+'</h2><p>'+r.correct+' poprawnie · '+r.wrong+' do powtórki</p><small>'+r.duration/60+' min</small></article>').join('')+'</div>':'<div class="progress-empty"><h2>Jeszcze wszystko przed nami!</h2><p>Zagraj, aby zobaczyć tutaj swoje przygody.</p></div>');
+      content=discoveryCardsMarkup(progress,mode,words);
     }else if(screen==='rules'){
       content=rulesViewMarkup()+'<div data-rules-content>'+rulesContentMarkup()+'</div>';
     }else if(screen==='collection'){
       const selected=words.filter(word=>{const item=byWord.get(word.word);return progress.journey?.cards?.[word.word]&&(filter==='all'||filter==='mastered'&&item?.masteryEarned||filter==='review'&&item?.needsReview||filter==='learning'&&!item?.masteryEarned&&!item?.needsReview);});
       content=(screen==='collection'?collectionFiltersMarkup(filter):'<p class="progress-subtitle">Wybierz słowo i poznaj jego zasadę.</p>')+
         (selected.length?'<div class="collection-word-grid" data-ds-recipe="container-collection-grid" data-ds-kind="container">'+selected.map(word=>collectionWordMarkup(word,byWord.get(word.word)?.state||'learning',progress.journey,byWord.get(word.word))).join('')+'</div>':'<div class="progress-empty"><h2>Twoja kolekcja rośnie z każdą próbą.</h2><p>'+(filter==='mastered'?'Słowa trafiają do „Umiem” po poprawnych powtórkach w różnych dniach.':'Ćwicz, a odkryte słowa pojawią się tutaj.')+'</p><button type="button" data-progress="practice">Ćwiczymy!</button></div>');
+      content+='<p class="undiscovered-note">Do odkrycia: '+words.filter(w=>!progress.journey.cards[w.word]).length+' słów.</p>';
       content='<section class="collection-content" data-ds-recipe="family-collection" data-ds-kind="container">'+content+'</section>';
     }else if(screen==='categories'){
       content='<p class="progress-subtitle">Małe kroki, coraz pewniejsza pisownia.</p><div class="progress-category-list">'+categoryGroups.map(g=>'<button type="button" data-progress="practice" data-category="'+g.category+'"><b class="category-pair"><span>'+g.category.split('/').map(esc).join('</span><i aria-hidden="true">/</i><span>')+'</span></b><span>'+g.mastered+' / '+g.total+' opanowane<small>'+(g.review?g.review+' słów do powtórki':'Poznaj lub utrwal tę zasadę')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>';
@@ -141,8 +144,10 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     finally{busy=false;}
   }
   root.addEventListener('click',event=>{
+    const discovery=event.target.closest('[data-discovery-key]');if(discovery){openDiscoveryCard(root,progress,discovery.dataset.discoveryMode,discovery.dataset.discoveryKey);return;}
     const button=event.target.closest('[data-progress]');if(!button)return;
     const action=button.dataset.progress;if(busy)return;
+    if(action==='award-kind'){awardKind=button.dataset.kind;render();return;}
     if(action==='trophy-cancel'){closeUpgrade();return;}
     if(action==='trophy-upgrade'){openUpgrade();return;}
     if(action==='award-tab'){if(button.dataset.preview){previewKind=button.dataset.kind;achievementPage=0;}else awardKind=button.dataset.kind;render();return;}
@@ -174,5 +179,6 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   },{signal:abort.signal});
   root.addEventListener('change',event=>{if(event.target.name==='progressRulesView')setRulesView(event.target.value==='rules'?0:1);},{signal:abort.signal});
   window.addEventListener('resize',()=>{const container=root.querySelector('.rules-views');if(container&&!container.classList.contains('jelly-v4-moving'))rulesJelly.update(container,rulesView==='rules'?0:1,{animate:false});},{signal:abort.signal});
-  controllers.set(root,()=>{abort.abort();upgradeDialog?.remove();root.getAnimations({subtree:true}).forEach(a=>a.cancel());});render();
+  const unbindAdventure=bindAdventure(root,{getProgress:()=>progress,words,onSave:async journey=>{await onSave?.(journey);progress.journey=journey;},onChanged:()=>{const dialog=root.querySelector('.adventure-reward-dialog');if(dialog)document.body.append(dialog);render();}});
+  controllers.set(root,()=>{unbindAdventure();document.querySelectorAll('.adventure-reward-dialog').forEach(d=>d.remove());abort.abort();upgradeDialog?.remove();root.getAnimations({subtree:true}).forEach(a=>a.cancel());});render();
 }

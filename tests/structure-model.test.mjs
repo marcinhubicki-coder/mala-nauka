@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -7,7 +8,7 @@ import {viewIdFor,validateConfig} from '../design-system/model.mjs';
 import {STARTUP_LINKS,startupLinks,resolveRoute,validateNavigation,playerSelectionSettings} from '../shared/navigation.mjs';
 import {designFields} from '../design-system/project-model.mjs';
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 test('every declared block has a unique identity, children, selector and acyclic inheritance',()=>{
  assert.equal(new Set(PARTS.map(p=>p.id)).size,PARTS.length);
  for(const p of PARTS){assert.ok(p.selector);assert.ok(['atom','group','family'].includes(p.level));for(const id of p.children)assert.ok(PART_BY_ID[id],`${p.id} → ${id}`);const chain=recipeLineage(p.id);assert.equal(new Set(chain).size,chain.length);if(p.inherits)assert.ok(PART_BY_ID[p.inherits]);}

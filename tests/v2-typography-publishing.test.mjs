@@ -1,9 +1,10 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {designFields,editableProjectConfig,projectContract,projectSnapshot} from '../design-system/project-model.mjs';
 import {validateConfig} from '../design-system/model.mjs';
-const production=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8'));
+const production=resolveBehaviorConfig(JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8')));
 test('Typography scale persists through design drafts, snapshots and publish contract',()=>{
  const local=structuredClone(production);
  local.typeScale={h2:{size:40,weight:700}};

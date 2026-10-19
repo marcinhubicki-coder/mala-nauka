@@ -11,10 +11,10 @@ function screenshotOrigin(rect){
   y:(screenshot.safeTop+(y-HOME_TOP)/HOME_CONTENT_HEIGHT*canvasHeight)*ratio
  };
 }
-test('Home approved five mode cards retain their 3 + 2 geometry',()=>{
+test('Home restores the reference proportions and 3 + 2 practice rows',()=>{
  const expected={
-  spelling:[37,1389],math:[334,1386],english:[628,1386],
-  flags:[37,1671],reading:[482,1671]
+  spelling:[29,1386],math:[327,1386],english:[621,1386],
+  flags:[29,1671],reading:[475,1671]
  };
  for(const [mode,[x,y]]of Object.entries(expected)){
   const actual=screenshotOrigin(HOME_TILES[mode]);

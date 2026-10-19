@@ -1,3 +1,4 @@
+import {advanceCampaign,trackAdventure} from './shared/adventure-model.mjs';
 import {awardRuleProgress,collectibleRules} from './shared/rule-progress.mjs';
 import {cleanJourney,discoverWord,answerReward,awardAchievements,progressionRules} from './shared/progression.mjs';
 import {DEFAULT_SCORING,scoreAttempts} from './spelling/scoring.mjs';
@@ -14,7 +15,7 @@ export function cleanProgress(value) {
  }
  const today=value?.today;
  const learning=value?.learning?cleanLearning(value.learning):[...history].reverse().reduce((ledger,result)=>addLearningSession(ledger,result),null);
- const journey=cleanJourney(value?.journey);if(!value?.journey&&Object.keys(learning?.items||{}).length)journey.tutorialDone=true;
+ const journey=cleanJourney(value?.journey);if(!value?.journey?.adventure){if(Object.keys(journey.trophies).some(id=>id.startsWith('mastery-')))journey.adventure.claims['knowledge-spelling']={level:1,choices:[]};for(const result of [...history].reverse())for(const attempt of result.attempts||[])journey.adventure=trackAdventure(journey.adventure,result.mode,attempt);}if(!value?.journey&&Object.keys(learning?.items||{}).length)journey.tutorialDone=true;
  if(today&&/^\d{4}-\d{2}-\d{2}$/.test(today.day)&&count(today.count))journey.activeDays[today.day]=Math.max(journey.activeDays[today.day]||0,today.count);
  for(const item of Object.values(learning?.items||{}))if(!journey.cards[item.word])journey.cards[item.word]={firstSeenAt:item.firstSeenAt||item.lastSeenAt,correct:item.correct||0};
  const currentDay=localDay();const dailyCount=journey.activeDays[currentDay];
@@ -47,6 +48,7 @@ export function recordResult(progress,result,words=[]) {
  progress.learning=addLearningSession(progress.learning,result,rules.mastery);
  progress.journey=awardRuleProgress(awardAchievements(progress.journey,progress.learning,words,result,rules),words,rules);
  if(result.rewards){result.rewards.mastered=[...new Set([...(result.rewards.mastered||[]),...Object.values(progress.learning.items).filter(w=>w.masteryEarned&&!previousMastered.has(w.word)).map(w=>w.word)])];result.rewards.achievements=[...new Set([...(result.rewards.achievements||[]),...Object.keys(progress.journey.achievements).filter(id=>!previousAchievements.has(id))])];const seen=new Set((result.attempts||[]).map(a=>a.word));result.rewards.rules=collectibleRules(words,progress.journey).filter(r=>r.words.some(w=>seen.has(w.word))).map(r=>({id:r.id,title:r.title,collected:progress.journey.rules[r.id]?.collected===true,discovered:r.discovered,threshold:r.threshold}));}
+ const campaign=advanceCampaign(progress,result,words);if(campaign.world)result.campaignWorld=campaign.world.id;result.campaignCompleted=campaign.complete===true;
  progress.history=[result,...progress.history].slice(0,50);
  const day=localDay(new Date(result.date));
  progress.today={day,count:result.attempts?.length?progress.journey.activeDays[day]||0:(progress.today.day===day?progress.today.count:0)+result.correct+result.wrong};

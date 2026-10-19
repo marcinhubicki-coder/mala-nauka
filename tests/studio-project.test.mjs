@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -8,7 +9,7 @@ import {resolveStudioMerge} from '../design-system/merge-model.mjs';
 import {GitClient} from '../design-system/git-client.mjs';
 import {validateConfig} from '../design-system/model.mjs';
 import {encodeShare,decodeShare,previewLink,validateEnvelope,validateFeedback} from '../design-system/project-share.mjs';
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8'));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url),'utf8')));
 const answer=(word,n,other={})=>({id:'event-'+n,type:'answer',word,at:'2026-10-05T10:00:00Z',sessionId:'one',correct:true,families:['u/ó'],...other});
 test('seventh distinct independent answer grants memory; repeat, hint and retry cannot farm it',()=>{
  let s=replayDiscovery(fixtureEvents('six'));assert.equal(s.memoryEarned,0);assert.equal(s.eligible,6);

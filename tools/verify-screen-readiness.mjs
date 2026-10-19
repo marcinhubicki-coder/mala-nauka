@@ -20,8 +20,7 @@ try{
  await page.goto(base+'/design-system/#components');
  await page.locator('#preview-toolbar').waitFor({timeout:20000});
  for(const mode of (process.env.V2_MODES||'spelling,english,flags,reading,math').split(',')){
-  await page.locator('[data-studio-nav=mode][value='+mode+']').locator('..').click();
-  await page.locator('[data-studio-nav=view][value='+mode+'-settings]').locator('..').click();
+  await page.locator('#view-select').selectOption(mode+'-settings');
   const frame=page.frameLocator('#device-frame');
   await frame.locator('#app[data-ds-contract-ready="'+mode+'-settings"]').waitFor({timeout:15000});
   await frame.locator('#app[data-view="wizard"] .mission-illustration').waitFor({state:'attached',timeout:15000});

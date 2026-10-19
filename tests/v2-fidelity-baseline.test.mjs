@@ -1,9 +1,10 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 const source=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
-const design=JSON.parse(source('design-system/config.json'));
+const design=resolveBehaviorConfig(JSON.parse(source('design-system/config.json')));
 
 test('Wariant pilota zachowuje zatwierdzony tekst misji',()=>{
  const live=(design.copyOverrides||[]).filter(row=>row.viewId==='spelling-settings'&&row.original==='Twoja mała misja');

@@ -29,9 +29,10 @@ const paths={
 export function studioIcon(id){return paths[id]?`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[id]}"/></svg>`:iconSVG(id);}
 export const NAV_ICONS={project:'rocket',components:'grid',builder:'layers',testing:'play',colors:'palette',fonts:'type',assets:'image',batches:'check',motion:'play',effects:'spark',sound:'music',scoring:'trophy',views:'flow',audit:'code',docs:'book',versions:'history'};
 export const MODE_ICONS={spelling:'letters',english:'globe',flags:'flag',reading:'book',math:'calculator'};
-export const CATEGORY_ICONS={login:'users',home:'home',results:'trophy',game:'play'};
+export const CATEGORY_ICONS={login:'users',home:'home',results:'trophy',campaign:'globe',game:'play'};
 export function partIcon(part){return ['page','template'].includes(part.level)?'screen':['group','family'].includes(part.level)?'layers':({text:'type',image:'image',background:'palette',button:'button',toggle:'toggle',key:'lock',input:'type',timer:'clock',meter:'target',icon:'atom'})[part.kind]||'square';}
 export function viewIcon(view){
+ if(view.screen==='campaign')return'globe';
  const value=[view.id,view.screen,view.state].filter(Boolean).join(' ').toLowerCase();
  if(/setting|wizard/.test(value))return 'gear';
  if(/incorrect|wrong|error/.test(value))return 'sad';

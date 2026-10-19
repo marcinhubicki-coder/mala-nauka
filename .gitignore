@@ -1,5 +1,5 @@
 dist/
-node_modules/
+node_modules
 .design-qa/
 
 # New immutable illustrations are committed only to assets/library-v1.

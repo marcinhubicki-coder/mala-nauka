@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {HOME_RECTS,HOME_TILES,homeRect,homePosition,validateHomeLayout} from '../shared/home-layout.mjs';
 
 test('Approved Home artboard geometry is canonically registered',()=>{
- assert.equal(Object.keys(HOME_RECTS).length,12);
+ assert.equal(Object.keys(HOME_RECTS).length,13);
  assert.deepEqual(HOME_TILES.spelling,[26,1240,269,260]);
  assert.deepEqual(homeRect({},'home-stats').rect,[10,940,833,210]);
  assert.ok(homePosition({},'home-mode-spelling').startsWith('left:0%'));

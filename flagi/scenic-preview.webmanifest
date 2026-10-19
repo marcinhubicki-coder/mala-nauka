@@ -1,0 +1,17 @@
+{
+  "id": "/flagi/scenic-preview",
+  "name": "Mała Nauka · Flagi",
+  "short_name": "Flagi",
+  "lang": "pl",
+  "start_url": "./scenic-preview.html?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#405024",
+  "theme_color": "#405024",
+  "icons": [
+    {"src":"../assets/icon-192.png?v=20260930","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"../assets/icon-512.png?v=20260930","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
+}

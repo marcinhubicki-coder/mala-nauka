@@ -13,7 +13,7 @@ import {surfaceEditor} from '../design-system/surface-editor.mjs';
 import {behaviorOptions} from '../design-system/behavior-picker.mjs';
 import {AMBIENT_STYLES,EFFECT_STYLES} from '../spelling/effect-model.mjs';
 
-const original=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const original=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
 
 test('migration is immutable, idempotent and preserves current runtime values',()=>{

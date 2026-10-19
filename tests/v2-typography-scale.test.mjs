@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -6,7 +7,7 @@ import {elementCSS,validateElementStyles,rawVisualValue} from '../shared/element
 import {validateConfig,configCSS,changedViews} from '../design-system/model.mjs';
 import {planStyleEdit,planTypeScaleEdit,planDesignBatch} from '../tools/studio-engine.mjs';
 const source=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-const original=JSON.parse(source('design-system/config.json'));
+const original=resolveBehaviorConfig(JSON.parse(source('design-system/config.json')));
 
 test('Text has precisely H1-H9 and Body visual tokens, not extra HTML tags',()=>{
  assert.deepEqual(TYPE_STYLE_IDS,['h1','h2','h3','h4','h5','h6','h7','h8','h9','body']);
@@ -21,7 +22,7 @@ test('Existing config stays valid and produces only opt-in type selectors',()=>{
  assert.match(css,/--ds-type-h1-size:44px/);
  assert.match(css,/--ds-type-body-size:16px/);
  assert.ok(!elementCSS(original).includes('--ds-type-h1-size'));
- assert.deepEqual(JSON.parse(source('design-system/config.json')).typography,original.typography);
+ assert.deepEqual(resolveBehaviorConfig(JSON.parse(source('design-system/config.json'))).typography,original.typography);
 });
 test('A single H2 token changes every H2 assignment but no other text instance',()=>{
  const initial=structuredClone(original);

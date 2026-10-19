@@ -1,8 +1,9 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {assertStudioBranch} from '../design-system/git-client.mjs';
-const config=JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8'));
+const config=resolveBehaviorConfig(JSON.parse(readFileSync(new URL('../design-system/config.json',import.meta.url),'utf8')));
 test('V2 Studio config declares the same write branch as the V2 preview',()=>{
  assert.equal(config.branch,'refactor/v2-parity-first');
  assert.equal(assertStudioBranch(config.branch,'refactor/v2-parity-first'),true);

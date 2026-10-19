@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
@@ -6,7 +7,7 @@ import {partSample} from '../shared/part-samples.mjs';
 import {partRecipeDefaults} from '../shared/part-recipes.mjs';
 import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from '../shared/profile-parts.mjs';
 import {visualValue,elementCSS} from '../shared/element-system.mjs';
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
 
 test('all declared parts construct immediately from code, with real locally available image assets',async()=>{

@@ -1,3 +1,5 @@
+@import url('./shared/adventure.css');
+@import './shared/game-chrome.css';
 @import "shared/round-result.css";
 @import url("home-screen.css?v=20260930-release");
 @import url("ortografia/wizard-v2.css?v=6-dyktando-jelly-v4");

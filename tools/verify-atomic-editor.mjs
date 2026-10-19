@@ -4,7 +4,7 @@ const server=createServer(async(req,res)=>{try{let p=new URL(req.url,'http://loc
 const browser=await webkit.launch({headless:true,...(process.env.WEBKIT_EXECUTABLE?{executablePath:process.env.WEBKIT_EXECUTABLE}:{})}),page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
 const base='http://127.0.0.1:'+server.address().port;
 
-const selectHome=async()=>{await page.locator('[data-studio-nav=category][value=home]').locator('..').click();await page.locator('[data-studio-nav=view][value=home]').locator('..').click();await page.frameLocator('#device-frame').locator('.home-canvas').waitFor();};
+const selectHome=async()=>{await page.locator('#view-select').selectOption('home');await page.frameLocator('#device-frame').locator('.home-canvas').waitFor();};
 const selectPart=async(id,level)=>{await page.locator('[data-studio-nav=library-level][value='+level+']').locator('..').click();await page.locator('.recipe-library-row[data-live-part="'+id+'"]').evaluate(n=>n.closest('details').open=true);await page.locator('.recipe-library-row[data-live-part="'+id+'"]').click();await page.locator('#live-sample [data-ds-recipe="'+id+'"]').first().waitFor();};
 try{
  await page.goto(base+'/design-system/#components');await page.locator('#preview-toolbar').waitFor();await selectHome();
@@ -40,7 +40,7 @@ try{
   if(id==='text-spelling-word'){assert.equal(await page.locator('#live-sample img,#live-sample image').count(),0);assert.equal(await page.locator('#live-sample [data-ds-recipe=text-spelling-word]').count(),1);}
  }
  console.log('PASS library: singleton choices hidden, correct today values, text-only question');
- await page.locator('#navigation [data-page=components]').click();await page.locator('[data-studio-nav=category][value=game]').locator('..').click();await page.locator('[data-studio-nav=mode][value=spelling]').locator('..').click();await page.locator('[data-studio-nav=view][value=spelling-initial]').locator('..').click();
+ await page.locator('#navigation [data-page=components]').click();await page.locator('#view-select').selectOption('spelling-initial');
  await frame.locator('[data-ds-recipe=text-spelling-word]').waitFor();
  assert.equal(await frame.locator('[data-ds-recipe=text-spelling-word] img,[data-ds-recipe=text-spelling-word] image').count(),0);assert.equal(await frame.locator('[data-ds-recipe=text-spelling-word]').count(),1);
  assert.equal(await frame.locator('[data-ds-recipe=text-spelling-word]').evaluate(n=>n.dataset.dsKind),'text');assert.ok(await frame.locator('[data-ds-recipe=text-spelling-word]').evaluate(n=>!!n.dataset.dsElement));

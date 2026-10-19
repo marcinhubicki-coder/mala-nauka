@@ -36,7 +36,7 @@ export function renderHomeHero(nickname='Odkrywco',style=''){
  <p class="home-hero-copy" data-ds-recipe="text-home-subtitle" data-ds-kind="text" data-ds-key="home-subtitle">Świetnie Ci idzie, co dalej?</p></section>`;
 }
 export function renderHomeAdventures(style=''){
- return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-kind="text" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Wybierz swoją przygodę</h2><p data-ds-kind="text" data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
+ return `<section class="home-adventures" data-ds-recipe="container-home-adventures" data-ds-kind="container" data-ds-key="home-adventures" style="${style}"><h2 id="home-modes-title" data-ds-kind="text" data-ds-recipe="text-home-adventure-title" data-ds-key="home-adventure-title">Poćwicz swobodnie</h2><p data-ds-kind="text" data-ds-recipe="text-home-mode-count" data-ds-key="home-mode-count">5 trybów</p></section>`;
 }
 export function renderHomeDecoration(mode){
  const [w,h]=HOME_TILE_SIZES[mode];
@@ -59,16 +59,20 @@ export function renderHomeModeCard(mode,name,style=''){
 export function renderHomeModes(modes,modeIds=Object.keys(TILES),style=''){
  return `<nav class="home-game-buttons" aria-labelledby="home-modes-title" data-ds-kind="container" data-ds-recipe="family-home-modes" data-ds-key="home-modes" data-ds-label="Pięć przygód" style="${style}">${modeIds.map(mode=>renderHomeModeCard(mode,modes[mode].name,homePosition(layout(),'home-mode-'+mode))).join('')}</nav>`;
 }
-export function renderHomeWelcome({nickname='Odkrywco',today=0,lastScore='0 pkt',lastLabel='Zagraj pierwszą rundę'}={},style=''){
- return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,homePosition(layout(),'home-hero'))}${renderHomeProgress({today,lastScore,lastLabel},homePosition(layout(),'home-stats'))}</section>`;
+export function renderHomeCampaign(campaignStarted=false,style=''){
+ const sparks=[[12,33,5,-1.2],[20,73,3,-3.4],[32,17,4,-2.1],[48,85,3,-.4],[67,18,5,-4.1],[81,76,4,-2.9],[90,39,5,-.8],[73,58,2,-3.7],[23,49,2,-2.5],[57,31,2,-1.7]];
+ return `<button type="button" class="home-campaign-cta" data-action="campaign" aria-label="${campaignStarted?'Twoja kampania':'Rozpocznij kampanię'}" data-ds-key="home-campaign" data-ds-kind="button" data-ds-recipe="button-campaign" data-ds-atomic="true" style="${style}"><span class="home-campaign-film" aria-hidden="true" data-mn-decoration="true"></span><span class="home-campaign-sparks" aria-hidden="true" data-mn-decoration="true">${sparks.map(([x,y,size,delay],i)=>`<i class="${i<7?'is-star':''}" style="left:${x}%;top:${y}%;--spark-size:${size};--spark-delay:${delay}s"></i>`).join('')}</span><span class="home-campaign-label">${campaignStarted?'Twoja':'Rozpocznij'}<br>kampani${campaignStarted?'a':'ę'}</span></button>`;
+}
+export function renderHomeWelcome({nickname='Odkrywco',today=0,lastScore='0 pkt',lastLabel='Zagraj pierwszą rundę',campaignStarted=false}={},style=''){
+ return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,homePosition(layout(),'home-hero'))}${renderHomeCampaign(campaignStarted,homePosition(layout(),'home-campaign'))}${renderHomeProgress({today,lastScore,lastLabel},homePosition(layout(),'home-stats'))}</section>`;
 }
 
-export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds}){
+export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds,campaignStarted=false}){
  const slots={
  'background-home':'<span class="home-background" data-ds-kind="background" data-ds-recipe="background-home" data-ds-key="home-background" aria-hidden="true"></span>',
  'image-home-logo-art':renderHomeLogo(homePosition(layout(),'home-logo')),
  'button-home-settings':renderHomeSettings(homePosition(layout(),'home-settings')),
- 'family-home-welcome':renderHomeWelcome({nickname,today,lastScore,lastLabel},homePosition(layout(),'home-welcome')),
+ 'family-home-welcome':renderHomeWelcome({nickname,today,lastScore,lastLabel,campaignStarted},homePosition(layout(),'home-welcome')),
  'container-home-adventures':renderHomeAdventures(homePosition(layout(),'home-adventures')),
  'family-home-modes':renderHomeModes(modes,modeIds,homePosition(layout(),'home-modes'))
  };

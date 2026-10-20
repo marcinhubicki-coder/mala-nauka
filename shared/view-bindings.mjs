@@ -204,7 +204,7 @@ const rules=[...progressBase(true),b('rules-views','control-jelly','toggle','pro
  repeat('rule-word','container-collection-word','button','rules-word-grid','.collection-word','data-word',{action:'rule',...progressAction,level:'group'}),within('rule-word-image','image-collection-word','image','rule-word','img'),within('rule-word-title','text-collection-word','text','rule-word','strong')];
 const sessions=[...progressBase(true),group('discovery-grid','group-discovery-grid','progress-canvas','.discovery-grid'),repeat('discovery','button-discovery-card','button','discovery-grid','[data-discovery-key]','data-discovery-key',{min:0,max:1000,action:'discovery-details',level:'group'}),within('discovery-name','text-discovery-name','text','discovery','strong'),within('discovery-progress','text-discovery-progress','text','discovery','small'),text('discovery-remaining','progress-canvas','.undiscovered-note')];
 
-const views={'campaign-math-initial':game('math'),'campaign-math-correct':game('math'),'campaign-math-wrong':game('math'),campaign,'reward-details':rewardDetails,players,settings,progress,collection,trophies:modernAwards,'trophy-base':trophies,'trophy-evolution':trophies,categories,rules,sessions,forge,'rule-details':ruleDetails};
+const views={'campaign-math-initial':mathGame,'campaign-math-correct':mathGame,'campaign-math-wrong':mathGame,campaign,'reward-details':rewardDetails,players,settings,progress,collection,trophies:modernAwards,'trophy-base':trophies,'trophy-evolution':trophies,categories,rules,sessions,forge,'rule-details':ruleDetails};
 for(const mode of ['english','flags','reading']){
  views[mode+'-settings']=wizard(mode);
  for(const state of ['initial','correct','wrong'])views[mode+'-'+state]=mode==='flags'?SCENIC_BINDINGS:game(mode);

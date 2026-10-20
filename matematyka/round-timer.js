@@ -1,6 +1,7 @@
 import {playPowerEffect} from '../shared/adventure-ui.mjs';
 import {progressionRules,reservePower,answerReward,cleanJourney,POWERS,comboMultiplier} from '../shared/progression.mjs';
 import {requestHostRoute} from '../shared/mode-host.mjs';
+import {mathCampaign} from './campaign.mjs';
 import {navigateWithBlob} from '../shared/screen-blob-transition.mjs';
 import {transitionMotion} from '../shared/screen-motion.mjs';
 import {transitionToResult} from '../ortografia/result-motion.mjs';
@@ -56,14 +57,15 @@ function syncTimerSnapshot() {
   }
 
   const paused = clock.state === 'paused';
-  const percent = Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100));
+  const step=mathCampaign(),counted=step?.limitMode==='count';
+  const percent = counted?Math.max(0,100*(1-(correct+wrong)/step.taskCount)):Math.max(0, Math.min(100, clock.remaining / (clock.duration * 1000) * 100));
   window.__mathTimerSnapshot = {
     active: true,
     paused,
     remaining: clock.remaining,
     duration: clock.duration,
     percent,
-    text: `${paused ? 'Ⅱ ' : ''}${formatRemaining(clock.remaining)}`,
+    text: `${paused ? 'Ⅱ ' : ''}${counted?Math.min(step.taskCount,roundScope?.prepared.size||1)+'/'+step.taskCount:formatRemaining(clock.remaining)}`,
   };
   return window.__mathTimerSnapshot;
 }
@@ -75,6 +77,7 @@ function startClock(mode, duration) {
   currentMode = mode;
   currentDuration = duration;
   clock = new Session(CLOCK_SOURCE, duration);
+  clock.untimed=mathCampaign()?.limitMode==='count';
   correct = 0;
   wrong = 0;
   cancelled = false;
@@ -107,6 +110,7 @@ function updateTimerUi() {
   const text = time?.querySelector('span');
   const bar = document.querySelector('.math-round-progress > span');
   if (text && text.textContent !== snapshot.text.replace('Ⅱ ','')) text.textContent = snapshot.text.replace('Ⅱ ','');const copy=document.querySelector('.topbar small');if(copy)copy.textContent=snapshot.paused?'Czas zatrzymany':'Matematyka';
+  if(time)time.setAttribute('aria-label',mathCampaign()?.limitMode==='count'?'Zadanie '+snapshot.text.replace('Ⅱ ',''):'Pozostały czas rundy');
   time?.classList.toggle('is-paused', snapshot.paused);
   if (bar) bar.style.width = `${snapshot.percent}%`;
 }
@@ -136,11 +140,12 @@ async function saveMathProgress(early=false) {
       playerId: player.id,
       mode: 'math',
       category: snapshot.category,
-      difficulty: 1,
+      difficulty: mathCampaign()?.difficulty||1,
       duration: snapshot.duration,
       correct: snapshot.correct,
       wrong: snapshot.wrong,
-      date: snapshot.date,attempts:[...scope.attempts],progressionRules:scope.rules,rewards:roundRewards,elapsedMs:clock?currentDuration*1000-clock.remaining:currentDuration*1000,limitMode:'time',
+      date: snapshot.date,attempts:[...scope.attempts],progressionRules:scope.rules,rewards:roundRewards,elapsedMs:clock?(clock.untimed?clock.questionElapsed:currentDuration*1000-clock.remaining):currentDuration*1000,limitMode:mathCampaign()?.limitMode||'time',
+      ...(mathCampaign()?{campaignStepId:mathCampaign().id,maxValue:mathCampaign().maxValue,wordLimit:mathCampaign().taskCount}:{}),
       early,
     };
     recordResult(progress, result);
@@ -151,9 +156,9 @@ async function saveMathProgress(early=false) {
   }
 }
 
-async function endRound() {
+async function endRound(completedQuestion=false) {
   if (!clock || cancelled || roundScope?.ending || document.querySelector('.math-round-summary')) return;
-  if (document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out')) return;
+  if (!completedQuestion&&(document.querySelector('.feedback.good') || document.querySelector('.correct-transition-out'))) return;
 
   roundScope.ending=true;gameSound.cue('roundEnd');
   clock.end();
@@ -164,17 +169,32 @@ async function endRound() {
   syncTimerSnapshot();
 }
 
+// Finish only after the last question's feedback/explanation; retries belong
+// to that question and cannot consume another campaign task.
+export function finishMathQuestion(){
+ const step=mathCampaign();
+ if(!step||!clock)return false;
+ if((step.limitMode==='count'&&correct+wrong>=step.taskCount)||clock.state==='ended'){
+  void endRound(true);return true;
+ }
+ return false;
+}
+
 function showRoundSummaryWithBlur(){const app=document.querySelector('#app');void transitionToResult(app,()=>{},(animate=false,delay=1000)=>renderRoundSummary({animate,delay})).catch(()=>renderRoundSummary());}
 function renderRoundSummary({animate=true,delay=200}={}) {
  const app=document.querySelector('#app');if(!app)return;
  lastResult={...lastResult,mode:'math',category:currentMode,duration:currentDuration,correct,wrong,rewards:roundRewards};
  renderSpellingResult(app,lastResult,[],null,{animate,delay});
  app.querySelector('.result-v4').classList.add('math-round-summary');
+ if(mathCampaign()){
+  const back=document.createElement('button');back.className='primary campaign-return';back.textContent=lastResult.campaignCompleted?'Dalej na mapie':'Wróć do mapy';back.dataset.action='campaign';app.querySelector('.result-v4').prepend(back);
+ }
 }
 function goRoute(action,directTarget=''){
  const app=document.querySelector('#app'),from=document.documentElement.dataset.dsView||'math-results';
- const to=directTarget||resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,action==='exit-confirm'?'math-initial':from,action,'math',action==='return-results'?historyOrigin:'');
- if((['home','settings','players'].includes(to)||to.endsWith('-settings')&&to!=='math-settings')&&requestHostRoute(to))return;
+ const to=directTarget||(mathCampaign()&&action==='result-back'?'campaign':null)||resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,action==='exit-confirm'?'math-initial':from,action,'math',action==='return-results'?historyOrigin:'');
+ if((['home','settings','players','campaign'].includes(to)||to.endsWith('-settings')&&to!=='math-settings')&&requestHostRoute(to))return;
+ if(to==='campaign'){location.href=new URL('../?open=campaign',import.meta.url).href;return;}
  if(to==='home'){const motion=transitionMotion(globalThis.__MALA_NAUKA_DESIGN__?.motion,from,'home');const url=new URL('../',import.meta.url).href;if(motion.style==='blob')void navigateWithBlob(url,{app,config:globalThis.__MALA_NAUKA_DESIGN__?.exitTransition,speed:motion.speed});else location.href=url;return;}
  stopResultScroll(app);destroyProgressScreen(app);
  if(to==='math-settings'){window.dispatchEvent(new CustomEvent('math-back-to-setup'));return;}
@@ -228,7 +248,7 @@ document.addEventListener('click', event => {
     const chosen = Number(answer.dataset.answer);
     if (Number.isFinite(expected) && Number.isFinite(chosen)&&quiz&&roundScope&&!roundScope.answered.has(quiz.dataset.questionId)) {
       const scope=roundScope;preparePower(quiz);scope.answered.add(quiz.dataset.questionId);
-      const equation=quiz.querySelector('.equation')?.textContent||quiz.textContent||'';const attempt={kind:'math',text:equation,category:currentMode,correct:chosen===expected,selected:String(chosen),answer:String(expected),at:new Date().toISOString()};scope.attempts.push(attempt);const answerIndex=scope.attempts.length;
+      const equation=quiz.querySelector('.equation')?.textContent||quiz.textContent||'';const attempt={kind:'math',text:equation,category:currentMode,difficulty:mathCampaign()?.difficulty||1,...(quiz.dataset.learningKey?{learningKey:quiz.dataset.learningKey}:{}),correct:chosen===expected,selected:String(chosen),answer:String(expected),at:new Date().toISOString()};scope.attempts.push(attempt);const answerIndex=scope.attempts.length;
       scope.writes=scope.writes.then(async()=>{if(!scope.player)return;const reward=answerReward(scope.journey,attempt,{mode:'math',id:scope.id+':'+answerIndex,streak:scope.streak,rules:scope.rules});scope.journey=reward.journey;scope.streak=reward.streak;scope.rewards.sparks+=reward.sparks;if(reward.power)playPowerEffect(document.querySelector('#app'),reward.power,scope.journey.powerLevels[reward.power]||1);const progress=cleanProgress(await playerService.getProgress(scope.player.id));progress.journey=scope.journey;await playerService.saveProgress(scope.player.id,progress);}).catch(error=>console.error('[math-progress]',error.message));
       if (chosen === expected) correct += 1;
       else wrong += 1;
@@ -237,6 +257,7 @@ document.addEventListener('click', event => {
   }
 
   const action=event.target.closest?.('[data-action]')?.dataset.action;
+  if(action==='campaign'){event.preventDefault();goRoute('','campaign');return;}
   if(action==='forge'){goRoute(action);return;}
   if(action==='toggle-result'){toggleResultDetail(document.querySelector('#app'),event.target.closest('[data-action]'));return;}
   if(['result-back','history','return-results','home','settings'].includes(action)){event.preventDefault();goRoute(action);}

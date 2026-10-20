@@ -374,7 +374,7 @@ async function campaignPage(){
 }
 async function launchCampaign(id){
  const c=adventureConfig(),step=c.steps.find(s=>s.id===id);if(!step||!campaignStepState(progress,step,words,c).unlocked)return;
- campaignTravelFrom={realm:step.realm,index:campaignPosition(progress,c.realms.find(r=>r.id===step.realm),c).index};campaignSelectedStep='';campaignRound=step;campaignRealm=step.realm;selectedMode=step.mode;await start();
+ campaignTravelFrom={realm:step.realm,index:campaignPosition(progress,c.realms.find(r=>r.id===step.realm),c).index};campaignSelectedStep='';campaignRound=step;campaignRealm=step.realm;selectedMode=step.mode;if(step.mode==='math'&&modeHost){modeHost.open('math',{campaignStepId:step.id});return;}await start();
 }
 async function home() {
  campaignRound=null;campaignTravelFrom=null;delete root.dataset.campaignMode;
@@ -509,7 +509,7 @@ async function start() {
    await scene.ready;if(game!==nextGame){scene.destroy();return;}
    const show=()=>{spellingArt.reset();stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);view='game';root.dataset.view='game';root.dataset.mode='flags';scene.mount(root);};
    await transitionToResult(root,()=>document.activeElement?.blur(),show);game.setPresentationHold(false);scene.activate();
-  }catch(error){scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;const message=root.querySelector('#setup-error');if(message){message.textContent=error.message;message.hidden=false;}}
+  }catch(error){scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;let message=root.querySelector('#setup-error');if(!message){message=document.createElement('p');message.id='setup-error';message.className='notice';message.setAttribute('role','alert');root.prepend(message);}message.textContent=error.message;message.hidden=false;}
   finally{root.inert=false;root.setAttribute('aria-busy','false');}return;
  }
  const render=()=>{prepareScreenChange(root,'game');stopResultScroll(root);destroyProgressScreen(root);closeResultRule(root,false);spellingArt.reset();view='game';root.dataset.view=view;root.dataset.mode=selectedMode;root.scrollTop=0;renderedState='';renderedQuestion=0;if(selectedMode==='spelling'){const ready=spellingArt.render(game);renderedState=game.state;renderedQuestion=game.question;updateClock();return ready;}return renderGame();};

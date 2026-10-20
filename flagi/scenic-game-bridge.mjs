@@ -17,6 +17,8 @@ export function prepareScenicGame(session,{onExit,onEnd,onAnswer,onPause}={}){
  }
  fit();addEventListener('resize',fit);
  let resolve,reject;const ready=new Promise((a,b)=>{resolve=a;reject=b});
+ const timeout=setTimeout(()=>reject(Error('Wczytywanie flag trwa zbyt długo. Sprawdź połączenie i spróbuj ponownie.')),45000);
+ void ready.then(()=>clearTimeout(timeout),()=>clearTimeout(timeout));
  const send=(type,paused)=>frame.contentWindow?.postMessage({type,paused},location.origin);
  function message(event){
   if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
@@ -31,5 +33,5 @@ export function prepareScenicGame(session,{onExit,onEnd,onAnswer,onPause}={}){
  }
  addEventListener('message',message);
  // Never reparent a loaded iframe: WebKit would discard the prepared document.
- return {ready,frame,mount(root){host.style.opacity='1';host.style.pointerEvents='auto';for(const node of [...root.children])if(node!==host)node.remove();root.dataset.scenic='true';root.dataset.dsContractPending='flags-initial';if(standalone)document.body.classList.add('scenic-hosted-standalone');},activate(){host.inert=false;frame.scenicActive=true;send('mala-nauka:scenic-activate')},pause(paused){send('mala-nauka:scenic-pause',paused)},destroy(){removeEventListener('resize',fit);removeEventListener('message',message);host.remove();document.body.classList.remove('scenic-hosted-standalone');}};
+ return {ready,frame,mount(root){host.style.opacity='1';host.style.pointerEvents='auto';for(const node of [...root.children])if(node!==host)node.remove();root.dataset.scenic='true';root.dataset.dsContractPending='flags-initial';if(standalone)document.body.classList.add('scenic-hosted-standalone');},activate(){host.inert=false;frame.scenicActive=true;send('mala-nauka:scenic-activate')},pause(paused){send('mala-nauka:scenic-pause',paused)},destroy(){clearTimeout(timeout);removeEventListener('resize',fit);removeEventListener('message',message);host.remove();document.body.classList.remove('scenic-hosted-standalone');}};
 }

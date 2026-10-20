@@ -21,7 +21,9 @@
 
     const snapshot = timerSnapshot();
     topbar.classList.add('math-timed');
-    const slot = topbar.lastElementChild;
+    // The shared game HUD already owns the timer and pause control.
+    // Never replace the pause button with a second legacy timer.
+    const slot = topbar.querySelector('.math-round-time') ? null : topbar.lastElementChild;
     if (slot && !slot.querySelector('.math-round-time')) {
       const text = snapshot?.text || '';
       const paused = snapshot?.paused ? ' is-paused' : '';

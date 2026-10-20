@@ -1610,7 +1610,7 @@
       "mode": "math",
       "screen": "game",
       "state": "initial",
-      "route": "/",
+      "route": "/matematyka/",
       "components": [
         "layout",
         "card",
@@ -1634,7 +1634,7 @@
       "mode": "math",
       "screen": "game",
       "state": "correct",
-      "route": "/",
+      "route": "/matematyka/",
       "components": [
         "layout",
         "card",
@@ -1658,7 +1658,7 @@
       "mode": "math",
       "screen": "game",
       "state": "wrong",
-      "route": "/",
+      "route": "/matematyka/",
       "components": [
         "layout",
         "card",

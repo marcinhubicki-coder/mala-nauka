@@ -4,7 +4,10 @@ import {missionIllustration} from '../shared/mission-parts.mjs';
 import {transitionToResult} from '../ortografia/result-motion.mjs';
 import {gameSound} from '../shared/sound-runtime.mjs';
 import {designReady} from '../shared/design-runtime.mjs';
-import {renderMathStudioResult} from './round-timer.js';
+import {renderMathStudioResult,finishMathQuestion} from './round-timer.js';
+import {mathCampaign,configureMathCampaign,campaignMathQuestion} from './campaign.mjs';
+import {cleanProgress} from '../progress.mjs';
+import {loadWords} from '../shared/asset-loader.mjs';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
 await designReady;
 const app = document.querySelector('#app');
@@ -85,7 +88,7 @@ function makeAnswers(correct, pool = [], min = 0, max = 100) {
   return [...values].sort((a, b) => a - b);
 }
 
-function makeQuestion(mode){return {...generateQuestion(mode),roundQuestionId:crypto.randomUUID()};}
+function makeQuestion(mode){return {...(mathCampaign()?campaignMathQuestion(mathCampaign()):generateQuestion(mode)),roundQuestionId:crypto.randomUUID()};}
 function generateQuestion(mode) {
   if (mode === 'add') {
     let a = randomInt(2, 60);
@@ -207,7 +210,7 @@ function renderCategories() {
 }
 
 async function startSelectedGame() {
-  saveSetup();
+  if(!mathCampaign())saveSetup();
   state.screen = state.selectedMode;
   resetAttemptState();
   state.question = makeQuestion(state.screen);
@@ -219,7 +222,7 @@ async function startSelectedGame() {
 }
 
 function nextQuestion() {
-  if (state.screen === 'categories') return;
+  if (state.screen === 'categories'||finishMathQuestion()) return;
   state.question = makeQuestion(state.screen);
   resetAttemptState();
   renderGame();
@@ -271,7 +274,7 @@ function hasVisualExplainer() {
 }
 
 function renderGame({ feedback = '', feedbackType = '' } = {}) {
-  app.dataset.mode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
+  app.dataset.mode='math';if(mathCampaign()||new URLSearchParams(location.search).get('viewId')?.startsWith('campaign-math'))app.dataset.campaignMode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
   const q = state.question;
   if (!q) return;
   const showExplainer = hasVisualExplainer();
@@ -279,7 +282,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
 
   app.innerHTML = `
     ${gameTopbar()}
-    <section class="screen quiz-screen" data-math-quiz data-question-id="${q.roundQuestionId}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
+    <section class="screen quiz-screen" data-math-quiz data-question-id="${q.roundQuestionId}" data-learning-key="${q.learningKey||''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
       <div class="quiz-stage ${showExplainer ? 'has-explainer' : ''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>
@@ -584,7 +587,12 @@ window.addEventListener('math-back-to-setup', renderCategories);
 
 async function bootMath(){
  await playerService.init();const player=await playerService.getSessionPlayer();
- if(!player){location.replace('../');return;}renderCategories();
+ if(!player){location.replace('../');return;}
+ const stepId=new URLSearchParams(location.search).get('campaignStep');
+ if(stepId){
+  try{const step=configureMathCampaign(stepId,cleanProgress(await playerService.getProgress(player.id)),await loadWords());state.selectedMode=step.category;state.duration=step.duration;await startSelectedGame();}
+  catch(error){app.textContent=error.message;const back=document.createElement('button');back.textContent='Wróć do kampanii';back.onclick=()=>{import('../shared/mode-host.mjs').then(({requestHostRoute})=>{if(!requestHostRoute('campaign'))location.href='../?open=campaign';});};app.append(back);}
+ }else renderCategories();
 }
 if(new URLSearchParams(location.search).has('studio')){
  renderCategories();

@@ -108,7 +108,7 @@ export function advanceCampaign(progress,result,words=[],config=adventureConfig(
  const s=campaignStepState(progress,step,words,config);if(!s.unlocked||s.complete||result.early||result.mode!==step.mode)return {changed:false,world:null};
  c.receipts.push(result.id);c.receipts=c.receipts.slice(-300);const valid=new Set(s.pool.map(r=>r.key)),coverage=new Set(c.coverage[step.id]||[]);
  for(const r of result.attempts||[])if(r.correct&&!r.hintUsed&&!r.explanationUsed&&valid.has(unitKey(step.mode,r)))coverage.add(unitKey(step.mode,r));c.coverage[step.id]=[...coverage];
- const accuracy=result.correct/Math.max(1,result.correct+result.wrong),roundDone=step.limitMode==='count'?result.correct+result.wrong>=Math.min(step.taskCount,Math.max(1,s.total)):result.elapsedMs>=step.duration*1000;
+ const accuracy=result.correct/Math.max(1,result.correct+result.wrong),roundDone=step.limitMode==='count'?result.correct+result.wrong>=(step.mode==='math'?step.taskCount:Math.min(step.taskCount,Math.max(1,s.total))):result.elapsedMs>=step.duration*1000;
  let world=null;if(roundDone&&accuracy>=step.accuracy){c.completed.push(step.id);const realm=config.realms.find(r=>r.id===step.realm);if(config.steps.filter(r=>r.realm===realm.id).every(r=>c.completed.includes(r.id))&&!c.rewards.includes(realm.id)){c.rewards.push(realm.id);progress.journey.sparks+=realm.reward*1e6;progress.journey.lifetimeSparks+=realm.reward*1e6;world=realm;}}
  progress.journey.adventure=a;return {changed:true,world,complete:c.completed.includes(step.id)};
 }

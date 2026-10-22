@@ -2,6 +2,8 @@
 
 Aktualny kontrakt i sposób publikacji: [Jeden wygląd: Studio → testy → produkcja](unified-runtime.md).
 
+**Najpierw przeczytaj:** [reguły decyzji projektowych użytkownika — październik 2026](decision-rules-2026-10.md). To bramki zakresu zmian, akceptacji wizualnej, prostoty Atomic Design, parity Studio/PWA i regresji; są nadrzędnym przewodnikiem pracy, a nie zamiennikiem plików konfiguracyjnych.
+
 Panel: `/design-system/` na branchu **design/system-v1**. To wspólny kontrakt wyglądu, komponentów i ilustracji oraz narzędzie do jego edycji.
 
 ![Design Studio: projekt wyspy, ekrany i lokalny edytor](studio-project-overview-final.jpg)

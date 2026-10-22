@@ -84,6 +84,7 @@ export class Session {
     else {
       if (!this.queue.length) {
         this.queue = shuffle(this.noRepeatWords?this.pool.filter(row=>!this.usedWords.has(wordKey(row.word))):this.pool, this.random);
+        if(this.pool.some(row=>row.priority)){this.queue=this.queue.map(row=>({row,key:Math.pow(Math.max(.000001,this.random()),1/(row.priority||1))})).sort((a,b)=>b.key-a.key).map(x=>x.row);}
         if (this.queue.length > 1 && this.queue[0] === this.current) [this.queue[0], this.queue[1]] = [this.queue[1], this.queue[0]];
       }
       if(this.noRepeatWords)this.queue=this.queue.filter(row=>!this.usedWords.has(wordKey(row.word)));
@@ -99,6 +100,7 @@ export class Session {
     this.hintUsed = false;
     this.questionElapsed = 0;
     this.lastTime = this.now();
+    this.onQuestion?.(this.current,this.question);
   }
   answer(option) {
     if (this.presentationHeld || this.state !== 'playing') return false;
@@ -106,8 +108,9 @@ export class Session {
     if (this.state !== 'playing' || (!['memory','reading-phrase'].includes(this.current?.kind) && !this.options.includes(option))) return false;
     this.selected = option;
     const correct = option === this.current.answer;
-    this.streak=correct&&!this.hintUsed?this.streak+1:0;this.bestStreak=Math.max(this.bestStreak,this.streak);
-    if(this.current.kind==='spelling')this.attempts.push({kind:'spelling',at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
+    this.streak=correct?(this.hintUsed?this.streak:this.streak+1):0;this.bestStreak=Math.max(this.bestStreak,this.streak);
+    this.attempts.push({kind:this.current.kind,at:new Date().toISOString(),hintUsed:this.hintUsed===true,word:this.current.word,masked:this.current.masked,answer:String(this.current.answer),selected:String(option),correct,category:this.current.category,difficulty:this.current.difficulty,targetIds:this.current.targetIds,...Object.fromEntries(['learningKey','countryId','full','text'].filter(k=>typeof this.current[k]==='string').map(k=>[k,this.current[k]])),...(this.current.learning?{learning:JSON.parse(JSON.stringify(this.current.learning))}:{})});
+    this.onAttempt?.(this.attempts.at(-1),this.question);
     this.lastResponseMs = Math.max(0, this.questionElapsed);
     this.recentAnswers.push({
       correct,
@@ -152,6 +155,7 @@ export class Session {
   // Decorative transitions do not consume answer time.
   setPresentationHold(held) {
     this.presentationHeld = held;
+    this.onPresentationHold?.(held);
     this.lastTime = this.now();
   }
   resume() {

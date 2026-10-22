@@ -1,3 +1,16 @@
 dist/
-node_modules/
+node_modules
 .design-qa/
+
+# New immutable illustrations are committed only to assets/library-v1.
+/assets/managed/
+
+# Local generation masters stay outside application commits.
+/outputs/v57/library/
+/outputs/v59/library/
+
+/outputs/v60/library/
+
+/outputs/v60/*.png
+
+/outputs/v61/*.png

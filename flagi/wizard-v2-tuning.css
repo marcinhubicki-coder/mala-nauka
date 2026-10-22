@@ -61,3 +61,5 @@
   top:-5px!important;
   height:7px!important;
 }
+.flag-limit-toggle{max-width:230px;margin:0 auto 8px;min-height:38px!important;height:38px!important}
+.flag-limit-toggle label{font-size:16px!important;min-height:38px!important}

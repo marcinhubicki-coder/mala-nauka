@@ -1,9 +1,13 @@
 import {pageHeading} from '../shared/navigation-parts.mjs';
+import {compileViewMarkup,viewAttrs} from '../shared/view-contracts.mjs';
 import {missionIllustration} from '../shared/mission-parts.mjs';
 import {transitionToResult} from '../ortografia/result-motion.mjs';
 import {gameSound} from '../shared/sound-runtime.mjs';
 import {designReady} from '../shared/design-runtime.mjs';
-import {renderMathStudioResult} from './round-timer.js';
+import {renderMathStudioResult,finishMathQuestion} from './round-timer.js';
+import {mathCampaign,configureMathCampaign,campaignMathQuestion} from './campaign.mjs';
+import {cleanProgress} from '../progress.mjs';
+import {loadWords} from '../shared/asset-loader.mjs';
 import { playerService } from '../player-service.mjs?v=1-local-profiles';
 await designReady;
 const app = document.querySelector('#app');
@@ -84,7 +88,8 @@ function makeAnswers(correct, pool = [], min = 0, max = 100) {
   return [...values].sort((a, b) => a - b);
 }
 
-function makeQuestion(mode) {
+function makeQuestion(mode){return {...(mathCampaign()?campaignMathQuestion(mathCampaign()):generateQuestion(mode)),roundQuestionId:crypto.randomUUID()};}
+function generateQuestion(mode) {
   if (mode === 'add') {
     let a = randomInt(2, 60);
     let b = randomInt(2, 60);
@@ -126,14 +131,14 @@ function makeQuestion(mode) {
   };
 }
 
-function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title'});}
+function setupTopbar(){return pageHeading('Matematyka',{titleRecipe:'text-math-setup-title',contractView:'math-settings',backId:'math-back',titleId:'math-heading'});}
 
 function gameTopbar() {
   return `
-    <header class="topbar">
-      <button class="icon-button" id="back" type="button" aria-label="Wróć">‹</button>
-      <div class="brand">${labels[state.screen] || 'Matematyka'}</div>
-      <div></div>
+    <header class="topbar game-bar">
+      <button class="icon-button icon" id="back" type="button" aria-label="Wyjdź z rundy">×</button>
+      <div class="brand time-block"><span class="math-round-time timer" aria-label="Pozostały czas rundy"><span>3:00</span></span><small>Matematyka</small></div>
+      <button type="button" class="icon icon-button" data-math-pause aria-label="Pauza">Ⅱ</button>
     </header>
   `;
 }
@@ -151,26 +156,26 @@ function renderCategories() {
   state.question = null;
   resetAttemptState();
 
-  app.innerHTML = `
+  app.innerHTML = compileViewMarkup('math-settings',`
     ${setupTopbar()}
     <section class="screen math-setup-screen">
 
 
-      <section class="wizard-intro mission-card" data-ds-key="mission" data-ds-recipe="container-mission">${missionIllustration('math')}<div><h2>Twoja mała misja</h2><p>Policz i odkryj odpowiedź.</p></div></section>
-      <section class="math-duration-setup" aria-label="Czas rozgrywki">
+      <section class="wizard-intro mission-card" ${viewAttrs('math-settings','math-mission')}>${missionIllustration('math')}<div><h2 ${viewAttrs('math-settings','math-mission-title')}>Twoja mała misja</h2><p ${viewAttrs('math-settings','math-mission-hint')}>Policz i odkryj odpowiedź.</p></div></section>
+      <section class="math-duration-setup" ${viewAttrs('math-settings','math-duration')} aria-label="Czas rozgrywki">
         <div class="math-duration-heading">Czas rozgrywki</div>
         <div class="math-duration-choices" role="group" aria-label="Wybierz czas rundy">
           ${DURATIONS.map(duration => `
-            <button type="button" class="math-duration-choice ${duration === state.duration ? 'is-selected' : ''}" data-duration="${duration}">
+            <button type="button" class="math-duration-choice ${duration === state.duration ? 'is-selected' : ''}" ${viewAttrs('math-settings','math-duration-'+duration)} data-action="choose-duration" data-duration="${duration}">
               ${duration / 60} min
             </button>
           `).join('')}
         </div>
       </section>
 
-      <div class="category-grid" aria-label="Kategorie matematyki">
+      <div class="category-grid" ${viewAttrs('math-settings','math-categories')} aria-label="Kategorie matematyki">
         ${categoryItems.map(item => `
-          <button class="category-card ${state.selectedMode === item.key ? 'active is-selected-mode' : ''}" type="button" data-category="${item.key}">
+          <button class="category-card ${state.selectedMode === item.key ? 'active is-selected-mode' : ''}" ${viewAttrs('math-settings','math-category-'+item.key)} type="button" data-action="choose-category" data-category="${item.key}">
             <span class="category-symbol" aria-hidden="true">${item.symbol}</span>
             <span class="category-name">${item.label}</span>
           </button>
@@ -178,12 +183,12 @@ function renderCategories() {
       </div>
 
       <div class="math-start-panel">
-        <button type="button" class="math-start-button" data-start>
+        <button type="button" class="math-start-button" ${viewAttrs('math-settings','math-start')} data-action="start-game" data-start>
           Rozpocznij <span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
-  `;
+  `);
 
   app.querySelectorAll('[data-duration]').forEach(button => {
     button.addEventListener('click', () => {
@@ -205,7 +210,7 @@ function renderCategories() {
 }
 
 async function startSelectedGame() {
-  saveSetup();
+  if(!mathCampaign())saveSetup();
   state.screen = state.selectedMode;
   resetAttemptState();
   state.question = makeQuestion(state.screen);
@@ -217,7 +222,7 @@ async function startSelectedGame() {
 }
 
 function nextQuestion() {
-  if (state.screen === 'categories') return;
+  if (state.screen === 'categories'||finishMathQuestion()) return;
   state.question = makeQuestion(state.screen);
   resetAttemptState();
   renderGame();
@@ -269,7 +274,7 @@ function hasVisualExplainer() {
 }
 
 function renderGame({ feedback = '', feedbackType = '' } = {}) {
-  app.dataset.mode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
+  app.dataset.mode='math';if(mathCampaign()||new URLSearchParams(location.search).get('viewId')?.startsWith('campaign-math'))app.dataset.campaignMode='math';app.dataset.view='game';app.dataset.state=feedbackType==='good'?'feedback-correct':feedbackType==='bad'?'feedback-wrong':'playing';
   const q = state.question;
   if (!q) return;
   const showExplainer = hasVisualExplainer();
@@ -277,7 +282,7 @@ function renderGame({ feedback = '', feedbackType = '' } = {}) {
 
   app.innerHTML = `
     ${gameTopbar()}
-    <section class="screen quiz-screen" data-math-quiz data-operation="${q.mode}" data-correct-answer="${q.correct}">
+    <section class="screen quiz-screen" data-math-quiz data-question-id="${q.roundQuestionId}" data-learning-key="${q.learningKey||''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
       <div class="quiz-stage ${showExplainer ? 'has-explainer' : ''}" data-operation="${q.mode}" data-correct-answer="${q.correct}">
         <div class="question-block">
           <p class="question-label">Ile to jest?</p>
@@ -582,7 +587,12 @@ window.addEventListener('math-back-to-setup', renderCategories);
 
 async function bootMath(){
  await playerService.init();const player=await playerService.getSessionPlayer();
- if(!player){location.replace('../');return;}renderCategories();
+ if(!player){location.replace('../');return;}
+ const stepId=new URLSearchParams(location.search).get('campaignStep');
+ if(stepId){
+  try{const step=configureMathCampaign(stepId,cleanProgress(await playerService.getProgress(player.id)),await loadWords());state.selectedMode=step.category;state.duration=step.duration;await startSelectedGame();}
+  catch(error){app.textContent=error.message;const back=document.createElement('button');back.textContent='Wróć do kampanii';back.onclick=()=>{import('../shared/mode-host.mjs').then(({requestHostRoute})=>{if(!requestHostRoute('campaign'))location.href='../?open=campaign';});};app.append(back);}
+ }else renderCategories();
 }
 if(new URLSearchParams(location.search).has('studio')){
  renderCategories();

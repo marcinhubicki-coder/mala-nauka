@@ -7,7 +7,7 @@ import {PART_BY_ID,recipeLineage} from './structure-model.mjs';
 import {DEFAULT_ENGLISH_WORD_FLIP} from './english-word-flip.mjs';
 
 // Saved consumers contain references. Expansion is transient and never saved.
-export const ANIMATION_NAMES={none:'Bez animacji',float:'Spokojne unoszenie',pulse:'Miękki puls',sway:'Kołysanie',enter:'Wejście z przesunięciem',fade:'Płynne pojawienie'};
+export const ANIMATION_NAMES={none:'Bez animacji',float:'Spokojne unoszenie',pulse:'Miękki puls',sway:'Kołysanie',enter:'Wejście z przesunięciem',fade:'Płynne pojawienie',bump:'Pojawienie i bump'};
 export const ANIMATION_SLOTS=['animation','activeAnimation','idleAnimation','enterAnimation','exitAnimation'];
 export const MOTION_TOKEN_KEYS={
  slider:['threshold'],
@@ -75,10 +75,10 @@ export function migrateBehaviors(input){
  styleRows(c,(row,path,id)=>{
   const parts=path.split('.'),mode=parts[0]==='familyStyles'?parts[1]:['elementOverrides','elementStates'].includes(parts[0])?parts[1].split('-')[0]:undefined,state=parts[0]==='recipeStates'?parts[2]:parts[0]==='elementStates'?parts[2]:'default',lineage=recipeLineage(id);
   const inherited={...originals[PART_BY_ID[id]?.kind],...Object.assign({},...lineage.map(recipe=>({...originals[recipe],...input.familyStyles?.[mode]?.[recipe]}))),...originals[id],...Object.assign({},...lineage.map(recipe=>input.recipeStates?.[recipe]?.[state])),...row};
-  const hasTune=row.animationDuration!==undefined||row.animationDistance!==undefined||row.stateDuration!==undefined||row.stateDistance!==undefined;
-  for(const slot of ANIMATION_SLOTS){const type=row[slot]??(hasTune?inherited[slot]:undefined);if(type!==undefined)row[slot]=add('animation',type,{duration:slot==='enterAnimation'||slot==='exitAnimation'?(inherited.stateDuration??260):(inherited.animationDuration??1600),distance:slot==='enterAnimation'||slot==='exitAnimation'?(inherited.stateDistance??6):(inherited.animationDistance??6)},ANIMATION_NAMES[type]||type);}
+  const hasTune=Object.keys(row).some(k=>/^(animation|active|idle|enter|exit|state)(Duration|Distance)$/.test(k));
+  for(const slot of ANIMATION_SLOTS){const type=row[slot]??(hasTune?inherited[slot]:undefined),prefix=slot==='animation'?'animation':slot.replace('Animation','');if(type!==undefined)row[slot]=add('animation',type,{duration:inherited[prefix+'Duration']??(['enter','exit'].includes(prefix)?(inherited.stateDuration??260):(inherited.animationDuration??1600)),distance:inherited[prefix+'Distance']??(['enter','exit'].includes(prefix)?(inherited.stateDistance??6):(inherited.animationDistance??6))},ANIMATION_NAMES[type]||type);}
   if(row.stateDuration!==undefined||row.stateDistance!==undefined)row.statePreset=add('state','',{duration:inherited.stateDuration??260,distance:inherited.stateDistance??6},'Płynna zmiana rozmiaru');
-  for(const key of ['animationDuration','animationDistance','stateDuration','stateDistance'])delete row[key];migrateSurface(row);
+  for(const key of Object.keys(row))if(/^(animation|active|idle|enter|exit|state)(Duration|Distance)$/.test(key))delete row[key];migrateSurface(row);
  });
  for(const row of Object.values(c.screenEffects||{}))migrateSurface(row);
  for(const [group,keys]of Object.entries(MOTION_TOKEN_KEYS)){

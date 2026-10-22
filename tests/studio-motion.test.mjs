@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {DEFAULT_MOTION,motionFrames,validateMotion,animateScreen,PlaybackClock} from '../shared/screen-motion.mjs';
@@ -25,13 +26,13 @@ test('stop and a new play invalidate delayed steps instead of leaving a loop ali
  const stale=clock.pause(900,first);assert.equal(await stale,false);
 });
 test('saved animation settings remain valid and their impact includes every registered screen',async()=>{
- const config=motionFixture(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
+ const config=motionFixture(resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))))),registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
  validateConfig(config);assert.equal(changedViews([{path:'motion.duration'}],registry).length,registry.views.length);
  config.motion.duration=-1;assert.throws(()=>validateConfig(config));
 });
 
 test('control motion tokens reach the two sliders, progress bar and animated result text',async()=>{
- const config=motionFixture(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
+ const config=motionFixture(resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))))),registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
  globalThis.__MALA_NAUKA_DESIGN__=config;
  assert.equal(continueMotion('wrong').completionDelay,240);
  assert.equal(continueMotion('result').completionDelay,350);
@@ -44,7 +45,7 @@ test('control motion tokens reach the two sliders, progress bar and animated res
 });
 
 test('drag sliders use the same jelly deformation as segmented controls',async()=>{
- const config=motionFixture(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),jelly=config.tokens.jelly;
+ const config=motionFixture(resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))))),jelly=config.tokens.jelly;
  const shared=jellyTransform(1,1,jelly),slider=sliderJellyTransform(48,1,1,jelly),reverse=sliderJellyTransform(24,.5,-1,jelly);
  assert.equal(slider,`translate3d(48px,0,0) ${shared}`);
  assert.match(slider,/scale\(1\.0675,0\.8500\) rotate\(1\.30deg\)$/);
@@ -53,7 +54,7 @@ test('drag sliders use the same jelly deformation as segmented controls',async()
 });
 
 test('motion presets keep component geometry and preserve the unique slider effects',async()=>{
- const config=motionFixture(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),height=config.tokens.jelly.height,threshold=config.tokens.slider.threshold;
+ const config=motionFixture(resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))))),height=config.tokens.jelly.height,threshold=config.tokens.slider.threshold;
  assert.equal(activeControlMotionPreset(config.tokens),'spring');
  const organic=applyControlMotionPreset(config.tokens,'organic');
  assert.equal(activeControlMotionPreset(organic),'organic');
@@ -68,7 +69,7 @@ test('motion presets keep component geometry and preserve the unique slider effe
 });
 
 test('two complete editing journeys keep saved comparison stable and fine tuning becomes custom',async()=>{
- const config=motionFixture(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),saved=structuredClone(config),design={config};
+ const config=motionFixture(resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))))),saved=structuredClone(config),design={config};
  const organic=applyControlMotionPreset(config.tokens,'organic');
  assert.ok(controlMotionEntries('organic').filter(([path,value])=>path.split('.').slice(1).reduce((node,key)=>node[key],config.tokens)!==value).length>30);
  const comparison={getDesign:()=>({config:{...config,tokens:organic},marker:'draft'}),getBase:()=>saved};

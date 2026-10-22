@@ -35,6 +35,6 @@ test('count results survive storage and never overwrite timed records',()=>{
  assert.equal(recordResult(progress,result),false);assert.deepEqual(progress.best,{});
  const restored=cleanProgress(JSON.parse(JSON.stringify(progress))).history[0];
  assert.equal(restored.wordLimit,40);assert.equal(restored.limitMode,'count');assert.equal(spellingRoundLabel(restored),'40 słów');
- assert.equal(cleanConfig('spelling',{}).limitMode,'time');
- assert.equal(cleanConfig('spelling',{limitMode:'bad',wordLimit:-1}).wordLimit,20);
+ assert.equal(cleanConfig('spelling',{}).limitMode,'count');
+ assert.equal(cleanConfig('spelling',{limitMode:'bad',wordLimit:-1}).wordLimit,10);
 });

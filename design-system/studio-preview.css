@@ -86,3 +86,15 @@
 #inspector{container-type:inline-size;container-name:inspector}
 
 .v2-element-pickers{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px}.v2-element-pickers .form-field{margin:4px 0}.v2-element-pickers select{width:100%;max-width:100%}@media(max-width:650px){.v2-element-pickers{grid-template-columns:1fr}}
+
+/* Local reference images align to the same 390×844 artboard as real iframes. */
+.reference-calibration{margin:9px 0 12px;padding:11px 13px;border:1px solid #d8e2f1;background:white;border-radius:11px;font-size:11px;color:#4a6082}
+.reference-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.reference-heading strong{font-size:12px;color:#162d55}.reference-heading span{color:#7285a0}
+.reference-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+.reference-upload{position:relative;cursor:pointer}.reference-upload input{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer}
+.reference-opacity{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.reference-opacity input{width:100px;accent-color:#315af2}.reference-opacity output{min-width:34px;font-variant-numeric:tabular-nums}
+.reference-help{color:#8090a8;font-size:10px;margin:8px 0 0}
+.studio-reference-image{position:absolute;left:12px;top:16px;width:390px;height:844px;z-index:8;object-fit:contain;border-radius:46px;user-select:none;pointer-events:none;transform:translateZ(0)}
+@media(max-width:690px){.reference-actions{gap:8px}.reference-calibration{margin-top:5px}}

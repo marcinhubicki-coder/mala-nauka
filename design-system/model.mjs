@@ -1,3 +1,7 @@
+import {validateResponsiveGeometry} from '../shared/responsive-geometry.mjs';
+import {validateAdventure} from '../shared/adventure-model.mjs';
+import {validateMapOverrides,validateMapDefaults} from '../shared/map-overrides.mjs';
+import {validateProgression} from '../shared/progression.mjs';
 import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {validateBehaviors} from './behaviors-model.mjs';
 import {validateNavigation} from '../shared/navigation.mjs';
@@ -12,7 +16,9 @@ import {validateSoundSettings} from '../shared/sound-library.mjs';
 import {safeKeys,validateTokens,THEME_FIELDS,MODES} from './validation.mjs';
 import {COMPONENT_IDS} from './preview-model.mjs';
 import {validateProject,validateCopy} from './project-model.mjs';
-import {elementCSS,validateElementStyles} from '../shared/element-system.mjs';
+import {elementCSS,validateElementStyles} from '../shared/element-styles.mjs';
+import {validateHomeLayout} from '../shared/home-layout.mjs';
+import {validateTypeScale,typeScaleCSS} from '../shared/type-system.mjs';
 // Shared, dependency-free contract. Studio, runtime and Git use this model.
 export const SCHEMA_VERSION = 1;
 export const clone = value => structuredClone(value);
@@ -46,6 +52,8 @@ export function validateConfig(config) {
     safeKeys(config.componentNames);
     for(const [id,name] of Object.entries(config.componentNames))if(!COMPONENT_IDS.includes(id)||typeof name!=='string'||!name.trim()||name.length>60||/[<>\u0000-\u001f]/.test(name))throw Error('Nieprawidłowa nazwa elementu.');
   }
+  validateResponsiveGeometry(config);if(config.adventure)validateAdventure(config.adventure);
+  validateMapOverrides(config.mapOverrides||{});validateMapDefaults(config.mapDefaults);
   validateBehaviors(config);
   const resolved=resolveBehaviorConfig(config);
   if(config.navigation)validateNavigation(config.navigation);
@@ -55,8 +63,12 @@ export function validateConfig(config) {
   if(config.logoTransition)validateLogoTransition(resolved.logoTransition);
   for(const [view,row]of Object.entries(resolved.screenEffects||{})){if(!/^[a-z0-9-]+$/.test(view))throw Error('Nieprawidłowy widok efektów.');safeKeys(row);validateSurface(row);}
   validateElementStyles(resolved);
+  if(config.layoutOverrides)validateHomeLayout(config);
+  validateTypeScale(config);
   if(config.studioPreferences){const p=config.studioPreferences;safeKeys(p);if(p.hiddenInspectorGroups&&(!Array.isArray(p.hiddenInspectorGroups)||p.hiddenInspectorGroups.some(id=>!['geometry','animation','surface','text','colors','image','clip','shared','advanced','scope'].includes(id))))throw Error('Nieprawidłowa grupa panelu.');if(!Number.isFinite(p.panelWidth)||p.panelWidth<260||p.panelWidth>440||typeof p.compact!=='boolean'||!Array.isArray(p.hiddenSections)||p.hiddenSections.some(id=>typeof id!=='string'||!/^[a-z-]+$/.test(id)))throw Error('Sprawdź ustawienia panelu Studio.');}
 
+  if(config.progression)validateProgression(config.progression);
+  if(config.testing&&typeof config.testing.includeProfiles!=='boolean')throw Error('Nieprawidłowa opcja profili testowych.');
   if(config.effects)validateEffects(resolved.effects);if(config.scoring)validateScoring(config.scoring);
   if(config.recipes)validateRecipes(config.recipes);if(config.blueprints)validateBlueprints(config.blueprints);
   validateTokens(resolved.tokens);
@@ -89,7 +101,7 @@ export function configCSS(config) {
   config=resolveBehaviorConfig(config);
   let css = `:root{${variables(config.tokens)}${variables(config.defaultTheme||{},'--ds-default-theme')}`;
   for (const [role, font] of Object.entries(config.typography)) css += `--ds-font-${role}:"${FONT_NAMES[font]}",ui-rounded,system-ui,sans-serif;`;
-  css += '}';
+  css += typeScaleCSS(config)+'}';
   for (const [mode, theme] of Object.entries(config.themes)) css += `#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(theme, '--ds-theme')}}`;
   for(const [mode,tokens]of Object.entries(config.familyTokens||{}))css+=`#app[data-mode="${mode}"],.ds-component-stage[data-mode="${mode}"]{${variables(tokens)}}`;
   for (const [view, overrides] of Object.entries(config.overrides || {})) {
@@ -116,7 +128,7 @@ export function changedViews(changes, registry) {
     if(change.path.startsWith('tokens.sliderResult.')||change.path.startsWith('tokens.resultText.'))return view.id==='spelling-results';
     if(/^tokens\.progress\.(duration|easePower|stretch|bounce|wobble|startKick|flash|finishDuration)$/.test(change.path))return view.id==='spelling-results';
     if(change.path.startsWith('recipes.'))return ATOMS[change.path.split('.')[1]]?.parents.some(p=>view.components.includes(p))||false;
-    if (change.path.startsWith('typography.')) return true;
+    if (change.path.startsWith('typography.')||change.path.startsWith('typeScale.')) return true;
     if (change.path.startsWith('componentNames.')) return view.components.includes(change.path.split('.')[1]);
     const component = change.path.split('.')[1];
     return view.components.some(id => registry.components.find(item => item.id === id)?.tokenGroup === component);
@@ -130,12 +142,16 @@ export function effectiveTokens(group){
 }
 
 export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,pinPurpose='',historyState='dashboard',popup=''}){
- if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup))return `spelling-${popup}`;
+ // The shared word dialog is also opened from the collection. Its nested
+ // contract belongs to that collection, rather than replacing it with results.
+ if(popup&&mode==='spelling'&&['rule','hint','pause'].includes(popup)&&(popup!=='rule'||view==='results'))return `spelling-${popup}`;
  if(view==='wizard')return `${mode}-settings`;
  if(view==='game')return `${mode}-${state==='feedback-correct'?'correct':state==='feedback-wrong'?'wrong':'initial'}`;
  if(view==='results')return `${mode}-results`;
  if(view==='player-pin'&&pinPurpose==='unlock')return 'player-unlock';
  if(view==='players')return hasPlayers?'players':'players-empty';
  if(view==='history')return ({dashboard:'progress',achievements:'trophies'})[historyState]||historyState;
- return ['home','settings','player-create','player-pin'].includes(view)?view:'';
+ if(view==='home'&&state==='story')return 'home-story';
+ if(view==='campaign'&&state==='story')return 'campaign-story';
+ return ['home','settings','player-create','player-pin','campaign','campaign-book'].includes(view)?view:'';
 }

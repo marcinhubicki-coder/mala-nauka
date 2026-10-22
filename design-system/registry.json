@@ -31,7 +31,7 @@
       "id": "card",
       "name": "Kafel ustawień",
       "tokenGroup": "card",
-      "selector": ".setup-card,.settings-card,.category-card,.result-sheet",
+      "selector": ".setup-card,.settings-card,.category-card",
       "description": "Jedna geometria i powierzchnia dla czterech trybów.",
       "states": [
         "default"
@@ -555,6 +555,33 @@
       "category": "home"
     },
     {
+      "id": "home-story",
+      "name": "Start · kampania",
+      "mode": "spelling",
+      "screen": "home",
+      "state": "story",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "button",
+        "profile",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "home"
+    },
+    {
       "id": "settings",
       "name": "Ustawienia aplikacji",
       "mode": "spelling",
@@ -881,7 +908,7 @@
       "mode": "flags",
       "screen": "game",
       "state": "initial",
-      "route": "/flagi/",
+      "route": "/flagi/scenic-preview.html",
       "components": [
         "flashcard",
         "answer",
@@ -908,7 +935,7 @@
       "mode": "flags",
       "screen": "game",
       "state": "correct",
-      "route": "/flagi/",
+      "route": "/flagi/scenic-preview.html",
       "components": [
         "flashcard",
         "answer",
@@ -935,7 +962,7 @@
       "mode": "flags",
       "screen": "game",
       "state": "wrong",
-      "route": "/flagi/",
+      "route": "/flagi/scenic-preview.html",
       "components": [
         "flashcard",
         "answer",
@@ -1365,7 +1392,7 @@
     },
     {
       "id": "trophies",
-      "name": "Moje puchary",
+      "name": "Puchary i medale",
       "mode": "spelling",
       "screen": "history",
       "state": "achievements",
@@ -1457,6 +1484,299 @@
         "display"
       ],
       "category": "results"
+    },
+    {
+      "id": "forge",
+      "name": "Kuźnia mocy",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "forge",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "rule-details",
+      "name": "Karta reguły",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "rule-details",
+      "route": "/",
+      "components": [
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "trophy-base",
+      "name": "Wybór podstawy pucharu",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "trophy-base",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "trophy-evolution",
+      "name": "Trwały wybór ozdoby pucharu",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "trophy-evolution",
+      "route": "/",
+      "components": [
+        "card",
+        "trophy",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign",
+      "name": "Mapa kampanii",
+      "mode": "spelling",
+      "screen": "campaign",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-story",
+      "name": "Iskierka · opowieść",
+      "mode": "spelling",
+      "screen": "campaign",
+      "state": "story",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-portal",
+      "name": "Portal Światów",
+      "mode": "spelling",
+      "screen": "campaign",
+      "state": "portal",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-book",
+      "name": "Księga kampanii",
+      "mode": "spelling",
+      "screen": "campaign-book",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "reward-details",
+      "name": "Odkrycie nagrody",
+      "mode": "spelling",
+      "screen": "history",
+      "state": "reward-details",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-math-initial",
+      "name": "Matematyka kampanii · initial",
+      "mode": "math",
+      "screen": "game",
+      "state": "initial",
+      "route": "/matematyka/",
+      "components": [
+        "layout",
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "campaign-math-correct",
+      "name": "Matematyka kampanii · correct",
+      "mode": "math",
+      "screen": "game",
+      "state": "correct",
+      "route": "/matematyka/",
+      "components": [
+        "layout",
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
+    },
+    {
+      "id": "campaign-math-wrong",
+      "name": "Matematyka kampanii · wrong",
+      "mode": "math",
+      "screen": "game",
+      "state": "wrong",
+      "route": "/matematyka/",
+      "components": [
+        "layout",
+        "card",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "game"
     }
   ],
   "flows": [
@@ -1910,6 +2230,66 @@
       "action": "Wyjdź po potwierdzeniu",
       "selector": "[data-action=\"exit-confirm\"]",
       "condition": "Zapis wyniku przerwanej rundy"
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "trophy-base"
+      ],
+      "action": "Otwórz pierwszy puchar",
+      "selector": "[data-progress=\"trophy-upgrade\"]",
+      "state": false,
+      "condition": "Gotowy etap i trwały wybór w zamkniętym prezencie"
+    },
+    {
+      "from": "trophy-base",
+      "to": [
+        "trophies"
+      ],
+      "action": "Zamknij bez wyboru",
+      "selector": "[data-progress=\"trophy-cancel\"]",
+      "state": false,
+      "condition": "Anulowanie zachowuje puchar"
+    },
+    {
+      "from": "trophy-base",
+      "to": [
+        "trophies"
+      ],
+      "action": "Wybierz prezent i odsłoń nagrodę",
+      "selector": "[data-progress=\"trophy-base\"]",
+      "state": false,
+      "condition": "Po zapisie i animacji bańki"
+    },
+    {
+      "from": "trophies",
+      "to": [
+        "trophy-evolution"
+      ],
+      "action": "Odkryj ulepszenie",
+      "selector": "[data-progress=\"trophy-upgrade\"]",
+      "state": false,
+      "condition": "Gotowy etap i trwały wybór w zamkniętym prezencie"
+    },
+    {
+      "from": "trophy-evolution",
+      "to": [
+        "trophies"
+      ],
+      "action": "Zamknij bez wyboru",
+      "selector": "[data-progress=\"trophy-cancel\"]",
+      "state": false,
+      "condition": "Anulowanie zachowuje puchar"
+    },
+    {
+      "from": "trophy-evolution",
+      "to": [
+        "trophies"
+      ],
+      "action": "Wybierz prezent i odsłoń nagrodę",
+      "selector": "[data-progress=\"trophy-choice\"]",
+      "state": false,
+      "condition": "Po zapisie i animacji bańki"
     }
   ]
 }

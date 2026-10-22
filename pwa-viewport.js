@@ -5,6 +5,7 @@
   const studio=new URLSearchParams(location.search).has('studio');
   const mobile=!studio&&((navigator.userAgentData?.mobile===true)||(/iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent))||(/Macintosh|iPad/.test(navigator.userAgent)&&navigator.maxTouchPoints>1));
   document.documentElement.dataset.device=mobile?'phone':'desktop';
+  if(mobile&&(navigator.standalone||matchMedia('(display-mode: standalone)').matches)){const meta=document.querySelector('meta[name=viewport]');if(meta)meta.content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';for(const type of ['gesturestart','gesturechange'])document.addEventListener(type,event=>event.preventDefault(),{passive:false});document.addEventListener('touchmove',event=>{if(event.touches.length>1)event.preventDefault();},{passive:false});}
   function orientation(portrait){
     const blocked=mobile&&!portrait,changed=document.documentElement.classList.contains('landscape-blocked')!==blocked;document.documentElement.classList.toggle('landscape-blocked',blocked);if(changed)document.dispatchEvent(new CustomEvent('mala-nauka:orientation',{detail:{blocked}}));
     let notice=document.getElementById('portrait-notice');
@@ -28,7 +29,7 @@
       style.setProperty('--app-viewport-height',`${viewport.height}px`);
       style.setProperty('--app-viewport-offset',`${viewport.offsetTop}px`);
     }else{
-      if(standalone)style.setProperty('--app-viewport-height',`${screenHeight}px`);
+      if(studio&&parent!==window)style.setProperty('--app-viewport-height',`${window.innerHeight}px`);else if(standalone)style.setProperty('--app-viewport-height',`${screenHeight}px`);
       else style.removeProperty('--app-viewport-height');
       style.removeProperty('--app-viewport-offset');
     }

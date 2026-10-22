@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -57,7 +58,7 @@ test('map edits keep screen-specific bindings separate from shared bindings',()=
  map.renderInspector=()=>{};map.change({target:{dataset:{soundBindingScope:''},value:'local'}});assert.equal(map.scope,'local');
 });
 test('sound map and cue mixers survive editable drafts and release snapshots',async()=>{
- const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))),sound=normalizeSoundSettings({loopSeconds:120,cues:{tap:{bell:40,duration:180}},bindings:{home:{'action:settings':{cue:'bubble',volume:45}}}});
+ const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)))),sound=normalizeSoundSettings({loopSeconds:120,cues:{tap:{bell:40,duration:180}},bindings:{home:{'action:settings':{cue:'bubble',volume:45}}}});
  config.sound=sound;assert.deepEqual(designFields(config).sound,sound);
  assert.deepEqual(projectSnapshot(discoveryProject(),config).design.sound,sound);
  assert.deepEqual(editableProjectConfig({...config,project:{designDraft:{sound}}}).sound,sound);

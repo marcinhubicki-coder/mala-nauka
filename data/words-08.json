@@ -668,8 +668,8 @@
     "difficulty": 1,
     "learning": {
       "type": "pattern",
-      "title": "„zi” przed samogłoską",
-      "explanation": "W słowie „zima” miękką głoskę „ź” zapisujemy przez „zi”, ponieważ po niej występuje samogłoska.",
+      "title": "„i” jest też samogłoską — zi",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy zi. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż zi przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [
@@ -1390,8 +1390,8 @@
     "difficulty": 1,
     "learning": {
       "type": "pattern",
-      "title": "„dzi” przed samogłoską",
-      "explanation": "W słowie „dzik” miękką głoskę „dź” zapisujemy przez „dzi”, ponieważ po niej występuje samogłoska.",
+      "title": "„i” jest też samogłoską — dzi",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy dzi. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż dzi przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [
@@ -1661,13 +1661,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ć/ci",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — ci",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy ci. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż ci przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1687,13 +1692,18 @@
       "ź/zi"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ź/zi",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ź lub zi. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ź” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ź” zapisujemy znakiem „ź”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1713,13 +1723,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1739,13 +1754,18 @@
       "dź/dzi"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis dź/dzi",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — dzi",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy dzi. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż dzi przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1765,13 +1785,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1793,13 +1818,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1819,13 +1849,18 @@
       "dź/dzi"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis dź/dzi",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór dź lub dzi. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„dzi” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę dź zapisujemy jako dzi. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1845,13 +1880,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1873,13 +1913,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1899,13 +1944,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1927,13 +1977,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1953,13 +2008,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -1979,13 +2039,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2005,13 +2070,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2033,13 +2103,18 @@
       "dź/dzi"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2061,13 +2136,18 @@
       "dź/dzi"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2087,13 +2167,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2113,13 +2198,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2139,13 +2229,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„si” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ś zapisujemy jako si. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2167,13 +2262,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2193,13 +2293,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2219,13 +2324,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2247,13 +2357,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2273,13 +2388,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2299,13 +2419,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2325,13 +2450,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — si",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy si. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż si przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2353,13 +2483,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ć/ci",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ci” przed inną samogłoską",
+      "explanation": "Przed samogłoską inną niż i (np. a, e, o, u) miękką spółgłoskę ć zapisujemy jako ci. Litera i jest tutaj znakiem zmiękczenia.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2381,13 +2516,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ć/ci",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ć lub ci. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„i” jest też samogłoską — ci",
+      "explanation": "Gdy po miękkiej spółgłosce słyszymy samogłoskę i, zapisujemy ci. Litera i jednocześnie oznacza samogłoskę i zmiękcza poprzednią spółgłoskę. To inny przypadek niż ci przed a, e, o czy u.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2407,13 +2547,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2433,13 +2578,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2459,13 +2609,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2485,13 +2640,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2511,13 +2671,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2539,13 +2704,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2565,13 +2735,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2593,13 +2768,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2621,13 +2801,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2649,13 +2834,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2675,13 +2865,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2701,13 +2896,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2727,13 +2927,18 @@
       "ś/si"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   },
   {
@@ -2755,13 +2960,18 @@
       "ń/ni"
     ],
     "learning": {
-      "type": "memory",
-      "title": "Zapis ś/si",
-      "explanation": "Przyjrzyj się wyróżnionej części słowa i zapamiętaj jego poprawny zapis. W tej grupie ćwiczymy wybór ś lub si. Porównaj też znane słowa z tej samej rodziny.",
+      "type": "pattern",
+      "title": "„ś” przed spółgłoską lub na końcu",
+      "explanation": "Miękką głoskę „ś” zapisujemy znakiem „ś”. Kreski używamy przed inną spółgłoską albo na końcu wyrazu.",
       "examples": [],
       "relatedWords": [],
       "forms": [],
-      "sources": []
+      "sources": [
+        {
+          "label": "RJP: zasady pisowni",
+          "url": "https://rjp.pan.pl/zasady-pisowni-i-interpunkcji-polskiej-2/"
+        }
+      ]
     }
   }
 ]

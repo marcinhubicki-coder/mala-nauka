@@ -1,0 +1,37 @@
+.studio-topbar{height:auto;flex-wrap:wrap;row-gap:8px}
+.studio-preview-device{display:flex;align-items:center;gap:12px;flex:0 0 100%;margin:0;padding:0;border:0;font-size:12px;color:#64748b;min-width:0}
+.studio-preview-device legend{float:left;padding:0;margin-right:12px;line-height:36px}
+.studio-preview-device>div{display:flex;border:1px solid #d8e2ef;background:#eef2f7;border-radius:10px;padding:3px;gap:3px}
+.studio-preview-device label{position:relative;cursor:pointer;border-radius:7px;padding:6px 16px;min-height:30px;display:flex;align-items:center;justify-content:center;color:#526885;font-weight:700}
+.studio-preview-device label:has(:checked){color:#fff;background:#315af2;box-shadow:0 1px 3px #193c7520}
+.studio-preview-device input{position:absolute;inset:0;opacity:0;width:100%;height:100%;min-height:0;margin:0;cursor:pointer;z-index:1}
+.studio-preview-device label:has(:focus-visible){outline:2px solid #315af2;outline-offset:3px}
+.studio-preview-device output{font-variant-numeric:tabular-nums;white-space:nowrap}
+.studio-main:has(>.workspace>.component-layout){display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+.studio-main:has(>.workspace>.component-layout)>.studio-topbar,.studio-main:has(>.workspace>.component-layout)>.studio-context{flex:none}
+.studio-main:has(>.workspace>.component-layout)>.workspace{flex:1;min-height:0;overflow:hidden}
+#workspace>.component-layout{height:100%;min-height:0}
+@media(min-width:691px){
+ .component-layout>.preview-column{grid-template-rows:auto auto auto minmax(360px,1fr);overflow-y:auto}
+}
+html[data-preview-device=desktop] :is(.phone-outer,.motion-phone,.effect-phone){width:var(--preview-frame-width)!important;height:var(--preview-frame-height)!important;border-radius:14px}
+html[data-preview-device=desktop] :is(.phone-inner,.effect-phone>iframe){width:var(--preview-screen-width)!important;height:var(--preview-screen-height)!important;border-radius:6px;left:12px;top:32px}
+html[data-preview-device=desktop] :is(.phone-inner iframe,.device-frame,.motion-phone iframe,.effect-phone iframe){width:var(--preview-screen-width)!important;height:var(--preview-screen-height)!important;border-radius:6px}
+html[data-preview-device=desktop] :is(.phone-notch,.phone-status,.phone-homebar){display:none!important}
+html[data-preview-device=desktop] :is(.phone-outer,.motion-phone,.effect-phone)::before{content:'● ● ●';position:absolute;left:14px;top:8px;line-height:16px;font-size:10px;letter-spacing:3px;color:#9aaac0;pointer-events:none}
+html[data-preview-device=desktop] .preview-gallery:not(.native-size) .phone-outer{margin-left:calc(var(--preview-frame-width) / -2)}
+html[data-preview-device=desktop] .preview-gallery.native-size{grid-template-columns:minmax(var(--preview-frame-width),1fr);overflow:auto}
+html[data-preview-device=desktop] .preview-gallery.native-size .phone-zone{min-height:calc(var(--preview-frame-height) + 36px)}
+html[data-preview-device=desktop] .preview-gallery.comparison>.preview-tile{flex-basis:calc(var(--preview-frame-width) * var(--preview-phone-scale))}
+html[data-preview-device=desktop] .preview-gallery.comparison .phone-outer{margin-left:calc(var(--preview-frame-width) / -2)}
+.test-phone{max-width:100%;overflow:hidden}
+.test-phone>iframe{display:block;transform-origin:top left;max-width:none!important}
+html[data-preview-device=desktop] .test-phone{width:100%;border-radius:10px}
+@media(max-width:690px){
+ .studio-preview-device{gap:8px;font-size:11px}
+ .studio-preview-device legend{margin-right:0;line-height:36px}
+ .studio-preview-device label{min-height:36px;padding:6px 12px;font-size:12px}
+ .studio-preview-device output{font-size:10px}
+ body.mobile-editor .studio-main:has(>.workspace>.component-layout){height:calc(100dvh - var(--mobile-dock-height))}
+ html[data-preview-device=desktop] .preview-gallery.comparison .phone-outer{margin-left:calc(var(--preview-frame-width) / -2)}
+}

@@ -22,8 +22,8 @@ const START_COPY={
 };
 const NOTES={
  flags:'Rozpoznawaj flagi i odkrywaj, gdzie leżą państwa.',
- countries:'Patrz na nazwę państwa i wybierz jego flagę.',
- capitals:'Połącz stolicę z właściwym państwem.'
+ countries:'Rozpoznaj państwo na mapie, korzystając z nazwy stolicy.',
+ capitals:'Spójrz na zaznaczony kraj i wybierz jego stolicę.'
 };
 
 let state=null;
@@ -42,11 +42,11 @@ function readState(fallbackDuration=60){
     gameType:GAME_TYPES.some(([id])=>id===saved.gameType)?saved.gameType:'flags',
     scope:saved.scope==='continents'?'continents':'world',
     continents:continents.length?continents:['europe'],
-    duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallbackDuration
+    duration:DURATIONS.includes(Number(saved.duration))?Number(saved.duration):fallbackDuration,limitMode:saved.limitMode==='time'?'time':'count',wordLimit:[10,20,40,80].includes(Number(saved.wordLimit))?Number(saved.wordLimit):10
    };
   }
  }catch{}
- return {gameType:'flags',scope:'world',continents:['europe'],duration:fallbackDuration};
+ return {gameType:'flags',scope:'world',continents:['europe'],duration:fallbackDuration,limitMode:'count',wordLimit:10};
 }
 
 function saveState(){
@@ -195,6 +195,8 @@ function activeIndexFor(container){
  const type=container?.dataset.segmented;
  if(type==='game')return Math.max(0,GAME_TYPES.findIndex(([id])=>id===state.gameType));
  if(type==='scope')return state.scope==='continents'?1:0;
+ if(type==='limit')return state.limitMode==='time'?1:0;
+ if(type==='questions')return Math.max(0,[10,20,40,80].indexOf(state.wordLimit));
  if(type==='time')return Math.max(0,DURATIONS.indexOf(state.duration));
  return 0;
 }
@@ -225,6 +227,7 @@ function applySegmentSelection(input){
 function setupDrag(container){
  if(!container||container.dataset.jellyV4DragReady==='true')return;
  jellyV4.setupDrag(container,{
+  captureOnDrag:true,
   getActiveIndex:()=>activeIndexFor(container),
   commitIndex:index=>{
    const list=[...container.querySelectorAll(':scope > label')];
@@ -274,14 +277,14 @@ function syncPanel(animate=false){
  syncSegmentedControls(animate);
 }
 
-function syncHidden(dispatch=true){
+function syncHidden(dispatch=true,force=false){
  const category=root.querySelector('input[name="category"]');
  if(!category)return;
  const next=encodeCategory();
  const changed=category.value!==next;
  category.value=next;
  saveState();
- if(dispatch&&changed)category.dispatchEvent(new Event('change',{bubbles:true}));
+ if(dispatch&&(changed||force))category.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
 function setWorldFromAllContinents(){
@@ -320,14 +323,17 @@ function install(){
   </fieldset>
 
   <fieldset class="flag-v2-section flag-v2-time">
-   <legend><span class="step-dot">3</span>Jak długo dasz radę?</legend>
-   <div class="flag-time-segmented flag-segmented" data-segmented="time" role="radiogroup" aria-label="Czas rozgrywki">${durationChoices()}</div>
+   <legend><span class="step-dot">3</span>Wybierz długość rundy</legend>
+   <div class="flag-limit-toggle flag-time-segmented flag-segmented" data-segmented="limit" role="radiogroup" aria-label="Zadania albo czas">${indicator()}${[['count','Zadania'],['time','Czas']].map(([value,label])=>`<label class="flag-time-choice"><input type="radio" name="limitMode" value="${value}" ${state.limitMode===value?'checked':''}><span>${label}</span></label>`).join('')}</div>
+   <div data-round-options="count" ${state.limitMode==='count'?'':'hidden'}><div class="flag-time-segmented flag-segmented" data-segmented="questions" role="radiogroup" aria-label="Liczba zadań">${indicator()}${[10,20,40,80].map(value=>`<label class="flag-time-choice"><input type="radio" name="wordLimit" value="${value}" ${state.wordLimit===value?'checked':''}><span>${value}</span></label>`).join('')}</div></div>
+   <div data-round-options="time" ${state.limitMode==='time'?'':'hidden'}><div class="flag-time-segmented flag-segmented" data-segmented="time" role="radiogroup" aria-label="Czas rozgrywki">${durationChoices()}</div></div>
   </fieldset>`;
 
  updateStartButton(false);
  updateNote();
  syncPanel(false);
- syncHidden(true);
+ syncHidden(true,true);
+ delete root.dataset.dsContractPending;
  requestAnimationFrame(()=>{syncSegmentedControls(false);installDrag();});
 }
 
@@ -348,6 +354,7 @@ root?.addEventListener('click',event=>{
 root?.addEventListener('change',event=>{
  if(root.dataset.mode!=='flags'||root.dataset.view!=='wizard'||!state)return;
  const target=event.target;
+ if(target?.name==='limitMode'||target?.name==='wordLimit'){state[target.name]=target.name==='wordLimit'?Number(target.value):target.value;root.querySelectorAll('[data-round-options]').forEach(n=>n.hidden=n.dataset.roundOptions!==state.limitMode);saveState();syncSegmentedControls(true);return;}
  if(target?.name==='flagGameType'){
   state.gameType=target.value;
   updateNote();

@@ -23,7 +23,7 @@ test('local view exceptions do not leak to other views and impact maps remain ex
 });
 test('playable illustrations and deleted aliases resolve to one existing canonical file',()=>{
  validateAssets(assets);assert.equal(words.length,new Set(words.map(row=>row.word)).size);configureAssets(assets,'https://example.test/base/');
- const ready=playableWords(words,assets);assert.equal(ready.length,Object.keys(assets.words).length);assert.deepEqual(words.filter(w=>!ready.includes(w)).map(w=>w.word).sort(),['chata','chrzan','dach','wieża']);
+ const ready=playableWords(words,assets);assert.equal(ready.length,Object.keys(assets.words).length);assert.deepEqual(words.filter(w=>!ready.includes(w)).map(w=>w.word).sort(),[]);
  for(const word of ready)assert.ok(assets.assets.some(row=>row.path===assets.words[word.word]?.path),word.word);
  for(const [alias,target]of Object.entries(assets.aliases))assert.equal(assetUrl(alias),'https://example.test/base/'+target);
  const first=words[0].word,path=assets.words[first].path;previewAssets({[path]:'blob:temporary-image'});assert.equal(wordAsset(first),'blob:temporary-image');previewAssets();
@@ -83,6 +83,7 @@ test('normal routes share studio view IDs for settings, feedback, profiles and a
  assert.equal(viewIdFor({view:'players',hasPlayers:false}),'players-empty');
  assert.equal(viewIdFor({view:'history',historyState:'achievements'}),'trophies');
  assert.equal(viewIdFor({view:'results',popup:'rule'}),'spelling-rule');
+ assert.equal(viewIdFor({view:'history',historyState:'collection',popup:'rule'}),'collection');
 });
 
 test('shared rules join the same atomic save and credentials never enter content',async()=>{

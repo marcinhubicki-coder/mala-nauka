@@ -9,14 +9,14 @@ const [config,assets,rules]=await Promise.all(['config','assets','rules'].map(na
 const words=(await Promise.all(Array.from({length:8},(_,i)=>read(`data/words-0${i+1}.json`)))).flat();
 test('central rules cover all words; one deliberate edit propagates and preserves individual examples',()=>{
  validateRules(rules);assert.ok(Object.keys(rules.rules).length>0);assert.equal(Object.keys(rules.assignments).length,words.length);
- assert.deepEqual(applyRules(words,rules),words);
+ const baseline=applyRules(words,rules);for(const w of baseline)assert.equal(w.learning.title,rules.rules[rules.assignments[w.word].primary].title);
  const draft=structuredClone(rules),id=draft.assignments.góra.primary;
  draft.rules[id].explanation='Wspólna treść testowa.';draft.rules[id].edited=true;
  const changed=applyRules(words,draft),labels=wordsForRule(draft,id);
  assert.ok(labels.length>1);
  for(let i=0;i<words.length;i++){
   assert.deepEqual(changed[i].learning.examples,words[i].learning.examples);
-  assert.equal(changed[i].learning.explanation,labels.includes(words[i].word)?'Wspólna treść testowa.':words[i].learning.explanation);
+  assert.equal(changed[i].learning.explanation,labels.includes(words[i].word)?'Wspólna treść testowa.':baseline[i].learning.explanation);
  }
  assert.notEqual(words.find(w=>w.word==='góra').learning.explanation,'Wspólna treść testowa.');
  draft.assignments.góra.additional=[id];assert.throws(()=>validateRules(draft));

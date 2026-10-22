@@ -13,7 +13,7 @@ import {surfaceEditor} from '../design-system/surface-editor.mjs';
 import {behaviorOptions} from '../design-system/behavior-picker.mjs';
 import {AMBIENT_STYLES,EFFECT_STYLES} from '../spelling/effect-model.mjs';
 
-const original=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const original=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
 
 test('migration is immutable, idempotent and preserves current runtime values',()=>{
@@ -89,4 +89,12 @@ test('choosing a surface for a whole screen never creates an invalid recipe stat
  const preview={viewId:'home',scope:'global',activeSelection:()=>({id:'layout-root',kind:'container',recipe:'layout',state:'initial'}),edit:(path,value)=>{paths.push(path);const keys=path.split('.');let node=c;for(const key of keys.slice(0,-1))node=node[key]||=( {} );node[keys.at(-1)]=value;}};
  StudioPreview.prototype.writeVisual.call(preview,'surfaceEffects',[{preset:'surface-bokeh'}]);assert.equal(paths[0],'elementStyles.layout.surfaceEffects');validateConfig(c);
  preview.scope='view';StudioPreview.prototype.writeVisual.call(preview,'surfaceEffects',[{preset:'surface-bokeh'}]);assert.equal(paths[1],'elementOverrides.home.layout-root.surfaceEffects');validateConfig(c);
+});
+
+test('award entry and idle tuning survives Studio behavior migration independently',()=>{
+ const saved=migrateBehaviors(original);validateConfig(saved);
+ for(const state of ['empty','earned','mastered']){
+  const a=visualValue(original,'spelling-rule',{id:'rule-mastery-badge',kind:'container',recipe:'group-word-award',state}),b=visualValue(saved,'spelling-rule',{id:'rule-mastery-badge',kind:'container',recipe:'group-word-award',state});
+  for(const key of ['enterAnimation','enterDuration','enterDistance','idleAnimation','idleDuration','idleDistance'])if(a[key]!==undefined)assert.equal(b[key],a[key],state+'.'+key);
+ }
 });

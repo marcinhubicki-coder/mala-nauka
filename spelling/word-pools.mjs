@@ -1,3 +1,4 @@
+import {practicePriority,targetId} from '../shared/mastery.mjs';
 import {RULE_CATEGORIES,ruleLibrary} from '../shared/rules-library.mjs';
 
 export const wordKey = word => String(word).normalize('NFC').trim().toLocaleLowerCase('pl');
@@ -8,7 +9,7 @@ const familyOf = Object.fromEntries(RULE_CATEGORIES.flatMap(category=>category.s
 // A word is the identity. A slot is only the question asked about that word.
 export function wordSlots(record) {
   const text=record.word.normalize('NFC');
-  const slots=[...text.toLocaleLowerCase('pl').matchAll(letters)].map(match=>({
+  const slots=[...text.toLocaleLowerCase('pl').matchAll(letters)].filter(match=>!(text.toLocaleLowerCase('pl')==='zmarznąć'&&match[0]==='rz')).map(match=>({
     category:familyOf[match[0]],answer:match[0],options:familyOf[match[0]].split('/'),
     masked:text.slice(0,match.index)+'_'+text.slice(match.index+match[0].length)
   }));
@@ -36,12 +37,13 @@ export function canonicalWords(rows) {
 }
 export function questionForWord(record,category,library=ruleLibrary()) {
   if(!practiceCategories(record).includes(category))return null;
-  const slot=wordSlots(record).find(slot=>slot.category===category);
+  const slots=wordSlots(record).filter(slot=>slot.category===category);
+  const slot=slots[0];
   if(!slot)return null;
   const primary=slot.masked===record.masked&&slot.answer===record.answer;
   const rule=Object.values(library?.rules||{}).find(rule=>rule.category===category&&rule.poolDefault);
   const learning=primary?record.learning:rule?{type:rule.type,title:rule.title,explanation:rule.explanation,examples:[],relatedWords:[],forms:[],sources:[]}:{type:'memory',title:`Pisownia ${category}`,explanation:`Zapamiętaj poprawny zapis słowa „${record.word}”. W zaznaczonym miejscu piszemy ${slot.answer}.`,examples:[],relatedWords:[],forms:[],sources:[]};
-  return {...record,...slot,difficulty:categoryLevel(record,category),wordId:wordKey(record.word),families:practiceCategories(record),learning};
+  return {...record,...slot,difficulty:categoryLevel(record,category),wordId:wordKey(record.word),families:practiceCategories(record),targetIds:wordSlots(record).filter(s=>practiceCategories(record).includes(s.category)).map(targetId),learning};
 }
 export function spellingPool(rows,config={},random=Math.random,library=ruleLibrary()) {
   const selected=config.category&&config.category!=='all'?new Set(config.category.split(',')):null;
@@ -49,7 +51,13 @@ export function spellingPool(rows,config={},random=Math.random,library=ruleLibra
     const families=practiceCategories(record).filter(category=>(!selected||selected.has(category))&&(!config.difficulty||categoryLevel(record,category)===config.difficulty));
     if(!families.length)return [];
     const category=selected?families[Math.min(families.length-1,Math.floor(random()*families.length))]:families.includes(record.category)?record.category:families[0];
-    return [questionForWord(record,category,library)];
+    const item=config.learning?.items?.['word:'+record.word];
+    const candidates=families.flatMap(f=>wordSlots(record).filter(s=>s.category===f));
+    candidates.sort((a,b)=>{const x=item?.targets?.[targetId(a)],y=item?.targets?.[targetId(b)];return Number(x?.masteryEarned||false)-Number(y?.masteryEarned||false)||String(x?.lastSeenAt||'').localeCompare(String(y?.lastSeenAt||''));});
+    const chosen=config.learning?candidates[0]:null;
+    const question=questionForWord(record,chosen?.category||category,library);
+    if(chosen){Object.assign(question,chosen);if(chosen.masked!==record.masked)question.learning={...question.learning,type:'memory',title:'Pisownia słowa '+record.word,explanation:'Zapamiętaj zaznaczony fragment poprawnej pisowni: '+record.word+'.'};}
+    return [{...question,priority:practicePriority(item)}];
   });
 }
 export function auditWordPools(rows,catalog) {

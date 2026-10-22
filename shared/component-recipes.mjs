@@ -1,5 +1,5 @@
 // Atoms own text rhythm. Existing component families keep surfaces and interaction.
-import {ICONS} from './element-system.mjs';
+import {ICONS} from './element-styles.mjs';
 import {ATOMS} from './structure-model.mjs';
 export {ATOMS};
 export const DEFAULT_RECIPES=Object.fromEntries(Object.entries(ATOMS).map(([id,a])=>[id,{enabled:false,size:a.size,weight:a.weight,lineHeight:1.2,gap:8,padding:0,role:a.role}]));

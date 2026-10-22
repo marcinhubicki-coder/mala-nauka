@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "model": "NPC discovery and integer sparks, no progress mutation",
+  "checks": [
+    {
+      "engine": "chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "geometry": {
+        "overflow": false,
+        "images": [],
+        "labels": [
+          582.296875,
+          582.296875,
+          582.296875
+        ],
+        "switchBottom": 804.65625,
+        "gaps": {
+          "upper": 30.640625,
+          "lower": 30.53125
+        }
+      },
+      "errors": [],
+      "flows": [
+        "story → free → story, stable chrome and Jelly, keyboard and drag",
+        "forge → home",
+        "awards → home",
+        "book → home",
+        "artifact page → home",
+        "continue → campaign"
+      ]
+    },
+    {
+      "engine": "webkit",
+      "viewport": [
+        390,
+        844
+      ],
+      "geometry": {
+        "overflow": false,
+        "images": [],
+        "labels": [
+          582.3125,
+          582.3125,
+          582.3125
+        ],
+        "switchBottom": 804.65625,
+        "gaps": {
+          "upper": 30.640625,
+          "lower": 30.53125
+        }
+      },
+      "errors": [],
+      "flows": [
+        "story → free → story, stable chrome and Jelly, keyboard and drag",
+        "forge → home",
+        "awards → home",
+        "book → home",
+        "artifact page → home",
+        "continue → campaign"
+      ]
+    }
+  ]
+}

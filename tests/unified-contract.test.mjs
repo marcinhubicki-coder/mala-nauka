@@ -1,10 +1,11 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {projectContract,designFields} from '../design-system/project-model.mjs';
 import {optimizedTestConfig} from '../design-system/pwa-test-build.mjs';
 import {validateConfig} from '../design-system/model.mjs';
-const base=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const base=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 test('Git, runtime and PWA export retain visibility, order, element motion and panel preferences',()=>{
  const local=structuredClone(base);
  local.elementOverrides={...local.elementOverrides,home:{example:{visibility:'removed',animation:'float',animationDuration:900,animationDistance:8}}};

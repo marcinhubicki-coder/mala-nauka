@@ -82,7 +82,8 @@ export function cleanConfig(mode, value) {
    duration:DURATIONS.includes(value?.duration)?value.duration:180,
    flagGameType:parsed.gameType,
    flagScope:parsed.scope,
-   flagContinents:parsed.continents
+   flagContinents:parsed.continents,
+   ...cleanRoundSettings(value)
   };
  }
  if(mode==='reading'){
@@ -130,7 +131,7 @@ export function categoryLabel(mode, category) {
 }
 const integer = (min,max,random) => min+Math.floor(random()*(max-min+1));
 export function mathQuestion(config, random = Math.random) {
- const level=config.difficulty, limit=[0,10,50,100][level];
+ const level=config.difficulty, limit=config.maxValue||[0,10,50,100][level];
  const operation=config.category==='all'?shuffle(['add','subtract','multiply','divide'],random)[0]:config.category;
  let a,b,result,symbol;
  if(operation==='add') { a=integer(0,limit-1,random); b=integer(1,limit-a,random); result=a+b;symbol='+'; }
@@ -143,7 +144,7 @@ export function mathQuestion(config, random = Math.random) {
  const radius=level===3&&result>20?8:5;
  const neighbours=Array.from({length:radius*2+1},(_,i)=>result+i-radius).filter(n=>n>=0&&n!==result);
  const options=[result,...shuffle(neighbours,random).slice(0,5)].map(String);
- return {kind:'math',text:`${a} ${symbol} ${b} = ?`,answer:String(result),options,full:`${a} ${symbol} ${b} = ${result}`,prompt:'Wybierz wynik działania',difficulty:level};
+ return {kind:'math',category:operation,learningKey:operation+'-'+(operation==='multiply'||operation==='divide'?level===1?5:10:limit<=10?10:limit<=20?20:limit<=100?100:1000),text:`${a} ${symbol} ${b} = ?`,answer:String(result),options,full:`${a} ${symbol} ${b} = ${result}`,prompt:'Wybierz wynik działania',difficulty:level};
 }
 
 const WORLD_EUROPE=FLAGS.filter(flag=>flag.continent==='europe').sort((a,b)=>a.distanceKm-b.distanceKm||a.distanceRank-b.distanceRank);
@@ -396,19 +397,22 @@ export function createSource(mode, config, words, random = Math.random) {
   const selected=new Set(parsed.categories);
   let pool=ENGLISH.filter(w=>parsed.scope==='all'||selected.has(w.category));
   if(config.difficulty===3) { const harder=pool.filter(w=>w.difficulty>=2);if(harder.length)pool=harder; }
-  return pool.map(w=>({kind:'english',text:w.meaning,answer:w.word,full:w.word,
+  return pool.map(w=>({kind:'english',learningKey:w.word,category:w.category,text:w.meaning,answer:w.word,full:w.word,
    options:config.difficulty===1?[w.word,...shuffle(ENGLISH.filter(o=>o.category===w.category&&o.word!==w.word),random).slice(0,3).map(o=>o.word)]:[w.word,...w.mistakes],
    prompt:config.difficulty===1?'Jak to jest po angielsku?':'Wybierz poprawną pisownię',difficulty:config.difficulty}));
  }
  if(mode==='flags') {
   const normalized=cleanConfig('flags',config);
-  const region=selectedFlagRegion(normalized);
+  const allowed=Array.isArray(config.campaignIds||config.offlineFlagIds)?new Set(config.campaignIds||config.offlineFlagIds):null;
+  const region=selectedFlagRegion(normalized).filter(flag=>!allowed||allowed.has(flag.id));
+  if(allowed&&!region.length)throw Error('Połącz się z internetem, aby wczytać flagi dla tej podróży.');
+  if(!config.campaignIds&&allowed&&normalized.flagGameType==='countries'&&region.length<4)throw Error('Ta podróż potrzebuje co najmniej czterech wcześniej wczytanych flag. Połącz się na chwilę z internetem.');
   return session=>{
-   const picked=normalized.flagScope==='world'
+   const picked=normalized.flagScope==='world'&&!allowed
     ? pickWorldCurriculumFlag(session,random)
     : pickRegionalCurriculumFlag(session,region,random);
    const flag=picked.flag;
-   const options=distractorRegion(flag,region,normalized);
+   const options=allowed&&!config.campaignIds&&normalized.flagGameType==='countries'?region:distractorRegion(flag,region,normalized);
    const difficulty=normalized.flagScope==='world'?flag.difficulty:regionalDifficulty(flag,region);
    return flagQuestion(flag,options,normalized,random,difficulty,{
     distanceJump:picked.isDistanceJump,

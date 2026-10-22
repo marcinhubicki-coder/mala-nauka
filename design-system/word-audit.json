@@ -2,13 +2,8 @@
   "entries": 510,
   "uniqueWords": 510,
   "duplicates": [],
-  "multipleCategories": 186,
-  "missingAssets": [
-    "wieża",
-    "dach",
-    "chata",
-    "chrzan"
-  ],
+  "multipleCategories": 185,
+  "missingAssets": [],
   "pools": [
     {
       "category": "u/ó",
@@ -18,8 +13,8 @@
     },
     {
       "category": "rz/ż",
-      "primary": 136,
-      "total": 158,
+      "primary": 135,
+      "total": 157,
       "basic": 83
     },
     {
@@ -30,7 +25,7 @@
     },
     {
       "category": "ć/ci",
-      "primary": 13,
+      "primary": 14,
       "total": 58,
       "basic": 34
     },

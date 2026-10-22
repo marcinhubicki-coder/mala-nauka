@@ -1,0 +1,16 @@
+.campaign-screen .campaign-itinerary{left:12px;right:12px;bottom:12px}
+.campaign-story{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.campaign-field-magic{--field-core:#ffe18c;--field-edge:#ca8c36;--field-light:#fff6b4;position:absolute;z-index:5;width:19%;height:10%;transform:translate(-50%,-65%);pointer-events:none;isolation:isolate;opacity:1;transition:opacity .3s}
+.campaign-field-magic[hidden]{display:none}.campaign-field-magic.field-replay{--field-core:#e7f6ff;--field-edge:#8bacc8;--field-light:#fffaff}
+.field-halo{position:absolute;left:3%;right:3%;bottom:14%;height:28%;border:1px solid var(--field-core);border-radius:50%;background:radial-gradient(ellipse,var(--field-core),transparent 70%);opacity:.55;box-shadow:0 0 6px var(--field-core);animation:field-breathe 3.8s ease-in-out infinite}
+.field-bubble{position:absolute;left:var(--x);top:70%;width:7px;height:7px;border-radius:50%;border:1px solid var(--field-core);background:radial-gradient(circle at 28% 25%,#fff 6%,var(--field-light) 18%,transparent 60%);box-shadow:0 0 4px var(--field-edge);opacity:0;animation:field-rise var(--time) var(--delay) ease-in-out infinite}
+.field-bubble>b{position:absolute;left:50%;top:50%;width:2px;height:3px;border-radius:50%;background:var(--field-core);opacity:0;--px:-7px;--py:-6px;animation:field-pop var(--time) var(--delay) ease-out infinite}.field-bubble>b:nth-child(2){--px:8px;--py:-4px}.field-bubble>b:nth-child(3){--px:1px;--py:7px}
+@keyframes field-rise{0%{opacity:0;transform:translate(0,0) scale(.3)}12%{opacity:.9}65%{opacity:.8;transform:translate(var(--drift),calc(var(--rise)*-1)) scale(1)}74%{opacity:1;transform:translate(var(--drift),calc(var(--rise)*-1.1)) scale(1.16)}82%,100%{opacity:0;transform:translate(var(--drift),calc(var(--rise)*-1.15)) scale(1.7)}}
+@keyframes field-pop{0%,68%{opacity:0;transform:translate(0,0)}76%{opacity:1}90%,100%{opacity:0;transform:translate(var(--px),var(--py))}}
+@keyframes field-breathe{50%{opacity:.8;transform:scale(1.06)}}
+.campaign-screen[data-travelling] .field-replay{opacity:0}.campaign-map[data-field-paused] .campaign-field-magic *{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.campaign-field-magic *{animation:none}.field-bubble{display:none}.campaign-field-magic{transition:none}}
+/* Radiance belongs only to the selected field; the traveller stays above it. */
+.field-radiance{position:absolute;inset:36% -14% -4%;border-radius:50%;background:radial-gradient(ellipse,#fff9dfbb 0%,var(--field-core) 24%,transparent 68%);opacity:.5;animation:field-breathe 3.8s ease-in-out infinite;mix-blend-mode:screen}
+.campaign-field-magic .field-halo{border-width:2px;opacity:.8;box-shadow:0 0 10px var(--field-core),0 0 20px var(--field-edge)}
+.campaign-field-flight{position:absolute;inset:0;z-index:5;width:100%;height:100%;pointer-events:none}

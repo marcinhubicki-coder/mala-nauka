@@ -1,6 +1,6 @@
 export const GAME_MODES=['spelling','english','flags','reading','math'];
 export const routeKey=(from,action,context='')=>[from,action,context].filter(Boolean).join('--');
-export const routeTargets=['home','settings','players','player-create','progress',...GAME_MODES.flatMap(mode=>[mode+'-settings',mode+'-results'])];
+export const routeTargets=['home','settings','players','player-create','progress','forge',...GAME_MODES.flatMap(mode=>[mode+'-settings',mode+'-results'])];
 export const PLAYER_SELECTION_DEFAULTS={autoContinue:true,delay:360,fadeDuration:280,otherOpacity:.28};
 export function playerSelectionSettings(config){return {...PLAYER_SELECTION_DEFAULTS,...config?.navigation?.playerSelection};}
 export const STARTUP_LINKS=[
@@ -21,6 +21,7 @@ export function defaultTarget(from,action,mode='spelling',context=''){
  if(action==='exit-confirm')return mode+'-results';
  if(action==='result-back'||action==='wizard')return mode+'-settings';
  if(action==='home')return 'home';if(action==='settings')return 'settings';
+ if(action==='forge')return 'forge';if(action==='dashboard')return 'progress';
  if(action==='history')return 'progress';if(action==='switch-player')return 'players';
  if(action==='return-results')return context||mode+'-results';
  if(action==='choose-mode')return mode+'-settings';
@@ -43,7 +44,10 @@ export function architectureLinks(mode){return [
  {from:mode+'-initial',action:'exit-confirm',label:'Zakończ i zobacz podsumowanie',to:mode+'-results'},
  {from:mode+'-results',action:'result-back',label:'Powrót',to:mode+'-settings'},
  {from:mode+'-results',action:'again',label:'Nowa runda',to:mode+'-initial',fixed:true},
- {from:mode+'-results',action:'history',label:'Moje wyniki',to:'progress'},
+ {from:mode+'-results',action:'forge',label:'Kuźnia mocy',to:'forge'},
+ {from:'forge',action:'return-results',context:mode+'-results',label:'Powrót do rundy',to:mode+'-results'},
+ {from:'forge',action:'dashboard',label:'Moje wyniki',to:'progress'},
+ {from:'progress',action:'forge',label:'Kuźnia mocy',to:'forge'},
  {from:'progress',action:'return-results',context:mode+'-results',label:'Powrót do rundy',to:mode+'-results'},
  {from:'progress',action:'home',label:'Powrót do startu',to:'home'}
  ];}
@@ -53,7 +57,7 @@ export function architectureLinks(mode){return [
 export function screenLinks(registry,id,{context='home'}={}){
  const main=key=>key.replace(/-(correct|wrong|pause|hint)$/,'-initial').replace(/-rule$/,'-results');
  let rows=id.startsWith('player')?startupLinks(id):id==='home'?GAME_MODES.map(mode=>({from:id,action:'choose-mode',context:mode,label:'Zagraj: '+({spelling:'Ortografia',english:'Angielski',flags:'Flagi',reading:'Czytanie',math:'Matematyka'})[mode],to:mode+'-settings'})).concat([{from:id,action:'settings',label:'Ustawienia',to:'settings'},{from:id,action:'history',label:'Moje wyniki',to:'progress'}]):id==='settings'?[{from:id,action:'home',label:'Powrót',to:'home'},{from:id,action:'switch-player',label:'Zmień gracza',to:'players'}]:GAME_MODES.flatMap(architectureLinks).filter(r=>r.from===id);
- if(id==='progress')rows=rows.filter(r=>r.action==='home'||r.context===context);
+ if(['progress','forge'].includes(id))rows=rows.filter(r=>!r.context||r.context===context);
  for(const flow of registry?.flows||[]){
   if(flow.state)continue;
   const matches=flow.from===id||(flow.from.includes('*')&&new RegExp('^'+flow.from.replace('*','[a-z]+')+'$').test(id));if(!matches)continue;

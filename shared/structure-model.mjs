@@ -1,3 +1,6 @@
+import {STORY_HOME_PARTS} from './story-home-contract.mjs';
+import {ADVENTURE_PARTS} from './adventure-contract.mjs';
+import {SCENIC_PARTS} from './scenic-contract.mjs';
 // Shared, code-backed vocabulary for the library, view map and element inspector.
 // Palettes are independent of families: a family is a complete view.
 export const ATOMS={
@@ -13,8 +16,15 @@ export const ATOMS={
 const atom=(id,name,kind,selector,extra={})=>({id,name,kind,selector,level:'atom',children:[],...extra});
 const group=(id,name,selector,children,extra={})=>({id,name,kind:'container',selector,children,level:'group',...extra});
 export const PARTS=[
+ ...STORY_HOME_PARTS,
+ ...ADVENTURE_PARTS,
+ ...SCENIC_PARTS,
  atom('container-card','Kafel / podkład','container','.setup-card,.settings-card,.card',{block:'card'}),
  atom('icon-step-dot','Numer w kółku','icon','.step-dot'),
+ group('family-player-empty','Pierwszy gracz','.player-shell-empty',['image-player-brand-art','container-player-title','image-player-empty-art','group-player-benefit','button-main','button-player-later'],{level:'family'}),
+ group('group-player-benefit','Korzyści z profilu','.player-benefit',['icon-player-benefit-icon','text-player-copy']),
+ atom('icon-player-benefit-icon','Ikona postępów gracza','icon','.player-benefit-icon'),
+ atom('button-player-later','Kontynuuj jako gość','button','.player-later'),
  atom('image-player-brand-art','Logo Małej Nauki','image','.player-brand-art',{asset:'assets/brand/player-logo-3d.webp'}),
  atom('image-player-empty-art','Ilustracja pierwszego gracza','image','.player-empty-art img',{asset:'assets/brand/player-empty-3d.webp'}),
  atom('image-player-avatar-art','Avatar gracza','image','.player-avatar-art'),
@@ -42,9 +52,14 @@ export const PARTS=[
  group('container-progress-collection','Moja kolekcja','.progress-illustrated.collection',['background-progress-collection','text-progress-collection','icon-home-chevron'],{kind:'button'}),
  group('container-collection-filters','Filtry kolekcji','.collection-filters',['button-collection-filter']),
  atom('button-collection-filter','Filtr kolekcji','button','[data-progress=filter]',{states:['default','selected']}),
- group('container-collection-word','Słowo w kolekcji','.collection-word',['image-collection-word','text-collection-word','text-collection-state'],{kind:'button'}),
- atom('image-collection-word','Ilustracja słowa','image','.collection-word img'),
+ group('container-collection-word','Słowo w kolekcji','.collection-word',['image-collection-word','image-word-award','text-collection-word','text-word-families'],{kind:'button'}),
+ atom('image-collection-word','Ilustracja słowa','image','.collection-photo-image,.collection-word>img'),
  atom('text-collection-word','Słowo','text','.collection-word strong'),
+ group('group-word-award','Odznaka z licznikiem','.word-detail-hero .word-badge',['image-word-award','text-word-award-count'],{states:['empty','earned','mastered']}),
+ atom('image-word-award','Odznaka Umiem / gwiazdka','image','.word-badge-art',{states:['empty','earned']}),
+ atom('text-word-award-count','Postęp odznaki','text','.word-badge-count'),
+ atom('text-word-families','Kategorie pisowni słowa','text','.word-families'),
+ atom('text-word-rules','Wszystkie zasady słowa','text','.rule-additional'),
  atom('text-collection-state','Etap nauki słowa','text','.collection-word small'),
  group('container-collection-grid','Odkryte słowa','.collection-word-grid',['container-collection-word']),
  group('family-collection','Kolekcja słów','.collection-content',['container-collection-filters','container-collection-grid'],{level:'family'}),
@@ -102,7 +117,24 @@ export const PARTS=[
  atom('icon-result-rays-left','Promienie podsumowania · lewo','icon','.result-rays-left'),
  atom('icon-result-rays-right','Promienie podsumowania · prawo','icon','.result-rays-right'),
   atom('text-pin-error','Komunikat PIN','text','.pin-error-outside'),
+ group('container-math-duration-setup','Ustawienia czasu matematyki','.math-duration-setup',['button-math-duration']),
+ group('group-math-categories','Kategorie matematyki','.category-grid',['button-math-category']),
+ atom('button-math-duration','Wybór czasu rozgrywki','button','.math-duration-choice',{states:['default','selected'],inherits:'button-main'}),
+ atom('button-math-category','Wybór rodzaju działań','button','.category-card',{states:['default','selected'],inherits:'button-main'}),
  atom('text-math-setup-title','Tytuł matematyki','text','[data-ds-recipe="text-math-setup-title"]'),
+ group('group-spelling-hud','Nagłówek gry · czas i nawigacja','.game-bar',['button-spelling-exit','container-spelling-clock','button-spelling-pause']),
+ atom('button-spelling-exit','Zakończ rundę','button','.game-bar [data-action=exit]',{inherits:'button-back'}),
+ atom('button-spelling-pause','Wstrzymaj grę','button','.game-bar [data-action=pause]',{inherits:'button-back'}),
+ group('container-spelling-clock','Czas i postęp rundy','.time-block',['text-game-clock','meter-round-progress-fill']),
+ atom('text-game-clock','Pozostały czas / pytania','text','.time-block .timer'),
+ atom('text-spelling-title','Tytuł pytania','text','.spelling-title'),
+ group('container-spelling-visual','Scena ilustracji ortografii','.spelling-visual',['image-spelling-scene']),
+ atom('image-spelling-scene','Obraz słowa / bańka','image','.spelling-visual',{variantAxis:'state',states:['default','correct','wrong']}),
+ group('group-spelling-question','Karta pytania','.spelling-question-card',['container-spelling-word']),
+ group('container-spelling-word','Zawartość słowa','.question-content',['text-spelling-word']),
+ group('group-spelling-answers','Dwa pola odpowiedzi','.answers.count-2',['button-answer']),
+ group('group-spelling-actions','Podpowiedź i przejście dalej','.spelling-action-row',['button-game-hint','container-result-continue-rail']),
+ atom('text-spelling-feedback','Komunikat poprawnej odpowiedzi','text','.feedback'),
  atom('text-spelling-word','Treść pytania ortografii','text','.question-content>.word'),
  atom('result-points-bubble','Bańka punktów','container','.result-points-bubble'),
  group('container-player-title','Powitanie gracza','.player-title',['text-player-title','text-player-copy']),
@@ -118,6 +150,25 @@ export const PARTS=[
  group('container-pin-card','Kafel ustawienia PIN-u','.pin-card',['container-pin-profile','control-pin','container-pin-fields'],{level:'family',states:['default','pin','no-pin']}),
  group('container-field-title','Numer + tekst','.field-title,fieldset legend',['icon-step-dot','text-field-label']),
  group('container-mission','Kafel misji','.wizard-intro',['image-mission','text-mission-title','text-mission-hint']),
+ group('family-education-popup','Edukacyjne okno dialogowe','.spelling-hint-sheet,.result-rule-dialog,#modal',['group-popup-head','text-popup-title','text-popup-copy','button-popup-close','button-main']),
+ group('group-popup-head','Nagłówek dialogu','.hint-sheet-head,.rule-dialog-head',['text-popup-title','button-popup-close']),
+ atom('button-popup-close','Zamknij okno','button','.hint-dismiss,.rule-close',{inherits:'button-back'}),
+ atom('text-popup-title','Tytuł podpowiedzi / zasady','text','.spelling-hint-sheet h2,.result-rule-dialog h2,#modal h2'),
+ atom('text-popup-copy','Treść podpowiedzi / zasady','text','.spelling-hint-sheet p,.rule-explanation>p,#modal>p'),
+ atom('text-popup-badge','Typ wyjaśnienia','text','.rule-type'),
+ group('container-rule-visual','Obraz zasady','.rule-visual',[]),
+ group('group-rule-scroll','Przewijane wyjaśnienie','.rule-dialog-scroll',['group-rule-explanation']),
+ group('group-rule-explanation','Treść zasady','.rule-explanation',['text-popup-title','text-popup-copy']),
+ group('family-spelling-results','Podsumowanie ortografii','.result.learning-result',['button-back','container-result-points','group-result-sheet'],{level:'family'}),
+ group('container-result-points','Zdobyte punkty','.result-points-bubble',['text-result-points']),
+ atom('text-result-points','Liczba zdobytych punktów','text','.result-points-core strong'),
+ group('group-result-sheet','Arkusz wyników','.result-sheet',['group-result-heading','container-result-summary','group-result-stats','group-result-details','container-result-continue-rail','button-main']),
+ group('group-result-heading','Nagłówek wyniku','.result-heading',['text-result-heading','text-result-intro']),
+ atom('text-result-heading','Tytuł wyniku','text','.result-heading h1'),
+ atom('text-result-intro','Pochwała wyniku','text','.result-heading>p'),
+ group('group-result-stats','Statystyki utrwalone/powtórka','.learning-stats-two',['container-result-stat']),
+ group('group-result-details','Dwa panele szczegółów','.result-details',['group-result-panel']),
+ group('group-result-panel','Szczegóły kategorii','.result-detail',[]),
  group('container-result-line','Wynik i procent','.round-summary-line',['text-result-score','text-result-mode','text-progress-value']),
  group('container-result-summary','Podsumowanie rundy','.round-summary',['container-result-line','container-round-progress'],{level:'family'}),
  group('container-result-details','Odpowiedzi rundy','.result-details',['container-result-review'],{level:'family'}),
@@ -129,6 +180,9 @@ export const PARTS=[
  atom('icon-result-sprig','Gałązka etapu nauki','icon','.result-sprig'),
  atom('text-result-mode','Tryb ukończonej rundy','text','.round-mode-pill'),
  group('container-setting-field','Pole ustawień','fieldset[class*=v2-section]',['container-field-title','control-jelly']),
+ group('group-spelling-scope','Zakres słów w ortografii','.spelling-v2-section:has([data-segmented=scope])',['control-jelly']),
+ group('group-spelling-level','Poziom słów w ortografii','.spelling-v2-section:has([data-segmented=level])',['control-jelly']),
+ group('group-spelling-round','Czas lub liczba słów','.spelling-round-section',['control-jelly']),
  group('container-setup-form','Konfiguracja przygody','.setup-form',['container-card','container-setting-field','text-wizard-note','button-game-start'],{level:'family'}),
  atom('text-wizard-note','Wskazówka pod konfiguracją','text','.wizard-note'),
  atom('button-game-hint','Podpowiedź w grze','button','.spelling-hint',{states:['default','pressed','disabled']}),
@@ -139,13 +193,64 @@ export const PARTS=[
  atom('meter-round-progress-fill','Wypełnienie postępu','meter','.round-progress-fill'),
  atom('text-progress-value','Wartość postępu','text','[data-reel=percent]')
 ];
+// The new view families retain the established shared recipe cascade.
+PARTS.push(
+ group('container-game-content','Treść pytania','.question-content',[]),
+ group('family-game-setup','Ustawienia przygody','#setup-form',['container-card','button-game-start'],{level:'family',inherits:'container-setup-form'}),
+ group('family-game-question','Pytanie w grze','.question-card',['container-game-content'],{level:'family',inherits:'container-card'}),
+ atom('text-mission-copy','Opis misji','text','.wizard-intro p',{inherits:'text-mission-hint',variantAxis:'mode',modes:['english','flags','reading']})
+);
+PARTS.push(
+ atom('image-reward-sprite','Puchar lub medal z atlasu','image','.reward-sprite',{states:['default','growing','earned']}),
+ atom('icon-power','Symbol mocy','icon','.power-icon'),
+ atom('meter-power-charge','Miernik naładowania mocy','meter','.power-charge progress,.reward-power-charge'),
+ atom('text-power-title','Nazwa mocy','text','.power-card h3'),atom('text-power-copy','Opis mocy','text','.power-card p'),
+ atom('button-forge','Wykuj moc','button','[data-progress="forge-power"]',{inherits:'button-main',states:['default','disabled']}),
+ atom('button-trophy-choice','Trwały wybór pucharu','button','[data-progress="trophy-base"],[data-progress="trophy-choice"]',{inherits:'button-main'}),
+ group('container-power-card','Karta mocy','.power-card',['icon-power','text-power-title','text-power-copy','meter-power-charge','button-forge'],{inherits:'container-card'}),
+ group('group-powers','Karty mocy','.power-grid',['container-power-card']),
+ group('group-power-meter','Energia mocy','.power-charge',['meter-power-charge']),
+ group('family-forge','Kuźnia mocy','.journey-forge',['group-power-meter','group-powers'],{level:'family'}),
+ group('group-trophy-evolution','Rozwój pucharu','.trophy-evolution',['image-reward-sprite','button-trophy-choice']),
+ atom('text-medal-title','Nazwa medalu','text','.medal-card h3'),atom('text-medal-copy','Postęp medalu','text','.medal-card p'),
+ group('container-medal','Medal za zadanie','.medal-card',['image-reward-sprite','text-medal-title','text-medal-copy']),
+ group('group-medals','Medale z przygód','.medal-grid',['container-medal']),
+ group('family-awards','Puchary i medale','.journey-awards',['group-trophy-evolution','group-medals'],{level:'family'}),
+ atom('image-rule-hero','Ilustracja reguły','image','.rule-hero img'),atom('text-rule-example','Przykład reguły','text','.rule-examples-grid > span'),
+ group('group-rule-examples','Przykłady reguły','.rule-examples-grid',['text-rule-example']),
+ group('group-rule-body','Treść karty reguły','.rule-dialog-copy',['group-rule-examples']),
+ group('family-rule-card-dialog','Okno karty reguły','.learning-rule-dialog',['image-rule-hero','group-rule-body','button-popup-close'],{level:'family',inherits:'family-education-popup'}),
+ group('family-round-rewards','Odkrycia i nagrody po rundzie','.round-rewards',[],{level:'family'}),
+ group('group-power-game-hud','Moc i combo w grze','.power-game-hud',[])
+);
+for(const [id,name]of Object.entries({
+ 'text-forge-title':'Tytuł kuźni','text-forge-description':'Opis kuźni','text-forge-wallet':'Portfel iskier','text-forge-note':'Zasady mocy','text-forge-feedback':'Potwierdzenie wykucia',
+ 'text-power-meter-title':'Tytuł energii','text-power-meter-value':'Wartość energii','text-power-meter-copy':'Opis ładowania','text-power-tier':'Rzadkość mocy','text-power-owned':'Posiadana moc',
+ 'text-awards-heading':'Tytuł pucharów','text-awards-copy':'Opis pucharów','text-trophy-name':'Nazwa pucharu','text-trophy-status':'Postęp pucharu','text-trophy-milestone':'Próg osiągnięcia','text-trophy-choice-title':'Nagłówek trwałego wyboru','text-trophy-choice-label':'Nazwa ozdoby','text-trophy-permanent':'Informacja o trwałości wyboru',
+ 'text-medals-title':'Tytuł medali','text-goals-title':'Tytuł osiągnięć','text-achievement-goal':'Cel osiągnięcia','text-achievement-progress':'Postęp osiągnięcia','text-rule-heading':'Tytuł reguły','text-rule-explanation':'Wyjaśnienie reguły',
+ 'text-card-stars':'Gwiazdka karty','text-hud-sparks':'Iskry podczas rundy','text-hud-combo':'Mnożnik combo','text-hud-power':'Aktywna moc'
+}))PARTS.push(atom(id,name,'text','[data-ds-recipe="'+id+'"]'));
+PARTS.push(group('group-trophy-milestones','Etapy pucharu','.trophy-milestones',['text-trophy-milestone']),group('group-achievement-goals','Cele kolekcji','.achievement-goals',['container-achievement-goal']),group('container-achievement-goal','Cel i licznik','[data-goal]',['text-achievement-goal','text-achievement-progress']));
+PARTS.push(
+ atom('image-gallery-art','Ilustracja kuźni, podium lub prezentu','image','.forge-emblem,.trophy-podium,.trophy-gift,.award-mystery,.power-icon'),
+ atom('button-award-tab','Przełącznik medali i pucharów','button','[data-progress=award-tab]',{inherits:'button-main'}),
+ atom('button-trophy-upgrade','Odkryj ulepszenie pucharu','button','[data-progress=trophy-upgrade]',{inherits:'button-main',states:['default','disabled']}),
+ atom('button-trophy-select','Wybierz puchar na podium','button','[data-progress=trophy-select]',{inherits:'button-main'}),
+ group('group-award-switch','Medale i puchary','.award-switch',['button-award-tab']),
+ group('group-trophy-stage','Podium z pucharem','.trophy-stage',['image-gallery-art','image-reward-sprite']),
+ group('group-trophy-selector','Pasek pucharów','.trophy-selector',['button-trophy-select']),
+ group('group-award-progress','Droga do nagrody','.award-progress',['meter-power-charge','text-achievement-progress']),
+ group('family-trophy-dialog','Niespodzianka: trwały wybór','.trophy-upgrade-dialog',['button-trophy-choice','button-popup-close'],{level:'family',inherits:'family-education-popup'})
+);
 const explicitUses={'text-pin-error':['player-pin','player-unlock'],'text-math-setup-title':['math-settings'],'text-spelling-word':['spelling-initial','spelling-correct','spelling-wrong'],'button-game-hint':['spelling-initial','spelling-correct','spelling-wrong'],'jelly-option':['spelling-settings','english-settings','flags-settings','reading-settings','math-settings']};
 for(const [id,views]of Object.entries(explicitUses)){const p=PARTS.find(p=>p.id===id);if(p)p.views=views;}
 export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));
 export function recipeLineage(id){const chain=[],seen=new Set();while(id&&!seen.has(id)){seen.add(id);chain.unshift(id);id=PART_BY_ID[id]?.inherits;}return chain;}
 export const LEVEL_NAMES={atom:'Atom',group:'Grupa · molekuła',family:'Rodzina · organizm',template:'Szablon',page:'Widok · strona'};
 const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','button-main'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','button-game-start'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','container-result-header','container-result-summary','container-result-stat','container-result-details','container-result-continue-rail','button-main','button-back','result-points-bubble'],collection:['button-back','family-collection'],progress:['button-back','container-progress-collection','container-card','container-round-progress']};
-export function viewType(view){if(view?.id==='collection'||view?.state==='collection')return 'collection';const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
+types.home.push('control-jelly');
+types['home-story']=['background-home','image-home-logo-art','button-home-settings','story-home-stage','control-jelly'];
+export function viewType(view){if(view?.id==='home-story'||view?.screen==='home'&&view?.state==='story')return 'home-story';if(view?.id==='collection'||view?.state==='collection')return 'collection';const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
 export function partLevel(item,items=[]){return item.level||PART_BY_ID[item.recipe]?.level||(item.kind==='button'&&items.filter(n=>n.parent===item.id).length>1?'group':null)||(['button','key','input','toggle','text','icon','image','background','timer','meter'].includes(item.kind)?'atom':items.some(n=>n.parent===item.id)?'group':'atom');}
 export function viewParts(view,inventory){
  const items=inventory?.items||[];
@@ -172,10 +277,10 @@ export function partVariants(part){
  return {axis:'default',label:'Wariant',choices:{default:'Domyślny'},defaultMode:'default'};
 }
 export function partStates(part){return part?.states||({jelly:['default','selected','dragging','disabled'],toggle:['default','selected'],button:['default','pressed','disabled'],answer:['default','correct','wrong','disabled'],slider:['default','dragging','spring-back','complete'],progress:['default','complete']})[part?.block]||['default'];}
-export const PAGE_TEMPLATES=Object.fromEntries(Object.entries(types).map(([id,children])=>[id,{id:'template:'+id,name:({home:'Ekran startowy',login:'Wybór gracza',create:'Tworzenie gracza',pin:'PIN',profile:'Ustawienia profilu',settings:'Ustawienia przygody',game:'Gra',results:'Wynik rundy',progress:'Moje wyniki',collection:'Kolekcja słów'})[id],level:'template',slots:children.map((recipe,index)=>({id:recipe,recipe,order:index,optional:id!=='home'})),children}]));
+export const PAGE_TEMPLATES=Object.fromEntries(Object.entries(types).map(([id,children])=>[id,{id:'template:'+id,name:({'home-story':'Start kampanii',home:'Ekran startowy',login:'Wybór gracza',create:'Tworzenie gracza',pin:'PIN',profile:'Ustawienia profilu',settings:'Ustawienia przygody',game:'Gra',results:'Wynik rundy',progress:'Moje wyniki',collection:'Kolekcja słów'})[id],level:'template',slots:children.map((recipe,index)=>({id:recipe,recipe,order:index,optional:id!=='home'})),children}]));
 export function templateForView(view){return PAGE_TEMPLATES[viewType(view)];}
 export function templateCatalog(registry){return Object.values(PAGE_TEMPLATES).map(t=>({...t,uses:registry.views.filter(v=>templateForView(v).id===t.id).map(v=>({view:v.id})),view:registry.views.find(v=>templateForView(v).id===t.id)?.id}));}
-export function composeTemplate(id,slots){const template=PAGE_TEMPLATES[id];if(!template)throw Error('Nieznany szablon: '+id);return template.slots.map(s=>{if(!s.optional&&!slots[s.id])throw Error('Brak slotu: '+s.id);return slots[s.id]||'';}).join('');}
+export function composeTemplate(id,slots,{exclude=[]}={}){const template=PAGE_TEMPLATES[id];if(!template)throw Error('Nieznany szablon: '+id);return template.slots.filter(s=>!exclude.includes(s.id)).map(s=>{if(!s.optional&&!slots[s.id])throw Error('Brak slotu: '+s.id);return slots[s.id]||'';}).join('');}
 
 // Content-dependent children are alternatives, not extra invisible layers.
 export function partChildren(part,mode='default'){

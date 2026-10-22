@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -14,11 +15,11 @@ import {validateConfig} from '../design-system/model.mjs';
 import {designFields} from '../design-system/project-model.mjs';
 import {transitionMotion,motionFrames,animateScreen} from '../shared/screen-motion.mjs';
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const modes=['spelling','math','english','flags','reading'];
 
-test('Home has six ordered template slots and actual composed families, without generated poster groups',()=>{
- assert.deepEqual(PAGE_TEMPLATES.home.slots.map(s=>s.recipe),['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes']);
+test('Home has seven ordered template slots and actual composed families, without generated poster groups',()=>{
+ assert.deepEqual(PAGE_TEMPLATES.home.slots.map(s=>s.recipe),['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes','control-jelly']);
  const markup=renderHomeScreen({nickname:'Odkrywco',today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę',modeIds:modes,modes:Object.fromEntries(modes.map(mode=>[mode,{name:mode}]))});
  assert.equal([...markup.matchAll(/data-ds-recipe="background-home"/g)].length,1);
  assert.equal([...markup.matchAll(/data-ds-recipe="button-home-card"/g)].length,5);
@@ -91,7 +92,10 @@ test('shared scale and shared state styles reach composed children, preserving e
 test('migration removes obsolete artwork tuning and promotes known instance tuning once',()=>{
  const old=structuredClone(config);old.elementOverrides={'spelling-settings':{primary:{offsetY:18},'spelling-mission-art':{imageScale:1.05},'spacer-muwfhj4u':{width:215}},'spelling-results':{'strong-5':{text:'Zachowaj mnie'}}};
  const next=migrateAtomicConfig(old);assert.deepEqual(migrateAtomicConfig(next),next);assert.equal(next.elementStyles['button-game-start'].offsetY,18);assert.deepEqual(next.elementOverrides,{'spelling-results':{'strong-5':{text:'Zachowaj mnie'}}});
- assert.equal(Object.values(config.elementOverrides).reduce((n,row)=>n+Object.keys(row).length,0),3);validateConfig(next);
+ assert.equal(config.elementOverrides?.['spelling-settings']?.['spelling-start']?.offsetY,3,
+  'The approved screen correction must be scoped to spelling, not the shared atom');
+ assert.equal(config.elementStyles?.['button-game-start']?.offsetY,18,'Shared start atom must remain unchanged');
+ validateConfig(next);
 });
 test('return routes and results use blobs at 1x, speed zero skips and speed two halves time',()=>{
  for(const from of modes.map(m=>m+'-settings').concat('progress')){const motion=transitionMotion(config.motion,from,'home');assert.equal(motion.style,'blob');assert.equal(motion.speed,1);}

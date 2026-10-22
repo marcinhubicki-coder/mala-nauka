@@ -1,3 +1,4 @@
+import {resolveBehaviorConfig} from '../shared/behaviors.mjs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
@@ -6,7 +7,7 @@ import {partSample} from '../shared/part-samples.mjs';
 import {partRecipeDefaults} from '../shared/part-recipes.mjs';
 import {profileAvatar,pinModeMarkup,pinDotsMarkup,pinKeypadMarkup} from '../shared/profile-parts.mjs';
 import {visualValue,elementCSS} from '../shared/element-system.mjs';
-const config=JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url)));
+const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const registry=JSON.parse(await readFile(new URL('../design-system/registry.json',import.meta.url)));
 
 test('all declared parts construct immediately from code, with real locally available image assets',async()=>{
@@ -52,11 +53,12 @@ test('shared recipe overrides propagate into composed children, retaining local 
  assert.equal(partRecipeDefaults(PART_BY_ID['icon-step-dot'],c).width,31);
  assert.equal(partRecipeDefaults(PART_BY_ID['container-pin-card'],c).height,0,'composed cards size to their contents');
 });
-test('newly mapped groups are built recursively and avatars preserve the production sprite coordinates',()=>{
+test('newly mapped groups compose correctly and portraits use one normalized asset path',()=>{
  const catalog=[{id:'group-extra',kind:'container',name:'Nowa grupa',children:['icon-step-dot','text-field-label']},...PARTS];
  assert.match(partSample('group-extra',{catalog}),/data-ds-recipe="icon-step-dot"/);
  assert.match(partSample('group-extra',{catalog}),/Co ćwiczymy/);
- assert.match(profileAvatar({avatarId:'l'}),/viewBox="960 650 320 320"/);
+ assert.match(profileAvatar({avatarId:'l'}),/assets\/brand\/avatars\/l\.webp/);
+ assert.doesNotMatch(profileAvatar({avatarId:'l'}),/<svg|viewBox|player-avatar-extra/);
  assert.doesNotMatch(profileAvatar({avatarId:'ab'}),/data-avatar="ab"/);
 });
 

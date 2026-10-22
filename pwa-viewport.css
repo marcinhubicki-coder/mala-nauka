@@ -36,7 +36,6 @@ main#app, .app-shell {
 html:has(#app[data-view="results"][data-mode="spelling"]) {
   background: #dfddfc url("assets/ortografia/result-background-v6.webp") center calc(-1.9 * var(--app-vh)) / auto calc(var(--app-viewport-height) + 1.9 * var(--app-vh)) no-repeat;
 }
-.result-scenery { display: none; }
 .result-sheet { bottom: max(calc(16 * var(--result-u)), var(--result-safe-bottom)); }
 
 /* Keep focus behavior and keyboard navigation, without visual focus rings. */
@@ -51,3 +50,7 @@ body{top:var(--app-viewport-offset,0px);bottom:auto}
 
 #app{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}#app input:not([type=radio]):not([type=checkbox]),#app textarea,#app [contenteditable=true]{-webkit-user-select:text;user-select:text}
 #portrait-notice{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#e9f5ff;color:#123864;text-align:center;font-family:var(--ds-font-body),sans-serif}#portrait-notice[hidden]{display:none}#portrait-notice>span{font-size:64px}#portrait-notice strong{font-size:24px}.landscape-blocked #app{visibility:hidden}
+
+/* Flags borrows only the scenic sky and peaks; V2 owns the result layout. */
+#app[data-view="results"][data-mode="flags"]{background-color:#dfddfc!important;background-image:linear-gradient(transparent 150px,#dfddfc 290px),url("assets/flags/adventure/setup-scene-v1.webp")!important;background-size:100% 100%,100% auto!important;background-position:center top!important;background-repeat:no-repeat!important}
+html:has(#app[data-view="results"][data-mode="flags"]),body:has(#app[data-view="results"][data-mode="flags"]){background:#dfddfc!important}

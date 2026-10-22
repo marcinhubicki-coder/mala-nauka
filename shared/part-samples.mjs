@@ -3,7 +3,8 @@ import {progressCollectionMarkup,collectionWordMarkup,collectionFiltersMarkup} f
 import {backButton} from './navigation-parts.mjs';
 import {wordMarkup} from '../spelling/word-reveal.mjs';
 import {missionIllustration} from './mission-parts.mjs';
-import {renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon,renderHomeSettings,renderHomeHero,renderHomeAdventures,renderHomeScreen,renderHomeLogo,renderHomeToday,renderHomeLast,renderHomeWelcome,renderHomeModes,HOME_MODES_BOUNDS,HOME_WELCOME_BOUNDS} from '../home-screen.mjs';
+import {renderHomeCampaign,renderHomeModeCard,renderHomeProgress,renderHomeDecoration,renderHomeBadge,renderHomeStatIcon,renderHomeSettings,renderHomeHero,renderHomeAdventures,renderHomeScreen,renderHomeLogo,renderHomeToday,renderHomeLast,renderHomeWelcome,renderHomeModes,HOME_MODES_BOUNDS,HOME_WELCOME_BOUNDS} from '../home-screen.mjs';
+import {HOME_RECTS} from './home-layout.mjs';
 import {homeTileSurface,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeDecorationAtoms,homeDecorationStar,HOME_TILE_SIZES} from './home-atoms.mjs';
 import {PART_BY_ID} from './structure-model.mjs';
 import {profileAvatar,pinModeMarkup,pinDotMarkup,pinDotsMarkup,pinKeyMarkup,pinKeypadMarkup} from './profile-parts.mjs';
@@ -52,6 +53,7 @@ export function partSample(id,options={}){
    case 'image-player-avatar-art':return avatar();
    case 'image-player-brand-art':case 'image-player-empty-art':return img(recipe,p.asset);
    case 'image-home-logo-art':return homePreview(renderHomeLogo('inset:0'),180,140);
+   case 'button-campaign':{const [,,w,h]=HOME_RECTS['home-campaign'].rect;return homePreview(renderHomeCampaign(false,'inset:0;width:100%;height:100%;max-width:none'),w,h);}
    case 'image-mission':return `<div class="mission-sample">${missionIllustration(homeMode,assetURL)}</div>`;
    case 'text-spelling-word':return wordMarkup('kr_l');
    case 'image-mn-soap-picture':return img(recipe,opts.photoAsset||'assets/scenes/krol.jpg');

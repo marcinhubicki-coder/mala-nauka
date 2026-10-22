@@ -10,14 +10,14 @@ export function requestHostRoute(target){
 export function createModeHost({app,audio,getDesign,navigate}){
  let frame,transition;
  window.__MALA_NAUKA_AUDIO_HOST__=audio;
- const open=mode=>{
+ const open=(mode,{campaignStepId}={})=>{
   transition?.cancel();frame?.remove();window.__MALA_NAUKA_AUDIO_HOST_ACTIVE__=true;
   audio.setScene({view:mode+'-settings',mode,playing:false,paused:false});
   app.dataset.mode=mode;app.dataset.view='wizard';app.replaceChildren();
   frame=document.createElement('iframe');frame.dataset.modeHost=mode;frame.dataset.mnDecoration='true';
   frame.title='Mała Nauka · '+mode;frame.allow='autoplay';
   frame.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;z-index:4;background:#e6f6ff';
-  const url=new URL('../'+FOLDERS[mode]+'/',import.meta.url);url.searchParams.set('audio-host','1');frame.src=url.href;app.append(frame);
+  const url=new URL('../'+FOLDERS[mode]+'/',import.meta.url);url.searchParams.set('audio-host','1');if(campaignStepId)url.searchParams.set('campaignStep',campaignStepId);frame.src=url.href;app.append(frame);
  };
  const close=target=>{
   const old=frame;if(!old){navigate(target);return;}
@@ -36,7 +36,7 @@ export function createModeHost({app,audio,getDesign,navigate}){
   if(event.origin!==location.origin||event.source!==frame?.contentWindow||event.data?.channel!==CHANNEL)return;
   const target=event.data.target;
   if(target?.endsWith('-settings')&&Object.hasOwn(FOLDERS,target.slice(0,-9)))open(target.slice(0,-9));
-  else if(['home','settings','players'].includes(target))close(target);
+  else if(['home','settings','players','campaign'].includes(target))close(target);
  });
  return {open,close};
 }

@@ -10,7 +10,7 @@ const browser=await (kind==='webkit'?webkit:chromium).launch({headless:true,...(
 const context=await browser.newContext({viewport:{width:1440,height:1000},hasTouch:true,serviceWorkers:'block'});
 const page=await context.newPage(),errors=[],missing=[];
 page.on('response',r=>{if(r.status()>=400)missing.push(new URL(r.url()).pathname);});
-page.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message);});page.on('console',m=>{if(m.type()==='error')console.log('CONSOLE',m.text());});
+page.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.stack||e.message);});page.on('console',m=>{if(m.type()==='error')console.log('CONSOLE',m.text());});
 await context.addInitScript(()=>{
  window.__audioQA=[];window.__audioContexts=new Set();const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
  const create=A.prototype.createBufferSource;
@@ -19,10 +19,10 @@ await context.addInitScript(()=>{
 try{
  await page.goto(base+'/design-system/#components');
  await page.locator('#preview-toolbar').waitFor({timeout:20000});
- for(const mode of ['spelling','english','flags','reading','math']){
-  await page.locator('[data-studio-nav=mode][value='+mode+']').locator('..').click();
-  await page.locator('[data-studio-nav=view][value='+mode+'-settings]').locator('..').click();
+ for(const mode of (process.env.V2_MODES||'spelling,english,flags,reading,math').split(',')){
+  await page.locator('#view-select').selectOption(mode+'-settings');
   const frame=page.frameLocator('#device-frame');
+  await frame.locator('#app[data-ds-contract-ready="'+mode+'-settings"]').waitFor({timeout:15000});
   await frame.locator('#app[data-view="wizard"] .mission-illustration').waitFor({state:'attached',timeout:15000});
   assert.ok(await frame.locator('.mission-illustration').evaluate(n=>n.getBoundingClientRect().width)>300);
   const app=frame.locator('#app');assert.ok(await app.locator('[data-ds-element]').count()>10);
@@ -34,7 +34,7 @@ try{
  await page.locator('[data-action="guest-player"]').click({timeout:20000});
  await page.locator('.home-canvas').waitFor({timeout:15000});
  await page.waitForFunction(()=>window.__MALA_NAUKA_AUDIO_HOST__?.unlocked&&window.__MALA_NAUKA_AUDIO_HOST__?.engine.theme?.key.startsWith('home:'),{timeout:15000});
- for(const mode of ['spelling','english','flags','reading','math']){
+ for(const mode of (process.env.V2_MODES||'spelling,english,flags,reading,math').split(',')){
   await page.locator('[data-action="choose-mode"][data-mode="'+mode+'"]').tap();
   const holder=await page.locator('[data-mode-host]').elementHandle(),gameFrame=await holder.contentFrame();
   const game=page.frameLocator('[data-mode-host]');
@@ -50,10 +50,14 @@ try{
   await game.locator(mode==='math'?'#back':'[data-action="exit"]').tap();
   await game.locator(mode==='math'?'[data-math-exit]':'[data-action="exit-confirm"]').tap();
   await game.locator('#app[data-view="results"] h1').waitFor({timeout:15000});
-  await game.locator('[data-action="history"]').tap();
-  await game.locator('[data-progress="collection"]').first().tap();
-  await game.locator('[data-progress="dashboard"]').tap();
-  await game.locator('[data-action="return-results"]').tap();
+  await gameFrame.waitForFunction(()=>{const root=document.querySelector('#app');return root.dataset.dsContractReady===root.dataset.mode+'-results'&&document.documentElement.dataset.dsView===root.dataset.dsContractReady;},{timeout:15000});
+  assert.deepEqual(await gameFrame.evaluate(async()=>{
+   const {mountedViewContract}=await import('/shared/view-contract-mount.mjs'),root=document.querySelector('#app');
+   return mountedViewContract(root,document.documentElement.dataset.dsView).filter(item=>!root.contains(item.node)&&!item.node.closest('dialog[open]')).map(item=>item.id);
+  }),[],'Closed dialogs must not leak components into the next screen');
+  await game.locator('[data-action="forge"]').tap();
+  await game.locator('.journey-forge').waitFor({timeout:15000});
+  await game.locator('[data-progress="return-results"]').tap();
   await game.locator('[data-action="result-back"]').tap();
   await game.locator('[data-action="home"]').tap();
   await page.locator('.home-canvas').waitFor({timeout:15000});

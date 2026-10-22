@@ -3,7 +3,7 @@
 export const HOME_WIDTH=853,HOME_TOP=100,HOME_CONTENT_HEIGHT=1670;
 export const HOME_SETTINGS=[709,122,103,103];
 export const HOME_STATS=[22,905,809,150];
-export const HOME_WELCOME_BOUNDS=[22,292,809,763];
+export const HOME_WELCOME_BOUNDS=[22,240,809,815];
 export const HOME_MODES_BOUNDS=[22,1140,809,450];
 export const HOME_TILES=Object.freeze({
  spelling:[22,1140,254,215],math:[299.5,1140,254,215],english:[577,1140,254,215],
@@ -16,7 +16,7 @@ export const HOME_RECTS=Object.freeze({
  // Retired CTA geometry stays readable in older local Studio drafts. Jelly owns navigation.
  'home-campaign':{rect:[48,695,345,120],basis:HOME_WELCOME_BOUNDS},
  'home-welcome':{rect:HOME_WELCOME_BOUNDS,basis:artboard},
- 'home-hero':{rect:[22,292,809,705],basis:HOME_WELCOME_BOUNDS},
+ 'home-hero':{rect:[22,240,809,757],basis:HOME_WELCOME_BOUNDS},
  'home-stats':{rect:HOME_STATS,basis:HOME_WELCOME_BOUNDS},
  'home-adventures':{rect:[22,1074,809,54],basis:artboard},
  'home-modes':{rect:HOME_MODES_BOUNDS,basis:artboard},

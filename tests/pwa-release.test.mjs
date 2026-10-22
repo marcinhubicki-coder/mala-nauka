@@ -31,7 +31,8 @@ test('every offline precache request resolves to an existing file or entry direc
     const path=request.replace(/^\//,'').split('?')[0];
     try{await access(new URL('../dist/'+path,import.meta.url));}
     catch(error){
-      if(error.code!=='ENOENT'||deployment.assetLibraryOrigin!==ASSET_ORIGIN||!/^assets\/.+\.(png|jpe?g|webp|avif|svg)$/i.test(path))throw error;
+      // Hosted bootstrap fonts use the same verified library rewrite as images.
+      if(error.code!=='ENOENT'||deployment.assetLibraryOrigin!==ASSET_ORIGIN||!/^assets\/.+\.(png|jpe?g|webp|avif|svg|woff2?)$/i.test(path))throw error;
       const asset=catalog.assets.find(asset=>asset.path===path);assert.ok(asset,'Missing bootstrap metadata: '+path);externalBootstrap.push(asset);
     }
   }

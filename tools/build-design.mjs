@@ -59,7 +59,7 @@ if(externalSceneLibrary){
  const archive=await readPublishedCatalog();
  assertScenicArchive(JSON.parse(await readFile(resolve(root,'design-system/scenic-assets.json'),'utf8')),archive);
  const current=JSON.parse(files.get('design-system/assets.json').toString());
- assertPublishedAssets(current.assets.filter(asset=>/\.(?:png|jpe?g|webp|avif|svg)$/i.test(asset.path)),archive);
+ assertPublishedAssets(current.assets.filter(asset=>/\.(?:png|jpe?g|webp|avif|svg|woff2?)$/i.test(asset.path)),archive);
 }
 if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/scenes/'))files.delete(path);
 if(externalSceneLibrary)for(const path of [...files.keys()])if(path.startsWith('assets/managed/'))files.delete(path);

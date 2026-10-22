@@ -21,6 +21,7 @@
 - Chromium i WebKit: wspólny nagłówek, działające Jelly (kliknięcie, klawiatura, przeciąganie), pięć skrótów i powrót do homescreenu, brak przelewania.
 - Chromium i WebKit: księga, dwa wiersze inicjału, spis tylko zdobytych treści, poprzedni/następny/najnowszy, brak odsłoniętego tekstu podczas dekodowania grafik, reduced motion. Telefon, iPad pion/poziom, desktop.
 - Pięć rendererów podsumowania × dwa konteksty: właściwa akcja, brak podwójnego naliczania iskier i brak nowych kart w kampanii.
+- Budowanie hostowane: fonty WOFF2 są sprawdzane po publicznym URL z tym samym hashem; pamięć offline nie wymaga kopii binarnej w repo aplikacji.
 - Osobna biblioteka: 80 nowych niezmiennych plików, 24,49 MB, hashe i rozmiary sprawdzone przed publikacją. Grafiki pobierane na żądanie; nie są dołączone do commitu aplikacji.
 
 Fizyczny iPhone/Safari PWA: do sprawdzenia przez użytkownika na opublikowanym Preview. Pełna matryca 54 widoków nie była ponownie uruchamiana; zaktualizowano i sprawdzono zmienione widoki.

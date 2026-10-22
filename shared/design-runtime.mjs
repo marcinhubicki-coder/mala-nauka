@@ -20,6 +20,7 @@ import {BOUND_VIEW_CONTRACTS} from './view-bindings.mjs';
 import {applyCompiledView} from './compiled-runtime.mjs';
 import {applyHomeGeometry} from './home-layout.mjs';
 const base = new URL('../', import.meta.url);
+const inBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
 let config,designSignature,pendingOutgoing;
 let inspectorLoader;
 function currentViewId(app){
@@ -146,12 +147,12 @@ export async function initDesign() {
   annotate();
   return settings;
 }
-export const designReady = initDesign().catch(error => {
+export const designReady = inBrowser ? initDesign().catch(error => {
   console.error('[design-system]', error.message);
   document.documentElement.dataset.dsError = error.message;
   throw error;
-});
+}) : Promise.resolve(null);
 
-if(typeof BroadcastChannel!=='undefined'){const maps=new BroadcastChannel('mala-nauka-map-settings');maps.onmessage=event=>{try{validateMapOverrides(event.data);if(config)applyDesign({...config,mapOverrides:event.data});}catch(error){console.error('[map-settings]',error)}};addEventListener('pagehide',()=>maps.close(),{once:true});}
+if(inBrowser&&typeof BroadcastChannel!=='undefined'){const maps=new BroadcastChannel('mala-nauka-map-settings');maps.onmessage=event=>{try{validateMapOverrides(event.data);if(config)applyDesign({...config,mapOverrides:event.data});}catch(error){console.error('[map-settings]',error)}};addEventListener('pagehide',()=>maps.close(),{once:true});}
 
-if(typeof BroadcastChannel!=='undefined'){const local=new BroadcastChannel('mala-nauka-design-settings');local.onmessage=e=>{if(e.data?.config){applyDesign(e.data.config);if(e.data.assets){configureAssets(e.data.assets,base.href);document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}}};addEventListener('pagehide',()=>local.close(),{once:true});}
+if(inBrowser&&typeof BroadcastChannel!=='undefined'){const local=new BroadcastChannel('mala-nauka-design-settings');local.onmessage=e=>{if(e.data?.config){applyDesign(e.data.config);if(e.data.assets){configureAssets(e.data.assets,base.href);document.dispatchEvent(new CustomEvent('mala-nauka:assets'));}}};addEventListener('pagehide',()=>local.close(),{once:true});}

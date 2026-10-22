@@ -45,7 +45,7 @@ import { cleanProgress, migrateProgress, recordResult, localDay } from './progre
 import { createSpellingArt } from './spelling/art.mjs?v=20261006-cinematic-v1';
 import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './player-service.mjs?v=7-profile-settings';
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
-import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
+import { parseBackupInput, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
 let campaignBookController=null,homeController=null,homeStyle=null,homePlayer=null,homePaintEpoch=0,homeHistoryEntry=null;
 let campaignBookEntry=null,campaignBookReturn='campaign';
@@ -86,7 +86,7 @@ function startGameTicker(){
   }
  },50);
 }
-let offlineReady=false,collectionReturn=null,pendingBackup=null,backupBusy=false;
+let offlineReady=false,collectionReturn=null,pendingBackup=null,pendingBackupScenarios=null,backupBusy=false;
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const btn=(text,action,cls='secondary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${text}</button>`;
 const minutes=seconds=>`${seconds/60} min`;
@@ -365,6 +365,9 @@ async function submitPlayerPin(){
 function pageHead(title,action='home') {return pageHeading(title,{action});}
 function navigate(next) {homeController?.destroy();homeController=null;homePaintEpoch++;campaignBookController?.destroy();campaignBookController=null;scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;
  prepareScreenChange(root,next);
+ // Withdraw the outgoing contract before async destinations replace its DOM.
+ // Studio can request an inventory between that replacement and the next frame.
+ delete root.dataset.dsContractReady;delete root.dataset.dsMountedView;
  editingPin=false;editingProfile=false;deletingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
  closeResultRule(root,false);
@@ -487,13 +490,22 @@ async function previewBackup(file){
  if(!file||backupBusy)return;backupBusy=true;pendingBackup=null;
  try{
   if(file.size>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
-  const backup=parseBackup(await file.text()),existing=await playerService.listPlayers(),summary=backupSummary(backup,existing),merged=new Set(existing.map(player=>player.id));
+  const input=parseBackupInput(await file.text());
+  if(input.kind==='scenarios'){
+   pendingBackupScenarios=input.scenarios;
+   showModal('Etapy kampanii',`<p>Wybierz stan do sprawdzenia. Importujesz tylko jeden profil demonstracyjny.</p><label for="backup-scenario">Etap postępu</label><select id="backup-scenario">${input.scenarios.map(s=>`<option value="${escape(s.id)}">${escape(s.label)}</option>`).join('')}</select><p id="backup-scenario-description">${escape(input.scenarios[0].description)}</p><div class="stack">${btn('Wybierz etap','select-backup-scenario','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);return;
+  }
+  await previewValidatedBackup(input.backup);
+ }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
+ finally{backupBusy=false;}
+}
+async function previewValidatedBackup(backup,{scenario=false}={}){
+ if(scenario)backup={...backup,preferences:backupPreferences()};
+ const existing=await playerService.listPlayers(),summary=backupSummary(backup,existing),merged=new Set(existing.map(player=>player.id));
   for(const row of backup.players)merged.add(row.profile.id);
   if(merged.size>MAX_PLAYERS)throw new Error(`Ta kopia dałaby więcej niż ${MAX_PLAYERS} profile. Usuń profil albo wybierz mniejszą kopię.`);
   pendingBackup=backup;
-  showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} Przywrócimy też ustawienia gry.</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
- }catch(error){backupStatus(error?.message||'Nie udało się odczytać kopii.');}
- finally{backupBusy=false;}
+  showModal('Import danych',`<p>Nowe profile: <strong>${summary.added}</strong>. Aktualizowane profile: <strong>${summary.updated}</strong>. Zapisane rundy: <strong>${summary.rounds}</strong>.</p>${backup.players.length?`<p class="backup-names">${backup.players.map(row=>escape(row.profile.nickname)).join(' · ')}</p>`:''}<p>${summary.updated?'Dane profili o tym samym identyfikatorze zostaną zastąpione kopią. Pozostałe profile zostają.':'Istniejące profile zostają zachowane.'} ${scenario?'Wczytamy wybrany etap kampanii.':'Przywrócimy też ustawienia gry.'}</p><div class="stack">${btn('Importuj kopię','confirm-import','primary')}${btn('Anuluj','cancel-import','secondary')}</div>`);
 }
 async function importBackup(){
  if(!pendingBackup||backupBusy)return;backupBusy=true;
@@ -506,7 +518,7 @@ async function importBackup(){
    if(preferences.spellingWizard)localStorage.setItem(keys[2],JSON.stringify(preferences.spellingWizard));else localStorage.removeItem(keys[2]);
    await playerService.importBackup(backup);
   }catch(error){for(let i=0;i<keys.length;i++){try{if(previous[i]===null)localStorage.removeItem(keys[i]);else localStorage.setItem(keys[i],previous[i]);}catch{}}throw error;}
-  settings=preferences.settings;configs=preferences.configs;pendingBackup=null;activePlayer=null;progress=cleanProgress(null);collectionReturn=null;
+  settings=preferences.settings;configs=preferences.configs;pendingBackup=null;pendingBackupScenarios=null;activePlayer=null;progress=cleanProgress(null);collectionReturn=null;
   modal.close();await refreshPlayers();playersPage();
  }catch(error){modal.close();backupStatus(error?.message||'Nie udało się zapisać kopii danych.');}
  finally{backupBusy=false;}
@@ -790,14 +802,15 @@ function routeTo(target){
 function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function showDeleteProfilePrompt(){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz wszystkie jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
- if(button.matches('[data-adventure-reward],[data-adventure-power],[data-power-preview],[data-campaign-realm],[data-campaign-start],[data-campaign-select],[data-campaign-portal],[data-campaign-character],[data-campaign-book]')||action==='close-reward')return;
+ if(button.matches('[data-adventure-reward],[data-adventure-power],[data-power-preview],[data-campaign-realm],[data-campaign-start],[data-campaign-select],[data-campaign-portal],[data-campaign-character],[data-campaign-book],[data-campaign-artifact]')||action==='close-reward')return;
  if(action==='campaign'){if(view==='home'){campaignRealm=storyHomeModel(progress,adventureConfig(),activePlayer).realm.id;campaignSelectedStep='';}progress.journey.adventure.campaign.started=true;await persistProgress();if(requestHostRoute('campaign'))return;campaignRound=null;navigate('campaign');return;}
  if(action==='home-forge'||action==='home-awards'){selectedMode='spelling';homeHistoryEntry=action==='home-forge'?'forge':'achievements';navigate('history');return;}
  if(action==='home-book'||action==='home-artifact'){campaignRealm=storyHomeModel(progress,adventureConfig(),activePlayer).realm.id;campaignBookReturn='home';campaignBookEntry=action==='home-artifact'?'key':null;navigate('campaign-book');return;}
  if(action==='export-backup'){await exportBackup();return;}
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
+ if(action==='select-backup-scenario'){const id=modal.querySelector('#backup-scenario')?.value,scenario=pendingBackupScenarios?.find(s=>s.id===id);if(scenario){try{await previewValidatedBackup(scenario.backup,{scenario:true});}catch(error){showModal('Import danych',`<p>${escape(error.message)}</p><div class="stack">${btn('Wróć','cancel-import','primary')}</div>`);}}return;}
  if(action==='confirm-import'){await importBackup();return;}
- if(action==='cancel-import'){pendingBackup=null;modal.close();return;}
+ if(action==='cancel-import'){pendingBackupScenarios=null;pendingBackup=null;modal.close();return;}
  if(action==='players'){const from=view==='player-pin'&&root.dataset.pinPurpose==='unlock'?'player-unlock':view;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,from,action,selectedMode)||'players');return;}
  if(action==='edit-player'){editingPin=false;editingProfile=false;pinInput='';pinError='';routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,'player-pin',action,selectedMode));return;}
  if(action==='edit-profile'){if(!activePlayer||activePlayer.id==='guest')return;editingPin=false;editingProfile=true;pendingNickname=activePlayer.nickname;pendingAvatarId=activePlayer.avatarId||'a';pinInput='';pinError='';playerCreatePage();return;}
@@ -878,6 +891,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
 }
 root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastResult&&!lastResult.campaignStepId){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);void start();}});
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
+modal.addEventListener('change',e=>{if(e.target.id==='backup-scenario'){const row=pendingBackupScenarios?.find(s=>s.id===e.target.value),description=modal.querySelector('#backup-scenario-description');if(description)description.textContent=row?.description||'';}});
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
 root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const help=root.querySelector('#nickname-help');if(help){help.textContent=`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.remove('is-invalid');}e.target.removeAttribute('aria-invalid');}});
 root.addEventListener('submit',async e=>{
@@ -959,7 +973,7 @@ async function renderStudioScenario(stateOverride=null){
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress={...exampleProgress(words),...exampleJourney(words,.25)};lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
- if(screen==='home'){homePlayer=activePlayer.id;homeStyle=state==='story'?'story':'free';if(state==='story'){progress.journey.adventure.campaign.started=true;progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,7).map(s=>s.id);}}
+ if(screen==='home'){homePlayer=activePlayer.id;homeStyle=state==='story'?'story':'free';if(state==='story'){progress.journey.adventure.campaign.started=true;const count=query.has('homeCompleted')?Math.max(0,Math.min(adventureConfig().steps.length,Number(query.get('homeCompleted'))||0)):7;progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,count).map(s=>s.id);for(const realm of adventureConfig().realms)if(adventureConfig().steps.filter(s=>s.realm===realm.id).every(s=>progress.journey.adventure.campaign.completed.includes(s.id)))progress.journey.adventure.campaign.storySeen.push('portal:'+realm.id);if(query.get('homeGuide')==='girl')activePlayer.avatarId='a';}}
  if(screen==='campaign-book'){progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,7).map(s=>s.id);view='campaign-book';root.dataset.view=view;root.mnScreenReady=campaignBookPage();await root.mnScreenReady;return;}
  if(screen==='campaign'){if(state==='portal'){progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,15).map(s=>s.id);campaignRealm=adventureConfig().realms[0].id;campaignSelectedStep='';}view='campaign';root.dataset.view='campaign';root.dataset.mode=selectedMode;root.mnScreenReady=campaignPage();await root.mnScreenReady;if(state==='story'){const dim=beginCampaignPresentation(root),dialog=openCampaignNarrator(root,campaignNarrative(progress,adventureConfig(),{realmId:campaignRealm,preview:true}));root.mnScreenReady=dialog.ready;await dialog.ready;void dialog.accepted.then(()=>dim.finish());}return;}
  if(screen==='history'&&state==='reward-details'){view='history';await historyPage('achievements');openRewardDialog(root,progress,'spelling-explorer',{words,onSave:async journey=>{progress.journey=journey;}});return;}
@@ -1045,7 +1059,7 @@ document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(locatio
 document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&!new URLSearchParams(location.search).has('campaignLab')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});
 
 root.addEventListener('click',async event=>{
- if(event.target.closest('[data-campaign-book]')){campaignBookEntry=null;campaignBookReturn='campaign';navigate('campaign-book');return;}
+ if(event.target.closest('[data-campaign-book],[data-campaign-artifact]')){campaignBookEntry=event.target.closest('[data-campaign-artifact]')?'key':null;campaignBookReturn='campaign';navigate('campaign-book');return;}
  const realm=event.target.closest('[data-campaign-realm]'),start=event.target.closest('[data-campaign-start]'),milestone=event.target.closest('[data-campaign-select]'),portal=event.target.closest('[data-campaign-portal]');
  if(realm&&!realm.disabled){campaignTravelFrom=null;campaignSelectedStep='';campaignRealm=realm.dataset.campaignRealm;void campaignPage();}
  if(start&&!start.disabled)void launchCampaign(start.dataset.campaignStart);

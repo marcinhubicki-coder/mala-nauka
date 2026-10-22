@@ -1,0 +1,31 @@
+{
+  "version": "v65",
+  "branch": "work/campaign-spacing-v65",
+  "localOnly": true,
+  "physicalPhoneVerified": false,
+  "build": true,
+  "browserEngines": [
+    "chromium",
+    "webkit"
+  ],
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "checks": {
+    "campaignDescriptionLines": 3,
+    "campaignIconsPx": 68,
+    "campaignLongestSubtitleFits": true,
+    "campaignRewardHintRemoved": true,
+    "cardInterruptedHeightContinuity": true,
+    "mapGeometryStable": true,
+    "bookIndexVisible": true,
+    "bookIndexEntries": 15,
+    "bookIndexOverflow": false,
+    "homeOpticalPaddingEqual": true,
+    "homeCaptionPositionsPreserved": true,
+    "contractChecksPassed": 8,
+    "viewCount": 54
+  },
+  "errors": []
+}

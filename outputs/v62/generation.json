@@ -1,0 +1,12 @@
+{
+  "tool": "image_gen.imagegen",
+  "purpose": "Graphical five-star campaign rating medallion",
+  "brief": "A single frontal circular storybook medallion isolated on a transparent background. Rich turquoise enamel and sculpted gold trim, warm ivory highlights, detailed magical illustration matching the campaign book. Exactly five empty five-point star sockets, three on the upper arc and two below. No lettering, extra stars, ribbons or scenery. Each empty socket must remain readable and suitable for a separately animated golden star overlay.",
+  "master": "outputs/v62/library/star-medallion-master.png",
+  "export": "assets/managed/341542f9f32ea4161fdcfbc7056b66e74e933c871bbc6e18786943d37b23e5f9.webp",
+  "width": 512,
+  "height": 512,
+  "size": 94606,
+  "transparent": true,
+  "status": "local candidate, not published"
+}

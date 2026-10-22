@@ -4,13 +4,13 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {chromium,webkit} from 'playwright';
 import {storyHomeModel} from '../shared/story-home.mjs';
 import {adventureConfig} from '../shared/adventure-model.mjs';
-const config=adventureConfig(),output='outputs/v61',base=process.argv[2]||'http://127.0.0.1:8874';await mkdir(output,{recursive:true});
+const config=adventureConfig(),output='outputs/v62',base=process.argv[2]||'http://127.0.0.1:8874';await mkdir(output,{recursive:true});
 for(const [count,host]of [[0,'guide'],[4,'mira'],[7,'bor'],[8,'bor'],[11,'bor']]){
  const progress={journey:{sparks:220900000,adventure:{campaign:{completed:config.steps.slice(0,count).map(s=>s.id)}}}},before=JSON.stringify(progress),model=storyHomeModel(progress,config,{avatarId:'c'});
  assert.equal(model.npc,host);assert.equal(model.sparks,220);assert.equal(JSON.stringify(progress),before);
 }
 const checks=[];
-for(const [engine,type]of [['chromium',chromium],['webkit',webkit]]){
+for(const [engine,type]of [['chromium',chromium],['webkit',webkit]].filter(([id])=>!process.env.MN_QA_ENGINES||process.env.MN_QA_ENGINES.split(',').includes(id))){
  const browser=await type.launch({headless:true});
  try{
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block'}),page=await context.newPage(),errors=[];

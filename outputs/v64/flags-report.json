@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "chromium/flags: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "chromium/countries: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "chromium/capitals: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "chromium: partial geometry rollback restores renderer size, then full rollback restores position",
+    "webkit/flags: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "webkit/countries: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "webkit/capitals: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+    "webkit: partial geometry rollback restores renderer size, then full rollback restores position"
+  ],
+  "errors": []
+}

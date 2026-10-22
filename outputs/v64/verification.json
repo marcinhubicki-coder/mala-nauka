@@ -1,0 +1,88 @@
+{
+  "version": 64,
+  "localOnly": true,
+  "physicalIphone": false,
+  "flags": {
+    "checks": [
+      "chromium/flags: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "chromium/countries: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "chromium/capitals: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "chromium: partial geometry rollback restores renderer size, then full rollback restores position",
+      "webkit/flags: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "webkit/countries: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "webkit/capitals: stable feedback, viewport repaint, zoom/neighbor retention, slider, next round and correct answer",
+      "webkit: partial geometry rollback restores renderer size, then full rollback restores position"
+    ],
+    "errors": []
+  },
+  "contracts": [
+    {
+      "view": "home-story",
+      "device": "iphone",
+      "components": 37,
+      "errors": []
+    },
+    {
+      "view": "campaign",
+      "device": "iphone",
+      "components": 47,
+      "errors": []
+    },
+    {
+      "view": "campaign-story",
+      "device": "iphone",
+      "components": 53,
+      "errors": []
+    },
+    {
+      "view": "campaign-portal",
+      "device": "iphone",
+      "components": 41,
+      "errors": []
+    },
+    {
+      "view": "campaign-book",
+      "device": "iphone",
+      "components": 42,
+      "errors": []
+    },
+    {
+      "view": "home-story",
+      "device": "desktop",
+      "components": 37,
+      "errors": []
+    },
+    {
+      "view": "campaign-story",
+      "device": "desktop",
+      "components": 53,
+      "errors": []
+    },
+    {
+      "view": "campaign",
+      "device": "desktop",
+      "components": 47,
+      "errors": []
+    },
+    {
+      "view": "campaign-portal",
+      "device": "desktop",
+      "components": 41,
+      "errors": []
+    },
+    {
+      "view": "campaign-book",
+      "device": "desktop",
+      "components": 42,
+      "errors": []
+    }
+  ],
+  "scenarios": 19,
+  "newPortraits": 12,
+  "newAssets": 13,
+  "assetBytes": 2409716,
+  "backupTests": {
+    "passed": 5,
+    "failed": 0
+  }
+}

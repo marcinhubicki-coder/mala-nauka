@@ -1,3 +1,5 @@
+import {CAMPAIGN_STAR_MEDALLION} from './campaign-star-assets.mjs';
+import {assetUrl} from './asset-loader.mjs';
 const path='M50 5 63.6 33.2 95 37.8 72.3 59.9 77.7 91 50 76.3 22.3 91 27.7 59.9 5 37.8 36.4 33.2Z';
 let sequence=0;
 const presentations=new WeakMap();
@@ -10,7 +12,8 @@ export function campaignStarSVG(filled=false,key=null){
 export function campaignRatingMarkup(score,{heldStars,showEmpty=false}={}){
  if(!score&&!showEmpty)return '';
  const filled=heldStars??score?.stars??0;
- return `<div class="campaign-rating" role="img" aria-label="${score?`Najlepsza ocena: ${score.stars} z 5 gwiazdek · ${score.percent}%`:'Jeszcze nie oceniono · 5 miejsc na gwiazdki'}"><span class="campaign-rating-label">${score?`Najlepiej: ${score.percent}%`:'Jeszcze nie oceniono'}</span><span class="campaign-rating-slots">${Array.from({length:5},(_,i)=>`<span class="campaign-star-slot ${i<filled?'is-earned':''}" data-star-slot="${i}">${campaignStarSVG(i<filled,'campaign-card-star-'+i+'-'+(i<filled?'filled':'empty'))}</span>`).join('')}</span></div>`;
+ const sockets=[[24.5,39.2],[50,29.2],[75,39.2],[37.5,65.2],[63.4,65.2]];
+ return `<div class="campaign-rating" role="img" aria-label="${score?`Najlepsza ocena: ${score.stars} z 5 gwiazdek · ${score.percent}%`:'Jeszcze nie oceniono · 5 miejsc na gwiazdki'}"><span class="campaign-rating-label">${score?`Najlepiej: ${score.percent}%`:'Jeszcze nie oceniono'}</span><img class="campaign-rating-art" src="${assetUrl(CAMPAIGN_STAR_MEDALLION.path)}" width="512" height="512" alt=""><span class="campaign-rating-slots">${sockets.map(([x,y],i)=>`<span class="campaign-star-slot ${i<filled?'is-earned':''}" data-star-slot="${i}" style="left:${x}%;top:${y}%">${campaignStarSVG(i<filled,'campaign-card-star-'+i+'-'+(i<filled?'filled':'empty'))}</span>`).join('')}</span></div>`;
 }
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 export async function presentCampaignStars(root,award,{sharedShade=false}={}){

@@ -1,0 +1,5 @@
+.portal-emblem{position:absolute;inset:5%;isolation:isolate;pointer-events:none;display:block}
+.portal-emblem>img{position:absolute;inset:20% 0 0;width:100%;height:80%;object-fit:contain;filter:drop-shadow(0 0 3px #8bb4f066)}
+.portal-emblem-back{z-index:0;clip-path:inset(0 0 49% 0)}
+.portal-emblem .portal-emblem-question{position:absolute;z-index:1;inset:3% 0 0;text-align:center;font:800 3.3em/1 var(--ds-font-display);color:#408f9d;text-shadow:0 1px #fff8d0,0 0 6px #fff;display:grid;place-items:center;padding-bottom:8%}
+.portal-emblem-front{z-index:2;clip-path:inset(51% 0 0)}

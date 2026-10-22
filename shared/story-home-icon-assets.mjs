@@ -1,0 +1,2 @@
+// Local immutable candidate. Library publication is a separate release step.
+export const STORY_HOME_ANVIL={"id":"home-forge-anvil-v63","path":"assets/managed/0fe94aad44bdaa0a2c3d98132e44bb0169334a948c4494d08ea8acb9a9411c04.webp","sha":"0fe94aad44bdaa0a2c3d98132e44bb0169334a948c4494d08ea8acb9a9411c04","size":74914,"width":512,"height":512,"type":"webp","group":"adventure","references":["shared/story-home.mjs"]};

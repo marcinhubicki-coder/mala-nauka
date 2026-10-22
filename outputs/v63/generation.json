@@ -1,0 +1,10 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Use case: stylized-concept. Asset type: a premium illustrated fantasy game UI icon, a standalone magical anvil. Create ONE beautifully crafted teal-blue enamel and brushed silver anvil with elegant warm gold trim, viewed in a clear front three-quarter angle. Above its striking surface a small brilliant golden energy core releases a compact upward fountain of sparks and wisps in gold, turquoise, pale pink and lavender, as if forging magical powers. Match a richly detailed hand-painted 3D storybook adventure aesthetic, charming and high quality, soft warm lighting, convincing metal texture and sculpted depth. Bold readable silhouette at 70 px, minimal tiny detail. Center the whole object in a square with 10 percent clear margin all around. The anvil fills the lower two thirds and the contained energy fountain the upper third. True transparent background, no environment, no pedestal, no books, no hammer, no characters, no face, no lettering, no frame or enclosing ring, no cast shadow rectangle. All sparks must remain inside the square canvas. Transparent cutout asset ready to place inside a separately drawn rainbow progress ring.",
+  "master": "outputs/v63/library/forge-anvil-master.png",
+  "export": "assets/managed/0fe94aad44bdaa0a2c3d98132e44bb0169334a948c4494d08ea8acb9a9411c04.webp",
+  "width": 512,
+  "height": 512,
+  "size": 74914,
+  "status": "local candidate; not published"
+}

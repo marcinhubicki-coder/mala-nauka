@@ -42,6 +42,18 @@ export function parseBackup(text){
  return validateBackup(value);
 }
 
+// A scenario pack carries ordinary, fully validated backups. Choosing one is
+// explicit, and importing the pack never creates every demo profile at once.
+export function parseBackupInput(text){
+ if(typeof text!=='string'||new TextEncoder().encode(text).byteLength>BACKUP_MAX_BYTES)throw new Error('Kopia danych może mieć maksymalnie 5 MB.');
+ let value;try{value=JSON.parse(text);}catch{throw invalid();}
+ if(value?.format!=='mala-nauka-campaign-scenarios')return {kind:'backup',backup:validateBackup(value)};
+ if(value.version!==1||!Array.isArray(value.scenarios)||!value.scenarios.length||value.scenarios.length>40)throw invalid();
+ const ids=new Set();
+ const scenarios=value.scenarios.map(row=>{if(!plain(row)||typeof row.id!=='string'||!/^[\w-]{1,100}$/.test(row.id)||ids.has(row.id)||typeof row.label!=='string'||!row.label.trim()||row.label.length>100)throw invalid();ids.add(row.id);const backup=validateBackup(row.backup);if(backup.players.length!==1||backup.guestProgress)throw invalid();return {id:row.id,label:row.label,description:typeof row.description==='string'?row.description.slice(0,240):'',backup};});
+ return {kind:'scenarios',scenarios};
+}
+
 export function backupSummary(backup,existing){
  const ids=new Set(existing.map(player=>player.id));
  const updated=backup.players.filter(row=>ids.has(row.profile.id)).length;

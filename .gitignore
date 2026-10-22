@@ -14,3 +14,15 @@ node_modules
 /outputs/v60/*.png
 
 /outputs/v61/*.png
+
+/outputs/v62/library/
+/outputs/v62/*.png
+
+/outputs/v63/library/
+/outputs/v63/*.png
+
+/outputs/v64/library/
+/outputs/v64/*.png
+
+/outputs/v65/*.png
+/outputs/v65/*.webm

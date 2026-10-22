@@ -17,9 +17,15 @@ export const STORY_HOME_ROWS=[
  part('story-home-panel','Matowe szkło · menu kampanii','container','story-home-stage','group'),
  part('story-home-wallet','Twoje iskry i moc','container','story-home-panel','group'),
  part('story-home-tools','Skarby i opowieść','container','story-home-panel','group'),
- part('story-home-sparks','Posiadane iskry','text','story-home-wallet'),
- part('story-home-forge','Zdobądź moc','button','story-home-wallet','atom','home-forge'),
- ...[['awards','Puchary i medale'],['book','Księga'],['artifact','Przedmiot świata']].map(([id,label])=>part('story-home-'+id,label,'button','story-home-tools','atom','home-'+id)),
+ part('story-home-sparks','Twoje Iskry Mocy','container','story-home-wallet','group'),
+ part('story-home-spark-pill','Pastylka iskier','container','story-home-sparks','group'),
+ part('story-home-spark-art','Graficzna iskra','icon','story-home-spark-pill'),
+ part('story-home-spark-value','Licznik iskier','text','story-home-spark-pill'),
+ part('story-home-spark-label','Twoje Iskry Mocy','text','story-home-spark-pill'),
+ part('story-home-forge','Uwolnij Moc','button','story-home-wallet','group','home-forge'),
+ part('story-home-forge-art','Kuźnia i pierścień gotowości','icon','story-home-forge'),
+ part('story-home-forge-label','Uwolnij Moc','text','story-home-forge'),
+ ...[['awards','Puchary i medale'],['book','Księga'],['artifact','Przedmiot świata']].flatMap(([id,label])=>[part('story-home-'+id,label,'button','story-home-tools','group','home-'+id),part('story-home-'+id+'-art',label+' · ilustracja','icon','story-home-'+id),part('story-home-'+id+'-label',label+' · podpis','text','story-home-'+id)]),
  part('story-home-mission','Kafel kolejnego kroku','container','story-home-panel','group'),
  part('story-home-continue','Kontynuuj kampanię','button','story-home-mission','atom','campaign')
 ];

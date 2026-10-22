@@ -1,0 +1,18 @@
+{
+  "index": {
+    "count": 15,
+    "height": 538,
+    "scroll": 538,
+    "keyInside": true,
+    "keyTop": 632.765625
+  },
+  "settings": {
+    "duration": 120,
+    "sound": false,
+    "animations": true,
+    "difficulty": true,
+    "category": true
+  },
+  "errors": [],
+  "ok": true
+}

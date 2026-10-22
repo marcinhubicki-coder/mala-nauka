@@ -1,0 +1,2 @@
+// Local candidate; publish the immutable bytes separately after visual acceptance.
+export const CAMPAIGN_STAR_MEDALLION={"id":"campaign-five-star-medallion-v62","path":"assets/managed/341542f9f32ea4161fdcfbc7056b66e74e933c871bbc6e18786943d37b23e5f9.webp","sha":"341542f9f32ea4161fdcfbc7056b66e74e933c871bbc6e18786943d37b23e5f9","size":94606,"width":512,"height":512,"type":"webp","group":"adventure","references":["shared/campaign-stars.mjs"]};

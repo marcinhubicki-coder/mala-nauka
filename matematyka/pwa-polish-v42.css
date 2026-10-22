@@ -3,6 +3,19 @@
 /* iOS rysuje dolny obszar PWA kolorem theme-color. Końcówka gradientu wraca
    więc do tego samego koloru, dzięki czemu nie ma twardego odcięcia. */
 @media (prefers-color-scheme: dark) {
+  /* The shared light UI ink must not override the night math canvas. */
+  #app[data-mode="math"][data-view="game"] {
+    --ds-color-ink: #fff;
+    --text: #fff;
+    color: var(--text);
+  }
+  #app[data-mode="math"][data-view="game"] .question-label {
+    color: var(--text);
+  }
+  #app[data-mode="math"][data-view="game"] .time-block .timer,
+  #app[data-mode="math"][data-view="game"] .time-block small {
+    color: var(--text) !important;
+  }
   html {
     background-color: #182133 !important;
     background-image:

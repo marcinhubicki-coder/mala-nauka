@@ -48,7 +48,7 @@ export function recordResult(progress,result,words=[]) {
  progress.learning=addLearningSession(progress.learning,result,rules.mastery);
  progress.journey=awardRuleProgress(awardAchievements(progress.journey,progress.learning,words,result,rules),words,rules);
  if(result.rewards){result.rewards.mastered=[...new Set([...(result.rewards.mastered||[]),...Object.values(progress.learning.items).filter(w=>w.masteryEarned&&!previousMastered.has(w.word)).map(w=>w.word)])];result.rewards.achievements=[...new Set([...(result.rewards.achievements||[]),...Object.keys(progress.journey.achievements).filter(id=>!previousAchievements.has(id))])];const seen=new Set((result.attempts||[]).map(a=>a.word));result.rewards.rules=collectibleRules(words,progress.journey).filter(r=>r.words.some(w=>seen.has(w.word))).map(r=>({id:r.id,title:r.title,collected:progress.journey.rules[r.id]?.collected===true,discovered:r.discovered,threshold:r.threshold}));}
- const campaign=advanceCampaign(progress,result,words);if(campaign.world)result.campaignWorld=campaign.world.id;result.campaignCompleted=campaign.complete===true;
+ const campaign=advanceCampaign(progress,result,words);if(campaign.world)result.campaignWorld=campaign.world.id;result.campaignCompleted=campaign.complete===true;if(campaign.rating){result.campaignStars=campaign.rating.stars;result.campaignPercent=campaign.rating.percent;}
  progress.history=[result,...progress.history].slice(0,50);
  const day=localDay(new Date(result.date));
  progress.today={day,count:result.attempts?.length?progress.journey.activeDays[day]||0:(progress.today.day===day?progress.today.count:0)+result.correct+result.wrong};

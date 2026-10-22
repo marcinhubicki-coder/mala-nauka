@@ -1,3 +1,4 @@
+import {HOME_STYLE_ROWS,STORY_HOME_ROWS} from './story-home-contract.mjs';
 // Declarative view contract. Editor and renderer share stable IDs; no DOM shape hashes.
 import {homeDecorationAtoms} from './home-atoms.mjs';
 import {SPELLING_SETTINGS_CONTRACT} from './spelling-settings-contract.mjs';
@@ -10,7 +11,6 @@ const row=(id,recipe,kind,parent,level='atom',action=null,mode=null)=>({id,recip
 const home=[
  row('home-background','background-home','background','layout-root'),
  row('home-logo','image-home-logo-art','image','layout-root'),
- row('home-campaign','button-campaign','button','home-welcome','atom','campaign'),
  row('home-settings','button-home-settings','button','layout-root','atom','settings'),
  row('home-welcome','family-home-welcome','container','layout-root','family'),
  row('home-hero','container-home-hero','container','home-welcome','group'),
@@ -51,6 +51,8 @@ for(const mode of MODES){
  home.push(row('home-'+mode+(mode==='spelling'||mode==='math'?'-symbol':'-glyph'),mode==='spelling'||mode==='math'?'text-home-mode-symbol':'icon-home-mode-glyph',mode==='spelling'||mode==='math'?'text':'icon','home-'+mode+'-badge'));
  home.push(row('home-'+mode+'-name','text-mode-name','text',card));
 }
+home.push(...HOME_STYLE_ROWS);
+const homeStory=[...home.filter(r=>['home-background','home-logo','home-settings'].includes(r.id)),...STORY_HOME_ROWS,...HOME_STYLE_ROWS];
 const playersEmpty=[
  row('player-shell','family-player-empty','container','layout-root','family'),
  row('player-brand-art','image-player-brand-art','image','player-shell'),
@@ -152,7 +154,7 @@ const spellingResults=[
  row('spelling-result-repeat','container-result-continue-rail','container','spelling-result-sheet','group',null,'spelling'),
  row('spelling-result-history','button-main','button','spelling-result-sheet','atom','forge','spelling')
 ];
-const BASE_VIEW_CONTRACTS=Object.freeze({home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item))),'spelling-initial':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-correct':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-wrong':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-hint':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-pause':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-results':Object.freeze(spellingResults.map(item=>Object.freeze(item))),'spelling-rule':Object.freeze(spellingResults.map(item=>Object.freeze(item)))});
+const BASE_VIEW_CONTRACTS=Object.freeze({'home-story':Object.freeze(homeStory.map(item=>Object.freeze(item))),home:Object.freeze(home.map(item=>Object.freeze(item))),'players-empty':Object.freeze(playersEmpty.map(item=>Object.freeze(item))),'math-settings':Object.freeze(mathSettings.map(item=>Object.freeze(item))),'player-create':Object.freeze(playerCreate.map(item=>Object.freeze(item))),'player-pin':Object.freeze(playerPin.map(item=>Object.freeze(item))),'player-unlock':Object.freeze(playerUnlock.map(item=>Object.freeze(item))),'spelling-settings':Object.freeze(spellingSettings.map(item=>Object.freeze(item))),'spelling-initial':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-correct':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-wrong':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-hint':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-pause':Object.freeze(spellingGame.map(item=>Object.freeze(item))),'spelling-results':Object.freeze(spellingResults.map(item=>Object.freeze(item))),'spelling-rule':Object.freeze(spellingResults.map(item=>Object.freeze(item)))});
 export const VIEW_CONTRACTS=Object.freeze({...BASE_VIEW_CONTRACTS,...BOUND_VIEW_CONTRACTS,...Object.fromEntries(['english','flags','reading','math'].map(mode=>[mode+'-results',Object.freeze(resultBindings(spellingResults,mode).map(Object.freeze))]))});
 // Build the immutable contract index once. Renderers reuse it instead of
 // repeatedly scanning up to 90 entries for each labelled component.

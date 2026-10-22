@@ -1,3 +1,4 @@
+import {homePlayStyleMarkup} from './shared/home-play-style.mjs';
 // The hero is an illustration; text, controls and surfaces remain editable.
 // Coordinates use the design's 853 × 1844 canvas; iOS draws its own system bars.
 import {homeTileSurface,homeDecorationAtoms,HOME_TILE_SIZES,homeBadgeSurface,homeModeGlyph,homeStatSymbol,homeStatIcon} from './shared/home-atoms.mjs';
@@ -59,22 +60,23 @@ export function renderHomeModeCard(mode,name,style=''){
 export function renderHomeModes(modes,modeIds=Object.keys(TILES),style=''){
  return `<nav class="home-game-buttons" aria-labelledby="home-modes-title" data-ds-kind="container" data-ds-recipe="family-home-modes" data-ds-key="home-modes" data-ds-label="Pięć przygód" style="${style}">${modeIds.map(mode=>renderHomeModeCard(mode,modes[mode].name,homePosition(layout(),'home-mode-'+mode))).join('')}</nav>`;
 }
+// Retained as an isolated library sample; the free homescreen uses the mode switch.
 export function renderHomeCampaign(campaignStarted=false,style=''){
  const sparks=[[12,33,5,-1.2],[20,73,3,-3.4],[32,17,4,-2.1],[48,85,3,-.4],[67,18,5,-4.1],[81,76,4,-2.9],[90,39,5,-.8],[73,58,2,-3.7],[23,49,2,-2.5],[57,31,2,-1.7]];
- return `<button type="button" class="home-campaign-cta" data-action="campaign" aria-label="${campaignStarted?'Twoja kampania':'Rozpocznij kampanię'}" data-ds-key="home-campaign" data-ds-kind="button" data-ds-recipe="button-campaign" data-ds-atomic="true" style="${style}"><span class="home-campaign-film" aria-hidden="true" data-mn-decoration="true"></span><span class="home-campaign-sparks" aria-hidden="true" data-mn-decoration="true">${sparks.map(([x,y,size,delay],i)=>`<i class="${i<7?'is-star':''}" style="left:${x}%;top:${y}%;--spark-size:${size};--spark-delay:${delay}s"></i>`).join('')}</span><span class="home-campaign-label">${campaignStarted?'Twoja':'Rozpocznij'}<br>kampani${campaignStarted?'a':'ę'}</span></button>`;
+ return `<button type="button" class="home-campaign-cta" data-action="campaign" aria-label="${campaignStarted?'Twoja kampania':'Rozpocznij kampanię'}" data-ds-key="home-campaign" data-ds-kind="button" data-ds-recipe="button-campaign" data-ds-atomic="true" style="${style}"><span class="home-campaign-aura" aria-hidden="true" data-mn-decoration="true"></span><span class="home-campaign-film" aria-hidden="true" data-mn-decoration="true"></span><span class="home-campaign-sparks" aria-hidden="true" data-mn-decoration="true">${sparks.map(([x,y,size,delay],i)=>`<i class="${i<7?'is-star':''}" style="left:${x}%;top:${y}%;--spark-size:${size};--spark-delay:${delay}s"></i>`).join('')}</span><span class="home-campaign-label">${campaignStarted?'Twoja':'Rozpocznij'}<br>kampani${campaignStarted?'a':'ę'}</span></button>`;
 }
 export function renderHomeWelcome({nickname='Odkrywco',today=0,lastScore='0 pkt',lastLabel='Zagraj pierwszą rundę',campaignStarted=false}={},style=''){
- return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,homePosition(layout(),'home-hero'))}${renderHomeCampaign(campaignStarted,homePosition(layout(),'home-campaign'))}${renderHomeProgress({today,lastScore,lastLabel},homePosition(layout(),'home-stats'))}</section>`;
+ return `<section class="home-welcome" data-ds-kind="container" data-ds-recipe="family-home-welcome" data-ds-key="home-welcome" style="${style}">${renderHomeHero(nickname,homePosition(layout(),'home-hero'))}${renderHomeProgress({today,lastScore,lastLabel},homePosition(layout(),'home-stats'))}</section>`;
 }
 
 export function renderHomeScreen({nickname,today,lastScore,lastLabel,modes,modeIds,campaignStarted=false}){
  const slots={
- 'background-home':'<span class="home-background" data-ds-kind="background" data-ds-recipe="background-home" data-ds-key="home-background" aria-hidden="true"></span>',
- 'image-home-logo-art':renderHomeLogo(homePosition(layout(),'home-logo')),
- 'button-home-settings':renderHomeSettings(homePosition(layout(),'home-settings')),
+ 'background-home':'',
+ 'image-home-logo-art':'',
+ 'button-home-settings':'',
  'family-home-welcome':renderHomeWelcome({nickname,today,lastScore,lastLabel,campaignStarted},homePosition(layout(),'home-welcome')),
  'container-home-adventures':renderHomeAdventures(homePosition(layout(),'home-adventures')),
  'family-home-modes':renderHomeModes(modes,modeIds,homePosition(layout(),'home-modes'))
  };
- return compileViewMarkup('home',`<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka">${composeTemplate('home',slots)}</section>`);
+ return compileViewMarkup('home',`<section class="home-canvas" data-ds-ignore="true" data-ds-template="template:home" aria-label="Mała Nauka"><span class="home-background" data-ds-kind="background" data-ds-recipe="background-home" data-ds-key="home-background" aria-hidden="true"></span>${renderHomeLogo(homePosition(layout(),'home-logo'))}${renderHomeSettings(homePosition(layout(),'home-settings'))}<div class="home-play-content"><div class="home-free-content">${composeTemplate('home',slots,{exclude:['background-home','image-home-logo-art','button-home-settings','control-jelly']})}</div></div>${homePlayStyleMarkup('free')}</section>`);
 }

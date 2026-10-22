@@ -48,7 +48,7 @@ export function rememberPresence(node,style){
 export function animatePresence(records){
  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
  let ghosts=0;
- for(const record of records){if(record.target.closest?.('[data-mn-decoration]'))continue;
+ for(const record of records){if(record.target.closest?.('[data-mn-decoration],[data-mn-managed-presence]'))continue;
   for(const node of record.removedNodes||[]){const style=styles.get(node),box=boxes.get(node);if(!style||style.exitAnimation==='none'||!style.exitAnimation||!box?.width||ghosts++>=2)continue;exitGhost(node,style,box);}
   for(const node of record.addedNodes||[]){const style=styles.get(node);if(!style||style.enterAnimation==='none'||!style.enterAnimation||!node.animate)continue;node.animate(presenceFrames(style),{duration:style.enterDuration??style.stateDuration??260,easing:'ease-out'});}
  }

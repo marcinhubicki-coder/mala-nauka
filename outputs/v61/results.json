@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "mode": "spelling",
+      "campaign": false,
+      "cta": 0,
+      "replay": 1,
+      "rewards": "Twoje odkryciaNowe karty: 1 w Twojej kolekcjidrzewo",
+      "campaignText": false,
+      "errors": ""
+    },
+    {
+      "mode": "spelling",
+      "campaign": true,
+      "cta": 1,
+      "replay": 0,
+      "rewards": "",
+      "campaignText": true,
+      "errors": ""
+    },
+    {
+      "mode": "math",
+      "campaign": false,
+      "cta": 0,
+      "replay": 1,
+      "rewards": "Twoje odkryciaNowe karty: 1 w Twojej kolekcjidrzewo",
+      "campaignText": false,
+      "errors": ""
+    },
+    {
+      "mode": "math",
+      "campaign": true,
+      "cta": 1,
+      "replay": 0,
+      "rewards": "",
+      "campaignText": true,
+      "errors": ""
+    },
+    {
+      "mode": "english",
+      "campaign": false,
+      "cta": 0,
+      "replay": 1,
+      "rewards": "Twoje odkryciaNowe karty: 1 w Twojej kolekcjidrzewo",
+      "campaignText": false,
+      "errors": ""
+    },
+    {
+      "mode": "english",
+      "campaign": true,
+      "cta": 1,
+      "replay": 0,
+      "rewards": "",
+      "campaignText": true,
+      "errors": ""
+    },
+    {
+      "mode": "flags",
+      "campaign": false,
+      "cta": 0,
+      "replay": 1,
+      "rewards": "Twoje odkryciaNowe karty: 1 w Twojej kolekcjidrzewo",
+      "campaignText": false,
+      "errors": ""
+    },
+    {
+      "mode": "flags",
+      "campaign": true,
+      "cta": 1,
+      "replay": 0,
+      "rewards": "",
+      "campaignText": true,
+      "errors": ""
+    },
+    {
+      "mode": "reading",
+      "campaign": false,
+      "cta": 0,
+      "replay": 1,
+      "rewards": "Twoje odkryciaNowe karty: 1 w Twojej kolekcjidrzewo",
+      "campaignText": false,
+      "errors": ""
+    },
+    {
+      "mode": "reading",
+      "campaign": true,
+      "cta": 1,
+      "replay": 0,
+      "rewards": "",
+      "campaignText": true,
+      "errors": ""
+    }
+  ],
+  "errors": []
+}

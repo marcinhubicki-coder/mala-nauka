@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-19T13:18:19.466Z",
-  "sourceCommit": "5b5175ee4fd152a933e2bb05ae9c46c2661e9780",
+  "date": "2026-10-21T06:45:50.946Z",
+  "sourceCommit": "6157dfce4294a003373dbceab195edafcb4078e5",
   "cleanup": {
     "removedAssets": 28,
     "savedAssetBytes": 7473392,
@@ -756,16 +756,6 @@
       "role": "body"
     },
     {
-      "file": "flagi/scenic-preview.css",
-      "selector": ".scenic-header .scenic-timer strong",
-      "role": "body"
-    },
-    {
-      "file": "flagi/scenic-preview.css",
-      "selector": ".scenic-timer small",
-      "role": "body"
-    },
-    {
       "file": "flagi/setup-retina.css",
       "selector": "#app[data-mode=\"flags\"][data-view=\"wizard\"]",
       "role": "body"
@@ -833,6 +823,11 @@
     {
       "file": "home-screen.css",
       "selector": ".home-hero-copy",
+      "role": "ui"
+    },
+    {
+      "file": "home-screen.css",
+      "selector": ".home-canvas .home-campaign-cta",
       "role": "ui"
     },
     {
@@ -1157,11 +1152,6 @@
     },
     {
       "file": "shared/adventure.css",
-      "selector": ".campaign-traveller-picker button",
-      "role": "body"
-    },
-    {
-      "file": "shared/adventure.css",
       "selector": ".campaign-itinerary h2",
       "role": "display"
     },
@@ -1177,8 +1167,33 @@
     },
     {
       "file": "shared/adventure.css",
-      "selector": ".home-welcome .home-campaign-cta",
-      "role": "ui"
+      "selector": ".campaign-reward-hint",
+      "role": "body"
+    },
+    {
+      "file": "shared/campaign-stars.css",
+      "selector": ".campaign-step-eyebrow",
+      "role": "body"
+    },
+    {
+      "file": "shared/campaign-stars.css",
+      "selector": ".campaign-screen .campaign-itinerary .campaign-story",
+      "role": "body"
+    },
+    {
+      "file": "shared/campaign-stars.css",
+      "selector": ".campaign-rating-label",
+      "role": "body"
+    },
+    {
+      "file": "shared/campaign-stars.css",
+      "selector": ".campaign-star-message",
+      "role": "display"
+    },
+    {
+      "file": "shared/campaign-stars.css",
+      "selector": ".campaign-world-veil>span",
+      "role": "display"
     },
     {
       "file": "shared/components.css",
@@ -1617,12 +1632,12 @@
       "display"
     ]
   },
-  "cssBytes": 577922,
-  "jsBytes": 1483297,
+  "cssBytes": 589209,
+  "jsBytes": 1566393,
   "largeFiles": [
     {
       "path": "app.js",
-      "bytes": 100721
+      "bytes": 102204
     },
     {
       "path": "shared/round-result.css",
@@ -1630,7 +1645,7 @@
     },
     {
       "path": "flagi/scenic-preview.mjs",
-      "bytes": 41955
+      "bytes": 42855
     },
     {
       "path": "progress-screen.css",
@@ -1646,19 +1661,19 @@
     },
     {
       "path": "shared/view-bindings.mjs",
-      "bytes": 38485
+      "bytes": 38745
     },
     {
       "path": "shared/structure-model.mjs",
-      "bytes": 35767
-    },
-    {
-      "path": "flagi/scenic-preview.css",
-      "bytes": 34686
+      "bytes": 35809
     },
     {
       "path": "shared/sound-library.mjs",
       "bytes": 32848
+    },
+    {
+      "path": "flagi/scenic-preview.css",
+      "bytes": 32285
     },
     {
       "path": "flagi/scenic-ink.mjs",
@@ -1677,16 +1692,16 @@
       "bytes": 25915
     },
     {
+      "path": "matematyka/app.js",
+      "bytes": 25201
+    },
+    {
       "path": "spelling-art.css",
       "bytes": 24424
     },
     {
       "path": "progress-screen.mjs",
       "bytes": 24203
-    },
-    {
-      "path": "matematyka/app.js",
-      "bytes": 24122
     },
     {
       "path": "app.css",
@@ -1697,12 +1712,12 @@
       "bytes": 21408
     },
     {
-      "path": "shared/adventure.css",
-      "bytes": 21235
-    },
-    {
       "path": "angielski/wizard-v2.mjs",
       "bytes": 21183
+    },
+    {
+      "path": "shared/campaign-scene.mjs",
+      "bytes": 21146
     },
     {
       "path": "spelling/word-particles.mjs",
@@ -1713,6 +1728,10 @@
       "bytes": 20539
     },
     {
+      "path": "shared/element-system.mjs",
+      "bytes": 20199
+    },
+    {
       "path": "ortografia/wizard-v2.css",
       "bytes": 20196
     },
@@ -1721,12 +1740,24 @@
       "bytes": 20162
     },
     {
-      "path": "shared/element-system.mjs",
-      "bytes": 20134
+      "path": "shared/adventure-model.mjs",
+      "bytes": 20091
     },
     {
       "path": "flagi/feedback-transition.js",
       "bytes": 20063
+    },
+    {
+      "path": "shared/adventure.css",
+      "bytes": 18982
+    },
+    {
+      "path": "home-screen.css",
+      "bytes": 18424
+    },
+    {
+      "path": "matematyka/round-timer.js",
+      "bytes": 18032
     }
   ],
   "fonts": [

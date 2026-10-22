@@ -62,3 +62,45 @@ Dowód lokalny: `.design-qa/live/live-image-in-deployed-pwa.png`, `.design-qa/li
 ## Wycofanie
 
 Błąd publikacji biblioteki nie zmienia przypisań aplikacji; należy naprawić hosting i ponowić zapis. Już zapisany plik jest wykorzystywany ponownie. Cofnięcie przypisania słowa do poprzedniej ścieżki nie usuwa pliku z biblioteki. Nie usuwać ani nie nadpisywać ścieżek opartych o hash. Przed przełączeniem aliasu zachować identyfikator starego deploymentu `dpl_3mPkuPijAuZfxT2MaQZzgqnh24mo`; ewentualne cofnięcie aliasu wymaga najpierw cofnięcia przypisań nowych obrazów, których stary release nie zawiera.
+
+
+## Lokalna kampania v53 — księga i Iskierka (21.10.2026)
+
+Rewizja lokalnego `design-system/assets.json`: 35. Nowe grafiki z rzeczywistą
+alfą, 512 × 512: `campaign-storybook-v53` (64 308 B) i
+`campaign-iskierka-v53` (62 268 B). Niezmienne metadane są w
+`shared/campaign-book-asset.mjs` i `shared/campaign-narrator-asset.mjs`.
+Zostały sprawdzone przez bibliotekę lokalną, indeks, HTTP i rzeczywiste PWA
+w Chromium/WebKit. Bajty są ignorowane w repozytorium aplikacji, zachowane
+w lokalnym `assets/managed/` oraz `outputs/v53/` katalogu zadania.
+Nie publikowano tych grafik do zewnętrznej biblioteki. Przed przyszłym
+wdrożeniem potrzebują zwykłego uploadu biblioteki i kontroli hashy.
+
+## Lokalna kampania v54 — wybrany przewodnik z księgą i Mira
+
+Rewizja 37: `campaign-iskierka-book-v54`, `campaign-iskier-book-v54`,
+`campaign-mira-v54`. Metadane: `shared/campaign-narrator-asset.mjs`.
+Kompresja WebP z zachowaniem prawdziwej alfy. Wybrana Iskierka to zaakceptowany
+wariant D; Iskier i Mira są nowymi propozycjami w tej samej rodzinie stylu.
+Bajty pozostają lokalne, ignorowane w repozytorium aplikacji.
+[Zakres i weryfikacja v54](design-system/campaign-iskier-ripple-v54.md).
+
+
+## Kampania v54 — biblioteka opowieści i części nagród
+
+Rewizja katalogu **40**. `shared/campaign-cast-assets.mjs` przechowuje metadane
+13 nowych portretów NPC (Mira jest w `campaign-narrator-asset.mjs`), sześciu
+nowych przedmiotów świata, pergaminu i dwóch krojów Charm WOFF2. Łącznie kampania
+ma 14 NPC i siedem różnych przedmiotów; istniejący klucz jest przedmiotem portu.
+Font ma licencję SIL OFL w `assets/fonts/Charm-OFL.txt`.
+
+`shared/reward-parts-assets.mjs`: 12 pojedynczych grafik z alfą, 586 958 B.
+Korpus medalu, wstążka, korpus pucharu i dziewięć ozdób. Renderer
+`shared/reward-art.mjs` nakłada je na wspólne 512 × 512 z podstawą y=460.
+Brąz/srebro/złoto mają identyczną geometrię, bez wycinania atlasu. Starsze galerie
+używają tego samego renderera. Ulepszenie dodaje oddzielną animowalną warstwę.
+
+Oryginały i prompty: katalog zadania `outputs/v54/library`, `outputs/v54/rewards`,
+`npc-prompty.json`, `artifact-prompty.json`, `reward-prompty.json`.
+Weryfikacja lokalna obejmuje indeks → HTTP → PWA. Bajty nie są częścią commitów
+aplikacji; publikacja do zewnętrznego magazynu nie została wykonana.

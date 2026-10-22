@@ -1,3 +1,29 @@
+> Aktualizacja v60, 22.10.2026: **54 widoki**. `home-story` to ekran kampanii
+> dla powracającego gracza; `home` zachowuje grę swobodną. Wspólny przełącznik
+> Jelly i nawigacja pozostają zamontowane podczas zmiany treści.
+> [Ekran kampanii v60](design-system/story-home-v60.md).
+
+> Aktualizacja v59, 22.10.2026: nadal **53 widoki**. Księga ma jeden pionowy
+> wariant z jedną kolumną, dolnym ornamentem nawigacji i pełnostronicowym spisem
+> 15 kroków. To zastępuje rozkładówkę v56. [Oprawa księgi v59](design-system/book-page-v59.md).
+
+> Aktualizacja v56, 21.10.2026: nadal **53 widoki**. Księga paruje odkryte
+> strony w poziomie; każda kartka zachowuje osobne grupy i atomy.
+> [Rozkładówka i hologram](design-system/book-spreads-hologram-v56.md).
+
+> Aktualizacja v54, 21.10.2026: **53 widoki**. `campaign-portal` to oszczędny
+> Portal Światów, z kluczem i pojedynczym wejściem. Kafel zadania, medalion
+> księgi i części klucza mają jawne grupy w kontraktach.
+> [Zakres v54](design-system/campaign-iskier-ripple-v54.md).
+
+> Aktualizacja v53, 21.10.2026: **52 widoki**. `campaign-book` i `campaign-story`
+> używają rzeczywistej księgi oraz dialogu Iskierki z PWA, z jawnymi częściami
+> i akcjami w edytorze. [Zakres i weryfikacja v53](design-system/campaign-river-book-v53.md).
+
+> Aktualizacja v50, 21.10.2026: nadal 50 widoków. Miernik kuźni korzysta z
+> jawnego atomu `meter-power-charge`; inwentarz odświeżony z 100 sprawdzeń.
+> [Żywa mapa i Lab efektów](design-system/campaign-effects-v50.md).
+
 > Aktualizacja v44, 19.10.2026: nadal 50 widoków. Kampania ma interaktywne pola,
 > powtórki, odkrywanie układanki i osobne laboratorium mapy w Studio.
 > Szczegóły i testy: [interaktywna kampania v44](design-system/interactive-campaign-v44.md).
@@ -12,7 +38,9 @@
 > Kuźnia obejmuje 8 mocy, a kolekcje innych trybów pokazują odkryte karty. Szczegóły
 > i dowody: [kampania i nagrody v42](design-system/campaign-rewards-v42.md).
 
-# Studio V2 — 45 aktualnych widoków (stan 17.10.2026)
+# Studio V2 — kontrakty widoków
+
+Poniższy opis 45 widoków jest zapisem stanu 17.10.2026. Bieżąca liczba: 53.
 
 Zakres: `refactor/v2-parity-first`, bez promocji do `main` ani zmian w V1.
 

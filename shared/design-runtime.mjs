@@ -23,7 +23,7 @@ const base = new URL('../', import.meta.url);
 let config,designSignature,pendingOutgoing;
 let inspectorLoader;
 function currentViewId(app){
- if(app.dataset.campaignMode==='math'&&app.dataset.view==='game')return 'campaign-math-'+(app.dataset.state==='feedback-correct'?'correct':app.dataset.state==='feedback-wrong'?'wrong':'initial');if(app.dataset.view==='campaign')return 'campaign';if(app.querySelector('.adventure-reward-dialog[open]'))return 'reward-details';
+ if(app.dataset.campaignMode==='math'&&app.dataset.view==='game')return 'campaign-math-'+(app.dataset.state==='feedback-correct'?'correct':app.dataset.state==='feedback-wrong'?'wrong':'initial');if(app.dataset.view==='campaign')return app.querySelector('.campaign-narrator[open]')?'campaign-story':app.querySelector('.is-at-portal')?'campaign-portal':'campaign';if(app.querySelector('.adventure-reward-dialog[open]'))return 'reward-details';
  const popup=document.querySelector('.result-rule-dialog[open]')?'rule':document.querySelector('.spelling-hint-sheet[open]')?'hint':app.classList.contains('paused')?'pause':'';
  const state=app.dataset.state|| (app.querySelector('.answer.wrong')?'feedback-wrong':app.querySelector('.answer.correct')?'feedback-correct':'');
  const trophyDialog=app.querySelector('.trophy-upgrade-dialog[open]');if(trophyDialog)return trophyDialog.dataset.trophyDialog;
@@ -32,7 +32,7 @@ function currentViewId(app){
 }
 const updateView=(root,settings,view)=>{
  if(!root||!view||currentViewId(root)!==view)return;
- if(view==='home')applyHomeGeometry(root,settings);
+ if(view==='home'||view==='home-story')applyHomeGeometry(root,settings);
  // Stateful setup renderers publish only after completing their mount.
  // Every registered view uses its explicit contract in Studio and the PWA.
  // The persistent audio owner delegates the entire screen to its mode iframe.
@@ -45,7 +45,7 @@ const updateView=(root,settings,view)=>{
   if(declared===viewContract(view).length)return applyCompiledView(root,settings,view);
   throw Error('Incomplete compiled screen: '+view+' ('+declared+'/'+viewContract(view).length+')');
  }
- // Only routes outside the 41-view registry may use the historical adapter.
+ // Only unregistered routes may use the historical adapter.
  // A missing or malformed registered contract always fails above.
  inspectorLoader??=import('./element-system.mjs').then(module=>module.annotateElements);
  void inspectorLoader.then(annotate=>{
@@ -114,7 +114,7 @@ export async function initDesign() {
     for (const node of app.querySelectorAll('.jelly-v4-container,.spelling-segmented,.english-segmented,.reading-segmented,.flag-segmented')) if(!node.classList.contains('ds-jelly'))node.classList.add('ds-jelly');
     if(app.dataset.view==='wizard')normalizeMission(app,app.dataset.mode,assetUrl);
     applyScreenCopy(app);
-    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')&&!window.__MALA_NAUKA_EXTERNAL_TRANSITION__){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background,config:config.exitTransition,speed:motion.speed});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
+    const screen=document.documentElement.dataset.dsView;if(screen&&previousScreen&&screen!==previousScreen&&!(['home','home-story'].includes(screen)&&['home','home-story'].includes(previousScreen))&&!(app.dataset.view==='campaign'&&['campaign','campaign-story','campaign-portal'].includes(previousScreen))&&(app.dataset.view!=='game'||!/-initial$|-correct$|-wrong$/.test(previousScreen))){screenAnimation?.cancel();const motion=transitionMotion(config.motion||DEFAULT_MOTION,previousScreen,screen);if(!document.documentElement.classList.contains('result-transition')&&!window.__MALA_NAUKA_EXTERNAL_TRANSITION__){if(motion.style==='blob'&&pendingOutgoing?.from===previousScreen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){screenAnimation=playScreenBlob({incoming:app,outgoing:pendingOutgoing.node,background:pendingOutgoing.background,config:config.exitTransition,speed:motion.speed});}else screenAnimation=animateScreen(app,motion);}pendingOutgoing=null;}if(screen)previousScreen=screen;
     app.mnEntrance=screenAnimation?.finished||Promise.resolve();
     updateView(app,config,document.documentElement.dataset.dsView);applyResponsiveGeometry(config,app);
   };

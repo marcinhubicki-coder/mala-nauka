@@ -27,7 +27,7 @@ const essential=new Set([
  'assets/czytanie/wizard-mission-retina-v1.webp'
 ]);
 export function selectOfflineBootstrapAssets(assets){
- return assets.filter(item=>essential.has(item.path)||/^assets\/fonts\/[^/]+\.woff2?$/.test(item.path)||/^assets\/icons\/.+\.(?:png|webp|svg)$/.test(item.path));
+ return assets.filter(item=>essential.has(item.path)||/^assets\/(?:fonts\/[^/]+|managed\/[a-f0-9]{64})\.woff2?$/.test(item.path)||/^assets\/icons\/.+\.(?:png|webp|svg)$/.test(item.path));
 }
 export function offlineAssetBudget(assets){
  const bootstrap=selectOfflineBootstrapAssets(assets);

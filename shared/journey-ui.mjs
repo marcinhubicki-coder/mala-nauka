@@ -1,18 +1,17 @@
 import {assetUrl} from './asset-loader.mjs';
-import {POWERS,GAME_MODES,cleanJourney,sparkBalance,powerRecipe,trophySpriteIndex,progressionRules} from './progression.mjs';
+import {POWERS,GAME_MODES,cleanJourney,sparkBalance,powerRecipe,progressionRules} from './progression.mjs';
 import {sceneFor,sceneUrl} from '../spelling/scenes.mjs';
 import {collectibleRules} from './rule-progress.mjs';
-import {REWARD_ATLASES} from './reward-assets.mjs';
+import {rewardArt} from './reward-art.mjs';
 import {GALLERY_ART} from './gallery-assets.mjs';
 import {awardCatalog,awardProgress,trophyLevel} from './award-catalog.mjs';
 export {trophyLevel} from './award-catalog.mjs';
 export const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const FAMILY_NAMES=['Puchar odkrywcy','Gwiezdny puchar','Kwiat wiedzy','Tarcza przygód','Puchar ciekawości'];
 export function rewardSprite(family=0,path='',{medal=false,design=0,tier=0,large=false}={}){
- const atlas=medal?REWARD_ATLASES.medals:REWARD_ATLASES.trophies[family],index=medal?tier*5+design:trophySpriteIndex(path);
- if(!atlas)return '';
- const x=index%5,y=Math.floor(index/5);
- return `<span class="reward-sprite ${large?'is-large':''}" data-ds-recipe="image-reward-sprite" role="img" aria-label="${medal?['Brązowy','Srebrny','Złoty'][tier]+' medal':FAMILY_NAMES[family]+' · '+['metal','brąz','srebro','złoto'][path.length]}" style="--reward-sheet:url('${esc(assetUrl(atlas.path))}');--reward-x:${x*25}%;--reward-y:${y*50}%"></span>`;
+ const label=medal?['Brązowy','Srebrny','Złoty'][tier]+' medal':FAMILY_NAMES[family]+' · etap '+(path.length+1);
+ const choice=[...path].reduce((n,c)=>n*2+(c==='b'?1:0),0);
+ return `<span class="reward-sprite has-modular-art ${large?'is-large':''}" data-ds-recipe="image-reward-sprite" role="img" aria-label="${esc(label)}">${rewardArt({level:medal?tier+1:path.length+1,medal,choice,label,className:'modular-award'})}</span>`;
 }
 export function galleryImage(name,className='',alt=''){
  const art=GALLERY_ART[name];return `<img class="${className}" src="${esc(assetUrl(art.path))}" alt="${esc(alt)}" width="${art.width}" height="${art.height}" decoding="async">`;
@@ -45,7 +44,7 @@ export function openRuleCard(root,words,journey,id,opener){
  dialog.innerHTML=`<button type="button" class="rule-dialog-close" data-action="close-rule-card" aria-label="Zamknij regułę">×</button><div class="rule-hero"><img src="${esc(sceneUrl(scene))}" alt="" width="600" height="270"><span aria-hidden="true">✦</span></div><div class="rule-dialog-copy"><span class="journey-eyebrow">${esc(rule.category)} · ${journey?.rules?.[id]?.collected||rule.collected?'Zebrana reguła':'Poznaj zasadę'}</span><h2 id="learning-rule-title">${esc(rule.title)}</h2><p>${esc(rule.explanation)}</p><h3>Przykłady w Twojej przygodzie</h3><div class="rule-examples-grid">${rule.words.filter(w=>journey?.cards?.[w.word]).map(w=>`<span data-word="${esc(w.word)}" class="${journey?.cards?.[w.word]?'':'is-undiscovered'}">${esc(w.word)}</span>`).join('')}</div><p class="journey-note">Odkryte: ${rule.discovered} / ${rule.total}. ${rule.discovered===rule.total?'Komplet przykładów!':'Każdy przykład odkryjesz podczas gry.'}</p></div>`;
  root.append(dialog);const close=()=>dialog.close();dialog.querySelector('button').onclick=close;dialog.addEventListener('click',e=>{if(e.target===dialog)close();});dialog.addEventListener('close',()=>{dialog.remove();opener?.focus({preventScroll:true});},{once:true});dialog.showModal();
 }
-export function roundRewardsMarkup(rewards){
- if(!rewards)return '';
- return `<section class="round-rewards" data-round-rewards><span class="journey-eyebrow">Twoja przygoda rośnie</span><h2>✦ ${Math.round(rewards.sparks||0)} iskier</h2>${rewards.discovered?.length?`<p><strong>Nowe karty: ${rewards.discovered.length}</strong> w Twojej kolekcji</p><div class="reward-word-pills">${rewards.discovered.map(w=>`<span data-word="${esc(w)}">${esc(w)}</span>`).join('')}</div>`:'<p>Każda próba pomaga utrwalać wiedzę.</p>'}${rewards.mastered?.length?`<p class="reward-mastery">Nowe „Umiem”: <strong>${rewards.mastered.map(esc).join(', ')}</strong></p>`:''}${rewards.achievements?.length?`<p>Nowe osiągnięcia: <strong>${rewards.achievements.length}</strong> ✦</p>`:''}${rewards.rules?.length?`<div class="round-rule-progress">${rewards.rules.map(r=>`<p>${esc(r.title)} <strong>${r.collected?'Zebrana reguła ✓':r.discovered+' / '+r.threshold+' przykładów'}</strong></p>`).join('')}</div>`:''}${rewards.stars?.length?`<p>${rewards.stars.map(s=>`${esc(s.word)} · ${['','brązowa','srebrna','złota'][s.level]} gwiazdka ★`).join('<br>')}</p>`:''}</section>`;
+export function roundRewardsMarkup(rewards,{campaign=false}={}){
+ if(!rewards||campaign)return '';
+ return `<section class="round-rewards" data-round-rewards><span class="journey-eyebrow">Twoje odkrycia</span>${rewards.discovered?.length?`<p><strong>Nowe karty: ${rewards.discovered.length}</strong> w Twojej kolekcji</p><div class="reward-word-pills">${rewards.discovered.map(w=>`<span data-word="${esc(w)}">${esc(w)}</span>`).join('')}</div>`:'<p>Każda próba pomaga utrwalać wiedzę.</p>'}${rewards.mastered?.length?`<p class="reward-mastery">Nowe „Umiem”: <strong>${rewards.mastered.map(esc).join(', ')}</strong></p>`:''}${rewards.achievements?.length?`<p>Nowe osiągnięcia: <strong>${rewards.achievements.length}</strong> ✦</p>`:''}${rewards.rules?.length?`<div class="round-rule-progress">${rewards.rules.map(r=>`<p>${esc(r.title)} <strong>${r.collected?'Zebrana reguła ✓':r.discovered+' / '+r.threshold+' przykładów'}</strong></p>`).join('')}</div>`:''}${rewards.stars?.length?`<p>${rewards.stars.map(s=>`${esc(s.word)} · ${['','brązowa','srebrna','złota'][s.level]} gwiazdka ★`).join('<br>')}</p>`:''}</section>`;
 }

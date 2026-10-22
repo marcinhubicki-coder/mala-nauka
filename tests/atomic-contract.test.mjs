@@ -18,8 +18,8 @@ const registry=JSON.parse(await readFile(new URL('../design-system/registry.json
 const config=resolveBehaviorConfig(JSON.parse(await readFile(new URL('../design-system/config.json',import.meta.url))));
 const modes=['spelling','math','english','flags','reading'];
 
-test('Home has six ordered template slots and actual composed families, without generated poster groups',()=>{
- assert.deepEqual(PAGE_TEMPLATES.home.slots.map(s=>s.recipe),['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes']);
+test('Home has seven ordered template slots and actual composed families, without generated poster groups',()=>{
+ assert.deepEqual(PAGE_TEMPLATES.home.slots.map(s=>s.recipe),['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes','control-jelly']);
  const markup=renderHomeScreen({nickname:'Odkrywco',today:0,lastScore:'0 pkt',lastLabel:'Zagraj pierwszą rundę',modeIds:modes,modes:Object.fromEntries(modes.map(mode=>[mode,{name:mode}]))});
  assert.equal([...markup.matchAll(/data-ds-recipe="background-home"/g)].length,1);
  assert.equal([...markup.matchAll(/data-ds-recipe="button-home-card"/g)].length,5);

@@ -2,25 +2,23 @@
 // View components and Design Studio use this same data, never visual DOM scans.
 export const HOME_WIDTH=853,HOME_TOP=100,HOME_CONTENT_HEIGHT=1670;
 export const HOME_SETTINGS=[709,122,103,103];
-export const HOME_STATS=[10,940,833,210];
-export const HOME_WELCOME_BOUNDS=[10,220,833,930];
-export const HOME_MODES_BOUNDS=[26,1240,801,521];
+export const HOME_STATS=[22,905,809,150];
+export const HOME_WELCOME_BOUNDS=[22,292,809,763];
+export const HOME_MODES_BOUNDS=[22,1140,809,450];
 export const HOME_TILES=Object.freeze({
- spelling:[26,1240,269,260],
- math:[295,1240,266,260],
- english:[560,1240,267,260],
- flags:[26,1499,398,262],
- reading:[428,1499,399,262]
+ spelling:[22,1140,254,215],math:[299.5,1140,254,215],english:[577,1140,254,215],
+ flags:[22,1375,393,215],reading:[438,1375,393,215]
 });
 const artboard=[0,HOME_TOP,HOME_WIDTH,HOME_CONTENT_HEIGHT];
 export const HOME_RECTS=Object.freeze({
  'home-logo':{rect:[26,102,180,140],basis:artboard},
  'home-settings':{rect:HOME_SETTINGS,basis:artboard},
+ // Retired CTA geometry stays readable in older local Studio drafts. Jelly owns navigation.
+ 'home-campaign':{rect:[48,695,345,120],basis:HOME_WELCOME_BOUNDS},
  'home-welcome':{rect:HOME_WELCOME_BOUNDS,basis:artboard},
- 'home-hero':{rect:[22,202,810,838],basis:HOME_WELCOME_BOUNDS},
- 'home-campaign':{rect:[62,650,340,104],basis:HOME_WELCOME_BOUNDS},
+ 'home-hero':{rect:[22,292,809,705],basis:HOME_WELCOME_BOUNDS},
  'home-stats':{rect:HOME_STATS,basis:HOME_WELCOME_BOUNDS},
- 'home-adventures':{rect:[26,1162,801,68],basis:artboard},
+ 'home-adventures':{rect:[22,1074,809,54],basis:artboard},
  'home-modes':{rect:HOME_MODES_BOUNDS,basis:artboard},
  ...Object.fromEntries(Object.entries(HOME_TILES).map(([mode,rect])=>['home-mode-'+mode,{rect,basis:HOME_MODES_BOUNDS}]))
 });

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PROGRESSION_RULES as rules,cleanJourney,discoverWord,answerReward,reservePower,forgePower,chooseTrophy,starLevel,sparkBalance,balanceBenchmark} from '../shared/progression.mjs';
+import {PROGRESSION_RULES as rules,cleanJourney,discoverWord,answerReward,reservePower,reserveChosenPower,forgePower,chooseTrophy,starLevel,sparkBalance,balanceBenchmark} from '../shared/progression.mjs';
 import {addLearningSession,cleanLearning,targetId} from '../shared/mastery.mjs';
 import {cleanProgress,recordResult,localDay} from '../progress.mjs';
 const attempt=(correct=true,extra={})=>({kind:'spelling',word:'róża',masked:'r_ża',answer:'ó',category:'u/ó',correct,at:'2026-10-01T12:00:00Z',...extra});
@@ -53,4 +53,10 @@ test('today includes interrupted answers and settling their round never counts t
  p.journey=answerReward(p.journey,a,{id:'interrupted:1'}).journey;
  const reloaded=cleanProgress(p);assert.equal(reloaded.today.count,5);
  recordResult(reloaded,{id:'interrupted',mode:'spelling',date:at,duration:60,correct:1,wrong:0,attempts:[a]});assert.equal(reloaded.today.count,5);
+});
+
+
+test('manual power choice reserves one owned charged power, consumes one answer and cannot spend twice',()=>{
+ let j=cleanJourney({powers:['spark','shield'],meter:100,powerLevels:{spark:2,shield:1}});const chosen=reserveChosenPower(j,'spark');assert.equal(j.meter,100);assert.equal(chosen.meter,0);assert.equal(chosen.pending,'spark');assert.throws(()=>reserveChosenPower(chosen,'shield'));assert.throws(()=>reserveChosenPower(j,'comet'));
+ const result=answerReward(chosen,attempt(),{id:'manual:1'});assert.equal(result.power,'spark');assert.equal(result.journey.pending,null);assert(result.sparks>2.2);const next=answerReward(result.journey,attempt(),{id:'manual:2'});assert.equal(next.power,null);assert.throws(()=>reserveChosenPower(next.journey,'shield'));
 });

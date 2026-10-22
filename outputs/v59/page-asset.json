@@ -1,0 +1,13 @@
+{
+  "id": "campaign-right-page-v59",
+  "path": "assets/managed/a615382cc07f36b33e5983de77d8ebbe43b671327e2ed7814e82851e160bb018.webp",
+  "sha": "a615382cc07f36b33e5983de77d8ebbe43b671327e2ed7814e82851e160bb018",
+  "size": 540106,
+  "width": 1024,
+  "height": 1536,
+  "type": "webp",
+  "group": "adventure",
+  "references": [
+    "shared/campaign-book.mjs"
+  ]
+}

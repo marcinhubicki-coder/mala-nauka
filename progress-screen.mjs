@@ -33,7 +33,7 @@ export function collectionWordMarkup(word,state='mastered',journey={},learningIt
 export function progressCollectionMarkup(spelling=true,forge=false){return '<button type="button" class="progress-illustrated collection '+(forge?'is-forge':'')+'" data-ds-recipe="container-progress-collection" data-ds-kind="button" data-ds-key="progress-collection" data-progress="'+(forge?'forge':'collection')+'"><span class="progress-collection-art" data-ds-recipe="background-progress-collection" data-ds-kind="background" data-ds-key="progress-collection-art" style="'+(forge?'background-image:url('+esc(assetUrl(GALLERY_ART.forge.path))+')':'')+'" aria-hidden="true"></span><strong class="progress-collection-title" data-ds-recipe="text-progress-collection" data-ds-kind="text" data-ds-key="progress-collection-title">'+(forge?'Kuźnia<br>mocy':'Moja kolekcja<br>'+(spelling?'słów':'przygód'))+'</strong><span class="progress-link-arrow" data-ds-recipe="icon-home-chevron" data-ds-kind="icon" data-ds-atomic="true" aria-hidden="true">'+chevron+'</span></button>';}
 export function destroyProgressScreen(root){controllers.get(root)?.();controllers.delete(root);}
 
-export function renderProgressScreen(root,{progress,words,backAction='home',initialMode='spelling',initialScreen='dashboard',onPractice,onSave,onBack,onNavigate}) {
+export function renderProgressScreen(root,{progress,words,backAction='home',initialMode='spelling',initialScreen='dashboard',entryBackHome=false,onPractice,onSave,onBack,onNavigate}) {
   destroyProgressScreen(root);
   let mode=initialMode in NAMES?initialMode:'spelling',screen=initialScreen,filter='all',achievementPage=0,rulesView='rules',ruleCategory=CATEGORIES[0];
   let awardKind='trophies',previewKind='medals',selectedTrophy='mastery-5',busy=false,upgradeDialog=null;
@@ -53,18 +53,25 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     return {category,total:all.length,mastered,earned,review};
   });
   function tabs(){return '<nav class="progress-modes" aria-label="Postępy według przygody">'+Object.keys(NAMES).map(id=>'<button type="button" data-progress="mode" data-mode="'+id+'" class="progress-mode '+(mode===id?'is-active':'')+'" aria-pressed="'+(mode===id)+'" aria-label="'+NAMES[id]+'">'+glyph(id)+(mode===id?'<span>'+NAMES[id]+'</span>':'')+'</button>').join('')+'</nav>';}
-  function header(title,sub=false){return pageHeading(title,{className:'progress-header',backClass:'progress-back',...(sub?{progress:screen==='forge'&&initialScreen==='forge'&&backAction==='return-results'?'return-results':'dashboard'}:{action:backAction})});}
+  function header(title,sub=false){return pageHeading(title,{className:'progress-header',backClass:'progress-back',...(sub?{progress:entryBackHome&&screen===initialScreen?'home':screen==='forge'&&initialScreen==='forge'&&backAction==='return-results'?'return-results':'dashboard'}:{action:backAction})});}
+  // Keep an open reward dialog connected and modal while its underlying card updates.
+  // Moving an open <dialog> to another parent removes it from the browser's top layer.
+  function paint(markup){
+    const template=document.createElement('template');template.innerHTML=markup;
+    const canvas=root.querySelector(':scope > .progress-canvas');
+    if(canvas)canvas.replaceWith(template.content);else root.replaceChildren(template.content);
+  }
   function render(){
     root.dataset.view='history';root.dataset.mode=mode;root.dataset.historyState=['collection','rules','categories'].includes(screen)&&mode!=='spelling'?'sessions':screen;
     if(screen!=='dashboard'){renderSubpage();return;}
     const spelling=mode==='spelling';
     const metrics=modeMetrics(progress,mode,words),sums=spelling?knowledge:{mastered:metrics.mastered,learning:Math.max(0,metrics.discovered-metrics.mastered),review:0};
     const heading=spelling?'Coraz pewniej<span class="progress-hero-line">z <span class="progress-hero-emphasis">ortografią!</span></span>':'Twoja przygoda<span class="progress-hero-line">z <span class="progress-hero-emphasis">'+INSTRUMENTAL[mode]+'!</span></span>';
-    root.innerHTML='<section class="progress-canvas"><div class="progress-hero">'+header('Moje wyniki')+tabs()+'<div class="progress-hero-copy"><h2>'+heading+'</h2><p>Zobacz, co już umiesz<br>i do czego warto<br>jeszcze wrócić.</p></div></div>'+
+    paint('<section class="progress-canvas"><div class="progress-hero">'+header('Moje wyniki')+tabs()+'<div class="progress-hero-copy"><h2>'+heading+'</h2><p>Zobacz, co już umiesz<br>i do czego warto<br>jeszcze wrócić.</p></div></div>'+
       '<div class="progress-content"><div class="progress-stats" aria-label="Twoja nauka">'+[['mastered','Umiem',check],['learning','Ćwiczę',gear],['review','Powtórzę',repeat]].map(([key,label,icon])=>'<button type="button" class="progress-stat '+key+'" data-progress="collection" data-filter="'+key+'"><span class="progress-stat-icon" aria-hidden="true">'+icon+'</span><span><b>'+sums[key]+'</b><small>'+label+'</small></span>'+sprig+'</button>').join('')+'</div>'+
       '<div class="progress-links">'+progressCollectionMarkup(spelling,true)+'<button type="button" class="progress-illustrated categories" data-progress="categories"><strong>Kategorie<br>do poćwiczenia</strong><span class="progress-link-arrow" aria-hidden="true">'+chevron+'</span></button></div>'+
        '<section class="progress-achievements"><header><div><h2>Twoje osiągnięcia</h2><p>Odkryj, co czeka tuż za rogiem!</p></div><button type="button" data-progress="achievements">Zobacz więcej '+chevron+'</button></header>'+rewardCardsMarkup(progress,mode,words,'medal')+'</section>'+
-      '<button type="button" class="progress-rules-link" data-progress="rules"><span class="progress-rule-art" aria-hidden="true"></span><span class="progress-rule-copy"><strong>Wyjaśnienia i zasady</strong><small>Zobacz proste wyjaśnienia<br>zasad ortografii i przykłady.</small></span><i aria-hidden="true">'+chevron+'</i></button></div></section>';
+      '<button type="button" class="progress-rules-link" data-progress="rules"><span class="progress-rule-art" aria-hidden="true"></span><span class="progress-rule-copy"><strong>Wyjaśnienia i zasady</strong><small>Zobacz proste wyjaśnienia<br>zasad ortografii i przykłady.</small></span><i aria-hidden="true">'+chevron+'</i></button></div></section>');
   }
   function rulesContentMarkup(){
     const selected=words.filter(word=>word.category===ruleCategory&&progress.journey.cards[word.word]);
@@ -107,7 +114,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     }else if(screen==='categories'){
       content='<p class="progress-subtitle">Małe kroki, coraz pewniejsza pisownia.</p><div class="progress-category-list">'+categoryGroups.map(g=>'<button type="button" data-progress="practice" data-category="'+g.category+'"><b class="category-pair"><span>'+g.category.split('/').map(esc).join('</span><i aria-hidden="true">/</i><span>')+'</span></b><span>'+g.mastered+' / '+g.total+' opanowane<small>'+(g.review?g.review+' słów do powtórki':'Poznaj lub utrwal tę zasadę')+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div>';
     }
-    root.innerHTML='<section class="progress-canvas progress-subpage" data-ds-recipe="'+(screen==='collection'?'family-collection':'family-progress-'+screen)+'" data-ds-kind="container">'+header(title,true)+content+'</section>';
+    paint('<section class="progress-canvas progress-subpage" data-ds-recipe="'+(screen==='collection'?'family-collection':'family-progress-'+screen)+'" data-ds-kind="container">'+header(title,true)+content+'</section>');
     const rail=root.querySelector('.trophy-selector'),selected=rail?.querySelector('[aria-pressed=true]');
     if(selected)rail.scrollLeft=Math.max(0,selected.getBoundingClientRect().left-rail.getBoundingClientRect().left-(rail.clientWidth-selected.offsetWidth)/2);
     if(screen==='rules'&&mode==='spelling')mountRulesView();
@@ -153,6 +160,7 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
     if(action==='award-tab'){if(button.dataset.preview){previewKind=button.dataset.kind;achievementPage=0;}else awardKind=button.dataset.kind;render();return;}
     if(action==='trophy-select'){selectedTrophy=button.dataset.award;render();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)root.querySelector('.trophy-on-podium')?.animate([{opacity:0,transform:'scale(.9)'},{opacity:1,transform:'scale(1)'}],{duration:280,easing:'ease-out'});return;}
     if(action==='award-open'){awardKind=button.dataset.kind;selectedTrophy=button.dataset.award;screen='achievements';render();root.scrollTop=0;return;}
+    if(action==='home'){onNavigate?.('home');return;}
     if(action==='return-results'){onBack?.();return;}
     if(action==='forge'&&onNavigate){const target=resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'progress','forge',mode);if(target!=='forge'){onNavigate(target);return;}}
     if(action==='open-rule-card'){openRuleCard(root,words,progress.journey,button.dataset.rule,button);return;}
@@ -179,6 +187,6 @@ export function renderProgressScreen(root,{progress,words,backAction='home',init
   },{signal:abort.signal});
   root.addEventListener('change',event=>{if(event.target.name==='progressRulesView')setRulesView(event.target.value==='rules'?0:1);},{signal:abort.signal});
   window.addEventListener('resize',()=>{const container=root.querySelector('.rules-views');if(container&&!container.classList.contains('jelly-v4-moving'))rulesJelly.update(container,rulesView==='rules'?0:1,{animate:false});},{signal:abort.signal});
-  const unbindAdventure=bindAdventure(root,{getProgress:()=>progress,words,onSave:async journey=>{await onSave?.(journey);progress.journey=journey;},onChanged:()=>{const dialog=root.querySelector('.adventure-reward-dialog');if(dialog)document.body.append(dialog);render();}});
-  controllers.set(root,()=>{unbindAdventure();document.querySelectorAll('.adventure-reward-dialog').forEach(d=>d.remove());abort.abort();upgradeDialog?.remove();root.getAnimations({subtree:true}).forEach(a=>a.cancel());});render();
+  const unbindAdventure=bindAdventure(root,{getProgress:()=>progress,words,onSave:async journey=>{await onSave?.(journey);progress.journey=journey;},onChanged:render});
+  controllers.set(root,()=>{unbindAdventure();root.querySelectorAll('.adventure-reward-dialog').forEach(d=>d.remove());abort.abort();upgradeDialog?.remove();root.getAnimations({subtree:true}).forEach(a=>a.cancel());});render();
 }

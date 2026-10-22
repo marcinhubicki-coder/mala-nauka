@@ -12,6 +12,9 @@ export function applyResponsiveGeometry(config,root=document.getElementById('app
  const id=node.dataset.dsElement||node.dataset.dsKey,recipe=node.dataset.dsRecipe,r=config.responsiveGeometry?.views?.[view]?.[id]||config.responsiveGeometry?.global?.[recipe],old=originals.get(node);
  if(!r){if(old){restore(node,old);originals.delete(node);}continue;}
  if(!old){const values={};for(const k of ['translate','width','height','aspect-ratio','min-height'])values[k]=node.style.getPropertyValue(k)?{value:node.style.getPropertyValue(k),priority:node.style.getPropertyPriority(k)}:null;originals.set(node,values);}
+ // Rebuild the whole constraint set: a position-only edit must not retain a
+ // width or aspect ratio from the previous resize operation.
+ else restore(node,old);
  const parent=node.parentElement;if(!parent)continue;if(!observed.has(parent)){observed.add(parent);observer.observe(parent);}
  node.style.setProperty('translate',`${r.x*parent.clientWidth}px ${r.y*parent.clientHeight}px`,'important');
  if(r.width!==undefined){node.style.setProperty('width',r.width*100+'%','important');node.style.setProperty('height','auto','important');if(r.aspect!==undefined){node.style.setProperty('aspect-ratio',String(r.aspect));node.style.setProperty('min-height','min-content');}}

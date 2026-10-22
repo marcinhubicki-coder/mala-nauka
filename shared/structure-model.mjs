@@ -1,3 +1,4 @@
+import {STORY_HOME_PARTS} from './story-home-contract.mjs';
 import {ADVENTURE_PARTS} from './adventure-contract.mjs';
 import {SCENIC_PARTS} from './scenic-contract.mjs';
 // Shared, code-backed vocabulary for the library, view map and element inspector.
@@ -15,6 +16,7 @@ export const ATOMS={
 const atom=(id,name,kind,selector,extra={})=>({id,name,kind,selector,level:'atom',children:[],...extra});
 const group=(id,name,selector,children,extra={})=>({id,name,kind:'container',selector,children,level:'group',...extra});
 export const PARTS=[
+ ...STORY_HOME_PARTS,
  ...ADVENTURE_PARTS,
  ...SCENIC_PARTS,
  atom('container-card','Kafel / podkład','container','.setup-card,.settings-card,.card',{block:'card'}),
@@ -201,11 +203,11 @@ PARTS.push(
 PARTS.push(
  atom('image-reward-sprite','Puchar lub medal z atlasu','image','.reward-sprite',{states:['default','growing','earned']}),
  atom('icon-power','Symbol mocy','icon','.power-icon'),
- atom('meter-power-charge','Miernik naładowania mocy','meter','.power-charge progress'),
+ atom('meter-power-charge','Miernik naładowania mocy','meter','.power-charge progress,.reward-power-charge'),
  atom('text-power-title','Nazwa mocy','text','.power-card h3'),atom('text-power-copy','Opis mocy','text','.power-card p'),
  atom('button-forge','Wykuj moc','button','[data-progress="forge-power"]',{inherits:'button-main',states:['default','disabled']}),
  atom('button-trophy-choice','Trwały wybór pucharu','button','[data-progress="trophy-base"],[data-progress="trophy-choice"]',{inherits:'button-main'}),
- group('container-power-card','Karta mocy','.power-card',['icon-power','text-power-title','text-power-copy','button-forge'],{inherits:'container-card'}),
+ group('container-power-card','Karta mocy','.power-card',['icon-power','text-power-title','text-power-copy','meter-power-charge','button-forge'],{inherits:'container-card'}),
  group('group-powers','Karty mocy','.power-grid',['container-power-card']),
  group('group-power-meter','Energia mocy','.power-charge',['meter-power-charge']),
  group('family-forge','Kuźnia mocy','.journey-forge',['group-power-meter','group-powers'],{level:'family'}),
@@ -246,7 +248,9 @@ export const PART_BY_ID=Object.fromEntries(PARTS.map(p=>[p.id,p]));
 export function recipeLineage(id){const chain=[],seen=new Set();while(id&&!seen.has(id)){seen.add(id);chain.unshift(id);id=PART_BY_ID[id]?.inherits;}return chain;}
 export const LEVEL_NAMES={atom:'Atom',group:'Grupa · molekuła',family:'Rodzina · organizm',template:'Szablon',page:'Widok · strona'};
 const types={login:['image-player-brand-art','image-player-empty-art','container-player-title','container-player-grid','button-main'],create:['button-back','container-player-form-card'],pin:['button-back','container-pin-card'],profile:['container-pin-profile','container-avatar-picker','control-pin','button-main'],home:['background-home','image-home-logo-art','button-home-settings','family-home-welcome','container-home-adventures','family-home-modes'],settings:['button-back','container-mission','container-card','container-field-title','control-jelly','button-game-start'],game:['background-home-art-backdrop','image-mn-soap-picture','button-answer','container-round-progress'],results:['background-home-art-backdrop','container-result-header','container-result-summary','container-result-stat','container-result-details','container-result-continue-rail','button-main','button-back','result-points-bubble'],collection:['button-back','family-collection'],progress:['button-back','container-progress-collection','container-card','container-round-progress']};
-export function viewType(view){if(view?.id==='collection'||view?.state==='collection')return 'collection';const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
+types.home.push('control-jelly');
+types['home-story']=['background-home','image-home-logo-art','button-home-settings','story-home-stage','control-jelly'];
+export function viewType(view){if(view?.id==='home-story'||view?.screen==='home'&&view?.state==='story')return 'home-story';if(view?.id==='collection'||view?.state==='collection')return 'collection';const s=view?.screen||view?.id||'';return s==='players'?'login':s==='player-create'?'create':s==='player-pin'?'pin':s==='home'?'home':s==='settings'?'profile':s==='wizard'||view?.id?.endsWith('-settings')?'settings':s==='results'?'results':s==='game'?'game':'progress';}
 export function partLevel(item,items=[]){return item.level||PART_BY_ID[item.recipe]?.level||(item.kind==='button'&&items.filter(n=>n.parent===item.id).length>1?'group':null)||(['button','key','input','toggle','text','icon','image','background','timer','meter'].includes(item.kind)?'atom':items.some(n=>n.parent===item.id)?'group':'atom');}
 export function viewParts(view,inventory){
  const items=inventory?.items||[];
@@ -273,10 +277,10 @@ export function partVariants(part){
  return {axis:'default',label:'Wariant',choices:{default:'Domyślny'},defaultMode:'default'};
 }
 export function partStates(part){return part?.states||({jelly:['default','selected','dragging','disabled'],toggle:['default','selected'],button:['default','pressed','disabled'],answer:['default','correct','wrong','disabled'],slider:['default','dragging','spring-back','complete'],progress:['default','complete']})[part?.block]||['default'];}
-export const PAGE_TEMPLATES=Object.fromEntries(Object.entries(types).map(([id,children])=>[id,{id:'template:'+id,name:({home:'Ekran startowy',login:'Wybór gracza',create:'Tworzenie gracza',pin:'PIN',profile:'Ustawienia profilu',settings:'Ustawienia przygody',game:'Gra',results:'Wynik rundy',progress:'Moje wyniki',collection:'Kolekcja słów'})[id],level:'template',slots:children.map((recipe,index)=>({id:recipe,recipe,order:index,optional:id!=='home'})),children}]));
+export const PAGE_TEMPLATES=Object.fromEntries(Object.entries(types).map(([id,children])=>[id,{id:'template:'+id,name:({'home-story':'Start kampanii',home:'Ekran startowy',login:'Wybór gracza',create:'Tworzenie gracza',pin:'PIN',profile:'Ustawienia profilu',settings:'Ustawienia przygody',game:'Gra',results:'Wynik rundy',progress:'Moje wyniki',collection:'Kolekcja słów'})[id],level:'template',slots:children.map((recipe,index)=>({id:recipe,recipe,order:index,optional:id!=='home'})),children}]));
 export function templateForView(view){return PAGE_TEMPLATES[viewType(view)];}
 export function templateCatalog(registry){return Object.values(PAGE_TEMPLATES).map(t=>({...t,uses:registry.views.filter(v=>templateForView(v).id===t.id).map(v=>({view:v.id})),view:registry.views.find(v=>templateForView(v).id===t.id)?.id}));}
-export function composeTemplate(id,slots){const template=PAGE_TEMPLATES[id];if(!template)throw Error('Nieznany szablon: '+id);return template.slots.map(s=>{if(!s.optional&&!slots[s.id])throw Error('Brak slotu: '+s.id);return slots[s.id]||'';}).join('');}
+export function composeTemplate(id,slots,{exclude=[]}={}){const template=PAGE_TEMPLATES[id];if(!template)throw Error('Nieznany szablon: '+id);return template.slots.filter(s=>!exclude.includes(s.id)).map(s=>{if(!s.optional&&!slots[s.id])throw Error('Brak slotu: '+s.id);return slots[s.id]||'';}).join('');}
 
 // Content-dependent children are alternatives, not extra invisible layers.
 export function partChildren(part,mode='default'){

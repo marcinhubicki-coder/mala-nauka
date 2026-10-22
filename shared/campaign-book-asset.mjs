@@ -1,0 +1,4 @@
+// Immutable local-library metadata. Binary publication remains separate.
+export const CAMPAIGN_BOOK_ART={"id":"campaign-storybook-v53","path":"assets/managed/b3cad115b1099caaf893b56286f208f7ce4c82043ef3380e4131aeb510097484.webp","sha":"b3cad115b1099caaf893b56286f208f7ce4c82043ef3380e4131aeb510097484","size":64308,"width":512,"height":512,"type":"webp","group":"adventure","references":["shared/campaign-book.mjs","shared/campaign-scene.mjs"]};
+
+export const CAMPAIGN_BOOK_PAGE_ART={"id":"campaign-right-page-v59","path":"assets/managed/a615382cc07f36b33e5983de77d8ebbe43b671327e2ed7814e82851e160bb018.webp","sha":"a615382cc07f36b33e5983de77d8ebbe43b671327e2ed7814e82851e160bb018","size":540106,"width":1024,"height":1536,"type":"webp","group":"adventure","references":["shared/campaign-book.mjs"]};

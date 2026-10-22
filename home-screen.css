@@ -263,8 +263,12 @@ body:has(#app[data-view="home"]) {
  animation:home-campaign-spark 3.8s ease-in-out var(--spark-delay) infinite;
 }
 .home-campaign-sparks .is-star {background:#fffce6;clip-path:polygon(50% 0,64% 36%,100% 50%,64% 64%,50% 100%,36% 64%,0 50%,36% 36%);}
-@keyframes home-campaign-breathe {0%,100%{transform:translateY(0) scale(.99)}50%{transform:translateY(-1px) scale(1.018,1.035)}}
+@keyframes home-campaign-breathe {0%,100%{transform:translateY(0) scale(.985,1.015) rotate(-.35deg)}33%{transform:translateY(-1px) scale(1.012,.99) rotate(.3deg)}66%{transform:translateY(-1px) scale(1.015,1.025) rotate(-.15deg)}}
 @keyframes home-campaign-rim {0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.01,1.025)}}
 @keyframes home-campaign-light {0%,20%{transform:translateX(-50%);opacity:0}35%{opacity:.75}65%{opacity:.6}80%,100%{transform:translateX(50%);opacity:0}}
 @keyframes home-campaign-spark {0%,100%{opacity:.12;transform:translateY(2px) scale(.65)}45%,60%{opacity:.95;transform:translateY(-3px) scale(1.15)}}
 @media(prefers-reduced-motion:reduce){.home-canvas .home-campaign-cta,.home-campaign-cta::before,.home-campaign-film::after,.home-campaign-sparks i{animation:none;transform:none}}
+
+.home-campaign-aura{position:absolute;inset:-7px;z-index:-2;border-radius:inherit;pointer-events:none;opacity:.7;background:conic-gradient(from 25deg,#ff92d5,#b4a2ff,#80eaff,#acffd4,#ffe8a0,#ffb3ba,#ff92d5);filter:blur(7px);animation:home-campaign-aura 6s ease-in-out infinite}
+@keyframes home-campaign-aura{0%,100%{opacity:.45;transform:scale(.99,1.04)}50%{opacity:.8;transform:scale(1.035,1.09)}}
+@media(prefers-reduced-motion:reduce){.home-campaign-aura{animation:none;opacity:.55}}

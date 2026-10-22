@@ -16,3 +16,6 @@
 .medal-requirements{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;font-size:10px;color:#a1ada4}.medal-requirements span{background:#e8ece5;padding:3px 5px;border-radius:8px}.medal-requirements .is-earned{color:#578463;background:#e1eedc}.achievement-goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:18px 0}.achievement-goals article{padding:18px;border-radius:19px;background:#fff9ee;border:1px solid #e5e3d8}.achievement-goals p{font-size:13px;margin:9px 0 0;color:#7f9586}.achievement-goals .is-earned{background:#e8f3e3}.round-rule-progress{border-top:1px solid #dddbc6;margin-top:15px;padding-top:8px}.round-rule-progress p{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;font-size:12px}.round-rule-progress strong{flex-shrink:0;font-size:11px;color:#7e9a62}
 
 .has-power [data-math-quiz] .question-block{filter:drop-shadow(0 0 14px #f0d77b)}
+
+/* Old galleries share the modular reward renderer with the new reward cards. */
+.reward-sprite.has-modular-art{background:none}.has-modular-art>.modular-award{display:block;width:100%;height:100%;overflow:visible}.modular-award [data-reward-part]{transform-box:fill-box;transform-origin:center}

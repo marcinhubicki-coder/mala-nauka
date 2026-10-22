@@ -31,7 +31,7 @@ test('knowledge cup keeps the chosen ornament order and converges to all nine el
  for(const [i,choice]of order.entries()){
   p=claimReward(p,'knowledge-spelling',{expectedLevel:i+1,choice},words);
   assert.deepEqual(p.journey.adventure.claims['knowledge-spelling'].choices,order.slice(0,i+1));
-  const html=knowledgeMarkup(p,'spelling',words);assert(html.includes('class="is-set" style="--gem:'+choice+';'));
+  const html=knowledgeMarkup(p,'spelling',words);assert(html.includes('data-ornaments="'+order.slice(0,i+1).sort((a,b)=>a-b).join(',')+'"'));assert(!html.includes('◆'));
  }
  assert(cupState(p,'spelling',words).complete);
  assert.equal(new Set(p.journey.adventure.claims['knowledge-spelling'].choices).size,9);

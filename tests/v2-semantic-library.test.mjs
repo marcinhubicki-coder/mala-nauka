@@ -21,7 +21,7 @@ test('One BackButton concept retains all real BackButton instances',()=>{
  assert.equal(back.length,1);
  const declaredBacks=raw.filter(row=>row.recipe==='button-back').reduce((n,row)=>n+row.uses.length,0);
  assert.equal(back[0].uses.length,declaredBacks);
- assert.equal(declaredBacks,37); // Campaign reuses the same BackButton in its map and three math states.
+ assert.equal(declaredBacks,40); // Campaign portal and book reuse the same BackButton as the map and games.
  assert.equal(back[0].variants.length,1); // no structural-hash variants remain
  assert.equal(back[0].registered,true);
 });

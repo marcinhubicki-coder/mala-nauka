@@ -1,7 +1,15 @@
-import {campaignPosition} from './shared/campaign-layout.mjs';
+import {storyHomeModel,storyHomeImages,renderStoryHome,mountStoryHomeFrost} from './shared/story-home.mjs';
+import {mountHomePlayStyle} from './shared/home-play-style.mjs';
+import {decodeImage} from './shared/screen-readiness.mjs';
+import {campaignNarrative} from './shared/campaign-narrator-model.mjs';
+import {openCampaignNarrator,beginCampaignPresentation} from './shared/campaign-narrator.mjs';
+import {narrateCampaignPortal} from './shared/campaign-scene.mjs';
+import {mountCampaignBook} from './shared/campaign-book.mjs';
+import {departCampaignWorld} from './shared/campaign-portal.mjs';
+import {campaignPosition,campaignTraveller} from './shared/campaign-layout.mjs';
 import {campaignRoundSource} from './shared/campaign-round.mjs';
-import {adventureConfig,campaignStepState,campaignPool,cleanAdventure,campaignSummary} from './shared/adventure-model.mjs';
-import {campaignMarkup,campaignMarkupReady,mountCampaignScene,celebrate,playPowerEffect,openRewardDialog,animateCampaignToken,departCampaignTraveller} from './shared/adventure-ui.mjs';
+import {adventureConfig,campaignStepState,campaignPool,cleanAdventure,campaignSummary,consumeCampaignPresentation} from './shared/adventure-model.mjs';
+import {campaignMarkupReady,celebrate,playPowerEffect,openRewardDialog,playCampaignReturn,renderCampaignScene} from './shared/adventure-ui.mjs';
 import {configureScenicRound} from './flagi/scenic-round.mjs';
 import {addLearningSession} from './shared/mastery.mjs';
 import {awardRuleProgress} from './shared/rule-progress.mjs';
@@ -39,6 +47,8 @@ import { playerService, AVATARS, NICKNAME_MAX_LENGTH, MAX_PLAYERS } from './play
 import { createJellyV4 } from './shared/jelly-v4.mjs?v=3';
 import { parseBackup, backupSummary, BACKUP_MAX_BYTES } from './profile-backup.mjs?v=1';
 const root=document.querySelector('#app'), modal=document.querySelector('#modal');
+let campaignBookController=null,homeController=null,homeStyle=null,homePlayer=null,homePaintEpoch=0,homeHistoryEntry=null;
+let campaignBookEntry=null,campaignBookReturn='campaign';
 let campaignRound=null,campaignRealm='',campaignTravelFrom=null,campaignPaintEpoch=0,campaignSelectedStep='',campaignResumeProfile=false,campaignDesignSignature='';
 const modeHost=new URLSearchParams(location.search).get('audio-host')==='1'?null:createModeHost({app:root,audio:gameSound,getDesign:()=>window.__MALA_NAUKA_DESIGN__,navigate:target=>{if(target==='players')playersPage();else navigate(target);}});
 const spellingArt=createSpellingArt(root,{onContinue:()=>syncGame()});
@@ -353,7 +363,7 @@ async function submitPlayerPin(){
 }
 
 function pageHead(title,action='home') {return pageHeading(title,{action});}
-function navigate(next) {scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;
+function navigate(next) {homeController?.destroy();homeController=null;homePaintEpoch++;campaignBookController?.destroy();campaignBookController=null;scenicGame?.destroy();scenicGame=null;delete root.dataset.scenic;delete root.dataset.dsContractPending;
  prepareScreenChange(root,next);
  editingPin=false;editingProfile=false;deletingProfile=false;
  stopGameTicker();settleResult(root);stopResultScroll(root);destroyProgressScreen(root);
@@ -361,30 +371,64 @@ function navigate(next) {scenicGame?.destroy();scenicGame=null;delete root.datas
  if(next!=='history')collectionReturn=null;
  spellingArt.reset();
  view=next;root.dataset.view=view;root.dataset.mode=selectedMode;setScreenTheme(view==='home'?'#ddf3ff':view==='wizard'&&(selectedMode==='spelling'||selectedMode==='english')?'#70d1f3':'#f5f8ff');
- if(view==='campaign')root.mnScreenReady=campaignPage();if(view==='home')home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history')root.mnScreenReady=historyPage();
+ if(view==='campaign-book')root.mnScreenReady=campaignBookPage();if(view==='campaign')root.mnScreenReady=campaignPage();if(view==='home')root.mnScreenReady=home();if(view==='wizard')wizard();if(view==='settings')settingsPage();if(view==='history'){root.mnScreenReady=historyPage(homeHistoryEntry||'dashboard',{fromHome:Boolean(homeHistoryEntry)});homeHistoryEntry=null;}
  root.scrollTop=0;(root.querySelector('h1')||root).focus({preventScroll:true});
 }
+async function campaignBookPage(){
+ root.dataset.dsContractPending='campaign-book';root.dataset.mode='spelling';
+ const initialPage=campaignBookEntry,returnTo=campaignBookReturn;campaignBookEntry=null;
+ campaignBookController=await mountCampaignBook(root,{progress,config:adventureConfig(),realmId:campaignRealm,character:campaignTraveller(progress,activePlayer),initialPage,onBack:()=>navigate(returnTo)});delete root.dataset.dsContractPending;
+}
 async function campaignPage(){
- const epoch=++campaignPaintEpoch,config=adventureConfig();campaignDesignSignature=JSON.stringify(config);root.dataset.dsContractPending='campaign';
+ const epoch=++campaignPaintEpoch,config=adventureConfig();campaignDesignSignature=JSON.stringify(config);root.dataset.dsContractPending='campaign';root.dataset.mode='spelling';
  if(activePlayer?.id&&!studioProfiles()){const latest=await playerService.getProgress(activePlayer.id);if(view!=='campaign')return;progress=cleanProgress(latest);}
- const from=campaignTravelFrom;campaignTravelFrom=null;
- const html=await campaignMarkupReady(progress,words,{config,realmId:campaignRealm,player:activePlayer,selectedStep:campaignSelectedStep,fromIndex:from?.realm===campaignRealm?from.index:undefined});if(epoch!==campaignPaintEpoch||view!=='campaign')return;root.innerHTML=html;
- const controller=await mountCampaignScene(root,progress,config,{fromIndex:from?.realm===campaignRealm?from.index:undefined});delete root.dataset.dsContractPending;
- if(from)void waitForScreenEntrance(root).then(()=>{if(epoch===campaignPaintEpoch&&view==='campaign')return animateCampaignToken(root,progress,adventureConfig(),from,controller);});
+ const award=progress.journey.adventure.campaign.presentation;const validAward=award&&config.steps.some(s=>s.id===award.stepId)?award:null;if(validAward)campaignRealm=validAward.realm;
+ const from=validAward?{realm:validAward.realm,index:validAward.fromIndex}:campaignTravelFrom;campaignTravelFrom=null;
+ const controller=await renderCampaignScene(root,progress,words,{config,realmId:campaignRealm,player:activePlayer,selectedStep:campaignSelectedStep,presentation:validAward,fromIndex:from?.realm===campaignRealm?from.index:undefined,isCurrent:()=>epoch===campaignPaintEpoch&&view==='campaign'});if(epoch!==campaignPaintEpoch||view!=='campaign')return;delete root.dataset.dsContractPending;
+ if(from||!studioProfiles())void waitForScreenEntrance(root).then(()=>{if(epoch===campaignPaintEpoch&&view==='campaign')return playCampaignReturn(root,progress,config,{award:validAward,from,controller,narration:!studioProfiles(),onNarrated:()=>persistProgress(),onPresented:async id=>{if(consumeCampaignPresentation(progress,id))await persistProgress();}});});
 }
 async function launchCampaign(id){
  const c=adventureConfig(),step=c.steps.find(s=>s.id===id);if(!step||!campaignStepState(progress,step,words,c).unlocked)return;
  campaignTravelFrom={realm:step.realm,index:campaignPosition(progress,c.realms.find(r=>r.id===step.realm),c).index};campaignSelectedStep='';campaignRound=step;campaignRealm=step.realm;selectedMode=step.mode;if(step.mode==='math'&&modeHost){modeHost.open('math',{campaignStepId:step.id});return;}await start();
 }
 async function home() {
+ const epoch=++homePaintEpoch;
  campaignRound=null;campaignTravelFrom=null;delete root.dataset.campaignMode;
  root.dataset.dsContractPending='home';
- const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(view!=='home'||activePlayer?.id!==playerId){if(root.dataset.dsContractPending==='home')delete root.dataset.dsContractPending;return;}progress=cleanProgress(latest);}
+ const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(epoch!==homePaintEpoch||view!=='home'||activePlayer?.id!==playerId)return;progress=cleanProgress(latest);}
+ if(homePlayer!==playerId){homeStyle=null;homePlayer=playerId;}
+ // First-run welcome is deliberately unchanged; this prototype is the returning-player home.
+ homeStyle??=progress.journey.adventure.campaign.started||progress.journey.adventure.campaign.completed.length?'story':'free';
  const latest=progress.history[0],today=progress.today.day===localDay()?progress.today.count:0;
  const lastScore=latest?`${scoreResult(latest).total} ${latest.progressionRules?'iskier':'pkt'}`:'0 iskier';
  const lastLabel=latest?`Ostatnia: ${MODES[latest.mode].name}`:'Zagraj pierwszą rundę';
- root.innerHTML=renderHomeScreen({nickname:activePlayer?.nickname||'odkrywco',today,lastScore,lastLabel,campaignStarted:progress.journey.adventure.campaign.started||progress.journey.adventure.campaign.completed.length>0,modes:MODES,modeIds});delete root.dataset.dsContractPending;
+ const model=storyHomeModel(progress,adventureConfig(),activePlayer),nickname=activePlayer?.nickname||'odkrywco';
+ const markup=style=>style==='story'?renderStoryHome({nickname,model}):renderHomeScreen({nickname,today,lastScore,lastLabel,campaignStarted:progress.journey.adventure.campaign.started||progress.journey.adventure.campaign.completed.length>0,modes:MODES,modeIds});
+ const images=style=>style==='story'?storyHomeImages(model):[assetUrl('assets/brand/home-adventure-3d.webp')];
+ await Promise.all(images(homeStyle).map(decodeImage));
+ if(epoch!==homePaintEpoch||view!=='home')return;
+ root.dataset.state=homeStyle==='story'?'story':'initial';root.innerHTML=markup(homeStyle);delete root.dataset.dsContractPending;
+ let run=0,animations=[],stopFrost=mountStoryHomeFrost(root);const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+ const switchStyle=async style=>{
+  homeStyle=style;const turn=++run,content=root.querySelector('.home-play-content');
+  const opacity=getComputedStyle(content).opacity,filter=getComputedStyle(content).filter;
+  animations.forEach(a=>a.cancel());content.style.opacity=opacity;content.style.filter=filter;
+  root.dataset.dsContractPending=style==='story'?'home-story':'home';
+  const fade=content.animate([{opacity,filter},{opacity:0,filter:'blur(12px)'}],{duration:reduced()?0:290,easing:'ease-in',fill:'forwards'});animations=[fade];
+  await Promise.all([fade.finished.catch(()=>{}),Promise.all(images(style).map(decodeImage))]);
+  if(turn!==run||epoch!==homePaintEpoch||view!=='home')return;
+  const holder=document.createElement('template');holder.innerHTML=markup(style);
+  const nextCanvas=holder.content.querySelector('.home-canvas'),canvas=root.querySelector('.home-canvas'),next=nextCanvas.querySelector('.home-play-content');
+  // The chrome and switch stay mounted, preserving focus, drag and spring motion.
+  canvas.className=nextCanvas.className;canvas.dataset.dsTemplate=nextCanvas.dataset.dsTemplate;canvas.setAttribute('aria-label',nextCanvas.getAttribute('aria-label'));root.dataset.state=style==='story'?'story':'initial';
+  next.style.opacity='0';stopFrost();content.replaceWith(next);stopFrost=mountStoryHomeFrost(root);fade.cancel();delete root.dataset.dsContractPending;
+  const entrance=next.animate([{opacity:0,filter:'blur(12px)',transform:'translateY(3px)'},{opacity:1,filter:'blur(0)',transform:'translateY(0)'}],{duration:reduced()?0:460,easing:'cubic-bezier(.2,.7,.2,1)',fill:'both'});animations=[entrance];
+  await entrance.finished.catch(()=>{});if(turn===run){next.style.opacity='';entrance.cancel();}
+ };
+ const jelly=mountHomePlayStyle(root,{style:homeStyle,onChange:style=>root.mnScreenReady=switchStyle(style)});
+ homeController={destroy(){run++;stopFrost();animations.forEach(a=>a.cancel());jelly.destroy();}};
 }
+
 function wizard() {
  root.dataset.tutorial=String(selectedMode==='spelling'&&!progress.journey?.tutorialDone&&!studioProfiles());
  if(selectedMode==='spelling')setDictationWords(words);
@@ -468,11 +512,11 @@ async function importBackup(){
  finally{backupBusy=false;}
 }
 function resultScopeLabel(r){const category=categoryLabel(r.mode,r.category);return r.mode==='reading'&&r.category==='memory'?category:`${category} · ${levelLabel(r.mode,r.difficulty)}`;}
-async function historyPage(initialScreen='dashboard') {
+async function historyPage(initialScreen='dashboard',{fromHome=false}={}) {
  root.dataset.dsContractPending='progress';
  const playerId=activePlayer?.id;if(playerId&&!studioProfiles()){const latest=await playerService.getProgress(playerId);if(view!=='history'||activePlayer?.id!==playerId){if(root.dataset.dsContractPending==='progress')delete root.dataset.dsContractPending;return;}progress=cleanProgress(latest);}
  setScreenTheme('#b4eaff');
- renderProgressScreen(root,{progress,words,initialScreen,onNavigate:target=>routeTo(target),onBack:()=>routeTo(resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'forge','return-results',selectedMode,collectionReturn?.result?.mode+'-results')),onSave:async journey=>{progress.journey=journey;await persistProgress({strict:true});},backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
+ renderProgressScreen(root,{progress,words,initialScreen,entryBackHome:fromHome,onNavigate:target=>routeTo(target),onBack:()=>routeTo(resolveRoute(globalThis.__MALA_NAUKA_DESIGN__,'forge','return-results',selectedMode,collectionReturn?.result?.mode+'-results')),onSave:async journey=>{progress.journey=journey;await persistProgress({strict:true});},backAction:collectionReturn?'return-results':'home',initialMode:selectedMode,
   onPractice:(mode,category)=>{selectedMode=mode;if(category){configs[mode]=cleanConfig(mode,{...configs[mode],category,dyktando:false});try{const prior=read(prefix+'spellingWizardV2',{})||{};localStorage.setItem(prefix+'spellingWizardV2',JSON.stringify({...prior,scope:'categories',categories:[category],dyktando:false}));}catch{}}navigate('wizard');}});delete root.dataset.dsContractPending;
 }
 function unlockAudio(){void gameSound.unlock({gesture:true});}
@@ -728,11 +772,11 @@ function finish(early=false,goHome=false){
  const record=recordResult(progress,result,words);void persistProgress();lastResult=result;
  if(goHome){routeTo(resolveRoute(window.__MALA_NAUKA_DESIGN__,game.mode+'-initial','exit-confirm',game.mode));return;}
  view='results';
- const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay},progress);if(result.campaignStepId){const back=document.createElement('button');back.type='button';back.className='primary campaign-return';back.dataset.action='campaign';back.textContent=result.campaignCompleted?'Krok ukończony · wróć na szlak →':'Wróć na szlak · kontynuuj odkrycia';root.querySelector('.result-v4')?.append(back);if(result.campaignWorld)celebrate(root);}};
+ const render=(animate=false,delay=1000)=>{spellingArt.reset();setScreenTheme('#dfddfc');renderSpellingResult(root,result,words,null,{animate,delay},progress);if(result.campaignStepId&&result.campaignWorld)celebrate(root);};
  void transitionToResult(root,()=>spellingArt.setPaused(true),render).catch(()=>{render();root.inert=false;});
 }
 function routeTo(target){
- if(target==='campaign'){campaignRound=null;navigate('campaign');return;}
+ if(target==='campaign'){if(requestHostRoute('campaign'))return;campaignRound=null;navigate('campaign');return;}
  if((['home','settings','players'].includes(target)||target.endsWith('-settings')&&target.slice(0,-9)!==selectedMode)&&requestHostRoute(target))return;
  if(target==='player-create'){playerCreatePage();return;}
  if(target==='players'){if(!studioProfiles())void playerService.lockSession();activePlayer=null;playersPage();return;}
@@ -746,8 +790,10 @@ function routeTo(target){
 function clearPrompt(){showModal('Wyczyścić wyniki tego profilu?',`<p>Usuniesz historię i rekordy aktywnego profilu. Ustawienia zostaną zachowane.</p><div class="stack">${btn('Zachowaj wyniki','cancel-clear','primary')}${btn('Wyczyść wyniki','confirm-clear','danger')}</div>`);}
 function showDeleteProfilePrompt(){if(!activePlayer||activePlayer.id==='guest')return;showModal('Usunąć profil?',`<p>Usuniesz profil <strong>${escape(activePlayer.nickname)}</strong> oraz wszystkie jego wyniki z tego urządzenia. Tego nie można cofnąć.</p><div class="stack">${btn('Zachowaj profil','cancel-delete-profile','primary')}${btn('Usuń profil','confirm-delete-profile','danger')}</div>`);}
 async function dispatch(event){const button=event.target.closest('button[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;
- if(button.matches('[data-adventure-reward],[data-adventure-power],[data-power-preview],[data-campaign-realm],[data-campaign-start],[data-campaign-select],[data-campaign-portal],[data-campaign-character]')||action==='close-reward')return;
- if(action==='campaign'){progress.journey.adventure.campaign.started=true;await persistProgress();campaignRound=null;navigate('campaign');return;}
+ if(button.matches('[data-adventure-reward],[data-adventure-power],[data-power-preview],[data-campaign-realm],[data-campaign-start],[data-campaign-select],[data-campaign-portal],[data-campaign-character],[data-campaign-book]')||action==='close-reward')return;
+ if(action==='campaign'){if(view==='home'){campaignRealm=storyHomeModel(progress,adventureConfig(),activePlayer).realm.id;campaignSelectedStep='';}progress.journey.adventure.campaign.started=true;await persistProgress();if(requestHostRoute('campaign'))return;campaignRound=null;navigate('campaign');return;}
+ if(action==='home-forge'||action==='home-awards'){selectedMode='spelling';homeHistoryEntry=action==='home-forge'?'forge':'achievements';navigate('history');return;}
+ if(action==='home-book'||action==='home-artifact'){campaignRealm=storyHomeModel(progress,adventureConfig(),activePlayer).realm.id;campaignBookReturn='home';campaignBookEntry=action==='home-artifact'?'key':null;navigate('campaign-book');return;}
  if(action==='export-backup'){await exportBackup();return;}
  if(action==='import-backup'){root.querySelector('#backup-file')?.click();return;}
  if(action==='confirm-import'){await importBackup();return;}
@@ -781,6 +827,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='enable-pin'){editingPin=true;pendingNickname='';pendingPlayerId=activePlayer.id;pinInput='';pinError='';playerPinPage();return;}
  if(action==='disable-pin'){activePlayer=studioProfiles()?{...activePlayer,hasPin:false}:await playerService.setPinProtection(activePlayer.id,{enabled:false});await refreshPlayers();navigate('settings');return;}
  if(action==='switch-player'){campaignResumeProfile=view==='campaign';const target=resolveRoute(window.__MALA_NAUKA_DESIGN__,'settings',action,selectedMode);if(target!=='players'){campaignResumeProfile=false;routeTo(target);return;}if(!studioProfiles())playerService.lockSession();activePlayer=null;editingProfile=false;pendingPlayerId=null;pendingNickname='';pinInput='';pinError='';await refreshPlayers();playersPage();return;}
+ if(action==='result-back'&&view==='results'&&lastResult?.campaignStepId){navigate('campaign');return;}
  if(['home','settings','history','return-results','result-back','choose-mode'].includes(action)){
   const from=document.documentElement.dataset.dsView||view,context=action==='return-results'?collectionReturn?.result.mode+'-results':action==='choose-mode'?button.dataset.mode:'';
   if(action==='history')collectionReturn=view==='results'&&lastResult?{result:lastResult,ui:getResultViewState(root)}:null;
@@ -829,7 +876,7 @@ async function dispatch(event){const button=event.target.closest('button[data-ac
  if(action==='clear')clearPrompt();if(action==='cancel-clear')modal.close();if(action==='confirm-clear'){progress=cleanProgress(null);void persistProgress();modal.close();navigate(view);}
  if(action==='retry')load();
 }
-root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastResult){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);void start();}});
+root.addEventListener('spelling-repeat-request',()=>{if(view==='results'&&lastResult&&!lastResult.campaignStepId){selectedMode=lastResult.mode;configs[selectedMode]=cleanConfig(selectedMode,lastResult);void start();}});
 root.addEventListener('click',dispatch);modal.addEventListener('click',dispatch);
 modal.addEventListener('cancel',e=>{e.preventDefault();if(view==='game')resume();else modal.close();});
 root.addEventListener('input',e=>{if(e.target.id==='player-nickname'){pendingNickname=e.target.value;const help=root.querySelector('#nickname-help');if(help){help.textContent=`Od 3 do ${NICKNAME_MAX_LENGTH} znaków.`;help.classList.remove('is-invalid');}e.target.removeAttribute('aria-invalid');}});
@@ -912,14 +959,16 @@ async function renderStudioScenario(stateOverride=null){
  players=[activePlayer,{id:'studio-olek',nickname:'Olek',avatarId:'b',hasPin:false},{id:'studio-maja',nickname:'Maja',avatarId:'f',hasPin:false}];selectedPlayerId=activePlayer.id;
  progress={...exampleProgress(words),...exampleJourney(words,.25)};lastResult=null;
  for(const mode of ['english','flags','reading','math'])progress.history.push({id:'studio-round-'+mode,mode,duration:180,category:'all',difficulty:1,date:'2026-09-08T12:00:00Z',correct:8,wrong:2});
- if(screen==='campaign'){view='campaign';root.dataset.view='campaign';root.dataset.mode=selectedMode;root.mnScreenReady=campaignPage();await root.mnScreenReady;return;}
+ if(screen==='home'){homePlayer=activePlayer.id;homeStyle=state==='story'?'story':'free';if(state==='story'){progress.journey.adventure.campaign.started=true;progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,7).map(s=>s.id);}}
+ if(screen==='campaign-book'){progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,7).map(s=>s.id);view='campaign-book';root.dataset.view=view;root.mnScreenReady=campaignBookPage();await root.mnScreenReady;return;}
+ if(screen==='campaign'){if(state==='portal'){progress.journey.adventure.campaign.completed=adventureConfig().steps.slice(0,15).map(s=>s.id);campaignRealm=adventureConfig().realms[0].id;campaignSelectedStep='';}view='campaign';root.dataset.view='campaign';root.dataset.mode=selectedMode;root.mnScreenReady=campaignPage();await root.mnScreenReady;if(state==='story'){const dim=beginCampaignPresentation(root),dialog=openCampaignNarrator(root,campaignNarrative(progress,adventureConfig(),{realmId:campaignRealm,preview:true}));root.mnScreenReady=dialog.ready;await dialog.ready;void dialog.accepted.then(()=>dim.finish());}return;}
  if(screen==='history'&&state==='reward-details'){view='history';await historyPage('achievements');openRewardDialog(root,progress,'spelling-explorer',{words,onSave:async journey=>{progress.journey=journey;}});return;}
  if(screen==='players'){if(state==='empty')players=[];else if(['one','two'].includes(state))players=players.slice(0,state==='one'?1:2);playersPage();return;}
  if(screen==='player-create'){pendingNickname='Ania';pendingAvatarId='c';playerCreatePage();return;}
  if(screen==='player-pin'){editingPin=false;deletingProfile=false;pendingNickname=state==='unlock'?'':'Ania';pendingPlayerId=state==='unlock'?activePlayer.id:null;pendingAvatarId='c';pendingPinEnabled=state!=='no-pin';pinInput='';playerPinPage();return;}
  if(screen==='history'&&['trophy-base','trophy-evolution'].includes(state)){if(state==='trophy-base')delete progress.journey.trophies['mastery-5'];else progress={...progress,...exampleJourney(words,.9)};view='history';void historyPage(state);return;}
  if(['home','settings','wizard','history'].includes(screen)){
-  navigate(screen);
+  navigate(screen);if(screen==='home')await root.mnScreenReady;
   if(screen==='history'&&state!=='dashboard'){
    await new Promise(requestAnimationFrame);
    if(state==='rule-details'){root.querySelector('[data-progress="rules"]')?.click();root.querySelector('[data-progress="open-rule-card"]')?.click();}
@@ -996,9 +1045,11 @@ document.addEventListener('mala-nauka:rules',()=>{if(new URLSearchParams(locatio
 document.addEventListener('mala-nauka:words',event=>{if(new URLSearchParams(location.search).has('studio')&&!new URLSearchParams(location.search).has('campaignLab')&&JSON.stringify(studioSourceWords)!==JSON.stringify(event.detail)){studioSourceWords=validateWords(event.detail);words=resolveRules(studioSourceWords);void renderStudioScenario();}});
 
 root.addEventListener('click',async event=>{
+ if(event.target.closest('[data-campaign-book]')){campaignBookEntry=null;campaignBookReturn='campaign';navigate('campaign-book');return;}
  const realm=event.target.closest('[data-campaign-realm]'),start=event.target.closest('[data-campaign-start]'),milestone=event.target.closest('[data-campaign-select]'),portal=event.target.closest('[data-campaign-portal]');
  if(realm&&!realm.disabled){campaignTravelFrom=null;campaignSelectedStep='';campaignRealm=realm.dataset.campaignRealm;void campaignPage();}
  if(start&&!start.disabled)void launchCampaign(start.dataset.campaignStart);
  if(milestone&&!milestone.disabled){campaignSelectedStep=milestone.dataset.campaignSelect;void campaignPage();}
- if(portal&&!portal.disabled){const next=adventureConfig().realms[Number(portal.dataset.campaignPortal)];if(next){portal.disabled=true;await campaignMarkupReady(progress,words,{realmId:next.id,player:activePlayer});celebrate(root);await departCampaignTraveller(root);campaignRealm=next.id;campaignTravelFrom={realm:next.id,index:0,arrivalOnly:true};await campaignPage();}}
+ if(portal&&!portal.disabled&&Number(portal.dataset.campaignPortal)===adventureConfig().realms.length){portal.disabled=true;try{await narrateCampaignPortal(root,progress,adventureConfig(),{onNarrated:()=>persistProgress(),onContinue:async()=>{navigate('campaign-book');return true;}});}finally{if(portal.isConnected)portal.disabled=false;}return;}
+ if(portal&&!portal.disabled){const next=adventureConfig().realms[Number(portal.dataset.campaignPortal)];if(next){portal.disabled=true;try{const ready=campaignMarkupReady(progress,words,{realmId:next.id,player:activePlayer});await narrateCampaignPortal(root,progress,adventureConfig(),{onNarrated:()=>persistProgress(),onContinue:async()=>{const departed=await departCampaignWorld(root);await ready;if(!departed||view!=='campaign')return false;campaignRealm=next.id;campaignTravelFrom={realm:next.id,index:0,arrivalOnly:true,world:true};await campaignPage();return true;}});}catch(error){console.error('Portal kampanii:',error);portal.disabled=false;}}}
 });

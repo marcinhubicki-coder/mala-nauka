@@ -186,9 +186,7 @@ function renderRoundSummary({animate=true,delay=200}={}) {
  lastResult={...lastResult,mode:'math',category:currentMode,duration:currentDuration,correct,wrong,rewards:roundRewards};
  renderSpellingResult(app,lastResult,[],null,{animate,delay});
  app.querySelector('.result-v4').classList.add('math-round-summary');
- if(mathCampaign()){
-  const back=document.createElement('button');back.className='primary campaign-return';back.textContent=lastResult.campaignCompleted?'Dalej na mapie':'Wróć do mapy';back.dataset.action='campaign';app.querySelector('.result-v4').prepend(back);
- }
+
 }
 function goRoute(action,directTarget=''){
  const app=document.querySelector('#app'),from=document.documentElement.dataset.dsView||'math-results';
@@ -228,7 +226,7 @@ export function renderMathStudioResult(fixture) {
   clock = null; syncTimerSnapshot(); renderRoundSummary();
 }
 
-document.querySelector('#app').addEventListener('spelling-repeat-request',()=>{stopResultScroll(document.querySelector('#app'));window.dispatchEvent(new CustomEvent('math-restart',{detail:{mode:currentMode,duration:currentDuration}}));});
+document.querySelector('#app').addEventListener('spelling-repeat-request',()=>{if(mathCampaign())return;stopResultScroll(document.querySelector('#app'));window.dispatchEvent(new CustomEvent('math-restart',{detail:{mode:currentMode,duration:currentDuration}}));});
 window.addEventListener('math-presentation-hold',event=>clock?.setPresentationHold(event.detail===true));
 window.addEventListener('math-round-start', event => {
   startClock(event.detail?.mode || 'multiply', Number(event.detail?.duration) || 180);

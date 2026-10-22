@@ -40,6 +40,7 @@ const queue=[initial,...pool.map(x=>x.id)].filter((id,i,all)=>records.has(id)&&a
 app.dataset.qa=String(query.has('qa'));
 const motion=matchMedia('(prefers-reduced-motion:reduce)');
 let step=0,points=0,seconds=SCENIC.seconds,state='loading',timeline=new ScenicTimeline(),round=0,paused=false,visibilityPaused=false;
+let layoutPending=false,layoutSize='',layoutGeneration=0;
 let readyForNext=false,fixtureTimer,game=hostedSession||createSession();
 const roundSeconds=hostedSession?.duration||SCENIC.seconds;
 const entry=createScenicGate(app,()=>language);
@@ -52,7 +53,17 @@ const current=()=>records.get(hostedSession?game.current.countryId:queue[step]);
 const optionRecords=values=>values.map(value=>records.get(value)||byName.get(value));
 const optionsNow=()=>hostedSession?optionRecords(game.options):optionsFor(current());
 const alive=owner=>owner===timeline&&!owner.cancelled;
-function setState(value){state=value;app.dataset.state=value;root.dataset.state=value==='feedback-correct'||value==='feedback-wrong'?value:'playing';if(!root.dataset.dsContractPending)syncContract();$('scenic-language').disabled=!['playing','feedback-correct','feedback-wrong'].includes(value);}
+function layoutIsStable(){
+  return ['playing','feedback-wrong','feedback-correct'].includes(state);
+}
+function setState(value){
+  state=value;
+  app.dataset.state=value;
+  root.dataset.state=value==='feedback-correct'||value==='feedback-wrong'?value:'playing';
+  if(!root.dataset.dsContractPending)syncContract();
+  $('scenic-language').disabled=!layoutIsStable();
+  if(layoutPending&&layoutIsStable())refreshMapLayout();
+}
 function syncContract(){const view='flags-'+(state==='feedback-correct'?'correct':state==='feedback-wrong'?'wrong':'initial');document.documentElement.dataset.dsView=view;applyCompiledView(root,globalThis.__MALA_NAUKA_DESIGN__,view);}
 function optionsFor(record){
   if(record.id==='pl')return ['is','ch','pl','rs'].map(id=>records.get(id));
@@ -407,7 +418,21 @@ window.addEventListener('message',event=>{if(!hostedSession||event.origin!==loca
 document.addEventListener('visibilitychange',()=>{visibilityPaused=document.hidden;syncPause();});
 // Test-only capture bridge: freeze Canvas without changing the photographed UI.
 if(query.has('qa'))window.addEventListener('scenic-qa-pause',event=>timeline.setPaused(event.detail===true||paused||visibilityPaused));
-const observer=new ResizeObserver(()=>{placeScroll();fitCaption();});observer.observe($('scenic-stage'));
+// Do not change the paper geometry in the middle of its fold or sand handoff.
+// A resized open map must be repainted at its actual size, rather than stretch
+// a canvas prepared for the previous viewport.
+const observer=new ResizeObserver(()=>{
+  const stage=$('scenic-stage');
+  const size=stage.clientWidth+':'+stage.clientHeight;
+  if(size===layoutSize)return;
+  layoutSize=size;
+  if(layoutIsStable())refreshMapLayout();
+  else if(state==='loading'){
+    placeScroll();
+    fitCaption();
+  }else layoutPending=true;
+});
+observer.observe($('scenic-stage'));
 window.addEventListener('pagehide',()=>{timeline.cancel();clearInterval(ticker);clearTimeout(fixtureTimer);observer.disconnect();continueDrag.destroy();sand.clear();mapInk.clear();});
 window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
 motion.addEventListener('change',()=>{if(state==='transition'||state==='showing-map')restart();});
@@ -421,15 +446,30 @@ let mapEditor,mapEditGeneration=0;
 function publishMap(){mapEditor?.publish();}
 // Canvas ink is part of the editable runtime. Repaint the active map when
 // Studio changes typography or a saved camera, without replaying feedback.
-let designRefresh=0;
+function refreshMapLayout(){
+  layoutPending=false;
+  const generation=++layoutGeneration,owner=timeline,record=current(),view=sheet.dataset.view;
+  placeScroll();
+  fitCaption();
+  if(!lastMapResult?.found||!sheet.classList.contains('is-open'))return;
+  const activeNeighbors=[...$('scenic-neighbors').querySelectorAll('[aria-pressed="true"]')]
+    .map(node=>node.dataset.neighbor);
+  const isCurrent=()=>generation===layoutGeneration&&alive(owner)&&record===current();
+  caught((async()=>{
+    syncContract();
+    await mapInk.prepare(lastMapResult,local(record),{
+      isCurrent,
+      ...(state==='playing'?{presentation:questionInk(mode)}:{})
+    });
+    if(!isCurrent())return;
+    await mapInk.reveal({timeline:owner,reduced:true});
+    await mapInk.setView(view,{timeline:owner,reduced:true});
+    for(const id of activeNeighbors)mapInk.setNeighbor(id,true);
+    publishMap();
+  })());
+}
 document.addEventListener('mala-nauka:design',()=>{
- const generation=++designRefresh,owner=timeline,record=current(),view=sheet.dataset.view;
- if(!lastMapResult?.found||!sheet.classList.contains('is-open')||!['playing','feedback-wrong','feedback-correct'].includes(state))return;
- caught((async()=>{placeScroll();fitCaption();syncContract();
-  await mapInk.prepare(lastMapResult,local(record),{isCurrent:()=>generation===designRefresh&&alive(owner)&&record===current(),...(state==='playing'?{presentation:questionInk(mode)}:{})});
-  if(generation!==designRefresh||!alive(owner)||record!==current())return;
-  await mapInk.reveal({timeline:owner,reduced:true});await mapInk.setView(view,{timeline:owner,reduced:true});publishMap();
- })());
+  if(layoutIsStable())refreshMapLayout();else layoutPending=true;
 });
 if(isValidator){
  const {attachMapEditor}=await import('./scenic-validator.mjs');

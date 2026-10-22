@@ -1,4 +1,4 @@
-// One timing source for the isolated scenic variant, also used by visual QA.
+// Shared scenic timing and layout constants for the game, Studio and QA.
 export const SCENIC = Object.freeze({
   seconds: 166, memoryMs: 3900, openMs: 880, closeMs: 860, inkDrawMs: 2100, inkEraseMs: 1050,
   sandMs: 1700, sandFall: .34, sandSettle: .49, grainsPerLetter: 30,

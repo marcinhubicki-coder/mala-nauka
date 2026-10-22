@@ -1,0 +1,2 @@
+// Immutable local-library metadata; publication is a separate release step.
+export const STORY_HOME_ART={"city": {"id": "home-story-harbor-v60", "path": "assets/managed/643dccce77e33d62a2134d8102ae997c4ea6ed481cb4f24d2605258e60194502.webp", "sha": "643dccce77e33d62a2134d8102ae997c4ea6ed481cb4f24d2605258e60194502", "size": 414606, "width": 1024, "height": 1536, "type": "webp", "group": "adventure", "references": ["shared/story-home.mjs"]}};

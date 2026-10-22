@@ -555,6 +555,33 @@
       "category": "home"
     },
     {
+      "id": "home-story",
+      "name": "Start · kampania",
+      "mode": "spelling",
+      "screen": "home",
+      "state": "story",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "button",
+        "profile",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "ui",
+        "display"
+      ],
+      "category": "home"
+    },
+    {
       "id": "settings",
       "name": "Ustawienia aplikacji",
       "mode": "spelling",
@@ -1559,6 +1586,81 @@
       "name": "Mapa kampanii",
       "mode": "spelling",
       "screen": "campaign",
+      "state": "initial",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-story",
+      "name": "Iskierka · opowieść",
+      "mode": "spelling",
+      "screen": "campaign",
+      "state": "story",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-portal",
+      "name": "Portal Światów",
+      "mode": "spelling",
+      "screen": "campaign",
+      "state": "portal",
+      "route": "/",
+      "components": [
+        "layout",
+        "card",
+        "popup",
+        "atom-container",
+        "atom-text",
+        "atom-icon",
+        "atom-image",
+        "atom-button",
+        "atom-background"
+      ],
+      "fixture": true,
+      "fontRoles": [
+        "body",
+        "display"
+      ],
+      "category": "results"
+    },
+    {
+      "id": "campaign-book",
+      "name": "Księga kampanii",
+      "mode": "spelling",
+      "screen": "campaign-book",
       "state": "initial",
       "route": "/",
       "components": [

@@ -151,5 +151,7 @@ export function viewIdFor({view,mode='spelling',state='',hasPlayers=true,pinPurp
  if(view==='player-pin'&&pinPurpose==='unlock')return 'player-unlock';
  if(view==='players')return hasPlayers?'players':'players-empty';
  if(view==='history')return ({dashboard:'progress',achievements:'trophies'})[historyState]||historyState;
- return ['home','settings','player-create','player-pin','campaign'].includes(view)?view:'';
+ if(view==='home'&&state==='story')return 'home-story';
+ if(view==='campaign'&&state==='story')return 'campaign-story';
+ return ['home','settings','player-create','player-pin','campaign','campaign-book'].includes(view)?view:'';
 }

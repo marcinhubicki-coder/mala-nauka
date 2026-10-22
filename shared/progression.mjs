@@ -63,6 +63,13 @@ function choosePower(journey,random){
 export function reservePower(value,rules=PROGRESSION_RULES,random=Math.random){
  const journey=cleanJourney(value);if(!journey.pending&&journey.powers.length&&journey.meter>=rules.meter.capacity){journey.pending=choosePower(journey,random);journey.meter-=rules.meter.capacity;}return journey;
 }
+// Explicit choice uses exactly the same charge and one-answer duration as a draw.
+export function reserveChosenPower(value,id,rules=PROGRESSION_RULES){
+ validateProgression(rules);const journey=cleanJourney(value);
+ if(journey.pending)throw Error('Moc jest już przygotowana.');
+ if(!journey.powers.includes(id)||journey.meter<rules.meter.capacity)throw Error('Ta moc nie jest naładowana.');
+ journey.pending=id;journey.meter-=rules.meter.capacity;journey.queued=null;return journey;
+}
 export function answerReward(value,attempt,{mode='spelling',id,streak=0,rules=PROGRESSION_RULES,random=Math.random}={}){
  validateProgression(rules);if(!id||!GAME_MODES[mode])throw Error('Odpowiedź wymaga trwałego identyfikatora i trybu.');
  let journey=cleanJourney(value);const receipt=/^(.*):([1-9][0-9]*)$/.exec(id);if(journey.applied.includes(id)||receipt&&(journey.receipts[receipt[1]]||0)>=Number(receipt[2]))return {journey,streak,duplicate:true,sparks:0};

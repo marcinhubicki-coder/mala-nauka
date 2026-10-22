@@ -8,8 +8,8 @@ import {planLayoutEdit,inspectHomeLayout} from '../tools/studio-engine.mjs';
 test('Engine plans a single Home geometry edit with unchanged siblings',()=>{
  const base={layoutOverrides:{home:{}}};
  const planned=planLayoutEdit(base,{id:'home-mode-spelling',geometry:{x:34,w:255}});
- assert.deepEqual(planned.change.rect,[34,1240,255,260]);
- assert.deepEqual(inspectHomeLayout(planned.config,'home-mode-math').rect,[295,1240,266,260]);
+ assert.deepEqual(planned.change.rect,[34,1140,255,215]);
+ assert.deepEqual(inspectHomeLayout(planned.config,'home-mode-math').rect,[299.5,1140,254,215]);
  assert.deepEqual(base,{layoutOverrides:{home:{}}});
  assert.throws(()=>planLayoutEdit({}, {id:'home-mode-spelling',geometry:{h:2000}}),/outside/);
 });

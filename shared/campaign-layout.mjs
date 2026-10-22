@@ -19,4 +19,20 @@ export function campaignPosition(progress,realm,config){const done=new Set(progr
 // Profile gender is the only player-facing source. Old traveller preferences stay
 // readable in progress backups but never override the avatar.
 export function campaignTraveller(progress,player){return ['a','d','e','g','i','k'].includes(player?.avatarId)?'girl':'boy';}
-export function campaignFacing(route,index){const a=route[Math.min(index,14)],b=route[Math.min(index+1,15)];return b.x<a.x?'left':'right';}
+export function campaignTravelFacing(route,from,to){
+ const a=route[Math.min(15,Math.max(0,from))],b=route[Math.min(15,Math.max(0,to))];
+ if(Math.abs(b.x-a.x)>.003)return b.x<a.x?'left':'right';
+ // A nearly vertical segment follows the next lateral turn, rather than
+ // resetting every upward movement to the right. Both sprites are rear views.
+ for(let i=Math.min(to+1,15);i<route.length;i++)if(Math.abs(route[i].x-b.x)>.003)return route[i].x<b.x?'left':'right';
+ return a.x>.5?'left':'right';
+}
+export function campaignFacing(route,index){return campaignTravelFacing(route,Math.min(index,14),Math.min(index+1,15));}
+
+// Reveal only the worlds already reached and the next silhouette. Editors retain
+// their separate full-world navigator; player progress never exposes the count.
+export function visibleCampaignWorlds(progress,config){
+ const state=progress?.journey?.adventure?.campaign||{},done=new Set(state.completed||[]),seen=new Set(state.storySeen||[]);let furthest=0;
+ config.realms.forEach((realm,i)=>{if(config.steps.some(s=>s.realm===realm.id&&done.has(s.id))||seen.has('intro:'+realm.id)||i>0&&seen.has('portal:'+config.realms[i-1].id))furthest=Math.max(furthest,i);});
+ return config.realms.slice(0,Math.min(config.realms.length,furthest+2));
+}

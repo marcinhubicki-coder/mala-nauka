@@ -1,0 +1,63 @@
+/* Shared chrome and canvas sizing live in home-screen.css. This layer only owns the campaign card. */
+.home-play-content{position:absolute;inset:0}
+.home-free-content{position:absolute;inset:0;transform:none}
+.home-play-style{position:absolute;z-index:8;bottom:.7%;left:13%;right:13%;height:6.1%;display:grid;align-items:center}
+.home-style-jelly{position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;width:100%;height:100%;min-height:44px;isolation:isolate;border:1px solid #fff9;border-radius:999px;background:linear-gradient(130deg,#f5fcffce,#c8e9fae6);box-shadow:inset 0 2px 5px #fff,0 4px 12px #5689ae20;--jelly-top:#c5f3ff;--jelly-bottom:#64b8f9;--jelly-active-ink:#193e78;--jelly-idle-ink:#526c91;--jelly-border-color:#fff;--jelly-shadow:#65a5e34d}
+.home-style-jelly>label{display:grid;place-items:center;min-width:0;position:relative;z-index:1;cursor:pointer;font-size:clamp(13px,3.9cqw,18px);font-weight:800;line-height:1.1}
+.home-style-jelly input{position:absolute;opacity:0;inset:0;pointer-events:none}
+.home-style-jelly>label:has(input:focus-visible){outline:3px solid #3660d1;outline-offset:3px;border-radius:999px}
+.home-style-indicator{position:absolute;left:2%;top:6%;width:48%;height:88%;border-radius:999px;pointer-events:none}
+.home-play-style .jelly-v4-buffer{position:absolute;inset:-15px 0;margin:0;padding:15px 0;height:auto;box-sizing:border-box}
+.story-home-stage{position:absolute;left:2.58%;right:2.58%;top:11.5%;bottom:10.8%;z-index:1}
+.story-home-landscape{position:absolute;inset:0;border-radius:7cqw;overflow:hidden;box-shadow:0 12px 26px #35638330,0 3px 7px #3563831a,inset 0 0 0 1px #ffffff8a;background:#9bdbf6}
+.story-home-landscape:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,#e8faffb3,transparent 62%) 0 0/100% 48% no-repeat;pointer-events:none}
+.story-home-landscape>img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.story-home-portrait-window{position:absolute;inset:-9.1% 0 38%;overflow:visible;z-index:2;pointer-events:none;border-radius:0 0 5cqw 5cqw}
+.story-home-portrait{position:absolute;right:-6%;top:0;width:84%;max-width:none;height:auto;filter:drop-shadow(-5px 8px 6px #58463136)}
+.story-home-stage[data-host=guide] .story-home-portrait{width:75%;right:-3%;top:0}
+.story-home-stage[data-host=mira] .story-home-portrait{width:84%;right:-6%;top:0}
+.story-home-greeting{position:absolute;z-index:3;left:6%;top:5.5%;width:46%;text-align:left;color:#20204e;pointer-events:none;text-shadow:0 1px 10px #effaffb3}
+.story-home-greeting p{margin:0 0 2.5cqw;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-size:5.1cqw;font-weight:800;line-height:1.1}
+.story-home-greeting h1{margin:0;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-size:7.2cqw;font-weight:800;line-height:1.06;letter-spacing:-.035em}
+.story-home-greeting h1 em{font-style:normal;color:#007dba;font-size:1.32em}
+.story-home-greeting>span{display:inline-block;margin-top:3.5cqw;font-size:3.6cqw;font-weight:800;line-height:1.2;max-width:88%;color:#3d5b75}
+.story-home-panel{position:absolute;z-index:4;bottom:2.1%;left:3%;right:3%;padding:3cqw;border:1px solid #ffffffcf;border-radius:7cqw;background:#e9e6e2;box-shadow:0 5px 24px #24345d20,inset 0 1px 1px #fffc;overflow:hidden}
+.story-home-frost{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;border-radius:inherit;opacity:0}.story-home-frost[data-ready=true]{opacity:1}.story-home-frost>img{position:absolute;left:var(--scene-x);top:var(--scene-y);width:var(--scene-w);height:var(--scene-h);max-width:none;object-fit:cover;object-position:50% 58%;filter:blur(11.8px)}.story-home-frost:after{content:"";position:absolute;inset:0;background:linear-gradient(130deg,#ffffffba,#f5eff0b8)}
+.story-home-wallet,.story-home-tools,.story-home-mission{position:relative;z-index:1}
+.story-home-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3cqw;align-items:start;margin:2.5cqw 3cqw 0}
+.story-home-shortcut{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:start;gap:1.3cqw;min-width:0;min-height:0;margin:0;padding:0;border:0;box-shadow:none;background:none;color:#31315d;font-size:3.1cqw;line-height:1.15;font-weight:800;text-align:center;border-radius:3cqw}
+.story-home-shortcut:focus-visible,.story-home-continue:focus-visible{outline:3px solid #355ccf;outline-offset:3px}
+.story-home-shortcut:active .story-home-shortcut-art{transform:scale(.94)}
+.story-home-shortcut-art{position:relative;display:block;width:17cqw;aspect-ratio:1;flex:0 0 auto;min-height:0;filter:drop-shadow(0 3px 3px #7151262c);transition:transform .18s ease}
+.story-home-shortcut-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.story-home-shortcut-art .story-home-forge-art{border-radius:50%;object-fit:cover;object-position:34% 50%;border:1px solid #fff9}
+.story-home-cup{position:absolute;inset:7%;width:86%;height:86%}
+.story-home-medal{position:absolute;right:-13%;bottom:-4%;width:65%;height:65%}
+/* The wallet is separate from the three destinations, with one shared medallion scale. */
+.story-home-wallet{display:grid;grid-template-columns:minmax(0,1fr) 23cqw;gap:3cqw;align-items:center}
+.story-home-medallion{border:1px solid #fff6c8;border-radius:50%;background:radial-gradient(circle at 35% 25%,#fffdf1,#f3e4b9 60%,#bcb1cf);box-shadow:0 3px 10px #67597b28,inset 0 2px 3px #fff}
+.story-home-medallion>img{inset:7%;width:86%;height:86%}
+.story-home-sparks{display:flex;align-items:center;gap:2cqw;min-height:17cqw;padding:1cqw 3cqw 1cqw 1cqw;border:1px solid #fff9;border-radius:999px;background:linear-gradient(110deg,#fff8c6c9,#fffaf6a8);box-shadow:inset 0 2px 4px #fff9,0 3px 10px #79664612;color:#5f482e}
+.story-home-spark-art{position:relative;display:block;width:16cqw;height:16cqw;flex:none}
+.story-home-spark-art>svg{width:100%;height:100%;overflow:hidden;filter:drop-shadow(0 0 5px #fbd86b85);animation:home-spark-breathe 3.8s ease-in-out infinite}
+.story-home-spark-art>i{position:absolute;left:calc(12% + var(--i)*14%);top:calc(75% - mod(var(--i),3)*24%);width:3px;height:3px;border-radius:50%;background:#fff2a8;box-shadow:0 0 5px #f7bc37;animation:home-spark-drift 3.6s ease-in-out infinite;animation-delay:calc(var(--i)*-.61s);pointer-events:none}
+.story-home-spark-balance{display:grid;gap:1cqw;min-width:0}.story-home-spark-balance>small{font-size:3.1cqw;font-weight:800;white-space:nowrap}.story-home-spark-balance>strong{display:flex;font-size:6.4cqw;line-height:1;letter-spacing:-.02em;font-weight:800;font-variant-numeric:tabular-nums}
+.story-spark-reel{display:block;height:1em;width:.62em;overflow:hidden}.story-spark-reel>span{display:block;will-change:transform}.story-spark-reel>span>span{display:block;height:1em;line-height:1em;text-align:center}
+.story-home-forge .story-home-shortcut-art{width:17cqw}.story-forge-ring{position:absolute;inset:-7%;width:114%;height:114%;overflow:visible;transform:rotate(-90deg);fill:none;stroke:#ae9d7455;stroke-width:3}.story-forge-ring .story-forge-meter{stroke:#34b9ad;stroke-linecap:round;stroke-width:3.4}
+.story-home-forge.is-ready .story-home-shortcut-art{animation:home-forge-ready 3s ease-in-out infinite}.story-home-forge.is-ready .story-forge-meter{stroke:#e9b838}
+.story-home-portal-art{position:absolute;inset:0;display:grid;place-items:center}.story-home-portal-art>img{position:absolute;left:5%;bottom:0;width:90%;height:62%;object-fit:contain;filter:drop-shadow(0 0 5px #8bb4f0)}.story-home-portal-art>span{position:relative;margin-top:-10%;font-family:var(--ds-font-display);font-size:12cqw;line-height:1;color:#408f9d;text-shadow:0 1px #fff8d0,0 0 8px #fff}
+@keyframes home-spark-breathe{0%,100%{transform:scale(.96);filter:drop-shadow(0 0 4px #fbd86b75)}50%{transform:scale(1.04);filter:drop-shadow(0 0 8px #fbd86bc9)}}
+@keyframes home-spark-drift{0%,100%{opacity:0;transform:translate(0,5px) scale(.4)}35%{opacity:1}70%{opacity:.7;transform:translate(4px,-13px) scale(1.1)}}
+@keyframes home-forge-ready{0%,100%{filter:drop-shadow(0 0 3px #ffce5b66);transform:scale(1)}50%{filter:drop-shadow(0 0 9px #ffce5bbb);transform:scale(1.04)}}
+.story-home-mission{margin-top:3cqw;padding:2.6cqw;border:1px solid #fff;border-radius:5.3cqw;background:linear-gradient(120deg,#ffffffd6,#faf7ffb3);box-shadow:inset 0 1px 1px #fff,0 3px 8px #6b66821a}
+.story-home-mission>p{margin:0 0 2cqw;color:#5d5c80;text-align:center;font-size:3.7cqw;font-weight:800;line-height:1.15;white-space:nowrap}
+.story-home-continue{position:relative;display:flex;align-items:center;justify-content:center;gap:2cqw;width:100%;min-height:48px;padding:3cqw 2cqw;border:1px solid #ffefad;border-radius:999px;background:linear-gradient(135deg,#fff2b8,#f9ca62 60%,#e7ac48);box-shadow:inset 0 2px 2px #fff9,0 4px 0 #c9913c,0 7px 16px #d2a45a30;color:#3c3155;font-family:var(--ds-font-display),ui-rounded,sans-serif;font-size:4.7cqw;font-weight:800;line-height:1.1}
+.story-home-continue>span:last-child{font-size:1.4em;line-height:.5}
+@media(prefers-reduced-motion:reduce){.story-home-shortcut-art{transition:none}}
+
+/* Free play shares the story card's top and bottom edges, with real gutters. */
+.home-free-content .home-mode-badge{width:14cqw;height:14cqw;top:10%}.home-free-content .home-mode-symbol{font-size:6.3cqw}.home-free-content .home-game-button[data-mode=math] .home-mode-symbol{font-size:6cqw}.home-free-content .home-tile-name{font-size:3.9cqw;bottom:7%}.home-free-content .home-game-button[data-mode=math] .home-tile-name{font-size:3.75cqw}
+.home-free-content .home-stats{padding:2cqw 3.3cqw}.home-free-content .home-icon{width:9cqw;height:9cqw}.home-free-content .home-stat-value{font-size:5cqw}.home-free-content .home-stat-label{font-size:2.65cqw}.home-free-content .home-progress-arrow{width:9cqw;height:9cqw}.home-free-content .home-adventures h2{font-size:4.9cqw}
+@media(prefers-reduced-motion:reduce){.story-home-spark-art>svg,.story-home-spark-art>i,.story-home-forge.is-ready .story-home-shortcut-art{animation:none}}
+
+.home-free-content .home-greeting-live{top:16%;font-size:4.8cqw;line-height:1.25}.home-free-content .home-headline{font-size:5.9cqw}.home-free-content .home-headline strong{font-size:9.8cqw}.home-free-content .home-hero-copy{top:53%;font-size:3.9cqw}

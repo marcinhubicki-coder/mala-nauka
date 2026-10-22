@@ -9,7 +9,7 @@ test('the generated worker is valid JavaScript and installation downloads only i
 });
 test('reward atlases and the word/flag bank stay outside offline installation',()=>{
  const assets=JSON.parse(readFileSync(new URL('../design-system/assets.json',import.meta.url))).assets,bootstrap=selectOfflineBootstrapAssets(assets);
- assert.ok(bootstrap.length<40);assert.equal(bootstrap.filter(a=>/assets\/(managed|scenes|flags)\//.test(a.path)).length,0);
+ assert.ok(bootstrap.length<40);assert.equal(bootstrap.filter(a=>/assets\/(managed|scenes|flags)\//.test(a.path)&&!a.path.endsWith('.woff2')).length,0);
  const vercel=JSON.parse(readFileSync(new URL('../vercel.json',import.meta.url)));assert.deepEqual(vercel.rewrites,[{source:'/assets/:path*',destination:'https://mala-nauka-assets.vercel.app/assets/:path*'}]);
 });
 test('offline starter images are served from installation cache without downloading the bank',async()=>{

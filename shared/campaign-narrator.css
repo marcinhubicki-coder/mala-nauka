@@ -1,0 +1,78 @@
+/* A single dim layer belongs to the whole conversation/reward presentation. */
+.campaign-presentation-shade{position:absolute;inset:0;z-index:14;background:#241e4940;pointer-events:auto}
+.campaign-narrator{
+ --peek-width:150px;--peek-height:225px;--peek-band:225px;--peek-inset:16px;
+ position:fixed;inset:0;margin:auto;width:min(820px,calc(100cqw - 32px));max-width:none;max-height:calc(100dvh - 36px);
+ padding:0;border:0;overflow:visible;background:transparent;color:#30265b;box-shadow:none;text-align:center;
+}
+.campaign-narrator::backdrop{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.iskierka-stage{position:relative;width:200px;height:180px;margin:0 auto 16px;z-index:3;pointer-events:none}
+.iskierka-character{position:relative;display:block;width:100%;height:100%;object-fit:contain;transform-origin:center;animation:iskierka-breathe 3.8s ease-in-out infinite;filter:drop-shadow(4px 7px 7px #2b264c40) drop-shadow(0 0 7px #ffdc8033)}
+.iskierka-sparks{position:absolute;inset:0;pointer-events:none}
+.iskierka-sparks i{position:absolute;left:calc(8% + var(--spark)*11%);top:var(--spark-y);width:4px;height:4px;border-radius:50%;background:#fff4bd;box-shadow:0 0 9px 2px #ffd370aa;animation:iskierka-spark 3.2s ease-in-out infinite;animation-delay:calc(var(--spark)*-.53s)}
+.iskierka-bubble{
+ position:relative;box-sizing:border-box;width:100%;margin:0;padding:25px 26px 16px;
+ background:linear-gradient(135deg,#fffbeb,#f6f4ff);border:2px solid #fff9dd;outline:1px solid #d5bc8e99;outline-offset:3px;
+ border-radius:38px 32px 36px 28px;box-shadow:0 12px 50px #2c235b30,inset 0 2px #fff,inset 0 -3px 12px #dbc89d33;
+}
+.iskierka-bubble:before{content:'';position:absolute;left:calc(50% - 19px);top:-22px;width:38px;height:28px;background:#fffbed;clip-path:polygon(15% 100%,68% 0,100% 100%)}
+.iskierka-name{font:800 11px/1.3 var(--ds-font-body);letter-spacing:.07em;text-transform:uppercase;color:#a27835}
+.iskierka-bubble h2{font:800 24px/1.16 var(--ds-font-display);margin:9px auto 13px;max-width:30ch;text-wrap:balance}
+.iskierka-copy{max-width:64ch;max-height:36dvh;margin-inline:auto;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.iskierka-copy p{font:600 16px/1.5 var(--ds-font-body);margin:0 0 12px;text-wrap:pretty}
+.iskierka-bubble .primary{min-width:150px;min-height:48px;margin:5px auto 9px}
+.iskierka-bubble small{display:block;font:600 11px/1.3 var(--ds-font-body);color:#81748e}
+
+/* The sprite is above the wide bubble on phones/tablets, beside it on wide screens.
+   Its authored seam stays 16px inside the actual screen edge in both directions. */
+.campaign-narrator[data-pose=peek]{padding-top:var(--peek-band)}
+.campaign-narrator[data-pose=peek] .iskierka-stage{position:absolute;top:0;left:calc((100cqw - 100%)*-.5 + var(--peek-inset) - var(--peek-width)*.22);width:var(--peek-width);height:var(--peek-height);margin:0}
+.campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-stage{left:auto;right:calc((100cqw - 100%)*-.5 + var(--peek-inset) - var(--peek-width)*.22)}
+.campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-character{scale:-1 1}
+.campaign-narrator[data-pose=peek] .iskierka-bubble:before{left:22px;top:-23px;width:30px;height:30px;clip-path:polygon(0 0,20% 100%,100% 100%)}
+.campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-bubble:before{left:auto;right:22px;clip-path:polygon(100% 0,0 100%,80% 100%)}
+/* A soft silhouette behind the speaker and a small shaded lip at the hidden edge.
+   Neither effect paints a rectangular plate over the map. */
+.campaign-narrator[data-pose=peek] .iskierka-stage:before{content:'';position:absolute;inset:0;background:#24223d;opacity:.26;mask:var(--speaker-art) center/contain no-repeat;-webkit-mask:var(--speaker-art) center/contain no-repeat;filter:blur(5px);transform:translate(5px,8px);animation:iskierka-shadow 3.8s ease-in-out infinite}
+.campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-stage:before{scale:-1 1}
+.campaign-narrator[data-pose=peek] .iskierka-stage:after{content:'';position:absolute;z-index:4;left:calc(22% - 4px);top:20%;bottom:8%;width:8px;background:linear-gradient(90deg,#26334c80,#ddd4bd45 42%,transparent);box-shadow:3px 0 6px #222c4633;mask:linear-gradient(transparent,#000 15%,#000 80%,transparent);-webkit-mask:linear-gradient(transparent,#000 15%,#000 80%,transparent)}
+.campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-stage:after{left:auto;right:calc(22% - 4px);background:linear-gradient(270deg,#26334c80,#ddd4bd45 42%,transparent);box-shadow:-3px 0 6px #222c4633}
+
+.iskierka-power-choices{display:grid;gap:8px;margin:12px 0;max-height:30dvh;overflow:auto;padding:2px}
+.iskierka-power-choices button{display:flex;align-items:center;gap:12px;text-align:left;border-radius:18px;border:1px solid #baa0dc66;background:linear-gradient(115deg,#fff9dc,#e8e2ff);padding:7px 12px;color:#30265b;font:800 14px/1.3 var(--ds-font-body);cursor:pointer;box-shadow:inset 0 1px #fff}
+.iskierka-power-choices .power-art{width:48px;height:48px;flex:none;margin:0}
+.iskierka-power-choices small{margin-top:3px;font-size:11px}
+.campaign-narrator[data-kind=task]{padding-top:0}
+.campaign-narrator[data-kind=task] .iskierka-stage,.campaign-narrator[data-kind=task] .iskierka-bubble:before{display:none}
+.campaign-narrator[data-kind=task] .iskierka-power-choices{grid-template-columns:repeat(3,1fr)}
+.campaign-narrator[data-kind=task] [data-guide-choice]{justify-content:center;font-size:23px;min-height:62px}
+.campaign-narrator[data-kind=congratulations] .iskierka-bubble{border-color:#ffe5a6}
+.campaign-narrator[data-speaker="Duch Portalu"] .iskierka-stage{width:250px;height:200px}
+.campaign-narrator[data-speaker="Duch Portalu"] .iskierka-character{width:145px}
+.portal-offering{position:absolute;right:8px;top:38px;width:100px;height:145px;object-fit:contain;filter:drop-shadow(0 3px 12px #ffe69799);animation:iskierka-breathe 4s ease-in-out infinite}
+
+@container(min-width:700px){
+ .campaign-narrator{--peek-width:180px;--peek-height:270px;--peek-band:270px;width:min(940px,calc(100cqw - 40px))}
+ .iskierka-bubble{padding:28px 36px 20px}
+ .iskierka-bubble h2{font-size:28px}
+ .iskierka-copy p{font-size:17px}
+}
+@container(min-width:1100px){
+ .campaign-narrator[data-pose=peek]{--peek-band:0px;width:min(1100px,calc(100cqw - 320px));min-height:270px}
+ .campaign-narrator[data-pose=peek] .iskierka-bubble:before{left:-23px;top:48px;clip-path:polygon(0 0,100% 24%,100% 100%);width:30px;height:35px}
+ .campaign-narrator[data-pose=peek][data-entrance$=right] .iskierka-bubble:before{left:auto;right:-23px;clip-path:polygon(100% 0,0 24%,0 100%)}
+}
+@media(max-height:650px){
+ .campaign-narrator{--peek-width:90px;--peek-height:135px;--peek-band:135px;max-height:calc(100dvh - 24px)}
+ .iskierka-stage{width:120px;height:105px;margin-bottom:10px}
+ .iskierka-bubble{padding:18px 22px 12px}.iskierka-bubble h2{font-size:21px;margin:7px auto 10px}
+ .iskierka-copy{max-height:29dvh}.iskierka-copy p{font-size:14px;line-height:1.45;margin-bottom:8px}
+ .iskierka-bubble .primary{min-height:42px;margin:2px auto 6px}
+ .campaign-narrator[data-speaker="Duch Portalu"] .iskierka-stage{height:140px;width:200px}.campaign-narrator[data-speaker="Duch Portalu"] .iskierka-character{width:110px}
+ .portal-offering{width:78px;height:110px;top:25px}
+}
+@keyframes iskierka-breathe{50%{transform:translateY(-5px) scale(1.025)}}
+@keyframes iskierka-shadow{50%{transform:translate(5px,5px) scale(1.015)}}
+@keyframes iskierka-spark{0%,100%{opacity:.15;transform:translateY(2px) scale(.7)}50%{opacity:1;transform:translateY(-9px) scale(1.15)}}
+.campaign-narrator[data-paused] *,.campaign-narrator[data-paused] .iskierka-stage:before{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.iskierka-character,.iskierka-sparks i,.portal-offering,.iskierka-stage:before{animation:none!important}}

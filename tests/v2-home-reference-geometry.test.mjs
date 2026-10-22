@@ -11,10 +11,10 @@ function screenshotOrigin(rect){
   y:(screenshot.safeTop+(y-HOME_TOP)/HOME_CONTENT_HEIGHT*canvasHeight)*ratio
  };
 }
-test('Home restores the reference proportions and 3 + 2 practice rows',()=>{
+test('Home restores the campaign/free shared edges and 3 + 2 practice rows',()=>{
  const expected={
-  spelling:[29,1386],math:[327,1386],english:[621,1386],
-  flags:[29,1671],reading:[475,1671]
+  spelling:[24,1266],math:[332,1266],english:[640,1266],
+  flags:[24,1527],reading:[486,1527]
  };
  for(const [mode,[x,y]]of Object.entries(expected)){
   const actual=screenshotOrigin(HOME_TILES[mode]);
